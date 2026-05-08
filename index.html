@@ -898,6 +898,7 @@ footer { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.06)
 .footer-inner { max-width: 1200px; margin: 0 auto; }
 .footer-top { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 2.5rem; }
 .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 0.85rem; }
+.footer-logo-landscape { height: 52px; width: auto; max-width: 220px; object-fit: contain; display: block; }
 .footer-logo-mark { width: 36px; height: 36px; background: linear-gradient(135deg, var(--blue), #E8192C); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; color: white; font-size: 12px; overflow: hidden; }
 .footer-logo-mark img { width: 100%; height: 100%; object-fit: contain; }
 .footer-logo-text { font-family: var(--font-display); font-weight: 800; color: white; font-size: 0.95rem; }
@@ -2056,8 +2057,11 @@ footer { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.06)
     <div class="footer-top">
       <div class="footer-brand">
         <div class="footer-logo">
-          <div class="footer-logo-mark"><img src="assets/images/logo/logo-white.png" alt="CT" onerror="this.style.display='none';this.parentElement.innerHTML='CT';"></div>
-          <div class="footer-logo-text">CANADO TECHNIQUE<small>Centre de Formation Professionnelle d'Haïti</small></div>
+          <img src="assets/images/logo/logo_cfph.png" alt="Canado Technique — CFPH" class="footer-logo-landscape" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="footer-logo-fallback" style="display:none;align-items:center;gap:10px;">
+            <div class="footer-logo-mark">CT</div>
+            <div class="footer-logo-text">CANADO TECHNIQUE<small>Centre de Formation Professionnelle d'Haïti</small></div>
+          </div>
         </div>
         <div class="footer-desc">Former les techniciens d'élite d'Haïti — une vision à 50 ans portée par l'excellence pédagogique, les certifications internationales et l'innovation IA.</div>
       </div>
