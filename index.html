@@ -756,9 +756,7 @@ footer {
   <div class="nav-inner">
     <div class="nav-logo" onclick="showSection('hero',null)" style="cursor:pointer;">
       <div class="nav-logo-mark">
-        <!-- Remplacez le texte "CT" par votre vrai logo : -->
-        <!-- <img src="assets/images/logo/logo-white.png" alt="Canado Technique"> -->
-        CT
+        <img src="assets/images/logo/logo-white.png" alt="Canado Technique" onerror="this.style.display='none';this.parentElement.innerHTML='CT';">
       </div>
       <div class="nav-brand">
         CANADO <span>TECHNIQUE</span>
@@ -899,9 +897,8 @@ footer {
     <div class="about-grid container">
       <div class="about-img-wrap">
         <div class="about-img-placeholder">
-          <!-- ✅ REMPLACER PAR VOTRE PHOTO : -->
-          <!-- <img src="assets/images/hero/school-photo.jpg" alt="Canado Technique - Centre de formation"> -->
-          <div class="placeholder-icon">🏫</div>
+          <img src="assets/images/hero/school-photo.jpg" alt="Canado Technique - Centre de formation" onerror="this.style.display='none';this.parentElement.querySelector('.placeholder-icon').style.display='flex';">
+          <div class="placeholder-icon" style="display:none;">🏫</div>
         </div>
         <div class="about-badge-float">
           <div class="abf-num">2026</div>
@@ -955,13 +952,18 @@ footer {
     <div style="max-width:1200px;margin:0 auto;">
       <p style="text-align:center;font-size:0.78rem;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem;">Galerie — Ateliers & Classes</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;">
-        <!-- ✅ Remplacer par vos vraies photos: assets/images/gallery/ -->
-        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#EBF5FF,#DBEAFE);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(18,70,212,0.3);">🔌</div>
-        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#D1FAE5,#A7F3D0);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(0,217,126,0.4);">🔧</div>
-        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(91,33,182,0.3);">📡</div>
-        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(180,83,9,0.4);">⚙️</div>
-        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#FCE7F3,#FBCFE8);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(157,23,77,0.3);">💡</div>
-        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#E0F2FE,#BAE6FD);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(3,105,161,0.3);">🌐</div>
+        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#EBF5FF,#DBEAFE);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(18,70,212,0.3);">
+          <img src="assets/images/gallery/photo-01.jpg" alt="Atelier réseau" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">🔌</div>
+        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#D1FAE5,#A7F3D0);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(0,217,126,0.4);">
+          <img src="assets/images/gallery/photo-02.jpg" alt="Atelier mécanique" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">🔧</div>
+        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(91,33,182,0.3);">
+          <img src="assets/images/gallery/photo-03.jpg" alt="Télécommunications" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">📡</div>
+        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(180,83,9,0.4);">
+          <img src="assets/images/gallery/photo-04.jpg" alt="Électromécanique" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">⚙️</div>
+        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#FCE7F3,#FBCFE8);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(157,23,77,0.3);">
+          <img src="assets/images/gallery/photo-05.jpg" alt="Classe" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">💡</div>
+        <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#E0F2FE,#BAE6FD);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(3,105,161,0.3);">
+          <img src="assets/images/gallery/photo-06.jpg" alt="Réseaux" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">🌐</div>
       </div>
       <p style="text-align:center;font-size:0.75rem;color:var(--gray-500);margin-top:1rem;">Placez vos photos dans <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;">assets/images/gallery/</code></p>
     </div>
@@ -998,8 +1000,7 @@ footer {
           <div class="course-title">Réseaux & Cisco — Préparation CCNA</div>
           <div class="course-teacher">
             <div class="teacher-avatar">
-              <!-- <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil"> -->
-              R
+              <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil" onerror="this.style.display='none';this.parentElement.innerHTML='R';">
             </div>
             Formateur Raymonvil · Certifié CCNA
           </div>
@@ -1247,8 +1248,7 @@ footer {
 
       <div class="teacher-card">
         <div class="teacher-photo">
-          <!-- <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil"> -->
-          R
+          <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil" onerror="this.style.display='none';this.parentElement.innerHTML='R';">
         </div>
         <div class="teacher-name">Raymonvil</div>
         <div class="teacher-role">Technique Réseaux Informatiques & Cybersécurité</div>
@@ -1257,8 +1257,7 @@ footer {
 
       <div class="teacher-card">
         <div class="teacher-photo">
-          <!-- <img src="assets/images/teachers/marcellus.jpg" alt="Marcellus"> -->
-          M
+          <img src="assets/images/teachers/marcellus.jpg" alt="Marcellus" onerror="this.style.display='none';this.parentElement.innerHTML='M';">
         </div>
         <div class="teacher-name">Marcellus</div>
         <div class="teacher-role">Télécommunications & Systèmes Digitaux</div>
@@ -1267,8 +1266,7 @@ footer {
 
       <div class="teacher-card">
         <div class="teacher-photo">
-          <!-- <img src="assets/images/teachers/amilcar.jpg" alt="Amilcar"> -->
-          A
+          <img src="assets/images/teachers/amilcar.jpg" alt="Amilcar" onerror="this.style.display='none';this.parentElement.innerHTML='A';">
         </div>
         <div class="teacher-name">Amilcar</div>
         <div class="teacher-role">Électromécanique & Circuits Électriques</div>
@@ -1277,8 +1275,7 @@ footer {
 
       <div class="teacher-card">
         <div class="teacher-photo">
-          <!-- <img src="assets/images/teachers/rodaulking.jpg" alt="Rodaulking"> -->
-          Ro
+          <img src="assets/images/teachers/rodaulking.jpg" alt="Rodaulking" onerror="this.style.display='none';this.parentElement.innerHTML='Ro';">
         </div>
         <div class="teacher-name">Rodaulking</div>
         <div class="teacher-role">Moteurs, Générateurs & Transformateurs</div>
@@ -1287,8 +1284,7 @@ footer {
 
       <div class="teacher-card">
         <div class="teacher-photo">
-          <!-- <img src="assets/images/teachers/adelphonse.jpg" alt="Adelphonse"> -->
-          Ad
+          <img src="assets/images/teachers/adelphonse.jpg" alt="Adelphonse" onerror="this.style.display='none';this.parentElement.innerHTML='Ad';">
         </div>
         <div class="teacher-name">Adelphonse</div>
         <div class="teacher-role">Hydraulique & Électrohydraulique</div>
@@ -1297,8 +1293,7 @@ footer {
 
       <div class="teacher-card">
         <div class="teacher-photo">
-          <!-- <img src="assets/images/teachers/steeve.jpg" alt="Steeve"> -->
-          S
+          <img src="assets/images/teachers/steeve.jpg" alt="Steeve" onerror="this.style.display='none';this.parentElement.innerHTML='S';">
         </div>
         <div class="teacher-name">Steeve</div>
         <div class="teacher-role">Électronique de Puissance</div>
@@ -1332,7 +1327,7 @@ footer {
       <div class="sidebar">
         <div class="user-profile">
           <div class="avatar">
-            <!-- <img src="assets/images/logo/favicon.ico" alt=""> --> JP
+            <img src="assets/images/logo/favicon.ico" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none';this.parentElement.innerHTML='JP';">
           </div>
           <div class="user-name">Jean-Pierre Louis</div>
           <div class="user-role">Étudiant · Niveau Intermédiaire</div>
@@ -1427,8 +1422,7 @@ footer {
       </div>
 
       <div class="video-box">
-        <!-- ✅ Miniature vidéo: assets/videos/thumbnails/module-01-thumb.jpg -->
-        <!-- <img src="assets/videos/thumbnails/module-01-thumb.jpg" alt="Module 1"> -->
+        <img src="assets/videos/thumbnails/module-01-thumb.jpg" alt="Module 1" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.style.display='none';">
         <div class="video-placeholder-inner">
           <div class="play-btn">▶</div>
           <div class="v-lbl">Module 1 — Introduction aux Technique Réseaux Informatiques</div>
@@ -1551,8 +1545,7 @@ footer {
         <div class="tc-lbl">Votre formateur</div>
         <div class="tc-profile">
           <div class="tc-avatar">
-            <!-- <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil"> -->
-            R
+            <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil" onerror="this.style.display='none';this.parentElement.innerHTML='R';">
           </div>
           <div>
             <div class="tc-name">Raymonvil</div>
@@ -1722,8 +1715,7 @@ footer {
         <div class="bsum-row"><span class="bsum-key">Places restantes</span><span class="bsum-val" style="color:var(--orange);">⚠ 3 / 8</span></div>
         <div class="inst-mini">
           <div class="inst-av">
-            <!-- <img src="assets/images/teachers/raymonvil.jpg" alt=""> -->
-            MA
+            <img src="assets/images/teachers/raymonvil.jpg" alt="Raymonvil" onerror="this.style.display='none';this.parentElement.innerHTML='MA';">
           </div>
           <div>
             <div class="inst-name">Prof. Marc Antoine</div>
@@ -1818,8 +1810,7 @@ footer {
       <div class="footer-brand">
         <div class="footer-logo">
           <div class="footer-logo-mark">
-            <!-- <img src="assets/images/logo/logo-white.png" alt="CT"> -->
-            CT
+            <img src="assets/images/logo/logo-white.png" alt="CT" onerror="this.style.display='none';this.parentElement.innerHTML='CT';">
           </div>
           <div class="footer-logo-text">
             CANADO TECHNIQUE
