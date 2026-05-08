@@ -54,7 +54,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: auto; font-size: 16px; }
 body { font-family: var(--font-body); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -98,10 +98,16 @@ nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
 .nav-links a {
   padding: 0.45rem 0.85rem; border-radius: var(--radius-sm);
   color: rgba(255,255,255,0.55); font-size: 0.875rem; font-weight: 500;
-  transition: all 0.2s; white-space: nowrap;
+  transition: all 0.2s; white-space: nowrap; position: relative;
 }
 .nav-links a:hover { color: white; background: rgba(255,255,255,0.07); }
-.nav-links a.active { color: var(--cyan); background: rgba(0,197,232,0.08); }
+.nav-links a.active {
+  color: var(--cyan); background: rgba(0,197,232,0.08);
+}
+.nav-links a.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 2px; background: var(--cyan); border-radius: 2px;
+}
 
 .nav-cta { display: flex; gap: 0.6rem; align-items: center; flex-shrink: 0; }
 .btn { padding: 0.5rem 1.2rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.875rem; transition: all 0.22s; display: inline-flex; align-items: center; gap: 6px; }
@@ -117,8 +123,21 @@ nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
    SECTIONS
 ═══════════════════════════════════════ */
 .section { display: none; min-height: 100vh; padding-top: 68px; }
-.section.active { display: block; animation: fadeInUp 0.35s ease; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.section.active { display: block; animation: pageReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes pageReveal {
+  from { opacity: 0; transform: translateY(18px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0)  scale(1); }
+}
+
+/* Page transition flash line at top */
+.page-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
+  background: linear-gradient(90deg, var(--cyan), var(--blue-light));
+  width: 0; transition: width 0.35s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+}
+.page-progress.run { width: 100%; }
+.page-progress.done { width: 100%; opacity: 0; transition: opacity 0.3s 0.1s; }
 
 /* ═══════════════════════════════════════
    SECTION LABELS & TITLES
@@ -209,10 +228,12 @@ nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
   padding: 0.9rem 2.2rem; border-radius: var(--radius);
   background: linear-gradient(135deg, var(--blue), #0EA5E9); color: white;
   font-family: var(--font-display); font-weight: 700; font-size: 0.95rem;
-  box-shadow: var(--shadow-blue); transition: all 0.25s;
-  display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: var(--shadow-blue); transition: all 0.28s cubic-bezier(0.22,1,0.36,1);
+  display: inline-flex; align-items: center; gap: 8px; position: relative; overflow: hidden;
 }
-.btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(18,70,212,0.55); }
+.btn-hero-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); opacity: 0; transition: opacity 0.2s; }
+.btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(18,70,212,0.6); }
+.btn-hero-primary:hover::after { opacity: 1; }
 .btn-hero-secondary {
   padding: 0.9rem 2rem; border-radius: var(--radius);
   background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.2);
@@ -383,10 +404,10 @@ nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
 
 .course-card {
   background: white; border-radius: var(--radius-lg); overflow: hidden;
-  border: 1px solid var(--border); transition: all 0.28s; cursor: pointer;
+  border: 1px solid var(--border); transition: all 0.32s cubic-bezier(0.22,1,0.36,1); cursor: pointer;
   display: flex; flex-direction: column;
 }
-.course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.course-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(18,70,212,0.14), 0 2px 12px rgba(0,0,0,0.06); border-color: rgba(18,70,212,0.2); }
 
 .course-thumb {
   height: 170px; display: flex; align-items: center; justify-content: center;
@@ -900,6 +921,7 @@ footer { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.06)
 <body>
 
 <!-- ═══ NAVBAR ═══ -->
+<div class="page-progress" id="page-progress"></div>
 <nav id="main-nav">
   <div class="nav-inner">
     <div class="nav-logo" onclick="showSection('hero',null)">
@@ -2016,12 +2038,18 @@ footer { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.06)
    NAVIGATION
 ═══════════════════════════════ */
 function showSection(id, link) {
+  // Progress bar at top — gives instant visual feedback
+  const prog = document.getElementById('page-progress');
+  if (prog) { prog.className = 'page-progress run'; setTimeout(() => prog.className = 'page-progress done', 380); setTimeout(() => prog.className = 'page-progress', 700); }
+  // Scroll to top INSTANTLY before visual change — prevents "still on old page" impression
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById(id);
   if (target) target.classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
   if (link) link.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
   // Close mobile menu
   const links = document.getElementById('nav-links');
   if (links) links.removeAttribute('style');
