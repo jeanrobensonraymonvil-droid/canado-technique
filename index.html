@@ -343,14 +343,15 @@ nav {
 .course-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); border-color:transparent; }
 
 .course-thumb {
-  height:155px; display:flex; align-items:center; justify-content:center;
-  position:relative; font-size:3rem;
+  height:165px; display:flex; align-items:center; justify-content:center;
+  position:relative; font-size:3rem; overflow:hidden;
+  background:#0a1628;
 }
-/* Photo slide overlay si présente */
 .course-thumb img {
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  /* Source: assets/images/gallery/ ou assets/videos/thumbnails/ */
+  transition:transform 0.4s ease;
 }
+.course-card:hover .course-thumb img { transform:scale(1.04); }
 .course-thumb-icon { position:relative; z-index:1; }
 .c-badge {
   position:absolute; top:10px; right:10px; z-index:2;
@@ -990,9 +991,9 @@ footer {
 
       <!-- ══ TRI ══ -->
       <div class="course-card" data-filiere="TRI" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EBF5FF,#DBEAFE);">
-          <span class="course-thumb-icon">🌐</span>
-          <span class="c-badge badge-hot">🔥 Populaire</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-tri-01.png" alt="Réseaux & Cisco" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-hot" style="z-index:3;">🔥 Populaire</span>
         </div>
         <div class="course-body">
           <div class="course-cat">TRI-01 · Technique Réseaux Informatiques</div>
@@ -1012,9 +1013,9 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="TRI" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EBF5FF,#DBEAFE);">
-          <span class="course-thumb-icon">🔐</span>
-          <span class="c-badge badge-new">✨ Nouveau</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-tri-02.png" alt="Cybersécurité" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-new" style="z-index:3;">✨ Nouveau</span>
         </div>
         <div class="course-body">
           <div class="course-cat">TRI-02 · Technique Réseaux Informatiques</div>
@@ -1032,9 +1033,9 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="TRI" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EBF5FF,#DBEAFE);">
-          <span class="course-thumb-icon">💻</span>
-          <span class="c-badge badge-pop">⭐ Top</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-tri-05.png" alt="Maintenance PC" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-pop" style="z-index:3;">⭐ Top</span>
         </div>
         <div class="course-body">
           <div class="course-cat">TRI-05 · Technique Réseaux Informatiques</div>
@@ -1053,9 +1054,9 @@ footer {
 
       <!-- ══ TEL ══ -->
       <div class="course-card" data-filiere="TEL" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">
-          <span class="course-thumb-icon">📡</span>
-          <span class="c-badge badge-hot">🔥 Phase Pilote</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-tel-01.png" alt="Téléphonie" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-hot" style="z-index:3;">🔥 Phase Pilote</span>
         </div>
         <div class="course-body">
           <div class="course-cat">TEL-01 · Télécommunications</div>
@@ -1073,8 +1074,8 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="TEL" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">
-          <span class="course-thumb-icon">🖥️</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-tel-03.png" alt="Utilisation Ordinateur" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="course-body">
           <div class="course-cat">TEL-03 · Télécommunications</div>
@@ -1093,9 +1094,9 @@ footer {
 
       <!-- ══ MEI ══ -->
       <div class="course-card" data-filiere="MEI" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">
-          <span class="course-thumb-icon">🔧</span>
-          <span class="c-badge badge-pilot">⚙ Phase Pilote</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-mei-07.png" alt="Travaux d'Usinage" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-pilot" style="z-index:3;">⚙ Phase Pilote</span>
         </div>
         <div class="course-body">
           <div class="course-cat">MEI-07 · Mécanique d'Entretien Industriel</div>
@@ -1113,8 +1114,8 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="MEI" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">
-          <span class="course-thumb-icon">🔩</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-mei-22.png" alt="Entretien Pompes" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="course-body">
           <div class="course-cat">MEI-22 · Mécanique d'Entretien Industriel</div>
@@ -1132,8 +1133,8 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="MEI" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">
-          <span class="course-thumb-icon">🔨</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-mei-08.png" alt="Soudage Industriel" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="course-body">
           <div class="course-cat">MEI-08 · Mécanique d'Entretien Industriel</div>
@@ -1152,9 +1153,9 @@ footer {
 
       <!-- ══ ELM ══ -->
       <div class="course-card" data-filiere="ELM" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">
-          <span class="course-thumb-icon">⚡</span>
-          <span class="c-badge badge-hot">🔥 Phase Pilote</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-elm-03.png" alt="Circuits CC &amp; CA" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-hot" style="z-index:3;">🔥 Phase Pilote</span>
         </div>
         <div class="course-body">
           <div class="course-cat">ELM-03 · Électromécanique</div>
@@ -1172,9 +1173,9 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="ELM" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">
-          <span class="course-thumb-icon">⚙️</span>
-          <span class="c-badge badge-pop">⭐ Top</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-elm-09.png" alt="Moteurs &amp; Générateurs" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-pop" style="z-index:3;">⭐ Top</span>
         </div>
         <div class="course-body">
           <div class="course-cat">ELM-09 · Électromécanique</div>
@@ -1192,9 +1193,9 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="ELM" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">
-          <span class="course-thumb-icon">💧</span>
-          <span class="c-badge badge-new">✨ Nouveau</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-elm-19.png" alt="Hydraulique" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span class="c-badge badge-new" style="z-index:3;">✨ Nouveau</span>
         </div>
         <div class="course-body">
           <div class="course-cat">ELM-19 · Électromécanique</div>
@@ -1212,8 +1213,8 @@ footer {
       </div>
 
       <div class="course-card" data-filiere="ELM" onclick="showSection('video-player',null)">
-        <div class="course-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">
-          <span class="course-thumb-icon">🔌</span>
+        <div class="course-thumb" style="background:#0a1628;">
+          <img src="assets/images/courses/course-elm-20.png" alt="Électronique" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="course-body">
           <div class="course-cat">ELM-20 · Électromécanique</div>
