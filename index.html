@@ -276,23 +276,116 @@ nav {
 .sec-header { text-align:center; max-width:580px; margin:0 auto 3rem; }
 
 /* ═══════════════════════════════════════════════
-   ABOUT / ECOLE SECTION (remplace "Studio Banj")
+   ABOUT / ECOLE SECTION — redesign complet
 ═══════════════════════════════════════════════ */
 #about {
-  background:var(--off-white);
-  padding:5rem 1.5rem;
+  background:var(--navy);
+  padding:0;
 }
-.about-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+
+/* HERO BANNER PHOTO (paysage) */
+.about-hero-slider {
+  position:relative; width:100%; height:420px; overflow:hidden;
+  background:var(--navy-2);
+}
+@media(max-width:640px){ .about-hero-slider { height:220px; } }
+
+.slider-track {
+  display:flex; height:100%;
+  transition:transform 0.7s cubic-bezier(0.77,0,0.175,1);
+}
+.slider-slide {
+  min-width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.slider-slide-bg {
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
+}
+.slider-slide img {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.slider-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom, rgba(4,13,26,0.2) 0%, rgba(4,13,26,0.65) 100%);
+  z-index:1;
+}
+.slider-caption {
+  position:absolute; bottom:1.5rem; left:1.75rem; z-index:2;
+  color:white;
+}
+.slider-caption h3 { font-family:var(--font-display); font-size:1.15rem; font-weight:700; text-shadow:0 2px 12px rgba(0,0,0,0.5); }
+.slider-caption small { font-size:0.75rem; color:rgba(255,255,255,0.65); }
+
+.slider-dots {
+  position:absolute; bottom:1.25rem; right:1.25rem; z-index:3;
+  display:flex; gap:6px;
+}
+.slider-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(255,255,255,0.4); cursor:pointer; transition:all 0.3s;
+  border:none;
+}
+.slider-dot.active { background:var(--cyan); transform:scale(1.25); }
+.slider-arrows {
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:100%; display:flex; justify-content:space-between;
+  padding:0 1rem; z-index:3; pointer-events:none;
+}
+.slider-arrow {
+  pointer-events:all; background:rgba(4,13,26,0.55); border:1px solid rgba(255,255,255,0.2);
+  color:white; width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; cursor:pointer; transition:all 0.2s; backdrop-filter:blur(8px);
+}
+.slider-arrow:hover { background:var(--blue); border-color:var(--blue); }
+
+/* ABOUT CONTENT GRID */
+.about-body {
+  background:var(--off-white);
+  padding:4rem 1.5rem 5rem;
+}
+.about-grid {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:3.5rem; align-items:start;
+}
+@media(max-width:900px){
+  .about-grid { grid-template-columns:1fr; gap:2.5rem; }
+}
+
+/* STATS ROW */
+.about-stats-bar {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  background:var(--navy-2);
+  border-radius:var(--radius-lg); overflow:hidden;
+  border:1px solid var(--border-dark);
+  margin-bottom:3.5rem;
+}
+@media(max-width:640px){
+  .about-stats-bar { grid-template-columns:1fr 1fr; }
+}
+.astat {
+  padding:1.5rem 1.25rem; text-align:center;
+  border-right:1px solid rgba(255,255,255,0.07);
+  position:relative;
+}
+.astat:last-child { border-right:none; }
+.astat-num { font-family:var(--font-display); font-size:2.1rem; font-weight:800; color:white; line-height:1; }
+.astat-num span { color:var(--cyan); font-size:1.3rem; }
+.astat-label { font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:5px; }
+
+/* PILLARS */
 .about-img-wrap { position:relative; }
 .about-img-placeholder {
-  width:100%; aspect-ratio:4/3;
+  width:100%; aspect-ratio:16/9;
   background:linear-gradient(135deg,var(--navy),#1A3A6B);
   border-radius:var(--radius-lg); overflow:hidden; position:relative;
   display:flex; align-items:center; justify-content:center;
 }
 .about-img-placeholder img {
   width:100%; height:100%; object-fit:cover; display:block;
-  /* Image source: assets/images/hero/school-photo.jpg */
 }
 .about-img-placeholder .placeholder-icon { font-size:4rem; opacity:0.2; }
 .about-badge-float {
@@ -590,35 +683,130 @@ nav {
 .sb-blue  { background:#DBEAFE; color:#1E40AF; }
 
 /* ═══════════════════════════════════════════════
-   PAIEMENT
+   PAIEMENT — Unibank réel
 ═══════════════════════════════════════════════ */
-#payment { background:var(--off-white); padding:5rem 1.5rem; }
-.payment-layout { max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr 340px; gap:1.75rem; }
-.pay-card { background:white; border-radius:var(--radius-lg); padding:1.75rem; border:1px solid var(--border); }
-.pay-title { font-family:var(--font-display); font-weight:800; font-size:1.15rem; color:var(--navy-2); margin-bottom:0.25rem; }
-.pay-sub { color:var(--gray-500); font-size:0.85rem; margin-bottom:1.5rem; }
-.method-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
-.method-tab { display:flex; align-items:center; gap:6px; padding:0.5rem 1rem; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600; color:var(--gray-500); cursor:pointer; transition:all 0.2s; }
-.method-tab:hover { border-color:var(--blue-mid); color:var(--blue-mid); }
-.method-tab.active { border-color:var(--blue-mid); background:var(--gray-100); color:var(--blue-mid); }
-.form-group { margin-bottom:1.1rem; }
-.form-label { display:block; font-size:0.8rem; font-weight:600; color:var(--navy-2); margin-bottom:0.4rem; }
-.form-input { width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:0.65rem 0.9rem; font-size:0.88rem; outline:none; transition:border-color 0.2s; }
-.form-input:focus { border-color:var(--blue-mid); box-shadow:0 0 0 3px rgba(18,70,212,0.1); }
-.secure-note { display:flex; align-items:center; gap:7px; background:rgba(0,217,126,0.07); border:1px solid rgba(0,217,126,0.2); border-radius:var(--radius-sm); padding:0.65rem 0.9rem; font-size:0.78rem; color:#007A46; margin-bottom:1.25rem; }
-.btn-pay { width:100%; background:linear-gradient(135deg,var(--blue),#0EA5E9); color:white; border:none; padding:0.9rem; border-radius:var(--radius); font-family:var(--font-display); font-weight:700; font-size:1rem; box-shadow:0 8px 24px rgba(18,70,212,0.4); transition:all 0.25s; }
-.btn-pay:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(18,70,212,0.5); }
+#payment { background:var(--navy); padding:5rem 1.5rem; }
+.payment-layout { max-width:980px; margin:0 auto; display:grid; grid-template-columns:1fr 370px; gap:2rem; }
+@media(max-width:900px){ .payment-layout { grid-template-columns:1fr; } }
 
-.order-card { background:white; border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border); }
-.order-title { font-family:var(--font-display); font-weight:800; font-size:1rem; color:var(--navy-2); margin-bottom:1.1rem; }
-.order-item { display:flex; gap:0.85rem; align-items:center; margin-bottom:1.1rem; padding-bottom:1.1rem; border-bottom:1px solid var(--border); }
+.pay-card { background:rgba(255,255,255,0.04); border-radius:var(--radius-lg); padding:2rem; border:1px solid rgba(255,255,255,0.1); }
+.pay-title { font-family:var(--font-display); font-weight:800; font-size:1.2rem; color:white; margin-bottom:0.25rem; }
+.pay-sub { color:rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:1.75rem; }
+
+/* Method tabs */
+.method-tabs { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:1.75rem; }
+.method-tab {
+  display:flex; align-items:center; gap:8px;
+  padding:0.75rem 1rem; border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600;
+  color:rgba(255,255,255,0.5); cursor:pointer; transition:all 0.2s;
+  background:transparent;
+}
+.method-tab:hover { border-color:var(--cyan); color:var(--cyan); background:rgba(0,197,232,0.06); }
+.method-tab.active { border-color:var(--cyan); color:white; background:rgba(0,197,232,0.12); }
+.method-tab .mt-icon { font-size:1.1rem; }
+
+/* Payment panels */
+.pay-panel { display:none; }
+.pay-panel.active { display:block; }
+
+/* Unibank panel */
+.unibank-panel { }
+.unibank-header {
+  display:flex; align-items:center; gap:12px;
+  background:linear-gradient(135deg,rgba(0,82,165,0.3),rgba(0,150,200,0.2));
+  border:1px solid rgba(0,150,200,0.3); border-radius:var(--radius);
+  padding:1rem 1.25rem; margin-bottom:1.5rem;
+}
+.unibank-logo { width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,#0052A5,#0096C8); display:flex; align-items:center; justify-content:center; font-weight:800; color:white; font-size:0.72rem; flex-shrink:0; font-family:var(--font-display); }
+.unibank-info strong { color:white; font-size:0.92rem; font-weight:700; display:block; }
+.unibank-info small { color:rgba(255,255,255,0.55); font-size:0.78rem; }
+
+.account-cards { display:grid; grid-template-columns:1fr 1fr; gap:0.85rem; margin-bottom:1.5rem; }
+@media(max-width:480px){ .account-cards { grid-template-columns:1fr; } }
+.account-card {
+  border-radius:var(--radius); padding:1rem 1.1rem;
+  border:1.5px solid rgba(255,255,255,0.1); cursor:pointer;
+  transition:all 0.22s; position:relative;
+}
+.account-card.usd { background:linear-gradient(135deg,rgba(0,82,165,0.25),rgba(0,130,200,0.15)); }
+.account-card.htg { background:linear-gradient(135deg,rgba(0,120,80,0.25),rgba(0,180,100,0.15)); }
+.account-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+.account-card.selected { border-color:var(--cyan); box-shadow:0 0 0 2px rgba(0,197,232,0.3); }
+.acc-currency { font-size:0.7rem; font-weight:800; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; }
+.acc-label { font-size:0.82rem; font-weight:700; color:white; margin-bottom:0.5rem; }
+.acc-number {
+  font-family:monospace; font-size:0.85rem; color:var(--cyan);
+  letter-spacing:0.05em; word-break:break-all;
+}
+.acc-copy-btn {
+  position:absolute; top:0.6rem; right:0.7rem;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  border-radius:6px; color:rgba(255,255,255,0.55); font-size:0.65rem;
+  padding:0.2rem 0.5rem; cursor:pointer; transition:all 0.2s; font-weight:600;
+}
+.acc-copy-btn:hover { background:rgba(0,197,232,0.2); color:var(--cyan); }
+.acc-amount { display:inline-block; margin-top:0.6rem; font-size:0.9rem; font-weight:800; }
+.acc-amount.usd-amt { color:#60A5FA; }
+.acc-amount.htg-amt { color:#34D399; }
+
+/* Steps */
+.pay-steps { display:flex; flex-direction:column; gap:0.65rem; margin-bottom:1.5rem; }
+.pay-step { display:flex; gap:0.85rem; align-items:flex-start; }
+.step-num { width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg,var(--blue),var(--cyan)); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:800; color:white; flex-shrink:0; margin-top:1px; }
+.step-text { font-size:0.83rem; color:rgba(255,255,255,0.75); line-height:1.5; }
+.step-text strong { color:white; }
+
+/* Versement schedule */
+.versement-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:1.5rem; }
+@media(max-width:480px){ .versement-grid { grid-template-columns:1fr; } }
+.versement-item {
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius-sm); padding:0.75rem 0.9rem;
+}
+.versement-item.v-paid { border-color:rgba(0,217,126,0.35); background:rgba(0,217,126,0.07); }
+.v-period { font-size:0.7rem; font-weight:700; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:3px; }
+.v-label { font-size:0.82rem; color:white; font-weight:600; }
+.v-status { font-size:0.7rem; margin-top:3px; }
+.v-status.paid { color:var(--green); }
+.v-status.pending { color:rgba(255,255,255,0.4); }
+
+.form-group { margin-bottom:1.1rem; }
+.form-label { display:block; font-size:0.78rem; font-weight:600; color:rgba(255,255,255,0.6); margin-bottom:0.4rem; }
+.form-input {
+  width:100%; background:rgba(255,255,255,0.07); border:1.5px solid rgba(255,255,255,0.14);
+  border-radius:var(--radius-sm); padding:0.65rem 0.9rem; color:white; font-size:0.88rem; outline:none; transition:border-color 0.2s;
+  font-family:var(--font-body);
+}
+.form-input::placeholder { color:rgba(255,255,255,0.28); }
+.form-input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,197,232,0.1); }
+select.form-input { -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='rgba(255,255,255,0.4)' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
+select.form-input option { background:#0D2240; }
+
+.secure-note { display:flex; align-items:center; gap:7px; background:rgba(0,217,126,0.08); border:1px solid rgba(0,217,126,0.25); border-radius:var(--radius-sm); padding:0.65rem 0.9rem; font-size:0.78rem; color:#4ADE80; margin-bottom:1.25rem; }
+.btn-pay { width:100%; background:linear-gradient(135deg,var(--blue),var(--cyan)); color:white; border:none; padding:0.95rem; border-radius:var(--radius); font-family:var(--font-display); font-weight:700; font-size:1rem; box-shadow:0 8px 24px rgba(18,70,212,0.5); transition:all 0.25s; cursor:pointer; }
+.btn-pay:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(0,197,232,0.4); }
+
+/* Order card */
+.order-card { background:rgba(255,255,255,0.04); border-radius:var(--radius-lg); padding:1.75rem; border:1px solid rgba(255,255,255,0.1); }
+.order-title { font-family:var(--font-display); font-weight:800; font-size:1rem; color:white; margin-bottom:1.25rem; }
+.order-item { display:flex; gap:0.85rem; align-items:center; margin-bottom:1.1rem; padding-bottom:1.1rem; border-bottom:1px solid rgba(255,255,255,0.08); }
 .order-thumb { width:50px; height:50px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
-.order-info-name { font-size:0.88rem; font-weight:700; color:var(--navy-2); }
-.order-info-meta { font-size:0.75rem; color:var(--gray-500); margin-top:2px; }
-.price-line { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--gray-500); padding:0.4rem 0; }
-.price-line.total { font-weight:800; font-size:1rem; color:var(--navy-2); border-top:1px solid var(--border); margin-top:0.5rem; padding-top:0.75rem; }
-.pm-logos { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem; }
-.pm-logo { padding:0.3rem 0.7rem; background:var(--gray-100); border-radius:var(--radius-sm); font-size:0.72rem; font-weight:700; color:var(--gray-700); }
+.order-info-name { font-size:0.88rem; font-weight:700; color:white; }
+.order-info-meta { font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:2px; }
+.price-line { display:flex; justify-content:space-between; font-size:0.85rem; color:rgba(255,255,255,0.5); padding:0.45rem 0; }
+.price-line.total { font-weight:800; font-size:1rem; color:white; border-top:1px solid rgba(255,255,255,0.12); margin-top:0.5rem; padding-top:0.75rem; }
+.pm-logos { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1.25rem; }
+.pm-logo { padding:0.3rem 0.7rem; background:rgba(255,255,255,0.08); border-radius:var(--radius-sm); font-size:0.72rem; font-weight:700; color:rgba(255,255,255,0.5); }
+
+/* Notice banner */
+.pay-notice {
+  background:linear-gradient(135deg,rgba(245,197,24,0.12),rgba(255,140,0,0.08));
+  border:1px solid rgba(245,197,24,0.3); border-radius:var(--radius);
+  padding:1rem 1.25rem; margin-top:1.25rem; font-size:0.8rem;
+  color:rgba(255,255,255,0.75); line-height:1.6;
+}
+.pay-notice strong { color:var(--gold); }
 
 /* ═══════════════════════════════════════════════
    RÉSERVATION
