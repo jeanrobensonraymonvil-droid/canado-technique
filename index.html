@@ -140,8 +140,55 @@ nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
 .page-progress.done { width: 100%; opacity: 0; transition: opacity 0.3s 0.1s; }
 
 /* ═══════════════════════════════════════
-   SECTION LABELS & TITLES
+   PAGE BANNER (en-tête de chaque section)
 ═══════════════════════════════════════ */
+.page-banner {
+  background: var(--navy);
+  padding: 2.2rem 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: relative; overflow: hidden;
+}
+.page-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 120% at 10% 50%, rgba(18,70,212,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-banner::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.4;
+}
+.page-banner-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  position: relative; z-index: 1;
+}
+.page-banner-left { display: flex; align-items: center; gap: 1rem; }
+.page-banner-icon {
+  width: 44px; height: 44px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(18,70,212,0.3), rgba(0,197,232,0.2));
+  border: 1px solid rgba(0,197,232,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.page-banner-title {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.3rem;
+  color: white; line-height: 1.1;
+}
+.page-banner-sub {
+  font-size: 0.78rem; color: rgba(255,255,255,0.42); margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+.page-banner-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; color: rgba(255,255,255,0.3);
+}
+.page-banner-breadcrumb span { color: var(--cyan); font-weight: 600; }
+.page-banner-breadcrumb .sep { opacity: 0.3; }
+
+
 .sec-tag {
   display: inline-flex; align-items: center; gap: 6px;
   background: var(--gray-100); color: var(--blue-mid);
@@ -159,8 +206,9 @@ nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
   background: var(--navy);
   position: relative; overflow: hidden;
   padding-top: 68px; min-height: 100vh;
-  display: flex; flex-direction: column;
+  flex-direction: column;
 }
+#hero.active { display: flex; }
 .hero-orbs { position: absolute; inset: 0; pointer-events: none; }
 .hero-orbs::before {
   content: '';
@@ -1045,6 +1093,19 @@ footer { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.06)
 
 <!-- ═══ L'ÉCOLE ═══ -->
 <section class="section" id="about">
+  <!-- Page Banner -->
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="page-banner-left">
+        <div class="page-banner-icon">🏫</div>
+        <div>
+          <div class="page-banner-title">L'École</div>
+          <div class="page-banner-sub">Canado Technique — Centre de Formation Professionnelle d'Haïti</div>
+        </div>
+      </div>
+      <div class="page-banner-breadcrumb">Accueil <span class="sep">›</span> <span>L'École</span></div>
+    </div>
+  </div>
   <!-- Slider -->
   <div class="about-hero-slider" id="slider">
     <div class="slider-track" id="slider-track">
@@ -1157,6 +1218,19 @@ footer { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.06)
 
 <!-- ═══ FORMATIONS ═══ -->
 <section class="section" id="courses">
+  <!-- Page Banner -->
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="page-banner-left">
+        <div class="page-banner-icon">📚</div>
+        <div>
+          <div class="page-banner-title">Formations</div>
+          <div class="page-banner-sub">Cours hybrides certifiants — théorie en ligne + pratique en atelier</div>
+        </div>
+      </div>
+      <div class="page-banner-breadcrumb">Accueil <span class="sep">›</span> <span>Formations</span></div>
+    </div>
+  </div>
   <div class="courses-container">
     <div class="sec-header">
       <div class="sec-tag">📚 Formations</div>
