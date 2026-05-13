@@ -47,7 +47,7 @@ html
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:var(--navy);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:var(--fB);background:#091525;color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;font-family:inherit;border:none;outline:none}
 input,select,textarea{font-family:inherit;outline:none}
@@ -126,7 +126,7 @@ img{max-width:100%;display:block}
 .page.act{display:block}
 
 /* ═══ HERO ═══ */
-.hero{background:var(--navy);padding:4.5rem 1.5rem 4rem;position:relative;overflow:hidden}
+.hero{background:#0a1828;padding:4.5rem 1.5rem 4rem;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .hero-bg::before{content:'';position:absolute;
   width:600px;height:600px;border-radius:50%;
@@ -257,7 +257,7 @@ img{max-width:100%;display:block}
 .feat-desc{font-size:.77rem;color:var(--g500);line-height:1.65}
 
 /* ═══ ÉVÉNEMENTS ═══ */
-.ev-dk{background:var(--navy2);padding:3rem 1.5rem}
+.ev-dk{background:#0d2038;padding:3rem 1.5rem}
 .ev-in{max-width:1150px;margin:0 auto}
 .ev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
 .ecard{background:rgba(255,255,255,.04);border:1px solid var(--bdrDk);
@@ -678,6 +678,68 @@ tr:hover td{background:var(--g50)}
   :root{--text:#F0F4FF;--g50:#0C1F3D;--g100:#081428;--g200:#0C1F3D;
     --bdr:rgba(100,130,220,.22);--white:#0B1525}
 }
+
+/* ═══ CURRENCY SWITCHER ═══ */
+.curr-switch{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:3px;cursor:pointer;flex-shrink:0}
+.curr-opt{padding:4px 11px;border-radius:18px;font-size:.68rem;font-weight:700;
+  color:rgba(255,255,255,.45);transition:all .22s;white-space:nowrap}
+.curr-opt.act{background:var(--gold);color:var(--navy);box-shadow:0 2px 8px rgba(245,197,24,.35)}
+/* Dual price display */
+.price-htg{display:inline}
+.price-usd{display:none}
+body.usd .price-htg{display:none}
+body.usd .price-usd{display:inline}
+
+/* ═══ ACCESSIBILITY / CLARITY IMPROVEMENTS ═══ */
+/* Hero text */
+.hero p{color:rgba(255,255,255,.78)!important}
+.hfeat{color:rgba(255,255,255,.72)!important}
+.hstat-l{color:rgba(255,255,255,.65)!important}
+.hvisual-lbl{color:rgba(255,255,255,.55)!important}
+/* Feature cards on dark bg */
+.feat-desc{color:rgba(255,255,255,.72)!important}
+/* Section headers dark */
+.sh.dark p{color:rgba(255,255,255,.68)!important}
+/* Events */
+.einfo p{color:rgba(255,255,255,.65)!important}
+/* Offers */
+.offer-desc{color:rgba(255,255,255,.65)!important}
+.offer-price .orig{color:rgba(255,255,255,.45)!important}
+/* Nav */
+.nav-brand small{color:rgba(255,255,255,.55)!important}
+.nav-links button{color:rgba(255,255,255,.7)!important}
+/* Footer */
+.ft-desc{color:rgba(255,255,255,.62)!important}
+.ft-col a,.ft-col p{color:rgba(255,255,255,.62)!important}
+.ft-col a:hover{color:rgba(255,255,255,.9)!important}
+/* Portal */
+.urole{color:rgba(255,255,255,.68)!important}
+.rooby-status{color:rgba(255,255,255,.68)!important}
+.pmini-info small{color:rgba(255,255,255,.6)!important}
+/* Admin dashboard stat labels */
+.klbl{color:rgba(255,255,255,.72)!important}
+.knum{font-size:1.9rem!important;color:#fff!important}
+/* Table headers */
+th{color:rgba(255,255,255,.88)!important}
+/* Sidebar labels (light areas) */
+.slbl{color:var(--g700)!important;font-weight:800!important}
+.sitem{color:#1a2a4a!important;font-weight:500!important}
+/* Page header banners - slightly lighter navy */
+.ph{background:linear-gradient(135deg,#0f2040,#152d52)!important}
+/* Dark-bg feature cards */
+.sn2 .feat-card{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.14)!important}
+.sn2 .feat-title{color:#fff!important}
+/* Hero visual panel */
+.hvisual{background:rgba(255,255,255,.07)!important}
+/* Notification text on dark */
+.lbox-sub{color:rgba(255,255,255,.7)!important}
+/* Footer top accent */
+.ft{border-top:2px solid rgba(232,25,44,.25)!important}
+/* Bigger modal backdrop — slightly lighter */
+.modal-overlay,.login-overlay{background:rgba(4,13,26,.80)!important}
+/* Programme pages subtitle */
+.pcard p{color:#5a6e99!important}
 </style>
 </head>
 <body>
@@ -703,6 +765,10 @@ tr:hover td{background:var(--g50)}
       <button id="nb-actualites" onclick="goPage('actualites')">Actualités</button>
     </div>
     <div class="nav-right">
+      <div class="curr-switch" onclick="toggleCurrency()" title="Changer devise / Change currency">
+        <div class="curr-opt act" id="co-htg">HTG 🇭🇹</div>
+        <div class="curr-opt" id="co-usd">USD 🇺🇸</div>
+      </div>
       <button class="nav-notif-btn" onclick="toggleNotifCenter()" title="Notifications">
         🔔<span class="notif-dot"></span>
       </button>
@@ -874,8 +940,8 @@ tr:hover td{background:var(--g50)}
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
           <div class="feat-icon" style="background:rgba(27,58,140,.15)">🎥</div>
-          <div class="feat-title" style="color:#fff">Cours Vidéo Protégés</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Accédez aux cours vidéo YouTube sécurisés depuis votre dashboard étudiant. Contenu protégé et privé.</div>
+          <div class="feat-title" style="color:#fff">Cours Vidéo Sécurisés</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Accédez aux cours vidéo sécurisés depuis votre espace étudiant. Contenu protégé — accès exclusif aux étudiants inscrits.</div>
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
           <div class="feat-icon" style="background:rgba(91,45,142,.12)">🔐</div>
@@ -955,7 +1021,7 @@ tr:hover td{background:var(--g50)}
      PAGE PROGRAMMES
 ════════════════════════════════════════ -->
 <div class="page" id="page-programmes">
-  <div style="background:var(--navy);padding:2.5rem 1.5rem 2rem;border-bottom:1px solid var(--bdrDk)">
+  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
     <div style="max-width:1150px;margin:0 auto">
       <div class="tag-r">4 filières · 1ère et 2ème année · APC</div>
       <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin:.5rem 0 .4rem">Programmes de formation officielle</h1>
@@ -984,7 +1050,7 @@ tr:hover td{background:var(--g50)}
      PAGE COURS
 ════════════════════════════════════════ -->
 <div class="page" id="page-cours">
-  <div style="background:var(--navy);padding:2.5rem 1.5rem 2rem;border-bottom:1px solid var(--bdrDk)">
+  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
     <div style="max-width:1150px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
       <div>
         <div class="tag-r">Plateforme e-learning</div>
@@ -1012,7 +1078,7 @@ tr:hover td{background:var(--g50)}
      PAGE EXAMENS PUBLIQUE
 ════════════════════════════════════════ -->
 <div class="page" id="page-examens-pub">
-  <div style="background:var(--navy);padding:2.5rem 1.5rem 2rem;border-bottom:1px solid var(--bdrDk)">
+  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
     <div style="max-width:1150px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
       <div>
         <div class="tag-r">Plateforme officielle</div>
@@ -1052,7 +1118,7 @@ tr:hover td{background:var(--g50)}
      PAGE PAIEMENT & INSCRIPTION
 ════════════════════════════════════════ -->
 <div class="page" id="page-paiement">
-  <div style="background:var(--navy);padding:2.5rem 1.5rem 2rem;border-bottom:1px solid var(--bdrDk)">
+  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
     <div style="max-width:1150px;margin:0 auto">
       <div class="tag-gold">💳 Paiement sécurisé · Gourdes haïtiennes (HTG)</div>
       <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin:.5rem 0 .4rem">Inscription & Paiement</h1>
@@ -1070,7 +1136,7 @@ tr:hover td{background:var(--g50)}
      PAGE ACTUALITÉS
 ════════════════════════════════════════ -->
 <div class="page" id="page-actualites">
-  <div style="background:var(--navy);padding:2.5rem 1.5rem 2rem;border-bottom:1px solid var(--bdrDk)">
+  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
     <div style="max-width:1150px;margin:0 auto">
       <div class="tag-r">Actualités & Vie du campus</div>
       <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin-top:.5rem">À la une</h1>
@@ -1684,15 +1750,35 @@ const TARIFS = {
   TEL:  {an1:4000, an2:4500, full:7500, cert:500},
 };
 const HTG = ' HTG';
+const USD_RATE = 133; // 1 USD ≈ 133 HTG
+
+function isUSDMode() { return document.body.classList.contains('usd'); }
+
+/** Single price string based on current currency mode */
+function fmtPrice(htg) {
+  if(isUSDMode()) {
+    const usd = htg / USD_RATE;
+    return '$' + (usd < 10 ? usd.toFixed(2) : Math.round(usd)) + ' USD';
+  }
+  return htg.toLocaleString() + ' HTG';
+}
+
+/** Dual span — shows HTG or USD via CSS toggle */
+function fmtPriceDual(htg, showSaving) {
+  const usd = htg / USD_RATE;
+  const usdStr = '$' + (usd < 10 ? usd.toFixed(2) : Math.round(usd));
+  return '<span class="price-htg">' + htg.toLocaleString() + ' HTG</span>' +
+         '<span class="price-usd">' + usdStr + ' USD</span>';
+}
 
 function renderPaiement() {
   const c = document.getElementById('paiement-content');
   c.innerHTML = `
   <div style="margin-bottom:2rem">
     <div class="sh" style="text-align:left;margin-bottom:1.5rem">
-      <div class="tag-gold" style="margin-bottom:.5rem">💳 Paiement en gourdes haïtiennes (HTG)</div>
+      <div class="tag-gold" style="margin-bottom:.5rem">💳 Paiement en HTG 🇭🇹 ou USD 🇺🇸</div>
       <h2 style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:var(--text)">Choisissez votre formation</h2>
-      <p style="color:var(--g500);font-size:.88rem">Tarifs adaptés au marché haïtien · Paiement sécurisé</p>
+      <p style="color:var(--g500);font-size:.88rem">Tarifs en HTG ou USD · Paiement sécurisé</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem" id="tarif-cards"></div>
   </div>
@@ -1733,15 +1819,15 @@ function renderPaiement() {
         <div style="display:flex;flex-direction:column;gap:.5rem">
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:var(--g50);border:1px solid var(--bdr);cursor:pointer;transition:all .18s" onclick="openPayModal('${prog}','1')">
             <div><div style="font-size:.8rem;font-weight:600;color:var(--text)">1ère Année</div><div style="font-size:.7rem;color:var(--g500)">${MODULES[prog].length} modules</div></div>
-            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--blue)">${t.an1.toLocaleString()}${HTG}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
+            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--blue)">${fmtPriceDual(t.an1)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:var(--g50);border:1px solid var(--bdr);cursor:pointer;transition:all .18s" onclick="openPayModal('${prog}','2')">
             <div><div style="font-size:.8rem;font-weight:600;color:var(--text)">2ème Année <span class="new-badge">NEW</span></div><div style="font-size:.7rem;color:var(--g500)">${MODULES_2[prog]?.length||0} modules</div></div>
-            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--blue)">${t.an2.toLocaleString()}${HTG}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
+            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--blue)">${fmtPriceDual(t.an2)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:rgba(245,197,24,.06);border:1.5px solid rgba(245,197,24,.2);cursor:pointer" onclick="openPayModal('${prog}','full')">
             <div><div style="font-size:.8rem;font-weight:700;color:var(--text)">⭐ Programme complet</div><div style="font-size:.7rem;color:var(--g500)">1ère + 2ème + Diplôme</div></div>
-            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--goldD)">${t.full.toLocaleString()}${HTG}</div><div style="font-size:.68rem;color:var(--green)">Économie: ${(t.an1+t.an2-t.full).toLocaleString()}${HTG}</div></div>
+            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--goldD)">${fmtPriceDual(t.full)}</div><div style="font-size:.68rem;color:var(--green)">Économie: ${fmtPriceDual(t.an1+t.an2-t.full)}</div></div>
           </div>
         </div>
       </div>
@@ -1765,7 +1851,7 @@ function openPayModal(prog, an) {
       <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text)">${info.label}</div>
       <div style="font-size:.78rem;color:var(--g500)">${label} · ${mods.length} modules</div>
     </div>
-    <div style="margin-left:auto;font-family:var(--fD);font-weight:800;font-size:1.5rem;color:${isFull?'var(--goldD)':'var(--blue)'}">${price.toLocaleString()} HTG</div>
+    <div style="margin-left:auto;font-family:var(--fD);font-weight:800;font-size:1.5rem;color:${isFull?'var(--goldD)':'var(--blue)'}">${fmtPriceDual(price)}</div>
   </div>
   <div class="fsec">
     <h4>Informations personnelles</h4>
@@ -1782,8 +1868,8 @@ function openPayModal(prog, an) {
     <div class="os-line"><span>Programme</span><span style="font-weight:600">${info.label}</span></div>
     <div class="os-line"><span>Formule</span><span>${label}</span></div>
     <div class="os-line"><span>Modules inclus</span><span>${mods.length} modules</span></div>
-    ${isFull?`<div class="os-line"><span>Économie réalisée</span><span class="os-discount">-${(t.an1+t.an2-t.full).toLocaleString()} HTG</span></div>`:''}
-    <div class="os-line" style="border-top:2px solid var(--bdr);padding-top:.6rem;margin-top:.3rem"><span class="os-total">Total à payer</span><span class="os-price">${price.toLocaleString()} HTG</span></div>
+    ${isFull?`<div class="os-line"><span>Économie réalisée</span><span class="os-discount">${fmtPriceDual(t.an1+t.an2-t.full)}</span></div>`:''}
+    <div class="os-line" style="border-top:2px solid var(--bdr);padding-top:.6rem;margin-top:.3rem"><span class="os-total">Total à payer</span><span class="os-price">${fmtPriceDual(price)}</span></div>
   </div>
   <div style="background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.12);border-radius:var(--r);padding:.9rem;margin-bottom:1.2rem;font-size:.78rem;color:var(--g700)">
     📍 <strong>Comment payer :</strong> Apportez ce bon de commande au bureau Canado Technique, ou effectuez un virement bancaire. Votre matricule sera créé dans 24h ouvrables après réception du paiement.
@@ -1826,9 +1912,8 @@ function renderOffers() {
       <div class="offer-title">${o.title}</div>
       <div class="offer-desc">${o.desc}</div>
       <div class="offer-price">
-        <span class="price">${o.price.toLocaleString()}</span>
-        <span class="curr">HTG</span>
-        <span class="orig">${o.orig.toLocaleString()} HTG</span>
+        <span class="price">${fmtPrice(o.price)}</span>
+        <span class="orig" style="text-decoration:line-through">${fmtPriceDual(o.orig)}</span>
       </div>
       <button class="btn btn-ghost btn-sm" style="margin-top:.9rem;width:100%;justify-content:center" onclick="event.stopPropagation();goPage('paiement')">S'inscrire →</button>
     </div>`).join('');
@@ -2096,12 +2181,12 @@ function openVideoManager(code) {
     <h4 style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.8rem">🎥 Gestionnaire vidéo — ${code}</h4>
     <div class="frow">
       <div class="fg">
-        <label>URL YouTube (Unlisted)</label>
-        <input type="text" placeholder="https://youtu.be/xxxxx" value="https://youtu.be/dQw4w9WgXcQ">
+        <label>URL de la vidéo (lien sécurisé)</label>
+        <input type="text" placeholder="URL de la vidéo sécurisée..." value="">
       </div>
       <div class="fg">
         <label>Type de source</label>
-        <select><option>YouTube Unlisted</option><option>Stockage cloud sécurisé</option><option>Lien direct sécurisé</option></select>
+        <select><option>Vidéo privée (non listée)</option><option>Stockage cloud sécurisé</option><option>Lien direct sécurisé</option></select>
       </div>
     </div>
     <button class="btn btn-blue btn-sm" onclick="toast('Vidéo sauvegardée pour ${code}')">Sauvegarder la vidéo</button>
@@ -2787,7 +2872,7 @@ INFORMATIONS SUR L'ÉCOLE:
 - 2 années de formation avec modules officiels
 - Plus de 1642 étudiants inscrits, 12+ ans d'expérience
 
-TARIFS (en HTG - Gourdes Haïtiennes):
+TARIFS (HTG = Gourdes haïtiennes | 1 USD ≈ 133 HTG):
 - TRI 1ère année: 4500 HTG | 2ème année: 5000 HTG | Programme complet: 8500 HTG
 - MEI 1ère année: 4000 HTG | 2ème année: 4500 HTG | Programme complet: 7500 HTG
 - ELM 1ère année: 4200 HTG | 2ème année: 4700 HTG | Programme complet: 8000 HTG
@@ -2799,9 +2884,9 @@ Cisco CCNA 1 et 2, Windows Server, Active Directory, Linux, Sécurité réseau, 
 FONCTIONNALITÉS DE LA PLATEFORME:
 - Examens QCM multi-versions générés par IA
 - Réservation de laboratoire en ligne
-- Cours vidéo protégés YouTube
+- Cours vidéo protégés (accès étudiant sécurisé uniquement)
 - Séances Zoom intégrées
-- Paiement en HTG (MonCash bientôt)
+- Paiement en HTG 🇭🇹 ou USD 🇺🇸 (MonCash bientôt)
 - Certificats et diplômes officiels
 - Assistant IA 24/7 (Rooby, c'est moi !)
 
@@ -2981,6 +3066,19 @@ function toast(msg) {
 /* ══════════════════════════════════════
    INIT
 ══════════════════════════════════════ */
+/* ══════════════════════════════════════
+   CURRENCY TOGGLE
+══════════════════════════════════════ */
+function toggleCurrency() {
+  const isUSD = document.body.classList.toggle('usd');
+  document.getElementById('co-htg').classList.toggle('act', !isUSD);
+  document.getElementById('co-usd').classList.toggle('act', isUSD);
+  // Re-render pages that show prices
+  if(currentPage === 'paiement') renderPaiement();
+  renderOffers();
+  toast(isUSD ? '🇺🇸 Prix affichés en dollars US (USD)' : '🇭🇹 Prix affichés en gourdes haïtiennes (HTG)');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderOffers();
   goPage('accueil');
