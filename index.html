@@ -273,7 +273,7 @@ img{max-width:100%;display:block}
 /* ═══ TABLE ═══ */
 .tw{overflow-x:auto;border-radius:var(--r);border:1px solid var(--bdr)}
 table{width:100%;border-collapse:collapse;font-size:.8rem}
-th{background:var(--navy);color:rgba(255,255,255,.65);font-size:.69rem;font-weight:600;
+th{background:#1a2f52;color:rgba(255,255,255,.92);font-size:.69rem;font-weight:700;
   text-transform:uppercase;letter-spacing:.08em;padding:.65rem 1rem;text-align:left}
 td{padding:.65rem 1rem;border-bottom:1px solid var(--bdr);color:var(--text)}
 tr:last-child td{border-bottom:none}
@@ -305,8 +305,8 @@ tr:hover td{background:var(--g50)}
 .kcard{background:var(--g50);border-radius:var(--r);padding:1.1rem;border:1px solid var(--bdr);
   transition:all .2s;cursor:default}
 .kcard:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(27,58,140,.1)}
-.knum{font-family:var(--fD);font-weight:800;font-size:1.7rem;color:var(--blue);margin-bottom:2px}
-.klbl{font-size:.68rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em}
+.knum{font-family:var(--fD);font-weight:800;font-size:1.85rem;color:var(--blue);margin-bottom:4px}
+.klbl{font-size:.7rem;color:#4a5e8a;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
 .kcard.kr .knum{color:var(--red)}
 .kcard.kg .knum{color:var(--green)}
 .kcard.kgd .knum{color:#A07000}
@@ -325,20 +325,20 @@ tr:hover td{background:var(--g50)}
   font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff;flex-shrink:0;
   box-shadow:0 2px 12px rgba(232,25,44,.3)}
 .uname{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff}
-.urole{font-size:.7rem;color:rgba(255,255,255,.42);margin-top:1px}
+.urole{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:1px;font-weight:500}
 .rbadge{padding:4px 12px;border-radius:12px;font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .rbA{background:rgba(232,25,44,.2);color:#ff6b7a}
 .rbP{background:rgba(27,58,140,.28);color:#7BA7FF}
 .rbE{background:rgba(0,107,70,.22);color:#4ADE80}
 .pgrid2{display:grid;grid-template-columns:230px 1fr;gap:1.2rem}
-.psidebar{display:flex;flex-direction:column;gap:.3rem}
-.sitem{padding:.6rem .95rem;border-radius:9px;font-size:.81rem;font-weight:500;
-  color:var(--g700);background:transparent;border:none;text-align:left;
+.psidebar{display:flex;flex-direction:column;gap:.3rem;background:var(--g50);border-radius:var(--rL);padding:.6rem;border:1px solid var(--bdr)}
+.sitem{padding:.6rem .95rem;border-radius:9px;font-size:.81rem;font-weight:600;
+  color:#2a3d6b;background:transparent;border:none;text-align:left;
   cursor:pointer;display:flex;align-items:center;gap:9px;transition:all .18s}
-.sitem:hover{background:var(--g100);color:var(--text)}
-.sitem.act{background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(4,13,26,.15)}
+.sitem:hover{background:var(--g100);color:#0B1525;font-weight:700}
+.sitem.act{background:#1B3A8C;color:#fff;font-weight:700;box-shadow:0 2px 12px rgba(27,58,140,.25)}
 .sdiv{height:1px;background:var(--bdr);margin:.5rem 0}
-.slbl{font-size:.66rem;font-weight:700;color:var(--g500);text-transform:uppercase;
+.slbl{font-size:.66rem;font-weight:800;color:#4a5e8a;text-transform:uppercase;
   letter-spacing:.1em;padding:.3rem .95rem}
 .pcontent{background:var(--white);border-radius:var(--rL);border:1px solid var(--bdr);
   padding:1.6rem;min-height:520px;box-shadow:0 2px 16px rgba(27,58,140,.06)}
@@ -412,12 +412,12 @@ tr:hover td{background:var(--g50)}
   color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center}
 .pay-method{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1.2rem}
 .pm-btn{padding:.9rem;border:1.5px solid var(--bdr);border-radius:var(--r);
-  text-align:center;cursor:pointer;transition:all .2s;font-size:.82rem;font-weight:600;
-  color:var(--g700);background:#fff}
+  text-align:center;cursor:pointer;transition:all .2s;font-size:.82rem;font-weight:700;
+  color:#2a3d6b;background:#fff}
 .pm-btn:hover,.pm-btn.act{border-color:var(--blue);background:rgba(27,58,140,.05);color:var(--blue)}
 .pm-btn .pm-icon{font-size:1.5rem;display:block;margin-bottom:.3rem}
-.pm-btn small{display:block;font-size:.65rem;font-weight:400;color:var(--g500);margin-top:1px}
-.pm-soon{opacity:.5;cursor:not-allowed}
+.pm-btn small{display:block;font-size:.67rem;font-weight:500;color:#5a6e99;margin-top:2px}
+.pm-soon{opacity:.65;cursor:not-allowed}
 .pm-soon:hover{border-color:var(--bdr);background:#fff;color:var(--g700)}
 .order-summary{background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem}
 .os-line{display:flex;justify-content:space-between;align-items:center;
@@ -457,7 +457,7 @@ tr:hover td{background:var(--g50)}
 .lbox-hd{background:linear-gradient(135deg,var(--navy),var(--navy3));
   border-radius:var(--rL);padding:1.4rem;margin-bottom:1.4rem;text-align:center}
 .lbox h2{font-family:var(--fD);font-weight:800;font-size:1.1rem;color:#fff;margin-bottom:.3rem}
-.lbox-sub{font-size:.76rem;color:rgba(255,255,255,.45)}
+.lbox-sub{font-size:.76rem;color:rgba(255,255,255,.78);font-weight:500}
 .lroles{display:flex;gap:.5rem;margin-bottom:1rem}
 .lrole{flex:1;padding:.6rem;border-radius:8px;border:1.5px solid var(--bdr);
   font-size:.78rem;font-weight:600;color:var(--g700);background:var(--g50);cursor:pointer;
@@ -733,7 +733,19 @@ th{color:rgba(255,255,255,.88)!important}
 /* Hero visual panel */
 .hvisual{background:rgba(255,255,255,.07)!important}
 /* Notification text on dark */
-.lbox-sub{color:rgba(255,255,255,.7)!important}
+.lbox-sub{color:rgba(255,255,255,.82)!important}
+/* Sidebar items extra specificity */
+.psidebar .sitem{color:#1e3060!important;font-weight:600!important}
+.psidebar .sitem.act{color:#ffffff!important;background:#1B3A8C!important}
+.psidebar .sitem:hover{color:#0B1525!important;background:rgba(27,58,140,.1)!important}
+/* Table cell text */
+td{color:#0B1525!important}
+/* Chip text visibility */
+.chip{font-weight:700!important}
+/* Portal header bg */
+.ph{border:1px solid rgba(255,255,255,.12)!important}
+/* Payment page description */
+.paiement-desc{color:rgba(255,255,255,.8)!important}
 /* Footer top accent */
 .ft{border-top:2px solid rgba(232,25,44,.25)!important}
 /* Bigger modal backdrop — slightly lighter */
@@ -1025,7 +1037,7 @@ th{color:rgba(255,255,255,.88)!important}
     <div style="max-width:1150px;margin:0 auto">
       <div class="tag-r">4 filières · 1ère et 2ème année · APC</div>
       <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin:.5rem 0 .4rem">Programmes de formation officielle</h1>
-      <p style="color:rgba(255,255,255,.42);font-size:.88rem">Modules officiels CFPH-Canado Technique</p>
+      <p style="color:rgba(255,255,255,.75);font-size:.88rem">Modules officiels CFPH-Canado Technique</p>
     </div>
   </div>
   <div style="background:var(--g50);padding:1rem 1.5rem;border-bottom:1px solid var(--bdr)">
@@ -1100,10 +1112,10 @@ th{color:rgba(255,255,255,.88)!important}
           <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text);margin-bottom:.4rem">Professeur</h3>
           <p style="font-size:.75rem;color:var(--g500)">Créer des examens IA, consulter les résultats en temps réel</p>
         </div>
-        <div style="background:var(--navy);border:1px solid var(--bdrDk);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onclick="showLogin()">
+        <div style="background:#0d1f3c;border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onclick="showLogin()">
           <div style="font-size:2rem;margin-bottom:.7rem">🎓</div>
           <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff;margin-bottom:.4rem">Étudiant</h3>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.42)">Passer un examen officiel et obtenir vos résultats immédiatement</p>
+          <p style="font-size:.75rem;color:rgba(255,255,255,.78)">Passer un examen officiel et obtenir vos résultats immédiatement</p>
         </div>
       </div>
       <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem">
@@ -1122,7 +1134,7 @@ th{color:rgba(255,255,255,.88)!important}
     <div style="max-width:1150px;margin:0 auto">
       <div class="tag-gold">💳 Paiement sécurisé · Gourdes haïtiennes (HTG)</div>
       <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin:.5rem 0 .4rem">Inscription & Paiement</h1>
-      <p style="color:rgba(255,255,255,.42);font-size:.88rem">Tarifs adaptés au marché haïtien · Cours individuels ou programmes complets avec diplôme</p>
+      <p style="color:rgba(255,255,255,.78);font-size:.88rem">Tarifs en HTG 🇭🇹 ou USD 🇺🇸 · Inscription avec ou sans programme complet</p>
     </div>
   </div>
   <div class="sw">
