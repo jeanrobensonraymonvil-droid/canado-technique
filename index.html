@@ -162,7 +162,7 @@ img{max-width:100%;display:block}
   border-radius:var(--r);padding:1rem;text-align:center;transition:all .2s}
 .hstat:hover{background:rgba(255,255,255,.07);border-color:rgba(232,25,44,.2)}
 .hstat-n{font-family:var(--fD);font-weight:800;font-size:1.8rem;color:var(--red)}
-.hstat-l{font-size:.68rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.hstat-l{font-size:.68rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
 .hvisual{background:rgba(255,255,255,.03);border:1px solid var(--bdrDk);
   border-radius:var(--rL);padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;
   animation:fadeUp .4s .3s both;backdrop-filter:blur(8px)}
@@ -175,7 +175,7 @@ img{max-width:100%;display:block}
 .pmini-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;
   justify-content:center;font-size:1rem;flex-shrink:0}
 .pmini-info p{font-size:.78rem;font-weight:600;color:#fff;margin-bottom:1px}
-.pmini-info small{font-size:.67rem;color:rgba(255,255,255,.38)}
+.pmini-info small{font-size:.67rem;color:rgba(255,255,255,.55)}
 .pbadge{margin-left:auto;font-size:.65rem;padding:3px 8px;border-radius:9px;font-weight:700;white-space:nowrap}
 .hero-features{display:flex;gap:1.5rem;margin-top:1.5rem;animation:fadeUp .4s .6s both}
 .hfeat{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.45)}
@@ -207,23 +207,23 @@ img{max-width:100%;display:block}
 
 /* ═══ PROGRAMMES ═══ */
 .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.3rem}
-.pcard{background:var(--white);border:1.5px solid var(--bdr);border-radius:var(--rL);
+.pcard{background:linear-gradient(135deg,#0C1F3D,#081428);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--rL);
   padding:1.6rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .25s}
 .pcard.TRI::before{background:linear-gradient(90deg,var(--blue),var(--blueG))}
 .pcard.MEI::before{background:linear-gradient(90deg,#8B5E00,#C98A00)}
 .pcard.ELM::before{background:linear-gradient(90deg,#006B46,#00A066)}
 .pcard.TEL::before{background:linear-gradient(90deg,#5B2D8E,#8A50CC)}
-.pcard:hover{border-color:rgba(27,58,140,.3);transform:translateY(-3px);
-  box-shadow:0 12px 40px rgba(27,58,140,.14)}
+.pcard:hover{border-color:rgba(59,123,255,.45);transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(27,58,140,.35)}
 .pcard:hover::before{height:6px}
 .pcard-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;
   justify-content:center;font-size:1.4rem;margin-bottom:1rem}
-.pcard h3{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:var(--text);margin-bottom:.4rem}
-.pcard p{font-size:.79rem;color:var(--g500);line-height:1.68;margin-bottom:1rem}
+.pcard h3{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:#ffffff;margin-bottom:.4rem}
+.pcard p{font-size:.79rem;color:rgba(255,255,255,.6);line-height:1.68;margin-bottom:1rem}
 .pmeta{display:flex;gap:.5rem;flex-wrap:wrap}
-.mchip{font-size:.67rem;padding:3px 8px;border-radius:8px;background:var(--g100);
-  color:var(--g700);font-weight:500}
+.mchip{font-size:.67rem;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,.12);
+  color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.02em}
 
 /* ═══ OFFRES SPÉCIALES ═══ */
 .offers-section{background:linear-gradient(135deg,var(--navy2),var(--navy3));
@@ -268,12 +268,12 @@ img{max-width:100%;display:block}
 .edate .day{font-family:var(--fD);font-weight:800;font-size:1.3rem;color:#fff;line-height:1}
 .edate .mon{font-size:.6rem;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
 .einfo h4{font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.4}
-.einfo p{font-size:.72rem;color:rgba(255,255,255,.42)}
+.einfo p{font-size:.72rem;color:rgba(255,255,255,.58)}
 
 /* ═══ TABLE ═══ */
 .tw{overflow-x:auto;border-radius:var(--r);border:1px solid var(--bdr)}
 table{width:100%;border-collapse:collapse;font-size:.8rem}
-th{background:#1a2f52;color:rgba(255,255,255,.92);font-size:.69rem;font-weight:700;
+th{background:#1a2f52;color:#ffffff;font-size:.69rem;font-weight:800;
   text-transform:uppercase;letter-spacing:.08em;padding:.65rem 1rem;text-align:left}
 td{padding:.65rem 1rem;border-bottom:1px solid var(--bdr);color:var(--text)}
 tr:last-child td{border-bottom:none}
@@ -288,14 +288,16 @@ tr:hover td{background:var(--g50)}
 
 /* ═══ MODULE LIST ═══ */
 .mlist{display:flex;flex-direction:column;gap:.45rem}
-.mrow{background:var(--g50);border:1px solid var(--bdr);border-radius:var(--r);
+.mrow{background:#f0f4ff;border:1px solid #c8d6f5;border-radius:var(--r);
   padding:.68rem 1rem;display:flex;align-items:center;gap:.9rem;transition:all .2s;cursor:pointer}
-.mrow:hover{border-color:rgba(27,58,140,.25);background:var(--g100)}
-.mnum{width:32px;height:32px;border-radius:7px;background:var(--navy);
-  color:rgba(255,255,255,.55);font-size:.7rem;font-weight:700;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.mtitle{flex:1;font-size:.8rem;font-weight:500;color:var(--text)}
-.mdur{font-size:.68rem;color:var(--g500);white-space:nowrap}
+.mrow:hover{border-color:rgba(27,58,140,.35);background:#dce6ff}
+.mnum{width:32px;height:32px;border-radius:7px;
+  background:linear-gradient(135deg,var(--blueL),var(--blueG));
+  color:#ffffff;font-size:.7rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(43,86,192,.35);letter-spacing:.03em}
+.mtitle{flex:1;font-size:.8rem;font-weight:600;color:#0B1A35}
+.mdur{font-size:.68rem;color:#2a3d6b;font-weight:600;white-space:nowrap}
 .mseuil{font-size:.68rem;padding:2px 7px;border-radius:7px;font-weight:600;white-space:nowrap}
 .pbar{height:6px;background:var(--g200);border-radius:3px;overflow:hidden}
 .pfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blueG));border-radius:3px;transition:width .5s ease}
@@ -306,7 +308,7 @@ tr:hover td{background:var(--g50)}
   transition:all .2s;cursor:default}
 .kcard:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(27,58,140,.1)}
 .knum{font-family:var(--fD);font-weight:800;font-size:1.85rem;color:var(--blue);margin-bottom:4px}
-.klbl{font-size:.7rem;color:#4a5e8a;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.klbl{font-size:.7rem;color:#1B3A8C;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
 .kcard.kr .knum{color:var(--red)}
 .kcard.kg .knum{color:var(--green)}
 .kcard.kgd .knum{color:#A07000}
@@ -338,7 +340,7 @@ tr:hover td{background:var(--g50)}
 .sitem:hover{background:var(--g100);color:#0B1525;font-weight:700}
 .sitem.act{background:#1B3A8C;color:#fff;font-weight:700;box-shadow:0 2px 12px rgba(27,58,140,.25)}
 .sdiv{height:1px;background:var(--bdr);margin:.5rem 0}
-.slbl{font-size:.66rem;font-weight:800;color:#4a5e8a;text-transform:uppercase;
+.slbl{font-size:.66rem;font-weight:800;color:#2a3d6b;text-transform:uppercase;
   letter-spacing:.1em;padding:.3rem .95rem}
 .pcontent{background:var(--white);border-radius:var(--rL);border:1px solid var(--bdr);
   padding:1.6rem;min-height:520px;box-shadow:0 2px 16px rgba(27,58,140,.06)}
@@ -350,7 +352,7 @@ tr:hover td{background:var(--g50)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
 .frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin-bottom:.8rem}
 .fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:.7rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.08em}
+.fg label{font-size:.7rem;font-weight:700;color:#2a3d6b;text-transform:uppercase;letter-spacing:.08em}
 .fg input,.fg select,.fg textarea{padding:.52rem .8rem;border:1.5px solid var(--bdr);
   border-radius:8px;font-size:.82rem;color:var(--text);background:#fff;transition:border .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);
@@ -398,7 +400,7 @@ tr:hover td{background:var(--g50)}
 .esel-card{background:var(--g50);border:1.5px solid var(--bdr);border-radius:var(--r);
   padding:1.1rem;cursor:pointer;transition:all .22s}
 .esel-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(27,58,140,.12);transform:translateY(-2px)}
-.esel-prog{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.esel-prog{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;color:var(--blue)}
 .esel-title{font-size:.82rem;font-weight:600;color:var(--text);line-height:1.4}
 .esel-meta{font-size:.72rem;color:var(--g500)}
 
@@ -460,10 +462,10 @@ tr:hover td{background:var(--g50)}
 .lbox-sub{font-size:.76rem;color:rgba(255,255,255,.78);font-weight:500}
 .lroles{display:flex;gap:.5rem;margin-bottom:1rem}
 .lrole{flex:1;padding:.6rem;border-radius:8px;border:1.5px solid var(--bdr);
-  font-size:.78rem;font-weight:600;color:var(--g700);background:var(--g50);cursor:pointer;
-  text-align:center;transition:all .18s}
-.lrole:hover{border-color:var(--blue);color:var(--blue)}
-.lrole.act{border-color:var(--blue);background:rgba(27,58,140,.07);color:var(--blue)}
+  font-size:.78rem;font-weight:700;color:#1B3A8C;background:var(--g100);cursor:pointer;
+  text-align:center;transition:all .18s;letter-spacing:.02em}
+.lrole:hover{border-color:var(--blue);color:#fff;background:var(--blueL)}
+.lrole.act{border-color:var(--blue);background:var(--blue);color:#fff;box-shadow:0 2px 12px rgba(27,58,140,.3)}
 .tfa-box{display:none;background:rgba(27,58,140,.05);border:1.5px solid rgba(27,58,140,.15);
   border-radius:var(--r);padding:1rem;margin-bottom:.8rem;text-align:center}
 .tfa-box.show{display:block}
@@ -524,7 +526,7 @@ tr:hover td{background:var(--g50)}
 .rooby-input-area{padding:.85rem 1rem;border-top:1px solid var(--bdr);
   display:flex;gap:.5rem;align-items:flex-end}
 .rooby-input{flex:1;padding:.55rem .8rem;border:1.5px solid var(--bdr);border-radius:10px;
-  font-size:.82rem;color:var(--text);resize:none;max-height:80px;line-height:1.5;
+  font-size:.82rem;color:var(--text);background:var(--white);resize:none;max-height:80px;line-height:1.5;
   transition:border .18s}
 .rooby-input:focus{border-color:var(--blue)}
 .rooby-send{width:36px;height:36px;border-radius:9px;background:var(--blue);
@@ -605,7 +607,7 @@ tr:hover td{background:var(--g50)}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:2rem;margin-bottom:2rem}
 .ft-brand{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.5rem}
 .ft-brand span{color:var(--red)}
-.ft-desc{font-size:.78rem;color:rgba(255,255,255,.38);line-height:1.7}
+.ft-desc{font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.7}
 .ft-col h4{font-size:.73rem;font-weight:700;color:rgba(255,255,255,.5);
   text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem}
 .ft-col p{font-size:.78rem;color:rgba(255,255,255,.38);line-height:1.7}
@@ -717,9 +719,12 @@ body.usd .price-usd{display:inline}
 .urole{color:rgba(255,255,255,.68)!important}
 .rooby-status{color:rgba(255,255,255,.68)!important}
 .pmini-info small{color:rgba(255,255,255,.6)!important}
-/* Admin dashboard stat labels */
-.klbl{color:rgba(255,255,255,.72)!important}
-.knum{font-size:1.9rem!important;color:#fff!important}
+/* Admin dashboard stat labels — kcard a fond CLAIR (#F8FAFF), texte doit être foncé */
+.klbl{color:#1B3A8C!important}
+.knum{font-size:1.9rem!important;color:var(--blue)!important}
+.kcard.kr .knum{color:var(--red)!important}
+.kcard.kg .knum{color:var(--green)!important}
+.kcard.kgd .knum{color:#A07000!important}
 /* Table headers */
 th{color:rgba(255,255,255,.88)!important}
 /* Sidebar labels (light areas) */
@@ -738,8 +743,37 @@ th{color:rgba(255,255,255,.88)!important}
 .psidebar .sitem{color:#1e3060!important;font-weight:600!important}
 .psidebar .sitem.act{color:#ffffff!important;background:#1B3A8C!important}
 .psidebar .sitem:hover{color:#0B1525!important;background:rgba(27,58,140,.1)!important}
-/* Table cell text */
-td{color:#0B1525!important}
+/* Table cell text — lisible en mode clair ET sombre */
+td{color:var(--text)!important}
+/* Tables dans sections blanches (.sw) — texte toujours foncé */
+.sw td{color:#0B1525!important;background-color:transparent}
+.sw tr:hover td{background:#f0f4ff!important}
+.sw table{background:#ffffff!important}
+/* Module rows dans page programmes — toujours fond clair + texte foncé */
+.sw .mrow{background:#f0f4ff!important;border-color:#c8d6f5!important}
+.sw .mrow .mtitle{color:#0B1525!important}
+.sw .mrow .mdur{color:#1a2f5a!important}
+/* Chip cgy dans sections blanches */
+.sw .cgy{background:#e8eeff!important;color:#3A4A6B!important}
+.pcontent{background:#ffffff!important;color:#0B1525!important}
+.pcontent td{color:#0B1525!important}
+.pcontent th{color:#ffffff!important}
+/* KPI cards toujours sur fond clair */
+.kcard{background:#f8faff!important;color:#0B1525!important}
+.kcard .knum{color:var(--blue)!important}
+.kcard.kr .knum{color:var(--red)!important}
+.kcard.kg .knum{color:var(--green)!important}
+.kcard.kgd .knum{color:#A07000!important}
+.kcard.kgold .knum{color:var(--goldD)!important}
+.kcard .klbl{color:#1B3A8C!important}
+/* Module rows (.mrow) — fond clair, texte foncé */
+.mrow{background:#f0f4ff!important;color:#0B1525!important}
+.mrow .mtitle{color:#0B1525!important;font-weight:600!important}
+.mrow .mdur{color:#1a2f5a!important;font-weight:600!important}
+/* Sidebar fond clair */
+.psidebar{background:#f8faff!important}
+/* Progress percentage text in tables */
+.pcontent [style*="color:var(--g500)"]{color:#4a5e8a!important}
 /* Chip text visibility */
 .chip{font-weight:700!important}
 /* Portal header bg */
@@ -750,8 +784,168 @@ td{color:#0B1525!important}
 .ft{border-top:2px solid rgba(232,25,44,.25)!important}
 /* Bigger modal backdrop — slightly lighter */
 .modal-overlay,.login-overlay{background:rgba(4,13,26,.80)!important}
-/* Programme pages subtitle */
-.pcard p{color:#5a6e99!important}
+/* Programme pages subtitle — fond sombre (#0C1F3D) donc texte blanc */
+.pcard p{color:rgba(255,255,255,.72)!important}
+
+/* Métier/formation info dans les mini-cartes hero sur fond sombre */
+.pmini-info p{color:#ffffff!important}
+.pmini-info small{color:rgba(255,255,255,.65)!important}
+
+/* Durée modules (.mdur) sur fond clair .mrow — déjà OK, mais forcer lisibilité */
+.mrow .mdur{color:#1a2f5a!important}
+.mrow .mtitle{color:#0B1525!important}
+
+/* Chips sur fonds sombres dans programme cards */
+.pcard .mchip{color:#ffffff!important;background:rgba(255,255,255,.18)!important}
+
+/* Cours page — sous-titre dans header sombre */
+.cours-subtitle{color:rgba(255,255,255,.72)!important}
+
+/* KPI labels dans dashboard — s'assurer blanc sur fond clair */
+.kcard .klbl{color:#1B3A8C!important}
+
+/* renderCours : sous-titre dans la bande colorée */
+/* (généré dynamiquement, couvert par color:#fff inline) */
+
+/* Correction générale : tout texte sur fond #0d1f3c ou similaire */
+[style*="background:#0d1f3c"] p:not([style*="color"]),
+[style*="background:#0d2038"] p:not([style*="color"]) {
+  color: rgba(255,255,255,.75) !important;
+}
+
+/* ═══ CORRECTIONS COULEURS ═══ */
+/* 1. Titres de panneaux (.ph2) — bleu foncé bien lisible sur fond blanc */
+.ph2 {
+  color: var(--blue) !important;
+}
+
+/* 2. Chip "Suspendu" (.cgy) dans pcontent (fond blanc) — texte foncé lisible */
+.pcontent .cgy,
+.pcontent .chip.cgy {
+  background: #e8eeff !important;
+  color: #3A4A6B !important;
+}
+
+/* 3. Table publique des examens — texte toujours visible sur fond blanc */
+#page-examens-pub td {
+  color: #0B1525 !important;
+}
+/* Code de module (style color:var(--g500) inline) dans la table pub */
+#page-examens-pub td[style*="color:var(--g500)"],
+#page-examens-pub td[style*="color: var(--g500)"] {
+  color: #4a5e8a !important;
+}
+/* Chip cgy dans la table publique — "Fermé" */
+#page-examens-pub .cgy {
+  background: #e8eeff !important;
+  color: #3A4A6B !important;
+}
+
+/* Sessions d'examens — titre h3 en bleu */
+#page-examens-pub h3 {
+  color: var(--blue) !important;
+}
+
+/* ═══ CORRECTIONS SURVOL TABLEAU + MODAL PAIEMENT ═══ */
+
+/* Survol de ligne dans .pcontent — fond bleu très clair, texte foncé garanti */
+.pcontent tr:hover td {
+  background: #e8f0ff !important;
+  color: #0B1525 !important;
+}
+/* Chips restent lisibles au survol */
+.pcontent tr:hover td .chip { opacity: 1; }
+
+/* Modal de paiement — forcer fond blanc et textes foncés */
+.modal-box {
+  background: #ffffff !important;
+  color: #0B1525 !important;
+}
+.modal-head h2 { color: #0B1525 !important; }
+.modal-close { background: #e8eeff !important; color: #3A4A6B !important; }
+.modal-close:hover { background: #d0dcf8 !important; color: #0B1525 !important; }
+
+/* Résumé de commande dans le modal */
+.order-summary {
+  background: #f0f5ff !important;
+  border-color: #c8d6f5 !important;
+}
+.os-line { color: #0B1525 !important; border-bottom-color: #d0dcf8 !important; }
+.os-total { color: #0B1525 !important; }
+.os-price { color: var(--blue) !important; }
+.os-discount { color: #006B46 !important; }
+
+/* Formulaire dans le modal — labels et inputs toujours lisibles */
+.modal-box .fg label { color: #1B3A8C !important; }
+.modal-box .fg input,
+.modal-box .fg select,
+.modal-box .fg textarea {
+  background: #ffffff !important;
+  color: #0B1525 !important;
+  border-color: #c0ccee !important;
+}
+.modal-box .fg input::placeholder { color: #8a9cc4 !important; }
+
+/* Bloc info programme dans le modal (fond coloré clair) */
+.modal-box [style*="background:var(--g50)"],
+.modal-box [style*="background: var(--g50)"] {
+  background: #f0f5ff !important;
+}
+
+/* Texte du programme dans le modal */
+.modal-box [style*="color:var(--text)"],
+.modal-box [style*="color: var(--text)"] {
+  color: #0B1525 !important;
+}
+.modal-box [style*="color:var(--g500)"],
+.modal-box [style*="color: var(--g500)"] {
+  color: #4a5e8a !important;
+}
+
+/* Info paiement (bandeau bleu clair) */
+.modal-box [style*="rgba(27,58,140,.05)"] {
+  background: rgba(27,58,140,.06) !important;
+  color: #2a3d6b !important;
+}
+.modal-box [style*="color:var(--g700)"],
+.modal-box [style*="color: var(--g700)"] {
+  color: #2a3d6b !important;
+}
+
+/* Page paiement public (.sw) — pay-card et méthodes */
+.pay-card { background: #ffffff !important; }
+.pay-card h3, .pay-card p, .pay-card div { color: #0B1525; }
+.pm-btn {
+  background: #ffffff !important;
+  color: #1B3A8C !important;
+  border-color: #c8d6f5 !important;
+}
+.pm-btn small { color: #4a5e8a !important; }
+.pm-btn:hover, .pm-btn.act {
+  background: rgba(27,58,140,.07) !important;
+  color: var(--blue) !important;
+}
+.pm-soon { opacity: .6; }
+.pm-soon:hover {
+  background: #ffffff !important;
+  color: #4a5e8a !important;
+  border-color: #c8d6f5 !important;
+}
+
+/* Processus d'inscription — texte foncé */
+#page-paiement .sw [style*="color:var(--text)"],
+#page-paiement .sw [style*="color: var(--text)"] {
+  color: #0B1525 !important;
+}
+#page-paiement .sw [style*="color:var(--g500)"],
+#page-paiement .sw [style*="color: var(--g500)"] {
+  color: #4a5e8a !important;
+}
+
+/* Tarif cards — titres et prix */
+#page-paiement .sw [style*="color:var(--text)"] { color: #0B1525 !important; }
+#page-paiement .sw [style*="color:var(--blue)"] { color: var(--blue) !important; }
+#page-paiement .sw [style*="color:var(--goldD)"] { color: var(--goldD) !important; }
 </style>
 </head>
 <body>
@@ -1104,12 +1298,12 @@ td{color:#0B1525!important}
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem">
         <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showLogin()">
           <div style="font-size:2rem;margin-bottom:.7rem">🛡️</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text);margin-bottom:.4rem">Administration</h3>
+          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Administration</h3>
           <p style="font-size:.75rem;color:var(--g500)">Gérer les étudiants, autoriser l'accès, configurer les sessions</p>
         </div>
         <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showLogin()">
           <div style="font-size:2rem;margin-bottom:.7rem">📘</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text);margin-bottom:.4rem">Professeur</h3>
+          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Professeur</h3>
           <p style="font-size:.75rem;color:var(--g500)">Créer des examens IA, consulter les résultats en temps réel</p>
         </div>
         <div style="background:#0d1f3c;border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onclick="showLogin()">
@@ -1794,23 +1988,23 @@ function renderPaiement() {
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem" id="tarif-cards"></div>
   </div>
-  <div style="background:rgba(245,197,24,.06);border:1.5px solid rgba(245,197,24,.2);border-radius:var(--rL);padding:1.4rem;margin-bottom:1.5rem">
-    <h4 style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.8rem">💳 Méthodes de paiement disponibles</h4>
+  <div style="background:#fffbeb;border:1.5px solid rgba(245,197,24,.35);border-radius:var(--rL);padding:1.4rem;margin-bottom:1.5rem">
+    <h4 style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:#0B1525;margin-bottom:.8rem">💳 Méthodes de paiement disponibles</h4>
     <div class="pay-method">
-      <div class="pm-btn act"><span class="pm-icon">🏦</span>Virement bancaire<small>Disponible maintenant</small></div>
-      <div class="pm-btn act"><span class="pm-icon">💵</span>Paiement en caisse<small>Au bureau Canado</small></div>
-      <div class="pm-btn pm-soon"><span class="pm-icon">📱</span>MonCash<small>Bientôt disponible</small></div>
-      <div class="pm-btn pm-soon"><span class="pm-icon">📲</span>NatCash<small>Bientôt disponible</small></div>
+      <div class="pm-btn act"><span class="pm-icon">🏦</span>Virement bancaire<small style="color:#1B3A8C">Disponible maintenant</small></div>
+      <div class="pm-btn act"><span class="pm-icon">💵</span>Paiement en caisse<small style="color:#1B3A8C">Au bureau Canado</small></div>
+      <div class="pm-btn pm-soon"><span class="pm-icon">📱</span>MonCash<small style="color:#4a5e8a">Bientôt disponible</small></div>
+      <div class="pm-btn pm-soon"><span class="pm-icon">📲</span>NatCash<small style="color:#4a5e8a">Bientôt disponible</small></div>
     </div>
-    <div style="font-size:.75rem;color:var(--g500);margin-top:.5rem">💡 Les paiements par MonCash, NatCash et carte bancaire seront disponibles prochainement. Toutes les transactions sont sécurisées.</div>
+    <div style="font-size:.75rem;color:#4a5e8a;margin-top:.5rem;background:#f0f5ff;border-radius:8px;padding:.6rem .8rem;border:1px solid #d0dcf8">💡 Les paiements par MonCash, NatCash et carte bancaire seront disponibles prochainement. Toutes les transactions sont sécurisées.</div>
   </div>
-  <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem">
-    <h4 style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.8rem">📋 Processus d'inscription</h4>
+  <div style="background:#f0f5ff;border:1px solid #c8d6f5;border-radius:var(--rL);padding:1.4rem">
+    <h4 style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:#0B1525;margin-bottom:.8rem">📋 Processus d'inscription</h4>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.8rem">
       ${['1. Choisissez votre programme','2. Sélectionnez la formule','3. Effectuez le paiement','4. Recevez votre matricule'].map((s,i)=>`
-        <div style="display:flex;align-items:flex-start;gap:.6rem">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
-          <div style="font-size:.8rem;color:var(--text);line-height:1.5">${s.substring(3)}</div>
+        <div style="display:flex;align-items:flex-start;gap:.6rem;background:#fff;border:1px solid #d8e4fc;border-radius:10px;padding:.75rem">
+          <div style="width:28px;height:28px;border-radius:50%;background:#1B3A8C;color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
+          <div style="font-size:.8rem;color:#0B1525;line-height:1.5;font-weight:500">${s.substring(3)}</div>
         </div>`).join('')}
     </div>
   </div>`;
