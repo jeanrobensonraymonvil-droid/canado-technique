@@ -352,8 +352,8 @@ tr:hover td{background:var(--g50)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
 .frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin-bottom:.8rem}
 .fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:.7rem;font-weight:700;color:#2a3d6b;text-transform:uppercase;letter-spacing:.08em}
-.fg input,.fg select,.fg textarea{padding:.52rem .8rem;border:1.5px solid var(--bdr);
+.fg label{font-size:.7rem;font-weight:700;color:#1B3A8C;text-transform:uppercase;letter-spacing:.08em}
+.fg input,.fg select,.fg textarea{padding:.52rem .8rem;border:1.5px solid var(--bdr);color:#0B1525!important;background:#fff!important;
   border-radius:8px;font-size:.82rem;color:var(--text);background:#fff;transition:border .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);
   box-shadow:0 0 0 3px rgba(27,58,140,.08)}
@@ -471,7 +471,7 @@ tr:hover td{background:var(--g50)}
 .tfa-box.show{display:block}
 .tfa-inputs{display:flex;gap:.5rem;justify-content:center;margin-top:.8rem}
 .tfa-digit{width:44px;height:48px;border:1.5px solid var(--bdr);border-radius:9px;
-  text-align:center;font-size:1.3rem;font-weight:700;color:var(--navy);background:#fff;
+  text-align:center;font-size:1.3rem;font-weight:700;color:#040D1A!important;background:#fff!important;
   transition:border .18s}
 .tfa-digit:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,58,140,.1)}
 
@@ -782,6 +782,114 @@ td{color:var(--text)!important}
 .paiement-desc{color:rgba(255,255,255,.8)!important}
 /* Footer top accent */
 .ft{border-top:2px solid rgba(232,25,44,.25)!important}
+/* ═══ ROLE BADGES EXTENDED ═══ */
+.rbadge.rbDG{background:linear-gradient(135deg,#B8860B,#FFD700);color:#3a2500;font-weight:800;box-shadow:0 2px 12px rgba(218,165,32,.4)}
+.rbadge.rbADM{background:linear-gradient(135deg,#2E8B57,#3CB371);color:#fff}
+.rbadge.rbDE{background:linear-gradient(135deg,#1B3A8C,#2B56C0);color:#fff}
+.rbadge.rbDEV{background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff}
+/* ═══ ROLE INDICATOR ═══ */
+.role-level-badge{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:700;
+  padding:3px 10px;border-radius:12px;border:1.5px solid;letter-spacing:.04em}
+.rl-1{background:rgba(218,165,32,.15);border-color:rgba(218,165,32,.4);color:#8B6914}
+.rl-2{background:rgba(232,25,44,.1);border-color:rgba(232,25,44,.25);color:#C8101E}
+.rl-3{background:rgba(0,107,70,.1);border-color:rgba(0,107,70,.25);color:#006B46}
+.rl-4{background:rgba(27,58,140,.1);border-color:rgba(27,58,140,.25);color:#1B3A8C}
+.rl-5{background:rgba(91,45,142,.1);border-color:rgba(91,45,142,.25);color:#5B2D8E}
+.rl-6{background:rgba(59,123,255,.1);border-color:rgba(59,123,255,.25);color:#1B3A8C}
+/* ═══ AUDIT LOG ═══ */
+.audit-row{display:flex;align-items:flex-start;gap:.8rem;padding:.75rem 1rem;
+  border-bottom:1px solid var(--bdr);transition:background .15s}
+.audit-row:hover{background:var(--g50)}
+.audit-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:.9rem;flex-shrink:0}
+.audit-meta{flex:1;min-width:0}
+.audit-action{font-size:.78rem;font-weight:600;color:var(--text)}
+.audit-detail{font-size:.72rem;color:var(--g500);margin-top:2px;line-height:1.5}
+.audit-time{font-size:.68rem;color:var(--g500);white-space:nowrap;flex-shrink:0;text-align:right}
+.audit-diff{font-size:.7rem;margin-top:3px;padding:3px 8px;border-radius:6px;display:inline-block}
+.diff-old{background:rgba(232,25,44,.08);color:var(--redD);text-decoration:line-through}
+.diff-new{background:rgba(0,107,70,.08);color:var(--green)}
+/* ═══ VALIDATION WORKFLOW ═══ */
+.wf-step{background:#fff;border:1.5px solid var(--bdr);border-radius:var(--r);padding:.9rem 1rem;
+  display:flex;align-items:center;gap:.9rem;transition:all .2s;position:relative}
+.wf-step.done{border-color:rgba(0,107,70,.35);background:rgba(0,107,70,.03)}
+.wf-step.pending{border-color:rgba(245,197,24,.4);background:rgba(245,197,24,.03)}
+.wf-step.rejected{border-color:rgba(232,25,44,.3);background:rgba(232,25,44,.03)}
+.wf-step.waiting{border-color:var(--bdr);background:var(--g50);opacity:.65}
+.wf-connector{height:24px;width:2px;background:var(--bdrDk);margin-left:23px}
+.wf-connector.done{background:rgba(0,107,70,.4)}
+.wf-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.9rem;flex-shrink:0}
+.wf-title{font-size:.8rem;font-weight:700;color:var(--text)}
+.wf-who{font-size:.72rem;color:var(--g500);margin-top:1px}
+/* ═══ ÉPREUVE PRATIQUE ═══ */
+.ep-header{background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--rL);
+  padding:1.5rem;margin-bottom:1.2rem;color:#fff}
+.ep-section{background:#fff;border:1.5px solid var(--bdr);border-radius:var(--r);
+  padding:1.2rem;margin-bottom:1rem}
+.ep-section h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--blue);
+  margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:2px solid rgba(27,58,140,.12)}
+.ep-task{background:var(--g50);border:1px solid var(--bdr);border-radius:8px;
+  padding:.75rem 1rem;margin-bottom:.6rem}
+.ep-task-num{font-size:.7rem;font-weight:800;color:var(--blue);text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:.3rem}
+.ep-score-row{display:flex;justify-content:space-between;align-items:center;
+  padding:.4rem 0;border-bottom:1px solid var(--bdr);font-size:.78rem}
+.ep-score-row:last-child{border-bottom:none}
+.ep-pts{font-weight:700;color:var(--blue);min-width:60px;text-align:right}
+
+/* ═══ 📱 MOBILE RESPONSIVE FIXES ═══ */
+@media(max-width:768px){
+  .hero-in{grid-template-columns:1fr;gap:2rem}
+  .hvisual{display:none}
+  .hstats{grid-template-columns:repeat(2,1fr)}
+  .pgrid{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr}
+  .offer-grid{grid-template-columns:1fr}
+  .ev-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .nav-menu-btn{display:flex}
+  .hero h1{font-size:1.9rem}
+  .hero h1 .h1-sub{font-size:1.3rem}
+  .si,.si-lg{padding:2rem 1rem}
+  .pgrid2{grid-template-columns:1fr}
+  .psidebar{position:relative;border-right:none;border-bottom:1.5px solid var(--bdrDk);
+    display:flex;flex-direction:row;overflow-x:auto;gap:.25rem;padding:.5rem;
+    min-height:unset;height:auto}
+  .sitem{white-space:nowrap;font-size:.75rem;padding:.45rem .8rem}
+  .pi{padding:0}
+  .ph{flex-wrap:wrap;gap:.5rem;padding:1rem}
+  .kgrid{grid-template-columns:repeat(2,1fr)}
+  .pcontent{padding:1rem}
+  .tw{overflow-x:auto}
+  table{min-width:500px}
+  .frow,.frow3{flex-direction:column}
+  .lbox{margin:.8rem;max-height:90vh;overflow-y:auto}
+  .lroles{grid-template-columns:repeat(2,1fr)!important}
+  .modal-box{margin:1rem;max-height:92vh}
+  .notif-center{width:100%;right:0;top:0}
+  .rooby-panel{width:calc(100vw - 2rem);right:1rem}
+  .puser{flex-direction:column;align-items:flex-start;gap:.4rem}
+  .sh h2{font-size:1.5rem}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{width:100%;justify-content:center}
+  .login-overlay .lroles{grid-template-columns:repeat(2,1fr)!important}
+  .cal-grid{grid-template-columns:repeat(7,1fr)}
+  .audit-time{display:none}
+  .wf-step{flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .hstats{grid-template-columns:1fr}
+  .kgrid{grid-template-columns:1fr}
+  .hero h1{font-size:1.6rem}
+  .nav-in{padding:0 1rem}
+  .lroles{grid-template-columns:1fr!important}
+}
+
+/* ═══ WCAG ACCESSIBILITY ═══ */
+:focus-visible{outline:3px solid var(--blueG);outline-offset:2px}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 5px var(--blue)}
+
 /* Bigger modal backdrop — slightly lighter */
 .modal-overlay,.login-overlay{background:rgba(4,13,26,.80)!important}
 /* Programme pages subtitle — fond sombre (#0C1F3D) donc texte blanc */
@@ -1441,10 +1549,16 @@ td{color:var(--text)!important}
       <h2>Connexion sécurisée</h2>
       <div class="lbox-sub">Plateforme Canado Technique</div>
     </div>
-    <div class="lroles" id="lroles-container">
-      <button class="lrole act" onclick="selRoleBtn('admin',this)">🛡️ Admin</button>
-      <button class="lrole" onclick="selRoleBtn('prof',this)">📘 Prof</button>
-      <button class="lrole" onclick="selRoleBtn('etud',this)">🎓 Étudiant</button>
+    <div class="lroles" id="lroles-container" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:1rem">
+      <button class="lrole act" onclick="selRoleBtn('dg',this)" title="Accès total — modification, validation, audit complet">👑 Dir. Général</button>
+      <button class="lrole" onclick="selRoleBtn('admin',this)" title="Gestion système + utilisateurs">🛡️ Admin Sys</button>
+      <button class="lrole" onclick="selRoleBtn('adm',this)" title="Inscriptions, dossiers, communication">🏢 Administration</button>
+      <button class="lrole" onclick="selRoleBtn('detudes',this)" title="Validation des programmes et contenus">📋 Dir. Études</button>
+      <button class="lrole" onclick="selRoleBtn('devals',this)" title="Contrôle des examens et conformité">🔍 Dir. Évaluations</button>
+      <button class="lrole" onclick="selRoleBtn('prof',this)" title="Création cours et examens — validation requise">📘 Professeur</button>
+    </div>
+    <div id="etud-row" style="display:none;margin-bottom:.6rem">
+      <button class="lrole" style="width:100%" onclick="selRoleBtn('etud',this)">🎓 Étudiant</button>
     </div>
     <div id="lprog-wrap" style="display:none;margin-bottom:.8rem">
       <div class="fg">
@@ -1636,67 +1750,68 @@ const MODULES = {
 ══════════════════════════════════════ */
 const MODULES_2 = {
   TRI:[
-    {code:"TRI2-01",title:"Architecture des réseaux avancés",dur:60,seuil:80},
-    {code:"TRI2-02",title:"Cisco CCNA 1 — Introduction aux réseaux",dur:90,seuil:80},
-    {code:"TRI2-03",title:"Cisco CCNA 2 — Commutation et routage",dur:90,seuil:80},
-    {code:"TRI2-04",title:"Microsoft Windows Server — Installation et configuration",dur:75,seuil:80},
-    {code:"TRI2-05",title:"Microsoft Active Directory et gestion des utilisateurs",dur:60,seuil:75},
-    {code:"TRI2-06",title:"Sécurité informatique et cybersécurité fondamentale",dur:75,seuil:85},
-    {code:"TRI2-07",title:"Virtualisation avec VMware et Hyper-V",dur:60,seuil:75},
-    {code:"TRI2-08",title:"Administration Linux/Ubuntu",dur:75,seuil:75},
-    {code:"TRI2-09",title:"Services réseau — DHCP, DNS, HTTP, FTP",dur:60,seuil:80},
-    {code:"TRI2-10",title:"Câblage structuré et normes TIA/EIA",dur:45,seuil:80},
-    {code:"TRI2-11",title:"Wi-Fi et réseaux sans fil 802.11",dur:60,seuil:75},
-    {code:"TRI2-12",title:"Cloud computing — AWS et Azure fondamentaux",dur:60,seuil:75},
-    {code:"TRI2-13",title:"Supervision réseau — SNMP et outils de monitoring",dur:45,seuil:75},
-    {code:"TRI2-14",title:"VoIP et téléphonie sur IP",dur:45,seuil:75},
-    {code:"TRI2-15",title:"Firewall, VPN et sécurité périmétrique",dur:75,seuil:85},
-    {code:"TRI2-16",title:"Sauvegarde, RAID et continuité de service",dur:45,seuil:80},
-    {code:"TRI2-17",title:"Programmation Python pour l'administration système",dur:90,seuil:70},
-    {code:"TRI2-18",title:"Bases de données MySQL et PostgreSQL",dur:75,seuil:75},
-    {code:"TRI2-19",title:"Développement web — HTML, CSS, JavaScript",dur:90,seuil:70},
-    {code:"TRI2-20",title:"Support technique avancé et Help Desk",dur:60,seuil:80},
-    {code:"TRI2-21",title:"Gestion de projet IT — PMBOK & Agile",dur:45,seuil:75},
-    {code:"TRI2-22",title:"ITIL — Gestion des services informatiques",dur:30,seuil:75},
-    {code:"TRI2-23",title:"Microsoft 365 — Administration et configuration",dur:60,seuil:80},
-    {code:"TRI2-24",title:"Scripting PowerShell pour Windows",dur:60,seuil:75},
-    {code:"TRI2-25",title:"Conception et déploiement réseau d'entreprise",dur:90,seuil:85},
-    {code:"TRI2-26",title:"Projet intégrateur — Infrastructure IT complète",dur:120,seuil:85},
-    {code:"TRI2-27",title:"Anglais professionnel pour l'informatique",dur:45,seuil:75},
-    {code:"TRI2-28",title:"Éthique professionnelle et entrepreneuriat IT",dur:30,seuil:75},
+    // Semestre 3
+    {code:"TRI-17",title:"Initiation à la réseautique",dur:75,seuil:75,sem:3},
+    {code:"TRI-18",title:"Installation de serveur",dur:75,seuil:75,sem:3},
+    {code:"TRI-19",title:"Routage et commutation",dur:90,seuil:80,sem:3},
+    {code:"TRI-20",title:"Configuration des serveurs",dur:75,seuil:75,sem:3},
+    {code:"TRI-21",title:"Évolutivité des réseaux",dur:90,seuil:80,sem:3},
+    {code:"TRI-22",title:"Maintenance des serveurs",dur:75,seuil:75,sem:3},
+    // Semestre 4
+    {code:"TRI-23",title:"Câblage structuré",dur:90,seuil:80,sem:4},
+    {code:"TRI-24",title:"Supervision et dépannage réseau",dur:75,seuil:75,sem:4},
+    {code:"TRI-25",title:"Connexion de réseaux",dur:75,seuil:75,sem:4},
+    {code:"TRI-26",title:"Sécurité de réseau",dur:75,seuil:75,sem:4},
+    {code:"TRI-27",title:"Implantation d'un réseau",dur:120,seuil:85,sem:4},
+    {code:"TRI-28",title:"Recherche d'emploi",dur:45,seuil:75,sem:4},
   ],
   MEI:[
-    {code:"MEI2-01",title:"Hydraulique et pneumatique industrielle",dur:90,seuil:80},
-    {code:"MEI2-02",title:"Automates programmables industriels (API/PLC)",dur:90,seuil:85},
-    {code:"MEI2-03",title:"Machines CNC — Programmation et opération",dur:120,seuil:85},
-    {code:"MEI2-04",title:"Maintenance préventive et corrective",dur:75,seuil:80},
-    {code:"MEI2-05",title:"Dessin industriel assisté par ordinateur (CAO)",dur:60,seuil:75},
-    {code:"MEI2-06",title:"Systèmes de convoyage et manutention automatisée",dur:60,seuil:80},
-    {code:"MEI2-07",title:"Vibrations, équilibrage et alignement de précision",dur:75,seuil:80},
-    {code:"MEI2-08",title:"Gestion de la maintenance (GMAO)",dur:45,seuil:75},
-    {code:"MEI2-09",title:"Projet de maintenance industrielle",dur:120,seuil:85},
-    {code:"MEI2-10",title:"Éthique et gestion en milieu industriel",dur:30,seuil:75},
+    // Semestre 3
+    {code:"MEI-14",title:"Entretien et réparation d'éléments de transmission",dur:90,seuil:80,sem:3},
+    {code:"MEI-15",title:"Exécution de travaux sur tubes, tuyaux et boyaux",dur:90,seuil:80,sem:3},
+    {code:"MEI-16",title:"Montage, entretien et réparation des pompes hydrauliques",dur:75,seuil:75,sem:3},
+    {code:"MEI-19",title:"Techniques d'équilibrage statique et dynamique",dur:90,seuil:80,sem:3},
+    {code:"MEI-20",title:"Techniques d'analyse de vibrations",dur:90,seuil:80,sem:3},
+    // Semestre 4
+    {code:"MEI-21",title:"Entretien de pompes à vide et compresseurs",dur:90,seuil:80,sem:4},
+    {code:"MEI-22",title:"Montage et réparation de circuits hydrauliques",dur:90,seuil:80,sem:4},
+    {code:"MEI-23",title:"Montage et réparation de circuits pneumatiques",dur:90,seuil:80,sem:4},
+    {code:"MEI-25",title:"Maintenance préventive de l'équipement industriel",dur:90,seuil:80,sem:4},
+    {code:"MEI-26",title:"Installation d'équipement industriel",dur:90,seuil:80,sem:4},
+    {code:"MEI-27",title:"Dépannage d'équipement industriel",dur:90,seuil:80,sem:4},
+    {code:"MEI-28",title:"Préparation au marché du travail",dur:45,seuil:80,sem:4},
   ],
   ELM:[
-    {code:"ELM2-01",title:"Automatisation des processus industriels",dur:90,seuil:85},
-    {code:"ELM2-02",title:"Variateurs de vitesse et moteurs spéciaux",dur:75,seuil:85},
-    {code:"ELM2-03",title:"Énergie solaire et systèmes photovoltaïques",dur:90,seuil:80},
-    {code:"ELM2-04",title:"Automates programmables — LADDER et FBD",dur:90,seuil:85},
-    {code:"ELM2-05",title:"Maintenance électrique industrielle",dur:75,seuil:85},
-    {code:"ELM2-06",title:"Haute tension et distribution électrique",dur:60,seuil:85},
-    {code:"ELM2-07",title:"Instrumentation et mesures industrielles",dur:60,seuil:80},
-    {code:"ELM2-08",title:"Projet électromécanique intégrateur",dur:120,seuil:85},
-    {code:"ELM2-09",title:"Éthique professionnelle et gestion",dur:30,seuil:75},
+    // Semestre 3
+    {code:"ELM-12",title:"Installation de groupes électrogènes, onduleurs et panneaux solaires",dur:90,seuil:85,sem:3},
+    {code:"ELM-16",title:"Fonctionnement des moteurs à essence et diesel",dur:90,seuil:85,sem:3},
+    {code:"ELM-17",title:"Réparation et entretien de groupes électrogènes",dur:90,seuil:85,sem:3},
+    {code:"ELM-18",title:"Circuits pneumatiques et électropneumatiques",dur:90,seuil:85,sem:3},
+    {code:"ELM-19",title:"Circuits hydrauliques et électrohydrauliques",dur:90,seuil:85,sem:3},
+    // Semestre 4
+    {code:"ELM-20",title:"Électronique de puissance",dur:90,seuil:80,sem:4},
+    {code:"ELM-21",title:"Programmation d'un automate",dur:90,seuil:85,sem:4},
+    {code:"ELM-22",title:"Raccordement d'automates",dur:90,seuil:85,sem:4},
+    {code:"ELM-23",title:"Dépannage d'un système automatisé",dur:90,seuil:85,sem:4},
+    {code:"ELM-24",title:"Maintenance planifiée",dur:75,seuil:80,sem:4},
+    {code:"ELM-25",title:"Entrepreneuriat",dur:30,seuil:75,sem:4},
+    {code:"ELM-26",title:"Préparation au marché du travail",dur:45,seuil:70,sem:4},
   ],
   TEL:[
-    {code:"TEL2-01",title:"Réseaux mobiles 4G/5G et LTE",dur:90,seuil:85},
-    {code:"TEL2-02",title:"Fibres optiques — Installation et mesure",dur:75,seuil:85},
-    {code:"TEL2-03",title:"Systèmes satellitaires et VSAT",dur:60,seuil:80},
-    {code:"TEL2-04",title:"IP multimédia — SIP et protocoles VoIP",dur:75,seuil:80},
-    {code:"TEL2-05",title:"Microcontrôleurs et IoT — Arduino & Raspberry Pi",dur:90,seuil:75},
-    {code:"TEL2-06",title:"Sécurité des systèmes de télécommunications",dur:60,seuil:80},
-    {code:"TEL2-07",title:"Projet de déploiement télécoms",dur:120,seuil:85},
-    {code:"TEL2-08",title:"Éthique et gestion en télécommunications",dur:30,seuil:75},
+    // Semestre 3
+    {code:"TEL-15",title:"Communication radio",dur:90,seuil:85,sem:3},
+    {code:"TEL-16",title:"Câblage structuré",dur:90,seuil:85,sem:3},
+    {code:"TEL-17",title:"Réseau informatique",dur:90,seuil:85,sem:3},
+    {code:"TEL-18",title:"Système téléphonique",dur:90,seuil:85,sem:3},
+    {code:"TEL-19",title:"Fibre optique",dur:90,seuil:85,sem:3},
+    // Semestre 4
+    {code:"TEL-20",title:"Communication sans fil",dur:90,seuil:85,sem:4},
+    {code:"TEL-21",title:"Téléphonie IP",dur:75,seuil:80,sem:4},
+    {code:"TEL-22",title:"Installation et réparation de matériels de câblodistribution",dur:90,seuil:85,sem:4},
+    {code:"TEL-23",title:"Téléphonie sans fil",dur:90,seuil:85,sem:4},
+    {code:"TEL-24",title:"Systèmes d'alimentation d'appoint",dur:90,seuil:85,sem:4},
+    {code:"TEL-25",title:"Entrepreneuriat",dur:30,seuil:75,sem:4},
+    {code:"TEL-26",title:"Préparation au marché du travail",dur:45,seuil:70,sem:4},
   ],
 };
 
@@ -2128,28 +2243,84 @@ function renderOffers() {
 /* ══════════════════════════════════════
    LOGIN / LOGOUT / 2FA
 ══════════════════════════════════════ */
-let selRole = 'admin';
+let selRole = 'dg';
+
+/* ══════ SYSTÈME 6 NIVEAUX ══════
+   1. dg        — Directeur Général (accès total + audit)
+   2. admin     — Administrateur Système (gestion + utilisateurs)
+   3. adm       — Administration (inscriptions, dossiers)
+   4. detudes   — Direction des Études (validation pédagogique)
+   5. devals    — Direction des Évaluations (validation examens)
+   6. prof      — Corps professoral (création, pas de publication)
+   7. etud      — Étudiant (lecture seule, examens)
+══════════════════════════════ */
 const ROLES = {
-  admin:{name:'Gary Pierre',role:'Directeur · Administration',badge:'Admin',rbClass:'rbA',avt:'GP',
+  dg:{name:'Jean Robenson Raymonvil',role:'Directeur Général · Accès Total',badge:'Dir. Général',rbClass:'rbDG',avt:'JR',
+    level:1,
+    sidebar:[
+      {id:'dash',icon:'📊',label:'Tableau de bord'},
+      {id:'audit',icon:'🔍',label:"Journal d'audit"},
+      {id:'etudiants',icon:'👥',label:'Étudiants'},
+      {id:'cours-mgmt',icon:'📚',label:'Gestion des cours'},
+      {id:'exam-builder',icon:'📝',label:'Examens IA'},
+      {id:'validation-hub',icon:'✅',label:'Validation & Flux'},
+      {id:'epreuve-pratique',icon:'🧪',label:'Épreuve Pratique A'},
+      {id:'paiements-admin',icon:'💳',label:'Paiements'},
+      {id:'rapports',icon:'📈',label:'Rapports & stats'},
+      {id:'reservations',icon:'📅',label:'Réservations'},
+    ]},
+  admin:{name:'Gary Pierre',role:'Administrateur Système',badge:'Admin Sys',rbClass:'rbA',avt:'GP',
+    level:2,
     sidebar:[
       {id:'dash',icon:'📊',label:'Tableau de bord'},
       {id:'etudiants',icon:'👥',label:'Étudiants inscrits'},
       {id:'cours-mgmt',icon:'📚',label:'Gestion des cours'},
       {id:'exam-builder',icon:'📝',label:'Créer examen IA'},
+      {id:'validation-hub',icon:'✅',label:'File de validation'},
       {id:'reservations',icon:'📅',label:'Réservations labo'},
       {id:'paiements-admin',icon:'💳',label:'Paiements'},
       {id:'rapports',icon:'📈',label:'Rapports & stats'},
     ]},
+  adm:{name:'Carline Dorcé',role:'Administration · Inscriptions & Dossiers',badge:'Administration',rbClass:'rbADM',avt:'CD',
+    level:3,
+    sidebar:[
+      {id:'dash',icon:'📊',label:'Tableau de bord'},
+      {id:'etudiants',icon:'👥',label:'Dossiers étudiants'},
+      {id:'paiements-admin',icon:'💳',label:'Paiements & inscriptions'},
+      {id:'rapports',icon:'📈',label:'Rapports'},
+      {id:'reservations',icon:'📅',label:'Réservations'},
+    ]},
+  detudes:{name:'Marie-France Dolce',role:'Direction des Études',badge:'Dir. Études',rbClass:'rbDE',avt:'MD',
+    level:4,
+    sidebar:[
+      {id:'dash',icon:'📊',label:'Tableau de bord'},
+      {id:'cours-mgmt',icon:'📚',label:'Programmes & modules'},
+      {id:'validation-hub',icon:'✅',label:'Validation pédagogique'},
+      {id:'epreuve-pratique',icon:'🧪',label:'Épreuve Pratique A'},
+      {id:'rapports',icon:'📈',label:'Rapports académiques'},
+    ]},
+  devals:{name:'Jean Christophe',role:'Direction des Évaluations',badge:'Dir. Évaluations',rbClass:'rbDEV',avt:'JC',
+    level:5,
+    sidebar:[
+      {id:'dash',icon:'📊',label:'Tableau de bord'},
+      {id:'exam-builder',icon:'📝',label:'Créer examen IA'},
+      {id:'validation-hub',icon:'✅',label:'Contrôle & conformité'},
+      {id:'epreuve-pratique',icon:'🧪',label:'Épreuve Pratique A'},
+      {id:'rapports',icon:'📈',label:'Résultats & statistiques'},
+    ]},
   prof:{name:'Rooby Raymonvil',role:'Formateur TRI · Réseaux Informatiques',badge:'Professeur',rbClass:'rbP',avt:'RR',
+    level:6,
     sidebar:[
       {id:'dash',icon:'📊',label:'Tableau de bord'},
       {id:'cours-mgmt',icon:'📚',label:'Mes cours & modules'},
       {id:'exam-builder',icon:'📝',label:'Créer examen IA'},
+      {id:'epreuve-pratique',icon:'🧪',label:'Épreuve Pratique A'},
       {id:'reservations',icon:'📅',label:'Demandes pratique'},
       {id:'zoom-panel',icon:'🎥',label:'Séances Zoom'},
       {id:'rapports',icon:'📈',label:'Résultats étudiants'},
     ]},
   etud:{name:'Marie Louisiane',role:'Étudiante TRI · Promo 2026',badge:'Étudiant',rbClass:'rbE',avt:'ML',
+    level:7,
     sidebar:[
       {id:'dash',icon:'📊',label:'Mon tableau de bord'},
       {id:'mes-cours',icon:'📚',label:'Mes cours'},
@@ -2159,7 +2330,7 @@ const ROLES = {
       {id:'zoom-panel',icon:'🎥',label:'Rejoindre Zoom'},
     ]},
 };
-let currentRole = 'admin';
+let currentRole = 'dg';
 let etudProg = 'TRI';
 let etudYear = '1';
 let tfaVerified = false;
@@ -2170,10 +2341,6 @@ function selRoleBtn(r, el) {
   el.classList.add('act');
   document.getElementById('lprog-wrap').style.display = (r==='etud')?'block':'none';
 }
-document.querySelectorAll('.lrole').forEach((el,i)=>{
-  const roles=['admin','prof','etud'];
-  el.onclick=()=>selRoleBtn(roles[i],el);
-});
 
 function showLogin() { document.getElementById('login-overlay').classList.add('show'); }
 function hideLogin() { document.getElementById('login-overlay').classList.remove('show'); }
@@ -2254,6 +2421,9 @@ function showPanel(id) {
     case 'reservations': renderReservationsAdmin(c); break;
     case 'zoom-panel': renderZoom(c); break;
     case 'paiements-admin': renderPaiementsAdmin(c); break;
+    case 'audit': renderAuditLog(c); break;
+    case 'validation-hub': renderValidationHub(c); break;
+    case 'epreuve-pratique': renderEpreuvePratique(c); break;
   }
 }
 
@@ -3272,6 +3442,486 @@ function toast(msg) {
 /* ══════════════════════════════════════
    INIT
 ══════════════════════════════════════ */
+/* ══════════════════════════════════════
+   SYSTÈME D'AUDIT & TRAÇABILITÉ
+══════════════════════════════════════ */
+const AUDIT_LOG = [
+  {id:1,user:'Jean Robenson Raymonvil',role:'Dir. Général',action:'VALIDATION',target:'Examen TRI-19 Version A',time:'13 Mai 2026 · 10:42',type:'validate',old:'En attente',new:'Publié'},
+  {id:2,user:'Rooby Raymonvil',role:'Professeur',action:'CRÉATION_EXAMEN',target:'TRI-19 Routage et commutation',time:'13 Mai 2026 · 09:15',type:'create',old:null,new:'Brouillon créé'},
+  {id:3,user:'Carline Dorcé',role:'Administration',action:'MODIFICATION_NOTE',target:'Marie Louisiane — TRI-05',time:'13 Mai 2026 · 08:30',type:'edit',old:'72%',new:'75%'},
+  {id:4,user:'Marie-France Dolce',role:'Dir. Études',action:'VALIDATION_PROGRAMME',target:'2ème année TRI — Semestre 4',time:'12 Mai 2026 · 16:00',type:'validate',old:'Soumis',new:'Validé (Études)'},
+  {id:5,user:'Jean Christophe',role:'Dir. Évaluations',action:'REJET_EXAMEN',target:'ELM-20 Électronique de puissance',time:'12 Mai 2026 · 14:22',type:'reject',old:'En validation',new:'Rejeté — corrections requises'},
+  {id:6,user:'Gary Pierre',role:'Admin Sys',action:'CRÉATION_COMPTE',target:'Étudiant: Samuel Toussaint TRI2',time:'12 Mai 2026 · 11:05',type:'create',old:null,new:'Compte actif'},
+  {id:7,user:'Rooby Raymonvil',role:'Professeur',action:'ACTIVATION_MODULE',target:'TRI-24 Supervision réseau',time:'11 Mai 2026 · 15:30',type:'edit',old:'Désactivé',new:'Activé'},
+  {id:8,user:'Carline Dorcé',role:'Administration',action:'INSCRIPTION',target:'Jean-Paul Estimé — MEI 1ère année',time:'11 Mai 2026 · 09:00',type:'create',old:null,new:'Dossier créé · Paiement en attente'},
+];
+
+const AUDIT_TYPE_CONFIG = {
+  validate:{icon:'✅',bg:'rgba(0,107,70,.12)',color:'var(--green)'},
+  create:{icon:'➕',bg:'rgba(27,58,140,.1)',color:'var(--blue)'},
+  edit:{icon:'✏️',bg:'rgba(245,197,24,.12)',color:'var(--goldD)'},
+  reject:{icon:'❌',bg:'rgba(232,25,44,.1)',color:'var(--red)'},
+  delete:{icon:'🗑️',bg:'rgba(232,25,44,.15)',color:'var(--red)'},
+};
+
+function logAudit(action,target,oldVal,newVal) {
+  const r = ROLES[currentRole];
+  AUDIT_LOG.unshift({
+    id:Date.now(),
+    user:r.name,role:r.badge,action,target,
+    time:new Date().toLocaleString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    type:action.toLowerCase().includes('valid')?'validate':
+         action.toLowerCase().includes('creat')||action.toLowerCase().includes('ajout')?'create':
+         action.toLowerCase().includes('rejet')||action.toLowerCase().includes('suppr')?'reject':'edit',
+    old:oldVal||null,new:newVal||null
+  });
+}
+
+function renderAuditLog(c) {
+  const canView = ['dg','admin'].includes(currentRole);
+  if(!canView){c.innerHTML=`<div class="ph2">🔒 Accès restreint</div><p style="color:var(--g500);font-size:.85rem">Le journal d'audit est réservé au Directeur Général et à l'Administrateur Système.</p>`;return;}
+  const filters = ['Tous','VALIDATION','CRÉATION_EXAMEN','MODIFICATION_NOTE','REJET','CRÉATION_COMPTE','INSCRIPTION'];
+  c.innerHTML = `<div class="ph2">🔍 Journal d'Audit & Traçabilité</div>
+  <div style="background:rgba(232,25,44,.06);border:1px solid rgba(232,25,44,.18);border-radius:var(--r);padding:.8rem 1rem;margin-bottom:1rem;font-size:.78rem;color:#9a0010">
+    ⚠️ Toutes les actions sont enregistrées et horodatées. Aucune modification n'est invisible. Accès : Directeur Général & Admin uniquement.
+  </div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
+    <input type="text" id="audit-search" placeholder="Rechercher utilisateur, action..." style="flex:1;min-width:200px;padding:.45rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;color:#0B1525;background:#fff" oninput="filterAudit(this.value)">
+    <select id="audit-type-filter" style="padding:.45rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;color:#0B1525;background:#fff" onchange="filterAudit(document.getElementById('audit-search').value)">
+      ${filters.map(f=>`<option value="${f}">${f}</option>`).join('')}
+    </select>
+    <button class="btn btn-red btn-sm" onclick="toast('📥 Export CSV du journal d\'audit...')">Export CSV</button>
+  </div>
+  <div id="audit-list">
+    ${renderAuditRows(AUDIT_LOG)}
+  </div>`;
+}
+
+function renderAuditRows(logs) {
+  if(!logs.length) return '<p style="color:var(--g500);text-align:center;padding:2rem;font-size:.85rem">Aucun résultat</p>';
+  return logs.map(a=>{
+    const cfg = AUDIT_TYPE_CONFIG[a.type]||{icon:'📋',bg:'var(--g100)',color:'var(--g700)'};
+    return `<div class="audit-row">
+      <div class="audit-icon" style="background:${cfg.bg}">${cfg.icon}</div>
+      <div class="audit-meta">
+        <div class="audit-action">${a.action.replace(/_/g,' ')} — <span style="color:${cfg.color}">${a.target}</span></div>
+        <div class="audit-detail">👤 ${a.user} <span class="chip cgy" style="font-size:.65rem">${a.role}</span></div>
+        ${a.old?`<div style="margin-top:4px;display:flex;gap:.4rem;flex-wrap:wrap">
+          <span class="audit-diff diff-old">${a.old}</span>
+          <span style="font-size:.7rem;color:var(--g500)">→</span>
+          <span class="audit-diff diff-new">${a.new}</span>
+        </div>`:(a.new?`<div class="audit-diff diff-new" style="margin-top:4px">${a.new}</div>`:'')}
+      </div>
+      <div class="audit-time">🕐 ${a.time}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterAudit(search) {
+  const typeF = document.getElementById('audit-type-filter')?.value||'Tous';
+  let logs = AUDIT_LOG;
+  if(search) logs = logs.filter(a=>
+    a.user.toLowerCase().includes(search.toLowerCase())||
+    a.action.toLowerCase().includes(search.toLowerCase())||
+    a.target.toLowerCase().includes(search.toLowerCase())
+  );
+  if(typeF!=='Tous') logs = logs.filter(a=>a.action.includes(typeF));
+  const el = document.getElementById('audit-list');
+  if(el) el.innerHTML = renderAuditRows(logs);
+}
+
+/* ══════════════════════════════════════
+   FLUX DE VALIDATION DES EXAMENS
+   Prof → Dir.Études → Dir.Évaluations → Publication
+══════════════════════════════════════ */
+const VALIDATION_QUEUE = [
+  {id:'V001',code:'TRI-19',title:'Routage et commutation',prof:'Rooby Raymonvil',created:'13 Mai 2026',
+   steps:[
+     {level:'Professeur',who:'Rooby Raymonvil',status:'done',date:'13 Mai 2026 09:15',comment:'Examen soumis pour validation'},
+     {level:'Dir. Études',who:'Marie-France Dolce',status:'pending',date:null,comment:''},
+     {level:'Dir. Évaluations',who:'Jean Christophe',status:'waiting',date:null,comment:''},
+     {level:'Publication',who:'Système',status:'waiting',date:null,comment:''},
+   ]},
+  {id:'V002',code:'ELM-20',title:'Électronique de puissance',prof:'Jean Alix',created:'12 Mai 2026',
+   steps:[
+     {level:'Professeur',who:'Jean Alix',status:'done',date:'12 Mai 2026 08:00',comment:'Version A et B soumises'},
+     {level:'Dir. Études',who:'Marie-France Dolce',status:'done',date:'12 Mai 2026 10:30',comment:'Contenu conforme au programme'},
+     {level:'Dir. Évaluations',who:'Jean Christophe',status:'rejected',date:'12 Mai 2026 14:22',comment:'Barème incorrect — réviser questions 8 et 12'},
+     {level:'Publication',who:'Système',status:'waiting',date:null,comment:''},
+   ]},
+  {id:'V003',code:'MEI-22',title:'Montage circuits hydrauliques',prof:'Carla Noel',created:'11 Mai 2026',
+   steps:[
+     {level:'Professeur',who:'Carla Noel',status:'done',date:'11 Mai 2026',comment:'Épreuve pratique soumise'},
+     {level:'Dir. Études',who:'Marie-France Dolce',status:'done',date:'11 Mai 2026',comment:'Validé pédagogiquement'},
+     {level:'Dir. Évaluations',who:'Jean Christophe',status:'done',date:'12 Mai 2026',comment:'Barème vérifié — conforme'},
+     {level:'Publication',who:'Système',status:'done',date:'12 Mai 2026',comment:'Publié aux étudiants'},
+   ]},
+];
+
+function renderValidationHub(c) {
+  const canValidateEtudes = ['dg','admin','detudes'].includes(currentRole);
+  const canValidateEvals = ['dg','admin','devals'].includes(currentRole);
+  const canPublish = ['dg'].includes(currentRole);
+
+  c.innerHTML = `<div class="ph2">✅ Flux de Validation des Examens</div>
+  <div style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1.2rem;font-size:.78rem;color:var(--blue)">
+    📋 <strong>Workflow obligatoire :</strong> Professeur → Direction des Études → Direction des Évaluations → Publication. Aucun examen ne peut être publié sans les 3 validations.
+  </div>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
+    <div class="kcard" style="flex:1;min-width:120px"><div class="knum">${VALIDATION_QUEUE.length}</div><div class="klbl">En file</div></div>
+    <div class="kcard kg" style="flex:1;min-width:120px"><div class="knum">1</div><div class="klbl">Publiés</div></div>
+    <div class="kcard kr" style="flex:1;min-width:120px"><div class="knum">1</div><div class="klbl">Rejetés</div></div>
+    <div class="kcard kgd" style="flex:1;min-width:120px"><div class="knum">1</div><div class="klbl">En attente</div></div>
+  </div>
+  ${VALIDATION_QUEUE.map(v=>renderWorkflowCard(v,canValidateEtudes,canValidateEvals,canPublish)).join('')}`;
+}
+
+function renderWorkflowCard(v,canDE,canDEV,canPub) {
+  const statusChip = {done:'<span class="chip cg">Validé</span>',pending:'<span class="chip cgd">En attente</span>',rejected:'<span class="chip cr">Rejeté</span>',waiting:'<span class="chip cgy">En attente</span>'};
+  const stepStatus = {done:{cls:'done',icon:'✅'},pending:{cls:'pending',icon:'⏳'},rejected:{cls:'rejected',icon:'❌'},waiting:{cls:'waiting',icon:'⬜'}};
+  const overall = v.steps[3].status==='done'?'cg':v.steps.some(s=>s.status==='rejected')?'cr':v.steps[1].status==='pending'?'cgd':'cgy';
+  const overallLabel = v.steps[3].status==='done'?'Publié':v.steps.some(s=>s.status==='rejected')?'Rejeté':v.steps[1].status==='pending'?'En validation':'En attente';
+
+  let actionBtns = '';
+  if(v.steps[1].status==='pending'&&canDE) {
+    actionBtns = `<div style="display:flex;gap:.5rem;margin-top:.8rem">
+      <input type="text" placeholder="Commentaire Dir. Études..." id="comment-de-${v.id}" style="flex:1;padding:.4rem .7rem;border:1.5px solid var(--bdr);border-radius:7px;font-size:.78rem;color:#0B1525;background:#fff">
+      <button class="btn btn-green btn-sm" onclick="validateStep('${v.id}',1,'Dir. Études')">✓ Valider</button>
+      <button class="btn btn-outline btn-sm" onclick="rejectStep('${v.id}',1,'Dir. Études')">✕ Rejeter</button>
+    </div>`;
+  } else if(v.steps[2].status==='pending'&&canDEV) {
+    actionBtns = `<div style="display:flex;gap:.5rem;margin-top:.8rem">
+      <input type="text" placeholder="Commentaire Dir. Évaluations..." id="comment-dev-${v.id}" style="flex:1;padding:.4rem .7rem;border:1.5px solid var(--bdr);border-radius:7px;font-size:.78rem;color:#0B1525;background:#fff">
+      <button class="btn btn-green btn-sm" onclick="validateStep('${v.id}',2,'Dir. Évaluations')">✓ Valider barème</button>
+      <button class="btn btn-outline btn-sm" onclick="rejectStep('${v.id}',2,'Dir. Évaluations')">✕ Rejeter</button>
+    </div>`;
+  } else if(v.steps[3].status==='pending'&&canPub) {
+    actionBtns = `<div style="margin-top:.8rem"><button class="btn btn-red" onclick="validateStep('${v.id}',3,'Système')">🚀 Publier aux étudiants</button></div>`;
+  } else if(v.steps.some(s=>s.status==='rejected')) {
+    actionBtns = `<div style="background:rgba(232,25,44,.06);border:1px solid rgba(232,25,44,.15);border-radius:8px;padding:.6rem .8rem;margin-top:.6rem;font-size:.76rem;color:var(--redD)">
+      ↩️ Retourné au professeur pour corrections — <strong>${v.steps.find(s=>s.status==='rejected')?.comment||''}</strong>
+    </div>`;
+  }
+
+  return `<div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1.2rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+      <div>
+        <div style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:var(--text)">${v.code} · ${v.title}</div>
+        <div style="font-size:.73rem;color:var(--g500);margin-top:2px">Prof. ${v.prof} · Soumis le ${v.created}</div>
+      </div>
+      <span class="chip ${overall}">${overallLabel}</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      ${v.steps.map((s,i)=>{
+        const sc = stepStatus[s.status]||{cls:'waiting',icon:'⬜'};
+        return `<div class="wf-step ${sc.cls}" id="wf-${v.id}-${i}">
+          <div class="wf-icon" style="background:${s.status==='done'?'rgba(0,107,70,.12)':s.status==='rejected'?'rgba(232,25,44,.1)':s.status==='pending'?'rgba(245,197,24,.12)':'var(--g100)'}">
+            ${sc.icon}
+          </div>
+          <div style="flex:1">
+            <div class="wf-title">${s.level}</div>
+            <div class="wf-who">${s.who}${s.date?' · '+s.date:''}</div>
+            ${s.comment?`<div style="font-size:.71rem;color:var(--g500);margin-top:2px;font-style:italic">"${s.comment}"</div>`:''}
+          </div>
+        </div>
+        ${i<v.steps.length-1?`<div class="wf-connector ${s.status==='done'?'done':''}"></div>`:''}`;
+      }).join('')}
+    </div>
+    ${actionBtns}
+  </div>`;
+}
+
+function validateStep(vid,stepIdx,who) {
+  const v = VALIDATION_QUEUE.find(x=>x.id===vid);
+  if(!v) return;
+  const commentEl = document.getElementById(`comment-de-${vid}`)||document.getElementById(`comment-dev-${vid}`);
+  const comment = commentEl?.value||'Validé sans commentaire';
+  v.steps[stepIdx].status = 'done';
+  v.steps[stepIdx].date = new Date().toLocaleDateString('fr-FR');
+  v.steps[stepIdx].comment = comment;
+  if(stepIdx<v.steps.length-1) v.steps[stepIdx+1].status='pending';
+  logAudit('VALIDATION',`${v.code} — Étape ${who}`,v.steps[stepIdx-1]?.status||'Soumis','Validé');
+  toast(`✅ Étape "${who}" validée pour ${v.code}`);
+  showToastNotif('✅ Validation enregistrée',`${v.code} avance vers l'étape suivante. Action tracée dans l'audit.`);
+  showPanel('validation-hub');
+}
+
+function rejectStep(vid,stepIdx,who) {
+  const v = VALIDATION_QUEUE.find(x=>x.id===vid);
+  if(!v) return;
+  const commentEl = document.getElementById(`comment-de-${vid}`)||document.getElementById(`comment-dev-${vid}`);
+  const comment = commentEl?.value||'Corrections requises';
+  v.steps[stepIdx].status = 'rejected';
+  v.steps[stepIdx].comment = comment;
+  logAudit('REJET_EXAMEN',`${v.code} — Rejeté par ${who}`,'En validation',`Rejeté — ${comment}`);
+  toast(`❌ Examen ${v.code} rejeté — retour au professeur`);
+  showPanel('validation-hub');
+}
+
+/* ══════════════════════════════════════
+   ÉPREUVE PRATIQUE A — SECTION
+══════════════════════════════════════ */
+function renderEpreuvePratique(c) {
+  c.innerHTML = `<div class="ph2">🧪 Épreuve Pratique A — Exemple Officiel</div>
+
+  <div class="ep-header">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem">
+      <div>
+        <div style="font-size:.65rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.4rem">Canado Technique · Programme APC · Épreuve Officielle</div>
+        <div style="font-family:var(--fD);font-weight:800;font-size:1.1rem;color:#fff">Épreuve A Pratique — Déploiement Réseau d'Entreprise</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.3rem">TRI-27 · Implantation d'un réseau · Version A · Durée : 3 heures</div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-gold btn-sm" onclick="window.print()">🖨️ Imprimer</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('📄 Export PDF en cours...')">📄 Export PDF</button>
+        ${['dg','detudes','devals'].includes(currentRole)?`<button class="btn btn-green btn-sm" onclick="toast('✅ Épreuve validée et publiée')">✅ Valider & Publier</button>`:''}
+      </div>
+    </div>
+    <div style="display:flex;gap:1rem;margin-top:1.2rem;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .9rem;text-align:center">
+        <div style="font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em">Programme</div>
+        <div style="font-size:.85rem;font-weight:700;color:#fff">TRI — Réseaux</div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .9rem;text-align:center">
+        <div style="font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em">Durée</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--gold)">3 heures</div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .9rem;text-align:center">
+        <div style="font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em">Total</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--greenL)">100 points</div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .9rem;text-align:center">
+        <div style="font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em">Seuil réussite</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--red)">85%</div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .9rem;text-align:center">
+        <div style="font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em">Élaboré par</div>
+        <div style="font-size:.85rem;font-weight:700;color:#fff">Rooby Raymonvil</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIRECTIVES -->
+  <div class="ep-section">
+    <h3>📋 Directives générales</h3>
+    <div style="display:flex;flex-direction:column;gap:.45rem">
+      ${[
+        'Cette épreuve évalue votre compétence à concevoir et déployer une infrastructure réseau d\'entreprise complète.',
+        'Toute communication entre étudiants est strictement interdite. Tout appareil de communication doit être éteint.',
+        'Lisez attentivement l\'ensemble du sujet avant de commencer. Respectez l\'ordre des parties.',
+        'En cas de problème matériel (panne équipement, câble défectueux), avertir immédiatement le professeur.',
+        'Chaque étape doit être validée par le professeur avant de passer à la suivante. Un carré ■ signale une vérification obligatoire.',
+        'Répartition du temps : Partie I — 60 min · Partie II — 90 min · Partie III — 30 min.',
+        'Tout travail non présenté au professeur aux moments indiqués sera noté zéro.',
+        'La propreté du poste de travail, la qualité du câblage et la documentation sont évaluées.'
+      ].map(d=>`<div style="display:flex;gap:.7rem;align-items:flex-start;padding:.45rem 0;border-bottom:1px solid var(--bdr)">
+        <span style="color:var(--blue);font-weight:700;font-size:.78rem;flex-shrink:0">▸</span>
+        <span style="font-size:.8rem;color:var(--g700);line-height:1.6">${d}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- SCÉNARIO -->
+  <div class="ep-section">
+    <h3>🏢 Scénario professionnel</h3>
+    <div style="background:linear-gradient(135deg,var(--g50),#e8f0fe);border:1.5px solid rgba(27,58,140,.2);border-radius:var(--r);padding:1.1rem;margin-bottom:1rem">
+      <div style="font-size:.7rem;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">Mise en situation réelle</div>
+      <p style="font-size:.83rem;color:var(--text);line-height:1.75;margin-bottom:.5rem"><strong>HAÏTI DIGITAL S.A.</strong>, une entreprise de services numériques basée à Port-au-Prince, vient d'ouvrir un nouveau bureau de 3 étages. La direction vous engage comme technicien réseau pour concevoir et déployer toute l'infrastructure réseau.</p>
+      <p style="font-size:.83rem;color:var(--text);line-height:1.75">L'entreprise dispose de : 45 postes de travail répartis sur 3 services (Comptabilité, Développement, Direction), 1 serveur de fichiers, 1 serveur web interne, et 1 connexion Internet à haut débit via un FAI local.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem">
+      ${[
+        {icon:'🏢',lbl:'3 services',sub:'Compta · Dev · Direction'},
+        {icon:'💻',lbl:'45 postes',sub:'Windows 10/11 Pro'},
+        {icon:'🖥️',lbl:'2 serveurs',sub:'Fichiers + Web interne'},
+        {icon:'🌐',lbl:'1 liaison WAN',sub:'100 Mbps FAI local'},
+        {icon:'📡',lbl:'Wi-Fi requis',sub:'Zone salon + salle réunion'},
+        {icon:'🔒',lbl:'Sécurité',sub:'VLAN + Firewall requis'},
+      ].map(s=>`<div style="background:#fff;border:1px solid var(--bdr);border-radius:8px;padding:.7rem;text-align:center">
+        <div style="font-size:1.2rem;margin-bottom:.3rem">${s.icon}</div>
+        <div style="font-size:.78rem;font-weight:700;color:var(--text)">${s.lbl}</div>
+        <div style="font-size:.68rem;color:var(--g500)">${s.sub}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- PARTIE I -->
+  <div class="ep-section">
+    <h3>Partie I \u2014 Conception et plan d\'adressage (30 points \u00b7 60 min)</h3>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 1.1 — Schéma réseau logique (15 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7;margin-bottom:.6rem">Sur la feuille quadrillée fournie, tracez le schéma logique complet du réseau de HAÏTI DIGITAL S.A. en respectant les symboles Cisco standards. Votre schéma doit inclure :</p>
+      <ul style="font-size:.78rem;color:var(--g700);padding-left:1.2rem;line-height:1.9">
+        <li>Les équipements : routeur, commutateurs (layer 2), point d'accès Wi-Fi, firewall</li>
+        <li>La segmentation en 3 VLANs minimum (VLAN 10-Compta, VLAN 20-Dev, VLAN 30-Direction)</li>
+        <li>Le serveur de fichiers et le serveur web avec leurs adresses</li>
+        <li>La zone démilitarisée (DMZ) pour le serveur web</li>
+        <li>Le routeur FAI et la connexion Internet</li>
+      </ul>
+      <div style="margin-top:.6rem;background:rgba(232,25,44,.08);border-left:3px solid var(--red);padding:.5rem .8rem;border-radius:0 6px 6px 0;font-size:.75rem;color:var(--redD)">
+        ■ ARRÊT — Faire vérifier le schéma par le professeur avant de continuer.
+      </div>
+    </div>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 1.2 — Plan d'adressage IP (15 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7;margin-bottom:.6rem">Complétez le tableau de plan d'adressage fourni. Utilisez le réseau de classe C <strong>192.168.50.0/24</strong> en appliquant la technique de sous-résautage (VLSM) pour optimiser l'utilisation des adresses. Justifiez vos choix.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:.75rem;margin-top:.5rem">
+        <thead><tr style="background:#1a2f52;color:#fff"><th style="padding:.5rem .7rem;text-align:left">VLAN</th><th style="padding:.5rem .7rem;text-align:left">Service</th><th style="padding:.5rem .7rem;text-align:left">Nb hôtes</th><th style="padding:.5rem .7rem;text-align:left">Sous-réseau</th><th style="padding:.5rem .7rem;text-align:left">Masque</th><th style="padding:.5rem .7rem;text-align:left">Passerelle</th></tr></thead>
+        <tbody>
+          ${[['10','Comptabilité','15','____________','____________','____________'],
+             ['20','Développement','20','____________','____________','____________'],
+             ['30','Direction','10','____________','____________','____________'],
+             ['99','Management','5','____________','____________','____________']].map((r,i)=>`<tr style="background:${i%2?'#f8faff':'#fff'}">
+            ${r.map(v=>`<td style="padding:.5rem .7rem;border-bottom:1px solid var(--bdr);color:${v.includes('___')?'var(--g300)':'var(--text)'}">${v}</td>`).join('')}
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PARTIE II -->
+  <div class="ep-section">
+    <h3>Partie II — Configuration des équipements réseau (50 points · 90 min)</h3>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 2.1 — Configuration du routeur Cisco (20 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7;margin-bottom:.6rem">Sur le routeur Cisco fourni (ou simulateur Packet Tracer), configurez les éléments suivants dans l'ordre :</p>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        ${[
+          {n:'a)',t:'Nom du routeur : RT-HAITI-DIGITAL',pts:2},
+          {n:'b)',t:'Mot de passe enable secret : CanadoTech2026',pts:3},
+          {n:'c)',t:'Sous-interfaces pour le routage inter-VLAN (router-on-a-stick)',pts:6},
+          {n:'d)',t:'Configuration NAT/PAT pour l\'accès Internet',pts:5},
+          {n:'e)',t:'Route statique par défaut vers le routeur FAI',pts:4},
+        ].map(item=>`<div style="display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--bdr)">
+          <span style="font-weight:700;color:var(--blue);font-size:.78rem;flex-shrink:0;width:20px">${item.n}</span>
+          <span style="font-size:.78rem;color:var(--text);flex:1">${item.t}</span>
+          <span style="font-size:.72rem;font-weight:700;color:var(--blue);white-space:nowrap">${item.pts} pts</span>
+        </div>`).join('')}
+      </div>
+      <div style="margin-top:.7rem;background:rgba(232,25,44,.08);border-left:3px solid var(--red);padding:.5rem .8rem;border-radius:0 6px 6px 0;font-size:.75rem;color:var(--redD)">
+        ■ ARRÊT — Démontrer la connectivité inter-VLAN au professeur avec des pings.
+      </div>
+    </div>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 2.2 — Configuration du commutateur principal (20 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7;margin-bottom:.5rem">Configurez le commutateur Cisco Catalyst (ou simulateur) :</p>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        ${[
+          {n:'a)',t:'Création des VLANs 10, 20, 30 et 99 avec noms descriptifs',pts:4},
+          {n:'b)',t:'Configuration des ports d\'accès pour chaque service',pts:6},
+          {n:'c)',t:'Configuration du port trunk vers le routeur (VLAN natif 99)',pts:5},
+          {n:'d)',t:'Activation du protocole STP (Spanning Tree Protocol)',pts:3},
+          {n:'e)',t:'Configuration SSH pour l\'administration à distance sécurisée',pts:2},
+        ].map(item=>`<div style="display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--bdr)">
+          <span style="font-weight:700;color:var(--blue);font-size:.78rem;flex-shrink:0;width:20px">${item.n}</span>
+          <span style="font-size:.78rem;color:var(--text);flex:1">${item.t}</span>
+          <span style="font-size:.72rem;font-weight:700;color:var(--blue);white-space:nowrap">${item.pts} pts</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 2.3 — Services réseau sur serveur Windows Server (10 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7;margin-bottom:.5rem">Sur le serveur de fichiers fourni, installez et configurez :</p>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        ${[
+          {n:'a)',t:'Service DHCP avec plages d\'adresses par VLAN',pts:4},
+          {n:'b)',t:'Service DNS avec zone de recherche directe haiti-digital.local',pts:3},
+          {n:'c)',t:'Partages de fichiers avec permissions par service (NTFS)',pts:3},
+        ].map(item=>`<div style="display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--bdr)">
+          <span style="font-weight:700;color:var(--blue);font-size:.78rem;flex-shrink:0;width:20px">${item.n}</span>
+          <span style="font-size:.78rem;color:var(--text);flex:1">${item.t}</span>
+          <span style="font-size:.72rem;font-weight:700;color:var(--blue);white-space:nowrap">${item.pts} pts</span>
+        </div>`).join('')}
+      </div>
+      <div style="margin-top:.7rem;background:rgba(232,25,44,.08);border-left:3px solid var(--red);padding:.5rem .8rem;border-radius:0 6px 6px 0;font-size:.75rem;color:var(--redD)">
+        ■ ARRÊT — Démontrer l'attribution DHCP automatique et la résolution DNS au professeur.
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE III -->
+  <div class="ep-section">
+    <h3>Partie III — Tests, validation et documentation (20 points · 30 min)</h3>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 3.1 — Tests de connectivité (10 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7;margin-bottom:.5rem">Effectuez et documentez les tests suivants sur la feuille de résultats :</p>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        ${[
+          {n:'1.',t:'Ping entre VLAN 10 et VLAN 20 (routage inter-VLAN fonctionnel)',pts:2},
+          {n:'2.',t:'Ping vers le serveur de fichiers depuis chaque VLAN',pts:2},
+          {n:'3.',t:'Résolution DNS : nslookup haiti-digital.local',pts:2},
+          {n:'4.',t:'Attribution DHCP réussie sur un poste client (ipconfig /all)',pts:2},
+          {n:'5.',t:'Accès Internet depuis un poste client (ping google.com ou 8.8.8.8)',pts:2},
+        ].map(item=>`<div style="display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--bdr)">
+          <span style="font-weight:700;color:var(--blue);font-size:.78rem;flex-shrink:0;width:20px">${item.n}</span>
+          <span style="font-size:.78rem;color:var(--text);flex:1">${item.t}</span>
+          <span style="font-size:.72rem;font-weight:700;color:var(--blue);white-space:nowrap">${item.pts} pts</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="ep-task">
+      <div class="ep-task-num">Tâche 3.2 — Rapport technique (10 points)</div>
+      <p style="font-size:.8rem;color:var(--text);line-height:1.7">Rédigez un rapport technique d'une page résumant :</p>
+      <ul style="font-size:.78rem;color:var(--g700);padding-left:1.2rem;line-height:1.9">
+        <li>L'architecture réseau retenue et justification des choix (5 pts)</li>
+        <li>Les problèmes rencontrés et solutions apportées (3 pts)</li>
+        <li>Les recommandations pour l'évolutivité future du réseau (2 pts)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BARÈME PROFESSEUR -->
+  <div class="ep-section" style="border-color:rgba(27,58,140,.25)">
+    <h3>📊 Grille d\'évaluation \u2014 À l\'usage exclusif du professeur</h3>
+    <div style="background:rgba(27,58,140,.04);border-radius:8px;padding:.8rem;margin-bottom:.8rem;font-size:.75rem;color:var(--blue)">
+      ⚠️ Cette section est réservée au professeur évaluateur. Seuil de réussite : <strong>85 points sur 100</strong>.
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      ${[
+        ['Partie I — Schéma logique réseau','Schéma conforme, symboles corrects, VLAN identifiés','15 pts'],
+        ['Partie I \u2014 Plan d\'adressage IP','VLSM appliqué, adresses correctes, passerelles définies','15 pts'],
+        ['Partie II — Config. routeur Cisco','Nom, password, sous-interfaces, NAT/PAT, route défaut','20 pts'],
+        ['Partie II — Config. commutateur','VLANs créés, ports configurés, trunk, STP, SSH','20 pts'],
+        ['Partie II — Services Windows Server','DHCP, DNS, partages NTFS fonctionnels','10 pts'],
+        ['Partie III — Tests connectivité','5 tests documentés et réussis','10 pts'],
+        ['Partie III — Rapport technique','Architecture, problèmes, recommandations','10 pts'],
+      ].map((row,i)=>`<div class="ep-score-row" style="background:${i%2?'#f8faff':'#fff'}">
+        <div style="flex:1">
+          <div style="font-size:.78rem;font-weight:600;color:var(--text)">${row[0]}</div>
+          <div style="font-size:.71rem;color:var(--g500);margin-top:1px">${row[1]}</div>
+        </div>
+        <div class="ep-pts">${row[2]}</div>
+        <div style="font-size:.72rem;color:var(--g300);padding-left:.8rem;min-width:80px">_____ / ${row[2].replace(' pts','')}</div>
+      </div>`).join('')}
+      <div class="ep-score-row" style="background:#1a2f52;border-radius:0 0 8px 8px">
+        <div style="font-size:.82rem;font-weight:800;color:#fff;flex:1">TOTAL GÉNÉRAL</div>
+        <div style="font-size:.82rem;font-weight:800;color:var(--gold)">100 pts</div>
+        <div style="font-size:.8rem;font-weight:700;color:#fff;padding-left:.8rem;min-width:80px">_____ / 100</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+      <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:8px;padding:.8rem">
+        <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">Nom de l'étudiant :</div>
+        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
+        <div style="font-size:.7rem;color:var(--g500);margin-top:.6rem;margin-bottom:.3rem">Matricule :</div>
+        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
+      </div>
+      <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:8px;padding:.8rem">
+        <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">Date d'évaluation :</div>
+        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
+        <div style="font-size:.7rem;color:var(--g500);margin-top:.6rem;margin-bottom:.3rem">Signature du professeur :</div>
+        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.8rem;margin-top:.8rem;align-items:center">
+      <span style="font-size:.8rem;font-weight:700;color:var(--text)">Résultat :</span>
+      <span class="chip cg" style="font-size:.78rem">✅ Succès (≥85)</span>
+      <span class="chip cr" style="font-size:.78rem">✗ Échec (&lt;85)</span>
+      <span style="font-size:.75rem;color:var(--g500);margin-left:auto">Remarques : ______________________</span>
+    </div>
+  </div>`;
+}
+
 /* ══════════════════════════════════════
    CURRENCY TOGGLE
 ══════════════════════════════════════ */
