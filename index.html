@@ -890,6 +890,23 @@ td{color:var(--text)!important}
 :focus-visible{outline:3px solid var(--blueG);outline-offset:2px}
 .btn:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 5px var(--blue)}
 
+/* ═══ ACTUALITÉS CARDS ═══ */
+.actu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.actu-card{background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.actu-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.actu-img{height:180px;position:relative;background-size:cover;background-position:center}
+.actu-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent)}
+.actu-date{position:absolute;bottom:.6rem;left:.8rem;font-size:.68rem;color:#fff;font-weight:600;background:rgba(0,0,0,.35);padding:.2rem .5rem;border-radius:4px}
+.actu-body{padding:1rem}
+.actu-titre{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.4;margin-bottom:.5rem}
+.actu-desc{font-size:.78rem;color:var(--g500);line-height:1.6}
+@media(max-width:768px){.actu-grid{grid-template-columns:1fr}}
+
+/* ═══ HERO CARROUSEL DOTS ═══ */
+.hero-dots{display:flex;gap:.4rem;margin-top:1rem}
+.hero-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;padding:0}
+.hero-dot.act{background:#fff;width:24px;border-radius:4px}
+
 /* Bigger modal backdrop — slightly lighter */
 .modal-overlay,.login-overlay{background:rgba(4,13,26,.80)!important}
 /* Programme pages subtitle — fond sombre (#0C1F3D) donc texte blanc */
@@ -1118,14 +1135,15 @@ td{color:var(--text)!important}
           <div class="hfeat"><span>✓</span> Certifications Cisco & Microsoft</div>
         </div>
         <div class="hstats">
-          <div class="hstat"><div class="hstat-n">1 642</div><div class="hstat-l">Étudiants</div></div>
-          <div class="hstat"><div class="hstat-n">87+</div><div class="hstat-l">Modules</div></div>
-          <div class="hstat"><div class="hstat-n">12+</div><div class="hstat-l">Ans d'expérience</div></div>
+          <div class="hstat"><div class="hstat-n" id="stat-etudiants">1 642</div><div class="hstat-l">Étudiants</div></div>
+          <div class="hstat"><div class="hstat-n" id="stat-modules">87+</div><div class="hstat-l">Modules</div></div>
+          <div class="hstat"><div class="hstat-n" id="stat-ans">12+</div><div class="hstat-l">Ans d'expérience</div></div>
         </div>
       </div>
       <div>
         <div class="hvisual">
           <div class="hvisual-lbl">Programmes disponibles</div>
+          <div id="pmini-container">
           <div class="pmini" onclick="goPage('programmes')">
             <div class="pmini-icon" style="background:rgba(27,58,140,.12)">🌐</div>
             <div class="pmini-info"><p>Réseaux Informatiques (TRI)</p><small>16 modules · 2 ans · Cisco CCNA</small></div>
@@ -1145,6 +1163,7 @@ td{color:var(--text)!important}
             <div class="pmini-icon" style="background:rgba(91,45,142,.1)">📡</div>
             <div class="pmini-info"><p>Télécommunications (TEL)</p><small>14 modules · 2 ans</small></div>
             <div class="pbadge" style="background:rgba(91,45,142,.1);color:#5B2D8E">Nouveau</div>
+          </div>
           </div>
           <div style="margin-top:.3rem;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:.7rem;color:rgba(255,255,255,.3)">✨ 2ème année disponible pour TRI</span>
@@ -1177,7 +1196,7 @@ td{color:var(--text)!important}
         <h2>Nos 4 Filières de Formation</h2>
         <p>Des programmes APC validés par le MENFP, adaptés au marché haïtien</p>
       </div>
-      <div class="pgrid">
+      <div class="pgrid" id="pgrid-container">
         <div class="pcard TRI" onclick="goPage('programmes')">
           <div class="pcard-icon" style="background:rgba(27,58,140,.1)">🌐</div>
           <h3>Techniques de Réseaux Informatiques</h3>
@@ -1273,7 +1292,7 @@ td{color:var(--text)!important}
         <div class="tag-r" style="background:rgba(232,25,44,.15)">Vie du campus</div>
         <h2>Prochains Événements</h2>
       </div>
-      <div class="ev-grid">
+      <div class="ev-grid" id="ev-grid-container">
         <div class="ecard">
           <div class="edate"><div class="day">14</div><div class="mon">Jun</div></div>
           <div class="einfo"><h4>Salon des Compétences 2026 — 8ème édition</h4><p>Campus Port-au-Prince · 08:00–17:00</p></div>
@@ -1290,7 +1309,22 @@ td{color:var(--text)!important}
     </div>
   </div>
 
-  <!-- FOOTER -->
+  <!-- ACTUALITÉS -->
+  <div class="sw" style="background:var(--g50)">
+    <div class="si">
+      <div class="sh">
+        <div class="tag-r">Vie de l'école</div>
+        <h2>Actualités &amp; Annonces</h2>
+        <p>Les dernières nouvelles de Canado Technique</p>
+      </div>
+      <div class="actu-grid" id="actu-grid-container">
+        <div class="actu-card"><div class="actu-img" style="background:#1B3A8C"><div class="actu-overlay"></div></div><div class="actu-body"><h4 class="actu-titre">Chargement…</h4></div></div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem">
+        <button class="btn btn-outline" onclick="goPage('actualites')">Voir toutes les actualités →</button>
+      </div>
+    </div>
+  </div>
   <footer class="ft">
     <div class="ft-in">
       <div class="ft-grid">
@@ -2214,28 +2248,211 @@ function confirmPayment(prog, an) {
 /* ══════════════════════════════════════
    OFFRES SPÉCIALES
 ══════════════════════════════════════ */
-const OFFERS = [
-  {icon:'🌐',title:'TRI — Cours accéléré d\'été',desc:'Formation intensive réseaux · Juillet 2026',orig:4500,price:3200,badge:'Promo été',badgeClass:''},
-  {icon:'📡',title:'TEL — Nouvelle filière',desc:'Découvrez la télécommunication moderne',orig:4000,price:3800,badge:'NOUVEAU',badgeClass:'new'},
-  {icon:'⭐',title:'Programme TRI Complet',desc:'1ère + 2ème année + Diplôme officiel',orig:9500,price:8500,badge:'Meilleure valeur',badgeClass:'gold'},
-  {icon:'⚡',title:'ELM — Spécialisation Solaire',desc:'Énergie photovoltaïque intégrée 2ème an.',orig:4700,price:4000,badge:'-15%',badgeClass:''},
-  {icon:'🔧',title:'MEI — Cours CNC',desc:'Module machines CNC spécialisé',orig:1200,price:800,badge:'Flash -33%',badgeClass:''},
-  {icon:'🎓',title:'Pack Certification CCNA',desc:'Préparation intensive Cisco CCNA',orig:6000,price:4500,badge:'Populaire 🔥',badgeClass:'gold'},
-];
+/* ══════════════════════════════════════
+   DATA SOURCE — changer cette URL quand le serveur sera prêt :
+   DÉVELOPPEMENT : './data.json'
+   PRODUCTION    : 'https://canadotechnique.tech/data.php'
+══════════════════════════════════════ */
+const DATA_SOURCE = './data.json';
 
+/* Données globales — remplies par loadSiteData() */
+let SITE_DATA = null;
+
+async function loadSiteData() {
+  try {
+    const res = await fetch(DATA_SOURCE);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    SITE_DATA = await res.json();
+    applyHomeData();
+  } catch(e) {
+    console.warn('data.json non trouvé — données statiques utilisées', e);
+    SITE_DATA = null; // fallback gracieux : le HTML statique reste affiché
+  }
+}
+
+/* ── Applique toutes les données sur la page d'accueil ── */
+function applyHomeData() {
+  if(!SITE_DATA) return;
+  applyConfig();
+  applyCarrousel();
+  applyProgrammes();
+  applyEvenements();
+  applyArticles();
+  renderOffers();
+}
+
+/* ── Config générale (stats, texte inscription) ── */
+function applyConfig() {
+  const cfg = SITE_DATA.config;
+  if(!cfg) return;
+
+  // Stats hero
+  const stats = cfg.stats || {};
+  const sEtud = document.getElementById('stat-etudiants');
+  const sMod  = document.getElementById('stat-modules');
+  const sAns  = document.getElementById('stat-ans');
+  if(sEtud) sEtud.textContent = stats.etudiants || '1 642';
+  if(sMod)  sMod.textContent  = stats.modules    || '87+';
+  if(sAns)  sAns.textContent  = stats.annees_experience || '12+';
+
+  // Texte inscription
+  const inscEl = document.getElementById('inscription-text');
+  if(inscEl && cfg.text_inscription) inscEl.innerHTML = cfg.text_inscription;
+
+  // Titre école nav
+  const logoEl = document.getElementById('nav-ecole-nom');
+  if(logoEl && cfg.nom_ecole) logoEl.textContent = cfg.nom_ecole;
+}
+
+/* ── Carrousel hero ── */
+function applyCarrousel() {
+  const slides = SITE_DATA.carrousel;
+  if(!slides || !slides.length) return;
+  const container = document.getElementById('hero-carrousel');
+  if(!container) return;
+
+  let current = 0;
+  const render = (i) => {
+    const s = slides[i];
+    container.style.background = s.fallback_color || 'linear-gradient(135deg,#1B3A8C,#0a1828)';
+    const titleEl = document.getElementById('hero-carrousel-titre');
+    const descEl  = document.getElementById('hero-carrousel-desc');
+    const dotEls  = document.querySelectorAll('.hero-dot');
+    if(titleEl && s.label_visible) titleEl.textContent = s.titre_image;
+    if(descEl  && s.label_visible) descEl.textContent  = s.short_description;
+    dotEls.forEach((d,idx) => d.classList.toggle('act', idx === i));
+  };
+
+  // Créer les dots de navigation
+  const dotsEl = document.getElementById('hero-carrousel-dots');
+  if(dotsEl) {
+    dotsEl.innerHTML = slides.map((_,i) =>
+      `<button class="hero-dot${i===0?' act':''}" onclick="setSlide(${i})"></button>`
+    ).join('');
+  }
+
+  window.setSlide = (i) => { current = i; render(i); };
+  window.nextSlide = () => { current = (current+1) % slides.length; render(current); };
+  window.prevSlide = () => { current = (current-1+slides.length) % slides.length; render(current); };
+
+  render(0);
+  setInterval(window.nextSlide, 5000);
+}
+
+/* ── Programmes cards ── */
+function applyProgrammes() {
+  const progs = SITE_DATA.programmes;
+  if(!progs || !progs.length) return;
+
+  // Mini-cartes dans le hero (hvisual)
+  const miniEl = document.getElementById('pmini-container');
+  if(miniEl) {
+    miniEl.innerHTML = progs.map(p=>`
+      <div class="pmini" onclick="goPage('programmes')">
+        <div class="pmini-icon" style="background:rgba(${p.color_rgb},.12)">${p.icon}</div>
+        <div class="pmini-info">
+          <p>${p.label} (${p.code})</p>
+          <small>${p.modules_count} · ${p.duree}</small>
+        </div>
+        <div class="pbadge" style="background:${p.badge_color};color:${p.badge_text_color}">${p.badge}</div>
+      </div>`).join('');
+  }
+
+  // Grande grille programmes
+  const pgridEl = document.getElementById('pgrid-container');
+  if(pgridEl) {
+    pgridEl.innerHTML = progs.map(p=>`
+      <div class="pcard ${p.code}" onclick="goPage('programmes')">
+        <div class="pcard-icon" style="background:rgba(${p.color_rgb},.08)">${p.icon}</div>
+        <h3>${p.label}</h3>
+        <p>${p.short_description}</p>
+        <div class="pmeta">
+          <span class="mchip">${p.code}</span>
+          <span class="mchip">${p.modules_count}</span>
+          ${p.certifications.map(c=>`<span class="mchip">${c}</span>`).join('')}
+        </div>
+      </div>`).join('');
+  }
+
+  // Stats total étudiants
+  const totalEtud = progs.reduce((s,p)=>s+(p.nb_etudiants||0),0);
+  const sEtud = document.getElementById('stat-etudiants');
+  if(sEtud && totalEtud > 0) sEtud.textContent = totalEtud.toLocaleString('fr-FR');
+}
+
+/* ── Événements ── */
+function applyEvenements() {
+  const evts = SITE_DATA.evenements;
+  if(!evts || !evts.length) return;
+  const container = document.getElementById('ev-grid-container');
+  if(!container) return;
+
+  const MOIS = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  container.innerHTML = evts.slice(0,4).map(ev => {
+    const d = new Date(ev.date_start);
+    const day  = d.getDate();
+    const mon  = MOIS[d.getMonth()];
+    const hDeb = ev.time_start ? ev.time_start.slice(0,5) : '';
+    const hFin = ev.time_end   ? ev.time_end.slice(0,5)   : '';
+    return `<div class="ecard">
+      <div class="edate"><div class="day">${day}</div><div class="mon">${mon}</div></div>
+      <div class="einfo">
+        <h4>${ev.titre_event}</h4>
+        <p>${ev.location} · ${hDeb}${hFin?' – '+hFin:''}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Articles / Actualités ── */
+function applyArticles() {
+  const arts = SITE_DATA.articles;
+  if(!arts || !arts.length) return;
+  const container = document.getElementById('actu-grid-container');
+  if(!container) return;
+
+  container.innerHTML = arts.slice(0,3).map(a => {
+    const imgStyle = a.featured_image
+      ? `background-image:url('${a.featured_image}');background-size:cover;background-position:center`
+      : `background:${a.fallback_color||'#1B3A8C'}`;
+    const dateStr = a.date_publication
+      ? new Date(a.date_publication).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})
+      : '';
+    return `<div class="actu-card">
+      <div class="actu-img" style="${imgStyle}">
+        <div class="actu-overlay"></div>
+        <span class="actu-date">${dateStr}</span>
+      </div>
+      <div class="actu-body">
+        <h4 class="actu-titre">${a.titre}</h4>
+        <p class="actu-desc">${a.short_description}</p>
+        <button class="btn btn-outline btn-sm" style="margin-top:.6rem" onclick="goPage('actualites')">Lire la suite →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Offres (lit depuis SITE_DATA si dispo, sinon statique) ── */
 function renderOffers() {
   const c = document.getElementById('offers-container');
   if(!c) return;
-  c.innerHTML = OFFERS.map(o=>`
+
+  const offres = (SITE_DATA && SITE_DATA.offres) ? SITE_DATA.offres : [
+    {titre:'TRI — Cours accéléré été',sous_titre:'Formation intensive réseaux · Juillet 2026',badge:'Promo été',badge_color:'var(--red)',prix_original:'4 500 HTG',prix_promo:'3 200 HTG',validite:'Juillet 2026'},
+    {titre:'Pack Certification CCNA',sous_titre:'Préparation intensive Cisco CCNA',badge:'Populaire 🔥',badge_color:'var(--blue)',prix_original:'6 000 HTG',prix_promo:'4 500 HTG',validite:'Session Juillet 2026'},
+    {titre:'Programme TRI Complet',sous_titre:'1ère + 2ème année + Diplôme officiel',badge:'⭐ Meilleure valeur',badge_color:'var(--gold)',prix_original:'9 500 HTG',prix_promo:'8 500 HTG',validite:'Offre permanente'},
+  ];
+
+  c.innerHTML = offres.map(o=>`
     <div class="offer-card" onclick="goPage('paiement')">
-      ${o.badge?`<div class="offer-badge ${o.badgeClass}">${o.badge}</div>`:''}
-      <div class="offer-icon">${o.icon}</div>
-      <div class="offer-title">${o.title}</div>
-      <div class="offer-desc">${o.desc}</div>
+      ${o.badge?`<div class="offer-badge" style="background:${o.badge_color}">${o.badge}</div>`:''}
+      <div class="offer-title">${o.titre}</div>
+      <div class="offer-desc">${o.sous_titre || o.description || ''}</div>
       <div class="offer-price">
-        <span class="price">${fmtPrice(o.price)}</span>
-        <span class="orig" style="text-decoration:line-through">${fmtPriceDual(o.orig)}</span>
+        <span class="price">${o.prix_promo}</span>
+        <span class="orig" style="text-decoration:line-through;font-size:.75rem;color:var(--g500);margin-left:.4rem">${o.prix_original}</span>
       </div>
+      <div style="font-size:.7rem;color:var(--g500);margin-top:.3rem">🗓 ${o.validite}</div>
       <button class="btn btn-ghost btn-sm" style="margin-top:.9rem;width:100%;justify-content:center" onclick="event.stopPropagation();goPage('paiement')">S'inscrire →</button>
     </div>`).join('');
 }
@@ -3936,6 +4153,8 @@ function toggleCurrency() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Chargement des données depuis data.json (ou data.php en production)
+  loadSiteData();
   renderOffers();
   goPage('accueil');
 
