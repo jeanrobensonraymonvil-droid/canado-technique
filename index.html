@@ -611,6 +611,23 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
 .notif-badge{width:8px;height:8px;background:var(--blue);border-radius:50%;flex-shrink:0;margin-top:4px}
 
 /* ═══ OVERLAY PAIEMENT ═══ */
+.cours-viewer{position:fixed;inset:0;z-index:1050;display:flex;flex-direction:column;
+  background:var(--navy);opacity:0;pointer-events:none;transition:opacity .25s}
+.cours-viewer.show{opacity:1;pointer-events:all}
+.cours-viewer-bar{height:52px;background:rgba(4,13,26,.97);border-bottom:1px solid var(--bdrDk);
+  display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0}
+.cours-viewer-title{flex:1;font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cours-viewer-close{height:34px;padding:0 1rem;border-radius:8px;background:rgba(232,25,44,.12);
+  border:1px solid rgba(232,25,44,.3);color:var(--red);font-size:.78rem;font-weight:600;
+  cursor:pointer;transition:all .2s;white-space:nowrap}
+.cours-viewer-close:hover{background:var(--red);color:#fff}
+.cours-viewer-body{flex:1;overflow:hidden;position:relative}
+.cours-viewer-body iframe{width:100%;height:100%;border:none;display:block}
+.cours-viewer-spinner{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;background:var(--navy);flex-direction:column;gap:1rem}
+.cours-viewer-spinner .spin-ring{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);
+  border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
 .modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(4,13,26,.85);
   display:flex;align-items:center;justify-content:center;
   backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .3s}
@@ -3286,7 +3303,7 @@ function renderCoursMgmt(c) {
     <div class="mlist">
       ${MODULES[prog].map((m,i)=>{
         const on = states[m.code] === true;
-        const coursBtn = m.fichier ? `<a href="${m.fichier}" target="_blank" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
+        const coursBtn = m.fichier ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title}')">📖 Cours</button>` : '';
         return `<div class="mrow">
           <div class="mnum">${String(i+1).padStart(2,'0')}</div>
           <div class="mtitle">${m.code} · ${m.title}</div>
@@ -3632,7 +3649,7 @@ function renderMesCours(c) {
         st = 'cur';
       }
       const icon = st==='done'?'✅':st==='cur'?'▶':'🔒';
-      const coursBtn = m.fichier && active ? `<a href="${m.fichier}" target="_blank" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
+      const coursBtn = m.fichier && active ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title}')">📖 Cours</button>` : '';
       const videoBtn = active ? `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>` : '';
       const chip = st==='done'?`<span class="chip cg">Validé</span>${videoBtn}${coursBtn}`:st==='cur'?`<span class="chip cb">En cours</span>${videoBtn}${coursBtn}`:'<span class="chip cgy">Verrouillé</span>';
       return `<div class="mrow"><div class="mnum">${String(i+1).padStart(2,'0')}</div>
@@ -4758,6 +4775,57 @@ document.addEventListener('DOMContentLoaded', () => {
     if(notif && !roobyOpen) notif.style.display = 'flex';
   }, 8000);
 });
+</script>
+
+<!-- ══ COURS VIEWER ══ -->
+<div class="cours-viewer" id="cours-viewer">
+  <div class="cours-viewer-bar">
+    <span style="font-size:1rem">📖</span>
+    <span class="cours-viewer-title" id="cours-viewer-title">Cours</span>
+    <button class="cours-viewer-close" onclick="closeCoursViewer()">✕ Fermer</button>
+  </div>
+  <div class="cours-viewer-body">
+    <div class="cours-viewer-spinner" id="cours-spinner">
+      <div class="spin-ring"></div>
+      <span style="font-size:.8rem;color:rgba(255,255,255,.4)">Chargement du cours…</span>
+    </div>
+    <iframe id="cours-iframe" src="about:blank" sandbox="allow-same-origin allow-scripts" onload="hideCoursSpinner()"></iframe>
+  </div>
+</div>
+
+<script>
+function openCoursViewer(fichier, titre) {
+  // Security: must be logged in
+  if (!currentRole) { toast('🔒 Accès refusé — connexion requise'); return; }
+  // Students: must be activated
+  if (currentRole === 'etud') {
+    const prog = etudProg || 'TRI';
+    const states = getModuleStates(prog);
+    const mod = (MODULES[prog]||[]).find(m => m.fichier === fichier);
+    if (!mod || !states[mod.code]) { toast('🔒 Ce module n\'est pas encore activé'); return; }
+  }
+  document.getElementById('cours-viewer-title').textContent = titre || 'Cours';
+  document.getElementById('cours-spinner').style.display = 'flex';
+  document.getElementById('cours-iframe').src = fichier;
+  document.getElementById('cours-viewer').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCoursViewer() {
+  document.getElementById('cours-viewer').classList.remove('show');
+  document.getElementById('cours-iframe').src = 'about:blank';
+  document.body.style.overflow = '';
+}
+
+function hideCoursSpinner() {
+  const iframe = document.getElementById('cours-iframe');
+  if (iframe.src && iframe.src !== 'about:blank') {
+    document.getElementById('cours-spinner').style.display = 'none';
+  }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeCoursViewer(); });
 </script>
 </body>
 </html>
