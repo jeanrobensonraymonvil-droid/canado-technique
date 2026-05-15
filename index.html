@@ -211,13 +211,20 @@ img{max-width:100%;display:block}
   letter-spacing:.12em;margin-bottom:.2rem}
 .pmini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
   border-radius:var(--r);padding:.75rem 1rem;display:flex;align-items:center;
-  gap:.75rem;cursor:pointer;transition:all .22s}
+  gap:.75rem;cursor:pointer;transition:all .22s;overflow:hidden}
 .pmini:hover{border-color:var(--red);background:rgba(232,25,44,.07);transform:translateX(4px)}
 .pmini-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;
   justify-content:center;font-size:1rem;flex-shrink:0}
-.pmini-info p{font-size:.78rem;font-weight:600;color:#fff;margin-bottom:1px}
-.pmini-info small{font-size:.67rem;color:rgba(255,255,255,.55)}
-.pbadge{margin-left:auto;font-size:.65rem;padding:3px 8px;border-radius:9px;font-weight:700;white-space:nowrap}
+.pmini-info{flex:1;min-width:0;overflow:hidden}
+.pmini-info p{font-size:.78rem;font-weight:600;color:#fff;margin-bottom:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pmini-info small{font-size:.67rem;color:rgba(255,255,255,.55);display:block;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbadge{flex-shrink:0;margin-left:auto;font-size:.65rem;padding:3px 9px;border-radius:9px;font-weight:700;white-space:nowrap;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 2px 8px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.12);
+  text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .hero-features{display:flex;gap:1.5rem;margin-top:1.5rem;animation:fadeUp .4s .6s both}
 .hfeat{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.45)}
 .hfeat span{color:var(--greenL)}
@@ -927,6 +934,21 @@ td{color:var(--text)!important}
   .lroles{grid-template-columns:1fr!important}
 }
 
+/* ═══ GLOBAL OVERFLOW PROTECTION ═══ */
+/* Prevent any text/button from breaking layout */
+.sw, .si { overflow-x: hidden; }
+.btn { max-width: 100%; }
+/* Ensure long words break on small screens */
+@media(max-width:480px){
+  .pcard h3, .pcard p, h1, h2, h3, h4 { word-break: break-word; overflow-wrap: break-word; }
+  /* Examens page 3-column grid to 1 on mobile */
+  [style*="grid-template-columns:repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Paiement card buttons */
+  .btn-sm { font-size:.7rem; padding:.3rem .6rem; }
+}
+
 /* ═══ WCAG ACCESSIBILITY ═══ */
 :focus-visible{outline:3px solid var(--blueG);outline-offset:2px}
 .btn:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 5px var(--blue)}
@@ -1196,22 +1218,22 @@ td{color:var(--text)!important}
               <div class="pmini" onclick="goPage('programmes')">
                 <div class="pmini-icon" style="background:rgba(27,58,140,.12)">🌐</div>
                 <div class="pmini-info"><p>Réseaux Informatiques (TRI)</p><small>16 modules · 2 ans · Cisco CCNA</small></div>
-                <div class="pbadge" style="background:rgba(27,58,140,.12);color:var(--blue)">HOT 🔥</div>
+                <div class="pbadge" style="background:rgba(27,58,140,.85);color:#fff">HOT 🔥</div>
               </div>
               <div class="pmini" onclick="goPage('programmes')">
                 <div class="pmini-icon" style="background:rgba(139,94,0,.1)">🔧</div>
                 <div class="pmini-info"><p>Mécanique Industrielle (MEI)</p><small>16 modules · 2 ans</small></div>
-                <div class="pbadge" style="background:rgba(139,94,0,.1);color:#8B5E00">Disponible</div>
+                <div class="pbadge" style="background:rgba(139,94,0,.85);color:#fff">Disponible</div>
               </div>
               <div class="pmini" onclick="goPage('programmes')">
                 <div class="pmini-icon" style="background:rgba(0,107,70,.1)">⚡</div>
                 <div class="pmini-info"><p>Électromécanique (ELM)</p><small>13 modules · 2 ans</small></div>
-                <div class="pbadge" style="background:rgba(0,107,70,.1);color:var(--green)">Disponible</div>
+                <div class="pbadge" style="background:rgba(0,107,70,.85);color:#fff">Disponible</div>
               </div>
               <div class="pmini" onclick="goPage('programmes')">
                 <div class="pmini-icon" style="background:rgba(91,45,142,.1)">📡</div>
                 <div class="pmini-info"><p>Télécommunications (TEL)</p><small>14 modules · 2 ans</small></div>
-                <div class="pbadge" style="background:rgba(91,45,142,.1);color:#5B2D8E">Nouveau</div>
+                <div class="pbadge" style="background:rgba(91,45,142,.85);color:#fff">Nouveau</div>
               </div>
             </div>
             <div style="margin-top:.3rem;display:flex;align-items:center;justify-content:space-between">
@@ -1554,20 +1576,30 @@ td{color:var(--text)!important}
     <div style="max-width:1150px;margin:0 auto">
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem">
         <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showLogin()">
-          <div style="font-size:2rem;margin-bottom:.7rem">🛡️</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Administration</h3>
-          <p style="font-size:.75rem;color:var(--g500)">Gérer les étudiants, autoriser l'accès, configurer les sessions</p>
+          <div style="font-size:2rem;margin-bottom:.7rem">🖥️</div>
+          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Gestion des examens</h3>
+          <p style="font-size:.75rem;color:var(--g500)">Créer, valider et configurer les sessions d'examens par module</p>
         </div>
         <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showLogin()">
-          <div style="font-size:2rem;margin-bottom:.7rem">📘</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Professeur</h3>
-          <p style="font-size:.75rem;color:var(--g500)">Créer des examens IA, consulter les résultats en temps réel</p>
+          <div style="font-size:2rem;margin-bottom:.7rem">📊</div>
+          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Résultats & Statistiques</h3>
+          <p style="font-size:.75rem;color:var(--g500)">Consulter les résultats en temps réel et analyser les performances</p>
         </div>
         <div style="background:#0d1f3c;border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onclick="showLogin()">
           <div style="font-size:2rem;margin-bottom:.7rem">🎓</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff;margin-bottom:.4rem">Étudiant</h3>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.78)">Passer un examen officiel et obtenir vos résultats immédiatement</p>
+          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff;margin-bottom:.4rem">Passer un examen</h3>
+          <p style="font-size:.75rem;color:rgba(255,255,255,.78)">Accéder à vos examens officiels et obtenir vos résultats immédiatement</p>
         </div>
+
+
+
+
+
+
+
+
+
+
       </div>
       <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem">
         <h3 style="font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--text);margin-bottom:1rem">Sessions d'examens — Juin/Juillet 2026</h3>
@@ -1680,17 +1712,7 @@ td{color:var(--text)!important}
       <h2>Connexion sécurisée</h2>
       <div class="lbox-sub">Plateforme Canado Technique</div>
     </div>
-    <div class="lroles" id="lroles-container" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:1rem">
-      <button class="lrole act" onclick="selRoleBtn('dg',this)" title="Accès total — modification, validation, audit complet">👑 Dir. Général</button>
-      <button class="lrole" onclick="selRoleBtn('admin',this)" title="Gestion système + utilisateurs">🛡️ Admin Sys</button>
-      <button class="lrole" onclick="selRoleBtn('adm',this)" title="Inscriptions, dossiers, communication">🏢 Administration</button>
-      <button class="lrole" onclick="selRoleBtn('detudes',this)" title="Validation des programmes et contenus">📋 Dir. Études</button>
-      <button class="lrole" onclick="selRoleBtn('devals',this)" title="Contrôle des examens et conformité">🔍 Dir. Évaluations</button>
-      <button class="lrole" onclick="selRoleBtn('prof',this)" title="Création cours et examens — validation requise">📘 Professeur</button>
-    </div>
-    <div id="etud-row" style="display:none;margin-bottom:.6rem">
-      <button class="lrole" style="width:100%" onclick="selRoleBtn('etud',this)">🎓 Étudiant</button>
-    </div>
+    <!-- Hidden role selector — auto-detected from credentials -->
     <div id="lprog-wrap" style="display:none;margin-bottom:.8rem">
       <div class="fg">
         <label>Votre programme</label>
@@ -1711,11 +1733,17 @@ td{color:var(--text)!important}
     </div>
     <div class="fg" style="margin-bottom:.8rem">
       <label>Identifiant / Matricule</label>
-      <input type="text" id="luser" placeholder="Entrez votre identifiant..." value="admin">
+      <input type="text" id="luser" placeholder="Entrez votre identifiant..." autocomplete="username">
     </div>
     <div class="fg" style="margin-bottom:.8rem">
       <label>Mot de passe</label>
-      <input type="password" id="lpass" placeholder="••••••••" value="••••••">
+      <input type="password" id="lpass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <!-- Login error message -->
+    <div id="login-error" style="display:none;background:rgba(232,25,44,.1);border:1px solid rgba(232,25,44,.25);border-radius:8px;padding:.55rem .9rem;font-size:.77rem;color:#ff6b7a;margin-bottom:.75rem"></div>
+    <!-- Login hint -->
+    <div id="login-hint" style="background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.15);border-radius:8px;padding:.55rem .9rem;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:.75rem;line-height:1.6">
+      Comptes démo : <strong style="color:rgba(255,255,255,.75)">etudiant / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">prof / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">admin / 1234</strong>
     </div>
     <!-- 2FA BOX -->
     <div class="tfa-box" id="tfa-box">
@@ -2504,7 +2532,7 @@ function applyProgrammes() {
           <p>${p.label} (${p.code})</p>
           <small>${p.modules_count} · ${p.duree}</small>
         </div>
-        <div class="pbadge" style="background:${p.badge_color};color:${p.badge_text_color}">${p.badge}</div>
+        <div class="pbadge" style="background:rgba(${p.color_rgb},.85);color:#fff">${p.badge}</div>
       </div>`).join('');
   }
 
@@ -2738,7 +2766,58 @@ function selRoleBtn(r, el) {
 function showLogin() { document.getElementById('login-overlay').classList.add('show'); }
 function hideLogin() { document.getElementById('login-overlay').classList.remove('show'); }
 
+// Credential → role mapping (demo system)
+const CREDENTIALS = {
+  // Étudiant
+  'etudiant':  {role:'etud',  pass:'1234'},
+  'marie':     {role:'etud',  pass:'1234'},
+  'etud':      {role:'etud',  pass:'1234'},
+  // Professeur
+  'prof':      {role:'prof',  pass:'1234'},
+  'rooby':     {role:'prof',  pass:'1234'},
+  'professeur':{role:'prof',  pass:'1234'},
+  // Administration
+  'admin':     {role:'admin', pass:'1234'},
+  'gary':      {role:'admin', pass:'1234'},
+  'carline':   {role:'adm',   pass:'1234'},
+  'adm':       {role:'adm',   pass:'1234'},
+  // Direction
+  'dg':        {role:'dg',    pass:'1234'},
+  'directeur': {role:'dg',    pass:'1234'},
+  'jean':      {role:'dg',    pass:'1234'},
+  'detudes':   {role:'detudes',pass:'1234'},
+  'devals':    {role:'devals', pass:'1234'},
+};
+
 function initLogin() {
+  const user = document.getElementById('luser').value.trim().toLowerCase();
+  const pass = document.getElementById('lpass').value;
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+
+  if (!user || !pass) {
+    errEl.textContent = '⚠️ Veuillez entrer votre identifiant et mot de passe.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const cred = CREDENTIALS[user];
+  if (!cred) {
+    errEl.textContent = '❌ Identifiant introuvable. Essayez: etudiant, prof ou admin.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (pass !== cred.pass && pass !== '1234') {
+    errEl.textContent = '❌ Mot de passe incorrect.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Set detected role
+  selRole = cred.role;
+  // Show programme selector only for students
+  document.getElementById('lprog-wrap').style.display = (cred.role === 'etud') ? 'block' : 'none';
+
   // Show 2FA step
   document.getElementById('tfa-box').classList.add('show');
   document.getElementById('tfa-step').style.display = 'block';
@@ -2768,10 +2847,14 @@ function doLogin() {
   etudProg = document.getElementById('lprog').value;
   etudYear = document.getElementById('letud-year')?.value || '1';
   hideLogin();
-  // Reset 2FA UI
+  // Reset 2FA UI + form
   document.getElementById('tfa-box').classList.remove('show');
   document.getElementById('tfa-step').style.display = 'none';
   document.getElementById('normal-login-btn').style.display = 'block';
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('lprog-wrap').style.display = 'none';
+  document.getElementById('luser').value = '';
+  document.getElementById('lpass').value = '';
   document.querySelectorAll('.tfa-digit').forEach(el=>el.value='');
   const r = ROLES[currentRole];
   document.getElementById('p-avt').textContent = r.avt;
