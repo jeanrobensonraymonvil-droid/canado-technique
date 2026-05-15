@@ -7,7 +7,7 @@ html
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canado Technique — Plateforme Numérique Unifiée</title>
 <link rel="icon" type="image/png" href="assets/images/logo/logo.png">
-<link rel="shortcut icon" type="image/png" href="/assets/images/logo/logo.png">
+<link rel="shortcut icon" type="image/png" href="assets/images/logo/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
 <style>
@@ -1501,7 +1501,7 @@ td{color:var(--text)!important}
         <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:space-between;width:100%">
           <span style="font-size:.75rem;color:rgba(255,255,255,.35)">© 2026 Canado Technique · Tous droits réservés</span>
           <div style="display:flex;align-items:center;gap:.75rem">
-            <img src="/assets/images/logo/logo_cfph.png" alt="CFPH Logo"
+            <img src="assets/images/logo/logo_cfph.png" alt="CFPH Logo"
               style="height:36px;width:auto;opacity:.85;filter:brightness(0) invert(1)"
               onerror="this.style.display='none'">
             <span style="font-size:.68rem;color:rgba(255,255,255,.22)">Conçu & développé par Rooby Design</span>
@@ -1988,7 +1988,7 @@ const MODULES = {
   TRI:[
     {code:"TRI-01",title:"Métier et formation",dur:30,seuil:75},
     {code:"TRI-02",title:"Gestion du temps",dur:30,seuil:70},
-    {code:"TRI-03",title:"Mathématiques en informatique",dur:60,seuil:70},
+    {code:"TRI-03",title:"Mathématiques en informatique",dur:60,seuil:70,fichier:"cours/cours-tri03-mathematiques.html"},
     {code:"TRI-04",title:"Anglais technique",dur:30,seuil:75},
     {code:"TRI-05",title:"Système d'exploitation",dur:75,seuil:80},
     {code:"TRI-06",title:"Résolution de problèmes",dur:30,seuil:70},
@@ -2365,6 +2365,19 @@ function renderCours() {
           <button class="btn btn-blue btn-sm" onclick="event.stopPropagation();showLogin()" style="font-size:.78rem">🔓 Se connecter</button>
           <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openPayModal('${prog}','1')" style="font-size:.78rem">S'inscrire</button>
         </div>
+        ${mods.filter(m=>m.fichier).length ? `
+        <div style="margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--bdr)">
+          <div style="font-size:.7rem;font-weight:700;color:var(--g700);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">📂 Modules disponibles</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem">
+            ${mods.filter(m=>m.fichier).map(m=>`
+              <a href="${m.fichier}" style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.5rem .7rem;background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.15);border-radius:8px;text-decoration:none;transition:all .2s"
+                onmouseover="this.style.background='rgba(27,58,140,.13)';this.style.borderColor='rgba(27,58,140,.35)'"
+                onmouseout="this.style.background='rgba(27,58,140,.06)';this.style.borderColor='rgba(27,58,140,.15)'">
+                <span style="font-size:.75rem;font-weight:600;color:var(--blue)">${m.code} · ${m.title}</span>
+                <span style="font-size:.7rem;font-weight:700;color:var(--blue);white-space:nowrap">Ouvrir →</span>
+              </a>`).join('')}
+          </div>
+        </div>` : ''}
       </div>
     </div>`;
   }).join('');
