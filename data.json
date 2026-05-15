@@ -1,4 +1,6 @@
 {
+  "_comment": "DATA SOURCE — Canado Technique | Dev: data.json | Prod: https://canadotechnique.tech/data.php",
+
   "config": {
     "nom_ecole": "Canado Technique",
     "slogan": "Former les techniciens haïtiens de demain",
@@ -9,8 +11,8 @@
     "facebook": "https://facebook.com/canadotechnique",
     "is_inscription_visible": 1,
     "text_inscription": "Les inscriptions pour l'année académique 2026–2027 sont ouvertes. Rejoignez l'une de nos 4 filières certifiantes et construisez votre avenir dans la technique.",
-    "backend_url": "https://mscfph.com/cfph",
     "annee_academique": "2025–2026",
+    "logo_white": "assets/images/logo/logo-white.png",
     "stats": {
       "etudiants": "1 642",
       "modules": "87+",
@@ -23,7 +25,7 @@
       "id": 1,
       "titre_image": "Bienvenue à Canado Technique",
       "short_description": "Formations APC certifiantes reconnues par le MENFP — 4 filières disponibles",
-      "image": "/web_uploads/images/hero1.jpg",
+      "image": "assets/images/hero/slide-01.jpg",
       "label_visible": 1,
       "fallback_color": "linear-gradient(135deg,#1B3A8C,#0a1828)"
     },
@@ -31,7 +33,7 @@
       "id": 2,
       "titre_image": "Salon des Compétences 2026 — 8ème édition",
       "short_description": "14 Juin 2026 · Campus Port-au-Prince · Portes ouvertes au public",
-      "image": "/web_uploads/images/salon2026.jpg",
+      "image": "assets/images/hero/slide-02.jpg",
       "label_visible": 1,
       "fallback_color": "linear-gradient(135deg,#C8101E,#8B0010)"
     },
@@ -39,7 +41,7 @@
       "id": 3,
       "titre_image": "Inscriptions ouvertes — Promo 2026–2027",
       "short_description": "Places limitées · Dépôt de dossier disponible en ligne",
-      "image": "/web_uploads/images/inscription.jpg",
+      "image": "assets/images/hero/slide-03.jpg",
       "label_visible": 1,
       "fallback_color": "linear-gradient(135deg,#006B46,#003828)"
     }
@@ -47,212 +49,100 @@
 
   "programmes": [
     {
-      "id": 1,
-      "code": "TRI",
+      "id": 1, "code": "TRI",
       "label": "Techniques de Réseaux Informatiques",
       "short_description": "Maîtrisez les fondamentaux des réseaux, systèmes, programmation et infrastructure IT. Formation Cisco CCNA intégrée en 2ème année.",
-      "icon": "🌐",
-      "color_rgb": "27,58,140",
-      "duree": "2 ans",
+      "icon": "🌐", "color_rgb": "27,58,140", "duree": "2 ans",
       "modules_count": "28 modules 2ème année",
       "certifications": ["Cisco CCNA", "Microsoft"],
-      "badge": "HOT 🔥",
-      "badge_color": "rgba(27,58,140,.12)",
-      "badge_text_color": "var(--blue)",
-      "nb_etudiants": 420
+      "badge": "HOT 🔥", "badge_color": "rgba(27,58,140,.12)", "badge_text_color": "#1B3A8C",
+      "nb_etudiants": 420,
+      "cours": [
+        { "id": "TRI-01", "titre": "Initiation aux réseaux",     "image": "assets/images/courses/course-tri-01.jpg", "duree": "75h" },
+        { "id": "TRI-02", "titre": "Systèmes d'exploitation",    "image": "assets/images/courses/course-tri-02.jpg", "duree": "75h" },
+        { "id": "TRI-05", "titre": "Câblage structuré",          "image": "assets/images/courses/course-tri-05.jpg", "duree": "90h" }
+      ]
     },
     {
-      "id": 2,
-      "code": "MEI",
+      "id": 2, "code": "MEI",
       "label": "Mécanique d'Entretien Industrielle",
       "short_description": "Entretien, usinage et maintenance des équipements industriels. Formation pratique en atelier équipé.",
-      "icon": "🔧",
-      "color_rgb": "139,94,0",
-      "duree": "2 ans",
+      "icon": "🔧", "color_rgb": "139,94,0", "duree": "2 ans",
       "modules_count": "16 modules",
       "certifications": ["Atelier pratique"],
-      "badge": "Disponible",
-      "badge_color": "rgba(139,94,0,.1)",
-      "badge_text_color": "#8B5E00",
-      "nb_etudiants": 380
+      "badge": "Disponible", "badge_color": "rgba(139,94,0,.1)", "badge_text_color": "#8B5E00",
+      "nb_etudiants": 380,
+      "cours": [
+        { "id": "MEI-07", "titre": "Hydraulique industrielle",   "image": "assets/images/courses/course-mei-07.jpg", "duree": "90h" },
+        { "id": "MEI-08", "titre": "Pneumatique",               "image": "assets/images/courses/course-mei-08.jpg", "duree": "90h" },
+        { "id": "MEI-22", "titre": "Circuits hydrauliques",     "image": "assets/images/courses/course-mei-22.jpg", "duree": "90h" }
+      ]
     },
     {
-      "id": 3,
-      "code": "ELM",
+      "id": 3, "code": "ELM",
       "label": "Électromécanique Industrielle",
       "short_description": "Circuits électriques, automatisation, moteurs et systèmes de commande industrielle.",
-      "icon": "⚡",
-      "color_rgb": "0,107,70",
-      "duree": "2 ans",
+      "icon": "⚡", "color_rgb": "0,107,70", "duree": "2 ans",
       "modules_count": "13 modules",
       "certifications": ["Électricité", "Automatisation"],
-      "badge": "Disponible",
-      "badge_color": "rgba(0,107,70,.1)",
-      "badge_text_color": "var(--green)",
-      "nb_etudiants": 310
+      "badge": "Disponible", "badge_color": "rgba(0,107,70,.1)", "badge_text_color": "#006B46",
+      "nb_etudiants": 310,
+      "cours": [
+        { "id": "ELM-03", "titre": "Circuits électriques fondamentaux", "image": "assets/images/courses/course-elm-03.jpg", "duree": "75h" },
+        { "id": "ELM-09", "titre": "Moteurs électriques",               "image": "assets/images/courses/course-elm-09.jpg", "duree": "90h" },
+        { "id": "ELM-19", "titre": "Circuits pneumatiques",             "image": "assets/images/courses/course-elm-19.jpg", "duree": "90h" },
+        { "id": "ELM-20", "titre": "Électronique de puissance",         "image": "assets/images/courses/course-elm-20.jpg", "duree": "90h" }
+      ]
     },
     {
-      "id": 4,
-      "code": "TEL",
+      "id": 4, "code": "TEL",
       "label": "Télécommunications",
       "short_description": "Signaux, protocoles, antennes, microprocesseurs et systèmes de télécommunications modernes.",
-      "icon": "📡",
-      "color_rgb": "91,45,142",
-      "duree": "2 ans",
+      "icon": "📡", "color_rgb": "91,45,142", "duree": "2 ans",
       "modules_count": "14 modules",
       "certifications": ["RF", "Protocoles"],
-      "badge": "Nouveau",
-      "badge_color": "rgba(91,45,142,.1)",
-      "badge_text_color": "#5B2D8E",
-      "nb_etudiants": 290
+      "badge": "Nouveau", "badge_color": "rgba(91,45,142,.1)", "badge_text_color": "#5B2D8E",
+      "nb_etudiants": 290,
+      "cours": [
+        { "id": "TEL-01", "titre": "Principes des télécommunications", "image": "assets/images/courses/course-tel-01.jpg", "duree": "75h" },
+        { "id": "TEL-03", "titre": "Systèmes de transmission",         "image": "assets/images/courses/course-tel-03.jpg", "duree": "90h" }
+      ]
     }
   ],
 
   "evenements": [
-    {
-      "id": 1,
-      "titre_event": "Salon des Compétences 2026 — 8ème édition",
-      "date_start": "2026-06-14",
-      "time_start": "08:00:00",
-      "time_end": "17:00:00",
-      "location": "Campus Canado Technique, Port-au-Prince",
-      "description": "La grande célébration annuelle des compétences techniques. Démonstrations, remises de prix, expositions des projets étudiants.",
-      "is_publish": 1
-    },
-    {
-      "id": 2,
-      "titre_event": "Remise de Diplômes — Promo 2026",
-      "date_start": "2026-06-22",
-      "time_start": "09:00:00",
-      "time_end": "12:00:00",
-      "location": "Salle principale Canado Technique",
-      "description": "Cérémonie officielle de remise des diplômes de fin d'études pour la promotion 2026.",
-      "is_publish": 1
-    },
-    {
-      "id": 3,
-      "titre_event": "Sessions Examens Officiels — Toutes filières",
-      "date_start": "2026-07-05",
-      "time_start": "08:00:00",
-      "time_end": "16:00:00",
-      "location": "Salle informatique & Ateliers",
-      "description": "Examens de fin de semestre pour toutes les filières. Présence obligatoire avec pièce d'identité.",
-      "is_publish": 1
-    },
-    {
-      "id": 4,
-      "titre_event": "Journée Portes Ouvertes — Rentrée 2026–2027",
-      "date_start": "2026-08-15",
-      "time_start": "09:00:00",
-      "time_end": "14:00:00",
-      "location": "Canado Technique, Pétion-Ville",
-      "description": "Découvrez nos formations, rencontrez les professeurs et visitez nos laboratoires. Inscription gratuite.",
-      "is_publish": 1
-    }
+    { "id": 1, "titre_event": "Salon des Compétences 2026 — 8ème édition", "date_start": "2026-06-14", "time_start": "08:00:00", "time_end": "17:00:00", "location": "Campus Canado Technique, Port-au-Prince", "is_publish": 1 },
+    { "id": 2, "titre_event": "Remise de Diplômes — Promo 2026",           "date_start": "2026-06-22", "time_start": "09:00:00", "time_end": "12:00:00", "location": "Salle principale Canado Technique",        "is_publish": 1 },
+    { "id": 3, "titre_event": "Sessions Examens Officiels — Toutes filières","date_start": "2026-07-05","time_start": "08:00:00", "time_end": "16:00:00", "location": "Salle informatique & Ateliers",             "is_publish": 1 },
+    { "id": 4, "titre_event": "Journée Portes Ouvertes — Rentrée 2026–2027","date_start": "2026-08-15", "time_start": "09:00:00", "time_end": "14:00:00", "location": "Canado Technique, Pétion-Ville",           "is_publish": 1 }
   ],
 
   "articles": [
-    {
-      "id": 1,
-      "titre": "Canado Technique signe un partenariat avec Cisco Networking Academy",
-      "short_description": "Un accord majeur qui renforce la formation TRI avec des ressources Cisco officielles et des certifications reconnues mondialement.",
-      "featured_image": "/web_uploads/images/cisco-partenariat.jpg",
-      "date_publication": "2026-05-10",
-      "menu_link": "news",
-      "is_publish": 1,
-      "fallback_color": "#1B3A8C"
-    },
-    {
-      "id": 2,
-      "titre": "Les étudiants MEI remportent le prix d'excellence technique régional",
-      "short_description": "L'équipe mécanique de Canado Technique a dominé le concours régional avec un projet de maintenance industrielle innovant.",
-      "featured_image": "/web_uploads/images/prix-excellence.jpg",
-      "date_publication": "2026-05-03",
-      "menu_link": "news",
-      "is_publish": 1,
-      "fallback_color": "#8B5E00"
-    },
-    {
-      "id": 3,
-      "titre": "Lancement de la plateforme e-learning — Accès 24h/24 aux cours",
-      "short_description": "Tous les étudiants inscrits ont désormais accès aux cours vidéo, examens en ligne et à l'assistant IA Rooby depuis n'importe quel appareil.",
-      "featured_image": "/web_uploads/images/elearning-launch.jpg",
-      "date_publication": "2026-04-28",
-      "menu_link": "news",
-      "is_publish": 1,
-      "fallback_color": "#006B46"
-    },
-    {
-      "id": 4,
-      "titre": "Nouveaux équipements pour les ateliers ELM et TEL",
-      "short_description": "Investissement de 2,5 millions de gourdes dans des équipements modernes pour les ateliers d'électromécanique et télécommunications.",
-      "featured_image": "/web_uploads/images/equipements.jpg",
-      "date_publication": "2026-04-15",
-      "menu_link": "news",
-      "is_publish": 1,
-      "fallback_color": "#5B2D8E"
-    },
-    {
-      "id": 5,
-      "titre": "Inscription 2026–2027 : tout ce qu'il faut savoir",
-      "short_description": "Guide complet du processus d'inscription, documents requis, frais de scolarité et délais à respecter pour la prochaine rentrée.",
-      "featured_image": "/web_uploads/images/inscription-guide.jpg",
-      "date_publication": "2026-04-01",
-      "menu_link": "news",
-      "is_publish": 1,
-      "fallback_color": "#C8101E"
-    },
-    {
-      "id": 6,
-      "titre": "8ème Salon des Compétences — Appel à participation",
-      "short_description": "Les étudiants et entreprises partenaires sont invités à soumettre leurs projets pour le Salon des Compétences du 14 Juin 2026.",
-      "featured_image": "/web_uploads/images/salon-appel.jpg",
-      "date_publication": "2026-03-20",
-      "menu_link": "news",
-      "is_publish": 1,
-      "fallback_color": "#B8860B"
-    }
+    { "id": 1, "titre": "Canado Technique signe un partenariat avec Cisco Networking Academy",    "short_description": "Un accord majeur qui renforce la formation TRI avec des ressources Cisco officielles et des certifications reconnues mondialement.", "featured_image": "assets/images/gallery/photo-01.jpg", "date_publication": "2026-05-10", "menu_link": "news", "is_publish": 1 },
+    { "id": 2, "titre": "Les étudiants MEI remportent le prix d'excellence technique régional",  "short_description": "L'équipe mécanique de Canado Technique a dominé le concours régional avec un projet de maintenance industrielle innovant.",          "featured_image": "assets/images/gallery/photo-02.jpg", "date_publication": "2026-05-03", "menu_link": "news", "is_publish": 1 },
+    { "id": 3, "titre": "Lancement de la plateforme e-learning — Accès 24h/24 aux cours",        "short_description": "Tous les étudiants inscrits ont désormais accès aux cours vidéo, examens en ligne et à l'assistant IA Rooby depuis n'importe quel appareil.", "featured_image": "assets/images/gallery/photo-03.jpg", "date_publication": "2026-04-28", "menu_link": "news", "is_publish": 1 },
+    { "id": 4, "titre": "Nouveaux équipements pour les ateliers ELM et TEL",                     "short_description": "Investissement de 2,5 millions de gourdes dans des équipements modernes pour les ateliers d'électromécanique et télécommunications.", "featured_image": "assets/images/gallery/photo-04.jpg", "date_publication": "2026-04-15", "menu_link": "news", "is_publish": 1 },
+    { "id": 5, "titre": "Inscription 2026–2027 : tout ce qu'il faut savoir",                     "short_description": "Guide complet du processus d'inscription, documents requis, frais de scolarité et délais à respecter pour la prochaine rentrée.",     "featured_image": "assets/images/gallery/photo-05.jpg", "date_publication": "2026-04-01", "menu_link": "news", "is_publish": 1 },
+    { "id": 6, "titre": "8ème Salon des Compétences — Appel à participation",                   "short_description": "Les étudiants et entreprises partenaires sont invités à soumettre leurs projets pour le Salon des Compétences du 14 Juin 2026.",   "featured_image": "assets/images/gallery/photo-06.jpg", "date_publication": "2026-03-20", "menu_link": "news", "is_publish": 1 }
+  ],
+
+  "professeurs": [
+    { "id": 1, "nom": "Raymonvil", "prenom": "Rooby", "photo": "assets/images/teachers/raymonvil.jpg", "specialite": "Réseaux Informatiques", "programme": "TRI", "certifications": ["Cisco CCNA", "Microsoft"] },
+    { "id": 2, "nom": "Marc",      "prenom": "",       "photo": "assets/images/teachers/marc.jpg",      "specialite": "Mécanique Industrielle", "programme": "MEI", "certifications": [] }
+  ],
+
+  "galerie": [
+    { "id": 1, "image": "assets/images/gallery/photo-01.jpg", "titre": "Atelier réseaux" },
+    { "id": 2, "image": "assets/images/gallery/photo-02.jpg", "titre": "Salon des compétences" },
+    { "id": 3, "image": "assets/images/gallery/photo-03.jpg", "titre": "Laboratoire informatique" },
+    { "id": 4, "image": "assets/images/gallery/photo-04.jpg", "titre": "Remise de diplômes" },
+    { "id": 5, "image": "assets/images/gallery/photo-05.jpg", "titre": "Atelier mécanique" },
+    { "id": 6, "image": "assets/images/gallery/photo-06.jpg", "titre": "Cours pratique ELM" }
   ],
 
   "offres": [
-    {
-      "id": 1,
-      "titre": "Inscription Anticipée",
-      "sous_titre": "Promo rentrée 2026–2027",
-      "description": "Inscrivez-vous avant le 30 juin et bénéficiez d'une réduction sur les frais d'inscription.",
-      "badge": "🔥 Limité",
-      "badge_color": "var(--red)",
-      "prix_original": "15 000 HTG",
-      "prix_promo": "12 000 HTG",
-      "validite": "Jusqu'au 30 Juin 2026",
-      "tag_color": "rgba(232,25,44,.12)",
-      "tag_text": "var(--red)"
-    },
-    {
-      "id": 2,
-      "titre": "Pack Cours Vidéo TRI",
-      "sous_titre": "Accès complet 2ème année",
-      "description": "Accès illimité à tous les cours vidéo de 2ème année TRI pendant 12 mois.",
-      "badge": "⭐ Populaire",
-      "badge_color": "var(--blue)",
-      "prix_original": "8 000 HTG",
-      "prix_promo": "5 500 HTG",
-      "validite": "Offre permanente",
-      "tag_color": "rgba(27,58,140,.1)",
-      "tag_text": "var(--blue)"
-    },
-    {
-      "id": 3,
-      "titre": "Certification Cisco CCNA",
-      "sous_titre": "Préparation intensive",
-      "description": "Module de préparation à la certification Cisco CCNA pour étudiants TRI 2ème année.",
-      "badge": "🎯 Pro",
-      "badge_color": "var(--green)",
-      "prix_original": "20 000 HTG",
-      "prix_promo": "16 000 HTG",
-      "validite": "Session Juillet 2026",
-      "tag_color": "rgba(0,107,70,.1)",
-      "tag_text": "var(--green)"
-    }
+    { "id": 1, "titre": "Inscription Anticipée",    "sous_titre": "Promo rentrée 2026–2027",       "badge": "🔥 Limité",    "badge_color": "var(--red)",   "prix_original": "15 000 HTG", "prix_promo": "12 000 HTG", "validite": "Jusqu'au 30 Juin 2026" },
+    { "id": 2, "titre": "Pack Cours Vidéo TRI",     "sous_titre": "Accès complet 2ème année",      "badge": "⭐ Populaire", "badge_color": "var(--blue)",  "prix_original": "8 000 HTG",  "prix_promo": "5 500 HTG",  "validite": "Offre permanente" },
+    { "id": 3, "titre": "Certification Cisco CCNA", "sous_titre": "Préparation intensive TRI 2A",  "badge": "🎯 Pro",       "badge_color": "var(--green)", "prix_original": "20 000 HTG", "prix_promo": "16 000 HTG", "validite": "Session Juillet 2026" }
   ]
 }
