@@ -3252,17 +3252,19 @@ function renderCoursMgmt(c) {
     <div class="kcard kr"><div class="knum">11</div><div class="klbl">Verrouillés</div></div>
   </div>
   <div class="fsec">
-    <h4>Modules TRI — Activation et vidéos</h4>
+    <h4 style="color:var(--blue)">Modules TRI — Activation et vidéos</h4>
     <div class="mlist">
       ${MODULES.TRI.slice(0,8).map((m,i)=>{
         const on = i<5;
+        const coursBtn = m.fichier ? `<a href="${m.fichier}" target="_blank" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
         return `<div class="mrow">
           <div class="mnum">${String(i+1).padStart(2,'0')}</div>
           <div class="mtitle">${m.code} · ${m.title}</div>
           <div class="mdur">${m.dur}h</div>
-          <div style="display:flex;align-items:center;gap:.5rem">
+          <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+            ${coursBtn}
             <button class="btn btn-outline btn-sm" onclick="openVideoManager('${m.code}')">🎥 Vidéo</button>
-            <button class="tgl ${on?'on':''}" onclick="this.classList.toggle('on');toast('Module ${m.code} '+(this.classList.contains('on')?'activé':'désactivé'))"></button>
+            <button class="tgl ${on?'on':''}" onclick="this.classList.contains('on')?this.classList.remove('on'):this.classList.add('on');toast('Module ${m.code} '+(this.classList.contains('on')?'activé':'désactivé'))"></button>
           </div>
         </div>`;
       }).join('')}
