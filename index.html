@@ -125,8 +125,49 @@ img{max-width:100%;display:block}
 .page{display:none;min-height:100vh;padding-top:64px;animation:fadeUp .35s cubic-bezier(.22,1,.36,1) both}
 .page.act{display:block}
 
+/* ═══ HERO CARROUSEL ═══ */
+.hero{background:#0a1828;padding:0;position:relative;overflow:hidden;transition:background .8s ease}
+.hero-slide{padding:4.5rem 1.5rem 4rem;position:relative;min-height:520px;display:flex;align-items:center}
+.hero-slide-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .8s ease}
+.hero-slide-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(4,13,26,.88) 45%,rgba(4,13,26,.55))}
+.hero-carrousel-nav{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.75rem;z-index:10}
+.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:all .3s;padding:0}
+.hero-dot.act{width:24px;border-radius:4px;background:var(--red)}
+.hero-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.hero-arrow:hover{background:rgba(232,25,44,.35);border-color:rgba(232,25,44,.5)}
+.hero-slide-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(232,25,44,.18);border:1px solid rgba(232,25,44,.35);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#ff6b7a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;animation:fadeUp .4s .1s both}
+
+/* ═══ GALERIE ═══ */
+.galerie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.gal-item{border-radius:var(--rL);overflow:hidden;aspect-ratio:4/3;position:relative;cursor:pointer;background:#0d1f3c}
+.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease,opacity .3s}
+.gal-item:hover img{transform:scale(1.05)}
+.gal-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,13,26,.8),transparent);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:1rem}
+.gal-item:hover .gal-item-overlay{opacity:1}
+.gal-item-label{color:#fff;font-size:.78rem;font-weight:600}
+
+/* ═══ SECTION ÉCOLE (photo) ═══ */
+.ecole-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.ecole-photo{border-radius:var(--rXL);overflow:hidden;box-shadow:var(--shadowL);aspect-ratio:4/3;background:#0d1f3c}
+.ecole-photo img{width:100%;height:100%;object-fit:cover}
+.ecole-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.ecole-badge{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.06);border:1px solid var(--bdrDk);border-radius:10px;padding:.55rem .9rem;font-size:.76rem;color:rgba(255,255,255,.8)}
+.ecole-badge span{font-size:1rem}
+
+/* ═══ INSCRIPTION BANNER ═══ */
+.inscr-banner{background:linear-gradient(135deg,rgba(232,25,44,.12),rgba(27,58,140,.12));border:1px solid rgba(232,25,44,.2);border-radius:var(--rL);padding:1.4rem 1.8rem;margin-top:2rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.inscr-banner p{font-size:.84rem;color:rgba(255,255,255,.8);line-height:1.6;flex:1}
+
+@media(max-width:768px){
+  .galerie-grid{grid-template-columns:repeat(2,1fr)}
+  .ecole-grid{grid-template-columns:1fr}
+  .hero-slide{padding:3rem 1rem 4.5rem}
+}
+@media(max-width:480px){
+  .galerie-grid{grid-template-columns:1fr}
+}
+
 /* ═══ HERO ═══ */
-.hero{background:#0a1828;padding:4.5rem 1.5rem 4rem;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .hero-bg::before{content:'';position:absolute;
   width:600px;height:600px;border-radius:50%;
@@ -1113,64 +1154,79 @@ td{color:var(--text)!important}
      PAGE ACCUEIL
 ════════════════════════════════════════ -->
 <div class="page act" id="page-accueil">
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid-lines"></div>
-    <div class="hero-in">
-      <div>
-        <div class="htag">🎓 École Technique Numérique · Port-au-Prince</div>
-        <h1>Formation Technique<em> Professionnelle</em>
-          <span class="h1-sub">avec Intelligence Artificielle</span>
-        </h1>
-        <p>Canado Technique forme les techniciens de demain grâce à des programmes APC certifiants, une plateforme e-learning moderne et l'assistant IA <strong style="color:#fff">Rooby</strong> disponible 24h/24.</p>
-        <div class="hero-btns">
-          <button class="btn btn-red btn-lg" onclick="goPage('paiement')">📋 S'inscrire maintenant</button>
-          <button class="btn btn-ghost btn-lg" onclick="goPage('programmes')">Voir les programmes →</button>
+  <!-- HERO CARROUSEL -->
+  <section class="hero" id="hero-carrousel">
+    <!-- Slide background image -->
+    <div class="hero-slide-bg" id="hero-slide-bg"></div>
+    <div class="hero-grid-lines" style="position:absolute;inset:0;z-index:1"></div>
+    <div class="hero-slide-overlay"></div>
+
+    <div class="hero-slide">
+      <div class="hero-in" style="z-index:2">
+        <div>
+          <div class="hero-slide-tag" id="hero-carrousel-titre">🎓 École Technique Numérique · Port-au-Prince</div>
+          <h1 style="font-family:var(--fD);font-weight:800;font-size:2.7rem;line-height:1.08;margin-bottom:.6rem;color:#fff;animation:fadeUp .4s .2s both">
+            Formation Technique<em style="color:var(--red);font-style:normal"> Professionnelle</em>
+            <span style="display:block;font-size:1.8rem;color:rgba(255,255,255,.7);margin-top:.3rem">avec Intelligence Artificielle</span>
+          </h1>
+          <p id="hero-carrousel-desc" style="color:rgba(255,255,255,.6);font-size:.93rem;line-height:1.78;margin-bottom:1.5rem;animation:fadeUp .4s .3s both;max-width:550px">
+            Canado Technique forme les techniciens de demain grâce à des programmes APC certifiants, une plateforme e-learning moderne et l'assistant IA <strong style="color:#fff">Rooby</strong> disponible 24h/24.
+          </p>
+          <div class="hero-btns" style="animation:fadeUp .4s .4s both">
+            <button class="btn btn-red btn-lg" onclick="goPage('paiement')">📋 S'inscrire maintenant</button>
+            <button class="btn btn-ghost btn-lg" onclick="goPage('programmes')">Voir les programmes →</button>
+          </div>
+          <div class="hero-features" style="animation:fadeUp .4s .5s both;margin-top:1.2rem">
+            <div class="hfeat"><span style="color:var(--greenL)">✓</span> 4 Filières APC</div>
+            <div class="hfeat"><span style="color:var(--greenL)">✓</span> Diplôme reconnu MENFP</div>
+            <div class="hfeat"><span style="color:var(--greenL)">✓</span> IA Assistant 24/7</div>
+            <div class="hfeat"><span style="color:var(--greenL)">✓</span> Certifications Cisco & Microsoft</div>
+          </div>
+          <div class="hstats" style="animation:fadeUp .4s .6s both">
+            <div class="hstat"><div class="hstat-n" id="stat-etudiants">1 642</div><div class="hstat-l">Étudiants</div></div>
+            <div class="hstat"><div class="hstat-n" id="stat-modules">87+</div><div class="hstat-l">Modules</div></div>
+            <div class="hstat"><div class="hstat-n" id="stat-ans">12+</div><div class="hstat-l">Ans d'expérience</div></div>
+          </div>
         </div>
-        <div class="hero-features">
-          <div class="hfeat"><span>✓</span> 4 Filières APC</div>
-          <div class="hfeat"><span>✓</span> Diplôme reconnu MENFP</div>
-          <div class="hfeat"><span>✓</span> IA Assistant 24/7</div>
-          <div class="hfeat"><span>✓</span> Certifications Cisco & Microsoft</div>
-        </div>
-        <div class="hstats">
-          <div class="hstat"><div class="hstat-n" id="stat-etudiants">1 642</div><div class="hstat-l">Étudiants</div></div>
-          <div class="hstat"><div class="hstat-n" id="stat-modules">87+</div><div class="hstat-l">Modules</div></div>
-          <div class="hstat"><div class="hstat-n" id="stat-ans">12+</div><div class="hstat-l">Ans d'expérience</div></div>
+        <div>
+          <div class="hvisual">
+            <div class="hvisual-lbl">Programmes disponibles</div>
+            <div id="pmini-container">
+              <div class="pmini" onclick="goPage('programmes')">
+                <div class="pmini-icon" style="background:rgba(27,58,140,.12)">🌐</div>
+                <div class="pmini-info"><p>Réseaux Informatiques (TRI)</p><small>16 modules · 2 ans · Cisco CCNA</small></div>
+                <div class="pbadge" style="background:rgba(27,58,140,.12);color:var(--blue)">HOT 🔥</div>
+              </div>
+              <div class="pmini" onclick="goPage('programmes')">
+                <div class="pmini-icon" style="background:rgba(139,94,0,.1)">🔧</div>
+                <div class="pmini-info"><p>Mécanique Industrielle (MEI)</p><small>16 modules · 2 ans</small></div>
+                <div class="pbadge" style="background:rgba(139,94,0,.1);color:#8B5E00">Disponible</div>
+              </div>
+              <div class="pmini" onclick="goPage('programmes')">
+                <div class="pmini-icon" style="background:rgba(0,107,70,.1)">⚡</div>
+                <div class="pmini-info"><p>Électromécanique (ELM)</p><small>13 modules · 2 ans</small></div>
+                <div class="pbadge" style="background:rgba(0,107,70,.1);color:var(--green)">Disponible</div>
+              </div>
+              <div class="pmini" onclick="goPage('programmes')">
+                <div class="pmini-icon" style="background:rgba(91,45,142,.1)">📡</div>
+                <div class="pmini-info"><p>Télécommunications (TEL)</p><small>14 modules · 2 ans</small></div>
+                <div class="pbadge" style="background:rgba(91,45,142,.1);color:#5B2D8E">Nouveau</div>
+              </div>
+            </div>
+            <div style="margin-top:.3rem;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:.7rem;color:rgba(255,255,255,.3)">✨ 2ème année disponible pour TRI</span>
+              <button class="btn btn-red btn-sm" onclick="goPage('paiement')">Inscrire →</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div>
-        <div class="hvisual">
-          <div class="hvisual-lbl">Programmes disponibles</div>
-          <div id="pmini-container">
-          <div class="pmini" onclick="goPage('programmes')">
-            <div class="pmini-icon" style="background:rgba(27,58,140,.12)">🌐</div>
-            <div class="pmini-info"><p>Réseaux Informatiques (TRI)</p><small>16 modules · 2 ans · Cisco CCNA</small></div>
-            <div class="pbadge" style="background:rgba(27,58,140,.12);color:var(--blue)">HOT 🔥</div>
-          </div>
-          <div class="pmini" onclick="goPage('programmes')">
-            <div class="pmini-icon" style="background:rgba(139,94,0,.1)">🔧</div>
-            <div class="pmini-info"><p>Mécanique Industrielle (MEI)</p><small>16 modules · 2 ans</small></div>
-            <div class="pbadge" style="background:rgba(139,94,0,.1);color:#8B5E00">Disponible</div>
-          </div>
-          <div class="pmini" onclick="goPage('programmes')">
-            <div class="pmini-icon" style="background:rgba(0,107,70,.1)">⚡</div>
-            <div class="pmini-info"><p>Électromécanique (ELM)</p><small>13 modules · 2 ans</small></div>
-            <div class="pbadge" style="background:rgba(0,107,70,.1);color:var(--green)">Disponible</div>
-          </div>
-          <div class="pmini" onclick="goPage('programmes')">
-            <div class="pmini-icon" style="background:rgba(91,45,142,.1)">📡</div>
-            <div class="pmini-info"><p>Télécommunications (TEL)</p><small>14 modules · 2 ans</small></div>
-            <div class="pbadge" style="background:rgba(91,45,142,.1);color:#5B2D8E">Nouveau</div>
-          </div>
-          </div>
-          <div style="margin-top:.3rem;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-size:.7rem;color:rgba(255,255,255,.3)">✨ 2ème année disponible pour TRI</span>
-            <button class="btn btn-red btn-sm" onclick="goPage('paiement')">Inscrire →</button>
-          </div>
-        </div>
-      </div>
+    </div>
+
+    <!-- Navigation dots + arrows -->
+    <div class="hero-carrousel-nav">
+      <button class="hero-arrow" onclick="prevSlide()">‹</button>
+      <div id="hero-carrousel-dots" style="display:flex;gap:.5rem"></div>
+      <button class="hero-arrow" onclick="nextSlide()">›</button>
     </div>
   </section>
 
@@ -1325,6 +1381,64 @@ td{color:var(--text)!important}
       </div>
     </div>
   </div>
+  <!-- SECTION NOTRE ÉCOLE (school-photo.jpg) -->
+  <div class="sn" style="background:var(--navy2)">
+    <div class="si-lg">
+      <div class="ecole-grid">
+        <div>
+          <div class="ecole-photo">
+            <img src="assets/images/hero/school-photo.jpg" alt="Campus Canado Technique"
+              onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'">
+          </div>
+        </div>
+        <div>
+          <div class="sh dark" style="text-align:left;margin-bottom:1.2rem">
+            <div class="tag-b" style="background:rgba(27,58,140,.2);color:#7BA7FF">À propos</div>
+            <h2>Former les techniciens haïtiens de demain</h2>
+            <p style="color:rgba(255,255,255,.55);font-size:.87rem;line-height:1.75;margin-top:.7rem">
+              Depuis plus de 12 ans, Canado Technique forme des techniciens qualifiés dans les domaines des réseaux, de la mécanique, de l'électromécanique et des télécommunications. Nos programmes APC sont homologués par le MENFP et reconnus à l'international.
+            </p>
+          </div>
+          <div class="ecole-badges">
+            <div class="ecole-badge"><span>🏛️</span> Homologué MENFP</div>
+            <div class="ecole-badge"><span>🌐</span> Cisco Networking Academy</div>
+            <div class="ecole-badge"><span>🎓</span> 1 642 diplômés</div>
+            <div class="ecole-badge"><span>📍</span> Pétion-Ville, Port-au-Prince</div>
+            <div class="ecole-badge"><span>📞</span> +509 3780-0000</div>
+            <div class="ecole-badge"><span>✉️</span> info@canadotechnique.tech</div>
+          </div>
+          <div id="inscription-text-container">
+            <div class="inscr-banner" id="inscription-banner" style="display:none">
+              <span style="font-size:1.4rem">📋</span>
+              <p id="inscription-text"></p>
+              <button class="btn btn-red btn-sm" onclick="goPage('paiement')" style="white-space:nowrap">S'inscrire →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION GALERIE (gallery/photo-01 à 06) -->
+  <div class="sw" style="background:var(--g50)">
+    <div class="si">
+      <div class="sh">
+        <div class="tag-r">Photos du campus</div>
+        <h2>Vie à Canado Technique</h2>
+        <p>Ateliers, laboratoires, remises de diplômes et événements de l'école</p>
+      </div>
+      <div class="galerie-grid" id="galerie-container">
+        <!-- Injecté par applyGalerie() depuis data.json -->
+        <div class="gal-item"><img src="assets/images/gallery/photo-01.jpg" alt="Atelier réseaux"><div class="gal-item-overlay"><span class="gal-item-label">Atelier réseaux</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-02.jpg" alt="Salon des compétences"><div class="gal-item-overlay"><span class="gal-item-label">Salon des compétences</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-03.jpg" alt="Laboratoire informatique"><div class="gal-item-overlay"><span class="gal-item-label">Laboratoire informatique</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-04.jpg" alt="Remise de diplômes"><div class="gal-item-overlay"><span class="gal-item-label">Remise de diplômes</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-05.jpg" alt="Atelier mécanique"><div class="gal-item-overlay"><span class="gal-item-label">Atelier mécanique</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-06.jpg" alt="Cours pratique ELM"><div class="gal-item-overlay"><span class="gal-item-label">Cours pratique ELM</span></div></div>
+      </div>
+    </div>
+  </div>
+
   <footer class="ft">
     <div class="ft-in">
       <div class="ft-grid">
@@ -1490,37 +1604,19 @@ td{color:var(--text)!important}
       <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin-top:.5rem">À la une</h1>
     </div>
   </div>
-  <div class="sw">
+  <div class="sw" style="background:var(--g50)">
     <div class="si">
       <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem">
         <div>
-          <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem">
-            <div style="background:linear-gradient(135deg,var(--navy3),var(--blue));height:170px;display:flex;align-items:center;justify-content:center;font-size:3.5rem">🏆</div>
-            <div style="padding:1.3rem">
-              <div class="tag-r">Événement phare 2026</div>
-              <h3 style="font-family:var(--fD);font-weight:800;font-size:1.1rem;color:var(--text);margin:.5rem 0">Salon des Compétences — 8ème édition</h3>
-              <p style="font-size:.8rem;color:var(--g500);line-height:1.7">Le Canado Technique organise la 8ème édition du Salon des Compétences, vitrine des talents de nos étudiants. Expositions techniques, démonstrations pratiques, remise de prix d'excellence.</p>
-              <div style="margin-top:.8rem;display:flex;gap:.5rem;flex-wrap:wrap">
-                <span class="chip cgy">14 Juin 2026</span>
-                <span class="chip cgy">08:00–17:00</span>
-                <span class="chip cgy">Campus Port-au-Prince</span>
-              </div>
-            </div>
-          </div>
-          <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
-            <div class="tag-b">Innovation pédagogique</div>
-            <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text);margin:.4rem 0">Lancement de la plateforme e-learning avec IA intégrée</h3>
-            <p style="font-size:.78rem;color:var(--g500);line-height:1.7">Le Canado Technique déploie une plateforme numérique complète avec assistant IA Rooby, examens multi-versions, paiement en HTG et réservation de laboratoire.</p>
-          </div>
-          <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem">
-            <div class="tag-r">Académique</div>
-            <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text);margin:.4rem 0">87% de réussite aux certifications CCNA — Promo 2025</h3>
-            <p style="font-size:.78rem;color:var(--g500);line-height:1.7">La promotion TRI 2025 confirme la qualité de la formation avec un taux de réussite record aux examens Cisco CCNA.</p>
+          <!-- Grille dynamique avec toutes les images -->
+          <div class="actu-grid" id="actu-full-grid" style="grid-template-columns:repeat(2,1fr)">
+            <!-- Injecté par applyArticles() depuis data.json -->
+            <div class="actu-card"><div class="actu-img" style="background:linear-gradient(135deg,#0C1F3D,#1B3A8C)"><div class="actu-overlay"></div></div><div class="actu-body"><h4 class="actu-titre">Chargement…</h4></div></div>
           </div>
         </div>
         <div>
           <h3 style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--red)">Prochains événements</h3>
-          <div style="display:flex;flex-direction:column;gap:.8rem">
+          <div style="display:flex;flex-direction:column;gap:.8rem" id="actu-ev-sidebar">
             <div class="ecard" style="background:var(--g50);border:1px solid var(--bdr)">
               <div class="edate"><div class="day">14</div><div class="mon">Jun</div></div>
               <div class="einfo"><h4 style="color:var(--text)">Salon des Compétences 2026</h4><p>Campus Port-au-Prince</p></div>
@@ -1534,8 +1630,8 @@ td{color:var(--text)!important}
               <div class="einfo"><h4 style="color:var(--text)">Sessions examens officiels</h4><p>Tous programmes</p></div>
             </div>
             <div class="ecard" style="background:var(--g50);border:1px solid var(--bdr)">
-              <div class="edate"><div class="day">15</div><div class="mon">Sep</div></div>
-              <div class="einfo"><h4 style="color:var(--text)">Rentrée académique 2026-2027</h4><p>Inscriptions ouvertes</p></div>
+              <div class="edate"><div class="day">15</div><div class="mon">Aug</div></div>
+              <div class="einfo"><h4 style="color:var(--text)">Journée portes ouvertes</h4><p>Pétion-Ville · 09:00–14:00</p></div>
             </div>
           </div>
         </div>
@@ -1919,6 +2015,7 @@ function goPage(p) {
   if(p==='cours') renderCours();
   if(p==='examens-pub') renderPubExams();
   if(p==='paiement') renderPaiement();
+  if(p==='actualites' && SITE_DATA) applyArticles();
 }
 
 window.addEventListener('scroll',()=>{
@@ -2047,9 +2144,28 @@ function renderProgs() {
 ══════════════════════════════════════ */
 function renderCours() {
   const progColors = {TRI:'var(--blue)',MEI:'#6B4500',ELM:'#004D30',TEL:'#3D1A6E'};
+
+  // Récupérer les cours avec images depuis data.json si disponible
+  const coursData = (SITE_DATA && SITE_DATA.programmes) ? SITE_DATA.programmes : null;
+
   let html = Object.entries(MODULES).map(([prog,mods]) => {
     const info = PROG_INFO[prog];
     const pc = progColors[prog];
+
+    // Images de cours depuis data.json
+    const progData = coursData ? coursData.find(p=>p.code===prog) : null;
+    const coursImages = progData ? progData.cours : [];
+
+    const imgStrip = coursImages.length ? `
+      <div style="display:flex;gap:.5rem;overflow-x:auto;padding:.5rem 0;margin-bottom:.8rem;scrollbar-width:thin">
+        ${coursImages.map(c=>`
+          <div style="flex-shrink:0;width:100px;border-radius:8px;overflow:hidden;position:relative">
+            <img src="${c.image}" alt="${c.titre}" style="width:100%;height:70px;object-fit:cover;display:block"
+              onerror="this.parentElement.style.background='rgba(27,58,140,.15)';this.style.display='none'">
+            <div style="padding:.3rem .4rem;background:var(--g50);font-size:.6rem;color:var(--g700);line-height:1.3;font-weight:600">${c.titre}</div>
+          </div>`).join('')}
+      </div>` : '';
+
     return `<div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;cursor:pointer;transition:all .25s" onclick="showLogin()" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(27,58,140,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
       <div style="background:${pc};padding:1.3rem;display:flex;align-items:center;gap:.9rem">
         <span style="font-size:1.4rem">${info.icon}</span>
@@ -2059,6 +2175,7 @@ function renderCours() {
         </div>
       </div>
       <div style="padding:1.1rem">
+        ${imgStrip}
         <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g500);margin-bottom:5px"><span>Progression</span><span>0/${mods.length} modules</span></div>
         <div class="pbar"><div class="pfill" style="width:0%"></div></div>
         <p style="font-size:.73rem;color:var(--g500);margin-top:.7rem">Connectez-vous pour accéder aux modules activés par votre professeur</p>
@@ -2278,6 +2395,7 @@ function applyHomeData() {
   applyProgrammes();
   applyEvenements();
   applyArticles();
+  applyGalerie();
   renderOffers();
 }
 
@@ -2295,13 +2413,32 @@ function applyConfig() {
   if(sMod)  sMod.textContent  = stats.modules    || '87+';
   if(sAns)  sAns.textContent  = stats.annees_experience || '12+';
 
-  // Texte inscription
-  const inscEl = document.getElementById('inscription-text');
-  if(inscEl && cfg.text_inscription) inscEl.innerHTML = cfg.text_inscription;
+  // Bannière d'inscription
+  const inscEl     = document.getElementById('inscription-text');
+  const inscBanner = document.getElementById('inscription-banner');
+  if(inscEl && cfg.text_inscription) {
+    inscEl.innerHTML = cfg.text_inscription;
+    if(inscBanner && cfg.is_inscription_visible) inscBanner.style.display = 'flex';
+  }
 
   // Titre école nav
   const logoEl = document.getElementById('nav-ecole-nom');
   if(logoEl && cfg.nom_ecole) logoEl.textContent = cfg.nom_ecole;
+}
+
+/* ── Galerie photos ── */
+function applyGalerie() {
+  const galerie = SITE_DATA.galerie;
+  if(!galerie || !galerie.length) return;
+  const container = document.getElementById('galerie-container');
+  if(!container) return;
+
+  container.innerHTML = galerie.map(g => `
+    <div class="gal-item">
+      <img src="${g.image}" alt="${g.titre}"
+        onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'">
+      <div class="gal-item-overlay"><span class="gal-item-label">${g.titre}</span></div>
+    </div>`).join('');
 }
 
 /* ── Carrousel hero ── */
@@ -2309,12 +2446,24 @@ function applyCarrousel() {
   const slides = SITE_DATA.carrousel;
   if(!slides || !slides.length) return;
   const container = document.getElementById('hero-carrousel');
-  if(!container) return;
+  const bgEl      = document.getElementById('hero-slide-bg');
+  if(!container || !bgEl) return;
 
   let current = 0;
+
   const render = (i) => {
     const s = slides[i];
+    // Image de fond réelle
+    if(s.image) {
+      bgEl.style.backgroundImage = `url('${s.image}')`;
+      bgEl.style.opacity = '1';
+    } else {
+      bgEl.style.backgroundImage = 'none';
+      bgEl.style.opacity = '0';
+    }
+    // Couleur de fond fallback
     container.style.background = s.fallback_color || 'linear-gradient(135deg,#1B3A8C,#0a1828)';
+
     const titleEl = document.getElementById('hero-carrousel-titre');
     const descEl  = document.getElementById('hero-carrousel-desc');
     const dotEls  = document.querySelectorAll('.hero-dot');
@@ -2323,7 +2472,7 @@ function applyCarrousel() {
     dotEls.forEach((d,idx) => d.classList.toggle('act', idx === i));
   };
 
-  // Créer les dots de navigation
+  // Créer les dots
   const dotsEl = document.getElementById('hero-carrousel-dots');
   if(dotsEl) {
     dotsEl.innerHTML = slides.map((_,i) =>
@@ -2331,7 +2480,7 @@ function applyCarrousel() {
     ).join('');
   }
 
-  window.setSlide = (i) => { current = i; render(i); };
+  window.setSlide  = (i) => { current = i; render(i); };
   window.nextSlide = () => { current = (current+1) % slides.length; render(current); };
   window.prevSlide = () => { current = (current-1+slides.length) % slides.length; render(current); };
 
@@ -2408,28 +2557,54 @@ function applyEvenements() {
 function applyArticles() {
   const arts = SITE_DATA.articles;
   if(!arts || !arts.length) return;
-  const container = document.getElementById('actu-grid-container');
-  if(!container) return;
 
-  container.innerHTML = arts.slice(0,3).map(a => {
-    const imgStyle = a.featured_image
-      ? `background-image:url('${a.featured_image}');background-size:cover;background-position:center`
-      : `background:${a.fallback_color||'#1B3A8C'}`;
-    const dateStr = a.date_publication
-      ? new Date(a.date_publication).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})
-      : '';
-    return `<div class="actu-card">
-      <div class="actu-img" style="${imgStyle}">
-        <div class="actu-overlay"></div>
-        <span class="actu-date">${dateStr}</span>
-      </div>
-      <div class="actu-body">
-        <h4 class="actu-titre">${a.titre}</h4>
-        <p class="actu-desc">${a.short_description}</p>
-        <button class="btn btn-outline btn-sm" style="margin-top:.6rem" onclick="goPage('actualites')">Lire la suite →</button>
-      </div>
-    </div>`;
-  }).join('');
+  // Grille accueil (3 premiers)
+  const container = document.getElementById('actu-grid-container');
+  if(container) {
+    container.innerHTML = arts.filter(a=>a.is_publish).slice(0,3).map(a => {
+      const imgStyle = a.featured_image
+        ? `background-image:url('${a.featured_image}');background-size:cover;background-position:center`
+        : `background:${a.fallback_color||'#1B3A8C'}`;
+      const dateStr = a.date_publication
+        ? new Date(a.date_publication).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})
+        : '';
+      return `<div class="actu-card">
+        <div class="actu-img" style="${imgStyle}">
+          <div class="actu-overlay"></div>
+          <span class="actu-date">${dateStr}</span>
+        </div>
+        <div class="actu-body">
+          <h4 class="actu-titre">${a.titre}</h4>
+          <p class="actu-desc">${a.short_description}</p>
+          <button class="btn btn-outline btn-sm" style="margin-top:.6rem" onclick="goPage('actualites')">Lire la suite →</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Page actualités complète (tous les articles)
+  const fullContainer = document.getElementById('actu-full-grid');
+  if(fullContainer) {
+    fullContainer.innerHTML = arts.filter(a=>a.is_publish).map(a => {
+      const imgStyle = a.featured_image
+        ? `background-image:url('${a.featured_image}');background-size:cover;background-position:center`
+        : `background:linear-gradient(135deg,#0C1F3D,#1B3A8C)`;
+      const dateStr = a.date_publication
+        ? new Date(a.date_publication).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})
+        : '';
+      return `<div class="actu-card">
+        <div class="actu-img" style="${imgStyle}">
+          <div class="actu-overlay"></div>
+          <span class="actu-date">${dateStr}</span>
+        </div>
+        <div class="actu-body">
+          <h4 class="actu-titre">${a.titre}</h4>
+          <p class="actu-desc">${a.short_description}</p>
+          <button class="btn btn-outline btn-sm" style="margin-top:.6rem">Lire →</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
 }
 
 /* ── Offres (lit depuis SITE_DATA si dispo, sinon statique) ── */
