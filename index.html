@@ -6,6 +6,8 @@ html
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canado Technique — Plateforme Numérique Unifiée</title>
+<link rel="icon" type="image/png" href="assets/images/logo/logo.png">
+<link rel="shortcut icon" type="image/png" href="assets/images/logo/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
 <style>
@@ -326,7 +328,7 @@ th{background:#1a2f52;color:#ffffff;font-size:.69rem;font-weight:800;
 td{padding:.65rem 1rem;border-bottom:1px solid var(--bdr);color:var(--text)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(27,58,140,.07);color:var(--text)}
-tr:hover td code{background:rgba(27,58,140,.12);color:var(--blue)}
+tr:hover td code{background:#1a2f52;color:#7BA7FF}
 .chip{display:inline-block;padding:2px 9px;border-radius:8px;font-size:.68rem;font-weight:600}
 .cg{background:rgba(0,107,70,.1);color:#006B46}
 .cr{background:rgba(232,25,44,.1);color:var(--red)}
@@ -1496,8 +1498,15 @@ td{color:var(--text)!important}
         </div>
       </div>
       <div class="ft-bot">
-        <span style="font-size:.75rem;color:rgba(255,255,255,.35)">© 2026 Canado Technique · Tous droits réservés</span>
-        <span style="font-size:.68rem;color:rgba(255,255,255,.22)">Conçu & développé par Rooby Design</span>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:space-between;width:100%">
+          <span style="font-size:.75rem;color:rgba(255,255,255,.35)">© 2026 Canado Technique · Tous droits réservés</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <img src="assets/images/logo/logo_cfph.png" alt="CFPH Logo"
+              style="height:36px;width:auto;opacity:.85;filter:brightness(0) invert(1)"
+              onerror="this.style.display='none'">
+            <span style="font-size:.68rem;color:rgba(255,255,255,.22)">Conçu & développé par Rooby Design</span>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
@@ -2386,7 +2395,7 @@ function renderPubExams() {
     const statusIcon = e.status==='Disponible'?'●':e.status==='En attente'?'◐':'○';
     h+=`<tr>
       <td><span class="chip ${pc[e.prog]}" style="display:inline-flex;align-items:center;gap:3px">${progIcons[e.prog]} ${e.prog}</span></td>
-      <td><code style="font-size:.74rem;background:var(--g100);padding:2px 7px;border-radius:5px;color:var(--g700);font-family:monospace">${e.code}</code></td>
+      <td><code style="font-size:.74rem;background:#1a2f52;padding:3px 9px;border-radius:5px;color:#7BA7FF;font-family:monospace;font-weight:700;letter-spacing:.04em">${e.code}</code></td>
       <td style="font-weight:600;font-size:.82rem;color:var(--text);max-width:200px">${e.title}</td>
       <td style="font-size:.78rem"><span style="letter-spacing:.05em;color:var(--blue);font-weight:700">${e.ver}</span></td>
       <td style="font-size:.78rem;white-space:nowrap"><span style="color:var(--g500)">⏱</span> ${e.dur} min</td>
@@ -2458,7 +2467,7 @@ function renderExamModules(progFilter) {
       <div style="background:${c.bg};padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:.6rem">
           <span style="font-size:1rem">${c.icon}</span>
-          <code style="font-size:.72rem;color:rgba(255,255,255,.65);font-family:monospace;letter-spacing:.04em">${m.code}</code>
+          <code style="font-size:.72rem;color:#fff;font-family:monospace;letter-spacing:.06em;font-weight:800">${m.code}</code>
         </div>
         ${st!=='—'?`<span class="chip ${stClass}" style="font-size:.62rem">${st}</span>`:''}
       </div>
