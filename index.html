@@ -2918,6 +2918,32 @@ let selRole = 'dg';
    6. prof      — Corps professoral (création, pas de publication)
    7. etud      — Étudiant (lecture seule, examens)
 ══════════════════════════════ */
+
+/* ══════════════════════════════════════
+   MODULE STATE — persistance localStorage
+══════════════════════════════════════ */
+function getModuleStates(prog) {
+  try {
+    const raw = localStorage.getItem('moduleStates_' + prog);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  // Default: first 5 activated
+  const mods = MODULES[prog] || [];
+  const defaults = {};
+  mods.forEach((m, i) => { defaults[m.code] = i < 5; });
+  return defaults;
+}
+
+function setModuleActive(prog, code, active) {
+  const states = getModuleStates(prog);
+  states[code] = active;
+  try { localStorage.setItem('moduleStates_' + prog, JSON.stringify(states)); } catch(e) {}
+}
+
+function isModuleActive(prog, code) {
+  return getModuleStates(prog)[code] === true;
+}
+
 const ROLES = {
   dg:{name:'Jean Robenson Raymonvil',role:'Directeur Général · Accès Total',badge:'Dir. Général',rbClass:'rbDG',avt:'JR',
     level:1,
@@ -3244,18 +3270,22 @@ function renderEtudiants(c) {
 
 function renderCoursMgmt(c) {
   const isprof = currentRole==='prof';
+  const prog = etudProg || 'TRI';
+  const states = getModuleStates(prog);
+  const actCount = Object.values(states).filter(Boolean).length;
+  const lockCount = (MODULES[prog]||[]).length - actCount;
   c.innerHTML = `<div class="ph2">${isprof?'Mes cours & modules':'Gestion des cours'}</div>
   <div class="kgrid">
     <div class="kcard"><div class="knum">16</div><div class="klbl">Modules 1ère année</div></div>
     <div class="kcard kg"><div class="knum">28</div><div class="klbl">Modules 2ème année</div></div>
-    <div class="kcard kgd"><div class="knum">5</div><div class="klbl">Activés</div></div>
-    <div class="kcard kr"><div class="knum">11</div><div class="klbl">Verrouillés</div></div>
+    <div class="kcard kgd"><div class="knum">${actCount}</div><div class="klbl">Activés</div></div>
+    <div class="kcard kr"><div class="knum">${lockCount}</div><div class="klbl">Verrouillés</div></div>
   </div>
   <div class="fsec">
     <h4 style="color:var(--blue)">Modules TRI — Activation et vidéos</h4>
     <div class="mlist">
-      ${MODULES.TRI.slice(0,8).map((m,i)=>{
-        const on = i<5;
+      ${MODULES[prog].map((m,i)=>{
+        const on = states[m.code] === true;
         const coursBtn = m.fichier ? `<a href="${m.fichier}" target="_blank" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
         return `<div class="mrow">
           <div class="mnum">${String(i+1).padStart(2,'0')}</div>
@@ -3264,12 +3294,27 @@ function renderCoursMgmt(c) {
           <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
             ${coursBtn}
             <button class="btn btn-outline btn-sm" onclick="openVideoManager('${m.code}')">🎥 Vidéo</button>
-            <button class="tgl ${on?'on':''}" onclick="this.classList.contains('on')?this.classList.remove('on'):this.classList.add('on');toast('Module ${m.code} '+(this.classList.contains('on')?'activé':'désactivé'))"></button>
+            <button class="tgl ${on?'on':''}" onclick="toggleModule('${prog}','${m.code}',this)"></button>
           </div>
         </div>`;
       }).join('')}
     </div>
   </div>`;
+}
+
+function toggleModule(prog, code, btn) {
+  const nowOn = btn.classList.contains('on');
+  const newState = !nowOn;
+  if(newState) { btn.classList.add('on'); } else { btn.classList.remove('on'); }
+  setModuleActive(prog, code, newState);
+  toast('Module ' + code + ' ' + (newState ? 'activé ✅' : 'désactivé 🔒'));
+  // Refresh counters
+  const states = getModuleStates(prog);
+  const actCount = Object.values(states).filter(Boolean).length;
+  const lockCount = (MODULES[prog]||[]).length - actCount;
+  const cards = document.querySelectorAll('.kcard');
+  if(cards[2]) cards[2].querySelector('.knum').textContent = actCount;
+  if(cards[3]) cards[3].querySelector('.knum').textContent = lockCount;
 }
 
 function openVideoManager(code) {
@@ -3569,13 +3614,26 @@ function renderEtudDash(c) {
 function renderMesCours(c) {
   const prog = etudProg || 'TRI';
   const mods = MODULES[prog];
+  const states = getModuleStates(prog);
   c.innerHTML = `<div class="ph2">Mes cours — ${prog} 1ère année</div>
   <div class="mlist">
     ${mods.map((m,i)=>{
-      const st = i<3?'done':i===3?'cur':'lock';
+      // Module accessible to student ONLY if activated by prof/admin
+      const active = states[m.code] === true;
+      // Among active modules: first ones done, current one in progress — locked if not activated
+      const activeMods = mods.filter((_,j) => states[mods[j].code] === true);
+      const activeIdx = activeMods.indexOf(m);
+      let st;
+      if (!active) {
+        st = 'lock';
+      } else if (activeIdx < activeMods.length - 1) {
+        st = 'done';
+      } else {
+        st = 'cur';
+      }
       const icon = st==='done'?'✅':st==='cur'?'▶':'🔒';
-      const coursBtn = m.fichier && (st==='done'||st==='cur') ? `<a href="${m.fichier}" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
-      const videoBtn = (st==='done'||st==='cur') ? `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>` : '';
+      const coursBtn = m.fichier && active ? `<a href="${m.fichier}" target="_blank" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
+      const videoBtn = active ? `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>` : '';
       const chip = st==='done'?`<span class="chip cg">Validé</span>${videoBtn}${coursBtn}`:st==='cur'?`<span class="chip cb">En cours</span>${videoBtn}${coursBtn}`:'<span class="chip cgy">Verrouillé</span>';
       return `<div class="mrow"><div class="mnum">${String(i+1).padStart(2,'0')}</div>
         <div class="mtitle">${icon} ${m.code} · ${m.title}</div>
