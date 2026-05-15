@@ -1628,7 +1628,7 @@ td{color:var(--text)!important}
           <div style="background:#fff;border:1.5px solid rgba(27,58,140,.18);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(27,58,140,.07)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(27,58,140,.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(27,58,140,.07)'" onclick="showLogin()">
             <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blueG));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🖥️</div>
             <div style="min-width:0">
-              <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text)">Espace enseignant</div>
+              <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--blue)">Espace enseignant</div>
               <div style="font-size:.74rem;color:var(--g500);margin-top:2px">Créer · Gérer · Analyser les examens</div>
             </div>
             <div style="margin-left:auto;color:var(--blue);font-size:.9rem;flex-shrink:0">→</div>
@@ -1647,7 +1647,7 @@ td{color:var(--text)!important}
         <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden">
           <div style="padding:1.1rem 1.4rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem">
             <div>
-              <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text)">Sessions d'examens — Juin · Juillet 2026</div>
+              <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--blue)">Sessions d'examens — Juin · Juillet 2026</div>
               <div style="font-size:.72rem;color:var(--g500);margin-top:2px">Toutes filières · Calendrier officiel MENFP</div>
             </div>
             <div style="display:flex;gap:.5rem">
@@ -2547,7 +2547,7 @@ function renderPaiement() {
       <div style="background:${info.color};padding:1rem 1.2rem;display:flex;align-items:center;gap:.75rem">
         <span style="font-size:1.2rem">${info.icon}</span>
         <div>
-          <div style="font-family:var(--fD);font-weight:800;font-size:.85rem;color:#fff">${info.label}</div>
+          <div style="font-family:var(--fD);font-weight:800;font-size:.85rem;color:#fff;word-break:break-word">${info.label}</div>
           <div style="font-size:.65rem;color:rgba(255,255,255,.5);margin-top:1px">${prog}</div>
         </div>
       </div>
@@ -3345,8 +3345,8 @@ function renderExamBuilder(c) {
   <div class="fsec">
     <h4>Examens existants</h4>
     <div class="tw"><table><thead><tr><th>Module</th><th>Versions</th><th>Passé par</th><th>Moy.</th><th>Statut</th><th>Action</th></tr></thead><tbody>
-      <tr><td style="font-weight:500">TRI-05 · Système d'exploitation</td><td>A</td><td>42</td><td style="color:var(--green);font-weight:700">78%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-05')">Voir</button></td></tr>
-      <tr><td style="font-weight:500">TRI-13 · Technologies internet</td><td>A·B</td><td>38</td><td style="color:var(--green);font-weight:700">72%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-13')">Voir</button></td></tr>
+      <tr><td style="font-weight:500;color:#fff">TRI-05 · Système d'exploitation</td><td>A</td><td>42</td><td style="color:var(--green);font-weight:700">78%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-05')">Voir</button></td></tr>
+      <tr><td style="font-weight:500;color:#fff">TRI-13 · Technologies internet</td><td>A·B</td><td>38</td><td style="color:var(--green);font-weight:700">72%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-13')">Voir</button></td></tr>
     </tbody></table></div>
   </div>`;
   updateModList();
