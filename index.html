@@ -3573,8 +3573,8 @@ function renderMesCours(c) {
       const st = i<3?'done':i===3?'cur':'lock';
       const icon = st==='done'?'✅':st==='cur'?'▶':'🔒';
       const coursBtn = m.fichier && (st==='done'||st==='cur') ? `<a href="${m.fichier}" class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" title="Ouvrir le cours">📖 Cours</a>` : '';
-      const chip = st==='done'?`<span class="chip cg">Validé</span>${coursBtn}`:st==='cur'?`<span class="chip cb">En cours</span>
-        <button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>${coursBtn}`:'<span class="chip cgy">Verrouillé</span>';
+      const videoBtn = (st==='done'||st==='cur') ? `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>` : '';
+      const chip = st==='done'?`<span class="chip cg">Validé</span>${videoBtn}${coursBtn}`:st==='cur'?`<span class="chip cb">En cours</span>${videoBtn}${coursBtn}`:'<span class="chip cgy">Verrouillé</span>';
       return `<div class="mrow"><div class="mnum">${String(i+1).padStart(2,'0')}</div>
         <div class="mtitle">${icon} ${m.code} · ${m.title}</div>
         <div class="mdur">${m.dur}h</div>
