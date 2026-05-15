@@ -1563,52 +1563,192 @@ td{color:var(--text)!important}
      PAGE EXAMENS PUBLIQUE
 ════════════════════════════════════════ -->
 <div class="page" id="page-examens-pub">
-  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
-    <div style="max-width:1150px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
-      <div>
-        <div class="tag-r">Plateforme officielle</div>
-        <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin-top:.5rem">Examens Canado Technique</h1>
+
+  <!-- ── HERO EXAMENS ── -->
+  <div style="background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none"></div>
+    <div style="position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.12),transparent 70%);pointer-events:none"></div>
+    <div style="max-width:1150px;margin:0 auto;position:relative;z-index:1">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin-bottom:2.5rem">
+        <div>
+          <div class="tag-r" style="margin-bottom:.7rem">📝 Plateforme d'évaluation officielle</div>
+          <h1 style="font-family:var(--fD);font-weight:800;font-size:2.2rem;color:#fff;line-height:1.1;margin-bottom:.6rem">
+            Examens<br><span style="color:rgba(255,255,255,.45);font-size:1.3rem;font-weight:600">Canado Technique</span>
+          </h1>
+          <p style="color:rgba(255,255,255,.55);font-size:.86rem;max-width:480px;line-height:1.7">
+            Évaluations officielles APC multi-versions générées par IA · Résultats immédiats · Conformité MENFP
+          </p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.6rem;align-items:flex-end">
+          <button class="btn btn-red" style="font-size:.85rem;padding:.6rem 1.4rem" onclick="showLogin()">
+            🎓 Accéder à mon espace →
+          </button>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.3)">Connexion requise · Identifiant + code 2FA</div>
+        </div>
       </div>
-      <button class="btn btn-red" onclick="showLogin()">Accéder aux examens ▸</button>
+
+      <!-- Métriques rapides -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-bottom:none">
+        <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">87<span style="color:var(--red)">+</span></div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Modules évalués</div>
+        </div>
+        <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">3<span style="color:var(--red)">×</span></div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Versions par examen</div>
+        </div>
+        <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">IA</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Génération automatique</div>
+        </div>
+        <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">100<span style="color:var(--red)">%</span></div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Résultats immédiats</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div style="background:var(--g50);padding:2rem 1.5rem">
+
+  <!-- ── CORPS ── -->
+  <div style="background:var(--g50);padding:0 1.5rem 3rem">
     <div style="max-width:1150px;margin:0 auto">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem">
-        <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showLogin()">
-          <div style="font-size:2rem;margin-bottom:.7rem">🖥️</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Gestion des examens</h3>
-          <p style="font-size:.75rem;color:var(--g500)">Créer, valider et configurer les sessions d'examens par module</p>
-        </div>
-        <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showLogin()">
-          <div style="font-size:2rem;margin-bottom:.7rem">📊</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#1B3A8C;margin-bottom:.4rem">Résultats & Statistiques</h3>
-          <p style="font-size:.75rem;color:var(--g500)">Consulter les résultats en temps réel et analyser les performances</p>
-        </div>
-        <div style="background:#0d1f3c;border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rL);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s" onclick="showLogin()">
-          <div style="font-size:2rem;margin-bottom:.7rem">🎓</div>
-          <h3 style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff;margin-bottom:.4rem">Passer un examen</h3>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.78)">Accéder à vos examens officiels et obtenir vos résultats immédiatement</p>
-        </div>
 
-
-
-
-
-
-
-
-
-
+      <!-- Tabs de navigation -->
+      <div style="display:flex;gap:0;border-bottom:2px solid var(--bdr);margin-bottom:2rem;overflow-x:auto">
+        <button id="etab-sessions" onclick="showExamTab('sessions')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:700;color:var(--blue);border-bottom:2px solid var(--blue);margin-bottom:-2px;cursor:pointer;white-space:nowrap;font-family:var(--fB)">📅 Sessions actives</button>
+        <button id="etab-modules" onclick="showExamTab('modules')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--g500);cursor:pointer;white-space:nowrap;font-family:var(--fB)">📚 Catalogue modules</button>
+        <button id="etab-process" onclick="showExamTab('process')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--g500);cursor:pointer;white-space:nowrap;font-family:var(--fB)">🔄 Comment ça marche</button>
+        <button id="etab-certif" onclick="showExamTab('certif')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--g500);cursor:pointer;white-space:nowrap;font-family:var(--fB)">🏆 Certifications</button>
       </div>
-      <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.5rem">
-        <h3 style="font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--text);margin-bottom:1rem">Sessions d'examens — Juin/Juillet 2026</h3>
-        <div class="tw" id="pub-exam-table"></div>
+
+      <!-- TAB: SESSIONS ACTIVES -->
+      <div id="etab-sessions-content">
+        <!-- CTA connexion compacte -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
+          <div style="background:#fff;border:1.5px solid rgba(27,58,140,.18);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(27,58,140,.07)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(27,58,140,.14)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(27,58,140,.07)'" onclick="showLogin()">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blueG));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🖥️</div>
+            <div style="min-width:0">
+              <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text)">Espace enseignant</div>
+              <div style="font-size:.74rem;color:var(--g500);margin-top:2px">Créer · Gérer · Analyser les examens</div>
+            </div>
+            <div style="margin-left:auto;color:var(--blue);font-size:.9rem;flex-shrink:0">→</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(27,58,140,.2)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(27,58,140,.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(27,58,140,.2)'" onclick="showLogin()">
+            <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🎓</div>
+            <div style="min-width:0">
+              <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff">Passer un examen</div>
+              <div style="font-size:.74rem;color:rgba(255,255,255,.55);margin-top:2px">Accéder avec votre matricule</div>
+            </div>
+            <div style="margin-left:auto;color:rgba(255,255,255,.6);font-size:.9rem;flex-shrink:0">→</div>
+          </div>
+        </div>
+
+        <!-- Tableau sessions -->
+        <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden">
+          <div style="padding:1.1rem 1.4rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem">
+            <div>
+              <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text)">Sessions d'examens — Juin · Juillet 2026</div>
+              <div style="font-size:.72rem;color:var(--g500);margin-top:2px">Toutes filières · Calendrier officiel MENFP</div>
+            </div>
+            <div style="display:flex;gap:.5rem">
+              <span class="chip cg" style="font-size:.68rem">● Disponible</span>
+              <span class="chip cgd" style="font-size:.68rem">● En attente</span>
+              <span class="chip cgy" style="font-size:.68rem">● Fermé</span>
+            </div>
+          </div>
+          <div class="tw" id="pub-exam-table"></div>
+        </div>
       </div>
+
+      <!-- TAB: CATALOGUE MODULES -->
+      <div id="etab-modules-content" style="display:none">
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
+          <button class="btn btn-blue btn-sm exam-filter-btn act" data-prog="ALL" onclick="filterExamModules('ALL',this)">Tous</button>
+          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="TRI" onclick="filterExamModules('TRI',this)">🌐 TRI</button>
+          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="MEI" onclick="filterExamModules('MEI',this)">🔧 MEI</button>
+          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="ELM" onclick="filterExamModules('ELM',this)">⚡ ELM</button>
+          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="TEL" onclick="filterExamModules('TEL',this)">📡 TEL</button>
+        </div>
+        <div id="exam-modules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem"></div>
+      </div>
+
+      <!-- TAB: COMMENT ÇA MARCHE -->
+      <div id="etab-process-content" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-bottom:2rem">
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">01</div>
+            <div style="width:42px;height:42px;background:linear-gradient(135deg,var(--blue),var(--blueG));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">🔐</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Connexion sécurisée</div>
+            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Connectez-vous avec votre matricule étudiant et votre code 2FA. Votre session est chiffrée et unique.</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">02</div>
+            <div style="width:42px;height:42px;background:linear-gradient(135deg,#006B46,#00A066);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">📋</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Sélection du module</div>
+            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Choisissez parmi les modules activés par votre professeur. Chaque examen est unique — version A, B ou C attribuée aléatoirement.</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">03</div>
+            <div style="width:42px;height:42px;background:linear-gradient(135deg,#8B5E00,#C98A00);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">⏱️</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Examen chronométré</div>
+            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Le minuteur démarre dès votre première réponse. Durée selon le module (30 à 120 min). Pas de retour en arrière possible.</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">04</div>
+            <div style="width:42px;height:42px;background:linear-gradient(135deg,#5B2D8E,#8A50CC);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">🏆</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Résultats immédiats</div>
+            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Score, corrections détaillées et feedback immédiat après soumission. Résultats transmis automatiquement à votre professeur.</div>
+          </div>
+        </div>
+        <!-- Règlement -->
+        <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem">
+          <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem">📜 Règlement des examens — Canado Technique</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+            <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span>Un seul essai par session officielle</div>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span>Seuil de réussite : 70–85% selon module</div>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span>Connexion Internet stable requise</div>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span>Identité vérifiée par le professeur superviseur</div>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--red);font-weight:700;flex-shrink:0">✗</span>Aucune aide externe autorisée</div>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--red);font-weight:700;flex-shrink:0">✗</span>Partage de questions strictement interdit</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CERTIFICATIONS -->
+      <div id="etab-certif-content" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-bottom:1.5rem">
+          <div style="background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.6rem;color:#fff">
+            <div style="font-size:2rem;margin-bottom:.8rem">🌐</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;margin-bottom:.4rem">Cisco CCNA</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:1rem">Certification internationale en réseaux informatiques. Intégrée en TRI 2ème année après validation des 28 modules.</div>
+            <span class="chip" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);font-size:.65rem;border:1px solid rgba(255,255,255,.15)">TRI 2ème année</span>
+          </div>
+          <div style="background:linear-gradient(135deg,#1a0a2e,#5B2D8E);border-radius:var(--rL);padding:1.6rem;color:#fff">
+            <div style="font-size:2rem;margin-bottom:.8rem">🏛️</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;margin-bottom:.4rem">Diplôme MENFP</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:1rem">Diplôme d'État reconnu par le Ministère de l'Éducation Nationale. Délivré après validation de toutes les compétences APC.</div>
+            <span class="chip" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);font-size:.65rem;border:1px solid rgba(255,255,255,.15)">Toutes filières</span>
+          </div>
+          <div style="background:linear-gradient(135deg,#003828,#006B46);border-radius:var(--rL);padding:1.6rem;color:#fff">
+            <div style="font-size:2rem;margin-bottom:.8rem">🎖️</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;margin-bottom:.4rem">Badge de compétence</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:1rem">Chaque module réussi génère un badge numérique vérifiable. Partageable sur LinkedIn et votre portfolio professionnel.</div>
+            <span class="chip" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);font-size:.65rem;border:1px solid rgba(255,255,255,.15)">Module par module</span>
+          </div>
+        </div>
+        <div style="background:#fff;border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <div style="font-size:1.5rem">💡</div>
+          <div style="flex:1;min-width:200px">
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text)">Reconnaissance internationale</div>
+            <div style="font-size:.77rem;color:var(--g500);margin-top:3px;line-height:1.6">Les diplômes Canado Technique sont reconnus par les employeurs haïtiens et les partenaires internationaux (Cisco, entreprises industrielles, ONG techniques).</div>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="goPage('paiement')">S'inscrire maintenant →</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
-
 <!-- ════════════════════════════════════════
      PAGE PAIEMENT & INSCRIPTION
 ════════════════════════════════════════ -->
@@ -2172,45 +2312,48 @@ function renderProgs() {
    PAGE COURS
 ══════════════════════════════════════ */
 function renderCours() {
-  const progColors = {TRI:'var(--blue)',MEI:'#6B4500',ELM:'#004D30',TEL:'#3D1A6E'};
-
-  // Récupérer les cours avec images depuis data.json si disponible
+  const progColors = {TRI:'linear-gradient(135deg,#1B3A8C,#2B56C0)',MEI:'linear-gradient(135deg,#6B4500,#C98A00)',ELM:'linear-gradient(135deg,#004D30,#00A066)',TEL:'linear-gradient(135deg,#3D1A6E,#8A50CC)'};
   const coursData = (SITE_DATA && SITE_DATA.programmes) ? SITE_DATA.programmes : null;
 
   let html = Object.entries(MODULES).map(([prog,mods]) => {
     const info = PROG_INFO[prog];
     const pc = progColors[prog];
-
-    // Images de cours depuis data.json
     const progData = coursData ? coursData.find(p=>p.code===prog) : null;
     const coursImages = progData ? progData.cours : [];
+    const an2count = MODULES_2[prog]?.length||0;
 
     const imgStrip = coursImages.length ? `
-      <div style="display:flex;gap:.5rem;overflow-x:auto;padding:.5rem 0;margin-bottom:.8rem;scrollbar-width:thin">
+      <div style="display:flex;gap:.6rem;overflow-x:auto;padding:.4rem 0;margin-bottom:.9rem;scrollbar-width:thin">
         ${coursImages.map(c=>`
-          <div style="flex-shrink:0;width:100px;border-radius:8px;overflow:hidden;position:relative">
-            <img src="${c.image}" alt="${c.titre}" style="width:100%;height:70px;object-fit:cover;display:block"
-              onerror="this.parentElement.style.background='rgba(27,58,140,.15)';this.style.display='none'">
-            <div style="padding:.3rem .4rem;background:var(--g50);font-size:.6rem;color:var(--g700);line-height:1.3;font-weight:600">${c.titre}</div>
+          <div style="flex-shrink:0;width:110px;border-radius:9px;overflow:hidden;border:1px solid var(--bdr);background:#fff">
+            <img src="${c.image}" alt="${c.titre}" style="width:100%;height:68px;object-fit:cover;display:block"
+              onerror="this.parentElement.style.background='var(--g100)';this.style.display='none'">
+            <div style="padding:.3rem .5rem;font-size:.62rem;color:var(--g700);line-height:1.35;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.titre}</div>
           </div>`).join('')}
       </div>` : '';
 
-    return `<div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;cursor:pointer;transition:all .25s" onclick="showLogin()" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(27,58,140,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-      <div style="background:${pc};padding:1.3rem;display:flex;align-items:center;gap:.9rem">
-        <span style="font-size:1.4rem">${info.icon}</span>
-        <div>
-          <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff">${info.label}</div>
-          <div style="font-size:.65rem;color:rgba(255,255,255,.45);margin-top:2px">${prog} · ${mods.length} modules 1A + ${MODULES_2[prog]?.length||0} modules 2A</div>
+    return `<div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(27,58,140,.06)" onclick="showLogin()"
+      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 36px rgba(27,58,140,.16)';this.style.borderColor='rgba(27,58,140,.3)'"
+      onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(27,58,140,.06)';this.style.borderColor='var(--bdr)'">
+      <div style="background:${pc};padding:1.3rem 1.4rem;display:flex;align-items:center;gap:.9rem">
+        <div style="width:46px;height:46px;border-radius:11px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">${info.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${info.label}</div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.55);margin-top:3px">${prog} · ${mods.length} modules 1A &nbsp;·&nbsp; ${an2count} modules 2A</div>
         </div>
+        <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:.3rem .7rem;font-size:.68rem;color:#fff;font-weight:700;flex-shrink:0">🔒 Accès réservé</div>
       </div>
-      <div style="padding:1.1rem">
+      <div style="padding:1.2rem 1.3rem">
         ${imgStrip}
-        <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g500);margin-bottom:5px"><span>Progression</span><span>0/${mods.length} modules</span></div>
-        <div class="pbar"><div class="pfill" style="width:0%"></div></div>
-        <p style="font-size:.73rem;color:var(--g500);margin-top:.7rem">Connectez-vous pour accéder aux modules activés par votre professeur</p>
-        <div style="display:flex;gap:.5rem;margin-top:.8rem">
-          <button class="btn btn-blue btn-sm" onclick="event.stopPropagation();showLogin()">Accéder</button>
-          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openPayModal('${prog}','1')">S'inscrire</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:.73rem;color:var(--g500);margin-bottom:.5rem">
+          <span style="font-weight:600;color:var(--g700)">Progression</span>
+          <span style="font-weight:700;color:var(--g700)">0 / ${mods.length} modules</span>
+        </div>
+        <div class="pbar" style="margin-bottom:.9rem"><div class="pfill" style="width:0%"></div></div>
+        <p style="font-size:.76rem;color:var(--g500);line-height:1.65;margin-bottom:.9rem">Le professeur active chaque module. Connectez-vous avec votre matricule pour accéder aux cours disponibles.</p>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn btn-blue btn-sm" onclick="event.stopPropagation();showLogin()" style="font-size:.78rem">🔓 Se connecter</button>
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openPayModal('${prog}','1')" style="font-size:.78rem">S'inscrire</button>
         </div>
       </div>
     </div>`;
@@ -2222,23 +2365,115 @@ function renderCours() {
    EXAMENS PUBLICS
 ══════════════════════════════════════ */
 function renderPubExams() {
+  // Table sessions
   const sample = [
-    {prog:'TRI',code:'TRI-05',title:"Système d'exploitation",ver:'A·B',dur:75,q:30,status:'Disponible',sc:'cg'},
+    {prog:'TRI',code:'TRI-05',title:"Système d'exploitation",ver:'A·B·C',dur:75,q:30,status:'Disponible',sc:'cg'},
     {prog:'TRI',code:'TRI-13',title:'Technologies et services internet',ver:'A·B·C',dur:45,q:30,status:'Disponible',sc:'cg'},
+    {prog:'TRI',code:'TRI-08',title:'Logiciels de bureautique',ver:'A·B',dur:105,q:35,status:'Disponible',sc:'cg'},
     {prog:'MEI',code:'MEI-07',title:"Exécution de travaux d'usinage manuel",ver:'A·B',dur:90,q:25,status:'Disponible',sc:'cg'},
     {prog:'MEI',code:'MEI-05',title:'Santé et sécurité au travail',ver:'A',dur:30,q:20,status:'En attente',sc:'cgd'},
     {prog:'ELM',code:'ELM-03',title:'Circuits CC et CA',ver:'A·B',dur:90,q:30,status:'Disponible',sc:'cg'},
+    {prog:'ELM',code:'ELM-09',title:'Moteurs, générateurs et transformateurs',ver:'A·B',dur:75,q:28,status:'Disponible',sc:'cg'},
     {prog:'TEL',code:'TEL-02',title:'Circuits CC et CA',ver:'A·B',dur:90,q:30,status:'Disponible',sc:'cg'},
     {prog:'TEL',code:'TEL-07',title:"Circuit d'électronique numérique",ver:'A',dur:75,q:25,status:'Fermé',sc:'cgy'},
   ];
   const pc = {TRI:'cb',MEI:'cgd',ELM:'cg',TEL:'cgy'};
-  let h = `<table><thead><tr><th>Programme</th><th>Code</th><th>Module</th><th>Versions</th><th>Durée</th><th>Q.</th><th>Statut</th><th>Action</th></tr></thead><tbody>`;
+  const progIcons = {TRI:'🌐',MEI:'🔧',ELM:'⚡',TEL:'📡'};
+  let h = `<table><thead><tr><th>Programme</th><th>Code</th><th>Module</th><th>Versions</th><th>Durée</th><th>Questions</th><th>Statut</th><th>Action</th></tr></thead><tbody>`;
   sample.forEach(e=>{
     const canTry = e.status==='Disponible';
-    h+=`<tr><td><span class="chip ${pc[e.prog]}">${e.prog}</span></td><td style="font-size:.75rem;color:var(--g500)">${e.code}</td><td style="font-weight:500">${e.title}</td><td>${e.ver}</td><td>${e.dur} min</td><td>${e.q}</td><td><span class="chip ${e.sc}">${e.status}</span></td><td>${canTry?`<button class="btn btn-outline btn-sm" onclick="startQuickExam('${e.code}')">Essayer</button>`:'—'}</td></tr>`;
+    const statusIcon = e.status==='Disponible'?'●':e.status==='En attente'?'◐':'○';
+    h+=`<tr>
+      <td><span class="chip ${pc[e.prog]}" style="display:inline-flex;align-items:center;gap:3px">${progIcons[e.prog]} ${e.prog}</span></td>
+      <td><code style="font-size:.74rem;background:var(--g100);padding:2px 7px;border-radius:5px;color:var(--g700);font-family:monospace">${e.code}</code></td>
+      <td style="font-weight:600;font-size:.82rem;color:var(--text);max-width:200px">${e.title}</td>
+      <td style="font-size:.78rem"><span style="letter-spacing:.05em;color:var(--blue);font-weight:700">${e.ver}</span></td>
+      <td style="font-size:.78rem;white-space:nowrap"><span style="color:var(--g500)">⏱</span> ${e.dur} min</td>
+      <td style="font-size:.78rem;font-weight:600;color:var(--text)">${e.q} Q.</td>
+      <td><span class="chip ${e.sc}" style="font-size:.68rem">${statusIcon} ${e.status}</span></td>
+      <td>${canTry?`<button class="btn btn-blue btn-sm" style="font-size:.72rem" onclick="event.stopPropagation();showLogin()">Démarrer →</button>`:`<span style="color:var(--g300);font-size:.78rem">—</span>`}</td>
+    </tr>`;
   });
   h+=`</tbody></table>`;
   document.getElementById('pub-exam-table').innerHTML = h;
+
+  // Render module catalog
+  renderExamModules('ALL');
+}
+
+function showExamTab(tab) {
+  ['sessions','modules','process','certif'].forEach(t => {
+    const btn = document.getElementById('etab-'+t);
+    const cnt = document.getElementById('etab-'+t+'-content');
+    if(!btn||!cnt) return;
+    const isActive = t===tab;
+    cnt.style.display = isActive ? 'block' : 'none';
+    btn.style.color = isActive ? 'var(--blue)' : 'var(--g500)';
+    btn.style.fontWeight = isActive ? '700' : '600';
+    btn.style.borderBottom = isActive ? '2px solid var(--blue)' : 'none';
+    btn.style.marginBottom = isActive ? '-2px' : '0';
+  });
+}
+
+let _currentExamProg = 'ALL';
+function filterExamModules(prog, btn) {
+  _currentExamProg = prog;
+  document.querySelectorAll('.exam-filter-btn').forEach(b=>{
+    b.classList.remove('act','btn-blue');
+    b.classList.add('btn-outline');
+  });
+  btn.classList.add('act','btn-blue');
+  btn.classList.remove('btn-outline');
+  renderExamModules(prog);
+}
+
+function renderExamModules(progFilter) {
+  const grid = document.getElementById('exam-modules-grid');
+  if(!grid) return;
+  const colors = {TRI:{bg:'linear-gradient(135deg,#1B3A8C,#2B56C0)',icon:'🌐',chip:'cb'},
+    MEI:{bg:'linear-gradient(135deg,#6B4500,#C98A00)',icon:'🔧',chip:'cgd'},
+    ELM:{bg:'linear-gradient(135deg,#004D30,#00A066)',icon:'⚡',chip:'cg'},
+    TEL:{bg:'linear-gradient(135deg,#3D1A6E,#8A50CC)',icon:'📡',chip:'cgy'}};
+  const examStatuses = {
+    'TRI-05':'Disponible','TRI-13':'Disponible','TRI-08':'Disponible','TRI-03':'Disponible',
+    'MEI-07':'Disponible','MEI-03':'Disponible','MEI-05':'En attente',
+    'ELM-03':'Disponible','ELM-09':'Disponible','ELM-08':'En attente',
+    'TEL-02':'Disponible','TEL-05':'Disponible','TEL-07':'Fermé',
+  };
+  let allMods = [];
+  Object.entries(MODULES).forEach(([prog,mods])=>{
+    if(progFilter==='ALL'||progFilter===prog) {
+      mods.forEach(m=>allMods.push({...m,prog}));
+    }
+  });
+  grid.innerHTML = allMods.map(m=>{
+    const c = colors[m.prog];
+    const st = examStatuses[m.code]||'—';
+    const stClass = st==='Disponible'?'cg':st==='En attente'?'cgd':st==='Fermé'?'cgy':'';
+    const canStart = st==='Disponible';
+    return `<div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;transition:all .22s;cursor:pointer"
+      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(27,58,140,.13)'"
+      onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="background:${c.bg};padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span style="font-size:1rem">${c.icon}</span>
+          <code style="font-size:.72rem;color:rgba(255,255,255,.65);font-family:monospace;letter-spacing:.04em">${m.code}</code>
+        </div>
+        ${st!=='—'?`<span class="chip ${stClass}" style="font-size:.62rem">${st}</span>`:''}
+      </div>
+      <div style="padding:.9rem 1rem">
+        <div style="font-weight:700;font-size:.82rem;color:var(--text);line-height:1.4;margin-bottom:.5rem;min-height:2.2em">${m.title}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+            <span style="font-size:.68rem;color:var(--g500);background:var(--g100);padding:2px 7px;border-radius:5px">⏱ ${m.dur} h</span>
+            <span style="font-size:.68rem;color:var(--g500);background:var(--g100);padding:2px 7px;border-radius:5px">✓ ${m.seuil}%</span>
+          </div>
+          ${canStart?`<button class="btn btn-blue btn-sm" style="font-size:.7rem;padding:.25rem .7rem" onclick="event.stopPropagation();showLogin()">Passer →</button>`:
+            `<button class="btn btn-ghost btn-sm" style="font-size:.7rem;padding:.25rem .7rem;opacity:.5" disabled>Indisponible</button>`}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ══════════════════════════════════════
