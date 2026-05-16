@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-08 — Logiciels de bureautique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.mod-meta-item strong{color:rgba(255,255,255,.9)}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
+.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
+.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
+.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
+.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-body{padding:1.5rem}
+.content-section{margin-bottom:1.8rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
+.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
+.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.content-section strong{color:var(--text);font-weight:700}
+.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
+.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
+.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
+.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
+.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
+.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
+.data-table tr:hover td{background:rgba(27,58,140,.04)}
+.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
+.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
+.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
+.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
+.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
+.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
+.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
+.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
+.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
+.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.video-guide-text strong{color:rgba(255,255,255,.85)}
+.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
+.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
+.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
+.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
+.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
+.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
+.quiz-body{padding:1.2rem 1.5rem}
+.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
+.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
+.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
+.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
+.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
+.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
+.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
+.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
+.quiz-expl.show{display:block}
+.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.quiz-score-display{font-size:.82rem;color:var(--g700)}
+.quiz-score-display strong{color:var(--text);font-size:.92rem}
+.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
+.btn-quiz-submit:hover{background:#d4a800}
+.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
+.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* SÉANCE PRATIQUE */
+.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pratique-header-info{flex:1}
+.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
+.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
+.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-body{padding:1.3rem 1.5rem}
+.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
+.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
+.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
+.pratique-card ul{padding-left:1.2rem}
+.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
+.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
+.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
+.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
+.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
+.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
+.pratique-confirm.show{display:flex}
+/* DÉMONSTRATION */
+.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.demo-header-info{flex:1}
+.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
+.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
+.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
+.demo-body{padding:1.3rem 1.5rem}
+.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
+.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
+.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
+.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
+.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
+.demo-step-text strong{color:var(--teal);font-weight:700}
+.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
+.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
+.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
+/* DEVOIR */
+.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.devoir-header-info{flex:1}
+.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
+.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
+.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.devoir-body{padding:1.3rem 1.5rem}
+.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
+.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
+.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.devoir-instructions ol{padding-left:1.3rem}
+.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
+.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
+.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
+.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
+.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
+.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
+.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
+.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
+.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
+.completion.show{display:block}
+.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
+.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #toc-sidebar.toc-open{transform:translateX(0)!important}
+  #toc-overlay{display:block!important}
+  .main-content{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .slot-grid{grid-template-columns:1fr 1fr!important}
+}
+#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
+@media(max-width:768px){#toc-mob-btn{display:flex!important}}
+#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
+.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
+.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
+.print-btn:hover{color:var(--g200)}
+@media print{
+  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
+  .video-block,.pratique-block,.demo-block{display:none!important}
+  .layout{display:block!important}
+  .main-content{width:100%!important}
+  body{background:#fff!important;color:#000!important}
+}
+
+</style>
+</head>
+<body>
+<div class="mod-header">
+  <div class="mod-header-in">
+    <div class="mod-tag">📊 Module TRI-08 · 1ère Année</div>
+    <h1>Logiciels de <em>bureautique</em></h1>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ Durée : <strong>105 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
+      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
+      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
+      <div class="mod-meta-item">🔬 Pratique : <strong>Labo bureautique (obligatoire)</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Dossier Word+Excel+PPT</strong></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    </div>
+  </div>
+</div><div class="wrap"><div class="layout"><div class="toc">
+  <h3>📋 Sommaire</h3>
+  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Traitement de texte Word/Writer</span></div>
+<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Tableur Excel/Calc</span></div>
+<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Présentations PowerPoint</span></div>
+<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Outils PDF et collaboration</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Séance pratique — Labo bureautique</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Démonstration document</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Dossier bureautique</div></div>
+</div><div><div class="chapter" id="chapter-1">
+  <div class="chapter-header">
+    <div class="chapter-num">01</div>
+    <div class="chapter-info">
+      <h2>Traitement de texte professionnel</h2>
+      <div class="chapter-meta"><span>🕐 26 heures</span><span class="chapter-badge">Word · Styles · Table des matières · Révision</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Créer un document professionnel avec Word</div><div class="video-subtitle">Durée : 15 min · Demo complète</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Structure d'un document pro (4 min)</strong> — Page de garde, table des matières automatique, numérotation des pages, en-têtes et pieds de page.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Styles et mise en forme (4 min)</strong> — Styles Titre1/Titre2/Normal. Pourquoi utiliser les styles plutôt que du formatage manuel.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Insertion et references (4 min)</strong> — Images, tableaux, references croisées. Création automatique de la table des matières.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Révision et commentaires (3 min)</strong> — Suivi des modifications, commentaires, comparaison de documents.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
+</div><div class="content-section"><h3>1.1 Fonctionnalités essentielles Word / LibreOffice Writer</h3><table class="data-table"><thead><tr><th>Fonctionnalité</th><th>Raccourci/Menu</th><th>Usage professionnel</th></tr></thead><tbody><tr><td>Styles de paragraphe</td><td>Onglet Accueil > Styles</td><td>Cohérence visuelle et table des matières auto</td></tr><tr><td>Table des matières</td><td>Références > Table des matières</td><td>Documents longs: rapports, manuels</td></tr><tr><td>En-têtes et pieds de page</td><td>Insertion > En-tête/Pied de page</td><td>Numérotation, logo, titre du document</td></tr><tr><td>Styles de tableau</td><td>Insertion > Tableau > Styles</td><td>Tableaux professionnels sans formatage manuel</td></tr><tr><td>Suivi des modifications</td><td>Révision > Suivre les modifications</td><td>Collaboration et révision de documents</td></tr><tr><td>Mailing / Publipostage</td><td>Publipostage > Démarrer</td><td>Générer lettres personnalisées en série</td></tr></tbody></table><div class="info-box"><span class="info-box-label">📌 Contexte professionnel haïtien</span>Dans les entreprises haïtiennes, les rapports d'intervention, les devis, les procédures internes, les courriers officiels — tous sont produits avec Word. Un technicien TRI qui sait produire des documents professionnels impeccables est immédiatement plus crédible.</div></div><div class="content-section"><h3>1.2 Les 5 erreurs les plus fréquentes dans les documents Word</h3><table class="data-table"><thead><tr><th>Erreur</th><th>Conséquence</th><th>Solution correcte</th></tr></thead><tbody><tr><td>Formater manuellement chaque titre</td><td>Incohérence + table des matières impossible</td><td>Utiliser les Styles Titre1, Titre2, Titre3</td></tr><tr><td>Espaces pour aligner le texte</td><td>Mise en page qui se casse au moindre changement</td><td>Utiliser les tabulations et les retraits</td></tr><tr><td>Captures d'écran de tableaux</td><td>Tableaux non éditables, basse qualité</td><td>Insérer un vrai tableau Word</td></tr><tr><td>Pas de numérotation de pages</td><td>Professionellement inacceptable</td><td>Ajouter automatiquement via pied de page</td></tr><tr><td>Police et taille aléatoires</td><td>Document visuellement chaotique</td><td>Définir police du corps: Calibri 11 ou Arial 11</td></tr></tbody></table></div><div class="quiz-block" id="quiz-1">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Pourquoi utiliser les "Styles" de paragraphe dans Word ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Pour gagner du temps uniquement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Pour générer une table des matières automatique et assurer la cohérence</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Pour changer les couleurs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Parce que c'est exigé par Microsoft</button></div>
+    <div class="quiz-expl" id="expl-q0_1">Les Styles permettent 2 choses essentielles: cohérence visuelle (tous les Titre1 identiques) et génération automatique de la table des matières. Sans styles, la table des matières ne peut pas être générée.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="2">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quelle est la bonne façon d'aligner du texte dans un tableau Word ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Utiliser des espaces</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Appuyer sur Tab plusieurs fois</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Utiliser les colonnes et la mise en forme du tableau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Insérer une capture d'écran</button></div>
+    <div class="quiz-expl" id="expl-q1_1">Les tableaux Word ont des fonctions d'alignement intégrées. Les espaces et tabulations pour aligner créent des problèmes dès que la police ou la taille change. Un vrai tableau s'aligne proprement à tout moment.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Comment numéroter automatiquement les pages dans Word ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Taper le numéro sur chaque page</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Insertion > Numérotation des pages (via pied de page)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Utiliser une macro complexe</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Ce n'est pas possible dans Word</button></div>
+    <div class="quiz-expl" id="expl-q2_1">Insertion > En-tête et pied de page > Numéro de page insère automatiquement le numéro de page qui se met à jour sur toutes les pages. Ne jamais taper les numéros manuellement.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Pour un document de 30 pages avec chapitres, quel élément est indispensable ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Un graphique</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Une table des matières automatique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Un fond coloré</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Des images décoratives</button></div>
+    <div class="quiz-expl" id="expl-q3_1">Une table des matières automatique est indispensable pour tout document de plus de 5 pages. Elle permet de naviguer rapidement et se met à jour automatiquement quand les titres changent.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-2">
+  <div class="chapter-header">
+    <div class="chapter-num">02</div>
+    <div class="chapter-info">
+      <h2>Tableur</h2>
+      <div class="chapter-meta"><span>🕐 26 heures</span><span class="chapter-badge">Excel · Formules · Graphiques · Tableaux de bord</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Excel — Du tableur au tableau de bord</div><div class="video-subtitle">Durée : 15 min · Formules et graphiques</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Fondamentaux Excel (4 min)</strong> — Cellules, plages, feuilles. Types de données. Règle #1 : une info par cellule. Structure d'un tableau de données propre.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Formules essentielles (5 min)</strong> — SOMME, MOYENNE, MAX, MIN, NB, SI, RECHERCHEV. Demo sur un tableau d'inventaire réseau haïtien.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Mise en forme conditionnelle (3 min)</strong> — Cellules qui changent de couleur selon la valeur. Exemple: stock sous le seuil = rouge.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Graphiques professionnels (3 min)</strong> — Choisir le bon type de graphique. Barres, courbes, camembert. Les faire lisibles et imprimables.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
+</div><div class="content-section"><h3>2.1 Formules Excel essentielles pour le technicien TRI</h3><table class="data-table"><thead><tr><th>Formule</th><th>Syntaxe</th><th>Exemple d'usage réseau/IT</th></tr></thead><tbody><tr><td>SOMME</td><td>=SOMME(A1:A10)</td><td>Total des équipements en stock</td></tr><tr><td>MOYENNE</td><td>=MOYENNE(B2:B20)</td><td>Temps moyen de résolution des tickets</td></tr><tr><td>MAX/MIN</td><td>=MAX(C1:C50)</td><td>Latence maximale/minimale sur le réseau</td></tr><tr><td>NB.SI</td><td>=NB.SI(D2:D100,"ACTIF")</td><td>Nombre d'équipements actifs</td></tr><tr><td>SI</td><td>=SI(E2>80,"Critique","OK")</td><td>Alerte si utilisation CPU > 80%</td></tr><tr><td>RECHERCHEV</td><td>=RECHERCHEV(F2,TablePC,3,FAUX)</td><td>Retrouver le technicien assigné à un ticket</td></tr><tr><td>CONCATENER</td><td>=CONCATENER(A2," — ",B2)</td><td>Fusionner Marque + Modèle pour inventaire</td></tr></tbody></table><div class="info-box"><span class="info-box-label">💼 Excel en entreprise haïtienne</span>Les entreprises haïtiennes utilisent Excel pour: inventaires IT, suivi des pannes, rapports de maintenance, tableaux de bord réseau, budgets IT. Un technicien TRI qui maîtrise Excel avancé peut produire des rapports professionnels qui impressionnent la direction.</div></div><div class="quiz-block" id="quiz-2">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Quelle formule Excel compte les cellules contenant "ACTIF" dans une plage ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>=SOMME(A1:A10)</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>=NB.SI(A1:A10,"ACTIF")</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>=SI(A1="ACTIF")</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>=COMPTE("ACTIF")</button></div>
+    <div class="quiz-expl" id="expl-q0_2">NB.SI (ou COUNTIF en anglais) compte les cellules qui correspondent à un critère. Syntaxe: =NB.SI(plage,"critère"). Très utile pour les inventaires IT.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="2">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quel type de graphique Excel est le meilleur pour comparer des catégories ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Graphique en courbes</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Graphique en secteurs (camembert)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Histogramme (barres)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Graphique en nuages de points</button></div>
+    <div class="quiz-expl" id="expl-q1_2">Le graphique en barres/histogramme est idéal pour comparer des catégories (nb de pannes par département, coût par type d'équipement). Les courbes = évolution dans le temps. Camembert = proportions.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Quelle est la règle #1 pour un tableau de données Excel professionnel ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Utiliser beaucoup de couleurs</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Une seule information par cellule</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Fusionner toutes les cellules du titre</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Utiliser uniquement des chiffres</button></div>
+    <div class="quiz-expl" id="expl-q2_2">Une information par cellule est la règle fondamentale. Évite de mettre "Nom Prénom" dans une cellule — mets Prénom et Nom dans des colonnes séparées. Cela permet les filtres, tris et formules.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">La mise en forme conditionnelle permet de...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Changer la police automatiquement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Colorer une cellule selon sa valeur</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Protéger les cellules par mot de passe</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Créer des listes déroulantes</button></div>
+    <div class="quiz-expl" id="expl-q3_2">La mise en forme conditionnelle change automatiquement la couleur ou le style d'une cellule selon sa valeur. Exemple: rouge si utilisation disque > 90%, vert si < 50%. Très utile pour les tableaux de bord réseau.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-3">
+  <div class="chapter-header">
+    <div class="chapter-num">03</div>
+    <div class="chapter-info">
+      <h2>Présentations professionnelles</h2>
+      <div class="chapter-meta"><span>🕐 26 heures</span><span class="chapter-badge">PowerPoint · Design · Règle 10-20-30</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — PowerPoint — Présenter comme un professionnel</div><div class="video-subtitle">Durée : 12 min · Design et structure</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Règle 10-20-30 (2 min)</strong> — Max 10 slides, 20 minutes de présentation, police 30pt minimum. La règle de Guy Kawasaki.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Design professionnel (4 min)</strong> — Utiliser les thèmes intégrés. Cohérence: mêmes polices, mêmes couleurs sur toutes les slides. Moins de texte, plus d'images.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Animations utiles vs inutiles (3 min)</strong> — Les animations qui distraient vs celles qui aident. Apparition simple = OK. Spinning tornado = non.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Slide master (3 min)</strong> — Comment modifier le design de toutes les slides en une seule opération avec le Masque des diapositives.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
+</div><div class="content-section"><h3>3.1 Les règles d'or d'une présentation professionnelle</h3><table class="data-table"><thead><tr><th>Règle</th><th>Bonne pratique</th><th>Erreur fréquente</th></tr></thead><tbody><tr><td>Densité de texte</td><td>3–5 points max par slide</td><td>Coller tout le rapport sur la slide</td></tr><tr><td>Police</td><td>Minimum 24–30pt (lisible au fond de la salle)</td><td>Police 10pt que personne ne lit</td></tr><tr><td>Images</td><td>Images haute qualité, pertinentes</td><td>Images pixelisées ou logos floutés</td></tr><tr><td>Animations</td><td>Apparitions simples uniquement</td><td>Tourbillons, rebonds, effets 3D</td></tr><tr><td>Cohérence</td><td>Mêmes couleurs et polices partout</td><td>Chaque slide a son propre design</td></tr><tr><td>Conclusion</td><td>"Merci" + coordonnées + QR code</td><td>Fin abrupte sans récapitulatif</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">La règle 10-20-30 de Guy Kawasaki signifie...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>10h de travail, 20 slides, 30 min de présentation</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>10 slides max, 20 min de présentation, police 30pt minimum</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>10 animations, 20 images, 30 couleurs max</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>10 personnes dans le public, 20 questions, 30 slides</button></div>
+    <div class="quiz-expl" id="expl-q0_3">La règle 10-20-30: maximum 10 slides, présentation de 20 minutes maximum, police minimum 30 points. Ces contraintes forcent la concision et l'impact. Une présentation de 50 slides perd le public.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="2">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Combien de points maximum par slide pour une présentation professionnelle ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>10–15 points</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>8–10 points</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>3–5 points</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>1–2 points uniquement</button></div>
+    <div class="quiz-expl" id="expl-q1_3">3 à 5 points par slide est la règle. La slide doit amplifier ce que vous dites, pas le remplacer. Si les gens lisent vos slides, ils n'écoutent pas — et inversement.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="2">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Quelle animation PowerPoint est acceptable dans un contexte professionnel ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Texte qui tournoie en spirale</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Transition "Cube 3D"</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Apparition simple de gauche à droite</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Explosion d'étoiles sur chaque diapositive</button></div>
+    <div class="quiz-expl" id="expl-q2_3">Les apparitions simples (de gauche, droite, haut, bas) sont les seules animations professionnellement acceptables. Toutes les animations complexes distraient le public du message.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Le "Masque des diapositives" dans PowerPoint permet de...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Masquer des slides pendant la présentation</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Modifier le design de toutes les slides en une opération</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Créer des animations automatiques</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Protéger la présentation par mot de passe</button></div>
+    <div class="quiz-expl" id="expl-q3_3">Le Masque des diapositives (Slide Master) est le modèle global. Toute modification du Masque s'applique à toutes les slides: logo, police, couleurs, fond. Essentiel pour les présentations avec identité visuelle cohérente.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-4">
+  <div class="chapter-header">
+    <div class="chapter-num">04</div>
+    <div class="chapter-info">
+      <h2>PDF et outils collaboratifs</h2>
+      <div class="chapter-meta"><span>🕐 27 heures</span><span class="chapter-badge">PDF · Google Workspace · Sauvegardes</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — PDF et outils collaboratifs</div><div class="video-subtitle">Durée : 10 min · PDF, Google Workspace, Office 365</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Créer et modifier des PDF (3 min)</strong> — Imprimer en PDF depuis n'importe quelle application. Adobe Acrobat vs LibreOffice vs PDF24 (gratuit). Remplir un formulaire PDF.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Compresser et fusionner des PDF (3 min)</strong> — PDF trop lourd pour l'email? Compresser avec ilovepdf.com ou PDF24. Fusionner plusieurs documents en un.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Google Workspace vs Office 365 (2 min)</strong> — Comparatif. Collaboration en temps réel. Comment partager correctement (pas d'envoi de pièces jointes = partager un lien).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Versions et sauvegardes (2 min)</strong> — Historique des versions dans Google Drive. OneDrive auto-sync. Règle 3-2-1 pour les sauvegardes importantes.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
+</div><div class="content-section"><h3>4.1 Formats de fichiers et compatibilité</h3><table class="data-table"><thead><tr><th>Format</th><th>Usage principal</th><th>Compatible avec</th></tr></thead><tbody><tr><td>.docx</td><td>Documents Word</td><td>Word 2007+, LibreOffice Writer, Google Docs</td></tr><tr><td>.xlsx</td><td>Tableaux Excel</td><td>Excel 2007+, LibreOffice Calc, Google Sheets</td></tr><tr><td>.pptx</td><td>Présentations PowerPoint</td><td>PowerPoint 2007+, LibreOffice Impress, Google Slides</td></tr><tr><td>.pdf</td><td>Documents finaux non éditables</td><td>Adobe Reader, navigateurs web, tous systèmes</td></tr><tr><td>.odt/.ods/.odp</td><td>LibreOffice Open Document</td><td>LibreOffice, Word/Excel/PPT avec conversion</td></tr><tr><td>.csv</td><td>Données tabulaires simples</td><td>Excel, Calc, tous langages de programmation</td></tr></tbody></table><div class="info-box"><span class="info-box-label">💼 Outil recommandé en Haïti : PDF24</span>PDF24.org est un outil gratuit, en ligne et installable, qui permet de compresser, fusionner, diviser, convertir et remplir des PDF sans installation lourde. En contexte haïtien avec connexion limitée, l'application desktop (hors-ligne) est recommandée.</div></div><div class="quiz-block" id="quiz-4">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="2">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Quel format de fichier est le mieux adapté pour envoyer un document final qui ne doit pas être modifié ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>DOCX</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>XLSX</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>PDF</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>TXT</button></div>
+    <div class="quiz-expl" id="expl-q0_4">Le PDF (Portable Document Format) garantit que le document s'affiche identiquement sur tous les systèmes, quel que soit l'OS ou la version de logiciel. Idéal pour les rapports finaux, factures, formulaires.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Comment partager un document Google Docs de façon professionnelle ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Envoyer le fichier en pièce jointe email</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Partager un lien avec les droits appropriés</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Imprimer et remettre en main propre</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Exporter en PDF et envoyer</button></div>
+    <div class="quiz-expl" id="expl-q1_4">Partager un lien Google Docs est la méthode moderne et professionnelle. Avantages: collaboration en temps réel, historique des versions, toujours la version la plus récente, pas de problèmes de pièces jointes volumineuses.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">La règle 3-2-1 de sauvegarde signifie...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Sauvegarder 3 fois par jour, 2 fois par semaine, 1 fois par mois</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>3 copies, sur 2 supports différents, dont 1 hors site</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>3 fichiers max par dossier, 2 versions, 1 archivage</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Sauvegarder pendant 3 mois puis supprimer</button></div>
+    <div class="quiz-expl" id="expl-q2_4">Règle 3-2-1: 3 copies de vos données, sur 2 supports différents (ex: PC + clé USB), dont 1 hors site (ex: cloud ou domicile). Cette règle protège contre les pannes matérielles, vols, incendies et ransomwares.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Quelle est la meilleure façon de réduire la taille d'un PDF trop lourd ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Réimprimer le document</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Utiliser un outil de compression PDF comme PDF24 ou ilovepdf</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Convertir en DOCX</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Supprimer certaines pages</button></div>
+    <div class="quiz-expl" id="expl-q3_4">Des outils gratuits comme PDF24 ou ilovepdf.com compriment les PDF en réduisant la résolution des images et en optimisant la structure interne. Un PDF de 50Mo peut facilement être réduit à 5Mo sans perte visible de qualité.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="pratique-block">
+  <div class="pratique-header">
+    <div class="pratique-icon-wrap">🔬</div>
+    <div class="pratique-header-info">
+      <h3>Séance Pratique — SP-TRI-08-01</h3>
+      <span>Labo bureautique — Production de documents professionnels</span>
+    </div>
+    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
+  </div>
+  <div class="pratique-body">
+    <p class="pratique-desc">Cette séance est OBLIGATOIRE pour valider TRI-08. Tu vas produire en conditions réelles 3 documents professionnels interconnectés: un rapport Word, un tableau Excel, et une présentation PowerPoint sur le même sujet. Durée: 3 heures.</p>
+    <div class="pratique-grid">
+      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Produire un rapport Word avec styles, table des matières, images et numérotation</li><li>Créer un tableau Excel avec formules, mise en forme conditionnelle et graphique</li><li>Concevoir une présentation PowerPoint de 8 slides au style cohérent</li><li>Exporter les 3 documents en PDF avec les bons paramètres</li></ul></div>
+      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>PC sous Windows avec Microsoft Office ou LibreOffice installé</li><li>Un sujet de rapport au choix (fourni par le professeur)</li><li>Clé USB pour sauvegarder votre travail</li><li>Carnet de notes pour documenter votre progression</li></ul></div>
+    </div>
+    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
+    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00')">Lun 19 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 13h00')">Lun 19 Mai — 13h00</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00')">Mar 20 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 13h00')">Mar 20 Mai — 13h00</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00')">Mer 21 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 13h00')">Jeu 22 Mai — 13h00</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00')">Ven 23 Mai — 8h00</button></div>
+    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-08-01')">📅 Confirmer ma réservation</button>
+    <div class="pratique-confirm" id="confirm-sp-08-01"></div>
+  </div>
+</div><div class="demo-block">
+  <div class="demo-header">
+    <div class="demo-icon-wrap">🎭</div>
+    <div class="demo-header-info">
+      <h3>Démonstration — DEM-TRI-08-01</h3>
+      <span>Démonstration devant le professeur</span>
+    </div>
+    <div class="demo-badge">Évaluation pratique</div>
+  </div>
+  <div class="demo-body">
+    <p class="demo-desc">Après la séance de labo, tu présenteras oralement ton document Word ou ta présentation PowerPoint au professeur pendant 5 minutes. L'objectif est de montrer que tu maîtrises les fonctionnalités avancées et que tu peux expliquer tes choix de mise en forme.</p>
+    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
+    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Ouvrir et présenter</strong> — Ouvrir le document Word et présenter sa structure : table des matières, styles utilisés, numérotation</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Démontrer les styles</strong> — Modifier un style Titre1 et montrer que tous les titres changent automatiquement</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Présenter le tableau Excel</strong> — Expliquer les formules utilisées et montrer la mise en forme conditionnelle</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Lancer la présentation</strong> — Passer en mode Diaporama et présenter les 8 slides avec les animations appropriées</div></div>
+    <div class="demo-eval">
+      <div class="demo-eval-label">✅ Critères d'évaluation</div>
+      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Rapport Word avec table des matières fonctionnelle</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Styles Titre utilisés correctement</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Excel: minimum 3 formules différentes</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Graphique Excel professionnel</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>PPT: 8 slides, police >24pt, cohérence visuelle</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Animations non excessives</div></div>
+    </div>
+  </div>
+</div><div class="devoir-block">
+  <div class="devoir-header">
+    <div class="devoir-icon-wrap">📝</div>
+    <div class="devoir-header-info">
+      <h3>Devoir TRI-08 — Dossier bureautique complet — Rapport technique</h3>
+      <span>Livrable individuel · Word + Excel + PowerPoint + PDF</span>
+    </div>
+    <div class="devoir-deadline">Délai : 1 semaine</div>
+  </div>
+  <div class="devoir-body">
+    <p class="devoir-desc">Tu dois produire un dossier bureautique professionnel complet sur le thème "Inventaire et rapport de l'infrastructure informatique de mon école". Les 3 documents doivent être cohérents visuellement et techniquement corrects.</p>
+    <div class="devoir-instructions">
+      <div class="devoir-instructions-label">📋 Instructions</div>
+      <ol><li>Rédige un <strong>rapport Word</strong> (minimum 4 pages) avec: page de garde, table des matières automatique, styles Titre1/Titre2/Corps, images, tableaux, et numérotation des pages.</li><li>Crée un <strong>tableau Excel</strong> d'inventaire IT avec: en-têtes, 20+ lignes de données fictives, formules (SOMME, NB.SI, SI), mise en forme conditionnelle, et un graphique professionnel.</li><li>Conçois une <strong>présentation PowerPoint</strong> de 8 à 10 slides présentant les conclusions du rapport. Applique la règle 10-20-30.</li><li>Exporte les 3 documents en <strong>PDF</strong> avec les paramètres appropriés.</li><li>Compresse les 3 PDF en un seul fichier ZIP et soumets via la plateforme.</li></ol>
+    </div>
+    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
+    <div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Rapport Word: table des matières, styles, mise en forme, images</div></div><div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Excel: formules, mise en forme conditionnelle, graphique professionnel</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">PowerPoint: 8-10 slides, cohérence visuelle, règle de densité</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Export PDF correct + organisation du ZIP</div></div>
+    <div class="devoir-submit-area">
+      <div class="devoir-submit-icon">📤</div>
+      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
+      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
+    </div>
+  </div>
+</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-08 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<script>
+const quizState={};
+function selectOpt(el,idx,qid){
+  const q=el.closest('.quiz-q');const id=q.dataset.q;
+  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
+  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
+  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+}
+function submitQuiz(qid,correct,expl){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+  if(!qBlock)return;
+  const q=qBlock.querySelector('[data-q="'+qid+'"]');
+  const opts=qBlock.querySelectorAll('.quiz-opt');
+  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
+  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
+  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
+  updateProgBar();
+}
+function retryQuiz(qid){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
+  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
+  if(quizState[qid])delete quizState[qid][qid];
+}
+function setVideo(btn,url,ch){
+  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
+  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+}
+function completeChapter(n){
+  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
+  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
+  updateProgBar();showToastM('Chapitre '+n+' validé !');
+}
+function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
+function updateProgBar(){
+  const code=getModCode();let total=0,ok=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
+  if(total===0)return;const pct=Math.round(ok/total*100);
+  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
+  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
+  checkCompletion(pct);
+}
+function checkCompletion(pct){
+  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
+  if(pct>=seuil){
+    const comp=document.getElementById('completion-block');
+    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
+    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+  }
+}
+function scrollToChapter(n){
+  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+}
+function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
+function reserverSeance(id){
+  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
+  if(!sel){showToastM('Sélectionne un créneau.');return;}
+  showToastM('✅ Créneau réservé : '+sel.textContent);
+  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+}
+function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
+function printModule(){window.print();}
+let _toastT2;
+function showToastM(msg){
+  let t=document.getElementById('mod-toast');
+  if(!t){t=document.createElement('div');t.id='mod-toast';
+    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+}
+let _chrStart=Date.now();
+function _initTimer(){
+  const code=getModCode();
+  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
+  _chrStart=Date.now()-saved*1000;
+  setInterval(()=>{
+    const el=document.getElementById('session-timer');
+    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
+    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
+    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+</script>
+
+<div id="mod-code-data" data-code="TRI-08" style="display:none"></div>
+<div id="seuil-data" data-seuil="60" style="display:none"></div>
+</body>
+</html>

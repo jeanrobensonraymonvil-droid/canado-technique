@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-02 — Gestion du temps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.mod-meta-item strong{color:rgba(255,255,255,.9)}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
+.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
+.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
+.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
+.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-body{padding:1.5rem}
+.content-section{margin-bottom:1.8rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
+.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
+.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.content-section strong{color:var(--text);font-weight:700}
+.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
+.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
+.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
+.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
+.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
+.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
+.data-table tr:hover td{background:rgba(27,58,140,.04)}
+.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
+.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
+.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
+.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
+.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
+.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
+.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
+.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
+.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
+.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.video-guide-text strong{color:rgba(255,255,255,.85)}
+.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
+.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
+.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
+.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
+.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
+.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
+.quiz-body{padding:1.2rem 1.5rem}
+.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
+.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
+.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
+.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
+.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
+.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
+.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
+.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
+.quiz-expl.show{display:block}
+.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.quiz-score-display{font-size:.82rem;color:var(--g700)}
+.quiz-score-display strong{color:var(--text);font-size:.92rem}
+.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
+.btn-quiz-submit:hover{background:#d4a800}
+.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
+.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* SÉANCE PRATIQUE */
+.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pratique-header-info{flex:1}
+.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
+.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
+.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-body{padding:1.3rem 1.5rem}
+.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
+.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
+.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
+.pratique-card ul{padding-left:1.2rem}
+.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
+.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
+.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
+.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
+.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
+.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
+.pratique-confirm.show{display:flex}
+/* DÉMONSTRATION */
+.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.demo-header-info{flex:1}
+.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
+.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
+.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
+.demo-body{padding:1.3rem 1.5rem}
+.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
+.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
+.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
+.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
+.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
+.demo-step-text strong{color:var(--teal);font-weight:700}
+.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
+.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
+.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
+/* DEVOIR */
+.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.devoir-header-info{flex:1}
+.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
+.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
+.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.devoir-body{padding:1.3rem 1.5rem}
+.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
+.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
+.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.devoir-instructions ol{padding-left:1.3rem}
+.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
+.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
+.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
+.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
+.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
+.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
+.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
+.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
+.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
+.completion.show{display:block}
+.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
+.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #toc-sidebar.toc-open{transform:translateX(0)!important}
+  #toc-overlay{display:block!important}
+  .main-content{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .slot-grid{grid-template-columns:1fr 1fr!important}
+}
+#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
+@media(max-width:768px){#toc-mob-btn{display:flex!important}}
+#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
+.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
+.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
+.print-btn:hover{color:var(--g200)}
+@media print{
+  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
+  .video-block,.pratique-block,.demo-block{display:none!important}
+  .layout{display:block!important}
+  .main-content{width:100%!important}
+  body{background:#fff!important;color:#000!important}
+}
+
+</style>
+</head>
+<body>
+<div class="mod-header">
+  <div class="mod-header-in">
+    <div class="mod-tag">⏱ Module TRI-02 · 1ère Année</div>
+    <h1>Gestion du <em>temps</em></h1>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ Durée : <strong>30 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>70%</strong></div>
+      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
+      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
+      <div class="mod-meta-item">📝 Devoir : <strong>Planning hebdomadaire</strong></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<div class="layout">
+  <div class="toc">
+    <h3>📋 Sommaire</h3>
+    <div class="toc-item act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Pourquoi gérer son temps ?</span></div>
+    <div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Outils de planification</span></div>
+    <div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Matrice Eisenhower</span></div>
+    <div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Équilibre et bien-être</span></div>
+    <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)">
+      <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.4rem">Évaluation</div>
+      <div style="font-size:.75rem;color:var(--purple);padding:.3rem .5rem;background:rgba(107,45,142,.06);border-radius:8px;border:1px solid rgba(107,45,142,.12)">📝 Devoir — Planning personnel</div>
+    </div>
+  </div>
+  <div>
+
+  <!-- CHAPITRE 1 -->
+  <div class="chapter" id="chapter-1">
+    <div class="chapter-header">
+      <div class="chapter-num">01</div>
+      <div class="chapter-info">
+        <h2>Pourquoi gérer son temps en formation technique ?</h2>
+        <div class="chapter-meta"><span>🕐 7 heures</span><span class="chapter-badge">Fondements · Voleurs de temps · Lois</span></div>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="video-block">
+        <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Le temps : ta ressource la plus précieuse</div><div class="video-subtitle">Durée recommandée : 8–10 min · Introduction motivante</div></div></div>
+        <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)" id="vurl-display-1">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+        <div class="video-guide">
+          <div class="video-guide-label">🎬 Guide de production</div>
+          <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Intro (2 min)</strong> — Pose une question : "Combien d'heures as-tu perdues cette semaine ?" Montre un agenda vide vs un agenda bien organisé.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Le contexte TRI (3 min)</strong> — Explique la charge d'un étudiant TRI : 75h pour TRI-05, 105h pour TRI-08. Sans gestion du temps, c'est impossible à gérer.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Les lois (3 min)</strong> — Loi de Pareto : 20% des efforts produisent 80% des résultats. Loi de Parkinson : le travail occupe tout le temps disponible. Explique avec des exemples concrets haïtiens.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Outro (2 min)</strong> — "Dans la prochaine vidéo, on découvre les outils concrets pour planifier ta semaine."</div></div>
+        </div>
+        <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
+      </div>
+
+      <div class="content-section">
+        <h3>1.1 Le temps de l'étudiant TRI</h3>
+        <p>Le programme TRI de 1ère année totalise <strong>690 heures de formation</strong> réparties sur 16 modules. Sans une gestion rigoureuse du temps, il est impossible de suivre ce rythme tout en maintenant de bonnes performances académiques.</p>
+        <p>La gestion du temps n'est pas une question d'organisation obsessionnelle — c'est une compétence professionnelle fondamentale. Un technicien en réseaux qui ne sait pas gérer ses priorités sera submergé dès son premier emploi.</p>
+        <div class="info-box tip">
+          <span class="info-box-label">💡 Chiffre clé</span>
+          Des études montrent qu'un étudiant perd en moyenne <strong>3 à 4 heures par jour</strong> à cause de distractions non maîtrisées (téléphone, réseaux sociaux, conversations non planifiées). Sur une semaine, c'est l'équivalent d'une journée complète de cours perdue.
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>1.2 Les principaux voleurs de temps</h3>
+        <table class="data-table">
+          <thead><tr><th>Voleur de temps</th><th>Impact estimé</th><th>Solution immédiate</th></tr></thead>
+          <tbody>
+            <tr><td>Téléphone et réseaux sociaux</td><td>1h30 à 3h/jour</td><td>Mode "Ne pas déranger" pendant les plages d'étude</td></tr>
+            <tr><td>Absence de plan de travail</td><td>45 min/jour perdues à "décider quoi faire"</td><td>Préparer le lendemain la veille au soir</td></tr>
+            <tr><td>Tâches non priorisées</td><td>2h/jour sur l'urgent non important</td><td>Appliquer la matrice Eisenhower</td></tr>
+            <tr><td>Environnement de travail bruyant</td><td>30% de productivité en moins</td><td>Définir un espace de travail dédié</td></tr>
+            <tr><td>Procrastination</td><td>Variable — jusqu'à 50% du temps d'étude</td><td>Technique Pomodoro + objectifs journaliers</td></tr>
+          </tbody>
+        </table>
+        <div class="info-box warn">
+          <span class="info-box-label">⚠️ La loi de Parkinson</span>
+          "Le travail s'étend pour occuper tout le temps disponible pour son accomplissement." Si tu te donnes 3 heures pour réviser un chapitre, tu en utiliseras 3 heures. Donne-toi 1h30 avec une heure d'objectif précis — tu travailleras plus efficacement.
+        </div>
+      </div>
+
+      <div class="quiz-block" id="quiz-1">
+        <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
+        <div class="quiz-body" id="qbody-1">
+          <div class="quiz-q" data-q="0" data-ans="2">
+            <div class="quiz-q-num">Question 1 / 4</div>
+            <div class="quiz-q-text">Le programme TRI 1ère année totalise combien d'heures de formation ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>420 heures</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>580 heures</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>690 heures</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>750 heures</button>
+            </div>
+            <div class="quiz-expl" id="expl-q0_1">Le programme TRI 1ère année compte 16 modules représentant 690 heures de formation au total, ce qui exige une gestion rigoureuse du temps.</div>
+          </div>
+          <div class="quiz-q" data-q="1" data-ans="1">
+            <div class="quiz-q-num">Question 2 / 4</div>
+            <div class="quiz-q-text">Que dit la loi de Parkinson ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>20% des efforts produisent 80% des résultats</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Le travail s'étend pour occuper tout le temps disponible</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Le temps libre est toujours plus productif que le travail planifié</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>On ne peut jamais terminer toutes ses tâches dans le temps prévu</button>
+            </div>
+            <div class="quiz-expl" id="expl-q1_1">La loi de Parkinson affirme que le travail s'étend pour remplir le temps alloué. La solution : fixer des délais volontairement courts mais réalistes pour chaque tâche.</div>
+          </div>
+          <div class="quiz-q" data-q="2" data-ans="0">
+            <div class="quiz-q-num">Question 3 / 4</div>
+            <div class="quiz-q-text">Quel est le premier "voleur de temps" d'un étudiant TRI selon le cours ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Téléphone et réseaux sociaux (1h30 à 3h/jour)</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Les trajets domicile-école</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Les conversations avec les professeurs</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Les repas et pauses</button>
+            </div>
+            <div class="quiz-expl" id="expl-q2_1">Le téléphone et les réseaux sociaux sont le premier voleur de temps, causant 1h30 à 3h de perte quotidienne. La solution : activer le mode "Ne pas déranger" pendant les plages d'étude.</div>
+          </div>
+          <div class="quiz-q" data-q="3" data-ans="3">
+            <div class="quiz-q-num">Question 4 / 4</div>
+            <div class="quiz-q-text">Le principe de Pareto (80/20) appliqué aux études signifie :</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Étudier 80% du temps et se reposer 20%</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Réussir 80% des examens avec 20% de chance</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>80% des étudiants réussissent avec seulement 20% d'efforts</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>20% des efforts bien ciblés produisent 80% des résultats académiques</button>
+            </div>
+            <div class="quiz-expl" id="expl-q3_1">Pareto : identifier les 20% de contenu les plus importants (les compétences clés d'un module) permet d'obtenir 80% des points à l'examen. Cela s'applique aussi à la gestion des priorités quotidiennes.</div>
+          </div>
+        </div>
+        <div class="quiz-footer">
+          <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
+          <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
+          <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+        <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPITRE 2 -->
+  <div class="chapter" id="chapter-2">
+    <div class="chapter-header">
+      <div class="chapter-num">02</div>
+      <div class="chapter-info">
+        <h2>Outils et méthodes de planification</h2>
+        <div class="chapter-meta"><span>🕐 8 heures</span><span class="chapter-badge">Agenda · Pomodoro · Applications</span></div>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="video-block">
+        <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Organiser sa semaine comme un pro</div><div class="video-subtitle">Durée recommandée : 10–12 min · Outils pratiques</div></div></div>
+        <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)" id="vurl-display-2">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+        <div class="video-guide">
+          <div class="video-guide-label">🎬 Guide de production</div>
+          <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Montre ton propre agenda (3 min)</strong> — Partage ton écran avec Google Calendar ou un agenda papier. Montre comment tu bloques tes blocs de travail.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Démo Pomodoro (4 min)</strong> — Lance un vrai timer de 25 minutes à l'écran. Explique la règle : 25 min focus total, 5 min pause, après 4 cycles = 30 min de longue pause.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Applications recommandées (3 min)</strong> — Montre Todoist, Google Calendar, ou Notion. Pour les étudiants sans smartphone récent : l'agenda papier fonctionne très bien aussi.</div></div>
+        </div>
+        <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
+      </div>
+
+      <div class="content-section">
+        <h3>2.1 La technique Pomodoro</h3>
+        <p>Développée par Francesco Cirillo dans les années 1980, la technique Pomodoro est l'une des méthodes de productivité les plus efficaces pour les étudiants et les techniciens.</p>
+        <p><strong>Comment ça fonctionne :</strong></p>
+        <ol style="padding-left:1.4rem;margin-bottom:.9rem">
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.4rem">Choisir une tâche précise (ex: "Réviser le chapitre 3 de TRI-05")</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.4rem">Régler un minuteur sur <strong>25 minutes</strong> — travail en focus total, sans interruption</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.4rem">Faire une <strong>pause de 5 minutes</strong> (se lever, boire de l'eau)</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.4rem">Répéter 4 fois, puis faire une <strong>longue pause de 30 minutes</strong></li>
+        </ol>
+        <div class="info-box tip">
+          <span class="info-box-label">💡 Pourquoi ça marche</span>
+          Le cerveau peut maintenir une concentration maximale pendant environ 25 minutes. Ensuite, il a besoin d'une micro-pause pour consolider les informations. La technique Pomodoro exploite ce rythme biologique naturel.
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>2.2 Outils recommandés pour l'étudiant TRI</h3>
+        <table class="data-table">
+          <thead><tr><th>Outil</th><th>Type</th><th>Usage</th><th>Disponibilité</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Agenda papier</strong></td><td>Manuel</td><td>Planning hebdomadaire, liste de tâches</td><td>Partout, sans électricité</td></tr>
+            <tr><td><strong>Google Calendar</strong></td><td>Numérique</td><td>Blocs de travail, rappels, événements</td><td>Gratuit, web + mobile</td></tr>
+            <tr><td><strong>Todoist / TickTick</strong></td><td>Numérique</td><td>Liste de tâches avec priorités</td><td>Gratuit (version base)</td></tr>
+            <tr><td><strong>Notion</strong></td><td>Numérique</td><td>Organisation complète : cours + tâches + notes</td><td>Gratuit pour étudiants</td></tr>
+            <tr><td><strong>Timer Pomodoro (web)</strong></td><td>Numérique</td><td>Minuteur 25/5 min</td><td>pomofocus.io (gratuit)</td></tr>
+          </tbody>
+        </table>
+        <div class="info-box">
+          <span class="info-box-label">📌 Conseil Canado Technique</span>
+          En Haïti, les coupures de courant sont fréquentes. Ayez toujours un <strong>agenda papier de secours</strong>. Les meilleurs techniciens haïtiens travaillent avec les deux : agenda numérique pour les rappels automatiques, carnet papier pour la réflexion et la planification profonde.
+        </div>
+      </div>
+
+      <div class="quiz-block" id="quiz-2">
+        <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
+        <div class="quiz-body" id="qbody-2">
+          <div class="quiz-q" data-q="0" data-ans="1">
+            <div class="quiz-q-num">Question 1 / 4</div>
+            <div class="quiz-q-text">Combien de minutes dure un "pomodoro" (une session de travail) ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>15 minutes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>25 minutes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>45 minutes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>60 minutes</button>
+            </div>
+            <div class="quiz-expl" id="expl-q0_2">Un pomodoro dure 25 minutes de travail en focus total, suivi de 5 minutes de pause. Ce rythme exploite la durée optimale de concentration du cerveau humain.</div>
+          </div>
+          <div class="quiz-q" data-q="1" data-ans="2">
+            <div class="quiz-q-num">Question 2 / 4</div>
+            <div class="quiz-q-text">Après combien de pomodoros consécutifs faut-il prendre une longue pause ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>2 pomodoros</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>3 pomodoros</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>4 pomodoros</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>6 pomodoros</button>
+            </div>
+            <div class="quiz-expl" id="expl-q1_2">Après 4 pomodoros (environ 2 heures de travail effectif), on fait une longue pause de 15 à 30 minutes pour récupérer et consolider les apprentissages.</div>
+          </div>
+          <div class="quiz-q" data-q="2" data-ans="0">
+            <div class="quiz-q-num">Question 3 / 4</div>
+            <div class="quiz-q-text">Pourquoi recommande-t-on aux étudiants haïtiens d'avoir aussi un agenda papier ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>À cause des coupures de courant fréquentes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Parce que le papier est plus rapide que le numérique</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Parce que les applications numériques sont toutes payantes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Parce que les professeurs exigent un agenda papier</button>
+            </div>
+            <div class="quiz-expl" id="expl-q2_2">En Haïti, les coupures d'électricité sont fréquentes. L'agenda papier est une sécurité indispensable qui fonctionne en toutes circonstances. Les deux outils (numérique + papier) se complètent.</div>
+          </div>
+          <div class="quiz-q" data-q="3" data-ans="3">
+            <div class="quiz-q-num">Question 4 / 4</div>
+            <div class="quiz-q-text">Quelle est la première étape de la technique Pomodoro ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Régler le minuteur sur 25 minutes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Ouvrir ses livres de cours</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Éliminer toutes les distractions</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Choisir une tâche précise à accomplir</button>
+            </div>
+            <div class="quiz-expl" id="expl-q3_2">La première étape est de définir une tâche précise. "Étudier" est trop vague. "Réviser les 3 premières sections du chapitre 2 de TRI-05" est une tâche précise et mesurable.</div>
+          </div>
+        </div>
+        <div class="quiz-footer">
+          <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
+          <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
+          <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+        <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPITRE 3 -->
+  <div class="chapter" id="chapter-3">
+    <div class="chapter-header">
+      <div class="chapter-num">03</div>
+      <div class="chapter-info">
+        <h2>Prioriser avec la matrice Eisenhower</h2>
+        <div class="chapter-meta"><span>🕐 8 heures</span><span class="chapter-badge">Urgent · Important · 4 Quadrants</span></div>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="video-block">
+        <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Choisir quoi faire en premier</div><div class="video-subtitle">Durée recommandée : 10–12 min · Matrice Eisenhower appliquée</div></div></div>
+        <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)" id="vurl-display-3">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+        <div class="video-guide">
+          <div class="video-guide-label">🎬 Guide de production</div>
+          <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Dessine la matrice en temps réel (4 min)</strong> — Sur un tableau blanc, trace les 4 quadrants et classe 8 activités concrètes d'un étudiant TRI (examen demain, lire le cours, réseaux sociaux, appel famille, etc.).</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Les erreurs fréquentes (3 min)</strong> — Passer trop de temps dans le Q3 (urgent mais pas important). Montrer comment les étudiants confondent "urgent" et "important".</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Application pratique (3 min)</strong> — Montre comment planifier une semaine en partant des tâches Q1 et Q2, et en éliminant ou délégant Q3 et Q4.</div></div>
+        </div>
+        <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
+      </div>
+
+      <div class="content-section">
+        <h3>3.1 Les 4 quadrants d'Eisenhower</h3>
+        <p>Dwight D. Eisenhower, général américain et président des États-Unis, avait une maxime célèbre : <em>"Ce qui est important est rarement urgent, et ce qui est urgent est rarement important."</em> Sa matrice classe toutes les tâches selon deux axes : <strong>urgence</strong> et <strong>importance</strong>.</p>
+        <div class="eis-wrap">
+          <div class="eis-label-top">
+            <div></div>
+            <div class="eis-axis-top">URGENT</div>
+            <div class="eis-axis-top">NON URGENT</div>
+          </div>
+          <div class="eis-grid">
+            <div class="eis-axis-label" style="grid-row:span 2">IMPORTANT&nbsp;&nbsp;NON IMPORTANT</div>
+            <div class="eis-cell eis-q1">
+              <h4>Q1 — FAIRE MAINTENANT</h4>
+              <ul>
+                <li>Examen dans 24h à préparer</li>
+                <li>TP à remettre ce soir</li>
+                <li>Panne réseau en labo</li>
+                <li>Devoir urgent noté</li>
+              </ul>
+              <span class="eis-action">⚡ Agir immédiatement</span>
+            </div>
+            <div class="eis-cell eis-q2">
+              <h4>Q2 — PLANIFIER</h4>
+              <ul>
+                <li>Révisions régulières des cours</li>
+                <li>Préparer les labs à l'avance</li>
+                <li>Lire la documentation Cisco</li>
+                <li>Pratiquer les configurations</li>
+              </ul>
+              <span class="eis-action">📅 Bloquer du temps</span>
+            </div>
+            <div class="eis-cell eis-q3">
+              <h4>Q3 — DÉLÉGUER / LIMITER</h4>
+              <ul>
+                <li>Certains messages non urgents</li>
+                <li>Demandes imprévues de camarades</li>
+                <li>Réunions non essentielles</li>
+              </ul>
+              <span class="eis-action">↗ Déléguer si possible</span>
+            </div>
+            <div class="eis-cell eis-q4">
+              <h4>Q4 — ÉLIMINER</h4>
+              <ul>
+                <li>Scroll réseaux sociaux</li>
+                <li>Séries TV pendant les examens</li>
+                <li>Conversations sans objectif</li>
+              </ul>
+              <span class="eis-action">🗑 Éliminer</span>
+            </div>
+          </div>
+        </div>
+        <div class="info-box tip">
+          <span class="info-box-label">🎯 Le secret des techniciens performants</span>
+          Les étudiants qui réussissent passent la majorité de leur temps dans le <strong>Quadrant 2</strong> — les révisions régulières, la pratique constante, la préparation à l'avance. Cela réduit les crises du Q1. Les étudiants en difficulté passent leur temps à éteindre les incendies du Q1 parce qu'ils ont négligé le Q2.
+        </div>
+      </div>
+
+      <div class="quiz-block" id="quiz-3">
+        <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
+        <div class="quiz-body" id="qbody-3">
+          <div class="quiz-q" data-q="0" data-ans="2">
+            <div class="quiz-q-num">Question 1 / 4</div>
+            <div class="quiz-q-text">Dans quelle catégorie Eisenhower classer "réviser régulièrement ses cours" ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Q1 — Urgent et Important</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Q3 — Urgent mais pas Important</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Q2 — Important mais pas Urgent</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Q4 — Ni urgent ni important</button>
+            </div>
+            <div class="quiz-expl" id="expl-q0_3">Réviser régulièrement est important pour la réussite, mais ce n'est pas urgent au sens immédiat. C'est le Quadrant 2 — les tâches qu'on doit planifier et maintenir pour éviter les crises du Q1.</div>
+          </div>
+          <div class="quiz-q" data-q="1" data-ans="3">
+            <div class="quiz-q-num">Question 2 / 4</div>
+            <div class="quiz-q-text">Où classeriez-vous "scroller les réseaux sociaux pendant 2h" ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Q1</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Q2</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Q3</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Q4</button>
+            </div>
+            <div class="quiz-expl" id="expl-q1_3">Le scroll des réseaux sociaux est ni urgent ni important (Q4). C'est la catégorie des activités à éliminer ou limiter drastiquement, surtout en période d'examens.</div>
+          </div>
+          <div class="quiz-q" data-q="2" data-ans="1">
+            <div class="quiz-q-num">Question 3 / 4</div>
+            <div class="quiz-q-text">Selon le cours, pourquoi les étudiants performants passent-ils du temps dans le Q2 ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Pour avoir plus de temps libre</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Pour réduire les crises urgentes du Q1</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Pour impressionner leurs professeurs</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Parce que le Q1 est toujours vide pour eux</button>
+            </div>
+            <div class="quiz-expl" id="expl-q2_3">Travailler dans le Q2 (prévention, planification, révisions régulières) réduit les urgences du Q1. C'est le principe de la proactivité : mieux vaut prévenir que guérir.</div>
+          </div>
+          <div class="quiz-q" data-q="3" data-ans="0">
+            <div class="quiz-q-num">Question 4 / 4</div>
+            <div class="quiz-q-text">La maxime d'Eisenhower dit que...</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Ce qui est important est rarement urgent</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Ce qui est urgent est toujours important</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Le temps est une ressource infinie</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Les urgences définissent les priorités</button>
+            </div>
+            <div class="quiz-expl" id="expl-q3_3">"Ce qui est important est rarement urgent, et ce qui est urgent est rarement important." Cette maxime est le fondement de la matrice. Elle nous invite à ne pas confondre la pression du moment avec la valeur réelle d'une tâche.</div>
+          </div>
+        </div>
+        <div class="quiz-footer">
+          <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
+          <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
+          <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+        <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPITRE 4 -->
+  <div class="chapter" id="chapter-4">
+    <div class="chapter-header">
+      <div class="chapter-num">04</div>
+      <div class="chapter-info">
+        <h2>Équilibre, bien-être et habitudes gagnantes</h2>
+        <div class="chapter-meta"><span>🕐 7 heures</span><span class="chapter-badge">Énergie · Stress · Habitudes</span></div>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="video-block">
+        <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Les habitudes des techniciens qui réussissent</div><div class="video-subtitle">Durée recommandée : 8–10 min · Témoignages et bonnes pratiques</div></div></div>
+        <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)" id="vurl-display-4">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+        <div class="video-guide">
+          <div class="video-guide-label">🎬 Guide de production</div>
+          <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Témoignage alumni (3 min)</strong> — Interview un ancien étudiant TRI qui travaille maintenant chez Digicel, BNC ou une entreprise IT. Demande-lui comment il gérait son temps en formation.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Les 5 habitudes clés (4 min)</strong> — Présente les 5 habitudes des techniciens performants avec des exemples concrets du contexte haïtien.</div></div>
+          <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Transition vers le devoir (1 min)</strong> — Annonce le devoir : créer son propre planning hebdomadaire personnalisé.</div></div>
+        </div>
+        <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
+      </div>
+
+      <div class="content-section">
+        <h3>4.1 Gérer son énergie, pas seulement son temps</h3>
+        <p>La gestion du temps seule ne suffit pas. Un étudiant épuisé ne peut pas étudier efficacement même avec le meilleur planning du monde. La gestion de l'<strong>énergie</strong> est aussi importante que la gestion du temps.</p>
+        <table class="data-table">
+          <thead><tr><th>Dimension</th><th>Pratiques recommandées</th><th>Impact sur les études</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sommeil</strong></td><td>7 à 8h par nuit, heures régulières</td><td>Mémorisation, concentration, réflexes techniques</td></tr>
+            <tr><td><strong>Alimentation</strong></td><td>Éviter les excès de sucre avant les cours</td><td>Maintien de la concentration sur la durée</td></tr>
+            <tr><td><strong>Activité physique</strong></td><td>30 min de marche ou sport/jour minimum</td><td>Réduction du stress, meilleure mémoire</td></tr>
+            <tr><td><strong>Pauses régulières</strong></td><td>5 min toutes les 25 min (Pomodoro)</td><td>Prévention de la fatigue cognitive</td></tr>
+            <tr><td><strong>Coupures numériques</strong></td><td>1h sans écran avant de dormir</td><td>Meilleure qualité de sommeil</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="content-section">
+        <h3>4.2 Les 5 habitudes des techniciens performants</h3>
+        <ol style="padding-left:1.4rem;margin-bottom:.9rem">
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.6rem"><strong>Préparer le lendemain la veille</strong> — Avant de dormir, noter les 3 tâches prioritaires du lendemain. Le matin, on commence sans hésitation.</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.6rem"><strong>Étudier aux mêmes heures chaque jour</strong> — Le cerveau est une machine d'habitudes. Des horaires fixes créent une routine de concentration automatique.</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.6rem"><strong>Faire une revue hebdomadaire</strong> — Chaque dimanche soir : que s'est-il passé cette semaine ? Quels objectifs atteints ? Qu'est-ce qui reste ?</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.6rem"><strong>Dire non aux interruptions non planifiées</strong> — "Je suis en plage de travail, je te réponds dans 45 minutes." C'est une compétence professionnelle, pas de l'impolitesse.</li>
+          <li style="font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.6rem"><strong>Célébrer les petites victoires</strong> — Cocher une tâche accomplie libère de la dopamine. Décomposer les gros modules en petites étapes permet d'avancer avec motivation constante.</li>
+        </ol>
+        <div class="info-box">
+          <span class="info-box-label">🏆 Témoignage — Jean-Luc, promo 2023, technicien chez BNC</span>
+          "En 1ère année, j'avais du mal à suivre. J'ai commencé à bloquer des créneaux fixes d'étude : 18h à 20h chaque soir. En 3 semaines, j'avais rattrapé mon retard. Ce qui a tout changé, c'est la régularité — pas les longues sessions d'urgence."
+        </div>
+      </div>
+
+      <div class="quiz-block" id="quiz-4">
+        <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
+        <div class="quiz-body" id="qbody-4">
+          <div class="quiz-q" data-q="0" data-ans="1">
+            <div class="quiz-q-num">Question 1 / 4</div>
+            <div class="quiz-q-text">Combien d'heures de sommeil recommande-t-on pour un étudiant en formation technique ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>5 à 6 heures</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>7 à 8 heures</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>9 à 10 heures</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Le sommeil n'affecte pas les performances académiques</button>
+            </div>
+            <div class="quiz-expl" id="expl-q0_4">7 à 8 heures de sommeil sont essentielles pour la mémorisation, la concentration et les réflexes techniques. Le sommeil consolide les apprentissages de la journée — c'est pendant qu'on dort que le cerveau "enregistre" les cours.</div>
+          </div>
+          <div class="quiz-q" data-q="1" data-ans="0">
+            <div class="quiz-q-num">Question 2 / 4</div>
+            <div class="quiz-q-text">Qu'est-ce que la "revue hebdomadaire" recommandée aux techniciens performants ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">A</span>Un bilan du dimanche soir : objectifs atteints, tâches restantes</button>
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">B</span>Lire les nouvelles technologiques chaque semaine</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Une réunion avec ses professeurs</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Réviser toute la matière de la semaine d'un coup</button>
+            </div>
+            <div class="quiz-expl" id="expl-q1_4">La revue hebdomadaire est un bilan personnel du dimanche soir : qu'a-t-on accompli ? Qu'est-ce qui reste ? Quels obstacles ont surgis ? C'est une habitude puissante qui permet de rester en contrôle de sa progression.</div>
+          </div>
+          <div class="quiz-q" data-q="2" data-ans="2">
+            <div class="quiz-q-num">Question 3 / 4</div>
+            <div class="quiz-q-text">Pourquoi est-il recommandé d'éviter les écrans 1h avant de dormir ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Pour économiser la batterie du téléphone</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Pour avoir plus de temps pour lire ses notes de cours</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Pour améliorer la qualité du sommeil</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>C'est une règle de Canado Technique</button>
+            </div>
+            <div class="quiz-expl" id="expl-q2_4">La lumière bleue des écrans perturbe la production de mélatonine, l'hormone du sommeil. Éviter les écrans 1h avant de dormir améliore significativement la qualité du sommeil et donc la mémorisation.</div>
+          </div>
+          <div class="quiz-q" data-q="3" data-ans="3">
+            <div class="quiz-q-num">Question 4 / 4</div>
+            <div class="quiz-q-text">Selon le témoignage de Jean-Luc (promo 2023), qu'est-ce qui a vraiment changé sa progression ?</div>
+            <div class="quiz-opts">
+              <button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Étudier 12 heures consécutives le week-end</button>
+              <button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Avoir un tuteur privé</button>
+              <button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Mémoriser tous ses cours en une nuit</button>
+              <button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Des créneaux fixes d'étude chaque soir — la régularité</button>
+            </div>
+            <div class="quiz-expl" id="expl-q3_4">Jean-Luc a bloqué des créneaux fixes (18h–20h chaque soir) et en 3 semaines il avait rattrapé son retard. La clé : la régularité, pas les longues sessions d'urgence. Une heure par jour régulière vaut mieux que 8 heures une fois par semaine.</div>
+          </div>
+        </div>
+        <div class="quiz-footer">
+          <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
+          <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
+          <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+        <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEVOIR -->
+  <div class="devoir-block">
+    <div class="devoir-header">
+      <div class="devoir-icon-wrap">📝</div>
+      <div class="devoir-header-info">
+        <h3>Devoir TRI-02 — Mon planning personnel hebdomadaire</h3>
+        <span>À remettre au professeur · Évaluation individuelle</span>
+      </div>
+      <div class="devoir-deadline">Délai : 1 semaine</div>
+    </div>
+    <div class="devoir-body">
+      <p class="devoir-desc">Ce devoir vise à t'amener à <strong>appliquer concrètement</strong> les techniques de gestion du temps vues dans ce module. Tu dois produire un planning hebdomadaire réel pour ta prochaine semaine de formation, accompagné d'une analyse honnête de ton utilisation actuelle du temps.</p>
+      <div class="devoir-instructions">
+        <div class="devoir-instructions-label">📋 Instructions</div>
+        <ol>
+          <li>Complète le <strong>tableau d'audit</strong> : pour chaque journée de la semaine passée, note combien de temps tu as passé à étudier, sur le téléphone, à dormir, etc.</li>
+          <li>Identifie tes <strong>3 principaux voleurs de temps</strong> et propose une stratégie concrète pour chacun.</li>
+          <li>Crée ton <strong>planning hebdomadaire</strong> pour la semaine suivante en utilisant la matrice Eisenhower pour prioriser tes tâches.</li>
+          <li>Intègre <strong>au minimum 5 sessions Pomodoro</strong> dans ton planning (avec les pauses notées).</li>
+          <li>Rédige une <strong>réflexion personnelle</strong> (15–20 lignes) : qu'est-ce que ce module a changé dans ta façon de voir ton temps ?</li>
+        </ol>
+      </div>
+      <div class="devoir-bareme-label">📊 Barème de notation (total : 100 points)</div>
+      <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Audit honnête et détaillé de la semaine passée</div></div>
+      <div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Identification des voleurs de temps + stratégies</div></div>
+      <div class="bareme-row"><div class="bareme-pts">35 pts</div><div class="bareme-label">Planning hebdomadaire complet et réaliste (Eisenhower appliqué)</div></div>
+      <div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Sessions Pomodoro intégrées dans le planning</div></div>
+      <div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Réflexion personnelle (qualité, sincérité, profondeur)</div></div>
+      <div class="devoir-submit-area">
+        <div class="devoir-submit-icon">📤</div>
+        <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Format accepté : document manuscrit, PDF ou fichier Word.</p>
+        <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre mon devoir en ligne</button>
+        <p style="font-size:.73rem;color:var(--g500);margin-top:.6rem">Connecte-toi à la plateforme Canado Technique pour la soumission en ligne. Le délai de remise est de <strong>7 jours</strong> à partir de l'activation de ce module.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="completion" id="completion-msg">
+    <h2>🎉 Module TRI-02 terminé !</h2>
+    <p>Tu as complété les 4 chapitres du module Gestion du temps. N'oublie pas de remettre ton devoir dans les 7 jours. Continue sur TRI-03 — Mathématiques en informatique.</p>
+  </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+const quizState={};
+function selectOpt(el,idx,qid){
+  const q=el.closest('.quiz-q');const id=q.dataset.q;
+  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
+  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
+  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+}
+function submitQuiz(qid,correct,expl){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+  if(!qBlock)return;
+  const q=qBlock.querySelector('[data-q="'+qid+'"]');
+  const opts=qBlock.querySelectorAll('.quiz-opt');
+  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
+  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
+  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
+  updateProgBar();
+}
+function retryQuiz(qid){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
+  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
+  if(quizState[qid])delete quizState[qid][qid];
+}
+function setVideo(btn,url,ch){
+  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
+  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+}
+function completeChapter(n){
+  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
+  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
+  updateProgBar();showToastM('Chapitre '+n+' validé !');
+}
+function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
+function updateProgBar(){
+  const code=getModCode();let total=0,ok=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
+  if(total===0)return;const pct=Math.round(ok/total*100);
+  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
+  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
+  checkCompletion(pct);
+}
+function checkCompletion(pct){
+  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
+  if(pct>=seuil){
+    const comp=document.getElementById('completion-block');
+    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
+    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+  }
+}
+function scrollToChapter(n){
+  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+}
+function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
+function reserverSeance(id){
+  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
+  if(!sel){showToastM('Sélectionne un créneau.');return;}
+  showToastM('✅ Créneau réservé : '+sel.textContent);
+  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+}
+function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
+function printModule(){window.print();}
+let _toastT2;
+function showToastM(msg){
+  let t=document.getElementById('mod-toast');
+  if(!t){t=document.createElement('div');t.id='mod-toast';
+    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+}
+let _chrStart=Date.now();
+function _initTimer(){
+  const code=getModCode();
+  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
+  _chrStart=Date.now()-saved*1000;
+  setInterval(()=>{
+    const el=document.getElementById('session-timer');
+    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
+    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
+    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+</script>
+
+<div id="mod-code-data" data-code="TRI-02" style="display:none"></div>
+<div id="seuil-data" data-seuil="60" style="display:none"></div>
+</body>
+</html>
