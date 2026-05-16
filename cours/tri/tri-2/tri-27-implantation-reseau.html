@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-27 — Implantation d'un réseau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.mod-meta-item strong{color:rgba(255,255,255,.9)}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
+.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
+.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
+.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
+.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-body{padding:1.5rem}
+.content-section{margin-bottom:1.8rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
+.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
+.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.content-section strong{color:var(--text);font-weight:700}
+.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
+.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
+.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
+.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
+.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
+.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
+.data-table tr:hover td{background:rgba(27,58,140,.04)}
+.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
+.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
+.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
+.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
+.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
+.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
+.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
+.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
+.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
+.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.video-guide-text strong{color:rgba(255,255,255,.85)}
+.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
+.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
+.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
+.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
+.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
+.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
+.quiz-body{padding:1.2rem 1.5rem}
+.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
+.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
+.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
+.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
+.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
+.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
+.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
+.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
+.quiz-expl.show{display:block}
+.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.quiz-score-display{font-size:.82rem;color:var(--g700)}
+.quiz-score-display strong{color:var(--text);font-size:.92rem}
+.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
+.btn-quiz-submit:hover{background:#d4a800}
+.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
+.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* SÉANCE PRATIQUE */
+.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pratique-header-info{flex:1}
+.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
+.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
+.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-body{padding:1.3rem 1.5rem}
+.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
+.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
+.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
+.pratique-card ul{padding-left:1.2rem}
+.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
+.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
+.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
+.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
+.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
+.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
+.pratique-confirm.show{display:flex}
+/* DÉMONSTRATION */
+.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.demo-header-info{flex:1}
+.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
+.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
+.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
+.demo-body{padding:1.3rem 1.5rem}
+.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
+.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
+.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
+.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
+.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
+.demo-step-text strong{color:var(--teal);font-weight:700}
+.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
+.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
+.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
+/* DEVOIR */
+.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.devoir-header-info{flex:1}
+.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
+.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
+.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.devoir-body{padding:1.3rem 1.5rem}
+.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
+.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
+.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.devoir-instructions ol{padding-left:1.3rem}
+.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
+.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
+.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
+.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
+.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
+.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
+.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
+.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
+.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
+.completion.show{display:block}
+.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
+.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #toc-sidebar.toc-open{transform:translateX(0)!important}
+  #toc-overlay{display:block!important}
+  .main-content{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .slot-grid{grid-template-columns:1fr 1fr!important}
+}
+#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
+@media(max-width:768px){#toc-mob-btn{display:flex!important}}
+#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
+.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
+.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
+.print-btn:hover{color:var(--g200)}
+@media print{
+  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
+  .video-block,.pratique-block,.demo-block{display:none!important}
+  .layout{display:block!important}
+  .main-content{width:100%!important}
+  body{background:#fff!important;color:#000!important}
+}
+
+</style>
+</head>
+<body>
+<div class="mod-header">
+  <div class="mod-header-in">
+    <div class="mod-tag">🏆 Module TRI-27 · 1ère Année</div>
+    <h1>Implantation d'un <em>réseau</em></h1>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ Durée : <strong>120 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>85%</strong></div>
+      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
+      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
+      <div class="mod-meta-item">🏆 Grand projet : <strong>Réseau complet (oblig.)</strong></div><div class="mod-meta-item">🎭 Soutenance : <strong>Devant jury</strong></div><div class="mod-meta-item">📝 Dossier : <strong>Technique complet</strong></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    </div>
+  </div>
+</div><div class="wrap"><div class="layout"><div class="toc">
+  <h3>📋 Sommaire</h3>
+  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Gestion de projet réseau</span></div>
+<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Analyse des besoins et conception</span></div>
+<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Déploiement et mise en service</span></div>
+<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Documentation et soutenance</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Grand Projet Final</div><div style="font-size:.75rem;color:#FFD700;padding:.3rem .5rem;background:rgba(255,215,0,.08);border-radius:8px;border:1px solid rgba(255,215,0,.25);margin-bottom:.3rem">🏆 Projet réseau complet</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Soutenance devant jury</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Dossier technique 30+ pages</div></div>
+</div><div><div class="chapter" id="chapter-1">
+  <div class="chapter-header">
+    <div class="chapter-num">01</div>
+    <div class="chapter-info">
+      <h2>Gestion de projet réseau</h2>
+      <div class="chapter-meta"><span>🕐 28 heures</span><span class="chapter-badge">Phases · Gantt · RACI · Communication client</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Gestion de projet réseau — Méthodologie professionnelle</div><div class="video-subtitle">Durée : 18 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Les phases d'un projet réseau (5 min)</strong> — ANALYSE (recueil des besoins, contraintes) → CONCEPTION (architecture, plans) → DÉPLOIEMENT (installation, configuration) → TEST (validation) → MISE EN SERVICE → DOCUMENTATION.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Outils de gestion de projet (4 min)</strong> — Gantt chart pour la planification, matrice RACI pour les responsabilités, registre des risques, plan de communication avec le client.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Le dossier technique (4 min)</strong> — Structure professionnelle: sommaire exécutif, analyse des besoins, architecture proposée, plans de câblage, configurations, plans de test, procédures de maintenance, budget.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Communication client (3 min)</strong> — Rapport d'avancement hebdomadaire. Réunion de validation jalons. Comment présenter des choix techniques à un non-technicien.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
+</div><div class="content-section"><h3>1.1 Phases du projet réseau TRI-27</h3><table class="data-table"><thead><tr><th>Phase</th><th>Durée</th><th>Livrables</th><th>Validation</th></tr></thead><tbody><tr><td>Phase 1 — Analyse</td><td>2 semaines</td><td>Recueil des besoins, inventaire existant, contraintes (budget, délai, normes)</td><td>Réunion de validation client</td></tr><tr><td>Phase 2 — Conception</td><td>3 semaines</td><td>Architecture réseau, plans de câblage, configurations théoriques, budget détaillé</td><td>Revue technique + approbation</td></tr><tr><td>Phase 3 — Déploiement</td><td>4 semaines</td><td>Infrastructure câblée, équipements configurés, VLANs, routage, sécurité, services</td><td>Tests unitaires à chaque étape</td></tr><tr><td>Phase 4 — Tests</td><td>1 semaine</td><td>Plan de tests, résultats de tous les tests, correction des anomalies</td><td>Rapport de tests signé</td></tr><tr><td>Phase 5 — Mise en service</td><td>3 jours</td><td>Bascule de production, migration des données si nécessaire, formation des utilisateurs</td><td>Signature du PV de mise en service</td></tr><tr><td>Phase 6 — Documentation</td><td>1 semaine</td><td>Dossier technique complet, guide d'administration, procédures de maintenance</td><td>Remise au client + archivage</td></tr></tbody></table><div class="info-box"><span class="info-box-label">🏆 Ce module est votre chef-d'œuvre</span>TRI-27 représente l'aboutissement de vos 2 années de formation. Le projet doit démontrer que vous maîtrisez tous les modules précédents: câblage structuré (TRI-23), VLANs et routage (TRI-19, 21), serveurs (TRI-18, 20), sécurité (TRI-26), supervision (TRI-24), et connexion WAN (TRI-25).</div></div><div class="quiz-block" id="quiz-1">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Quelle est la phase la plus critique dans un projet réseau, et pourquoi ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Le déploiement — c'est là qu'on travaille le plus</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>L'analyse des besoins — une erreur ici se propage et coûte 10x plus cher à corriger plus tard</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>La documentation — c'est ce que le client voit</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Les tests — car les erreurs sont détectées</button></div>
+    <div class="quiz-expl" id="expl-q0_1">La loi de Boehm: corriger une erreur en phase d'analyse coûte 1x. La même erreur découverte en déploiement coûte 10x. Découverte après la mise en service: 100x. Bien analyser les besoins réels (et pas ce qu'on pense qu'ils sont) est la compétence la plus critique d'un chef de projet réseau.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Qu'est-ce qu'une matrice RACI ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Un tableau de câblage réseau</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Un outil de gestion de projet qui définit pour chaque tâche: Responsible (qui fait), Accountable (qui est garant), Consulted (qui est consulté), Informed (qui est informé)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Un protocole de routage</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Un type de pare-feu</button></div>
+    <div class="quiz-expl" id="expl-q1_1">RACI clarifie les responsabilités et évite les zones grises: "qui décide?", "qui fait vraiment le travail?", "qui doit être informé?". Indispensable dans les projets multi-intervenants (technicien câblage, admin réseau, responsable sécurité, chef de projet).</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Un sommaire exécutif dans un dossier technique doit...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Contenir tous les détails techniques</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Permettre à un décideur non-technique de comprendre l'essentiel du projet en 1-2 pages: objectifs, solution proposée, budget, délais, risques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Lister toutes les commandes Cisco utilisées</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Être rédigé en anglais uniquement</button></div>
+    <div class="quiz-expl" id="expl-q2_1">Le sommaire exécutif est écrit POUR la direction: elle ne lit souvent que cette partie. 1-2 pages maximum: problème → solution proposée → avantages → budget → délais → risques majeurs. Pas de jargon technique. Le détail est dans les annexes techniques pour les techniciens.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Pourquoi rédiger un Plan de Tests avant de commencer le déploiement ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>C'est une obligation légale</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Définir à l'avance ce qu'on va tester et les critères de succès, pour avoir une validation objective et non subjective de la mise en service</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Pour ralentir le projet et facturer plus</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Les tests se définissent toujours après le déploiement</button></div>
+    <div class="quiz-expl" id="expl-q3_1">Un Plan de Tests pré-défini garantit une validation objective: "le test 15 est PASSED si le ping entre VLAN 10 et VLAN 20 répond en < 5ms". Sans plan de tests pré-défini, la mise en service devient subjective ("ça a l'air de marcher"). Le client signe sur la base des tests formels.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-2">
+  <div class="chapter-header">
+    <div class="chapter-num">02</div>
+    <div class="chapter-info">
+      <h2>Analyse des besoins et conception</h2>
+      <div class="chapter-meta"><span>🕐 32 heures</span><span class="chapter-badge">Recueil besoins · Inventaire · Architecture · Dimensionnement</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Analyse des besoins et conception du réseau</div><div class="video-subtitle">Durée : 20 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Recueil des besoins — Interview client (5 min)</strong> — Combien d'utilisateurs? Quelles applications critiques? Quelles heures de disponibilité requises? Quel budget? Quelles contraintes légales (données confidentielles)? Croissance prévue.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Inventaire de l'existant (4 min)</strong> — Auditer ce qui existe: câblage, équipements, licences, contrats opérateurs. Identifier ce qui peut être conservé vs remplacé.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Architecture logique et physique (6 min)</strong> — Schéma logique (VLANs, adressage, routage, services). Schéma physique (câblage, baies, positions des équipements). Les deux sont nécessaires.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Dimensionnement (5 min)</strong> — Nombre de ports nécessaires (+ 20% de marge), bande passante LAN/WAN, puissance des serveurs, capacité de stockage, dimensionnement UPS.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
+</div><div class="content-section"><h3>2.1 Questionnaire de recueil des besoins réseau</h3><table class="data-table"><thead><tr><th>Domaine</th><th>Questions clés</th><th>Impact sur la conception</th></tr></thead><tbody><tr><td>Utilisateurs</td><td>Combien? Où? Mobile ou fixe? Croissance à 3 ans?</td><td>Nombre de ports, capacité Wi-Fi, extensibilité</td></tr><tr><td>Applications</td><td>Quelles apps critiques? Cloud ou on-premise? VoIP?</td><td>Bande passante WAN, QoS, latence requise, VLAN Voice</td></tr><tr><td>Disponibilité</td><td>Heures critiques? RTO/RPO? Redondance requise?</td><td>Redondance (dual WAN, HSRP, UPS), SLA opérateur</td></tr><tr><td>Sécurité</td><td>Données sensibles? Réglementation? Accès distants?</td><td>VPN, DMZ, 802.1X, chiffrement, audit de conformité</td></tr><tr><td>Budget</td><td>Budget matériel? Budget récurrent (internet, licences)? Maintenance?</td><td>Choix des équipements, opérateurs, solutions cloud vs on-premise</td></tr><tr><td>Contraintes</td><td>Délai de mise en oeuvre? Horaires d'intervention? Normes?</td><td>Planning, fenêtres de maintenance, personnel nécessaire</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Pourquoi toujours ajouter 20% de marge lors du dimensionnement des ports switch ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Pour respecter les normes TIA</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Pour anticiper la croissance future — un réseau dimensionné à 100% de capacité dès le démarrage sera saturé dès l'ajout des premières extensions</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Pour avoir des ports de remplacement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Pour les tests de câblage</button></div>
+    <div class="quiz-expl" id="expl-q0_2">Si une entreprise a 50 PC, prévoir un switch de 50 ports = catastrophe en 6 mois. Ajouter 20%: 60 ports nécessaires → choisir 2x switches 48 ports (96 ports total). La marge permet d'accueillir les nouvelles recrues, les imprimantes réseau, les téléphones IP et les AP Wi-Fi sans ajouter d'équipements.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Un schéma réseau logique et un schéma physique diffèrent par...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Ils sont identiques — juste une question de présentation</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Le logique montre les VLANs, adressages, protocoles et services; le physique montre les équipements réels, leur localisation et le câblage physique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Le logique est pour les ingénieurs, le physique pour les électriciens</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Le physique est optionnel</button></div>
+    <div class="quiz-expl" id="expl-q1_2">Schéma logique = topologie L2/L3: VLANs numérotés, adresses IP, protocoles de routage (OSPF), services (DNS, DHCP). Schéma physique = réalité terrain: switch du 2ème étage, longueur des câbles, position des baies, numéros des ports. Les deux sont nécessaires pour installer ET maintenir un réseau.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Un client dit: "Je veux que mon réseau soit toujours disponible". Quelle est la bonne réponse du technicien ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Promettre 100% de disponibilité</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Demander: toujours = 24h/24, 7j/7? En combien de temps doit-on revenir en cas de panne (RTO)? Quel est le budget pour la redondance?</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Installer deux fois le même réseau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Utiliser uniquement des équipements Cisco Enterprise</button></div>
+    <div class="quiz-expl" id="expl-q2_2">"Toujours disponible" est un objectif flou. Le technicien doit quantifier: 99.9% = 8h de panne/an? 99.99% = 52 min/an? 99.999% = 5 min/an? Chaque niveau de disponibilité a un coût différent. Un RTO de 4h est très différent d'un RTO de 30 minutes en termes d'investissement en redondance.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">L'inventaire de l'existant avant un projet réseau sert à...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Justifier le remplacement de tout l'équipement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Identifier ce qui peut être conservé (économies), ce qui doit être remplacé, et les contraintes imposées par l'infrastructure existante (câblage, alimentation, espace baie)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Évaluer la compétence de l'équipe IT existante</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Documenter les erreurs passées</button></div>
+    <div class="quiz-expl" id="expl-q3_2">L'inventaire de l'existant révèle des contraintes réelles: le câblage est en Cat5 non compatible 1G? Câblage à refaire. Les baies sont pleines? Nouvelles baies nécessaires. Il y a déjà un switch 48 ports presque neuf? Récupérable. Sans inventaire, on risque de proposer une solution incompatible avec l'existant.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-3">
+  <div class="chapter-header">
+    <div class="chapter-num">03</div>
+    <div class="chapter-info">
+      <h2>Déploiement et mise en service</h2>
+      <div class="chapter-meta"><span>🕐 32 heures</span><span class="chapter-badge">Pré-staging · Séquence · Tests · Bascule production</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Déploiement et mise en service — Phases opérationnelles</div><div class="video-subtitle">Durée : 20 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Préparation du déploiement (4 min)</strong> — Pré-configuration hors site (pre-staging): configurer les équipements en atelier avant de les installer. Numéroter et étiqueter tout avant d'aller sur site. Checklist de déploiement.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Séquence de déploiement (6 min)</strong> — Ordre correct: 1) Infrastructure physique (câblage, baies). 2) Couche 1 (câbles, tests). 3) Couche 2 (switches, VLANs). 4) Couche 3 (routeurs, routage). 5) Services (DHCP, DNS, AD). 6) Sécurité (ACL, pare-feu). 7) Tests utilisateurs.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Tests de validation (5 min)</strong> — Tests couche par couche: ping physique → ping VLAN → ping inter-VLAN → ping serveur → test applicatif. Documenter chaque résultat.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Bascule de production (5 min)</strong> — Plan de bascule: heures de migration, équipe de rollback, communication aux utilisateurs, check-list post-migration, hotline de soutien les premiers jours.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
+</div><div class="content-section"><h3>3.1 Plan de tests de validation — Structure</h3><table class="data-table"><thead><tr><th>Niveau</th><th>Test</th><th>Critère de succès</th><th>Équipements testés</th></tr></thead><tbody><tr><td>Couche 1 — Physique</td><td>Testeur de câble sur chaque lien</td><td>Pass: 8 voyants verts ou rapport Fluke OK</td><td>100% des câbles installés</td></tr><tr><td>Couche 2 — Liaison</td><td>show vlan brief + ping inter-port même VLAN</td><td>VLANs visibles, ping réussi < 1ms</td><td>Tous les switches</td></tr><tr><td>Couche 3 — Réseau</td><td>ping et traceroute inter-VLAN et vers internet</td><td>Ping réussi vers toutes destinations, traceroute montre le chemin attendu</td><td>Routeurs + switches L3</td></tr><tr><td>Services — DHCP</td><td>Connecter un PC et vérifier l'IP obtenue</td><td>IP dans la bonne plage, passerelle et DNS corrects</td><td>Serveur DHCP</td></tr><tr><td>Services — DNS</td><td>nslookup des noms internes et externes</td><td>Résolution correcte < 100ms</td><td>Serveur DNS</td></tr><tr><td>Services — Fichiers</td><td>Accéder au partage depuis différents utilisateurs</td><td>Accès selon les permissions NTFS définies</td><td>Serveur de fichiers</td></tr><tr><td>Sécurité — ACL</td><td>Tester les flux bloqués et autorisés</td><td>Règles appliquées: trafic bloqué = bloqué, autorisé = autorisé</td><td>Routeurs + pare-feu</td></tr><tr><td>VPN — Connexion distante</td><td>Établir le VPN depuis l'extérieur</td><td>Tunnel établi, ping vers LAN interne réussi</td><td>Serveur VPN / routeur</td></tr><tr><td>Charge — Performance</td><td>Simuler 80% des utilisateurs actifs simultanément</td><td>Latence < 5ms, pas de perte de paquets</td><td>Tout le réseau</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Le "pre-staging" (pré-configuration) des équipements en atelier avant le déploiement sur site est recommandé car...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Pour montrer au client le travail effectué</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>On configure les équipements dans un environnement contrôlé sans contrainte de temps, évitant les erreurs sous pression sur site et réduisant la durée d'intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Pour des raisons de garantie fabricant</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Les équipements ne peuvent être configurés qu'en atelier</button></div>
+    <div class="quiz-expl" id="expl-q0_3">Le pre-staging: configurer le switch/routeur en atelier (hostname, VLANs, routing, sécurité), tester avec les équipements voisins, puis l'apporter sur site. Sur site, on raccorde et on vérifie. Durée d'intervention sur site réduite (moins de risque pour les opérations existantes).</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Pourquoi respecter l'ordre couche 1 → 2 → 3 → services lors du déploiement ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>C'est un ordre alphabétique</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Chaque couche dépend de la précédente — impossible de configurer les VLANs si les câbles ne sont pas fonctionnels</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Pour des raisons de facturation par phases</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>L'ordre n'a pas d'importance si on est expérimenté</button></div>
+    <div class="quiz-expl" id="expl-q1_3">Chaque couche dépend de la précédente dans le modèle OSI. Si le câblage (L1) a des problèmes, les trames (L2) ne passent pas = impossible de valider les VLANs. Si les VLANs (L2) sont incorrects, le routage (L3) ne fonctionnera pas. Déployer et valider couche par couche permet d'isoler rapidement les problèmes.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Un Plan de Bascule (cut-over plan) pour la mise en production doit inclure...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Uniquement les étapes techniques</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>L'heure de début, les étapes précises avec durées estimées, les critères de rollback (quand revenir en arrière), les contacts d'escalade, et la communication aux utilisateurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Les coordonnées du fournisseur d'équipements</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Le curriculum vitae de l'équipe technique</button></div>
+    <div class="quiz-expl" id="expl-q2_3">Un bon plan de bascule: H-48h (communication utilisateurs), H-24h (préparations finales), H-0 (début migration), étapes minutées, critères de rollback (si panne critique à H+2, on revient à l'ancien réseau), H+24h (stabilisation), H+72h (clôture de mise en service.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Comment documenter les résultats des tests de validation pour qu'ils soient acceptés par le client ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Un email verbal suffit</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Tableau formel: nom du test, date, exécuteur, critère de succès, résultat obtenu (Pass/Fail), et signature du client ou de son représentant technique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Screenshots uniquement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Témoignage verbal lors de la réunion de clôture</button></div>
+    <div class="quiz-expl" id="expl-q3_3">La documentation de tests doit être formelle et signée: elle constitue la preuve contractuelle que le réseau a bien été livré conforme aux spécifications. Le client signe chaque page du rapport de tests pour confirmer sa validation. En cas de litige ultérieur, c'est la référence.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-4">
+  <div class="chapter-header">
+    <div class="chapter-num">04</div>
+    <div class="chapter-info">
+      <h2>Documentation et soutenance</h2>
+      <div class="chapter-meta"><span>🕐 28 heures</span><span class="chapter-badge">Dossier technique · Présentation · Questions jury</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Documentation professionnelle et soutenance devant jury</div><div class="video-subtitle">Durée : 18 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Structure du dossier technique (5 min)</strong> — Page de garde, table des matières, sommaire exécutif (2p), contexte et objectifs (3p), analyse des besoins (5p), architecture proposée (10p), plans de câblage (5p), configurations (annexes), plan de tests + résultats (5p), plan de maintenance (3p), budget (2p).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Soigner la présentation (4 min)</strong> — Numérotation des pages, schémas lisibles et légendés, tableaux pour les configurations, police et mise en page professionnelle, relecture pour les fautes.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Préparer la soutenance (5 min)</strong> — 15-20 minutes de présentation + 10-15 minutes de questions. Structure: problème → solution → démo → résultats → apprentissages. Anticiper les questions du jury.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Questions typiques du jury (4 min)</strong> — "Pourquoi avoir choisi OSPF plutôt que RIP?", "Comment avez-vous testé la redondance?", "Quel est le RTO de cette architecture?", "Que se passe-t-il si le switch de distribution tombe en panne?", "Comment évoluera ce réseau dans 3 ans?"</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
+</div><div class="content-section"><h3>4.1 Structure du dossier technique de soutenance</h3><table class="data-table"><thead><tr><th>Section</th><th>Contenu attendu</th><th>Pages</th><th>Destinataire</th></tr></thead><tbody><tr><td>Sommaire exécutif</td><td>Résumé en langage accessible: problème, solution, budget, délais</td><td>1-2</td><td>Direction / non-technicien</td></tr><tr><td>Contexte et objectifs</td><td>Présentation du client, situation actuelle, objectifs du projet</td><td>2-3</td><td>Jury + client</td></tr><tr><td>Analyse des besoins</td><td>Résultats des interviews, inventaire, contraintes, exigences fonctionnelles</td><td>4-5</td><td>Jury technique</td></tr><tr><td>Architecture proposée</td><td>Schémas logique et physique, VLANs, adressage, services, sécurité</td><td>6-10</td><td>Jury technique</td></tr><tr><td>Plans de câblage</td><td>Plans par étage, tableau de câblage, convention d'étiquetage</td><td>3-5</td><td>Technicien terrain</td></tr><tr><td>Configurations clés</td><td>Extrait des configs Cisco, Windows Server, règles ACL (complet en annexe)</td><td>3-5</td><td>Admin réseau</td></tr><tr><td>Plan de tests et résultats</td><td>Tableau de tests avec critères + résultats obtenus</td><td>3-5</td><td>Jury + client</td></tr><tr><td>Plan de maintenance</td><td>Calendrier, checklist, stratégie de sauvegarde, escalade</td><td>2-3</td><td>Équipe IT client</td></tr><tr><td>Budget détaillé</td><td>Matériel, licences, installation, maintenance annuelle</td><td>2-3</td><td>Direction / client</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="2">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Lors de la soutenance, si le jury demande "pourquoi avez-vous choisi cet équipement?", la meilleure réponse est...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Parce que c'est celui que j'avais sous la main</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Parce que c'est ce que le professeur recommandait</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Parce qu'il répond aux contraintes de budget, de performances requises, et de la croissance prévue — avec comparaison avec les alternatives évaluées</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Parce que c'est la marque la plus connue</button></div>
+    <div class="quiz-expl" id="expl-q0_4">Le jury teste la rigueur de tes choix techniques. Toujours justifier avec: critères objectifs (budget, performances, scalabilité), alternatives évaluées et pourquoi elles ont été écartées, et comment ce choix répond aux besoins client spécifiques. Éviter les justifications subjectives.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="0">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Le sommaire exécutif d'un dossier technique est rédigé...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>En dernier — après avoir rédigé tous les détails techniques</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>En premier — pour guider la rédaction du reste du document</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Par le client lui-même</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>En anglais uniquement</button></div>
+    <div class="quiz-expl" id="expl-q1_4">Le sommaire exécutif est souvent rédigé en dernier: on sait exactement ce qu'on a fait et on le résume clairement. C'est la section la plus lue par la direction et les décideurs qui n'ont pas le temps de lire les 30+ pages de détails techniques.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Pour anticiper les questions du jury sur les choix d'architecture, il faut...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Mémoriser toutes les configurations</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Pour chaque choix technique, être capable d'expliquer: quel problème ça résout, pourquoi cette solution plutôt qu'une autre, et quelles sont ses limites</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Éviter les questions complexes dans la présentation</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Lire les configurations pendant la soutenance</button></div>
+    <div class="quiz-expl" id="expl-q2_4">La préparation des questions du jury passe par l'auto-questionnement: "Si j'étais jury, qu'est-ce que je questionnerais ici?" Pour chaque choix important (OSPF vs RIP, pfSense vs Cisco ASA, fibre vs Cat6), préparer une justification argumentée avec les alternatives et leurs trade-offs.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Un dossier technique de qualité professionnelle se reconnaît à...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Sa longueur — plus il est long, mieux c'est</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>La cohérence entre les schémas et les configurations, la clarté du plan de tests, la lisibilité des schémas, l'absence de jargon dans le sommaire exécutif, et la vérifiabilité de toute information</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>L'utilisation de termes techniques avancés</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>La richesse des captures d'écran</button></div>
+    <div class="quiz-expl" id="expl-q3_4">Un bon dossier: chaque schéma correspond exactement aux configurations (pas de contradictions), les tests sont documentés avec des résultats réels (pas inventés), les schémas sont lisibles et légendés, le sommaire exécutif est compréhensible par un non-technicien. La qualité prime sur la quantité.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div style="background:linear-gradient(135deg,rgba(255,215,0,.08) 0%,rgba(255,165,0,.04) 100%);border:2px solid rgba(255,215,0,.3);border-radius:16px;padding:1.5rem;margin:1.5rem 0">
+<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+<span style="font-size:2rem">🏆</span>
+<div>
+<div style="font-size:1rem;font-weight:800;color:#D4A017">Grand Projet Final — TRI-27</div>
+<div style="font-size:.8rem;color:var(--g500)">Implantation complète d'un réseau d'entreprise · Évaluation finale · Seuil 85%</div>
+</div>
+</div>
+<div style="background:rgba(255,215,0,.06);border-radius:10px;padding:1rem;margin-bottom:1rem">
+<div style="font-size:.9rem;font-weight:700;color:#D4A017;margin-bottom:.5rem">📋 Cahier des charges du projet</div>
+<div style="font-size:.85rem;color:var(--g300);line-height:1.7">
+Tu dois concevoir, déployer, tester, documenter et soutenir l'implantation complète du réseau d'une organisation fictive haïtienne que le professeur te assignera (banque, école, hôpital, ONG, entreprise industrielle). L'organisation a <strong>2 sites</strong>, <strong>50-100 employés</strong>, et des <strong>contraintes spécifiques</strong> communiquées en début de module.
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+<div style="background:var(--bg2);border-radius:10px;padding:.9rem">
+<div style="font-size:.8rem;font-weight:700;color:#FF9B50;margin-bottom:.5rem">🔬 Livrables techniques</div>
+<div style="font-size:.8rem;color:var(--g300);line-height:1.8">
+• Architecture réseau complète (logique + physique)<br>
+• Plan de câblage structuré (2 sites)<br>
+• Configuration Cisco: switches, routeurs, VPN<br>
+• Serveurs Windows + Linux opérationnels<br>
+• Sécurité: ACL, pare-feu, VLANs segmentés<br>
+• Services: DHCP, DNS, Fichiers, Web<br>
+• Supervision: Zabbix ou PRTG configuré
+</div>
+</div>
+<div style="background:var(--bg2);border-radius:10px;padding:.9rem">
+<div style="font-size:.8rem;font-weight:700;color:#C47BE8;margin-bottom:.5rem">📝 Livrables documentaires</div>
+<div style="font-size:.8rem;color:var(--g300);line-height:1.8">
+• Dossier technique (30+ pages)<br>
+• Schémas Visio/Draw.io ou équivalent<br>
+• Tableau de câblage complet<br>
+• Plan et résultats de tests (signé)<br>
+• Budget détaillé en HTG<br>
+• Plan de maintenance annuel<br>
+• Procédures d'administration
+</div>
+</div>
+</div>
+<div style="background:var(--bg2);border-radius:10px;padding:.9rem;margin-bottom:1rem">
+<div style="font-size:.8rem;font-weight:700;color:#4DDADA;margin-bottom:.5rem">🎭 Soutenance devant jury (45 minutes)</div>
+<div style="font-size:.85rem;color:var(--g300);line-height:1.7">
+<strong>Format:</strong> 20 min de présentation + 10 min de démonstration live + 15 min de questions du jury.<br>
+<strong>Jury:</strong> Directeur de Canado Technique + 2 professeurs + 1 professionnel invité du secteur IT haïtien.<br>
+<strong>Critère:</strong> Le jury évalue si tu es prêt à travailler comme technicien réseau professionnel.
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem">
+<div style="background:rgba(255,215,0,.06);border-radius:8px;padding:.75rem;text-align:center">
+<div style="font-size:1.3rem;font-weight:900;color:#D4A017">30%</div>
+<div style="font-size:.72rem;color:var(--g500)">Déploiement technique</div>
+</div>
+<div style="background:rgba(255,215,0,.06);border-radius:8px;padding:.75rem;text-align:center">
+<div style="font-size:1.3rem;font-weight:900;color:#D4A017">40%</div>
+<div style="font-size:.72rem;color:var(--g500)">Dossier technique</div>
+</div>
+<div style="background:rgba(255,215,0,.06);border-radius:8px;padding:.75rem;text-align:center">
+<div style="font-size:1.3rem;font-weight:900;color:#D4A017">30%</div>
+<div style="font-size:.72rem;color:var(--g500)">Soutenance jury</div>
+</div>
+</div>
+</div><div class="completion" id="completion-msg"><h2>🎉 Félicitations ! Module TRI-27 terminé — Vous êtes un technicien réseau certifié Canado Technique !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<script>
+const quizState={};
+function selectOpt(el,idx,qid){
+  const q=el.closest('.quiz-q');const id=q.dataset.q;
+  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
+  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
+  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+}
+function submitQuiz(qid,correct,expl){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+  if(!qBlock)return;
+  const q=qBlock.querySelector('[data-q="'+qid+'"]');
+  const opts=qBlock.querySelectorAll('.quiz-opt');
+  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
+  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
+  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
+  updateProgBar();
+}
+function retryQuiz(qid){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
+  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
+  if(quizState[qid])delete quizState[qid][qid];
+}
+function setVideo(btn,url,ch){
+  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
+  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+}
+function completeChapter(n){
+  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
+  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
+  updateProgBar();showToastM('Chapitre '+n+' validé !');
+}
+function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
+function updateProgBar(){
+  const code=getModCode();let total=0,ok=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
+  if(total===0)return;const pct=Math.round(ok/total*100);
+  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
+  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
+  checkCompletion(pct);
+}
+function checkCompletion(pct){
+  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
+  if(pct>=seuil){
+    const comp=document.getElementById('completion-block');
+    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
+    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+  }
+}
+function scrollToChapter(n){
+  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+}
+function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
+function reserverSeance(id){
+  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
+  if(!sel){showToastM('Sélectionne un créneau.');return;}
+  showToastM('✅ Créneau réservé : '+sel.textContent);
+  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+}
+function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
+function printModule(){window.print();}
+let _toastT2;
+function showToastM(msg){
+  let t=document.getElementById('mod-toast');
+  if(!t){t=document.createElement('div');t.id='mod-toast';
+    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+}
+let _chrStart=Date.now();
+function _initTimer(){
+  const code=getModCode();
+  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
+  _chrStart=Date.now()-saved*1000;
+  setInterval(()=>{
+    const el=document.getElementById('session-timer');
+    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
+    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
+    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+</script>
+
+<div id="mod-code-data" data-code="TRI-27" style="display:none"></div>
+<div id="seuil-data" data-seuil="85" style="display:none"></div>
+</body>
+</html>

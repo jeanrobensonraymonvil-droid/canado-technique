@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-19 — Routage et commutation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.mod-meta-item strong{color:rgba(255,255,255,.9)}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
+.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
+.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
+.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
+.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-body{padding:1.5rem}
+.content-section{margin-bottom:1.8rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
+.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
+.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.content-section strong{color:var(--text);font-weight:700}
+.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
+.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
+.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
+.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
+.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
+.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
+.data-table tr:hover td{background:rgba(27,58,140,.04)}
+.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
+.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
+.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
+.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
+.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
+.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
+.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
+.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
+.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
+.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.video-guide-text strong{color:rgba(255,255,255,.85)}
+.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
+.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
+.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
+.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
+.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
+.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
+.quiz-body{padding:1.2rem 1.5rem}
+.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
+.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
+.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
+.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
+.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
+.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
+.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
+.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
+.quiz-expl.show{display:block}
+.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.quiz-score-display{font-size:.82rem;color:var(--g700)}
+.quiz-score-display strong{color:var(--text);font-size:.92rem}
+.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
+.btn-quiz-submit:hover{background:#d4a800}
+.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
+.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* SÉANCE PRATIQUE */
+.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pratique-header-info{flex:1}
+.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
+.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
+.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-body{padding:1.3rem 1.5rem}
+.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
+.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
+.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
+.pratique-card ul{padding-left:1.2rem}
+.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
+.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
+.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
+.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
+.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
+.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
+.pratique-confirm.show{display:flex}
+/* DÉMONSTRATION */
+.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.demo-header-info{flex:1}
+.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
+.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
+.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
+.demo-body{padding:1.3rem 1.5rem}
+.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
+.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
+.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
+.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
+.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
+.demo-step-text strong{color:var(--teal);font-weight:700}
+.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
+.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
+.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
+/* DEVOIR */
+.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.devoir-header-info{flex:1}
+.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
+.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
+.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.devoir-body{padding:1.3rem 1.5rem}
+.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
+.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
+.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.devoir-instructions ol{padding-left:1.3rem}
+.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
+.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
+.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
+.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
+.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
+.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
+.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
+.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
+.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
+.completion.show{display:block}
+.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
+.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #toc-sidebar.toc-open{transform:translateX(0)!important}
+  #toc-overlay{display:block!important}
+  .main-content{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .slot-grid{grid-template-columns:1fr 1fr!important}
+}
+#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
+@media(max-width:768px){#toc-mob-btn{display:flex!important}}
+#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
+.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
+.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
+.print-btn:hover{color:var(--g200)}
+@media print{
+  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
+  .video-block,.pratique-block,.demo-block{display:none!important}
+  .layout{display:block!important}
+  .main-content{width:100%!important}
+  body{background:#fff!important;color:#000!important}
+}
+
+</style>
+</head>
+<body>
+<div class="mod-header">
+  <div class="mod-header-in">
+    <div class="mod-tag">🔀 Module TRI-19 · 1ère Année</div>
+    <h1>Routage et <em>commutation</em></h1>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ Durée : <strong>90 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
+      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
+      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
+      <div class="mod-meta-item">🔬 Pratique : <strong>Labo Cisco IOS (oblig.)</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Config routeur en direct</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Plan d'adressage réseau</strong></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    </div>
+  </div>
+</div><div class="wrap"><div class="layout"><div class="toc">
+  <h3>📋 Sommaire</h3>
+  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Cisco IOS — Fondements CLI</span></div>
+<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Configuration des switches</span></div>
+<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Configuration des routeurs</span></div>
+<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Protocoles de routage RIP/OSPF</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo Cisco IOS (obligatoire)</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Démo config routeur</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Plan d'adressage complet</div></div>
+</div><div><div class="chapter" id="chapter-1">
+  <div class="chapter-header">
+    <div class="chapter-num">01</div>
+    <div class="chapter-info">
+      <h2>Cisco IOS — Fondements CLI</h2>
+      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">Modes · Commandes · Sécurisation</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Cisco IOS — Premiers pas sur la CLI</div><div class="video-subtitle">Durée : 15 min · Live sur vrai équipement</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Les modes de la CLI Cisco (5 min)</strong> — User EXEC (>), Privileged EXEC (#), Global Config ((config)#), Interface Config ((config-if)#). Transitions avec enable, configure terminal, interface.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Commandes de navigation essentielles (4 min)</strong> — ?, tab completion, show commands, copy running-config startup-config.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Sécuriser un équipement Cisco (4 min)</strong> — enable secret, line console 0/line vty, password, login, service password-encryption.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Packet Tracer vs équipement réel (2 min)</strong> — Différences mineures. Packet Tracer valide 90% des configurations.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
+</div><div class="content-section"><h3>1.1 Les modes CLI Cisco et leurs commandes</h3><table class="data-table"><thead><tr><th>Mode</th><th>Invite</th><th>Accès</th><th>Commandes principales</th></tr></thead><tbody><tr><td>User EXEC</td><td>Router></td><td>Démarrage automatique</td><td>ping, show version, logout</td></tr><tr><td>Privileged EXEC</td><td>Router#</td><td>enable</td><td>show running-config, show ip route, copy, reload</td></tr><tr><td>Global Config</td><td>Router(config)#</td><td>configure terminal</td><td>hostname, ip route, router ospf, no shutdown</td></tr><tr><td>Interface Config</td><td>Router(config-if)#</td><td>interface FastEthernet0/0</td><td>ip address, duplex, speed, no shutdown</td></tr><tr><td>Line Config</td><td>Router(config-line)#</td><td>line console 0 / line vty 0 4</td><td>password, login, exec-timeout</td></tr><tr><td>Router Config</td><td>Router(config-router)#</td><td>router rip / router ospf</td><td>network, passive-interface, area</td></tr></tbody></table><div class="info-box danger"><span class="info-box-label">🚨 Commande la plus importante sur Cisco</span><strong>copy running-config startup-config</strong> (ou simplement <strong>wr</strong>)<br>Sauvegarde la configuration active en mémoire flash. Sans cette commande, toute configuration est perdue au redémarrage. À exécuter après CHAQUE modification importante.</div></div><div class="quiz-block" id="quiz-1">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="3">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Pour configurer une interface sur un routeur Cisco, quel mode faut-il être ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>User EXEC (>)</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Privileged EXEC (#)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Global Config ((config)#)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Interface Config ((config-if)#)</button></div>
+    <div class="quiz-expl" id="expl-q0_1">Pour configurer une interface (ip address, no shutdown), il faut être en mode Interface Config. Chemin: enable → configure terminal → interface FastEthernet0/0.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="2">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quelle commande Cisco affiche la configuration actuellement active en RAM ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>show startup-config</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>show ip route</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>show running-config</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>display configuration</button></div>
+    <div class="quiz-expl" id="expl-q1_1">show running-config (ou sh run) affiche la configuration active en RAM. show startup-config affiche la configuration sauvegardée en NVRAM (qui sera chargée au prochain démarrage).</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Pourquoi la commande "copy running-config startup-config" est-elle critique ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Pour accélérer le routeur</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Sans elle, toute configuration est perdue au redémarrage</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Pour chiffrer la configuration</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Pour envoyer la config au serveur TFTP</button></div>
+    <div class="quiz-expl" id="expl-q2_1">La running-config est en RAM (volatile). Au redémarrage, le routeur charge la startup-config (NVRAM, non volatile). Si on ne copie pas la running vers la startup, toutes les modifications disparaissent au redémarrage.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">La commande "enable secret motdepasse" est préférée à "enable password" car...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Elle est plus courte à taper</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Elle stocke le mot de passe en MD5/SHA256 — enable password le stocke en clair</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Elle n'existe que sur les routeurs haut de gamme</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Il n'y a aucune différence</button></div>
+    <div class="quiz-expl" id="expl-q3_1">enable secret chiffre le mot de passe avec MD5 (ou SHA256 sur IOS modernes). enable password le stocke en clair dans la config (même avec service password-encryption, le chiffrement est faible). Utiliser toujours enable secret.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-2">
+  <div class="chapter-header">
+    <div class="chapter-num">02</div>
+    <div class="chapter-info">
+      <h2>Configuration des switches</h2>
+      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">VLANs · Trunk/Access · STP · Port Security</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Configuration des switches Cisco</div><div class="video-subtitle">Durée : 15 min · VLANs et Spanning Tree</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>VLANs — Segmentation logique (5 min)</strong> — Pourquoi les VLANs. VLAN 10 = Direction, VLAN 20 = Comptabilité, VLAN 30 = Opérations. Isoler les trafics, améliorer la sécurité.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Configuration des ports (4 min)</strong> — Mode access (poste de travail) vs mode trunk (liens inter-switch ou switch-routeur). switchport mode access, switchport access vlan, switchport mode trunk.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Spanning Tree Protocol (3 min)</strong> — Prévient les boucles réseau. Rôles: Root Bridge, Designated Port, Blocked Port. RSTP (Rapid STP) = version moderne.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Port Security (3 min)</strong> — Limiter le nombre de MAC par port. Protéger contre les connexions non autorisées.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
+</div><div class="content-section"><h3>2.1 Configuration VLAN sur switch Cisco — Commandes</h3><table class="data-table"><thead><tr><th>Étape</th><th>Commandes Cisco IOS</th><th>Description</th></tr></thead><tbody><tr><td>Créer les VLANs</td><td>vlan 10 / name DIRECTION / vlan 20 / name COMPTA</td><td>Créer et nommer chaque VLAN</td></tr><tr><td>Port access (poste)</td><td>interface Fa0/1 / switchport mode access / switchport access vlan 10</td><td>Assigner un port à un VLAN</td></tr><tr><td>Port trunk (uplink)</td><td>interface Gi0/1 / switchport mode trunk / switchport trunk allowed vlan 10,20,30</td><td>Autoriser les VLANs sur le trunk</td></tr><tr><td>Vérifier les VLANs</td><td>show vlan brief</td><td>Voir tous les VLANs et leurs ports</td></tr><tr><td>Vérifier les trunks</td><td>show interfaces trunk</td><td>Voir les ports en mode trunk et les VLANs autorisés</td></tr><tr><td>VLAN natif trunk</td><td>switchport trunk native vlan 99</td><td>VLAN pour les trames non taguées (bonne pratique: VLAN non utilisé)</td></tr></tbody></table><div class="info-box warn"><span class="info-box-label">⚠️ VLAN 1 — Le VLAN à éviter</span>Le VLAN 1 est le VLAN par défaut sur tous les switches Cisco. Il est potentiellement vulnérable aux attaques VLAN hopping. Bonne pratique: ne jamais utiliser le VLAN 1 pour du trafic utilisateur. Créer des VLANs dédiés et changer le VLAN natif du trunk vers un VLAN inutilisé (ex: VLAN 99).</div></div><div class="quiz-block" id="quiz-2">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Un port switch en mode "access" est configuré pour...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Transporter tous les VLANs simultanément</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Appartenir à un seul VLAN et transmettre des trames non taguées</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Bloquer tout le trafic</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Être utilisé uniquement par les routeurs</button></div>
+    <div class="quiz-expl" id="expl-q0_2">Un port en mode access appartient à un seul VLAN. Les trames sortant d'un port access sont non taguées (le poste de travail ne voit pas le tag VLAN). Les ports trunk transportent plusieurs VLANs avec des tags 802.1Q.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quel est le rôle du Spanning Tree Protocol (STP) ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Accélérer la transmission des paquets</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Prévenir les boucles réseau en bloquant certains ports redondants</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Chiffrer le trafic entre les switches</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Gérer les adresses MAC</button></div>
+    <div class="quiz-expl" id="expl-q1_2">Sans STP, les trames broadcast créent des boucles infinies entre switches redondants (broadcast storm). STP élit un Root Bridge et bloque les ports redondants pour créer une topologie sans boucle. RSTP (Rapid STP) converge en quelques secondes vs 30-50s pour STP classique.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">La commande "show vlan brief" sur un switch Cisco permet de...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Voir la table de routage</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Voir tous les VLANs configurés avec leurs ports assignés</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Voir les interfaces en mode trunk</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Voir la configuration de sécurité des ports</button></div>
+    <div class="quiz-expl" id="expl-q2_2">show vlan brief est LA commande de vérification VLAN sur un switch Cisco. Elle affiche: ID VLAN, nom, statut (active/suspended), et la liste des ports assignés à chaque VLAN. Indispensable pour valider la configuration.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Pourquoi éviter d'utiliser le VLAN 1 pour le trafic utilisateur ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Le VLAN 1 est réservé pour les imprimantes</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Le VLAN 1 est potentiellement vulnérable au VLAN hopping et toujours actif par défaut</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Le VLAN 1 est plus lent que les autres VLANs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Le VLAN 1 ne supporte que 10 hôtes</button></div>
+    <div class="quiz-expl" id="expl-q3_2">Le VLAN 1 est le VLAN natif par défaut sur tous les switches Cisco. Il est potentiellement exploitable par des attaques VLAN hopping. Bonne pratique: utiliser des VLANs numérotés pour tout le trafic et changer le VLAN natif du trunk vers un VLAN non utilisé.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-3">
+  <div class="chapter-header">
+    <div class="chapter-num">03</div>
+    <div class="chapter-info">
+      <h2>Configuration des routeurs</h2>
+      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">Interfaces · Routage statique · RIP · OSPF</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Configuration des routeurs Cisco</div><div class="video-subtitle">Durée : 18 min · Routing statique et dynamique</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Configuration d'interface routeur (4 min)</strong> — interface Serial0/0/0, ip address X.X.X.X mask, no shutdown. Interface LAN (FastEthernet) vs WAN (Serial). Clock rate sur le DCE.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Routage statique (5 min)</strong> — ip route réseau_dest masque next_hop. Route par défaut: ip route 0.0.0.0 0.0.0.0 next_hop. Vérification: show ip route.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>RIP v2 (4 min)</strong> — router rip, version 2, network X.X.X.X, no auto-summary. Simple à configurer, adapté aux petits réseaux.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>OSPF (5 min)</strong> — router ospf 1, router-id, network X.X.X.X wildcard area 0. Plus scalable que RIP, converge plus vite, utilisé dans les vraies entreprises.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
+</div><div class="content-section"><h3>3.1 Comparatif routage statique vs dynamique</h3><table class="data-table"><thead><tr><th>Critère</th><th>Routage statique</th><th>RIP v2</th><th>OSPF</th></tr></thead><tbody><tr><td>Configuration</td><td>Manuelle — chaque route ajoutée à la main</td><td>Semi-auto — annonce les réseaux connectés</td><td>Auto — découverte complète de la topologie</td></tr><tr><td>Scalabilité</td><td>Faible — ne convient pas aux grands réseaux</td><td>Moyenne — limité à 15 sauts (hop count)</td><td>Excellente — conçu pour les grands réseaux</td></tr><tr><td>Convergence (panne)</td><td>Aucune — route manuelle uniquement</td><td>Lente (30-180 secondes)</td><td>Rapide (< 5 secondes avec OSPF)</td></tr><tr><td>Métrique</td><td>Non applicable — admin choisit la route</td><td>Hop count (nombre de routeurs traversés)</td><td>Coût basé sur la bande passante (10^8/BW)</td></tr><tr><td>Usage recommandé</td><td>Petits réseaux, route par défaut, stub</td><td>Réseaux de labo, très petits réseaux</td><td>Réseaux d'entreprise standard</td></tr><tr><td>Commande de base</td><td>ip route dest masque next-hop</td><td>router rip + network</td><td>router ospf 1 + network</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Comment configurer une route par défaut sur un routeur Cisco ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>ip route default 0.0.0.0 gateway</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>ip route 0.0.0.0 0.0.0.0 next-hop</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>route default gateway next-hop</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>ip default-route next-hop</button></div>
+    <div class="quiz-expl" id="expl-q0_3">ip route 0.0.0.0 0.0.0.0 next-hop configure la route par défaut: "pour toute destination inconnue, envoie vers ce next-hop." C'est la route de dernier recours, utilisée pour la connexion internet (traffic non local vers le FAI).</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quelle est la principale limitation de RIP v2 ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Il ne supporte pas IPv4</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Il est limité à 15 sauts (hop count) — réseau de 16 routeurs = inaccessible</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Il ne fonctionne que sur les switches</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>RIP v2 ne chiffre pas les routes</button></div>
+    <div class="quiz-expl" id="expl-q1_3">La métrique de RIP est le nombre de sauts (routeurs traversés). Un réseau à 16 sauts ou plus est considéré comme inaccessible (métrique = infini = 16). Ce qui rend RIP inadapté aux grands réseaux. OSPF n'a pas cette limitation.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">La commande OSPF "network 192.168.1.0 0.0.0.255 area 0" signifie...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Bloquer le réseau 192.168.1.0 dans l'area 0</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Annoncer le réseau 192.168.1.0/24 dans l'area OSPF 0</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Créer une route statique vers 192.168.1.0</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Configurer l'adresse IP de l'interface</button></div>
+    <div class="quiz-expl" id="expl-q2_3">La commande network OSPF utilise un wildcard (inverse du masque). 0.0.0.255 = /24 (255 en binaire = 8 bits à 1 = 8 bits hôte). "area 0" = backbone OSPF. Cette commande annonce le réseau 192.168.1.0/24 dans le processus OSPF.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="2">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Quelle commande Cisco affiche la table de routage complète ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>show ip interface</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>show running-config</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>show ip route</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>show version</button></div>
+    <div class="quiz-expl" id="expl-q3_3">show ip route est LA commande fondamentale de vérification du routage. Elle affiche toutes les routes connues avec leur origine (C=connected, S=static, R=RIP, O=OSPF, D=EIGRP) et le next-hop. Si une route manque, les paquets vers cette destination seront droppés.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-4">
+  <div class="chapter-header">
+    <div class="chapter-num">04</div>
+    <div class="chapter-info">
+      <h2>NAT, ACL et DHCP</h2>
+      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">NAT PAT · ACL · DHCP server · Vérification</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Protocoles avancés — NAT, ACL, et DHCP sur routeur</div><div class="video-subtitle">Durée : 15 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>NAT (Network Address Translation) (5 min)</strong> — Statique, dynamique, PAT (Port Address Translation). Configuration NAT overload (PAT) sur routeur Cisco. ip nat inside/outside.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>ACL (Access Control Lists) (5 min)</strong> — ACL standard (filtrage par IP source uniquement) vs ACL étendue (IP source + destination + port). Placement des ACL: standard près de la destination, étendue près de la source.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>DHCP sur routeur Cisco (3 min)</strong> — Configurer le routeur comme serveur DHCP. ip dhcp pool, network, default-router, dns-server, lease.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Vérification et dépannage (2 min)</strong> — show ip nat translations, show access-lists, show ip dhcp binding.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
+</div><div class="content-section"><h3>4.1 Configuration NAT PAT sur routeur Cisco</h3><table class="data-table"><thead><tr><th>Étape</th><th>Commande</th><th>Description</th></tr></thead><tbody><tr><td>1. Pool d'IPs publiques</td><td>ip nat pool POOL_NAME 200.1.1.1 200.1.1.1 netmask 255.255.255.0</td><td>(ou utiliser l'interface directement avec overload)</td></tr><tr><td>2. ACL pour le trafic privé</td><td>access-list 1 permit 192.168.1.0 0.0.0.255</td><td>Identifier le trafic à traduire</td></tr><tr><td>3. Activer NAT overload</td><td>ip nat inside source list 1 interface Serial0/0/0 overload</td><td>Lier l'ACL à l'interface WAN avec surcharge</td></tr><tr><td>4. Interfaces inside/outside</td><td>interface Fa0/0 → ip nat inside / interface Se0/0/0 → ip nat outside</td><td>Marquer les interfaces LAN et WAN</td></tr><tr><td>5. Vérifier</td><td>show ip nat translations</td><td>Voir les traductions actives</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">NAT PAT (Port Address Translation) permet de...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Utiliser plusieurs adresses IP publiques</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Masquer les adresses privées derrière une seule IP publique en utilisant les numéros de port pour distinguer les sessions</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Filtrer le trafic selon les ports</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Chiffrer le trafic internet</button></div>
+    <div class="quiz-expl" id="expl-q0_4">NAT PAT (aussi appelé NAT overload) traduit plusieurs adresses privées vers une seule adresse publique en distinguant les sessions par le numéro de port. C'est le fonctionnement standard de tous les routeurs ADSL/fibre domestiques et la grande majorité des routeurs d'entreprise.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Où placer une ACL étendue pour être le plus efficace ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Le plus près possible de la destination</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Le plus près possible de la source du trafic à filtrer</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Sur l'interface de loopback du routeur</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Sur le switch de distribution</button></div>
+    <div class="quiz-expl" id="expl-q1_4">Les ACL étendues filtrent selon la source ET la destination. En les plaçant près de la source, on bloque le trafic le plus tôt possible, évitant qu'il traverse inutilement le réseau. Les ACL standard (filtrage IP source uniquement) se placent près de la destination.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Quelle commande configure le routeur Cisco comme serveur DHCP pour le réseau 192.168.10.0/24 ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>dhcp server 192.168.10.0</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>ip dhcp pool LAN1 + network 192.168.10.0 255.255.255.0</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>enable dhcp 192.168.10.0/24</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>start dhcp-service 192.168.10.0</button></div>
+    <div class="quiz-expl" id="expl-q2_4">ip dhcp pool NOM crée le pool DHCP. Ensuite: network 192.168.10.0 255.255.255.0 (plage), default-router 192.168.10.1 (passerelle), dns-server 8.8.8.8 (DNS), lease 7 (durée du bail en jours).</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">La commande "show ip nat translations" affiche...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>La configuration NAT</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Les sessions NAT actives: IP privée + port ↔ IP publique + port</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>La liste des ACL configurées</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>La table de routage post-NAT</button></div>
+    <div class="quiz-expl" id="expl-q3_4">show ip nat translations montre les entrées actives dans la table de traduction NAT: inside local (IP privée:port), inside global (IP publique:port), outside local, outside global. Essentiel pour diagnostiquer des problèmes de NAT.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="pratique-block">
+  <div class="pratique-header">
+    <div class="pratique-icon-wrap">🔬</div>
+    <div class="pratique-header-info">
+      <h3>Séance Pratique — SP-TRI-19-01</h3>
+      <span>Labo Cisco IOS — Routage et commutation en conditions réelles</span>
+    </div>
+    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
+  </div>
+  <div class="pratique-body">
+    <p class="pratique-desc">Séance OBLIGATOIRE. Tu vas configurer une topologie complète avec switches, VLANs, routeurs et protocoles de routage. Configuration sur équipements Cisco réels ou Packet Tracer avancé. Durée: 4 heures.</p>
+    <div class="pratique-grid">
+      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Configurer les VLANs et ports trunk/access sur un switch Cisco</li><li>Configurer un routeur avec une route statique et une route par défaut</li><li>Activer OSPF entre 2 routeurs et vérifier la convergence</li><li>Configurer NAT PAT pour simuler l'accès internet</li><li>Vérifier toute la connectivité avec show commands et ping</li></ul></div>
+      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Accès aux équipements Cisco du labo (switches 2960 + routeurs 1841/2901)</li><li>OU Packet Tracer 8.x en cas d'indisponibilité du matériel</li><li>Câbles RJ45 et câbles console (fournis)</li><li>Carnet de notes pour documenter les configurations</li></ul></div>
+    </div>
+    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
+    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00 (4h)')">Lun 19 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 13h00 (4h)')">Lun 19 Mai — 13h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00 (4h)')">Mar 20 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 13h00 (4h)')">Mer 21 Mai — 13h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00 (4h)')">Jeu 22 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00 (4h)')">Ven 23 Mai — 8h00 (4h)</button></div>
+    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-19-01')">📅 Confirmer ma réservation</button>
+    <div class="pratique-confirm" id="confirm-sp-19-01"></div>
+  </div>
+</div><div class="demo-block">
+  <div class="demo-header">
+    <div class="demo-icon-wrap">🎭</div>
+    <div class="demo-header-info">
+      <h3>Démonstration — DEM-TRI-19-01</h3>
+      <span>Évaluation pratique individuelle (20 min)</span>
+    </div>
+    <div class="demo-badge">Évaluation pratique</div>
+  </div>
+  <div class="demo-body">
+    <p class="demo-desc">Le professeur te donne une topologie avec des exigences précises. Tu dois configurer le routeur en direct en 20 minutes.</p>
+    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
+    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Sécurisation initiale</strong> — hostname, enable secret, console password, ssh, banner</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Configuration interfaces</strong> — Adresses IP sur toutes les interfaces, no shutdown</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Routage</strong> — Route statique ou OSPF selon la topologie donnée</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Vérification</strong> — show ip route, show ip ospf neighbor, ping entre tous les réseaux</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Sauvegarde</strong> — copy running-config startup-config</div></div>
+    <div class="demo-eval">
+      <div class="demo-eval-label">✅ Critères d'évaluation</div>
+      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Hostname et sécurisation corrects</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Interfaces configurées sans erreur</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Routage fonctionnel (toutes routes présentes)</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Ping réussi entre tous les réseaux</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Configuration sauvegardée</div></div>
+    </div>
+  </div>
+</div><div class="devoir-block">
+  <div class="devoir-header">
+    <div class="devoir-icon-wrap">📝</div>
+    <div class="devoir-header-info">
+      <h3>Devoir TRI-19 — Plan d'adressage et configuration réseau complet</h3>
+      <span>Conception et documentation d'un réseau multi-sites</span>
+    </div>
+    <div class="devoir-deadline">Délai : 1 semaine</div>
+  </div>
+  <div class="devoir-body">
+    <p class="devoir-desc">Conçois l'infrastructure réseau complète d'une organisation haïtienne avec 3 sites (siège social à Port-au-Prince, bureau Cap-Haïtien, bureau Gonaïves).</p>
+    <div class="devoir-instructions">
+      <div class="devoir-instructions-label">📋 Instructions</div>
+      <ol><li>Définis un <strong>plan d'adressage IPv4 complet</strong>: choisir un espace d'adressage privé, diviser en sous-réseaux pour chaque site et chaque département.</li><li>Conçois le <strong>schéma de topologie réseau</strong> complet avec les équipements Cisco (switches, routeurs) et leurs interconnexions WAN.</li><li>Rédige les <strong>configurations Cisco IOS</strong> complètes pour les routeurs de chaque site (interfaces, routes OSPF ou statiques, NAT).</li><li>Documente la <strong>configuration VLAN</strong> pour le site principal (au minimum 3 VLANs avec leurs ports assignés).</li><li>Identifie et propose des solutions pour les <strong>points de défaillance unique</strong> (SPOF) dans ton architecture.</li></ol>
+    </div>
+    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
+    <div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Plan d'adressage complet et cohérent (pas de chevauchement, taille adaptée)</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Schéma topologique professionnel</div></div><div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Configurations Cisco IOS correctes et complètes</div></div><div class="bareme-row"><div class="bareme-pts">10 pts</div><div class="bareme-label">Configuration VLAN documentée</div></div><div class="bareme-row"><div class="bareme-pts">10 pts</div><div class="bareme-label">SPOF identifiés + solutions de redondance</div></div>
+    <div class="devoir-submit-area">
+      <div class="devoir-submit-icon">📤</div>
+      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
+      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
+    </div>
+  </div>
+</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-19 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<script>
+const quizState={};
+function selectOpt(el,idx,qid){
+  const q=el.closest('.quiz-q');const id=q.dataset.q;
+  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
+  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
+  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+}
+function submitQuiz(qid,correct,expl){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+  if(!qBlock)return;
+  const q=qBlock.querySelector('[data-q="'+qid+'"]');
+  const opts=qBlock.querySelectorAll('.quiz-opt');
+  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
+  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
+  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
+  updateProgBar();
+}
+function retryQuiz(qid){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
+  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
+  if(quizState[qid])delete quizState[qid][qid];
+}
+function setVideo(btn,url,ch){
+  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
+  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+}
+function completeChapter(n){
+  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
+  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
+  updateProgBar();showToastM('Chapitre '+n+' validé !');
+}
+function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
+function updateProgBar(){
+  const code=getModCode();let total=0,ok=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
+  if(total===0)return;const pct=Math.round(ok/total*100);
+  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
+  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
+  checkCompletion(pct);
+}
+function checkCompletion(pct){
+  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
+  if(pct>=seuil){
+    const comp=document.getElementById('completion-block');
+    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
+    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+  }
+}
+function scrollToChapter(n){
+  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+}
+function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
+function reserverSeance(id){
+  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
+  if(!sel){showToastM('Sélectionne un créneau.');return;}
+  showToastM('✅ Créneau réservé : '+sel.textContent);
+  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+}
+function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
+function printModule(){window.print();}
+let _toastT2;
+function showToastM(msg){
+  let t=document.getElementById('mod-toast');
+  if(!t){t=document.createElement('div');t.id='mod-toast';
+    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+}
+let _chrStart=Date.now();
+function _initTimer(){
+  const code=getModCode();
+  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
+  _chrStart=Date.now()-saved*1000;
+  setInterval(()=>{
+    const el=document.getElementById('session-timer');
+    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
+    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
+    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+</script>
+
+<div id="mod-code-data" data-code="TRI-19" style="display:none"></div>
+<div id="seuil-data" data-seuil="80" style="display:none"></div>
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-18 — Installation de serveur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.mod-meta-item strong{color:rgba(255,255,255,.9)}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
+.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
+.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
+.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
+.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-body{padding:1.5rem}
+.content-section{margin-bottom:1.8rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
+.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
+.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.content-section strong{color:var(--text);font-weight:700}
+.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
+.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
+.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
+.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
+.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
+.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
+.data-table tr:hover td{background:rgba(27,58,140,.04)}
+.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
+.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
+.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
+.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
+.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
+.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
+.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
+.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
+.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
+.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.video-guide-text strong{color:rgba(255,255,255,.85)}
+.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
+.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
+.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
+.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
+.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
+.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
+.quiz-body{padding:1.2rem 1.5rem}
+.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
+.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
+.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
+.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
+.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
+.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
+.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
+.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
+.quiz-expl.show{display:block}
+.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.quiz-score-display{font-size:.82rem;color:var(--g700)}
+.quiz-score-display strong{color:var(--text);font-size:.92rem}
+.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
+.btn-quiz-submit:hover{background:#d4a800}
+.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
+.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* SÉANCE PRATIQUE */
+.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pratique-header-info{flex:1}
+.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
+.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
+.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-body{padding:1.3rem 1.5rem}
+.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
+.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
+.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
+.pratique-card ul{padding-left:1.2rem}
+.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
+.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
+.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
+.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
+.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
+.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
+.pratique-confirm.show{display:flex}
+/* DÉMONSTRATION */
+.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.demo-header-info{flex:1}
+.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
+.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
+.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
+.demo-body{padding:1.3rem 1.5rem}
+.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
+.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
+.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
+.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
+.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
+.demo-step-text strong{color:var(--teal);font-weight:700}
+.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
+.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
+.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
+/* DEVOIR */
+.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.devoir-header-info{flex:1}
+.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
+.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
+.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.devoir-body{padding:1.3rem 1.5rem}
+.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
+.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
+.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.devoir-instructions ol{padding-left:1.3rem}
+.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
+.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
+.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
+.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
+.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
+.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
+.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
+.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
+.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
+.completion.show{display:block}
+.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
+.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #toc-sidebar.toc-open{transform:translateX(0)!important}
+  #toc-overlay{display:block!important}
+  .main-content{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .slot-grid{grid-template-columns:1fr 1fr!important}
+}
+#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
+@media(max-width:768px){#toc-mob-btn{display:flex!important}}
+#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
+.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
+.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
+.print-btn:hover{color:var(--g200)}
+@media print{
+  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
+  .video-block,.pratique-block,.demo-block{display:none!important}
+  .layout{display:block!important}
+  .main-content{width:100%!important}
+  body{background:#fff!important;color:#000!important}
+}
+
+</style>
+</head>
+<body>
+<div class="mod-header">
+  <div class="mod-header-in">
+    <div class="mod-tag">🖥️ Module TRI-18 · 1ère Année</div>
+    <h1>Installation de <em>serveur</em></h1>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ Durée : <strong>75 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
+      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
+      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
+      <div class="mod-meta-item">🔬 Pratique : <strong>Labo serveur (oblig.)</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Admin serveur</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport installation</strong></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    </div>
+  </div>
+</div><div class="wrap"><div class="layout"><div class="toc">
+  <h3>📋 Sommaire</h3>
+  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Architecture serveur</span></div>
+<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Windows Server — Installation</span></div>
+<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Active Directory — Fondements</span></div>
+<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Linux Server — Administration</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo installation serveur</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Démo admin Windows Server</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Rapport d'installation complet</div></div>
+</div><div><div class="chapter" id="chapter-1">
+  <div class="chapter-header">
+    <div class="chapter-num">01</div>
+    <div class="chapter-info">
+      <h2>Architecture serveur</h2>
+      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">Rôles · Types · Virtualisation · Contexte haïtien</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Architecture d'un serveur — Matériel et rôles</div><div class="video-subtitle">Durée : 12 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Serveur vs PC de bureau (3 min)</strong> — Redondance (double alimentation, RAID, ECC RAM), facteur de forme (rack 1U/2U, tour), disponibilité 24/7.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Types de serveurs (4 min)</strong> — Serveur de fichiers, serveur d'impression, contrôleur de domaine (DC), serveur web, serveur DHCP/DNS, serveur de base de données, serveur de messagerie.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Virtualisation (3 min)</strong> — VMware ESXi, Hyper-V, KVM. 1 serveur physique = N serveurs virtuels. Économies, flexibilité. Standard dans les entreprises modernes.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Contexte haïtien (2 min)</strong> — Défis: coupures EDH, chaleur ambiante, coût du matériel. Solutions: UPS de qualité, salle serveur climatisée, cloud hybride.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
+</div><div class="content-section"><h3>1.1 Types de serveurs et leurs rôles</h3><table class="data-table"><thead><tr><th>Type de serveur</th><th>Rôle principal</th><th>Exemples OS</th><th>Importance en Haïti</th></tr></thead><tbody><tr><td>Contrôleur de domaine (DC)</td><td>Authentification centrale, stratégies groupe</td><td>Windows Server 2019/2022</td><td>Critique — gère tous les comptes</td></tr><tr><td>Serveur DNS</td><td>Résolution des noms de domaine internes et externes</td><td>Windows Server, BIND Linux</td><td>Essentiel — tout dépend du DNS</td></tr><tr><td>Serveur DHCP</td><td>Attribution automatique des adresses IP</td><td>Windows Server, ISC DHCP</td><td>Essentiel — sans lui, adresses manuelles</td></tr><tr><td>Serveur de fichiers</td><td>Partage et stockage centralisé des données</td><td>Windows Server (DFS), Samba Linux</td><td>Très utile — données centralisées</td></tr><tr><td>Serveur web</td><td>Hébergement d'applications et sites intranet</td><td>IIS (Windows), Apache/Nginx (Linux)</td><td>Croissant — portail RH, intranet</td></tr><tr><td>Serveur de messagerie</td><td>Emails internes et externes</td><td>Exchange Server, Postfix Linux</td><td>Variable — souvent externalisé (Office 365)</td></tr></tbody></table><div class="info-box"><span class="info-box-label">🇭🇹 Réalité haïtienne — L'enjeu de la salle serveur</span>En Haïti, une salle serveur bien conçue doit prévoir: UPS avec au minimum 30 min d'autonomie pour une extinction propre, climatisation dédiée (les pannes serveur par surchauffe sont fréquentes en période de forte chaleur), et un générateur pour les opérations critiques 24/7.</div></div><div class="quiz-block" id="quiz-1">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Quelle est la principale différence entre un serveur et un PC de bureau ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Le serveur a un écran plus grand</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Le serveur est conçu pour fonctionner 24/7 avec redondance matérielle (alimentation double, RAID, ECC RAM)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Le serveur n'a pas de carte graphique</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Le serveur est toujours plus rapide</button></div>
+    <div class="quiz-expl" id="expl-q0_1">Un serveur est conçu pour la disponibilité et la fiabilité: alimentation double (si une tombe en panne, l'autre prend le relais), RAID pour la redondance des disques, ECC RAM qui corrige les erreurs mémoire. Un PC de bureau s'arrête, un serveur reste disponible.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">La virtualisation de serveurs permet de...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Rendre les serveurs plus rapides physiquement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Exécuter plusieurs serveurs virtuels sur un seul serveur physique, réduisant les coûts</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Connecter des serveurs de différentes marques</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Accéder aux serveurs depuis internet uniquement</button></div>
+    <div class="quiz-expl" id="expl-q1_1">La virtualisation (VMware, Hyper-V, KVM) permet de créer N serveurs virtuels sur 1 serveur physique. Exemple: un serveur à 150 000 HTG peut héberger DC + DNS + DHCP + Fichiers = 4 serveurs pour le prix d'un.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Dans le contexte haïtien, quel équipement est INDISPENSABLE dans une salle serveur ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Un écran 4K</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Un UPS (onduleur) de qualité</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Un scanner de documents</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Un système audio</button></div>
+    <div class="quiz-expl" id="expl-q2_1">L'UPS (Uninterruptible Power Supply) protège les serveurs contre les coupures EDH. Il maintient l'alimentation le temps d'effectuer un arrêt propre ou de démarrer le générateur. Les arrêts brusques (coupures EDH directes) peuvent corrompre les données et endommager les disques.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="2">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Quel type de serveur gère centralement les comptes utilisateurs et les stratégies de groupe ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Serveur Web</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Serveur de fichiers</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Contrôleur de domaine (DC) avec Active Directory</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Serveur DHCP</button></div>
+    <div class="quiz-expl" id="expl-q3_1">Le contrôleur de domaine (DC) avec Active Directory est le centre névralgique d'un réseau Windows. Il authentifie tous les utilisateurs, applique les stratégies de groupe (GPO), gère les mots de passe et les permissions. Sans DC, chaque PC gère ses propres comptes — impossible à administrer.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-2">
+  <div class="chapter-header">
+    <div class="chapter-num">02</div>
+    <div class="chapter-info">
+      <h2>Windows Server — Installation</h2>
+      <div class="chapter-meta"><span>🕐 20 heures</span><span class="chapter-badge">Éditions · Procédure · Nomenclature</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Windows Server — Installation et configuration initiale</div><div class="video-subtitle">Durée : 18 min · Procédure complète</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Éditions de Windows Server (3 min)</strong> — Essentials (petites structures), Standard (PME), Datacenter (grandes entreprises, virtualisation illimitée). Différences de licences et fonctionnalités.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Installation step by step (8 min)</strong> — Bootable USB, partitionnement (recommandation: partition système 80GB + partition données), rôles à installer, mot de passe Administrateur.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Configuration initiale (5 min)</strong> — Nom du serveur (convention: SRV-DC01, SRV-FILE01), IP fixe, mises à jour, Gestionnaire de serveur.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Rôles et fonctionnalités (2 min)</strong> — Ajouter des rôles via le Gestionnaire de serveur. Installation d'AD DS, DNS, DHCP.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
+</div><div class="content-section"><h3>2.1 Nomenclature des serveurs — Convention recommandée</h3><table class="data-table"><thead><tr><th>Préfixe</th><th>Rôle</th><th>Exemple</th><th>Explication</th></tr></thead><tbody><tr><td>SRV</td><td>Générique Serveur</td><td>SRV-01</td><td>Serveur sans rôle spécifique identifié</td></tr><tr><td>DC</td><td>Domain Controller</td><td>DC01, DC02</td><td>Contrôleur de domaine (numéroter pour la redondance)</td></tr><tr><td>FILE</td><td>Serveur de fichiers</td><td>FILE-SRV01</td><td>Stockage et partages</td></tr><tr><td>WEB</td><td>Serveur web/IIS</td><td>WEB-IIS01</td><td>Hébergement d'applications</td></tr><tr><td>DB</td><td>Serveur de base de données</td><td>DB-SQL01</td><td>SQL Server, MySQL</td></tr><tr><td>MAIL</td><td>Serveur de messagerie</td><td>MAIL-EXCH01</td><td>Exchange ou autre MTA</td></tr><tr><td>BACKUP</td><td>Serveur de sauvegarde</td><td>BACKUP-SRV01</td><td>Sauvegardes centralisées</td></tr></tbody></table><div class="info-box"><span class="info-box-label">📋 Bonnes pratiques de nommage serveur</span>Un bon nom de serveur: court (max 15 caractères pour NetBIOS), descriptif du rôle, avec numérotation pour la redondance. Éviter les noms trop personnels (SRV-JEAN) ou humoristiques — ils devront être documentés et maintenus pendant des années.</div></div><div class="quiz-block" id="quiz-2">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Quelle édition de Windows Server est adaptée pour une PME haïtienne de 50 employés ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Windows Server Essentials (limité à 25 users)</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Windows Server Standard</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Windows Server Datacenter</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Windows 11 Pro suffira</button></div>
+    <div class="quiz-expl" id="expl-q0_2">Windows Server Standard est l'édition adaptée aux PME. Essentials est limité à 25 utilisateurs et 50 appareils — trop restrictif. Datacenter est pour les grandes infrastructures de virtualisation. Standard offre toutes les fonctionnalités nécessaires à une PME.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="2">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quelle taille de partition recommande-t-on pour le système Windows Server ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>20 GB</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>40 GB</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>80 GB minimum</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>500 GB</button></div>
+    <div class="quiz-expl" id="expl-q1_2">80 GB minimum pour la partition système Windows Server. Windows Server + rôles + mises à jour + logs peuvent facilement consommer 40-60 GB. Avec 80 GB, on a de la marge. Les données (partages fichiers, BDD) doivent être sur une partition séparée — jamais sur C:.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">La convention de nommage "DC01" pour un serveur signifie...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Data Center numéro 1</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Domain Controller numéro 1 (contrôleur de domaine)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Dell Computer 01</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Disk Controller 01</button></div>
+    <div class="quiz-expl" id="expl-q2_2">DC = Domain Controller. La numérotation (01, 02) permet de distinguer les redondances. DC01 est le contrôleur de domaine principal, DC02 son réplica. Cette convention est universellement reconnue dans les équipes IT.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Après l'installation de Windows Server, quelle est la première action recommandée ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Installer les logiciels bureautiques</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Appliquer toutes les mises à jour de sécurité</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Créer les comptes utilisateurs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Configurer les partages réseau</button></div>
+    <div class="quiz-expl" id="expl-q3_2">Les mises à jour de sécurité sont prioritaires sur un serveur. Un serveur Windows sans mises à jour est exposé à des failles connues et potentiellement exploitées. Toujours patcher avant de mettre le serveur en production.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-3">
+  <div class="chapter-header">
+    <div class="chapter-num">03</div>
+    <div class="chapter-info">
+      <h2>Active Directory — Fondements</h2>
+      <div class="chapter-meta"><span>🕐 20 heures</span><span class="chapter-badge">Domaine · OUs · Utilisateurs · GPO</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Active Directory — Fondements et configuration</div><div class="video-subtitle">Durée : 18 min · Demo live AD</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Active Directory (AD) — Qu'est-ce que c'est ? (4 min)</strong> — Annuaire LDAP Microsoft. Structure: forêt → domaine → OUs (unités organisationnelles). Canado-technique.ht comme exemple de domaine.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Créer son premier domaine (5 min)</strong> — Promouvoir un serveur en DC: Add Role AD DS → Promote this server to DC → New forest → canado-technique.local.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Gestion des utilisateurs et groupes (5 min)</strong> — Active Directory Users and Computers (ADUC). Créer OUs par département. Créer des comptes utilisateurs. Groupes de sécurité vs de distribution.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Stratégies de groupe (GPO) (4 min)</strong> — Group Policy Management Console. Exemples: bloquer l'accès au panneau de configuration, forcer le fond d'écran de l'entreprise, configurer les paramètres de sécurité.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
+</div><div class="content-section"><h3>3.1 Structure Active Directory recommandée pour une PME</h3><table class="data-table"><thead><tr><th>Niveau</th><th>Objet</th><th>Exemple</th><th>Utilisation</th></tr></thead><tbody><tr><td>Forêt</td><td>Frontière de sécurité maximale</td><td>canado-technique.local</td><td>Une seule forêt pour la plupart des organisations</td></tr><tr><td>Domaine</td><td>Unité d'administration</td><td>canado-technique.local</td><td>Un domaine par organisation normalement</td></tr><tr><td>OU (Unité Org.)</td><td>Conteneur pour objets</td><td>OU=Direction, OU=Comptabilite</td><td>Organiser par département pour les GPO</td></tr><tr><td>Utilisateur</td><td>Compte individuel</td><td>jpierre@canado-technique.local</td><td>Un compte par personne physique</td></tr><tr><td>Groupe</td><td>Regroupement d'utilisateurs</td><td>GRP-Comptabilite-RW</td><td>Gérer les permissions par groupe, pas par user</td></tr><tr><td>Ordinateur</td><td>Compte machine</td><td>PC-COMPTA-01$</td><td>Chaque PC joint au domaine a un compte</td></tr></tbody></table><div class="info-box tip"><span class="info-box-label">🔑 La règle d'or AD: gérer les permissions par groupes</span>Ne jamais attribuer des permissions directement à un utilisateur. Toujours: créer un groupe, attribuer les permissions au groupe, ajouter les utilisateurs au groupe. Raison: si Marie remplace Jean, on retire Jean du groupe et on ajoute Marie — les permissions suivent automatiquement.</div></div><div class="quiz-block" id="quiz-3">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Dans Active Directory, une OU (Unité Organisationnelle) est...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Un type d'utilisateur spécial</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Un conteneur pour organiser les objets AD et appliquer des GPO</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Un serveur supplémentaire</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Un type de groupe de sécurité</button></div>
+    <div class="quiz-expl" id="expl-q0_3">Une OU est un conteneur dans l'annuaire AD qui regroupe des objets (users, groupes, PC) pour faciliter l'administration et l'application de stratégies de groupe (GPO). Exemple: OU=Comptabilite contient tous les utilisateurs du département comptabilité.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Pourquoi gérer les permissions via des groupes plutôt que directement par utilisateur ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Les groupes sont obligatoires dans AD</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Faciliter la gestion: changer les permissions d'un département ne nécessite qu'une modification du groupe</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Pour économiser des licences</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Les permissions individuelles ne fonctionnent pas dans AD</button></div>
+    <div class="quiz-expl" id="expl-q1_3">Gérer par groupes est fondamental en bonne pratique AD. Si 20 personnes ont les mêmes droits, créer 1 groupe et y mettre 20 personnes. Quand quelqu'un quitte ou rejoint, on le retire/ajoute du groupe — pas besoin de modifier 20 dossiers partagés.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="2">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Quelle console Windows Server permet de créer des stratégies de groupe ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Active Directory Users and Computers</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>DNS Manager</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Group Policy Management Console (GPMC)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Server Manager</button></div>
+    <div class="quiz-expl" id="expl-q2_3">GPMC (Group Policy Management Console) est l'outil pour créer, modifier et lier des GPO. Les GPO permettent de configurer des centaines de paramètres de sécurité et de bureau sur tous les postes du domaine simultanément.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Un domaine Active Directory avec le suffixe ".local" signifie...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Le serveur est en France</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>C'est un domaine interne non résolvable sur internet (ex: canado-technique.local)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Le serveur est lent</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Local = non sécurisé</button></div>
+    <div class="quiz-expl" id="expl-q3_3">Le suffixe .local est réservé aux domaines AD internes (non publiés sur internet). Exemple: canado-technique.local est uniquement résolvable depuis l'intérieur du réseau. Sur internet, canado-technique.ht est le domaine public. Les deux sont distincts.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-4">
+  <div class="chapter-header">
+    <div class="chapter-num">04</div>
+    <div class="chapter-info">
+      <h2>Linux Server — Administration</h2>
+      <div class="chapter-meta"><span>🕐 17 heures</span><span class="chapter-badge">Ubuntu LTS · systemctl · SSH · ufw</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Linux Server — Administration fondamentale</div><div class="video-subtitle">Durée : 15 min · Ubuntu Server en live</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Pourquoi Linux Server ? (3 min)</strong> — Gratuit, stable, sécurisé, omniprésent sur internet (80%+ des serveurs web). Apache, Nginx, MySQL tournent nativement sous Linux.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Installation Ubuntu Server 22.04 LTS (5 min)</strong> — LTS = Long Term Support (5 ans de mises à jour). Installation sans interface graphique = plus légère et sécurisée. Configuration SSH dès l'installation.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Administration de base (5 min)</strong> — systemctl (démarrer/arrêter/activer les services), journalctl (logs), ufw (pare-feu), apt (gestion des paquets).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>SSH — Accès à distance sécurisé (2 min)</strong> — Connexion SSH depuis Windows (PuTTY) ou depuis un autre Linux. Clés SSH vs mot de passe.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
+</div><div class="content-section"><h3>4.1 Commandes d'administration Linux Server essentielles</h3><table class="data-table"><thead><tr><th>Catégorie</th><th>Commande</th><th>Description</th><th>Exemple</th></tr></thead><tbody><tr><td>Services</td><td>systemctl start/stop/status</td><td>Gérer les services</td><td>systemctl status nginx</td></tr><tr><td>Services</td><td>systemctl enable/disable</td><td>Activer au démarrage</td><td>systemctl enable apache2</td></tr><tr><td>Logs</td><td>journalctl -u service</td><td>Logs d'un service</td><td>journalctl -u sshd -n 50</td></tr><tr><td>Paquets</td><td>apt update && apt upgrade</td><td>Mettre à jour le système</td><td>sudo apt update && sudo apt upgrade -y</td></tr><tr><td>Paquets</td><td>apt install</td><td>Installer un paquet</td><td>sudo apt install nginx</td></tr><tr><td>Pare-feu</td><td>ufw allow/deny port</td><td>Règles de pare-feu</td><td>sudo ufw allow 22/tcp</td></tr><tr><td>Réseau</td><td>ip addr show</td><td>Voir la config réseau</td><td>ip addr show eth0</td></tr><tr><td>Disque</td><td>df -h / du -sh</td><td>Espace disque</td><td>df -h /var</td></tr><tr><td>Processus</td><td>ps aux / top</td><td>Processus actifs</td><td>ps aux | grep apache</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Que signifie LTS dans "Ubuntu Server 22.04 LTS" ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Linux Trusted System</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Long Term Support — mises à jour de sécurité garanties pendant 5 ans</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Latest Technology Server</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Linux Terminal Server</button></div>
+    <div class="quiz-expl" id="expl-q0_4">LTS = Long Term Support. Ubuntu LTS reçoit des mises à jour de sécurité pendant 5 ans (vs 9 mois pour les versions non-LTS). Pour un serveur de production, toujours utiliser une version LTS. Ubuntu 22.04 LTS est supporté jusqu'en 2027.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="2">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Quelle commande systemctl vérifie si le service nginx est actif ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>systemctl check nginx</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>systemctl running nginx</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>systemctl status nginx</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>systemctl is-active nginx</button></div>
+    <div class="quiz-expl" id="expl-q1_4">systemctl status nginx affiche l'état complet du service: actif/inactif, PID, utilisation mémoire, et les dernières lignes de logs. Pour un test rapide: systemctl is-active nginx retourne "active" ou "inactive".</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Comment activer ufw (pare-feu) et autoriser uniquement SSH sur Ubuntu Server ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>firewall-cmd --add-service=ssh</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>sudo ufw enable && sudo ufw allow 22/tcp</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>iptables -A INPUT -p tcp --dport 22</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>netsh advfirewall add rule</button></div>
+    <div class="quiz-expl" id="expl-q2_4">ufw (Uncomplicated Firewall) est l'interface simplifiée d'iptables pour Ubuntu. Séquence: sudo ufw allow 22/tcp (autoriser SSH AVANT d'activer) → sudo ufw enable. Ne jamais activer ufw sans autoriser SSH d'abord sous peine de se bloquer l'accès à distance.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Pourquoi installer Ubuntu Server sans interface graphique (mode texte) ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>C'est la seule option disponible</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Réduit la consommation de ressources (RAM, CPU) et la surface d'attaque (moins de logiciels = moins de vulnérabilités)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Les interfaces graphiques ne fonctionnent pas sur les serveurs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Pour économiser sur les licences d'affichage</button></div>
+    <div class="quiz-expl" id="expl-q3_4">Un serveur sans interface graphique (headless) utilise beaucoup moins de RAM (512MB vs 2GB+ avec GUI), libère le CPU pour les services, et a moins de logiciels installés = moins de vulnérabilités potentielles. L'administration se fait via SSH à distance.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="pratique-block">
+  <div class="pratique-header">
+    <div class="pratique-icon-wrap">🔬</div>
+    <div class="pratique-header-info">
+      <h3>Séance Pratique — SP-TRI-18-01</h3>
+      <span>Labo — Installation et configuration d'un serveur Windows et Linux</span>
+    </div>
+    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
+  </div>
+  <div class="pratique-body">
+    <p class="pratique-desc">Séance OBLIGATOIRE. Tu vas installer et configurer un serveur Windows Server avec Active Directory ET un serveur Ubuntu avec les services de base. Durée: 4 heures en laboratoire.</p>
+    <div class="pratique-grid">
+      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Installer Windows Server 2019/2022 et promouvoir en contrôleur de domaine</li><li>Créer la structure AD (OUs, utilisateurs, groupes selon un plan fourni)</li><li>Appliquer une GPO simple (fond d'écran, restriction panneau de configuration)</li><li>Installer Ubuntu Server 22.04 LTS et configurer SSH</li><li>Installer et démarrer un service web sur Ubuntu (Apache ou Nginx)</li></ul></div>
+      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>PC avec VMware Workstation ou VirtualBox (2 VMs nécessaires)</li><li>ISO Windows Server (fourni par le labo)</li><li>ISO Ubuntu Server 22.04 LTS (téléchargeable)</li><li>Fiche de configuration fournie par le professeur</li></ul></div>
+    </div>
+    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
+    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00 (4h)')">Lun 19 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 13h00 (4h)')">Lun 19 Mai — 13h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00 (4h)')">Mar 20 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 13h00 (4h)')">Mer 21 Mai — 13h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00 (4h)')">Jeu 22 Mai — 8h00 (4h)</button></div>
+    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-18-01')">📅 Confirmer ma réservation</button>
+    <div class="pratique-confirm" id="confirm-sp-18-01"></div>
+  </div>
+</div><div class="demo-block">
+  <div class="demo-header">
+    <div class="demo-icon-wrap">🎭</div>
+    <div class="demo-header-info">
+      <h3>Démonstration — DEM-TRI-18-01</h3>
+      <span>Évaluation pratique (20 min)</span>
+    </div>
+    <div class="demo-badge">Évaluation pratique</div>
+  </div>
+  <div class="demo-body">
+    <p class="demo-desc">Tu démontreras devant le professeur ta maîtrise de l'administration Windows Server. Tu opèreras sur le serveur installé lors de la séance pratique.</p>
+    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
+    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Structure AD</strong> — Montrer la structure OUs créée, un utilisateur, un groupe de sécurité</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Créer un utilisateur</strong> — Créer un nouveau compte AD avec les paramètres corrects (OU, groupe, mot de passe)</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Appliquer une GPO</strong> — Montrer la GPO créée et son application sur une OU</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Vérifier les services</strong> — Gestionnaire de serveur → tous les rôles verts</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Linux via SSH</strong> — Depuis Windows, se connecter en SSH au serveur Ubuntu et exécuter 3 commandes</div></div>
+    <div class="demo-eval">
+      <div class="demo-eval-label">✅ Critères d'évaluation</div>
+      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Structure AD cohérente et fonctionnelle</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Utilisateur créé correctement</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>GPO configurée et liée à la bonne OU</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Tous les rôles opérationnels</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Connexion SSH réussie depuis Windows</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Commandes Linux exécutées correctement</div></div>
+    </div>
+  </div>
+</div><div class="devoir-block">
+  <div class="devoir-header">
+    <div class="devoir-icon-wrap">📝</div>
+    <div class="devoir-header-info">
+      <h3>Devoir TRI-18 — Rapport d'installation complet — Serveur Windows + Linux</h3>
+      <span>Documentation professionnelle de l'installation réalisée en labo</span>
+    </div>
+    <div class="devoir-deadline">Délai : 1 semaine</div>
+  </div>
+  <div class="devoir-body">
+    <p class="devoir-desc">Produis un rapport d'installation professionnel documentant tes deux installations (Windows Server + Ubuntu Server). Ce document sera comme un guide de référence pour un technicien qui reprendrait ta configuration.</p>
+    <div class="devoir-instructions">
+      <div class="devoir-instructions-label">📋 Instructions</div>
+      <ol><li>Rédige l'<strong>inventaire de l'infrastructure</strong>: pour chaque serveur, matériel/VM (RAM, CPU, stockage), OS installé avec version, IP, rôles installés.</li><li>Documente la <strong>structure Active Directory</strong>: schéma des OUs, liste des utilisateurs créés, groupes, et les GPO appliquées avec leur contenu.</li><li>Documente la <strong>configuration du serveur Linux</strong>: services installés avec leur statut, règles ufw, et configuration SSH.</li><li>Rédige un <strong>guide de reprise</strong>: si le serveur tombe en panne et doit être réinstallé, quelles sont les étapes exactes à suivre (incluant les informations à ne pas oublier)?</li><li>Identifie 3 <strong>risques de sécurité</strong> dans ta configuration et propose des corrections.</li></ol>
+    </div>
+    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
+    <div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Inventaire infrastructure complet et précis</div></div><div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Documentation AD: OUs, users, groupes, GPO</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Configuration Linux documentée</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Guide de reprise utilisable</div></div><div class="bareme-row"><div class="bareme-pts">10 pts</div><div class="bareme-label">3 risques de sécurité identifiés + corrections</div></div>
+    <div class="devoir-submit-area">
+      <div class="devoir-submit-icon">📤</div>
+      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
+      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
+    </div>
+  </div>
+</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-18 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<script>
+const quizState={};
+function selectOpt(el,idx,qid){
+  const q=el.closest('.quiz-q');const id=q.dataset.q;
+  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
+  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
+  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+}
+function submitQuiz(qid,correct,expl){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+  if(!qBlock)return;
+  const q=qBlock.querySelector('[data-q="'+qid+'"]');
+  const opts=qBlock.querySelectorAll('.quiz-opt');
+  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
+  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
+  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
+  updateProgBar();
+}
+function retryQuiz(qid){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
+  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
+  if(quizState[qid])delete quizState[qid][qid];
+}
+function setVideo(btn,url,ch){
+  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
+  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+}
+function completeChapter(n){
+  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
+  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
+  updateProgBar();showToastM('Chapitre '+n+' validé !');
+}
+function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
+function updateProgBar(){
+  const code=getModCode();let total=0,ok=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
+  if(total===0)return;const pct=Math.round(ok/total*100);
+  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
+  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
+  checkCompletion(pct);
+}
+function checkCompletion(pct){
+  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
+  if(pct>=seuil){
+    const comp=document.getElementById('completion-block');
+    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
+    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+  }
+}
+function scrollToChapter(n){
+  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+}
+function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
+function reserverSeance(id){
+  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
+  if(!sel){showToastM('Sélectionne un créneau.');return;}
+  showToastM('✅ Créneau réservé : '+sel.textContent);
+  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+}
+function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
+function printModule(){window.print();}
+let _toastT2;
+function showToastM(msg){
+  let t=document.getElementById('mod-toast');
+  if(!t){t=document.createElement('div');t.id='mod-toast';
+    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+}
+let _chrStart=Date.now();
+function _initTimer(){
+  const code=getModCode();
+  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
+  _chrStart=Date.now()-saved*1000;
+  setInterval(()=>{
+    const el=document.getElementById('session-timer');
+    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
+    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
+    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+</script>
+
+<div id="mod-code-data" data-code="TRI-18" style="display:none"></div>
+<div id="seuil-data" data-seuil="75" style="display:none"></div>
+</body>
+</html>
