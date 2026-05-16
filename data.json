@@ -384,5 +384,195 @@
         }
       ]
     }
+  ],
+  "config": {
+    "nom_ecole": "Canado Technique",
+    "slogan": "Former les techniciens de demain",
+    "is_inscription_visible": true,
+    "text_inscription": "📋 Inscriptions ouvertes — Session <strong>Septembre 2026</strong>. Places limitées !",
+    "stats": {
+      "etudiants": "1 642",
+      "modules": "87+",
+      "annees_experience": "12+"
+    }
+  },
+  "carrousel": [
+    {
+      "titre_image": "🎓 École Technique · Pétion-Ville, Haïti",
+      "short_description": "Canado Technique forme les techniciens de demain grâce à des programmes APC certifiants, une plateforme e-learning moderne et l'assistant IA Rooby disponible 24h/24.",
+      "image": "assets/images/hero/school-photo.jpg",
+      "fallback_color": "linear-gradient(135deg,#040D1A,#0C1F3D)",
+      "label_visible": false
+    },
+    {
+      "titre_image": "🌐 Formation TRI — Réseaux Informatiques",
+      "short_description": "Devenez technicien réseau certifié Cisco CCNA. 28 modules, 2 années, formation pratique sur équipements réels.",
+      "image": "assets/images/hero/slide-01.jpg",
+      "fallback_color": "linear-gradient(135deg,#081428,#1B3A8C)",
+      "label_visible": true
+    },
+    {
+      "titre_image": "⚡ Formation TEL — Télécommunications",
+      "short_description": "Maîtrisez les circuits électroniques, l'installation d'antennes et les systèmes de communication. 840h de formation.",
+      "image": "assets/images/hero/slide-02.jpg",
+      "fallback_color": "linear-gradient(135deg,#1A0800,#5B2D0C)",
+      "label_visible": true
+    },
+    {
+      "titre_image": "⚙️ MEI & ELM — Mécanique & Électromécanique",
+      "short_description": "Soudage, usinage, maintenance industrielle et électromécanique. Formations pratiques reconnues MENFP.",
+      "image": "assets/images/hero/slide-03.jpg",
+      "fallback_color": "linear-gradient(135deg,#0A0500,#3D2000)",
+      "label_visible": true
+    }
+  ],
+  "articles": [
+    {
+      "id": 1,
+      "titre": "Lancement officiel de la filière TEL — 14 modules disponibles",
+      "short_description": "Canado Technique lance officiellement sa formation en Télécommunications (TEL). Les 14 modules de 1ère année sont maintenant disponibles sur la plateforme e-learning.",
+      "fallback_color": "linear-gradient(135deg,#3D1A6E,#8A50CC)",
+      "date_publication": "2026-05-15T09:00:00",
+      "categorie": "Formation",
+      "is_publish": true
+    },
+    {
+      "id": 2,
+      "titre": "Résultats d'examens TRI — Session Avril 2026",
+      "short_description": "Les résultats des examens de fin de module pour la 1ère et 2ème année TRI sont disponibles. 89% de taux de réussite. Félicitations à tous les étudiants !",
+      "fallback_color": "linear-gradient(135deg,#003D20,#006B40)",
+      "date_publication": "2026-05-10T14:00:00",
+      "categorie": "Résultats",
+      "is_publish": true
+    },
+    {
+      "id": 3,
+      "titre": "Visite technique — Natcom Infrastructure, Port-au-Prince",
+      "short_description": "Les étudiants TEL 1ère année ont effectué une visite de terrain chez Natcom. Découverte des installations de fibre optique et des tours d'antennes 4G.",
+      "fallback_color": "linear-gradient(135deg,#1B3A8C,#2B56C0)",
+      "date_publication": "2026-05-05T08:00:00",
+      "categorie": "Vie étudiante",
+      "is_publish": true
+    },
+    {
+      "id": 4,
+      "titre": "Nouveaux équipements — Laboratoire TRI 2026",
+      "short_description": "Canado Technique renouvelle son parc d'équipements réseau. 12 nouveaux switches Cisco Catalyst et 8 routeurs pour les travaux pratiques de la 2ème année TRI.",
+      "fallback_color": "linear-gradient(135deg,#0C1F3D,#1B3A8C)",
+      "date_publication": "2026-04-28T10:00:00",
+      "categorie": "Infrastructure",
+      "is_publish": true
+    },
+    {
+      "id": 5,
+      "titre": "Inscriptions ouvertes — Session Septembre 2026",
+      "short_description": "Les inscriptions pour la session de septembre 2026 sont officiellement ouvertes pour les 4 filières. Places limitées — TRI, TEL, MEI et ELM. Contactez l'administration.",
+      "fallback_color": "linear-gradient(135deg,#3D0000,#8C1A1A)",
+      "date_publication": "2026-04-20T09:00:00",
+      "categorie": "Inscription",
+      "is_publish": true
+    }
+  ],
+  "evenements": [
+    {
+      "titre_event": "Examens finaux — TRI 1ère année",
+      "date_start": "2026-06-02",
+      "time_start": "08:00",
+      "time_end": "12:00",
+      "location": "Salle A · Canado Technique",
+      "type": "examen"
+    },
+    {
+      "titre_event": "Journée portes ouvertes",
+      "date_start": "2026-06-10",
+      "time_start": "09:00",
+      "time_end": "16:00",
+      "location": "Canado Technique · Pétion-Ville",
+      "type": "evenement"
+    },
+    {
+      "titre_event": "Labo pratique TEL — Antennes et RF",
+      "date_start": "2026-06-15",
+      "time_start": "13:00",
+      "time_end": "17:00",
+      "location": "Laboratoire TEL · Salle B",
+      "type": "labo"
+    },
+    {
+      "titre_event": "Remise des diplômes — Promotion 2026",
+      "date_start": "2026-07-05",
+      "time_start": "10:00",
+      "time_end": "13:00",
+      "location": "Auditorium · Canado Technique",
+      "type": "ceremonie"
+    }
+  ],
+  "galerie": [
+    {
+      "image": "assets/images/gallery/photo-1.jpg",
+      "titre": "Labo réseaux TRI"
+    },
+    {
+      "image": "assets/images/gallery/photo-2.jpg",
+      "titre": "Cours pratique TEL"
+    },
+    {
+      "image": "assets/images/gallery/photo-3.jpg",
+      "titre": "Remise de diplômes 2025"
+    },
+    {
+      "image": "assets/images/gallery/photo-4.jpg",
+      "titre": "Équipements Cisco"
+    },
+    {
+      "image": "assets/images/gallery/photo-5.jpg",
+      "titre": "Atelier MEI"
+    },
+    {
+      "image": "assets/images/gallery/photo-6.jpg",
+      "titre": "Campus Pétion-Ville"
+    }
+  ],
+  "programmes": [
+    {
+      "code": "TRI",
+      "label": "Techniques de Réseaux Informatiques",
+      "icon": "🌐",
+      "color_rgb": "27,58,140",
+      "modules_count": "28 modules",
+      "duree": "2 ans",
+      "badge": "HOT 🔥",
+      "short_description": "Formez-vous aux réseaux Cisco, serveurs et cybersécurité. Certification CCNA incluse."
+    },
+    {
+      "code": "TEL",
+      "label": "Techniques d'Électronique",
+      "icon": "⚡",
+      "color_rgb": "139,50,0",
+      "modules_count": "14 modules",
+      "duree": "2 ans",
+      "badge": "Nouveau ✨",
+      "short_description": "Électronique analogique, numérique, modulation AM/FM et installation d'antennes."
+    },
+    {
+      "code": "MEI",
+      "label": "Maintenance d'Équipements Industriels",
+      "icon": "⚙️",
+      "color_rgb": "139,94,0",
+      "modules_count": "16 modules",
+      "duree": "2 ans",
+      "badge": "Disponible",
+      "short_description": "Soudage, usinage, hydraulique et maintenance industrielle. Débouchés garantis."
+    },
+    {
+      "code": "ELM",
+      "label": "Électromécanique",
+      "icon": "🔌",
+      "color_rgb": "0,107,70",
+      "modules_count": "13 modules",
+      "duree": "2 ans",
+      "badge": "Disponible",
+      "short_description": "Électricité industrielle, moteurs, automatismes et installations électriques."
+    }
   ]
 }
