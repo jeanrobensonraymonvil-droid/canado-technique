@@ -1153,30 +1153,8 @@ td{color:var(--text)!important}
 #page-paiement .sw [style*="color:var(--text)"] { color: #0B1525 !important; }
 #page-paiement .sw [style*="color:var(--blue)"] { color: var(--blue) !important; }
 #page-paiement .sw [style*="color:var(--goldD)"] { color: var(--goldD) !important; }
-/* ═══ PLATEFORME PÉDAGOGIQUE OVERLAY ═══ */
-#plateforme-overlay{
-  position:fixed;inset:0;z-index:1060;
-  background:var(--navy);
-  display:none;flex-direction:column;
-}
-#plateforme-overlay.show{display:flex}
-#plateforme-bar{
-  height:52px;background:rgba(4,13,26,.98);border-bottom:1px solid var(--bdrDk);
-  display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0;
-}
-.plateforme-bar-logo{display:flex;align-items:center;gap:8px}
-.plateforme-bar-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),#E8B24A);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.plateforme-bar-title{font-family:var(--fD);font-weight:800;font-size:.85rem;color:#fff}
-.plateforme-bar-sub{font-size:.62rem;color:rgba(255,255,255,.38);margin-top:1px}
-.plateforme-bar-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:4px 10px;font-size:.72rem;color:rgba(255,255,255,.75)}
-#plateforme-iframe{flex:1;border:none;background:#0F1B2D}
-.plateforme-close-btn{height:34px;padding:0 1rem;border-radius:8px;background:rgba(232,25,44,.12);border:1px solid rgba(232,25,44,.3);color:var(--red);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;margin-left:auto}
-.plateforme-close-btn:hover{background:var(--red);color:#fff}
-/* Spinner dans la plateforme */
-#plateforme-spinner{position:absolute;inset:52px 0 0 0;display:flex;align-items:center;justify-content:center;background:#0F1B2D;flex-direction:column;gap:1rem;z-index:1}
-#plateforme-spinner.hidden{display:none}
-#plateforme-spinner .spin-ring{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:#3B82F6;border-radius:50%;animation:spin .8s linear infinite}
 </style>
+</head>
 <body>
 
 <!-- ════════════════════════════════════════
@@ -1194,7 +1172,7 @@ td{color:var(--text)!important}
     <div class="nav-links">
       <button id="nb-accueil" onclick="goPage('accueil')" class="act">Accueil</button>
       <button id="nb-programmes" onclick="goPage('programmes')">Programmes</button>
-      <button id="nb-cours" onclick="handleCoursClick()">Cours en ligne</button>
+      <button id="nb-cours" onclick="goPage('cours')">Cours en ligne</button>
       <button id="nb-examens-pub" onclick="goPage('examens-pub')">Examens</button>
       <button id="nb-paiement" onclick="goPage('paiement')">Inscription & Paiement</button>
       <button id="nb-actualites" onclick="goPage('actualites')">Actualités</button>
@@ -2074,20 +2052,20 @@ const MODULES = {
     {code:"ELM-15",title:"Circuits d'électronique numérique",dur:60,seuil:80},
   ],
   TEL:[
-    {code:"TEL-01",title:"Métier et Formation",dur:30,seuil:70},
-    {code:"TEL-02",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85},
-    {code:"TEL-03",title:"Utilisation de l'ordinateur",dur:45,seuil:80},
-    {code:"TEL-04",title:"Croquis et schémas",dur:30,seuil:85},
-    {code:"TEL-05",title:"Circuits d'électronique analogique",dur:90,seuil:85},
-    {code:"TEL-06",title:"Circuits d'oscillation et de filtration",dur:90,seuil:85},
-    {code:"TEL-07",title:"Circuit d'électronique numérique",dur:75,seuil:80},
-    {code:"TEL-08",title:"Circuits de modulation",dur:90,seuil:85},
-    {code:"TEL-09",title:"Santé et sécurité au travail",dur:30,seuil:80},
-    {code:"TEL-10",title:"Transmissions et protocoles de communication",dur:60,seuil:75},
-    {code:"TEL-11",title:"Installation d'antennes",dur:75,seuil:85},
-    {code:"TEL-12",title:"Terminologie anglaise",dur:45,seuil:75},
-    {code:"TEL-13",title:"Microprocesseurs et interfaces",dur:60,seuil:80},
-    {code:"TEL-14",title:"Remplacement de composants",dur:30,seuil:80},
+    {code:"TEL-01",title:"Métier et Formation",dur:30,seuil:70,fichier:"cours/tel/tel-1/tel-01-metier-formation.html"},
+    {code:"TEL-02",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-02-circuits-cc-ca.html"},
+    {code:"TEL-03",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/tel/tel-1/tel-03-utilisation-ordinateur.html"},
+    {code:"TEL-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/tel/tel-1/tel-04-croquis-schemas.html"},
+    {code:"TEL-05",title:"Circuits d'électronique analogique",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-05-electronique-analogique.html"},
+    {code:"TEL-06",title:"Circuits d'oscillation et de filtration",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-06-oscillation-filtration.html"},
+    {code:"TEL-07",title:"Circuit d'électronique numérique",dur:75,seuil:80,fichier:"cours/tel/tel-1/tel-07-electronique-numerique.html"},
+    {code:"TEL-08",title:"Circuits de modulation",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-08-circuits-modulation.html"},
+    {code:"TEL-09",title:"Santé et sécurité au travail",dur:30,seuil:80,fichier:"cours/tel/tel-1/tel-09-sante-securite.html"},
+    {code:"TEL-10",title:"Transmissions et protocoles de communication",dur:60,seuil:75,fichier:"cours/tel/tel-1/tel-10-transmissions-protocoles.html"},
+    {code:"TEL-11",title:"Installation d'antennes",dur:75,seuil:85,fichier:"cours/tel/tel-1/tel-11-installation-antennes.html"},
+    {code:"TEL-12",title:"Terminologie anglaise",dur:45,seuil:75,fichier:"cours/tel/tel-1/tel-12-terminologie-anglaise.html"},
+    {code:"TEL-13",title:"Microprocesseurs et interfaces",dur:60,seuil:80,fichier:"cours/tel/tel-1/tel-13-microprocesseurs-interfaces.html"},
+    {code:"TEL-14",title:"Remplacement de composants",dur:30,seuil:80,fichier:"cours/tel/tel-1/tel-14-remplacement-composants.html"},
   ],
 };
 
@@ -2211,6 +2189,30 @@ function getExam(code) {
 
 const MODULES_FLAT = Object.entries(MODULES).flatMap(([prog,mods])=>mods.map(m=>({...m,prog})));
 const MODULES_2_FLAT = Object.entries(MODULES_2).flatMap(([prog,mods])=>mods.map(m=>({...m,prog,year:2})));
+
+// ─── Chargement data.json et synchronisation des fichiers ───
+let DATA_JSON = null;
+(async function syncDataJson() {
+  try {
+    const resp = await fetch('./data.json');
+    DATA_JSON = await resp.json();
+    // Enrichir MODULES[] avec les chemins fichier de data.json
+    if (DATA_JSON && DATA_JSON.filieres) {
+      DATA_JSON.filieres.forEach(filiere => {
+        const prog = filiere.code;
+        filiere.annees.forEach(annee => {
+          annee.modules.forEach(djMod => {
+            if (!djMod.fichier) return;
+            const arr = annee.annee === 1 ? MODULES[prog] : MODULES_2[prog];
+            if (!arr) return;
+            const mod = arr.find(m => m.code === djMod.code);
+            if (mod && !mod.fichier) mod.fichier = djMod.fichier;
+          });
+        });
+      });
+    }
+  } catch(e) { /* data.json optionnel */ }
+})();
 
 /* ══════════════════════════════════════
    NAVIGATION
@@ -2961,26 +2963,33 @@ let selRole = 'dg';
 /* ══════════════════════════════════════
    MODULE STATE — persistance localStorage
 ══════════════════════════════════════ */
-function getModuleStates(prog) {
+function getModuleStates(prog, year) {
+  const yr = year || 1;
+  const key = 'moduleStates_' + prog + '_' + yr;
   try {
-    const raw = localStorage.getItem('moduleStates_' + prog);
+    const raw = localStorage.getItem(key);
     if (raw) return JSON.parse(raw);
+    // Legacy key without year
+    const rawLegacy = localStorage.getItem('moduleStates_' + prog);
+    if (rawLegacy && yr === 1) return JSON.parse(rawLegacy);
   } catch(e) {}
-  // Default: first 5 activated
-  const mods = MODULES[prog] || [];
+  // Défaut: 3 premiers modules activés (plus prudent)
+  const arr = yr === 1 ? (MODULES[prog] || []) : (MODULES_2[prog] || []);
   const defaults = {};
-  mods.forEach((m, i) => { defaults[m.code] = i < 5; });
+  arr.forEach((m, i) => { defaults[m.code] = i < 3; });
   return defaults;
 }
 
-function setModuleActive(prog, code, active) {
-  const states = getModuleStates(prog);
+function setModuleActive(prog, code, active, year) {
+  const yr = year || 1;
+  const key = 'moduleStates_' + prog + '_' + yr;
+  const states = getModuleStates(prog, yr);
   states[code] = active;
-  try { localStorage.setItem('moduleStates_' + prog, JSON.stringify(states)); } catch(e) {}
+  try { localStorage.setItem(key, JSON.stringify(states)); } catch(e) {}
 }
 
-function isModuleActive(prog, code) {
-  return getModuleStates(prog)[code] === true;
+function isModuleActive(prog, code, year) {
+  return getModuleStates(prog, year || 1)[code] === true;
 }
 
 const ROLES = {
@@ -3170,86 +3179,14 @@ function doLogin() {
   document.getElementById('p-role').textContent = r.role+(currentRole==='etud'?` · ${etudProg} ${etudYear}ère/ème année`:'');
   document.getElementById('p-rbadge').textContent = r.badge;
   document.getElementById('p-rbadge').className = 'rbadge '+r.rbClass;
+  buildSidebar();
+  goPage('portail');
+  showPanel('dash');
   toast('Bienvenue, '+r.name.split(' ')[0]+' ! 👋');
   showToastNotif('🔐 Connexion sécurisée','Authentification 2FA réussie. Session active.');
-
-  // Si étudiant → ouvrir directement la plateforme pédagogique
-  if (currentRole === 'etud') {
-    openPlateforme();
-  } else {
-    buildSidebar();
-    goPage('portail');
-    showPanel('dash');
-  }
 }
 
-function doLogout() { closePlateforme(); goPage('accueil'); currentRole = null; toast('Déconnexion réussie'); }
-
-/* ══════════════════════════════════════
-   PLATEFORME PÉDAGOGIQUE
-══════════════════════════════════════ */
-
-// Appelé quand on clique sur "Cours en ligne"
-function handleCoursClick() {
-  if (currentRole === 'etud') {
-    // Déjà connecté en tant qu'étudiant → ouvrir directement
-    openPlateforme();
-  } else if (currentRole) {
-    // Connecté en tant que staff/prof → aller à la page cours normale
-    goPage('cours');
-  } else {
-    // Pas connecté → afficher le login
-    // Quand le login réussit pour un étudiant, doLogin() ouvrira la plateforme automatiquement
-    showLogin();
-    // Pré-sélectionner rôle étudiant dans le form
-    setTimeout(() => {
-      document.getElementById('lprog-wrap').style.display = 'block';
-    }, 50);
-  }
-}
-
-function openPlateforme() {
-  if (currentRole !== 'etud') return;
-  const r = ROLES[currentRole];
-  const PROG_INFO_PL = {
-    TRI:{label:'Réseaux Informatiques',icon:'🌐',color:'#3B82F6'},
-    MEI:{label:'Mécanique Industrielle',icon:'🔧',color:'#C98A00'},
-    ELM:{label:'Électromécanique',icon:'⚡',color:'#00A066'},
-    TEL:{label:'Télécommunications',icon:'📡',color:'#8A50CC'},
-  };
-  const info = PROG_INFO_PL[etudProg] || {label:etudProg,icon:'📚',color:'#3B82F6'};
-
-  // Mettre à jour le header de la plateforme
-  document.getElementById('plateforme-bar-sub').textContent =
-    r.name + ' · ' + info.icon + ' ' + info.label + ' ' + etudYear + (etudYear==='1'?'ère':'ème') + ' année';
-  document.getElementById('plateforme-bar-prog').textContent =
-    info.icon + ' ' + etudProg + ' · ' + etudYear + (etudYear==='1'?'ère':'ème') + ' an.';
-  document.getElementById('plateforme-bar-badge').style.borderColor = info.color + '44';
-  document.getElementById('plateforme-bar-badge').style.color = info.color;
-
-  // Charger la plateforme dans l'iframe avec les paramètres de l'étudiant
-  const iframe = document.getElementById('plateforme-iframe');
-  // Passer le programme et l'année via URL hash pour que la plateforme puisse les lire
-  iframe.src = 'plateforme.html#' + etudProg + '-' + etudYear;
-
-  // Afficher l'overlay
-  document.getElementById('plateforme-spinner').classList.remove('hidden');
-  document.getElementById('plateforme-overlay').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closePlateforme() {
-  document.getElementById('plateforme-overlay').classList.remove('show');
-  document.getElementById('plateforme-iframe').src = 'about:blank';
-  document.body.style.overflow = '';
-}
-
-function hidePlateformeSpinner() {
-  const iframe = document.getElementById('plateforme-iframe');
-  if (iframe.src && iframe.src !== 'about:blank') {
-    document.getElementById('plateforme-spinner').classList.add('hidden');
-  }
-}
+function doLogout() { goPage('accueil'); toast('Déconnexion réussie'); }
 
 function buildSidebar() {
   const r = ROLES[currentRole];
@@ -3380,52 +3317,86 @@ function renderEtudiants(c) {
 }
 
 function renderCoursMgmt(c) {
-  const isprof = currentRole==='prof';
-  const prog = etudProg || 'TRI';
-  const states = getModuleStates(prog);
-  const actCount = Object.values(states).filter(Boolean).length;
-  const lockCount = (MODULES[prog]||[]).length - actCount;
-  c.innerHTML = `<div class="ph2">${isprof?'Mes cours & modules':'Gestion des cours'}</div>
+  const isprof = currentRole === 'prof';
+  // Le prof voit son programme, l'admin voit tous
+  const selProg = (isprof ? (etudProg || 'TRI') : (window._mgmtProg || 'TRI'));
+  const selYear = parseInt(window._mgmtYear) || 1;
+  const arr   = selYear === 1 ? (MODULES[selProg] || []) : (MODULES_2[selProg] || []);
+  const states = getModuleStates(selProg, selYear);
+  const actCount  = Object.values(states).filter(Boolean).length;
+  const lockCount = arr.length - actCount;
+  const anneeLabel = selYear === 1 ? '1ère' : '2ème';
+
+  const progSelector = isprof ? '' : `
+    <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap">
+      <span style="font-size:.8rem;color:var(--g500)">Programme :</span>
+      ${['TRI','TEL','ELM','MEI'].map(p=>`<button class="btn btn-sm ${p===selProg?'btn-blue':'btn-outline'}"
+        onclick="window._mgmtProg='${p}';renderCoursMgmt(document.getElementById('p-content'))">${p}</button>`).join('')}
+      <span style="font-size:.8rem;color:var(--g500);margin-left:.5rem">Année :</span>
+      ${[1,2].map(y=>`<button class="btn btn-sm ${y===selYear?'btn-blue':'btn-outline'}"
+        onclick="window._mgmtYear=${y};renderCoursMgmt(document.getElementById('p-content'))">${y===1?'1ère':'2ème'}</button>`).join('')}
+    </div>`;
+
+  c.innerHTML = `<div class="ph2">${isprof?'Mes cours & modules':'Gestion des cours — '+selProg}</div>
+  ${progSelector}
   <div class="kgrid">
-    <div class="kcard"><div class="knum">16</div><div class="klbl">Modules 1ère année</div></div>
-    <div class="kcard kg"><div class="knum">28</div><div class="klbl">Modules 2ème année</div></div>
-    <div class="kcard kgd"><div class="knum">${actCount}</div><div class="klbl">Activés</div></div>
+    <div class="kcard"><div class="knum">${arr.length}</div><div class="klbl">Modules ${anneeLabel} année</div></div>
+    <div class="kcard kg"><div class="knum">${actCount}</div><div class="klbl">Activés</div></div>
     <div class="kcard kr"><div class="knum">${lockCount}</div><div class="klbl">Verrouillés</div></div>
+    <div class="kcard kgd"><div class="knum">${arr.filter(m=>!!m.fichier).length}</div><div class="klbl">Cours HTML disponibles</div></div>
   </div>
   <div class="fsec">
-    <h4 style="color:var(--blue)">Modules TRI — Activation et vidéos</h4>
+    <h4 style="color:var(--blue)">${selProg} ${anneeLabel} année — Activation des modules</h4>
+    <div style="font-size:.75rem;color:var(--g500);margin-bottom:.8rem">
+      Activez un module pour le rendre visible aux étudiants. Ils ne verront que leurs modules activés.
+    </div>
     <div class="mlist">
-      ${MODULES[prog].map((m,i)=>{
-        const on = states[m.code] === true;
-        const coursBtn = m.fichier ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title}')">📖 Cours</button>` : '';
-        return `<div class="mrow">
-          <div class="mnum">${String(i+1).padStart(2,'0')}</div>
-          <div class="mtitle">${m.code} · ${m.title}</div>
-          <div class="mdur">${m.dur}h</div>
-          <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-            ${coursBtn}
-            <button class="btn btn-outline btn-sm" onclick="openVideoManager('${m.code}')">🎥 Vidéo</button>
-            <button class="tgl ${on?'on':''}" onclick="toggleModule('${prog}','${m.code}',this)"></button>
-          </div>
-        </div>`;
-      }).join('')}
+      ${arr.length === 0
+        ? '<div style="padding:2rem;text-align:center;color:var(--g400)">Aucun module défini pour cette année.</div>'
+        : arr.map((m, i) => {
+          const on = states[m.code] === true;
+          const hasFile = !!m.fichier;
+          const fileBadge = hasFile
+            ? '<span class="chip cg" style="font-size:.65rem">📄 HTML</span>'
+            : '<span class="chip cgy" style="font-size:.65rem">Sans fichier</span>';
+          const coursBtn = hasFile
+            ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)"
+                onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title}')">📖 Prévisualiser</button>`
+            : '';
+          return `<div class="mrow">
+            <div class="mnum">${String(i+1).padStart(2,'0')}</div>
+            <div class="mtitle" style="display:flex;align-items:center;gap:.4rem">${m.code} · ${m.title} ${fileBadge}</div>
+            <div class="mdur">${m.dur}h</div>
+            <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+              ${coursBtn}
+              <button class="btn btn-outline btn-sm" onclick="openVideoManager('${m.code}')">🎥 Vidéo</button>
+              <button class="tgl ${on?'on':''}" title="${on?'Désactiver':'Activer'}"
+                onclick="toggleModule('${selProg}','${m.code}',this,${selYear})"></button>
+              <span style="font-size:.7rem;color:var(--g500)">${on?'Actif':'Inactif'}</span>
+            </div>
+          </div>`;
+        }).join('')}
     </div>
   </div>`;
 }
 
-function toggleModule(prog, code, btn) {
+function toggleModule(prog, code, btn, year) {
+  const yr = year || 1;
   const nowOn = btn.classList.contains('on');
   const newState = !nowOn;
-  if(newState) { btn.classList.add('on'); } else { btn.classList.remove('on'); }
-  setModuleActive(prog, code, newState);
+  btn.classList.toggle('on', newState);
+  setModuleActive(prog, code, newState, yr);
+  const stateLabel = btn.nextElementSibling;
+  if (stateLabel) stateLabel.textContent = newState ? 'Actif' : 'Inactif';
   toast('Module ' + code + ' ' + (newState ? 'activé ✅' : 'désactivé 🔒'));
-  // Refresh counters
-  const states = getModuleStates(prog);
-  const actCount = Object.values(states).filter(Boolean).length;
-  const lockCount = (MODULES[prog]||[]).length - actCount;
+  // Refresh compteurs KPI
+  const states  = getModuleStates(prog, yr);
+  const arr     = yr === 1 ? (MODULES[prog]||[]) : (MODULES_2[prog]||[]);
+  const actCount  = Object.values(states).filter(Boolean).length;
+  const lockCount = arr.length - actCount;
   const cards = document.querySelectorAll('.kcard');
-  if(cards[2]) cards[2].querySelector('.knum').textContent = actCount;
-  if(cards[3]) cards[3].querySelector('.knum').textContent = lockCount;
+  if(cards[1]) cards[1].querySelector('.knum').textContent = actCount;
+  if(cards[2]) cards[2].querySelector('.knum').textContent = lockCount;
 }
 
 function openVideoManager(code) {
@@ -3723,37 +3694,73 @@ function renderEtudDash(c) {
 }
 
 function renderMesCours(c) {
-  const prog = etudProg || 'TRI';
-  const mods = MODULES[prog];
-  const states = getModuleStates(prog);
-  c.innerHTML = `<div class="ph2">Mes cours — ${prog} 1ère année</div>
-  <div class="mlist">
-    ${mods.map((m,i)=>{
-      // Module accessible to student ONLY if activated by prof/admin
-      const active = states[m.code] === true;
-      // Among active modules: first ones done, current one in progress — locked if not activated
-      const activeMods = mods.filter((_,j) => states[mods[j].code] === true);
-      const activeIdx = activeMods.indexOf(m);
-      let st;
-      if (!active) {
-        st = 'lock';
-      } else if (activeIdx < activeMods.length - 1) {
-        st = 'done';
-      } else {
-        st = 'cur';
-      }
-      const icon = st==='done'?'✅':st==='cur'?'▶':'🔒';
-      const coursBtn = m.fichier && active ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title}')">📖 Cours</button>` : '';
-      const videoBtn = active ? `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>` : '';
-      const chip = st==='done'?`<span class="chip cg">Validé</span>${videoBtn}${coursBtn}`:st==='cur'?`<span class="chip cb">En cours</span>${videoBtn}${coursBtn}`:'<span class="chip cgy">Verrouillé</span>';
-      return `<div class="mrow"><div class="mnum">${String(i+1).padStart(2,'0')}</div>
-        <div class="mtitle">${icon} ${m.code} · ${m.title}</div>
-        <div class="mdur">${m.dur}h</div>
-        <div class="mseuil" style="background:rgba(27,58,140,.08);color:var(--blue)">${m.seuil}%</div>
-        ${chip}
-      </div>`;
-    }).join('')}
+  const prog  = etudProg  || 'TRI';
+  const yr    = parseInt(etudYear) || 1;
+  const arr   = yr === 1 ? (MODULES[prog] || []) : (MODULES_2[prog] || []);
+  const states = getModuleStates(prog, yr);
+
+  const anneeLabel = yr === 1 ? '1ère' : '2ème';
+  const actives = arr.filter(m => states[m.code] === true);
+  const totalH  = arr.reduce((s,m)=>s+(m.dur||0),0);
+  const doneCount = arr.filter(m=>states[m.code]===true).length;
+  const pct = arr.length ? Math.round(doneCount/arr.length*100) : 0;
+
+  const PROG_COLORS = {TRI:'var(--blue)',TEL:'#F59E0B',ELM:'#10B981',MEI:'#EF4444'};
+  const pc = PROG_COLORS[prog] || 'var(--blue)';
+
+  // Bannière progression
+  const banner = `<div style="background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.15);border-radius:var(--rL);padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+    <div style="font-size:1.6rem">${PROG_INFO[prog]?.icon||'📚'}</div>
+    <div style="flex:1">
+      <div style="font-weight:700;font-size:.95rem;color:var(--text)">${PROG_INFO[prog]?.label||prog} · ${anneeLabel} année</div>
+      <div style="font-size:.73rem;color:var(--g500);margin-top:2px">${arr.length} modules · ${totalH}h de formation · ${actives.length} module${actives.length>1?'s':''} activé${actives.length>1?'s':''}</div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:.6rem">
+        <div style="flex:1;height:5px;background:rgba(0,0,0,.08);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${pc};border-radius:3px;transition:width .5s"></div>
+        </div>
+        <span style="font-size:.72rem;font-weight:700;color:${pc}">${pct}%</span>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="renderMesCours(document.getElementById('p-content'))">↻ Actualiser</button>
   </div>`;
+
+  // Tableau des modules
+  const rows = arr.map((m, i) => {
+    const active  = states[m.code] === true;
+    const hasFile = !!m.fichier;
+    const sc = m.seuil>=85?'cr':m.seuil>=80?'cgd':m.seuil>=75?'cb':'cg';
+
+    let statusBadge, actionBtns;
+    if (!active) {
+      // Module verrouillé
+      statusBadge = '<span class="chip cgy">🔒 Verrouillé</span>';
+      actionBtns  = '<span style="font-size:.73rem;color:var(--g400)">En attente du professeur</span>';
+    } else if (hasFile) {
+      // Module actif avec fichier HTML
+      const doneClass = states[m.code+'_done'] ? 'cg' : 'cb';
+      const doneLabel = states[m.code+'_done'] ? '✅ Validé' : '▶ En cours';
+      statusBadge = `<span class="chip ${doneClass}">${doneLabel}</span>`;
+      actionBtns  = `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" 
+          onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title}')">📖 Ouvrir le cours</button>
+        <button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>`;
+    } else {
+      // Module actif sans fichier HTML
+      statusBadge = '<span class="chip cb">▶ En cours</span>';
+      actionBtns  = `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>`;
+    }
+
+    return `<div class="mrow" style="${!active?'opacity:.55':''}">
+      <div class="mnum">${String(i+1).padStart(2,'0')}</div>
+      <div class="mtitle">${active?'':'🔒 '}${m.code} · ${m.title}</div>
+      <div class="mdur">${m.dur}h</div>
+      <div class="mseuil"><span class="chip ${sc}">${m.seuil}%</span></div>
+      <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">${statusBadge} ${actionBtns}</div>
+    </div>`;
+  }).join('');
+
+  c.innerHTML = `<div class="ph2">Mes cours — ${prog} ${anneeLabel} année</div>
+  ${banner}
+  <div class="mlist">${rows || '<div style="padding:2rem;text-align:center;color:var(--g400)">Aucun module disponible pour cette année.</div>'}</div>`;
 }
 
 function openVideoPlayer(code) {
@@ -4871,30 +4878,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- ════════════════════════════════════════
-     PLATEFORME PÉDAGOGIQUE OVERLAY
-════════════════════════════════════════ -->
-<div id="plateforme-overlay">
-  <div id="plateforme-bar">
-    <div class="plateforme-bar-logo">
-      <div class="plateforme-bar-logo-icon">🎓</div>
-      <div>
-        <div class="plateforme-bar-title">Canado Technique — Plateforme pédagogique</div>
-        <div class="plateforme-bar-sub" id="plateforme-bar-sub">Chargement…</div>
-      </div>
-    </div>
-    <div class="plateforme-bar-badge" id="plateforme-bar-badge" style="margin-left:1.2rem">
-      <span id="plateforme-bar-prog">—</span>
-    </div>
-    <button class="plateforme-close-btn" onclick="closePlateforme()">✕ Retour au site</button>
-  </div>
-  <div id="plateforme-spinner">
-    <div class="spin-ring"></div>
-    <span style="font-size:.8rem;color:rgba(255,255,255,.4)">Chargement de la plateforme…</span>
-  </div>
-  <iframe id="plateforme-iframe" src="about:blank" onload="hidePlateformeSpinner()"></iframe>
-</div>
-
 <!-- ══ COURS VIEWER ══ -->
 <div class="cours-viewer" id="cours-viewer">
   <div class="cours-viewer-bar">
@@ -4913,14 +4896,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 function openCoursViewer(fichier, titre) {
-  // Security: must be logged in
   if (!currentRole) { toast('🔒 Accès refusé — connexion requise'); return; }
-  // Students: must be activated
   if (currentRole === 'etud') {
-    const prog = etudProg || 'TRI';
-    const states = getModuleStates(prog);
-    const mod = (MODULES[prog]||[]).find(m => m.fichier === fichier);
-    if (!mod || !states[mod.code]) { toast('🔒 Ce module n\'est pas encore activé'); return; }
+    const prog  = etudProg || 'TRI';
+    const yr    = parseInt(etudYear) || 1;
+    const arr1  = MODULES[prog] || [];
+    const arr2  = MODULES_2[prog] || [];
+    const allMods = [...arr1, ...arr2];
+    const mod   = allMods.find(m => m.fichier === fichier);
+    // Vérifier que le fichier appartient au programme de l'étudiant
+    if (!mod) { toast('🔒 Ce cours ne fait pas partie de votre programme'); return; }
+    // Vérifier activation
+    const modYear = arr2.find(m=>m.code===mod.code) ? 2 : 1;
+    const states  = getModuleStates(prog, modYear);
+    if (!states[mod.code]) { toast('🔒 Ce module n\'est pas encore activé par votre professeur'); return; }
   }
   document.getElementById('cours-viewer-title').textContent = titre || 'Cours';
   document.getElementById('cours-spinner').style.display = 'flex';
