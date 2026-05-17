@@ -1635,7 +1635,7 @@ td{color:var(--text)!important}
 ════════════════════════════════════════ -->
 <div class="page" id="page-programmes">
   <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
-    <div class="page-hero-banner-bg" id="phb-prog" style="background-image:url('assets/images/hero/slide-06.jpg');background-position:center 35%"></div>
+    <div class="page-hero-banner-bg" id="phb-prog" style="background-image:url('assets/images/hero/Slide-06.png');background-position:center 35%"></div>
     <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(12,31,61,.78) 60%,rgba(27,58,140,.4) 100%)"></div>
     <div class="page-hero-banner-overlay-bottom"></div>
     <div class="page-hero-banner-content">
@@ -1668,7 +1668,7 @@ td{color:var(--text)!important}
 ════════════════════════════════════════ -->
 <div class="page" id="page-cours">
   <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
-    <div class="page-hero-banner-bg" id="phb-cours" style="background-image:url('assets/images/hero/slide-07.jpg');background-position:center 40%"></div>
+    <div class="page-hero-banner-bg" id="phb-cours" style="background-image:url('assets/images/hero/Slide-07.png');background-position:center 40%"></div>
     <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(8,20,40,.80) 55%,rgba(4,13,26,.55) 100%)"></div>
     <div class="page-hero-banner-overlay-bottom"></div>
     <div class="page-hero-banner-content">
@@ -1705,7 +1705,7 @@ td{color:var(--text)!important}
 
   <!-- ── HERO EXAMENS ── -->
   <div class="page-hero-banner" style="min-height:240px;border-bottom:1px solid rgba(255,255,255,.08)">
-    <div class="page-hero-banner-bg" id="phb-exam" style="background-image:url('assets/images/hero/slide-05.jpg');background-position:center 40%"></div>
+    <div class="page-hero-banner-bg" id="phb-exam" style="background-image:url('assets/images/hero/Slide-05.png');background-position:center 40%"></div>
     <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.94) 0%,rgba(12,31,61,.82) 55%,rgba(27,58,140,.45) 100%)"></div>
     <div class="page-hero-banner-overlay-bottom"></div>
     <div style="position:absolute;top:-60px;right:-60px;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.1),transparent 70%);pointer-events:none;z-index:1"></div>
@@ -1895,7 +1895,7 @@ td{color:var(--text)!important}
 ════════════════════════════════════════ -->
 <div class="page" id="page-paiement">
   <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
-    <div class="page-hero-banner-bg" id="phb-paiem" style="background-image:url('assets/images/hero/slide-08.jpg');background-position:center 30%"></div>
+    <div class="page-hero-banner-bg" id="phb-paiem" style="background-image:url('assets/images/hero/Slide-08.png');background-position:center 30%"></div>
     <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(10,24,46,.82) 55%,rgba(212,168,0,.18) 100%)"></div>
     <div class="page-hero-banner-overlay-bottom"></div>
     <div class="page-hero-banner-content">
@@ -1917,7 +1917,7 @@ td{color:var(--text)!important}
 ════════════════════════════════════════ -->
 <div class="page" id="page-actualites">
   <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
-    <div class="page-hero-banner-bg" id="phb-actu" style="background-image:url('assets/images/hero/slide-04.jpg')"></div>
+    <div class="page-hero-banner-bg" id="phb-actu" style="background-image:url('assets/images/hero/Slide-04.png')"></div>
     <div class="page-hero-banner-overlay"></div>
     <div class="page-hero-banner-overlay-bottom"></div>
     <div class="page-hero-banner-content">
@@ -5243,14 +5243,14 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeCoursViewe
 </script>
 
 <script>
-/* ── Page hero banner image fallback: jpg → png ── */
+/* ── Page hero banner image fallback: png → jpg ── */
 (function() {
   const banners = [
-    { id: 'phb-actu',  base: 'assets/images/hero/slide-04' },
-    { id: 'phb-exam',  base: 'assets/images/hero/slide-05' },
-    { id: 'phb-prog',  base: 'assets/images/hero/slide-06' },
-    { id: 'phb-cours', base: 'assets/images/hero/slide-07' },
-    { id: 'phb-paiem', base: 'assets/images/hero/slide-08' },
+    { id: 'phb-actu',  base: 'assets/images/hero/Slide-04' },
+    { id: 'phb-exam',  base: 'assets/images/hero/Slide-05' },
+    { id: 'phb-prog',  base: 'assets/images/hero/Slide-06' },
+    { id: 'phb-cours', base: 'assets/images/hero/Slide-07' },
+    { id: 'phb-paiem', base: 'assets/images/hero/Slide-08' },
   ];
   function tryImg(el, base, ext, fallbackExt) {
     const img = new Image();
@@ -5267,7 +5267,7 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeCoursViewe
   document.addEventListener('DOMContentLoaded', () => {
     banners.forEach(({ id, base }) => {
       const el = document.getElementById(id);
-      if (el) tryImg(el, base, 'jpg', 'png');
+      if (el) tryImg(el, base, 'png', 'jpg');
     });
   });
 })();

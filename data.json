@@ -46,27 +46,27 @@
 
   "galerie": [
     {
-      "image": "assets/images/galerie/galerie-01.jpg",
+      "image": "assets/images/gallery/photo-01.jpg",
       "titre": "Laboratoire réseaux"
     },
     {
-      "image": "assets/images/galerie/galerie-02.jpg",
+      "image": "assets/images/gallery/photo-02.jpg",
       "titre": "Atelier pratique"
     },
     {
-      "image": "assets/images/galerie/galerie-03.jpg",
+      "image": "assets/images/gallery/photo-03.jpg",
       "titre": "Salle de cours"
     },
     {
-      "image": "assets/images/galerie/galerie-04.jpg",
+      "image": "assets/images/gallery/photo-04.jpg",
       "titre": "Remise de diplômes"
     },
     {
-      "image": "assets/images/galerie/galerie-05.jpg",
+      "image": "assets/images/gallery/photo-05.jpg",
       "titre": "Séance TP réseau"
     },
     {
-      "image": "assets/images/galerie/galerie-06.jpg",
+      "image": "assets/images/gallery/photo-06.jpg",
       "titre": "Campus Pétion-Ville"
     }
   ],
