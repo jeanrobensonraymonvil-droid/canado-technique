@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TEL-05 — Circuits d'electronique analogique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.mod-meta-item strong{color:rgba(255,255,255,.9)}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
+.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
+.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
+.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
+.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-body{padding:1.5rem}
+.content-section{margin-bottom:1.8rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
+.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
+.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.content-section strong{color:var(--text);font-weight:700}
+.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
+.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
+.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
+.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
+.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
+.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
+.data-table tr:hover td{background:rgba(27,58,140,.04)}
+.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
+.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
+.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
+.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
+.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
+.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
+.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
+.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
+.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
+.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.video-guide-text strong{color:rgba(255,255,255,.85)}
+.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
+.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
+.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
+.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
+.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
+.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
+.quiz-body{padding:1.2rem 1.5rem}
+.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
+.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
+.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
+.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
+.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
+.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
+.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
+.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
+.quiz-expl.show{display:block}
+.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.quiz-score-display{font-size:.82rem;color:var(--g700)}
+.quiz-score-display strong{color:var(--text);font-size:.92rem}
+.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
+.btn-quiz-submit:hover{background:#d4a800}
+.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
+.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* SÉANCE PRATIQUE */
+.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pratique-header-info{flex:1}
+.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
+.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
+.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.pratique-body{padding:1.3rem 1.5rem}
+.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
+.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
+.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
+.pratique-card ul{padding-left:1.2rem}
+.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
+.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
+.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
+.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
+.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
+.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
+.pratique-confirm.show{display:flex}
+/* DÉMONSTRATION */
+.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.demo-header-info{flex:1}
+.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
+.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
+.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
+.demo-body{padding:1.3rem 1.5rem}
+.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
+.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
+.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
+.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
+.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
+.demo-step-text strong{color:var(--teal);font-weight:700}
+.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
+.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
+.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
+/* DEVOIR */
+.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
+.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.devoir-header-info{flex:1}
+.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
+.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
+.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.devoir-body{padding:1.3rem 1.5rem}
+.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
+.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
+.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.devoir-instructions ol{padding-left:1.3rem}
+.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
+.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
+.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
+.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
+.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
+.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
+.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
+.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
+.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
+.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
+.completion.show{display:block}
+.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
+.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #toc-sidebar.toc-open{transform:translateX(0)!important}
+  #toc-overlay{display:block!important}
+  .main-content{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .slot-grid{grid-template-columns:1fr 1fr!important}
+}
+#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
+@media(max-width:768px){#toc-mob-btn{display:flex!important}}
+#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
+.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
+.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
+.print-btn:hover{color:var(--g200)}
+@media print{
+  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
+  .video-block,.pratique-block,.demo-block{display:none!important}
+  .layout{display:block!important}
+  .main-content{width:100%!important}
+  body{background:#fff!important;color:#000!important}
+}
+</style>
+</head>
+<body>
+<div class="mod-header">
+  <div class="mod-header-in">
+    <div class="mod-tag">📡 Module TEL-05 · 1ère Année</div>
+    <h1>Electronique <em>analogique</em></h1>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ Durée : <strong>90 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>85%</strong></div>
+      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
+      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
+      <div class="mod-meta-item">🔬 Pratique : <strong>Labo montage analogique (oblig.)</strong></div><div class="mod-meta-item">🎭 Demo : <strong>Mesures oscilloscope devant prof</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport d'analyse circuit</strong></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    </div>
+  </div>
+</div><div id="mod-code-data" data-code="TEL-05" style="display:none"></div><div id="seuil-data" data-seuil="85" style="display:none"></div><div id="toc-overlay" onclick="toggleToc()"></div><button id="toc-mob-btn" onclick="toggleToc()" aria-label="Menu">☰</button><div class="wrap"><div class="layout"><div class="toc">
+  <h3>📋 Sommaire</h3>
+  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Diodes et redressement</span></div>
+<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Transistors — Amplification</span></div>
+<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Amplificateur operationnel (AOP)</span></div>
+<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Circuits de polarisation et stabilisation</span></div>
+  
+</div><div><div class="chapter" id="chapter-1">
+  <div class="chapter-header">
+    <div class="chapter-num">01</div>
+    <div class="chapter-info">
+      <h2>Diodes et redressement</h2>
+      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">PN · Redresseur · Zener · LED · Photodiode</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Diodes — Du redressement a la protection</div><div class="video-subtitle">Duree : 20 min · Mesures en direct</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>La diode PN — Fonctionnement (4 min)</strong> — Jonction P-N, polarisation directe (VF = 0.6-0.7V pour silicium), polarisation inverse (bloque). Courbe I-V caracteristique.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Circuit redresseur (5 min)</strong> — Demi-onde (1 diode), onde complete (4 diodes = pont de Graetz). Filtrage par condensateur. Application: alimentation CC depuis le secteur CA.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Diode Zener — Regulation de tension (5 min)</strong> — Fonctionnement en inverse. Regulation a tension constante. Circuit regulateur simple: R serie + Zener = regulation de tension basique.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>LED et photodiode (4 min)</strong> — LED: calcul de la resistance serie (R = (Vcc - VLED) / ILED). Photodiode: genere un courant proportionnel a la lumiere. Applications telecom: fibres optiques.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
+</div><div class="content-section"><h3>1.1 Types de diodes et leurs applications en telecom</h3><table class="data-table"><thead><tr><th>Type de diode</th><th>Symbole specifique</th><th>Application telecom typique</th><th>Parametre cle</th></tr></thead><tbody><tr><td>Diode de redressement</td><td>Triangle + barre droite</td><td>Alimentation CC des equipements radio</td><td>Courant max (If), tension inverse max (VR)</td></tr><tr><td>Diode Zener</td><td>Triangle + barre en Z</td><td>Regulateur de tension de reference, protection</td><td>Tension Zener (Vz), puissance max (Pz)</td></tr><tr><td>LED</td><td>Diode + 2 fleches sortantes</td><td>Indicateurs d'etat equipements, fibre optique emetteur</td><td>Vf, If, longueur d'onde (nm)</td></tr><tr><td>Photodiode</td><td>Diode + 2 fleches entrantes</td><td>Recepteur fibre optique, capteur de lumiere ambiante</td><td>Courant obscurite, responsivite (A/W)</td></tr><tr><td>Diode Schottky</td><td>Barre courbee en S</td><td>Circuits HF, protection rapide (temps de commutation <1ns)</td><td>Vf faible (0.2-0.3V), commutation rapide</td></tr><tr><td>Varicap (varactor)</td><td>Diode + condensateur</td><td>Syntonisation electronique des radios, VCO</td><td>Capacite variable avec tension inverse</td></tr></tbody></table></div><div class="quiz-block" id="quiz-1">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Un pont de Graetz (redresseur en H) avec 4 diodes produit...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Un courant continu pur sans ondulation</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Un courant redresse double alternance avec ondulation residuelle a filtrer avec un condensateur</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Un courant alternatif amplifie</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Un courant continu parfait sans condensateur</button></div>
+    <div class="quiz-expl" id="expl-q0_1">Le pont de Graetz redresse les deux alternances du signal CA (pas de demi-onde perdue). La sortie est une serie d'arcs (tension toujours positive). Un condensateur de filtrage lisse ces ondulations. Plus la capacite est elevee, plus le filtrage est efficace.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Pour alimenter une LED rouge (Vf=2V, If=20mA) avec une alimentation 5V, la resistance serie doit etre...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>100 Ohm</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>150 Ohm</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>200 Ohm</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>2000 Ohm</button></div>
+    <div class="quiz-expl" id="expl-q1_1">R = (Vcc - Vf) / If = (5-2) / 0.020 = 3 / 0.020 = 150 Ohm. Toujours calculer la resistance serie avant de connecter une LED — sans elle, la LED grille instantanement.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Une diode Schottky est preferee aux diodes ordinaires dans les circuits haute frequence car...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Elle est moins chere</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Son temps de commutation est tres court (< 1ns) et sa chute de tension directe est faible (0.2-0.3V vs 0.6-0.7V pour le silicium)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Elle supporte des tensions plus elevees</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Elle fonctionne sans polarisation directe</button></div>
+    <div class="quiz-expl" id="expl-q2_1">La diode Schottky utilise une jonction metal-semiconducteur au lieu de PN. Pas de charge stockee = commutation ultra-rapide. Tres utilisee dans les detecteurs RF, les circuits de protection contre les surtensions rapides et les alimentations a decoupage.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">La photodiode est utilisee dans les recepteurs de fibres optiques car...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Elle emette de la lumiere infrarouge</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Elle convertit les impulsions lumineuses de la fibre en courant electrique proportionnel — c'est le principe de la detection optique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Elle filtre les signaux parasites de la fibre</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Elle amplifie le signal lumineux avant conversion</button></div>
+    <div class="quiz-expl" id="expl-q3_1">Dans un lien fibre optique: l'emetteur (LED ou laser) convertit le signal electrique en lumiere. La fibre transporte cette lumiere. Le recepteur (photodiode) reconvertit la lumiere en courant electrique. Ensuite un transimpedance amplifier (TIA) convertit ce courant en tension.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-2">
+  <div class="chapter-header">
+    <div class="chapter-num">02</div>
+    <div class="chapter-info">
+      <h2>Transistors bipolaires</h2>
+      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">NPN/PNP · Regions · Amplification · Commutation</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Transistors bipolaires — Amplification et commutation</div><div class="video-subtitle">Duree : 22 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Structure NPN et PNP (4 min)</strong> — Trois regions: base (B), collecteur (C), emetteur (E). Courant de base controle le courant collecteur. Gain en courant: beta (hFE) = IC/IB.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Regions de fonctionnement (5 min)</strong> — Blocage (IB=0, transistor ouvert), saturation (transistor ferme, interrupteur ON), region active (amplification lineaire).</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Circuit amplificateur base commune (6 min)</strong> — Polarisation par diviseur de tension R1/R2. Calcul du point de repos Q. Gain en tension Av = -RC/re.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Transistor en commutation (5 min)</strong> — Transistor comme interrupteur electronique: commande un relais, une LED, un moteur. Resistances de base et collecteur. Protection par diode flyback.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
+</div><div class="content-section"><h3>2.1 Parametres cles du transistor NPN en amplification</h3><table class="data-table"><thead><tr><th>Parametre</th><th>Definition</th><th>Formule</th><th>Valeur typique 2N2222</th></tr></thead><tbody><tr><td>Beta (hFE)</td><td>Gain en courant = IC/IB</td><td>IC = beta x IB</td><td>100 a 300</td></tr><tr><td>Courant collecteur max (IC max)</td><td>Courant maximum supportable</td><td>Datasheet</td><td>600 mA</td></tr><tr><td>Tension collecteur-emetteur max (VCEO)</td><td>Tension max C-E sans claquage</td><td>Datasheet</td><td>40V</td></tr><tr><td>Point de repos Q</td><td>Point de fonctionnement en regime statique</td><td>Milieu de la droite de charge</td><td>VCE = VCC/2, IC = VCC/(2*RC)</td></tr><tr><td>Gain en tension Av</td><td>Amplification du signal CA</td><td>Av = -RC/re (ou re = 26mV/IC)</td><td>Variable selon RC et IC</td></tr><tr><td>Impedance d'entree Rin</td><td>Impedance vue par la source du signal</td><td>Rin = beta x re</td><td>Variable selon le point Q</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Un transistor 2N2222 a un gain beta=150. Si IB=50uA, quel est IC ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>50 uA</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>7.5 mA</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>150 mA</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>0.33 mA</button></div>
+    <div class="quiz-expl" id="expl-q0_2">IC = beta x IB = 150 x 50uA = 150 x 0.000050 = 0.0075A = 7.5mA. La base controle le collecteur avec un gain de 150: un petit courant de base commande un courant de collecteur 150 fois plus grand.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">En region de saturation, le transistor se comporte comme...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Un amplificateur lineaire</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Un interrupteur ferme (ON): VCE est tres faible (0.1-0.2V) et le courant collecteur est maximal</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Un circuit ouvert</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Un condensateur variable</button></div>
+    <div class="quiz-expl" id="expl-q1_2">Saturation = transistor completement ON. VCE(sat) ≈ 0.1-0.2V (proche de zero). Utilise pour les commandes de relais, LEDs, moteurs. En saturation, le transistor n'amplifie pas — il commute.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">La diode "flyback" en parallele avec un relais commandé par un transistor sert a...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Amplifier le signal de commande</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Proteger le transistor contre la surtension generee par la bobine du relais lors de la coupure (self-induction)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Augmenter le courant dans la bobine</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Filtrer le signal d'entree</button></div>
+    <div class="quiz-expl" id="expl-q2_2">Quand on coupe le transistor, le champ magnetique de la bobine du relais s'effondre brusquement et genere une surtension inverse importante (loi de Lenz). Sans diode flyback, cette surtension peut depasser VCEO du transistor et le detruire. La diode absorbe cette surtension.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="2">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Pour amplifier un signal audio avec un transistor NPN, on utilise la region...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Blocage</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Saturation</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Active (lineaire)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Claquage</button></div>
+    <div class="quiz-expl" id="expl-q3_2">Region active: le transistor amplifie linearement. Le signal de sortie est une version amplifiee et inversee du signal d'entree (gain Av negatif = inversion de phase). C'est le mode normal d'amplification audio, RF, video.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-3">
+  <div class="chapter-header">
+    <div class="chapter-num">03</div>
+    <div class="chapter-info">
+      <h2>Amplificateur operationnel</h2>
+      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">AOP ideal · Inverseur · Non-inv · Comparateur</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Amplificateur operationnel (AOP) — L'outil universel</div><div class="video-subtitle">Duree : 20 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>L'AOP ideal (4 min)</strong> — Gain differentiel infini, impedance d'entree infinie, impedance de sortie nulle, bande passante infinie. En pratique: LM741, TL071, LM358, LM324.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Montage inverseur (5 min)</strong> — Av = -Rf/Rin. Entree sur la borne (-). La sortie est inversee par rapport a l'entree. Application: amplification de signal capteur.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Montage non-inverseur (5 min)</strong> — Av = 1 + Rf/Rin. Entree sur la borne (+). Impedance d'entree tres haute — ideal pour adapter des sources a haute impedance.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Comparateur, integrateur, sommateur (4 min)</strong> — Comparateur: AOP sans retroaction, compare deux tensions. Integrateur: retroaction via condensateur. Sommateur: melange de signaux audio.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
+</div><div class="content-section"><h3>3.1 Configurations de base de l'AOP</h3><table class="data-table"><thead><tr><th>Configuration</th><th>Gain Av</th><th>Impedance entree</th><th>Phase sortie</th><th>Application telecom</th></tr></thead><tbody><tr><td>Suiveur (buffer)</td><td>1 (x1)</td><td>Tres haute (GOhm)</td><td>Non inversee</td><td>Adaptation d'impedance, isolation entre etages</td></tr><tr><td>Non-inverseur</td><td>+1 + Rf/Rin</td><td>Tres haute</td><td>Non inversee</td><td>Amplification capteur haute impedance, preamplificateur</td></tr><tr><td>Inverseur</td><td>-Rf/Rin</td><td>Moderee (= Rin)</td><td>Inversee</td><td>Amplification signal, sommateur audio</td></tr><tr><td>Sommateur</td><td>-Rf/Rin (pour chaque entree)</td><td>Moderee</td><td>Inversee</td><td>Melange de signaux audio, mixeur RF</td></tr><tr><td>Comparateur</td><td>Saturation (non lineaire)</td><td>Haute</td><td>Non lineaire</td><td>Detection de seuil, convertisseur analogique/numerique</td></tr><tr><td>Integrateur</td><td>-1/(j*omega*R*C)</td><td>Moderee</td><td>Dephasee 90°</td><td>Filtre integratif, generation de rampe</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Un AOP monte en inverseur avec Rin=10kOhm et Rf=47kOhm. Le gain est...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>4.7</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>-4.7</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>47</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>0.21</button></div>
+    <div class="quiz-expl" id="expl-q0_3">Av = -Rf/Rin = -47000/10000 = -4.7. Le signe negatif signifie inversion de phase. Un signal d'entree de +1V donne une sortie de -4.7V. Un signal AC est amplifie et inverse.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Le montage suiveur (buffer) avec un AOP est utile car...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Il amplifie le signal par 10</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Il a un gain de 1 mais une tres haute impedance d'entree — il isole la source sans la charger et peut alimenter une charge de faible impedance</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Il filtre les frequences hautes</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Il ajoute un dephasage de 90 degres</button></div>
+    <div class="quiz-expl" id="expl-q1_3">Le buffer AOP: Vout = Vin avec gain=1 MAIS l'impedance d'entree est de l'ordre du GOhm (ne charge pas la source) et l'impedance de sortie est tres faible (peut alimenter une charge). Indispensable entre etages d'impedances incompatibles.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Un comparateur AOP sans retroaction compare deux tensions et...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Amplifie la difference avec un gain precis</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Sature sa sortie vers +Vsat si V+ > V-, et vers -Vsat si V+ < V-</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Integre la difference dans le temps</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Additionne les deux tensions</button></div>
+    <div class="quiz-expl" id="expl-q2_3">Le comparateur bascule entre deux etats (saturation positive ou negative). Si V(+) > V(-): sortie = +Vsat (pres de VCC). Si V(+) < V(-): sortie = -Vsat (pres de VEE). Utilise pour detecter un seuil de tension, convertir un signal analogique en logique.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Pour amplifier le signal d'un microphone (haute impedance, signal tres faible) avant traitement, le meilleur montage AOP est...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Inverseur car il a le gain le plus eleve</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Non-inverseur car son impedance d'entree tres haute ne charge pas le microphone et le gain est ajustable</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Comparateur car il amplifie les faibles signaux</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Integrateur pour filtrer le bruit</button></div>
+    <div class="quiz-expl" id="expl-q3_3">Un microphone electret a une impedance de sortie elevee (plusieurs kOhm). Le montage non-inverseur avec son impedance d'entree de GOhm ne charge pas le microphone, preservant la qualite du signal. Le gain 1+Rf/Rin est facilement regle. C'est le schema standard des preamplificateurs microphone.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="chapter" id="chapter-4">
+  <div class="chapter-header">
+    <div class="chapter-num">04</div>
+    <div class="chapter-info">
+      <h2>Polarisation et stabilisation</h2>
+      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">Droite de charge · RE · Decouplage · Bruit</span></div>
+    </div>
+  </div>
+  <div class="chapter-body"><div class="video-block">
+  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Polarisation et stabilisation des circuits analogiques</div><div class="video-subtitle">Duree : 16 min</div></div></div>
+  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
+  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Droite de charge (4 min)</strong> — Droite IC = (VCC-VCE)/RC. Intersection avec la caracteristique du transistor = point de repos Q. Choix du point Q pour la linearite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Stabilisation thermique (4 min)</strong> — Le gain beta varie avec la temperature. La resistance d'emetteur RE stabilise le point Q. Condensateur de decouplage CE pour le signal AC.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Alimentation et decouplage (4 min)</strong> — Alimentation symetrique pour les AOP (+15V/-15V ou +12V/-12V). Condensateurs de decouplage 100nF au plus pres de chaque CI. Regulation de tension.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Bruit et interference en analogique (4 min)</strong> — Sources de bruit: bruit thermique (Johnson), bruit de grenaille, interferences electromagnetiques (EMI). Blindage, mise a la masse, plans de masse.</div></div></div>
+  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
+</div><div class="quiz-block" id="quiz-4">
+  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
+  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
+    <div class="quiz-q-num">Question 1 / 4</div>
+    <div class="quiz-q-text">Pourquoi place-t-on une resistance RE a l'emetteur d'un transistor amplificateur ?</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Pour augmenter le gain en tension</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Pour stabiliser le point de repos Q contre les variations de beta avec la temperature — la contre-reaction de RE compense les derives thermiques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Pour reduire l'impedance d'entree</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Pour proteger le transistor contre les courts-circuits</button></div>
+    <div class="quiz-expl" id="expl-q0_4">La resistance d'emetteur RE cree une contre-reaction negative: si IC augmente (par hausse de temperature), VE=IC*RE augmente, VBE=VB-VE diminue, IB diminue, IC diminue. Ce mecanisme auto-stabilisant maintient le point Q stable malgre les variations de temperature et de beta.</div>
+  </div><div class="quiz-q" data-q="1" data-ans="1">
+    <div class="quiz-q-num">Question 2 / 4</div>
+    <div class="quiz-q-text">Le condensateur CE en parallele avec RE sert a...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Augmenter la resistance effective de RE</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Court-circuiter RE pour le signal AC afin de conserver le gain en tension — sans CE, RE reduit aussi le gain AC</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Filtrer les harmoniques du signal</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Proteger RE contre les surtensions</button></div>
+    <div class="quiz-expl" id="expl-q1_4">RE stabilise le point Q (utile) mais reduit aussi le gain AC (indesirable). Le condensateur CE court-circuite RE pour les frequences AC du signal: le gain AC reste Av=-RC/re while le point Q reste stable. CE est typiquement de 47uF a 470uF selon la frequence de coupure basse voulue.</div>
+  </div><div class="quiz-q" data-q="2" data-ans="1">
+    <div class="quiz-q-num">Question 3 / 4</div>
+    <div class="quiz-q-text">Les condensateurs de decouplage 100nF places pres des CI analogiques servent a...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Stocker l'energie pour les pics de courant</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Filtrer les parasites haute frequence sur la ligne d'alimentation qui pourraient creer des oscillations parasites ou du bruit dans les circuits analogiques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Mesurer la consommation des CI</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Augmenter la tension d'alimentation</button></div>
+    <div class="quiz-expl" id="expl-q2_4">Les circuits analogiques sont tres sensibles aux variations de leur tension d'alimentation. Sans condensateurs de decouplage, les parasites HF sur les lignes VCC/GND (dus aux commutations numeriques voisines, aux ondulations d'alimentation) se retrouvent en sortie des amplificateurs.</div>
+  </div><div class="quiz-q" data-q="3" data-ans="1">
+    <div class="quiz-q-num">Question 4 / 4</div>
+    <div class="quiz-q-text">Le blindage d'un cable de signal analogique (cable coaxial par exemple) est mis a la masse pour...</div>
+    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Augmenter le gain du signal</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Former une cage de Faraday qui repousse les champs electromagnetiques exterieurs et empeche les interferences d'atteindre le conducteur central</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Reduire la resistance du cable</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Ameliorer la transmission a haute frequence uniquement</button></div>
+    <div class="quiz-expl" id="expl-q3_4">Le blindage mis a la masse forme une cage de Faraday: les champs electriques exterieurs induisent des courants sur le blindage qui vont directement a la masse, sans perturber le signal interieur. Essentiel pour les cables audio, les mesures de precision et les signaux RF faibles.</div>
+  </div></div>
+  <div class="quiz-footer">
+    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
+    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
+    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  </div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:1rem">
+  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+</div></div>
+</div><div class="pratique-block">
+  <div class="pratique-header">
+    <div class="pratique-icon-wrap">🔬</div>
+    <div class="pratique-header-info">
+      <h3>Séance Pratique — SP-TEL-05-01</h3>
+      <span>Labo analogique — Montage et mesure de circuits amplificateurs</span>
+    </div>
+    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
+  </div>
+  <div class="pratique-body">
+    <p class="pratique-desc">Seance OBLIGATOIRE. Monter et mesurer des circuits amplificateurs sur breadboard avec oscilloscope. Duree: 4 heures.</p>
+    <div class="pratique-grid">
+      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Monter un redresseur pont de Graetz et mesurer la tension continue de sortie</li><li>Construire un amplificateur a transistor NPN et mesurer le gain avec l'oscilloscope</li><li>Monter un AOP non-inverseur (gain=10) et verifier le gain avec un signal sinusoidal</li><li>Mesurer l'impedance d'entree de chaque montage</li><li>Comparer les formes d'onde entree/sortie a l'oscilloscope</li></ul></div>
+      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Breadboard et composants (transistors 2N2222, AOP LM741 ou TL071, diodes 1N4007)</li><li>Alimentation symetrique +/-12V ou +/-15V</li><li>Generateur de signaux (GBF)</li><li>Oscilloscope double trace</li><li>Multimetre numerique</li></ul></div>
+    </div>
+    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
+    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai 8h00')">Lun 19 Mai 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai 13h00')">Lun 19 Mai 13h00</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai 8h00')">Mar 20 Mai 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai 8h00')">Mer 21 Mai 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai 8h00')">Jeu 22 Mai 8h00</button></div>
+    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-tel05-01')">📅 Confirmer ma réservation</button>
+    <div class="pratique-confirm" id="confirm-sp-tel05-01"></div>
+  </div>
+</div><div class="demo-block">
+  <div class="demo-header">
+    <div class="demo-icon-wrap">🎭</div>
+    <div class="demo-header-info">
+      <h3>Démonstration — DEM-TEL-05-01</h3>
+      <span>Evaluation pratique (20 min)</span>
+    </div>
+    <div class="demo-badge">Évaluation pratique</div>
+  </div>
+  <div class="demo-body">
+    <p class="demo-desc">Le professeur impose un circuit. Tu le montes, le mesures et interpretes les resultats a l'oscilloscope.</p>
+    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
+    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Monter le circuit</strong> — Assembler rapidement sur breadboard selon le schema fourni</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Mesurer avec l'oscilloscope</strong> — Entree ET sortie en meme temps (double trace)</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Calculer le gain</strong> — Mesurer Vin et Vout et calculer Av = Vout/Vin</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Analyser la phase</strong> — Inverseuse ou non ? Dephasage ?</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Identifier le type de montage</strong> — Transistor ou AOP ? Inverseur ou non-inverseur ?</div></div>
+    <div class="demo-eval">
+      <div class="demo-eval-label">✅ Critères d'évaluation</div>
+      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Circuit monte correctement en moins de 5 min</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Oscilloscope configure correctement</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Gain mesure avec moins de 10% d'erreur</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Phase analysee correctement</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Type de montage identifie</div></div>
+    </div>
+  </div>
+</div><div class="devoir-block">
+  <div class="devoir-header">
+    <div class="devoir-icon-wrap">📝</div>
+    <div class="devoir-header-info">
+      <h3>Devoir TEL-05 — Rapport d'analyse — Circuit amplificateur complet</h3>
+      <span>Documentation et analyse approfondie d'un amplificateur</span>
+    </div>
+    <div class="devoir-deadline">Délai : 1 semaine</div>
+  </div>
+  <div class="devoir-body">
+    <p class="devoir-desc">Analyse complete d'un circuit amplificateur analogique assigne par le professeur.</p>
+    <div class="devoir-instructions">
+      <div class="devoir-instructions-label">📋 Instructions</div>
+      <ol><li>Dessine le <strong>schema complet</strong> du circuit amplificateur avec toutes les valeurs.</li><li>Calcule le <strong>point de repos Q</strong> de maniere theorique (VCE, IC, IB) et compare avec les mesures reelles a l'oscilloscope.</li><li>Mesure et calcule le <strong>gain en tension Av</strong> a differentes frequences (100Hz, 1kHz, 10kHz) et trace la reponse en frequence.</li><li>Analyse la <strong>distorsion harmonique</strong>: augmenter progressivement le signal d'entree jusqu'a saturation visible a l'oscilloscope.</li><li>Redige une <strong>synthese</strong>: le circuit est-il adapte pour une application audio? Pour une application RF? Pourquoi?</li></ol>
+    </div>
+    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
+    <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Schema complet et correct</div></div><div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Calcul et mesure du point de repos Q</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Reponse en frequence mesuree et tracee</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Analyse de la distorsion jusqu'a la saturation</div></div><div class="bareme-row"><div class="bareme-pts">10 pts</div><div class="bareme-label">Synthese applicative justifiee</div></div>
+    <div class="devoir-submit-area">
+      <div class="devoir-submit-icon">📤</div>
+      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
+      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
+    </div>
+  </div>
+</div><div class="completion" id="completion-msg"><h2>🎉 Module TEL-05 termine !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<script>
+const quizState={};
+function selectOpt(el,idx,qid){
+  const q=el.closest('.quiz-q');const id=q.dataset.q;
+  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
+  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
+  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+}
+function submitQuiz(qid,correct,expl){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+  if(!qBlock)return;
+  const q=qBlock.querySelector('[data-q="'+qid+'"]');
+  const opts=qBlock.querySelectorAll('.quiz-opt');
+  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
+  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
+  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
+  updateProgBar();
+}
+function retryQuiz(qid){
+  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
+  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
+  if(quizState[qid])delete quizState[qid][qid];
+}
+function setVideo(btn,url,ch){
+  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
+  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+}
+function completeChapter(n){
+  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
+  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
+  updateProgBar();showToastM('Chapitre '+n+' validé !');
+}
+function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
+function updateProgBar(){
+  const code=getModCode();let total=0,ok=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
+  if(total===0)return;const pct=Math.round(ok/total*100);
+  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
+  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
+  checkCompletion(pct);
+}
+function checkCompletion(pct){
+  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
+  if(pct>=seuil){
+    const comp=document.getElementById('completion-block');
+    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
+    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+  }
+}
+function scrollToChapter(n){
+  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+}
+function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
+function reserverSeance(id){
+  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
+  if(!sel){showToastM('Sélectionne un créneau.');return;}
+  showToastM('✅ Créneau réservé : '+sel.textContent);
+  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+}
+function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
+function printModule(){window.print();}
+let _toastT2;
+function showToastM(msg){
+  let t=document.getElementById('mod-toast');
+  if(!t){t=document.createElement('div');t.id='mod-toast';
+    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+}
+let _chrStart=Date.now();
+function _initTimer(){
+  const code=getModCode();
+  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
+  _chrStart=Date.now()-saved*1000;
+  setInterval(()=>{
+    const el=document.getElementById('session-timer');
+    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
+    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
+    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+</script>
+</body>
+</html>
