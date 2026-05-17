@@ -1184,6 +1184,58 @@ td{color:var(--text)!important}
 /* Tarif cards — titres et prix */
 #page-paiement .sw [style*="color:var(--text)"] { color: #0B1525 !important; }
 #page-paiement .sw [style*="color:var(--goldD)"] { color: var(--goldD) !important; }
+
+/* ═══ PAGE HERO BANNERS (slide photos) ═══ */
+.page-hero-banner {
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  display: flex;
+  align-items: flex-end;
+}
+.page-hero-banner-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  transition: transform 8s ease;
+}
+.page-hero-banner:hover .page-hero-banner-bg { transform: scale(1.03); }
+.page-hero-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(4,13,26,.92) 0%,
+    rgba(8,20,40,.80) 50%,
+    rgba(4,13,26,.60) 100%
+  );
+}
+.page-hero-banner-overlay-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(4,13,26,.6));
+}
+.page-hero-banner-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 2rem;
+}
+.page-hero-banner-line {
+  width: 40px; height: 3px;
+  background: var(--red);
+  border-radius: 2px;
+  margin-bottom: .75rem;
+}
+@media(max-width:768px) {
+  .page-hero-banner { min-height: 180px; }
+  .page-hero-banner-content { padding: 2rem 1rem 1.5rem; }
+}
 </style>
 </head>
 <body>
@@ -1582,11 +1634,15 @@ td{color:var(--text)!important}
      PAGE PROGRAMMES
 ════════════════════════════════════════ -->
 <div class="page" id="page-programmes">
-  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
-    <div style="max-width:1150px;margin:0 auto">
-      <div class="tag-r">4 filières · 1ère et 2ème année · APC</div>
-      <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin:.5rem 0 .4rem">Programmes de formation officielle</h1>
-      <p style="color:rgba(255,255,255,.75);font-size:.88rem">Modules officiels CFPH-Canado Technique</p>
+  <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="page-hero-banner-bg" id="phb-prog" style="background-image:url('assets/images/hero/slide-06.jpg');background-position:center 35%"></div>
+    <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(12,31,61,.78) 60%,rgba(27,58,140,.4) 100%)"></div>
+    <div class="page-hero-banner-overlay-bottom"></div>
+    <div class="page-hero-banner-content">
+      <div class="page-hero-banner-line"></div>
+      <div class="tag-r" style="margin-bottom:.6rem">4 filières · 1ère et 2ème année · APC</div>
+      <h1 style="font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.4rem">Programmes de formation officielle</h1>
+      <p style="color:rgba(255,255,255,.62);font-size:.84rem">Modules officiels CFPH · Canado Technique</p>
     </div>
   </div>
   <div style="background:var(--g50);padding:1rem 1.5rem;border-bottom:1px solid var(--bdr)">
@@ -1611,13 +1667,20 @@ td{color:var(--text)!important}
      PAGE COURS
 ════════════════════════════════════════ -->
 <div class="page" id="page-cours">
-  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
-    <div style="max-width:1150px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
-      <div>
-        <div class="tag-r">Plateforme e-learning</div>
-        <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin-top:.5rem">Cours en ligne</h1>
+  <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="page-hero-banner-bg" id="phb-cours" style="background-image:url('assets/images/hero/slide-07.jpg');background-position:center 40%"></div>
+    <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(8,20,40,.80) 55%,rgba(4,13,26,.55) 100%)"></div>
+    <div class="page-hero-banner-overlay-bottom"></div>
+    <div class="page-hero-banner-content">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+        <div>
+          <div class="page-hero-banner-line"></div>
+          <div class="tag-r" style="margin-bottom:.6rem">Plateforme e-learning</div>
+          <h1 style="font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.4rem">Cours en ligne</h1>
+          <p style="color:rgba(255,255,255,.62);font-size:.84rem">Modules activés par vos professeurs · Accès sécurisé</p>
+        </div>
+        <button class="btn btn-red" style="flex-shrink:0" onclick="showLogin()">Accéder à mes cours ▸</button>
       </div>
-      <button class="btn btn-red" onclick="showLogin()">Accéder à mes cours ▸</button>
     </div>
   </div>
   <div class="sw">
@@ -1641,10 +1704,12 @@ td{color:var(--text)!important}
 <div class="page" id="page-examens-pub">
 
   <!-- ── HERO EXAMENS ── -->
-  <div style="background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden">
-    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none"></div>
-    <div style="position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.12),transparent 70%);pointer-events:none"></div>
-    <div style="max-width:1150px;margin:0 auto;position:relative;z-index:1">
+  <div class="page-hero-banner" style="min-height:240px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="page-hero-banner-bg" id="phb-exam" style="background-image:url('assets/images/hero/slide-05.jpg');background-position:center 40%"></div>
+    <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.94) 0%,rgba(12,31,61,.82) 55%,rgba(27,58,140,.45) 100%)"></div>
+    <div class="page-hero-banner-overlay-bottom"></div>
+    <div style="position:absolute;top:-60px;right:-60px;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.1),transparent 70%);pointer-events:none;z-index:1"></div>
+    <div class="page-hero-banner-content" style="z-index:2">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin-bottom:2.5rem">
         <div>
           <div class="tag-r" style="margin-bottom:.7rem">📝 Plateforme d'évaluation officielle</div>
@@ -1670,7 +1735,7 @@ td{color:var(--text)!important}
           <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Modules évalués</div>
         </div>
         <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
-          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">3<span style="color:var(--red)">×</span></div>
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">5<span style="color:var(--red)">×</span></div>
           <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Versions par examen</div>
         </div>
         <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
@@ -1829,11 +1894,15 @@ td{color:var(--text)!important}
      PAGE PAIEMENT & INSCRIPTION
 ════════════════════════════════════════ -->
 <div class="page" id="page-paiement">
-  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
-    <div style="max-width:1150px;margin:0 auto">
-      <div class="tag-gold">💳 Paiement sécurisé · Gourdes haïtiennes (HTG)</div>
-      <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin:.5rem 0 .4rem">Inscription & Paiement</h1>
-      <p style="color:rgba(255,255,255,.78);font-size:.88rem">Tarifs en HTG 🇭🇹 ou USD 🇺🇸 · Inscription avec ou sans programme complet</p>
+  <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="page-hero-banner-bg" id="phb-paiem" style="background-image:url('assets/images/hero/slide-08.jpg');background-position:center 30%"></div>
+    <div class="page-hero-banner-overlay" style="background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(10,24,46,.82) 55%,rgba(212,168,0,.18) 100%)"></div>
+    <div class="page-hero-banner-overlay-bottom"></div>
+    <div class="page-hero-banner-content">
+      <div class="page-hero-banner-line" style="background:var(--gold)"></div>
+      <div class="tag-gold" style="margin-bottom:.6rem">💳 Paiement sécurisé · Gourdes haïtiennes (HTG)</div>
+      <h1 style="font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.4rem">Inscription & Paiement</h1>
+      <p style="color:rgba(255,255,255,.62);font-size:.84rem">Tarifs en HTG 🇭🇹 ou USD 🇺🇸 · Inscription avec ou sans programme complet</p>
     </div>
   </div>
   <div class="sw">
@@ -1847,10 +1916,15 @@ td{color:var(--text)!important}
      PAGE ACTUALITÉS
 ════════════════════════════════════════ -->
 <div class="page" id="page-actualites">
-  <div style="background:#0d1f3c;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)">
-    <div style="max-width:1150px;margin:0 auto">
-      <div class="tag-r">Actualités & Vie du campus</div>
-      <h1 style="font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;margin-top:.5rem">À la une</h1>
+  <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="page-hero-banner-bg" id="phb-actu" style="background-image:url('assets/images/hero/slide-04.jpg')"></div>
+    <div class="page-hero-banner-overlay"></div>
+    <div class="page-hero-banner-overlay-bottom"></div>
+    <div class="page-hero-banner-content">
+      <div class="page-hero-banner-line"></div>
+      <div class="tag-r" style="margin-bottom:.6rem">Actualités & Vie du campus</div>
+      <h1 style="font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.4rem">À la une</h1>
+      <p style="color:rgba(255,255,255,.62);font-size:.84rem">Dernières nouvelles · Événements · Vie étudiante</p>
     </div>
   </div>
   <div class="sw" style="background:var(--g50)">
@@ -5166,6 +5240,37 @@ function hideCoursSpinner() {
 
 // Close on Escape key
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeCoursViewer(); });
+</script>
+
+<script>
+/* ── Page hero banner image fallback: jpg → png ── */
+(function() {
+  const banners = [
+    { id: 'phb-actu',  base: 'assets/images/hero/slide-04' },
+    { id: 'phb-exam',  base: 'assets/images/hero/slide-05' },
+    { id: 'phb-prog',  base: 'assets/images/hero/slide-06' },
+    { id: 'phb-cours', base: 'assets/images/hero/slide-07' },
+    { id: 'phb-paiem', base: 'assets/images/hero/slide-08' },
+  ];
+  function tryImg(el, base, ext, fallbackExt) {
+    const img = new Image();
+    img.onload = () => { el.style.backgroundImage = "url('" + base + '.' + ext + "')"; };
+    img.onerror = () => {
+      if (fallbackExt) {
+        const img2 = new Image();
+        img2.onload = () => { el.style.backgroundImage = "url('" + base + '.' + fallbackExt + "')"; };
+        img2.src = base + '.' + fallbackExt;
+      }
+    };
+    img.src = base + '.' + ext;
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    banners.forEach(({ id, base }) => {
+      const el = document.getElementById(id);
+      if (el) tryImg(el, base, 'jpg', 'png');
+    });
+  });
+})();
 </script>
 </body>
 </html>
