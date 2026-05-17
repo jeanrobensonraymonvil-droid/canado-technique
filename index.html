@@ -2683,7 +2683,7 @@ function confirmPayment(prog, an) {
    DÉVELOPPEMENT : './data.json'
    PRODUCTION    : 'https://canadotechnique.tech/data.php'
 ══════════════════════════════════════ */
-const DATA_SOURCE = './data.json';
+const DATA_SOURCE = './data.json?v=' + (Math.floor(Date.now()/300000)); // Cache-bust toutes les 5 min
 
 /* Données globales — remplies par loadSiteData() */
 let SITE_DATA = null;
@@ -2868,13 +2868,19 @@ function applyEvenements() {
 
 /* ── Articles / Actualités ── */
 function applyArticles() {
-  const arts = SITE_DATA.articles;
-  if(!arts || !arts.length) return;
+  const arts = SITE_DATA && SITE_DATA.articles;
+  const container = document.getElementById('actu-grid-container');
+
+  // Si pas d'articles: afficher message propre (pas "Chargement…")
+  if(!arts || !arts.length) {
+    if(container) container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g400);font-size:.85rem">Aucune actualité disponible pour le moment.</div>';
+    return;
+  }
 
   // Grille accueil (3 premiers)
-  const container = document.getElementById('actu-grid-container');
   if(container) {
-    container.innerHTML = arts.filter(a=>a.is_publish).slice(0,3).map(a => {
+    const published = arts.filter(a=>a.is_publish===true||a.is_publish===1);
+    container.innerHTML = published.slice(0,3).map(a => {
       const imgStyle = a.featured_image
         ? `background-image:url('${a.featured_image}');background-size:cover;background-position:center`
         : `background:${a.fallback_color||'#1B3A8C'}`;
