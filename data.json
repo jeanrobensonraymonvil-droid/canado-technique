@@ -5,7 +5,6 @@
     "ville": "Pétion-Ville, Haïti",
     "version": "2025-2026"
   },
-
   "config": {
     "nom_ecole": "Canado Technique",
     "is_inscription_visible": true,
@@ -16,7 +15,6 @@
       "annees_experience": "12+"
     }
   },
-
   "carrousel": [
     {
       "id": "slide-01",
@@ -43,7 +41,6 @@
       "fallback_color": "linear-gradient(135deg,#0d1f3c,#2B56C0)"
     }
   ],
-
   "galerie": [
     {
       "image": "assets/images/gallery/photo-01.jpg",
@@ -70,7 +67,6 @@
       "titre": "Campus Pétion-Ville"
     }
   ],
-
   "programmes": [
     {
       "code": "TRI",
@@ -82,7 +78,10 @@
       "duree": "2 ans",
       "nb_etudiants": 642,
       "short_description": "Conception, installation et administration de réseaux locaux et étendus. Préparation CCNA.",
-      "certifications": ["Cisco CCNA", "Microsoft"]
+      "certifications": [
+        "Cisco CCNA",
+        "Microsoft"
+      ]
     },
     {
       "code": "MEI",
@@ -118,10 +117,11 @@
       "duree": "2 ans",
       "nb_etudiants": 310,
       "short_description": "Circuits électroniques, antennes, modulation et protocoles de communication modernes.",
-      "certifications": ["CompTIA A+"]
+      "certifications": [
+        "CompTIA A+"
+      ]
     }
   ],
-
   "evenements": [
     {
       "titre_event": "Salon des Compétences 2026",
@@ -156,7 +156,6 @@
       "type": "portes_ouvertes"
     }
   ],
-
   "articles": [
     {
       "id": 1,
@@ -209,7 +208,6 @@
       "categorie": "technologie"
     }
   ],
-
   "offres": [
     {
       "titre": "TRI — Cours accéléré été",
@@ -245,53 +243,223 @@
       "validite": "Offre permanente"
     }
   ],
-
   "filieres": [
     {
       "code": "TRI",
       "nom": "Techniques de Réseaux Informatiques",
       "couleur": "#3B82F6",
       "icone": "🌐",
-      "partenaires": ["Cisco CCNA", "Microsoft"],
+      "partenaires": [
+        "Cisco CCNA",
+        "Microsoft"
+      ],
       "annees": [
         {
           "annee": 1,
           "heures": 690,
           "modules": [
-            { "code": "TRI-01", "titre": "Le métier et la formation",            "heures": 30,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-01-metier-formation.html" },
-            { "code": "TRI-02", "titre": "Gestion du temps et organisation",      "heures": 45,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-02-gestion-du-temps.html" },
-            { "code": "TRI-03", "titre": "Mathématiques appliquées",              "heures": 60,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-03-mathematiques.html" },
-            { "code": "TRI-04", "titre": "Anglais technique",                     "heures": 45,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-04-anglais-technique.html" },
-            { "code": "TRI-05", "titre": "Systèmes d'exploitation",               "heures": 60,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-05-systeme-exploitation.html" },
-            { "code": "TRI-06", "titre": "Résolution de problèmes",               "heures": 30,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-06-resolution-problemes.html" },
-            { "code": "TRI-07", "titre": "Recherche d'information",                "heures": 30,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-07-recherche-information.html" },
-            { "code": "TRI-08", "titre": "Logiciels de bureautique",              "heures": 60,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-08-logiciels-bureautique.html" },
-            { "code": "TRI-09", "titre": "Communication professionnelle",          "heures": 45,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-09-communication-pro.html" },
-            { "code": "TRI-10", "titre": "Installation d'un poste de travail",    "heures": 60,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-10-installation-poste.html" },
-            { "code": "TRI-11", "titre": "Base de données",                        "heures": 60,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-11-base-donnees.html" },
-            { "code": "TRI-12", "titre": "Dépannage d'un poste de travail",       "heures": 60,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-12-depannage-poste.html" },
-            { "code": "TRI-13", "titre": "Technologies internet",                  "heures": 45,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-13-technologies-internet.html" },
-            { "code": "TRI-14", "titre": "Programmation et scripts",               "heures": 45,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-14-programmation-scripts.html" },
-            { "code": "TRI-15", "titre": "Assistance technique",                   "heures": 30,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-15-assistance-technique.html" },
-            { "code": "TRI-16", "titre": "Entrepreneuriat IT",                     "heures": 45,  "seuil": 60, "fichier": "cours/tri/tri-1/tri-16-entrepreneuriat.html" }
+            {
+              "code": "TRI-01",
+              "titre": "Le métier et la formation",
+              "heures": 30,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-01-metier-formation.html"
+            },
+            {
+              "code": "TRI-02",
+              "titre": "Gestion du temps et organisation",
+              "heures": 45,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-02-gestion-du-temps.html"
+            },
+            {
+              "code": "TRI-03",
+              "titre": "Mathématiques appliquées",
+              "heures": 60,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-03-mathematiques.html"
+            },
+            {
+              "code": "TRI-04",
+              "titre": "Anglais technique",
+              "heures": 45,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-04-anglais-technique.html"
+            },
+            {
+              "code": "TRI-05",
+              "titre": "Systèmes d'exploitation",
+              "heures": 60,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-05-systeme-exploitation.html"
+            },
+            {
+              "code": "TRI-06",
+              "titre": "Résolution de problèmes",
+              "heures": 30,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-06-resolution-problemes.html"
+            },
+            {
+              "code": "TRI-07",
+              "titre": "Recherche d'information",
+              "heures": 30,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-07-recherche-information.html"
+            },
+            {
+              "code": "TRI-08",
+              "titre": "Logiciels de bureautique",
+              "heures": 60,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-08-logiciels-bureautique.html"
+            },
+            {
+              "code": "TRI-09",
+              "titre": "Communication professionnelle",
+              "heures": 45,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-09-communication-pro.html"
+            },
+            {
+              "code": "TRI-10",
+              "titre": "Installation d'un poste de travail",
+              "heures": 60,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-10-installation-poste.html"
+            },
+            {
+              "code": "TRI-11",
+              "titre": "Base de données",
+              "heures": 60,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-11-base-donnees.html"
+            },
+            {
+              "code": "TRI-12",
+              "titre": "Dépannage d'un poste de travail",
+              "heures": 60,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-12-depannage-poste.html"
+            },
+            {
+              "code": "TRI-13",
+              "titre": "Technologies internet",
+              "heures": 45,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-13-technologies-internet.html"
+            },
+            {
+              "code": "TRI-14",
+              "titre": "Programmation et scripts",
+              "heures": 45,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-14-programmation-scripts.html"
+            },
+            {
+              "code": "TRI-15",
+              "titre": "Assistance technique",
+              "heures": 30,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-15-assistance-technique.html"
+            },
+            {
+              "code": "TRI-16",
+              "titre": "Entrepreneuriat IT",
+              "heures": 45,
+              "seuil": 60,
+              "fichier": "cours/tri/tri-1/tri-16-entrepreneuriat.html"
+            }
           ]
         },
         {
           "annee": 2,
           "heures": 960,
           "modules": [
-            { "code": "TRI-17", "titre": "Initiation à la réseautique",           "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-17-initiation-reseautique.html" },
-            { "code": "TRI-18", "titre": "Installation de serveur",               "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-18-installation-serveur.html" },
-            { "code": "TRI-19", "titre": "Routage et commutation",                "heures": 90,  "seuil": 80, "fichier": "cours/tri/tri-2/tri-19-routage-commutation.html" },
-            { "code": "TRI-20", "titre": "Configuration des serveurs",            "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-20-configuration-serveurs.html" },
-            { "code": "TRI-21", "titre": "Évolutivité des réseaux",               "heures": 90,  "seuil": 80, "fichier": "cours/tri/tri-2/tri-21-evolutivite-reseaux.html" },
-            { "code": "TRI-22", "titre": "Maintenance des serveurs",              "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-22-maintenance-serveurs.html" },
-            { "code": "TRI-23", "titre": "Câblage structuré",                     "heures": 90,  "seuil": 80, "fichier": "cours/tri/tri-2/tri-23-cablage-structure.html" },
-            { "code": "TRI-24", "titre": "Supervision et dépannage réseau",       "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-24-supervision-depannage.html" },
-            { "code": "TRI-25", "titre": "Connexion de réseaux",                  "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-25-connexion-reseaux.html" },
-            { "code": "TRI-26", "titre": "Sécurité de réseau",                    "heures": 75,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-26-securite-reseau.html" },
-            { "code": "TRI-27", "titre": "Implantation d'un réseau",              "heures": 120, "seuil": 85, "fichier": "cours/tri/tri-2/tri-27-implantation-reseau.html" },
-            { "code": "TRI-28", "titre": "Recherche d'emploi",                    "heures": 45,  "seuil": 75, "fichier": "cours/tri/tri-2/tri-28-recherche-emploi.html" }
+            {
+              "code": "TRI-17",
+              "titre": "Initiation à la réseautique",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-17-initiation-reseautique.html"
+            },
+            {
+              "code": "TRI-18",
+              "titre": "Installation de serveur",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-18-installation-serveur.html"
+            },
+            {
+              "code": "TRI-19",
+              "titre": "Routage et commutation",
+              "heures": 90,
+              "seuil": 80,
+              "fichier": "cours/tri/tri-2/tri-19-routage-commutation.html"
+            },
+            {
+              "code": "TRI-20",
+              "titre": "Configuration des serveurs",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-20-configuration-serveurs.html"
+            },
+            {
+              "code": "TRI-21",
+              "titre": "Évolutivité des réseaux",
+              "heures": 90,
+              "seuil": 80,
+              "fichier": "cours/tri/tri-2/tri-21-evolutivite-reseaux.html"
+            },
+            {
+              "code": "TRI-22",
+              "titre": "Maintenance des serveurs",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-22-maintenance-serveurs.html"
+            },
+            {
+              "code": "TRI-23",
+              "titre": "Câblage structuré",
+              "heures": 90,
+              "seuil": 80,
+              "fichier": "cours/tri/tri-2/tri-23-cablage-structure.html"
+            },
+            {
+              "code": "TRI-24",
+              "titre": "Supervision et dépannage réseau",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-24-supervision-depannage.html"
+            },
+            {
+              "code": "TRI-25",
+              "titre": "Connexion de réseaux",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-25-connexion-reseaux.html"
+            },
+            {
+              "code": "TRI-26",
+              "titre": "Sécurité de réseau",
+              "heures": 75,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-26-securite-reseau.html"
+            },
+            {
+              "code": "TRI-27",
+              "titre": "Implantation d'un réseau",
+              "heures": 120,
+              "seuil": 85,
+              "fichier": "cours/tri/tri-2/tri-27-implantation-reseau.html"
+            },
+            {
+              "code": "TRI-28",
+              "titre": "Recherche d'emploi",
+              "heures": 45,
+              "seuil": 75,
+              "fichier": "cours/tri/tri-2/tri-28-recherche-emploi.html"
+            }
           ]
         }
       ]
@@ -301,29 +469,119 @@
       "nom": "Télécommunications",
       "couleur": "#F59E0B",
       "icone": "📡",
-      "partenaires": ["CompTIA A+"],
+      "partenaires": [
+        "CompTIA A+"
+      ],
       "annees": [
         {
           "annee": 1,
           "heures": 840,
           "modules": [
-            { "code": "TEL-01", "titre": "Métier et Formation",                                   "heures": 30,  "seuil": 70, "fichier": "cours/tel/tel-1/tel-01-metier-formation.html" },
-            { "code": "TEL-02", "titre": "Circuits à courant continu et à courant alternatif",    "heures": 90,  "seuil": 85, "fichier": "cours/tel/tel-1/tel-02-circuits-cc-ca.html" },
-            { "code": "TEL-03", "titre": "Utilisation de l'ordinateur",                           "heures": 45,  "seuil": 80, "fichier": "cours/tel/tel-1/tel-03-utilisation-ordinateur.html" },
-            { "code": "TEL-04", "titre": "Croquis et schémas",                                    "heures": 30,  "seuil": 85, "fichier": "cours/tel/tel-1/tel-04-croquis-schemas.html" },
-            { "code": "TEL-05", "titre": "Circuits d'électronique analogique",                    "heures": 90,  "seuil": 85, "fichier": "cours/tel/tel-1/tel-05-electronique-analogique.html" },
-            { "code": "TEL-06", "titre": "Circuits d'oscillation et de filtration",               "heures": 90,  "seuil": 85, "fichier": "cours/tel/tel-1/tel-06-oscillation-filtration.html" },
-            { "code": "TEL-07", "titre": "Circuit d'électronique numérique",                      "heures": 75,  "seuil": 80, "fichier": "cours/tel/tel-1/tel-07-electronique-numerique.html" },
-            { "code": "TEL-08", "titre": "Circuits de modulation",                                "heures": 90,  "seuil": 85, "fichier": "cours/tel/tel-1/tel-08-circuits-modulation.html" },
-            { "code": "TEL-09", "titre": "Santé et sécurité au travail",                          "heures": 30,  "seuil": 80, "fichier": "cours/tel/tel-1/tel-09-sante-securite.html" },
-            { "code": "TEL-10", "titre": "Transmissions et protocoles de communication",           "heures": 60,  "seuil": 75, "fichier": "cours/tel/tel-1/tel-10-transmissions-protocoles.html" },
-            { "code": "TEL-11", "titre": "Installation d'antennes",                               "heures": 75,  "seuil": 85, "fichier": "cours/tel/tel-1/tel-11-installation-antennes.html" },
-            { "code": "TEL-12", "titre": "Terminologie anglaise",                                 "heures": 45,  "seuil": 75, "fichier": "cours/tel/tel-1/tel-12-terminologie-anglaise.html" },
-            { "code": "TEL-13", "titre": "Microprocesseurs et interfaces",                        "heures": 60,  "seuil": 80, "fichier": "cours/tel/tel-1/tel-13-microprocesseurs-interfaces.html" },
-            { "code": "TEL-14", "titre": "Remplacement de composants",                            "heures": 30,  "seuil": 80, "fichier": "cours/tel/tel-1/tel-14-remplacement-composants.html" }
+            {
+              "code": "TEL-01",
+              "titre": "Métier et Formation",
+              "heures": 30,
+              "seuil": 70,
+              "fichier": "cours/tel/tel-1/tel-01-metier-formation.html"
+            },
+            {
+              "code": "TEL-02",
+              "titre": "Circuits à courant continu et à courant alternatif",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/tel/tel-1/tel-02-circuits-cc-ca.html"
+            },
+            {
+              "code": "TEL-03",
+              "titre": "Utilisation de l'ordinateur",
+              "heures": 45,
+              "seuil": 80,
+              "fichier": "cours/tel/tel-1/tel-03-utilisation-ordinateur.html"
+            },
+            {
+              "code": "TEL-04",
+              "titre": "Croquis et schémas",
+              "heures": 30,
+              "seuil": 85,
+              "fichier": "cours/tel/tel-1/tel-04-croquis-schemas.html"
+            },
+            {
+              "code": "TEL-05",
+              "titre": "Circuits d'électronique analogique",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/tel/tel-1/tel-05-electronique-analogique.html"
+            },
+            {
+              "code": "TEL-06",
+              "titre": "Circuits d'oscillation et de filtration",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/tel/tel-1/tel-06-oscillation-filtration.html"
+            },
+            {
+              "code": "TEL-07",
+              "titre": "Circuit d'électronique numérique",
+              "heures": 75,
+              "seuil": 80,
+              "fichier": "cours/tel/tel-1/tel-07-electronique-numerique.html"
+            },
+            {
+              "code": "TEL-08",
+              "titre": "Circuits de modulation",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/tel/tel-1/tel-08-circuits-modulation.html"
+            },
+            {
+              "code": "TEL-09",
+              "titre": "Santé et sécurité au travail",
+              "heures": 30,
+              "seuil": 80,
+              "fichier": "cours/tel/tel-1/tel-09-sante-securite.html"
+            },
+            {
+              "code": "TEL-10",
+              "titre": "Transmissions et protocoles de communication",
+              "heures": 60,
+              "seuil": 75,
+              "fichier": "cours/tel/tel-1/tel-10-transmissions-protocoles.html"
+            },
+            {
+              "code": "TEL-11",
+              "titre": "Installation d'antennes",
+              "heures": 75,
+              "seuil": 85,
+              "fichier": "cours/tel/tel-1/tel-11-installation-antennes.html"
+            },
+            {
+              "code": "TEL-12",
+              "titre": "Terminologie anglaise",
+              "heures": 45,
+              "seuil": 75,
+              "fichier": "cours/tel/tel-1/tel-12-terminologie-anglaise.html"
+            },
+            {
+              "code": "TEL-13",
+              "titre": "Microprocesseurs et interfaces",
+              "heures": 60,
+              "seuil": 80,
+              "fichier": "cours/tel/tel-1/tel-13-microprocesseurs-interfaces.html"
+            },
+            {
+              "code": "TEL-14",
+              "titre": "Remplacement de composants",
+              "heures": 30,
+              "seuil": 80,
+              "fichier": "cours/tel/tel-1/tel-14-remplacement-composants.html"
+            }
           ]
         },
-        { "annee": 2, "heures": 0, "modules": [] }
+        {
+          "annee": 2,
+          "heures": 0,
+          "modules": []
+        }
       ]
     },
     {
@@ -333,8 +591,193 @@
       "icone": "⚙️",
       "partenaires": [],
       "annees": [
-        { "annee": 1, "heures": 0, "modules": [] },
-        { "annee": 2, "heures": 0, "modules": [] }
+        {
+          "annee": 1,
+          "heures": 825,
+          "modules": [
+            {
+              "code": "ELM-01",
+              "titre": "Métier et formation",
+              "heures": 30,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-1/elm-01-metier-formation.html"
+            },
+            {
+              "code": "ELM-02",
+              "titre": "Utilisation de l'ordinateur",
+              "heures": 45,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-1/elm-02-utilisation-ordinateur.html"
+            },
+            {
+              "code": "ELM-03",
+              "titre": "Circuits à courant continu et à courant alternatif",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-03-circuits-cc-ca.html"
+            },
+            {
+              "code": "ELM-04",
+              "titre": "Croquis et schémas",
+              "heures": 30,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-04-croquis-schemas.html"
+            },
+            {
+              "code": "ELM-05",
+              "titre": "Plan et devis",
+              "heures": 45,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-1/elm-05-plan-devis.html"
+            },
+            {
+              "code": "ELM-06",
+              "titre": "Santé et sécurité au travail",
+              "heures": 30,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-1/elm-06-sante-securite.html"
+            },
+            {
+              "code": "ELM-07",
+              "titre": "Usinage manuel et assemblage",
+              "heures": 105,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-07-usinage-assemblage.html"
+            },
+            {
+              "code": "ELM-08",
+              "titre": "Électrification de bâtiments",
+              "heures": 120,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-08-electrification-batiments.html"
+            },
+            {
+              "code": "ELM-09",
+              "titre": "Fonctionnement des moteurs, générateurs et transformateurs",
+              "heures": 75,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-09-moteurs-generateurs-transformateurs.html"
+            },
+            {
+              "code": "ELM-10",
+              "titre": "Raccordement et entretien des moteurs et circuits de commandes",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-10-moteurs-circuits-commandes.html"
+            },
+            {
+              "code": "ELM-11",
+              "titre": "Terminologie anglaise",
+              "heures": 45,
+              "seuil": 75,
+              "fichier": "cours/elm/elm-1/elm-11-terminologie-anglaise.html"
+            },
+            {
+              "code": "ELM-14",
+              "titre": "Circuits d'électronique analogique",
+              "heures": 60,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-1/elm-14-electronique-analogique.html"
+            },
+            {
+              "code": "ELM-15",
+              "titre": "Circuits d'électronique numérique",
+              "heures": 60,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-1/elm-15-electronique-numerique.html"
+            }
+          ]
+        },
+        {
+          "annee": 2,
+          "heures": 960,
+          "modules": [
+            {
+              "code": "ELM-12",
+              "titre": "Installation de groupes électrogènes, onduleurs et panneaux solaires",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-12-groupes-onduleurs-solaires.html"
+            },
+            {
+              "code": "ELM-16",
+              "titre": "Fonctionnement des moteurs à essence et diesel",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-16-moteurs-essence-diesel.html"
+            },
+            {
+              "code": "ELM-17",
+              "titre": "Réparation et entretien de groupes électrogènes",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-17-groupes-electrogenes.html"
+            },
+            {
+              "code": "ELM-18",
+              "titre": "Circuits pneumatiques et électropneumatiques",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-18-circuits-pneumatiques-electropneumatiques.html"
+            },
+            {
+              "code": "ELM-19",
+              "titre": "Circuits hydrauliques et électrohydrauliques",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-19-circuits-hydrauliques-electrohydrauliques.html"
+            },
+            {
+              "code": "ELM-20",
+              "titre": "Électronique de puissance",
+              "heures": 90,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-2/elm-20-electronique-puissance.html"
+            },
+            {
+              "code": "ELM-21",
+              "titre": "Programmation d'un automate",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-21-programmation-automate.html"
+            },
+            {
+              "code": "ELM-22",
+              "titre": "Raccordement d'automates",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-22-raccordement-automates.html"
+            },
+            {
+              "code": "ELM-23",
+              "titre": "Dépannage d'un système automatisé",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-23-depannage-systeme-automatise.html"
+            },
+            {
+              "code": "ELM-24",
+              "titre": "Maintenance planifiée",
+              "heures": 75,
+              "seuil": 80,
+              "fichier": "cours/elm/elm-2/elm-24-maintenance-planifiee.html"
+            },
+            {
+              "code": "ELM-25",
+              "titre": "Entrepreneuriat",
+              "heures": 30,
+              "seuil": 75,
+              "fichier": "cours/elm/elm-2/elm-25-entrepreneuriat.html"
+            },
+            {
+              "code": "ELM-26",
+              "titre": "Préparation au marché du travail",
+              "heures": 45,
+              "seuil": 70,
+              "fichier": "cours/elm/elm-2/elm-26-marche-travail.html"
+            }
+          ]
+        }
       ]
     },
     {
@@ -344,8 +787,16 @@
       "icone": "🔩",
       "partenaires": [],
       "annees": [
-        { "annee": 1, "heures": 0, "modules": [] },
-        { "annee": 2, "heures": 0, "modules": [] }
+        {
+          "annee": 1,
+          "heures": 0,
+          "modules": []
+        },
+        {
+          "annee": 2,
+          "heures": 0,
+          "modules": []
+        }
       ]
     }
   ]
