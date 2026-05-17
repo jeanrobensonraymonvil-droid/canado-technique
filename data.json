@@ -201,10 +201,10 @@
     {
       "id": 5,
       "titre": "Lancement de la plateforme e-learning Rooby",
-      "short_description": "La nouvelle plateforme numérique propulsée par Claude AI est officiellement lancée. Les étudiants accèdent à leurs cours, examens et l'assistant Rooby 24h/24.",
-      "featured_image": "assets/images/actu/actu-plateforme.jpg",
+      "short_description": "Canado Technique lance officiellement Rooby, son assistant IA et plateforme e-learning disponible 24h/24. Les étudiants accèdent désormais à leurs cours, exercices et support en ligne à tout moment.",
+      "featured_image": "assets/images/actu/actu-rooby.jpg",
       "fallback_color": "#2B56C0",
-      "date_publication": "2026-02-01",
+      "date_publication": "2026-05-17",
       "is_publish": true,
       "categorie": "technologie"
     }
