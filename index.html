@@ -465,12 +465,14 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
 .rbdg-b{background:rgba(27,58,140,.25);color:#7BA7FF}
 .rbdg-gd{background:rgba(245,197,24,.15);color:var(--gold)}
 .esel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.9rem;margin-top:.8rem}
-.esel-card{background:var(--g50);border:1.5px solid var(--bdr);border-radius:var(--r);
-  padding:1.1rem;cursor:pointer;transition:all .22s}
-.esel-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(27,58,140,.12);transform:translateY(-2px)}
-.esel-prog{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;color:var(--blue)}
-.esel-title{font-size:.82rem;font-weight:600;color:var(--text);line-height:1.4}
-.esel-meta{font-size:.72rem;color:var(--g500)}
+.esel-card{background:linear-gradient(135deg,#0C1F3D,#081428);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--r);
+  padding:1.1rem;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.esel-card:hover{border-color:rgba(59,123,255,.45);box-shadow:0 6px 24px rgba(27,58,140,.35);transform:translateY(-2px)}
+.esel-prog{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;
+  display:inline-block;background:#fff;color:#1B3A8C;padding:3px 10px;border-radius:7px;border:1.5px solid #c0ccee;
+  box-shadow:0 1px 4px rgba(27,58,140,.15)}
+.esel-title{font-size:.84rem;font-weight:700;color:#ffffff;line-height:1.4}
+.esel-meta{font-size:.72rem;color:rgba(255,255,255,.5)}
 
 /* ═══ PAIEMENT ═══ */
 .pay-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:1.5rem}
@@ -494,7 +496,7 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
   font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--bdr)}
 .os-line:last-child{border-bottom:none}
 .os-total{font-family:var(--fD);font-weight:800;font-size:1.1rem;color:var(--text)}
-.os-price{font-family:var(--fD);font-weight:700;color:var(--blue)}
+.os-price{font-family:var(--fD);font-weight:700;color:#ffffff}
 .os-discount{color:var(--green);font-size:.78rem}
 
 /* ═══ RESERVATIONS ═══ */
@@ -844,6 +846,15 @@ td{color:var(--text)!important}
 .pcontent{background:#ffffff!important;color:#0B1525!important}
 .pcontent td{color:#0B1525!important}
 .pcontent th{color:#ffffff!important}
+.pcontent [style*="color:var(--text)"]{color:#0B1525!important}
+.pcontent [style*="color:var(--g700)"]{color:#3A4A6B!important}
+.pcontent [style*="color:var(--g500)"]{color:#4a5e8a!important}
+.pcontent [style*="color:var(--blue)"]{color:#1B3A8C!important}
+.pcontent p{color:#0B1525}
+.pcontent ul li{color:#3A4A6B}
+.pcontent .ep-task p,.pcontent .ep-task ul,.pcontent .ep-task span{color:#0B1525}
+.pcontent .ep-task-num{color:#1B3A8C!important}
+.pcontent .ep-pts{color:#1B3A8C!important}
 /* KPI cards toujours sur fond clair */
 .kcard{background:#f8faff!important;color:#0B1525!important}
 .kcard .knum{color:var(--blue)!important}
@@ -884,14 +895,14 @@ td{color:var(--text)!important}
 .rl-6{background:rgba(59,123,255,.1);border-color:rgba(59,123,255,.25);color:#1B3A8C}
 /* ═══ AUDIT LOG ═══ */
 .audit-row{display:flex;align-items:flex-start;gap:.8rem;padding:.75rem 1rem;
-  border-bottom:1px solid var(--bdr);transition:background .15s}
-.audit-row:hover{background:var(--g50)}
-.audit-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;font-size:.9rem;flex-shrink:0}
+  border-bottom:1px solid var(--bdr);transition:background .15s;border-radius:8px;margin-bottom:2px}
+.audit-row:hover{background:#e8eeff}
+.audit-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:1rem;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .audit-meta{flex:1;min-width:0}
-.audit-action{font-size:.78rem;font-weight:600;color:var(--text)}
-.audit-detail{font-size:.72rem;color:var(--g500);margin-top:2px;line-height:1.5}
-.audit-time{font-size:.68rem;color:var(--g500);white-space:nowrap;flex-shrink:0;text-align:right}
+.audit-action{font-size:.8rem;font-weight:700;color:#0B1525}
+.audit-detail{font-size:.72rem;color:#3A4A6B;margin-top:2px;line-height:1.5}
+.audit-time{font-size:.68rem;color:#3A4A6B;white-space:nowrap;flex-shrink:0;text-align:right}
 .audit-diff{font-size:.7rem;margin-top:3px;padding:3px 8px;border-radius:6px;display:inline-block}
 .diff-old{background:rgba(232,25,44,.08);color:var(--redD);text-decoration:line-through}
 .diff-new{background:rgba(0,107,70,.08);color:var(--green)}
@@ -912,17 +923,17 @@ td{color:var(--text)!important}
 .ep-header{background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--rL);
   padding:1.5rem;margin-bottom:1.2rem;color:#fff}
 .ep-section{background:#fff;border:1.5px solid var(--bdr);border-radius:var(--r);
-  padding:1.2rem;margin-bottom:1rem}
+  padding:1.2rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(27,58,140,.06)}
 .ep-section h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--blue);
   margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:2px solid rgba(27,58,140,.12)}
-.ep-task{background:var(--g50);border:1px solid var(--bdr);border-radius:8px;
+.ep-task{background:#f4f7ff;border:1px solid #c8d6f5;border-radius:8px;
   padding:.75rem 1rem;margin-bottom:.6rem}
-.ep-task-num{font-size:.7rem;font-weight:800;color:var(--blue);text-transform:uppercase;
-  letter-spacing:.08em;margin-bottom:.3rem}
+.ep-task-num{font-size:.72rem;font-weight:800;color:#1B3A8C;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:.4rem;background:#dce6ff;display:inline-block;padding:2px 10px;border-radius:6px}
 .ep-score-row{display:flex;justify-content:space-between;align-items:center;
-  padding:.4rem 0;border-bottom:1px solid var(--bdr);font-size:.78rem}
+  padding:.4rem 0;border-bottom:1px solid var(--bdr);font-size:.78rem;color:#0B1525}
 .ep-score-row:last-child{border-bottom:none}
-.ep-pts{font-weight:700;color:var(--blue);min-width:60px;text-align:right}
+.ep-pts{font-weight:800;color:#1B3A8C;min-width:60px;text-align:right}
 
 /* ═══ 📱 MOBILE RESPONSIVE FIXES ═══ */
 @media(max-width:768px){
@@ -1100,7 +1111,7 @@ td{color:var(--text)!important}
 }
 .os-line { color: #0B1525 !important; border-bottom-color: #d0dcf8 !important; }
 .os-total { color: #0B1525 !important; }
-.os-price { color: var(--blue) !important; }
+.os-price { color: var(--greenL) !important; }
 .os-discount { color: #006B46 !important; }
 
 /* Formulaire dans le modal — labels et inputs toujours lisibles */
@@ -1172,7 +1183,6 @@ td{color:var(--text)!important}
 
 /* Tarif cards — titres et prix */
 #page-paiement .sw [style*="color:var(--text)"] { color: #0B1525 !important; }
-#page-paiement .sw [style*="color:var(--blue)"] { color: var(--blue) !important; }
 #page-paiement .sw [style*="color:var(--goldD)"] { color: var(--goldD) !important; }
 </style>
 </head>
@@ -1680,11 +1690,11 @@ td{color:var(--text)!important}
     <div style="max-width:1150px;margin:0 auto">
 
       <!-- Tabs de navigation -->
-      <div style="display:flex;gap:0;border-bottom:2px solid var(--bdr);margin-bottom:2rem;overflow-x:auto">
-        <button id="etab-sessions" onclick="showExamTab('sessions')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:700;color:var(--blue);border-bottom:2px solid var(--blue);margin-bottom:-2px;cursor:pointer;white-space:nowrap;font-family:var(--fB)">📅 Sessions actives</button>
-        <button id="etab-modules" onclick="showExamTab('modules')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--g500);cursor:pointer;white-space:nowrap;font-family:var(--fB)">📚 Catalogue modules</button>
-        <button id="etab-process" onclick="showExamTab('process')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--g500);cursor:pointer;white-space:nowrap;font-family:var(--fB)">🔄 Comment ça marche</button>
-        <button id="etab-certif" onclick="showExamTab('certif')" style="padding:.85rem 1.4rem;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--g500);cursor:pointer;white-space:nowrap;font-family:var(--fB)">🏆 Certifications</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;padding:.5rem;background:#fff;border-radius:var(--rL);border:1px solid var(--bdr);box-shadow:0 2px 12px rgba(27,58,140,.07)">
+        <button id="etab-sessions" onclick="showExamTab('sessions')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(27,58,140,.3)">📅 Sessions actives</button>
+        <button id="etab-modules" onclick="showExamTab('modules')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,#006B46,#00A066);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(0,107,70,.25);opacity:.75">📚 Catalogue modules</button>
+        <button id="etab-process" onclick="showExamTab('process')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,#8B5E00,#C98A00);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(139,94,0,.25);opacity:.75">🔄 Comment ça marche</button>
+        <button id="etab-certif" onclick="showExamTab('certif')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(91,45,142,.25);opacity:.75">🏆 Certifications</button>
       </div>
 
       <!-- TAB: SESSIONS ACTIVES -->
@@ -1730,10 +1740,10 @@ td{color:var(--text)!important}
       <div id="etab-modules-content" style="display:none">
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
           <button class="btn btn-blue btn-sm exam-filter-btn act" data-prog="ALL" onclick="filterExamModules('ALL',this)">Tous</button>
-          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="TRI" onclick="filterExamModules('TRI',this)">🌐 TRI</button>
-          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="MEI" onclick="filterExamModules('MEI',this)">🔧 MEI</button>
-          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="ELM" onclick="filterExamModules('ELM',this)">⚡ ELM</button>
-          <button class="btn btn-outline btn-sm exam-filter-btn" data-prog="TEL" onclick="filterExamModules('TEL',this)">📡 TEL</button>
+          <button class="btn btn-sm exam-filter-btn" data-prog="TRI" onclick="filterExamModules('TRI',this)" style="background:linear-gradient(135deg,#1B3A8C,#2B56C0);color:#fff;border:none;box-shadow:0 2px 8px rgba(27,58,140,.3)">🌐 TRI</button>
+          <button class="btn btn-sm exam-filter-btn" data-prog="MEI" onclick="filterExamModules('MEI',this)" style="background:linear-gradient(135deg,#6B4500,#C98A00);color:#fff;border:none;box-shadow:0 2px 8px rgba(139,94,0,.3)">🔧 MEI</button>
+          <button class="btn btn-sm exam-filter-btn" data-prog="ELM" onclick="filterExamModules('ELM',this)" style="background:linear-gradient(135deg,#004D30,#00A066);color:#fff;border:none;box-shadow:0 2px 8px rgba(0,107,70,.3)">⚡ ELM</button>
+          <button class="btn btn-sm exam-filter-btn" data-prog="TEL" onclick="filterExamModules('TEL',this)" style="background:linear-gradient(135deg,#3D1A6E,#8A50CC);color:#fff;border:none;box-shadow:0 2px 8px rgba(91,45,142,.3)">📡 TEL</button>
         </div>
         <div id="exam-modules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem"></div>
       </div>
@@ -1742,33 +1752,33 @@ td{color:var(--text)!important}
       <div id="etab-process-content" style="display:none">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-bottom:2rem">
           <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
-            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">01</div>
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.18);line-height:1">01</div>
             <div style="width:42px;height:42px;background:linear-gradient(135deg,var(--blue),var(--blueG));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">🔐</div>
-            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Connexion sécurisée</div>
-            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Connectez-vous avec votre matricule étudiant et votre code 2FA. Votre session est chiffrée et unique.</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--blue);margin-bottom:.4rem">Connexion sécurisée</div>
+            <div style="font-size:.77rem;color:var(--g700);line-height:1.65">Connectez-vous avec votre matricule étudiant et votre code 2FA. Votre session est chiffrée et unique.</div>
           </div>
           <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
-            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">02</div>
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(0,107,70,.18);line-height:1">02</div>
             <div style="width:42px;height:42px;background:linear-gradient(135deg,#006B46,#00A066);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">📋</div>
-            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Sélection du module</div>
-            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Choisissez parmi les modules activés par votre professeur. Chaque examen est unique — version A, B ou C attribuée aléatoirement.</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:#00A066;margin-bottom:.4rem">Sélection du module</div>
+            <div style="font-size:.77rem;color:var(--g700);line-height:1.65">Choisissez parmi les modules activés par votre professeur. Chaque examen est unique — version A, B ou C attribuée aléatoirement.</div>
           </div>
           <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
-            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">03</div>
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(139,94,0,.18);line-height:1">03</div>
             <div style="width:42px;height:42px;background:linear-gradient(135deg,#8B5E00,#C98A00);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">⏱️</div>
-            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Examen chronométré</div>
-            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Le minuteur démarre dès votre première réponse. Durée selon le module (30 à 120 min). Pas de retour en arrière possible.</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:#C98A00;margin-bottom:.4rem">Examen chronométré</div>
+            <div style="font-size:.77rem;color:var(--g700);line-height:1.65">Le minuteur démarre dès votre première réponse. Durée selon le module (30 à 120 min). Pas de retour en arrière possible.</div>
           </div>
           <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem;position:relative;overflow:hidden">
-            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(27,58,140,.06);line-height:1">04</div>
+            <div style="position:absolute;top:1rem;right:1rem;font-family:var(--fD);font-weight:900;font-size:3rem;color:rgba(91,45,142,.18);line-height:1">04</div>
             <div style="width:42px;height:42px;background:linear-gradient(135deg,#5B2D8E,#8A50CC);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem">🏆</div>
-            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text);margin-bottom:.4rem">Résultats immédiats</div>
-            <div style="font-size:.77rem;color:var(--g500);line-height:1.65">Score, corrections détaillées et feedback immédiat après soumission. Résultats transmis automatiquement à votre professeur.</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:#8A50CC;margin-bottom:.4rem">Résultats immédiats</div>
+            <div style="font-size:.77rem;color:var(--g700);line-height:1.65">Score, corrections détaillées et feedback immédiat après soumission. Résultats transmis automatiquement à votre professeur.</div>
           </div>
         </div>
         <!-- Règlement -->
         <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.4rem">
-          <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem">📜 Règlement des examens — Canado Technique</div>
+          <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem">📜 Règlement des examens — Canado Technique</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
             <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span>Un seul essai par session officielle</div>
             <div style="display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:var(--g700);line-height:1.55"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span>Seuil de réussite : 70–85% selon module</div>
@@ -1805,7 +1815,7 @@ td{color:var(--text)!important}
         <div style="background:#fff;border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
           <div style="font-size:1.5rem">💡</div>
           <div style="flex:1;min-width:200px">
-            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--text)">Reconnaissance internationale</div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:var(--greenL)">Reconnaissance internationale</div>
             <div style="font-size:.77rem;color:var(--g500);margin-top:3px;line-height:1.6">Les diplômes Canado Technique sont reconnus par les employeurs haïtiens et les partenaires internationaux (Cisco, entreprises industrielles, ONG techniques).</div>
           </div>
           <button class="btn btn-gold btn-sm" onclick="goPage('paiement')">S'inscrire maintenant →</button>
@@ -2472,16 +2482,23 @@ function renderPubExams() {
   let h = `<table><thead><tr><th>Programme</th><th>Code</th><th>Module</th><th>Versions</th><th>Durée</th><th>Questions</th><th>Statut</th><th>Action</th></tr></thead><tbody>`;
   sample.forEach(e=>{
     const canTry = e.status==='Disponible';
-    const statusIcon = e.status==='Disponible'?'●':e.status==='En attente'?'◐':'○';
     h+=`<tr>
       <td><span class="chip ${pc[e.prog]}" style="display:inline-flex;align-items:center;gap:3px">${progIcons[e.prog]} ${e.prog}</span></td>
-      <td><code style="font-size:.74rem;background:#1a2f52;padding:3px 9px;border-radius:5px;color:#7BA7FF;font-family:monospace;font-weight:700;letter-spacing:.04em">${e.code}</code></td>
+      <td><code style="font-size:.74rem;background:#fff;padding:4px 10px;border-radius:8px;color:#1B3A8C;font-family:monospace;font-weight:800;letter-spacing:.06em;border:1.5px solid #c0ccee;box-shadow:0 1px 4px rgba(27,58,140,.12)">${e.code}</code></td>
       <td style="font-weight:600;font-size:.82rem;color:var(--text);max-width:200px">${e.title}</td>
       <td style="font-size:.78rem"><span style="letter-spacing:.05em;color:var(--blue);font-weight:700">${e.ver}</span></td>
       <td style="font-size:.78rem;white-space:nowrap"><span style="color:var(--g500)">⏱</span> ${e.dur} min</td>
       <td style="font-size:.78rem;font-weight:600;color:var(--text)">${e.q} Q.</td>
-      <td><span class="chip ${e.sc}" style="font-size:.68rem">${statusIcon} ${e.status}</span></td>
-      <td>${canTry?`<button class="btn btn-blue btn-sm" style="font-size:.72rem" onclick="event.stopPropagation();showLogin()">Démarrer →</button>`:`<span style="color:var(--g300);font-size:.78rem">—</span>`}</td>
+      <td>${canTry
+        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066">
+             <span style="width:8px;height:8px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible
+           </span>`
+        : `<span class="chip ${e.sc}" style="font-size:.68rem">◐ ${e.status}</span>`
+      }</td>
+      <td>${canTry
+        ? `<button class="btn btn-sm" style="font-size:.72rem;background:linear-gradient(135deg,#006B46,#00A066);color:#fff;border:none;box-shadow:0 2px 8px rgba(0,107,70,.3)" onclick="event.stopPropagation();showLogin()">▶ Démarrer</button>`
+        : `<span style="color:var(--g300);font-size:.78rem">—</span>`
+      }</td>
     </tr>`;
   });
   h+=`</tbody></table>`;
@@ -2498,10 +2515,10 @@ function showExamTab(tab) {
     if(!btn||!cnt) return;
     const isActive = t===tab;
     cnt.style.display = isActive ? 'block' : 'none';
-    btn.style.color = isActive ? 'var(--blue)' : 'var(--g500)';
+    btn.style.opacity = isActive ? '1' : '0.55';
     btn.style.fontWeight = isActive ? '700' : '600';
-    btn.style.borderBottom = isActive ? '2px solid var(--blue)' : 'none';
-    btn.style.marginBottom = isActive ? '-2px' : '0';
+    btn.style.transform = isActive ? 'scale(1.03)' : 'scale(1)';
+    btn.style.boxShadow = isActive ? '0 4px 16px rgba(0,0,0,.25)' : '';
   });
 }
 
@@ -2551,15 +2568,15 @@ function renderExamModules(progFilter) {
         </div>
         ${st!=='—'?`<span class="chip ${stClass}" style="font-size:.62rem">${st}</span>`:''}
       </div>
-      <div style="padding:.9rem 1rem;background:#0d1f3c">
-        <div style="font-weight:700;font-size:.82rem;color:#fff;line-height:1.4;margin-bottom:.5rem;min-height:2.2em">${m.title}</div>
+      <div style="padding:.9rem 1rem;background:#fff">
+        <div style="font-weight:700;font-size:.82rem;color:#0B1525;line-height:1.4;margin-bottom:.5rem;min-height:2.2em">${m.title}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
           <div style="display:flex;gap:.4rem;flex-wrap:wrap">
-            <span style="font-size:.68rem;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:5px">⏱ ${m.dur} h</span>
-            <span style="font-size:.68rem;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:5px">✓ ${m.seuil}%</span>
+            <span style="font-size:.68rem;color:#3A4A6B;background:#E8EEFF;padding:2px 7px;border-radius:5px">⏱ ${m.dur} h</span>
+            <span style="font-size:.68rem;color:#3A4A6B;background:#E8EEFF;padding:2px 7px;border-radius:5px">✓ ${m.seuil}%</span>
           </div>
           ${canStart?`<button class="btn btn-blue btn-sm" style="font-size:.7rem;padding:.25rem .7rem" onclick="event.stopPropagation();showLogin()">Passer →</button>`:
-            `<button class="btn btn-ghost btn-sm" style="font-size:.7rem;padding:.25rem .7rem;opacity:.5" disabled>Indisponible</button>`}
+            `<button class="btn btn-ghost btn-sm" style="font-size:.7rem;padding:.25rem .7rem;opacity:.5;color:#3A4A6B;border-color:#ccc" disabled>Indisponible</button>`}
         </div>
       </div>
     </div>`;
@@ -2625,8 +2642,8 @@ function renderPaiement() {
   <div style="margin-bottom:2rem">
     <div class="sh" style="text-align:left;margin-bottom:1.5rem">
       <div class="tag-gold" style="margin-bottom:.5rem">💳 Paiement en HTG 🇭🇹 ou USD 🇺🇸</div>
-      <h2 style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:var(--text)">Choisissez votre formation</h2>
-      <p style="color:var(--g500);font-size:.88rem">Tarifs en HTG ou USD · Paiement sécurisé</p>
+      <h2 style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:var(--greenL)">Choisissez votre formation</h2>
+      <p style="color:#ffffff;font-size:.88rem">Tarifs en HTG ou USD · Paiement sécurisé</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem" id="tarif-cards"></div>
   </div>
@@ -2665,13 +2682,13 @@ function renderPaiement() {
       </div>
       <div style="padding:1rem">
         <div style="display:flex;flex-direction:column;gap:.5rem">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:var(--g50);border:1px solid var(--bdr);cursor:pointer;transition:all .18s" onclick="openPayModal('${prog}','1')">
-            <div><div style="font-size:.8rem;font-weight:600;color:var(--text)">1ère Année</div><div style="font-size:.7rem;color:var(--g500)">${MODULES[prog].length} modules</div></div>
-            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--blue)">${fmtPriceDual(t.an1)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:#e8eeff;border:1px solid #c0ccee;cursor:pointer;transition:all .18s" onclick="openPayModal('${prog}','1')">
+            <div><div style="font-size:.8rem;font-weight:600;color:#0B1525">1ère Année</div><div style="font-size:.7rem;color:#3A4A6B">${MODULES[prog].length} modules</div></div>
+            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:#0B1525">${fmtPriceDual(t.an1)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:var(--g50);border:1px solid var(--bdr);cursor:pointer;transition:all .18s" onclick="openPayModal('${prog}','2')">
-            <div><div style="font-size:.8rem;font-weight:600;color:var(--text)">2ème Année <span class="new-badge">NEW</span></div><div style="font-size:.7rem;color:var(--g500)">${MODULES_2[prog]?.length||0} modules</div></div>
-            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--blue)">${fmtPriceDual(t.an2)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:#e8eeff;border:1px solid #c0ccee;cursor:pointer;transition:all .18s" onclick="openPayModal('${prog}','2')">
+            <div><div style="font-size:.8rem;font-weight:600;color:#0B1525">2ème Année <span class="new-badge">NEW</span></div><div style="font-size:.7rem;color:#3A4A6B">${MODULES_2[prog]?.length||0} modules</div></div>
+            <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:#0B1525">${fmtPriceDual(t.an2)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:rgba(245,197,24,.06);border:1.5px solid rgba(245,197,24,.2);cursor:pointer" onclick="openPayModal('${prog}','full')">
             <div><div style="font-size:.8rem;font-weight:700;color:var(--text)">⭐ Programme complet</div><div style="font-size:.7rem;color:var(--g500)">1ère + 2ème + Diplôme</div></div>
@@ -2699,7 +2716,7 @@ function openPayModal(prog, an) {
       <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text)">${info.label}</div>
       <div style="font-size:.78rem;color:var(--g500)">${label} · ${mods.length} modules</div>
     </div>
-    <div style="margin-left:auto;font-family:var(--fD);font-weight:800;font-size:1.5rem;color:${isFull?'var(--goldD)':'var(--blue)'}">${fmtPriceDual(price)}</div>
+    <div style="margin-left:auto;font-family:var(--fD);font-weight:800;font-size:1.5rem;color:${isFull?'var(--goldD)':'var(--greenL)'}">${fmtPriceDual(price)}</div>
   </div>
   <div class="fsec">
     <h4>Informations personnelles</h4>
@@ -3495,16 +3512,17 @@ let generatedExam = null;
 function renderExamBuilder(c) {
   c.innerHTML = `<div class="ph2">Créer un examen <span class="ai-badge">✨ IA</span></div>
   <div class="ai-gen-box">
-    <h4>🤖 Génération automatique par intelligence artificielle <span class="ai-badge">Claude AI</span></h4>
-    <p style="font-size:.78rem;color:var(--g500);margin-bottom:1rem">L'IA génère automatiquement plusieurs versions d'examen différentes pour votre module en quelques secondes.</p>
-    <div class="frow3">
+    <h4>🤖 Génération intelligente multi-sections <span class="ai-badge">Claude AI</span></h4>
+    <p style="font-size:.78rem;color:var(--g500);margin-bottom:1.1rem">L'IA adapte automatiquement le contenu, les sections et la difficulté selon le module et le programme choisis. Jusqu'à <strong>5 versions</strong> différentes en une seule génération.</p>
+
+    <div class="frow3" style="margin-bottom:.8rem">
       <div class="fg">
         <label>Programme</label>
         <select id="eb-prog" onchange="updateModList()">
-          <option value="TRI">TRI</option>
-          <option value="MEI">MEI</option>
-          <option value="ELM">ELM</option>
-          <option value="TEL">TEL</option>
+          <option value="TRI">TRI — Réseaux Informatiques</option>
+          <option value="MEI">MEI — Maintenance Électronique</option>
+          <option value="ELM">ELM — Électromécanique</option>
+          <option value="TEL">TEL — Télécommunications</option>
         </select>
       </div>
       <div class="fg">
@@ -3512,47 +3530,74 @@ function renderExamBuilder(c) {
         <select id="eb-mod"></select>
       </div>
       <div class="fg">
-        <label>Nombre de questions</label>
-        <select id="eb-nq">
-          <option value="5">5 questions (rapide)</option>
-          <option value="10" selected>10 questions (standard)</option>
-          <option value="20">20 questions (complet)</option>
-          <option value="30">30 questions (officiel)</option>
-        </select>
-      </div>
-    </div>
-    <div class="frow">
-      <div class="fg">
-        <label>Type d'examen</label>
-        <select id="eb-type">
-          <option>QCM (Choix multiples)</option>
-          <option>QCM + Réponses courtes</option>
-          <option>Examen pratique</option>
-        </select>
-      </div>
-      <div class="fg">
         <label>Nombre de versions</label>
         <select id="eb-vers">
-          <option value="1">1 version</option>
-          <option value="2" selected>2 versions (A et B)</option>
-          <option value="3">3 versions (A, B et C)</option>
+          <option value="1">1 version (A)</option>
+          <option value="2" selected>2 versions (A · B)</option>
+          <option value="3">3 versions (A · B · C)</option>
+          <option value="4">4 versions (A · B · C · D)</option>
+          <option value="5">5 versions (A · B · C · D · E)</option>
         </select>
       </div>
     </div>
-    <div class="fg" style="margin-bottom:1rem">
-      <label>Instructions spécifiques (optionnel)</label>
-      <textarea id="eb-instruct" placeholder="Ex: Mettre l'accent sur les commandes réseau, les protocoles TCP/IP et le dépannage..." style="height:70px;resize:none"></textarea>
+
+    <div class="fg" style="margin-bottom:.8rem">
+      <label>Sections à inclure <span style="font-size:.7rem;font-weight:400;color:var(--g500)">(cochez les sections souhaitées — l'IA adapte le contenu)</span></label>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.45rem" id="eb-sections">
+        <label style="display:flex;align-items:center;gap:.35rem;background:rgba(27,58,140,.08);border:1.5px solid rgba(27,58,140,.25);border-radius:8px;padding:.38rem .8rem;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text)"><input type="checkbox" value="qcm" checked style="accent-color:var(--blue)"> QCM</label>
+        <label style="display:flex;align-items:center;gap:.35rem;background:rgba(27,58,140,.08);border:1.5px solid rgba(27,58,140,.25);border-radius:8px;padding:.38rem .8rem;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text)"><input type="checkbox" value="vrai_faux" style="accent-color:var(--blue)"> Vrai / Faux</label>
+        <label style="display:flex;align-items:center;gap:.35rem;background:rgba(27,58,140,.08);border:1.5px solid rgba(27,58,140,.25);border-radius:8px;padding:.38rem .8rem;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text)"><input type="checkbox" value="courtes" style="accent-color:var(--blue)"> Réponses courtes</label>
+        <label style="display:flex;align-items:center;gap:.35rem;background:rgba(27,58,140,.08);border:1.5px solid rgba(27,58,140,.25);border-radius:8px;padding:.38rem .8rem;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text)"><input type="checkbox" value="cas_pratique" style="accent-color:var(--blue)"> Cas pratique</label>
+        <label style="display:flex;align-items:center;gap:.35rem;background:rgba(27,58,140,.08);border:1.5px solid rgba(27,58,140,.25);border-radius:8px;padding:.38rem .8rem;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text)"><input type="checkbox" value="mise_en_situation" style="accent-color:var(--blue)"> Mise en situation</label>
+        <label style="display:flex;align-items:center;gap:.35rem;background:rgba(27,58,140,.08);border:1.5px solid rgba(27,58,140,.25);border-radius:8px;padding:.38rem .8rem;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text)"><input type="checkbox" value="definitions" style="accent-color:var(--blue)"> Définitions / Termes</label>
+      </div>
     </div>
-    <button class="btn btn-blue" id="ai-gen-btn" onclick="generateAIExam()">
+
+    <div class="frow3" style="margin-bottom:.8rem">
+      <div class="fg">
+        <label>Durée de l'examen</label>
+        <select id="eb-duree">
+          <option value="30">30 minutes</option>
+          <option value="45">45 minutes</option>
+          <option value="60" selected>1 heure</option>
+          <option value="90">1h30</option>
+          <option value="120">2 heures</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Niveau de difficulté</label>
+        <select id="eb-diff">
+          <option value="facile">Facile — révision</option>
+          <option value="moyen" selected>Moyen — standard APC</option>
+          <option value="difficile">Difficile — certification</option>
+          <option value="mixte">Mixte — progressif</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Total de points</label>
+        <select id="eb-pts">
+          <option value="20">20 points</option>
+          <option value="50">50 points</option>
+          <option value="100" selected>100 points</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fg" style="margin-bottom:1rem">
+      <label>Instructions spécifiques <span style="font-size:.7rem;font-weight:400;color:var(--g500)">(optionnel)</span></label>
+      <textarea id="eb-instruct" placeholder="Ex: Insister sur les commandes Cisco IOS, le routage inter-VLAN, le dépannage réseau..." style="height:65px;resize:none"></textarea>
+    </div>
+
+    <button class="btn btn-blue btn-lg" id="ai-gen-btn" onclick="generateAIExam()" style="width:100%;justify-content:center">
       ✨ Générer l'examen avec l'IA
     </button>
   </div>
   <div id="ai-exam-result"></div>
   <div class="fsec">
     <h4>Examens existants</h4>
-    <div class="tw"><table><thead><tr><th>Module</th><th>Versions</th><th>Passé par</th><th>Moy.</th><th>Statut</th><th>Action</th></tr></thead><tbody>
-      <tr><td style="font-weight:500;color:#fff">TRI-05 · Système d'exploitation</td><td>A</td><td>42</td><td style="color:var(--green);font-weight:700">78%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-05')">Voir</button></td></tr>
-      <tr><td style="font-weight:500;color:#fff">TRI-13 · Technologies internet</td><td>A·B</td><td>38</td><td style="color:var(--green);font-weight:700">72%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-13')">Voir</button></td></tr>
+    <div class="tw"><table><thead><tr><th>Module</th><th>Sections</th><th>Versions</th><th>Passé par</th><th>Moy.</th><th>Statut</th><th>Action</th></tr></thead><tbody>
+      <tr><td style="font-weight:500;color:#fff">TRI-05 · Système d'exploitation</td><td><span style="font-size:.72rem;color:var(--g300)">QCM · V/F · Pratique</span></td><td>A</td><td>42</td><td style="color:var(--green);font-weight:700">78%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-05')">Voir</button></td></tr>
+      <tr><td style="font-weight:500;color:#fff">TRI-13 · Technologies internet</td><td><span style="font-size:.72rem;color:var(--g300)">QCM · Courtes</span></td><td>A·B</td><td>38</td><td style="color:var(--green);font-weight:700">72%</td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm" onclick="previewExam('TRI-13')">Voir</button></td></tr>
     </tbody></table></div>
   </div>`;
   updateModList();
@@ -3570,10 +3615,17 @@ async function generateAIExam() {
   if(aiExamGenerating) return;
   const prog = document.getElementById('eb-prog').value;
   const modCode = document.getElementById('eb-mod').value;
-  const nq = parseInt(document.getElementById('eb-nq').value);
-  const type = document.getElementById('eb-type').value;
   const vers = parseInt(document.getElementById('eb-vers').value);
+  const duree = document.getElementById('eb-duree').value;
+  const diff = document.getElementById('eb-diff').value;
+  const pts = document.getElementById('eb-pts').value;
   const instruct = document.getElementById('eb-instruct').value;
+
+  // Collect checked sections
+  const sectionChecks = document.querySelectorAll('#eb-sections input[type=checkbox]:checked');
+  const sections = Array.from(sectionChecks).map(cb => cb.value);
+  if(sections.length === 0) { toast('⚠️ Sélectionnez au moins une section'); return; }
+
   const allMods = [...MODULES[prog],...(MODULES_2[prog]||[])];
   const mod = allMods.find(m=>m.code===modCode);
   if(!mod) return;
@@ -3584,41 +3636,66 @@ async function generateAIExam() {
   btn.innerHTML = '<span class="loader"></span> Génération en cours...';
 
   const res = document.getElementById('ai-exam-result');
-  res.innerHTML = `<div style="background:rgba(27,58,140,.04);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:1.2rem;margin-bottom:1rem;text-align:center">
-    <div class="loader dark" style="width:24px;height:24px;margin:0 auto .8rem"></div>
-    <div style="font-size:.85rem;font-weight:600;color:var(--text)">L'IA génère votre examen...</div>
-    <div style="font-size:.75rem;color:var(--g500);margin-top:.3rem">Module: ${mod.title} · ${nq} questions · ${vers} version(s)</div>
+  const verLetters = ['A','B','C','D','E'].slice(0,vers).join(' · ');
+  res.innerHTML = `<div style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.2);border-radius:var(--r);padding:1.4rem;margin-bottom:1rem;text-align:center">
+    <div class="loader dark" style="width:28px;height:28px;margin:0 auto .9rem"></div>
+    <div style="font-size:.88rem;font-weight:700;color:var(--text)">L\'IA génère votre examen...</div>
+    <div style="font-size:.76rem;color:var(--g500);margin-top:.4rem">${mod.code} · ${mod.title}</div>
+    <div style="font-size:.73rem;color:var(--blue);margin-top:.25rem;font-weight:600">${vers} version(s) · Sections : ${sections.join(', ')} · ${duree} min · ${pts} pts</div>
   </div>`;
 
-  const prompt = `Tu es un expert en formation technique haïtienne (programme APC du MENFP).
-Génère un examen QCM professionnel pour le module suivant:
+  // Map section keys to French labels and instructions
+  const sectionDefs = {
+    qcm: {label:'QCM — Choix multiples', key:'qcm', instr:'questions à 4 options (A/B/C/D) avec une seule bonne réponse, champ "q","opts"(4 items),"ans"(index 0-3),"pts","expl"'},
+    vrai_faux: {label:'Vrai ou Faux', key:'vrai_faux', instr:'affirmations à évaluer comme vraies ou fausses, champ "q","ans"("Vrai"ou"Faux"),"pts","expl"'},
+    courtes: {label:'Réponses courtes', key:'courtes', instr:'questions nécessitant 1 à 3 phrases de réponse, champ "q","reponse_attendue","pts"'},
+    cas_pratique: {label:'Cas pratique', key:'cas_pratique', instr:'un scénario technique réaliste avec 3-5 sous-questions, champ "scenario","sous_questions":[{"q","pts"}],"pts_total"'},
+    mise_en_situation: {label:'Mise en situation professionnelle', key:'mise_en_situation', instr:'une situation professionnelle réaliste avec tâches à accomplir, champ "contexte","taches":[{"tache","criteres","pts"}],"pts_total"'},
+    definitions: {label:'Définitions et termes techniques', key:'definitions', instr:'termes à définir ou à associer, champ "terme","definition_attendue","pts"'}
+  };
+
+  const diffLabels = {facile:'débutant / révision',moyen:'intermédiaire standard APC',difficile:'avancé / certification professionnelle',mixte:'progressif (facile→difficile)'};
+
+  const sectionsPrompt = sections.map(s => {
+    const d = sectionDefs[s];
+    return `- "${d.key}": tableau de questions ${d.instr}`;
+  }).join('\n');
+
+  const prompt = `Tu es un expert pédagogique en formation technique haïtienne (programme APC MENFP).
+Génère ${vers} version(s) d'examen COMPLÈTEMENT DIFFÉRENTES pour ce module :
 
 Module: ${mod.title} (${mod.code})
 Programme: ${PROG_INFO[prog]?.label || prog}
-Nombre de questions: ${nq}
+Niveau: ${diffLabels[diff]}
+Durée: ${duree} minutes
+Total: ${pts} points
 Seuil de réussite: ${mod.seuil}%
-${instruct ? 'Instructions spéciales: ' + instruct : ''}
+${instruct ? 'Instructions du professeur: ' + instruct : ''}
 
-Génère ${vers} version(s) d'examen DIFFÉRENTES (pas les mêmes questions).
+Chaque version doit contenir ces sections (répartis les ${pts} pts entre elles) :
+${sectionsPrompt}
 
-RÉPONDS UNIQUEMENT en JSON valide selon ce format exact:
+RÈGLES IMPORTANTES :
+- Les ${vers} versions doivent avoir des questions ENTIÈREMENT DIFFÉRENTES
+- Le contenu doit être adapté au contexte haïtien et au programme ${prog}
+- Langue : français professionnel
+- Les points par question doivent être cohérents et totaliser ${pts} pts par version
+- Chaque section doit avoir un champ "pts_section" avec son total de points
+
+RÉPONDS UNIQUEMENT en JSON valide, sans markdown, selon ce format :
 {
   "versions": [
     {
       "version": "A",
-      "questions": [
-        {
-          "q": "Question ici?",
-          "opts": ["Option A", "Option B", "Option C", "Option D"],
-          "ans": 0,
-          "expl": "Explication pédagogique de la bonne réponse"
-        }
-      ]
+      "titre": "Examen ${mod.code} — Version A",
+      "duree": ${duree},
+      "pts_total": ${pts},
+      "sections": {
+        ${sections.map(s => `"${s}": []`).join(',\n        ')}
+      }
     }
   ]
-}
-
-Les questions doivent être pertinentes, adaptées au niveau technique haïtien, en français. ans est l'index (0-3) de la bonne réponse.`;
+}`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -3626,7 +3703,7 @@ Les questions doivent être pertinentes, adaptées au niveau technique haïtien,
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
+        max_tokens:4000,
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -3635,13 +3712,12 @@ Les questions doivent être pertinentes, adaptées au niveau technique haïtien,
     const clean = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(clean);
     generatedExam = parsed;
-    renderGeneratedExam(parsed, mod, prog);
+    renderGeneratedExam(parsed, mod, prog, sections);
   } catch(err) {
     // Fallback demo
-    const demo = {versions:[{version:'A',questions:getExam(mod.code).slice(0,Math.min(nq,getExam(mod.code).length))}]};
-    if(vers>1) demo.versions.push({version:'B',questions:getExam(mod.code).slice(0,Math.min(nq,getExam(mod.code).length)).reverse()});
+    const demo = buildDemoExam(mod, vers, sections, pts, duree);
     generatedExam = demo;
-    renderGeneratedExam(demo, mod, prog);
+    renderGeneratedExam(demo, mod, prog, sections);
   } finally {
     aiExamGenerating = false;
     btn.disabled = false;
@@ -3649,34 +3725,95 @@ Les questions doivent être pertinentes, adaptées au niveau technique haïtien,
   }
 }
 
-function renderGeneratedExam(data, mod, prog) {
-  const res = document.getElementById('ai-exam-result');
-  let html = `<div style="background:rgba(0,107,70,.05);border:1.5px solid rgba(0,107,70,.2);border-radius:var(--rL);padding:1.3rem;margin-bottom:1rem">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
-      <div>
-        <div style="font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text)">✅ Examen généré — ${mod.code} · ${mod.title}</div>
-        <div style="font-size:.75rem;color:var(--g500);margin-top:2px">${data.versions.length} version(s) créée(s) · ${data.versions[0]?.questions?.length||0} questions chacune</div>
-      </div>
-      <div style="display:flex;gap:.5rem">
-        <button class="btn btn-green btn-sm" onclick="publishExam('${mod.code}')">✓ Publier l'examen</button>
-        <button class="btn btn-outline btn-sm" onclick="exportExamPDF('${mod.code}')">🖨️ Export PDF</button>
-      </div>
-    </div>`;
+function buildDemoExam(mod, vers, sections, pts, duree) {
+  const letters = ['A','B','C','D','E'];
+  const versions = [];
+  for(let i=0;i<vers;i++){
+    const secs = {};
+    const ptsPerSec = Math.floor(pts / sections.length);
+    sections.forEach(s => {
+      if(s==='qcm') secs.qcm = [{q:`Question QCM de démonstration sur ${mod.title}`,opts:['Option A','Option B','Option C','Option D'],ans:0,pts:5,expl:'Explication pédagogique.'}];
+      else if(s==='vrai_faux') secs.vrai_faux = [{q:`Affirmation V/F de démonstration — ${mod.title}`,ans:'Vrai',pts:3,expl:'Justification.'}];
+      else if(s==='courtes') secs.courtes = [{q:`Question à réponse courte sur ${mod.title}`,reponse_attendue:'Réponse attendue ici.',pts:5}];
+      else if(s==='cas_pratique') secs.cas_pratique = [{scenario:`Scénario pratique lié à ${mod.title}.`,sous_questions:[{q:'Sous-question 1',pts:5},{q:'Sous-question 2',pts:5}],pts_total:10}];
+      else if(s==='mise_en_situation') secs.mise_en_situation = [{contexte:`Situation professionnelle liée à ${mod.title}.`,taches:[{tache:'Tâche 1',criteres:'Critères d\'évaluation',pts:10}],pts_total:10}];
+      else if(s==='definitions') secs.definitions = [{terme:`Terme technique de ${mod.title}`,definition_attendue:'Définition attendue.',pts:3}];
+    });
+    versions.push({version:letters[i],titre:`Examen ${mod.code} — Version ${letters[i]}`,duree,pts_total:pts,sections:secs});
+  }
+  return {versions};
+}
 
-  data.versions.forEach((v,vi)=>{
-    html += `<div style="margin-bottom:.8rem">
-      <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:.5rem;padding:.4rem .8rem;background:rgba(27,58,140,.08);border-radius:7px;display:inline-block">📋 Version ${v.version}</div>
-      ${(v.questions||[]).slice(0,3).map((q,qi)=>`
-        <div style="font-size:.78rem;color:var(--g700);margin-bottom:.3rem;padding:.3rem 0">
-          <span style="font-weight:600">Q${qi+1}:</span> ${q.q}
-          <span style="color:var(--green);margin-left:.3rem">[Réponse: ${String.fromCharCode(65+(q.ans||0))}]</span>
-        </div>`).join('')}
-      ${(v.questions||[]).length > 3 ? `<div style="font-size:.73rem;color:var(--g500);font-style:italic">... et ${(v.questions.length-3)} autres questions</div>` : ''}
-    </div>`;
-  });
-  html += '</div>';
+const SECTION_META = {
+  qcm:             {icon:'📋', label:'QCM — Choix multiples',              color:'rgba(27,58,140,.08)',  border:'rgba(27,58,140,.25)'},
+  vrai_faux:       {icon:'✅', label:'Vrai ou Faux',                        color:'rgba(0,107,70,.07)',   border:'rgba(0,107,70,.25)'},
+  courtes:         {icon:'✍️', label:'Réponses courtes',                    color:'rgba(245,197,24,.08)', border:'rgba(245,197,24,.35)'},
+  cas_pratique:    {icon:'🛠️', label:'Cas pratique',                        color:'rgba(232,25,44,.06)',  border:'rgba(232,25,44,.2)'},
+  mise_en_situation:{icon:'🏢', label:'Mise en situation professionnelle',  color:'rgba(91,45,142,.07)', border:'rgba(91,45,142,.25)'},
+  definitions:     {icon:'📖', label:'Définitions / Termes techniques',    color:'rgba(59,123,255,.07)', border:'rgba(59,123,255,.25)'},
+};
+
+function renderGeneratedExam(data, mod, prog, sections) {
+  const res = document.getElementById('ai-exam-result');
+  const letters = ['A','B','C','D','E'];
+  const nVers = data.versions.length;
+
+  let html = `<div style="background:rgba(0,107,70,.05);border:1.5px solid rgba(0,107,70,.25);border-radius:var(--rL);padding:1.3rem;margin-bottom:1rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+      <div>
+        <div style="font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text)">✅ Examen généré — ${mod.code} · ${mod.title}</div>
+        <div style="font-size:.75rem;color:var(--g500);margin-top:3px">${nVers} version(s) · ${Object.keys(data.versions[0]?.sections||{}).length} section(s) · ${data.versions[0]?.pts_total||100} pts · ${data.versions[0]?.duree||60} min</div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-green btn-sm" onclick="publishExam('${mod.code}')">✓ Publier</button>
+        <button class="btn btn-outline btn-sm" onclick="exportExamPDF('${mod.code}')">🖨️ PDF</button>
+      </div>
+    </div>
+
+    <!-- Version tabs -->
+    <div style="display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap">
+      ${data.versions.map((v,vi)=>`<button onclick="showExamVersion(${vi})" id="ev-tab-${vi}" style="padding:.35rem .9rem;border-radius:8px;border:1.5px solid ${vi===0?'var(--blue)':'var(--bdr)'};background:${vi===0?'var(--blue)':'transparent'};color:${vi===0?'#fff':'var(--g700)'};font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s">Version ${v.version}</button>`).join('')}
+    </div>
+
+    <!-- Version panels -->
+    ${data.versions.map((v,vi)=>{
+      const secs = v.sections || {};
+      return `<div id="ev-panel-${vi}" style="display:${vi===0?'block':'none'}">
+        ${Object.entries(secs).map(([key, items])=>{
+          const meta = SECTION_META[key] || {icon:'📄',label:key,color:'rgba(27,58,140,.06)',border:'rgba(27,58,140,.2)'};
+          const arr = Array.isArray(items) ? items : [items];
+          return `<div style="background:${meta.color};border:1px solid ${meta.border};border-radius:10px;padding:.85rem 1rem;margin-bottom:.7rem">
+            <div style="font-size:.72rem;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem">
+              ${meta.icon} ${meta.label}
+              <span style="margin-left:auto;font-size:.7rem;font-weight:700;color:var(--blue)">${arr.reduce((a,q)=>a+(q.pts||q.pts_total||0),0)} pts</span>
+            </div>
+            ${arr.slice(0,2).map((q,qi)=>{
+              if(key==='qcm') return `<div style="font-size:.78rem;color:var(--g700);margin-bottom:.35rem;padding:.3rem 0;border-bottom:1px solid rgba(0,0,0,.06)"><span style="font-weight:700">Q${qi+1}:</span> ${q.q||''} <span style="color:var(--green);font-size:.72rem">[Rép: ${String.fromCharCode(65+(q.ans||0))}]</span></div>`;
+              if(key==='vrai_faux') return `<div style="font-size:.78rem;color:var(--g700);margin-bottom:.35rem"><span style="font-weight:700">Q${qi+1}:</span> ${q.q||''} <span style="color:var(--blue);font-size:.72rem">[${q.ans||'?'}]</span></div>`;
+              if(key==='courtes') return `<div style="font-size:.78rem;color:var(--g700);margin-bottom:.35rem"><span style="font-weight:700">Q${qi+1}:</span> ${q.q||''}</div>`;
+              if(key==='cas_pratique') return `<div style="font-size:.78rem;color:var(--g700);margin-bottom:.35rem"><span style="font-weight:700">Scénario:</span> ${(q.scenario||'').substring(0,120)}${(q.scenario||'').length>120?'…':''}</div>`;
+              if(key==='mise_en_situation') return `<div style="font-size:.78rem;color:var(--g700);margin-bottom:.35rem"><span style="font-weight:700">Contexte:</span> ${(q.contexte||'').substring(0,120)}${(q.contexte||'').length>120?'…':''}</div>`;
+              if(key==='definitions') return `<div style="font-size:.78rem;color:var(--g700);margin-bottom:.35rem"><span style="font-weight:700">Terme:</span> ${q.terme||q.q||''}</div>`;
+              return '';
+            }).join('')}
+            ${arr.length > 2 ? `<div style="font-size:.71rem;color:var(--g500);font-style:italic;margin-top:.3rem">… et ${arr.length-2} autre(s) élément(s)</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>`;
+    }).join('')}
+  </div>`;
+
   res.innerHTML = html;
-  toast(`✨ ${data.versions.length} version(s) d'examen générée(s) pour ${mod.code}`);
+  toast(`✨ ${nVers} version(s) générée(s) pour ${mod.code} — ${Object.keys(data.versions[0]?.sections||{}).length} section(s)`);
+}
+
+function showExamVersion(idx) {
+  document.querySelectorAll('[id^="ev-panel-"]').forEach((p,i)=>{ p.style.display = i===idx?'block':'none'; });
+  document.querySelectorAll('[id^="ev-tab-"]').forEach((t,i)=>{
+    t.style.background = i===idx?'var(--blue)':'transparent';
+    t.style.color = i===idx?'#fff':'var(--g700)';
+    t.style.borderColor = i===idx?'var(--blue)':'var(--bdr)';
+  });
 }
 
 function publishExam(code) {
@@ -4039,13 +4176,15 @@ function renderChoisirExam(c) {
   <div class="esel-grid">
     ${available.map(m=>{
       const hasExam = !!EXAMS[m.code];
-      const badge = hasExam?'<span class="chip cg">Disponible</span>':'<span class="chip cgy">En attente</span>';
+      const badge = hasExam
+        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066"><span style="width:7px;height:7px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible</span>`
+        : `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.15)">◐ En attente</span>`;
       return `<div class="esel-card" onclick="${hasExam?`startExam('${m.code}','A')`:`toast('Examen non encore disponible pour ${m.code}')`}">
-        <div class="esel-prog" style="color:var(--blue)">${m.code}</div>
+        <div class="esel-prog">${m.code}</div>
         <div class="esel-title">${m.title}</div>
         <div class="esel-meta" style="margin-top:.3rem;margin-bottom:.5rem">Seuil: ${m.seuil}% · ${m.dur}h</div>
         <div style="display:flex;align-items:center;justify-content:space-between">
-          ${badge}${hasExam?'<span style="font-size:.7rem;color:var(--g500)">Version A</span>':''}
+          ${badge}${hasExam?'<span style="font-size:.68rem;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.12)">Version A</span>':''}
         </div>
       </div>`;
     }).join('')}
@@ -4454,9 +4593,13 @@ function renderAuditLog(c) {
   </div>
   <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
     <input type="text" id="audit-search" placeholder="Rechercher utilisateur, action..." style="flex:1;min-width:200px;padding:.45rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;color:#0B1525;background:#fff" oninput="filterAudit(this.value)">
-    <select id="audit-type-filter" style="padding:.45rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;color:#0B1525;background:#fff" onchange="filterAudit(document.getElementById('audit-search').value)">
-      ${filters.map(f=>`<option value="${f}">${f}</option>`).join('')}
-    </select>
+    <button class="btn btn-sm" style="background:#1B3A8C;color:#fff;border:none" onclick="filterAuditType('Tous')">Tous</button>
+    <button class="btn btn-sm" style="background:rgba(0,107,70,.15);color:#006B46;border:1.5px solid #00A066;font-weight:700" onclick="filterAuditType('VALIDATION')">✅ VALIDATION</button>
+    <button class="btn btn-sm" style="background:rgba(27,58,140,.1);color:#1B3A8C;border:1.5px solid #2B56C0;font-weight:700" onclick="filterAuditType('CRÉATION_EXAMEN')">➕ CRÉATION EXAMEN</button>
+    <button class="btn btn-sm" style="background:rgba(245,197,24,.15);color:#A07000;border:1.5px solid #C98A00;font-weight:700" onclick="filterAuditType('MODIFICATION_NOTE')">✏️ MODIFICATION NOTE</button>
+    <button class="btn btn-sm" style="background:rgba(232,25,44,.1);color:#C8101E;border:1.5px solid var(--red);font-weight:700" onclick="filterAuditType('REJET')">❌ REJET</button>
+    <button class="btn btn-sm" style="background:rgba(91,45,142,.1);color:#5B2D8E;border:1.5px solid #8A50CC;font-weight:700" onclick="filterAuditType('CRÉATION_COMPTE')">👤 CRÉATION COMPTE</button>
+    <button class="btn btn-sm" style="background:rgba(59,123,255,.1);color:#2B56C0;border:1.5px solid #3B7BFF;font-weight:700" onclick="filterAuditType('INSCRIPTION')">📋 INSCRIPTION</button>
     <button class="btn btn-red btn-sm" onclick="toast('📥 Export CSV du journal d\'audit...')">Export CSV</button>
   </div>
   <div id="audit-list">
@@ -4482,6 +4625,19 @@ function renderAuditRows(logs) {
       <div class="audit-time">🕐 ${a.time}</div>
     </div>`;
   }).join('');
+}
+
+function filterAuditType(type) {
+  const search = document.getElementById('audit-search')?.value||'';
+  let logs = AUDIT_LOG;
+  if(search) logs = logs.filter(a=>
+    a.user.toLowerCase().includes(search.toLowerCase())||
+    a.action.toLowerCase().includes(search.toLowerCase())||
+    a.target.toLowerCase().includes(search.toLowerCase())
+  );
+  if(type!=='Tous') logs = logs.filter(a=>a.action.includes(type));
+  const el = document.getElementById('audit-list');
+  if(el) el.innerHTML = renderAuditRows(logs);
 }
 
 function filterAudit(search) {
@@ -4691,10 +4847,10 @@ function renderEpreuvePratique(c) {
   <!-- SCÉNARIO -->
   <div class="ep-section">
     <h3>🏢 Scénario professionnel</h3>
-    <div style="background:linear-gradient(135deg,var(--g50),#e8f0fe);border:1.5px solid rgba(27,58,140,.2);border-radius:var(--r);padding:1.1rem;margin-bottom:1rem">
-      <div style="font-size:.7rem;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">Mise en situation réelle</div>
-      <p style="font-size:.83rem;color:var(--text);line-height:1.75;margin-bottom:.5rem"><strong>HAÏTI DIGITAL S.A.</strong>, une entreprise de services numériques basée à Port-au-Prince, vient d'ouvrir un nouveau bureau de 3 étages. La direction vous engage comme technicien réseau pour concevoir et déployer toute l'infrastructure réseau.</p>
-      <p style="font-size:.83rem;color:var(--text);line-height:1.75">L'entreprise dispose de : 45 postes de travail répartis sur 3 services (Comptabilité, Développement, Direction), 1 serveur de fichiers, 1 serveur web interne, et 1 connexion Internet à haut débit via un FAI local.</p>
+    <div style="background:linear-gradient(135deg,#0a1e3c,#0f2a50);border:1.5px solid rgba(59,123,255,.3);border-radius:var(--r);padding:1.2rem;margin-bottom:1rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)">
+      <div style="font-size:.68rem;color:#5b9bd5;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem">📍 Mise en situation réelle</div>
+      <p style="font-size:.84rem;color:rgba(255,255,255,.92);line-height:1.78;margin-bottom:.55rem"><strong style="color:#fff">HAÏTI DIGITAL S.A.</strong>, une entreprise de services numériques basée à Port-au-Prince, vient d'ouvrir un nouveau bureau de 3 étages. La direction vous engage comme technicien réseau pour concevoir et déployer toute l'infrastructure réseau.</p>
+      <p style="font-size:.84rem;color:rgba(255,255,255,.78);line-height:1.78">L'entreprise dispose de : 45 postes de travail répartis sur 3 services (Comptabilité, Développement, Direction), 1 serveur de fichiers, 1 serveur web interne, et 1 connexion Internet à haut débit via un FAI local.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem">
       ${[
@@ -4704,10 +4860,10 @@ function renderEpreuvePratique(c) {
         {icon:'🌐',lbl:'1 liaison WAN',sub:'100 Mbps FAI local'},
         {icon:'📡',lbl:'Wi-Fi requis',sub:'Zone salon + salle réunion'},
         {icon:'🔒',lbl:'Sécurité',sub:'VLAN + Firewall requis'},
-      ].map(s=>`<div style="background:#fff;border:1px solid var(--bdr);border-radius:8px;padding:.7rem;text-align:center">
-        <div style="font-size:1.2rem;margin-bottom:.3rem">${s.icon}</div>
-        <div style="font-size:.78rem;font-weight:700;color:var(--text)">${s.lbl}</div>
-        <div style="font-size:.68rem;color:var(--g500)">${s.sub}</div>
+      ].map(s=>`<div style="background:#0d1e3a;border:1px solid rgba(59,123,255,.22);border-radius:8px;padding:.75rem;text-align:center">
+        <div style="font-size:1.25rem;margin-bottom:.35rem">${s.icon}</div>
+        <div style="font-size:.78rem;font-weight:700;color:#e8f0ff">${s.lbl}</div>
+        <div style="font-size:.68rem;color:#6a8ab5;margin-top:2px">${s.sub}</div>
       </div>`).join('')}
     </div>
   </div>
@@ -4867,24 +5023,24 @@ function renderEpreuvePratique(c) {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
-      <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:8px;padding:.8rem">
-        <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">Nom de l'étudiant :</div>
-        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
-        <div style="font-size:.7rem;color:var(--g500);margin-top:.6rem;margin-bottom:.3rem">Matricule :</div>
-        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
+      <div style="background:#0d1e3a;border:1px solid rgba(100,130,220,.3);border-radius:8px;padding:.85rem">
+        <div style="font-size:.7rem;color:#7fa8d8;font-weight:600;letter-spacing:.04em;margin-bottom:.4rem">Nom de l'étudiant :</div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.18);height:26px"></div>
+        <div style="font-size:.7rem;color:#7fa8d8;font-weight:600;letter-spacing:.04em;margin-top:.7rem;margin-bottom:.4rem">Matricule :</div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.18);height:26px"></div>
       </div>
-      <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:8px;padding:.8rem">
-        <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">Date d'évaluation :</div>
-        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
-        <div style="font-size:.7rem;color:var(--g500);margin-top:.6rem;margin-bottom:.3rem">Signature du professeur :</div>
-        <div style="border-bottom:1px solid var(--bdr);height:24px"></div>
+      <div style="background:#0d1e3a;border:1px solid rgba(100,130,220,.3);border-radius:8px;padding:.85rem">
+        <div style="font-size:.7rem;color:#7fa8d8;font-weight:600;letter-spacing:.04em;margin-bottom:.4rem">Date d'évaluation :</div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.18);height:26px"></div>
+        <div style="font-size:.7rem;color:#7fa8d8;font-weight:600;letter-spacing:.04em;margin-top:.7rem;margin-bottom:.4rem">Signature du professeur :</div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.18);height:26px"></div>
       </div>
     </div>
-    <div style="display:flex;gap:.8rem;margin-top:.8rem;align-items:center">
-      <span style="font-size:.8rem;font-weight:700;color:var(--text)">Résultat :</span>
+    <div style="display:flex;gap:.8rem;margin-top:.85rem;align-items:center;background:#0a1828;border-radius:8px;padding:.6rem .9rem;border:1px solid rgba(100,130,220,.2)">
+      <span style="font-size:.8rem;font-weight:700;color:#fff">Résultat :</span>
       <span class="chip cg" style="font-size:.78rem">✅ Succès (≥85)</span>
       <span class="chip cr" style="font-size:.78rem">✗ Échec (&lt;85)</span>
-      <span style="font-size:.75rem;color:var(--g500);margin-left:auto">Remarques : ______________________</span>
+      <span style="font-size:.75rem;color:rgba(255,255,255,.5);margin-left:auto">Remarques : ______________________</span>
     </div>
   </div>`;
 }
