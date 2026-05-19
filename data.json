@@ -270,14 +270,14 @@
               "titre": "Gestion du temps",
               "heures": 30,
               "seuil": 70,
-              "fichier": "cours/tri/tri-1/tri-02-gestion-temps.html"
+              "fichier": "cours/tri/tri-1/tri-02-gestion-du-temps.html"
             },
             {
               "code": "TRI-03",
               "titre": "Mathématiques en informatique",
               "heures": 60,
               "seuil": 70,
-              "fichier": "cours/tri/tri-1/tri-03-mathematiques-informatique.html"
+              "fichier": "cours/tri/tri-1/tri-03-mathematiques.html"
             },
             {
               "code": "TRI-04",
@@ -319,7 +319,7 @@
               "titre": "Communication professionnelle",
               "heures": 60,
               "seuil": 75,
-              "fichier": "cours/tri/tri-1/tri-09-communication-professionnelle.html"
+              "fichier": "cours/tri/tri-1/tri-09-communication-pro.html"
             },
             {
               "code": "TRI-10",
@@ -968,25 +968,25 @@
               "fichier": "cours/mei/mei-1/mei-13-arbres-roulements.html"
             },
             {
-              "code": "MEI-14",
-              "titre": "Éléments de transmission",
-              "heures": 75,
+              "code": "MEI-17",
+              "titre": "Façonnage",
+              "heures": 90,
               "seuil": 85,
-              "fichier": "cours/mei/mei-1/mei-14-elements-transmission.html"
+              "fichier": "cours/mei/mei-1/mei-17-faconnage.html"
             },
             {
-              "code": "MEI-15",
-              "titre": "Tubes, tuyaux et boyaux",
-              "heures": 60,
-              "seuil": 80,
-              "fichier": "cours/mei/mei-1/mei-15-tubes-tuyaux-boyaux.html"
+              "code": "MEI-18",
+              "titre": "Circuits électriques",
+              "heures": 90,
+              "seuil": 85,
+              "fichier": "cours/mei/mei-1/mei-18-circuits-electriques.html"
             },
             {
-              "code": "MEI-16",
-              "titre": "Pompes hydrauliques",
-              "heures": 75,
-              "seuil": 85,
-              "fichier": "cours/mei/mei-1/mei-16-pompes-hydrauliques.html"
+              "code": "MEI-24",
+              "titre": "Entrepreneuriat",
+              "heures": 30,
+              "seuil": 75,
+              "fichier": "cours/mei/mei-1/mei-24-entrepreneuriat.html"
             }
           ]
         },
@@ -995,18 +995,25 @@
           "heures": 945,
           "modules": [
             {
-              "code": "MEI-17",
-              "titre": "Façonnage",
-              "heures": 90,
+              "code": "MEI-14",
+              "titre": "Éléments de transmission",
+              "heures": 75,
               "seuil": 85,
-              "fichier": "cours/mei/mei-2/mei-17-faconnage.html"
+              "fichier": "cours/mei/mei-2/mei-14-elements-transmission.html"
             },
             {
-              "code": "MEI-18",
-              "titre": "Circuits électriques",
-              "heures": 90,
+              "code": "MEI-15",
+              "titre": "Tubes, tuyaux et boyaux",
+              "heures": 60,
+              "seuil": 80,
+              "fichier": "cours/mei/mei-2/mei-15-tubes-tuyaux-boyaux.html"
+            },
+            {
+              "code": "MEI-16",
+              "titre": "Pompes hydrauliques",
+              "heures": 75,
               "seuil": 85,
-              "fichier": "cours/mei/mei-2/mei-18-circuits-electriques.html"
+              "fichier": "cours/mei/mei-2/mei-16-pompes-hydrauliques.html"
             },
             {
               "code": "MEI-19",
@@ -1042,13 +1049,6 @@
               "heures": 90,
               "seuil": 85,
               "fichier": "cours/mei/mei-2/mei-23-circuits-pneumatiques.html"
-            },
-            {
-              "code": "MEI-24",
-              "titre": "Entrepreneuriat",
-              "heures": 30,
-              "seuil": 75,
-              "fichier": "cours/mei/mei-2/mei-24-entrepreneuriat.html"
             },
             {
               "code": "MEI-25",
