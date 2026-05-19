@@ -2033,7 +2033,7 @@ td{color:var(--text)!important}
     <div id="login-error" style="display:none;background:rgba(232,25,44,.1);border:1px solid rgba(232,25,44,.25);border-radius:8px;padding:.55rem .9rem;font-size:.77rem;color:#ff6b7a;margin-bottom:.75rem"></div>
     <!-- Login hint -->
     <div id="login-hint" style="background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.15);border-radius:8px;padding:.55rem .9rem;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:.75rem;line-height:1.6">
-      Comptes démo : <strong style="color:rgba(255,255,255,.75)">etudiant / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">prof / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">admin / 1234</strong>
+      Comptes démo : <strong style="color:rgba(255,255,255,.75)">etudiant / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">prof / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">admin / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">dg / 1234</strong>
     </div>
     <!-- 2FA BOX -->
     <div class="tfa-box" id="tfa-box">
@@ -3295,12 +3295,8 @@ function initLogin() {
   // Show programme selector only for students
   document.getElementById('lprog-wrap').style.display = (cred.role === 'etud') ? 'block' : 'none';
 
-  // Show 2FA step
-  document.getElementById('tfa-box').classList.add('show');
-  document.getElementById('tfa-step').style.display = 'block';
-  document.getElementById('normal-login-btn').style.display = 'none';
-  document.querySelectorAll('.tfa-digit')[0].focus();
-  toast('📱 Code 2FA envoyé à votre appareil (démo: 123456)');
+  // Connexion directe sans 2FA
+  doLogin();
 }
 
 function tfaNext(el, idx) {
