@@ -5190,6 +5190,7 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="cours-viewer-bar">
     <span style="font-size:1rem">📖</span>
     <span class="cours-viewer-title" id="cours-viewer-title">Cours</span>
+    <button id="cours-newtab-btn" class="cours-viewer-close" style="background:rgba(59,123,255,.15);border:1px solid rgba(59,123,255,.3);color:#7fb3ff;margin-right:.4rem" onclick="openCoursNewTab()">↗ Nouvel onglet</button>
     <button class="cours-viewer-close" onclick="closeCoursViewer()">✕ Fermer</button>
   </div>
   <div class="cours-viewer-body">
@@ -5197,11 +5198,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="spin-ring"></div>
       <span style="font-size:.8rem;color:rgba(255,255,255,.4)">Chargement du cours…</span>
     </div>
-    <iframe id="cours-iframe" src="about:blank" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" onload="hideCoursSpinner()"></iframe>
+    <iframe id="cours-iframe" src="about:blank" onload="hideCoursSpinner()"></iframe>
   </div>
 </div>
 
 <script>
+let _currentCoursFile = null;
+
 function openCoursViewer(fichier, titre) {
   if (!currentRole) { toast('🔒 Accès refusé — connexion requise'); return; }
   if (currentRole === 'etud') {
@@ -5218,6 +5221,7 @@ function openCoursViewer(fichier, titre) {
     const states  = getModuleStates(prog, modYear);
     if (!states[mod.code]) { toast('🔒 Ce module n\'est pas encore activé par votre professeur'); return; }
   }
+  _currentCoursFile = fichier;
   document.getElementById('cours-viewer-title').textContent = titre || 'Cours';
   document.getElementById('cours-spinner').style.display = 'flex';
   document.getElementById('cours-iframe').src = fichier;
@@ -5225,17 +5229,30 @@ function openCoursViewer(fichier, titre) {
   document.body.style.overflow = 'hidden';
 }
 
+function openCoursNewTab() {
+  if (_currentCoursFile) window.open(_currentCoursFile, '_blank');
+}
+
 function closeCoursViewer() {
   document.getElementById('cours-viewer').classList.remove('show');
   document.getElementById('cours-iframe').src = 'about:blank';
   document.body.style.overflow = '';
+  _currentCoursFile = null;
 }
 
 function hideCoursSpinner() {
   const iframe = document.getElementById('cours-iframe');
-  if (iframe.src && iframe.src !== 'about:blank') {
-    document.getElementById('cours-spinner').style.display = 'none';
-  }
+  if (!iframe.src || iframe.src === 'about:blank') return;
+  document.getElementById('cours-spinner').style.display = 'none';
+  // Détection contenu vide : si l'iframe est chargé mais vide, afficher un message d'aide
+  try {
+    const body = iframe.contentDocument && iframe.contentDocument.body;
+    if (body && body.innerHTML.trim() === '') {
+      const spinner = document.getElementById('cours-spinner');
+      spinner.style.display = 'flex';
+      spinner.innerHTML = '<div style="text-align:center"><div style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:1rem">Le cours ne peut pas s\'afficher ici.</div><button class="btn btn-blue btn-sm" onclick="openCoursNewTab()">↗ Ouvrir dans un nouvel onglet</button></div>';
+    }
+  } catch(e) { /* cross-origin, ignorer */ }
 }
 
 // Close on Escape key
