@@ -414,24 +414,43 @@ function selectOpt(el,idx,qid){
   q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
   try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
+function submitQuiz(qid){
+  const qBlock=document.getElementById('quiz-'+qid);
   if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
+  const questions=qBlock.querySelectorAll('.quiz-q');
+  let allAnswered=true;
+  questions.forEach(q=>{
+    const qKey='q'+q.dataset.q+'_'+qid;
+    if(quizState[qKey]===undefined||quizState[qKey][q.dataset.q]===undefined)allAnswered=false;
+  });
+  if(!allAnswered){showToastM('Réponds à toutes les questions avant de valider.');return;}
+  let totalQ=0,correctQ=0;
+  questions.forEach(q=>{
+    const qKey='q'+q.dataset.q+'_'+qid;
+    const correct=parseInt(q.dataset.ans);
+    const selected=quizState[qKey]?quizState[qKey][q.dataset.q]:undefined;
+    const opts=q.querySelectorAll('.quiz-opt');
+    opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===selected&&selected!==correct)b.classList.add('wrong');});
+    totalQ++;if(selected===correct)correctQ++;
+    try{localStorage.setItem('qa_'+getModCode()+'_'+qKey+'_'+q.dataset.q,selected);}catch(e){}
+  });
+  const ok=correctQ===totalQ;
+  const pct=Math.round(correctQ/totalQ*100);
+  const res=document.getElementById('res-'+qid);
+  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Toutes les réponses sont correctes !':'❌ '+correctQ+'/'+totalQ+' bonne(s) réponse(s) — '+pct+'%')+'</div>';res.style.display='block';}
+  const retryBtn=document.getElementById('qretry-'+qid);if(retryBtn)retryBtn.style.display=ok?'none':'inline-flex';
   try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
   updateProgBar();
 }
 function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
+  const qBlock=document.getElementById('quiz-'+qid);if(!qBlock)return;
   qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
   const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+  const retryBtn=document.getElementById('qretry-'+qid);if(retryBtn)retryBtn.style.display='none';
+  qBlock.querySelectorAll('.quiz-q').forEach(q=>{
+    const qKey='q'+q.dataset.q+'_'+qid;
+    if(quizState[qKey])delete quizState[qKey][q.dataset.q];
+  });
 }
 function setVideo(btn,url,ch){
   document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
