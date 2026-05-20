@@ -347,8 +347,8 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
       <div class="fg"><label>Programmes enseignés *</label>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem" id="pm-progs-check">
           ${['TRI','MEI','ELM','TEL'].map(p=>`
-          <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;background:#f0f4ff;border:1px solid var(--g200);border-radius:8px;padding:.35rem .7rem;font-size:.78rem;font-weight:600;color:var(--text)">
-            <input type="checkbox" value="${p}" style="width:auto;border:none;padding:0"> ${p}
+          <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;background:#f0f4ff;border:1.5px solid var(--g200);border-radius:8px;padding:.4rem .8rem;font-size:.8rem;font-weight:600;color:var(--text);transition:all .18s;user-select:none" id="plabel-${p}">
+            <input type="checkbox" value="${p}" id="pcheck-${p}" style="width:14px;height:14px;border:none;padding:0;margin:0;cursor:pointer;accent-color:var(--blue)" onchange="updateProgLabel('${p}')"> ${p}
           </label>`).join('')}
         </div>
       </div>
@@ -872,11 +872,24 @@ function renderProfs(){
     </tr>`).join('')}</tbody></table></div>`;
 }
 
+function updateProgLabel(p){
+  const cb=document.getElementById('pcheck-'+p);
+  const lbl=document.getElementById('plabel-'+p);
+  if(!cb||!lbl)return;
+  if(cb.checked){lbl.style.background='#dbeafe';lbl.style.borderColor='var(--blue)';lbl.style.color='var(--blue)';}
+  else{lbl.style.background='#f0f4ff';lbl.style.borderColor='var(--g200)';lbl.style.color='var(--text)';}
+}
+
 function openProfModal(id){
   document.getElementById('prof-modal-title').textContent=id?'✏️ Modifier le compte':'👨‍🏫 Nouveau compte professeur';
   document.getElementById('pm-id').value=id||'';
   ['pm-nom','pm-titre','pm-email','pm-password'].forEach(x=>document.getElementById(x).value='');
-  document.querySelectorAll('#pm-progs-check input[type=checkbox]').forEach(cb=>cb.checked=false);
+  // Reset all checkboxes and labels
+  ['TRI','MEI','ELM','TEL'].forEach(p=>{
+    const cb=document.getElementById('pcheck-'+p);
+    if(cb)cb.checked=false;
+    updateProgLabel(p);
+  });
   if(id){
     const users=JSON.parse(localStorage.getItem('canado_users')||'[]');
     const u=users.find(x=>x.id===id);
@@ -886,8 +899,8 @@ function openProfModal(id){
     document.getElementById('pm-email').value=u.email;
     document.getElementById('pm-password').value=u.password;
     (u.programmes||[]).forEach(p=>{
-      const cb=document.querySelector(`#pm-progs-check input[value="${p}"]`);
-      if(cb)cb.checked=true;
+      const cb=document.getElementById('pcheck-'+p);
+      if(cb){cb.checked=true;updateProgLabel(p);}
     });
   }
   document.getElementById('prof-modal').classList.add('show');
@@ -907,7 +920,7 @@ function saveProf(){
   const titre=document.getElementById('pm-titre').value.trim();
   const email=document.getElementById('pm-email').value.trim();
   const pass=document.getElementById('pm-password').value;
-  const progs=[...document.querySelectorAll('#pm-progs-check input:checked')].map(cb=>cb.value);
+  const progs=['TRI','MEI','ELM','TEL'].filter(p=>document.getElementById('pcheck-'+p)?.checked);
   if(!nom||!email||!pass){toast('⚠️ Nom, email et mot de passe obligatoires');return;}
   if(!progs.length){toast('⚠️ Sélectionnez au moins un programme');return;}
   const users=JSON.parse(localStorage.getItem('canado_users')||'[]');
