@@ -400,6 +400,10 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
 .rbA{background:rgba(232,25,44,.2);color:#ff6b7a}
 .rbP{background:rgba(27,58,140,.28);color:#7BA7FF}
 .rbE{background:rgba(0,107,70,.22);color:#4ADE80}
+.rbDG{background:rgba(232,25,44,.25);color:#ff6b7a}
+.rbDE{background:rgba(59,123,255,.22);color:#7BA7FF}
+.rbDEV{background:rgba(245,197,24,.2);color:#D4A800}
+.rbADM{background:rgba(91,45,142,.22);color:#C09EFF}
 .pgrid2{display:grid;grid-template-columns:230px 1fr;gap:1.2rem}
 .psidebar{display:flex;flex-direction:column;gap:.3rem;background:var(--g50);border-radius:var(--rL);padding:.6rem;border:1px solid var(--bdr)}
 .sitem{padding:.6rem .95rem;border-radius:9px;font-size:.81rem;font-weight:600;
@@ -2910,7 +2914,12 @@ function applyGalerie() {
 
 /* ── Carrousel hero ── */
 function applyCarrousel() {
-  const slides = SITE_DATA.carrousel;
+  const FALLBACK_SLIDES = [
+    {titre_image:'🎓 École Technique Numérique · Port-au-Prince',short_description:'Centre de formation professionnelle certifié — Programmes APC · MENFP',image:'assets/images/hero/slide-01.jpg',fallback_color:'linear-gradient(135deg,#1B3A8C,#0a1828)',label_visible:true},
+    {titre_image:'🌐 Formation TRI — Réseaux Informatiques',short_description:'Cisco · Windows Server · Cybersécurité · CCNA — 4 programmes certifiants',image:'assets/images/hero/slide-02.jpg',fallback_color:'linear-gradient(135deg,#0C1F3D,#1B3A8C)',label_visible:true},
+    {titre_image:'📡 Télécommunications · Électromécanique',short_description:'Formations MEI · ELM · TEL — Promo 2026 ouverte aux inscriptions',image:'assets/images/hero/slide-03.jpg',fallback_color:'linear-gradient(135deg,#0d1f3c,#2B56C0)',label_visible:true},
+  ];
+  const slides = (SITE_DATA && SITE_DATA.carrousel && SITE_DATA.carrousel.length) ? SITE_DATA.carrousel : FALLBACK_SLIDES;
   if(!slides || !slides.length) return;
   const container = document.getElementById('hero-carrousel');
   const bgEl      = document.getElementById('hero-slide-bg');
@@ -3231,7 +3240,7 @@ const ROLES = {
       {id:'zoom-panel',icon:'🎥',label:'Rejoindre Zoom'},
     ]},
 };
-let currentRole = 'dg';
+let currentRole = '';
 let etudProg = 'TRI';
 let etudYear = '1';
 let tfaVerified = false;
@@ -3937,7 +3946,7 @@ function renderRapportDirection(c) {
   </div>`;
 }
 
-
+function renderPaiementsAdmin(c) {
   c.innerHTML = `<div class="ph2">Gestion des paiements</div>
   <div class="kgrid">
     <div class="kcard kgold"><div class="knum">4.2M</div><div class="klbl">HTG ce mois</div></div>
@@ -5159,6 +5168,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Chargement des données depuis data.json (ou data.php en production)
   loadSiteData();
   renderOffers();
+  applyCarrousel(); // Carrousel statique en attendant data.json
   goPage('accueil');
 
   // Rooby input auto-resize
