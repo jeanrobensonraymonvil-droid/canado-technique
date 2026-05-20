@@ -2,8 +2,9 @@
   "ecole": {
     "nom": "Canado Technique",
     "slogan": "Former les techniciens de demain",
-    "ville": "Pétion-Ville, Haïti",
-    "version": "2025-2026"
+    "ville": "Port-au-Prince, Haïti",
+    "version": "2025-2026",
+    "adresse": "157 Avenue Martin Luther King, Port-au-Prince"
   },
   "config": {
     "nom_ecole": "Canado Technique",
@@ -64,7 +65,7 @@
     },
     {
       "image": "assets/images/gallery/photo-06.jpg",
-      "titre": "Campus Pétion-Ville"
+      "titre": "Campus Port-au-Prince"
     }
   ],
   "programmes": [
@@ -85,11 +86,11 @@
     },
     {
       "code": "MEI",
-      "label": "Maintenance d'Équipements Industriels",
+      "label": "Mécanique d'Entretien Industrielle",
       "icon": "🔩",
       "color_rgb": "239,68,68",
       "badge": "Industriel",
-      "modules_count": "24 modules",
+      "modules_count": "28 modules",
       "duree": "2 ans",
       "nb_etudiants": 380,
       "short_description": "Maintenance préventive et corrective des équipements industriels mécaniques et électriques.",
@@ -97,11 +98,11 @@
     },
     {
       "code": "ELM",
-      "label": "Électromécanique",
+      "label": "Électromécanique Industrielle",
       "icon": "⚙️",
       "color_rgb": "16,185,129",
       "badge": "Technique",
-      "modules_count": "22 modules",
+      "modules_count": "25 modules",
       "duree": "2 ans",
       "nb_etudiants": 310,
       "short_description": "Systèmes électromécaniques, automates, moteurs et installations industrielles.",
@@ -113,7 +114,7 @@
       "icon": "📡",
       "color_rgb": "245,158,11",
       "badge": "CompTIA A+",
-      "modules_count": "14 modules",
+      "modules_count": "26 modules",
       "duree": "2 ans",
       "nb_etudiants": 310,
       "short_description": "Circuits électroniques, antennes, modulation et protocoles de communication modernes.",
@@ -152,7 +153,7 @@
       "date_start": "2026-08-15",
       "time_start": "09:00",
       "time_end": "14:00",
-      "location": "Pétion-Ville",
+      "location": "157 Ave MLK, Port-au-Prince",
       "type": "portes_ouvertes"
     }
   ],
@@ -1081,6 +1082,42 @@
           ]
         }
       ]
+    }
+  ],
+  "paiement": {
+    "comptes_bancaires": [
+      {
+        "devise": "USD",
+        "numero": "2501-0220-1150886",
+        "banque": "Unibank",
+        "type": "Compte courant"
+      },
+      {
+        "devise": "HTG",
+        "numero": "2501-0210-1150878",
+        "banque": "Unibank",
+        "type": "Compte courant"
+      }
+    ],
+    "methodes": [
+      "Virement bancaire",
+      "Paiement en caisse",
+      "MonCash (bientôt)",
+      "NatCash (bientôt)"
+    ]
+  },
+  "specialisations": [
+    {
+      "de": "TEL",
+      "vers": "TRI",
+      "label": "Spécialisation TRI",
+      "desc": "Modules 2ème année TRI après 2 ans en TEL"
+    },
+    {
+      "de": "TRI",
+      "vers": "TEL",
+      "label": "Spécialisation TEL",
+      "desc": "Modules 2ème année TEL après 2 ans en TRI"
     }
   ]
 }

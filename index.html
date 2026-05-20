@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="assets/images/logo/logo.png" type="image/png">
+<link rel="icon" href="assets/images/logo/cfph.png" type="image/png">
 <link rel="shortcut icon" href="assets/images/logo/cfph.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canado Technique — Centre de Formation Professionnelle d'Haiti</title>
@@ -647,6 +647,27 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
   border:1px solid rgba(232,25,44,.3);color:var(--red);font-size:.78rem;font-weight:600;
   cursor:pointer;transition:all .2s;white-space:nowrap}
 .cours-viewer-close:hover{background:var(--red);color:#fff}
+
+/* ── MODULE HERO BANNER ── */
+.cv-hero{position:relative;height:180px;flex-shrink:0;overflow:hidden}
+.cv-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;
+  transition:transform .4s ease}
+.cv-hero:hover .cv-hero-bg{transform:scale(1.03)}
+.cv-hero-overlay{position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(12,31,61,.78) 60%,rgba(27,58,140,.3) 100%)}
+.cv-hero-line{position:absolute;top:0;left:0;right:0;height:3px}
+.cv-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:1.4rem 1.8rem;gap:.6rem}
+.cv-hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .9rem;
+  border-radius:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);font-size:.68rem;font-weight:700;color:rgba(255,255,255,.8);
+  letter-spacing:.06em;width:fit-content}
+.cv-hero-title{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:#fff;
+  line-height:1.15;max-width:700px}
+.cv-hero-meta{display:flex;gap:1rem;flex-wrap:wrap}
+.cv-hero-meta span{font-size:.75rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.35rem}
+.cv-hero-meta strong{color:rgba(255,255,255,.9);font-weight:700}
+
 .cours-viewer-body{flex:1;overflow:hidden;position:relative}
 .cours-viewer-body iframe{width:100%;height:100%;border:none;display:block}
 .cours-viewer-spinner{position:absolute;inset:0;display:flex;align-items:center;
@@ -2147,143 +2168,134 @@ td{color:var(--text)!important}
 ══════════════════════════════════════ */
 const MODULES = {
   TRI:[
-    {code:"TRI-01",title:"Métier et formation",dur:30,seuil:75,fichier:"cours/tri/tri-1/tri-01-metier-formation.html"},
-    {code:"TRI-02",title:"Gestion du temps",dur:30,seuil:70,fichier:"cours/tri/tri-1/tri-02-gestion-du-temps.html"},
-    {code:"TRI-03",title:"Mathématiques en informatique",dur:60,seuil:70,fichier:"cours/tri/tri-1/tri-03-mathematiques.html"},
-    {code:"TRI-04",title:"Anglais technique",dur:30,seuil:75,fichier:"cours/tri/tri-1/tri-04-anglais-technique.html"},
-    {code:"TRI-05",title:"Système d'exploitation",dur:75,seuil:80,fichier:"cours/tri/tri-1/tri-05-systeme-exploitation.html"},
-    {code:"TRI-06",title:"Résolution de problèmes",dur:30,seuil:70,fichier:"cours/tri/tri-1/tri-06-resolution-problemes.html"},
-    {code:"TRI-07",title:"Recherche d'information",dur:15,seuil:80,fichier:"cours/tri/tri-1/tri-07-recherche-information.html"},
-    {code:"TRI-08",title:"Logiciels de bureautique",dur:105,seuil:80,fichier:"cours/tri/tri-1/tri-08-logiciels-bureautique.html"},
-    {code:"TRI-09",title:"Communication professionnelle",dur:60,seuil:75,fichier:"cours/tri/tri-1/tri-09-communication-pro.html"},
-    {code:"TRI-10",title:"Installation d'un poste",dur:90,seuil:80,fichier:"cours/tri/tri-1/tri-10-installation-poste.html"},
-    {code:"TRI-11",title:"Base de données",dur:75,seuil:80,fichier:"cours/tri/tri-1/tri-11-base-donnees.html"},
-    {code:"TRI-12",title:"Dépannage d'un poste",dur:90,seuil:80,fichier:"cours/tri/tri-1/tri-12-depannage-poste.html"},
-    {code:"TRI-13",title:"Technologies et services internet",dur:45,seuil:75,fichier:"cours/tri/tri-1/tri-13-technologies-internet.html"},
-    {code:"TRI-14",title:"Programmation de scripts",dur:90,seuil:70,fichier:"cours/tri/tri-1/tri-14-programmation-scripts.html"},
-    {code:"TRI-15",title:"Assistance technique",dur:45,seuil:80,fichier:"cours/tri/tri-1/tri-15-assistance-technique.html"},
-    {code:"TRI-16",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/tri/tri-1/tri-16-entrepreneuriat.html"},
+  {code:"TRI-01",title:"Métier et formation",dur:30,seuil:75,fichier:"cours/tri/tri-1/tri-01-metier-formation.html"},
+  {code:"TRI-02",title:"Gestion du temps",dur:30,seuil:70,fichier:"cours/tri/tri-1/tri-02-gestion-du-temps.html"},
+  {code:"TRI-03",title:"Mathématiques en informatique",dur:60,seuil:70,fichier:"cours/tri/tri-1/tri-03-mathematiques.html"},
+  {code:"TRI-04",title:"Anglais technique",dur:30,seuil:75,fichier:"cours/tri/tri-1/tri-04-anglais-technique.html"},
+  {code:"TRI-05",title:"Système d'exploitation",dur:75,seuil:80,fichier:"cours/tri/tri-1/tri-05-systeme-exploitation.html"},
+  {code:"TRI-06",title:"Résolution de problèmes",dur:30,seuil:70,fichier:"cours/tri/tri-1/tri-06-resolution-problemes.html"},
+  {code:"TRI-07",title:"Recherche d'information",dur:15,seuil:80,fichier:"cours/tri/tri-1/tri-07-recherche-information.html"},
+  {code:"TRI-08",title:"Logiciels de bureautique",dur:105,seuil:80,fichier:"cours/tri/tri-1/tri-08-logiciels-bureautique.html"},
+  {code:"TRI-09",title:"Communication professionnelle",dur:60,seuil:75,fichier:"cours/tri/tri-1/tri-09-communication-pro.html"},
+  {code:"TRI-10",title:"Installation d'un poste",dur:90,seuil:80,fichier:"cours/tri/tri-1/tri-10-installation-poste.html"},
+  {code:"TRI-11",title:"Base de données",dur:75,seuil:80,fichier:"cours/tri/tri-1/tri-11-base-donnees.html"},
+  {code:"TRI-12",title:"Dépannage d'un poste",dur:90,seuil:80,fichier:"cours/tri/tri-1/tri-12-depannage-poste.html"},
+  {code:"TRI-13",title:"Technologies et services internet",dur:45,seuil:75,fichier:"cours/tri/tri-1/tri-13-technologies-internet.html"},
+  {code:"TRI-14",title:"Programmation de scripts",dur:90,seuil:70,fichier:"cours/tri/tri-1/tri-14-programmation-scripts.html"},
+  {code:"TRI-15",title:"Assistance technique",dur:45,seuil:80,fichier:"cours/tri/tri-1/tri-15-assistance-technique.html"},
+  {code:"TRI-16",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/tri/tri-1/tri-16-entrepreneuriat.html"},
   ],
   MEI:[
-    {code:"MEI-01",title:"Métier et formation",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-01-metier-formation.html"},
-    {code:"MEI-02",title:"Utilisation d'un ordinateur",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-02-utilisation-ordinateur.html"},
-    {code:"MEI-03",title:"Croquis, schémas et dessins",dur:75,seuil:75,fichier:"cours/mei/mei-1/mei-03-croquis-schemas-dessins.html"},
-    {code:"MEI-04",title:"Interprétation de plans et documentation technique",dur:60,seuil:75,fichier:"cours/mei/mei-1/mei-04-interpretation-plans.html"},
-    {code:"MEI-05",title:"Santé et sécurité au travail",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-05-sante-securite.html"},
-    {code:"MEI-06",title:"Utilisation d'instruments de mesure",dur:45,seuil:75,fichier:"cours/mei/mei-1/mei-06-instruments-mesure.html"},
-    {code:"MEI-07",title:"Exécution de travaux d'usinage manuel",dur:90,seuil:85,fichier:"cours/mei/mei-1/mei-07-usinage-manuel.html"},
-    {code:"MEI-08",title:"Exécution de travaux de coupage et de soudage",dur:105,seuil:85,fichier:"cours/mei/mei-1/mei-08-coupage-soudage.html"},
-    {code:"MEI-09",title:"Exécution de travaux d'usinage sur machines-outils",dur:120,seuil:85,fichier:"cours/mei/mei-1/mei-09-usinage-machines-outils.html"},
-    {code:"MEI-10",title:"Exécution d'opérations de lubrification",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-10-lubrification.html"},
-    {code:"MEI-11",title:"Techniques de levage et de manutention",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-11-levage-manutention.html"},
-    {code:"MEI-12",title:"Utilisation de techniques d'alignement",dur:60,seuil:75,fichier:"cours/mei/mei-1/mei-12-techniques-alignement.html"},
-    {code:"MEI-13",title:"Démontage, installation et ajustement d'arbres et roulements",dur:45,seuil:75,fichier:"cours/mei/mei-1/mei-13-arbres-roulements.html"},
-    {code:"MEI-17",title:"Exécution de travaux de façonnage",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-17-faconnage.html"},
-    {code:"MEI-18",title:"Vérification de circuits électriques",dur:90,seuil:75,fichier:"cours/mei/mei-1/mei-18-circuits-electriques.html"},
-    {code:"MEI-24",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-24-entrepreneuriat.html"},
+  {code:"MEI-01",title:"Métier et formation",dur:30,seuil:70,fichier:"cours/mei/mei-1/mei-01-metier-formation.html"},
+  {code:"MEI-02",title:"Utilisation de l'ordinateur",dur:45,seuil:75,fichier:"cours/mei/mei-1/mei-02-utilisation-ordinateur.html"},
+  {code:"MEI-03",title:"Croquis, schémas et dessins",dur:60,seuil:80,fichier:"cours/mei/mei-1/mei-03-croquis-schemas-dessins.html"},
+  {code:"MEI-04",title:"Interprétation de plans",dur:60,seuil:80,fichier:"cours/mei/mei-1/mei-04-interpretation-plans.html"},
+  {code:"MEI-05",title:"Santé et sécurité au travail",dur:30,seuil:80,fichier:"cours/mei/mei-1/mei-05-sante-securite.html"},
+  {code:"MEI-06",title:"Instruments de mesure",dur:60,seuil:80,fichier:"cours/mei/mei-1/mei-06-instruments-mesure.html"},
+  {code:"MEI-07",title:"Usinage manuel",dur:105,seuil:85,fichier:"cours/mei/mei-1/mei-07-usinage-manuel.html"},
+  {code:"MEI-08",title:"Coupage et soudage",dur:105,seuil:85,fichier:"cours/mei/mei-1/mei-08-coupage-soudage.html"},
+  {code:"MEI-09",title:"Usinage par machines-outils",dur:105,seuil:85,fichier:"cours/mei/mei-1/mei-09-usinage-machines-outils.html"},
+  {code:"MEI-10",title:"Lubrification",dur:60,seuil:80,fichier:"cours/mei/mei-1/mei-10-lubrification.html"},
+  {code:"MEI-11",title:"Levage et manutention",dur:60,seuil:80,fichier:"cours/mei/mei-1/mei-11-levage-manutention.html"},
+  {code:"MEI-12",title:"Techniques d'alignement",dur:75,seuil:85,fichier:"cours/mei/mei-1/mei-12-techniques-alignement.html"},
+  {code:"MEI-13",title:"Arbres et roulements",dur:75,seuil:85,fichier:"cours/mei/mei-1/mei-13-arbres-roulements.html"},
+  {code:"MEI-17",title:"Façonnage",dur:90,seuil:85,fichier:"cours/mei/mei-1/mei-17-faconnage.html"},
+  {code:"MEI-18",title:"Circuits électriques",dur:90,seuil:85,fichier:"cours/mei/mei-1/mei-18-circuits-electriques.html"},
+  {code:"MEI-24",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-24-entrepreneuriat.html"},
   ],
   ELM:[
-    {code:"ELM-01",title:"Métier et formation",dur:30,seuil:80,fichier:"cours/elm/elm-1/elm-01-metier-formation.html"},
-    {code:"ELM-02",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/elm/elm-1/elm-02-utilisation-ordinateur.html"},
-    {code:"ELM-03",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/elm/elm-1/elm-03-circuits-cc-ca.html"},
-    {code:"ELM-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/elm/elm-1/elm-04-croquis-schemas.html"},
-    {code:"ELM-05",title:"Plan et devis",dur:45,seuil:80,fichier:"cours/elm/elm-1/elm-05-plan-devis.html"},
-    {code:"ELM-06",title:"Santé et sécurité au travail",dur:30,seuil:80,fichier:"cours/elm/elm-1/elm-06-sante-securite.html"},
-    {code:"ELM-07",title:"Usinage manuel et assemblage",dur:105,seuil:85,fichier:"cours/elm/elm-1/elm-07-usinage-assemblage.html"},
-    {code:"ELM-08",title:"Électrification de bâtiments",dur:120,seuil:85,fichier:"cours/elm/elm-1/elm-08-electrification-batiments.html"},
-    {code:"ELM-09",title:"Fonctionnement des moteurs, générateurs et transformateurs",dur:75,seuil:85,fichier:"cours/elm/elm-1/elm-09-moteurs-generateurs-transformateurs.html"},
-    {code:"ELM-10",title:"Raccordement et entretien des moteurs et circuits de commandes",dur:90,seuil:85,fichier:"cours/elm/elm-1/elm-10-moteurs-circuits-commandes.html"},
-    {code:"ELM-11",title:"Terminologie anglaise",dur:45,seuil:75,fichier:"cours/elm/elm-1/elm-11-terminologie-anglaise.html"},
-    {code:"ELM-14",title:"Circuits d'électronique analogique",dur:60,seuil:85,fichier:"cours/elm/elm-1/elm-14-electronique-analogique.html"},
-    {code:"ELM-15",title:"Circuits d'électronique numérique",dur:60,seuil:80,fichier:"cours/elm/elm-1/elm-15-electronique-numerique.html"},
+  {code:"ELM-01",title:"Métier et formation",dur:30,seuil:80,fichier:"cours/elm/elm-1/elm-01-metier-formation.html"},
+  {code:"ELM-02",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/elm/elm-1/elm-02-utilisation-ordinateur.html"},
+  {code:"ELM-03",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/elm/elm-1/elm-03-circuits-cc-ca.html"},
+  {code:"ELM-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/elm/elm-1/elm-04-croquis-schemas.html"},
+  {code:"ELM-05",title:"Plan et devis",dur:45,seuil:80,fichier:"cours/elm/elm-1/elm-05-plan-devis.html"},
+  {code:"ELM-06",title:"Santé et sécurité au travail",dur:30,seuil:80,fichier:"cours/elm/elm-1/elm-06-sante-securite.html"},
+  {code:"ELM-07",title:"Usinage manuel et assemblage",dur:105,seuil:85,fichier:"cours/elm/elm-1/elm-07-usinage-assemblage.html"},
+  {code:"ELM-08",title:"Électrification de bâtiments",dur:120,seuil:85,fichier:"cours/elm/elm-1/elm-08-electrification-batiments.html"},
+  {code:"ELM-09",title:"Fonctionnement des moteurs, générateurs et transformateurs",dur:75,seuil:85,fichier:"cours/elm/elm-1/elm-09-moteurs-generateurs-transformateurs.html"},
+  {code:"ELM-10",title:"Raccordement et entretien des moteurs et circuits de commandes",dur:90,seuil:85,fichier:"cours/elm/elm-1/elm-10-moteurs-circuits-commandes.html"},
+  {code:"ELM-11",title:"Terminologie anglaise",dur:45,seuil:75,fichier:"cours/elm/elm-1/elm-11-terminologie-anglaise.html"},
+  {code:"ELM-14",title:"Circuits d'électronique analogique",dur:60,seuil:85,fichier:"cours/elm/elm-1/elm-14-electronique-analogique.html"},
+  {code:"ELM-15",title:"Circuits d'électronique numérique",dur:60,seuil:80,fichier:"cours/elm/elm-1/elm-15-electronique-numerique.html"},
   ],
   TEL:[
-    {code:"TEL-01",title:"Métier et Formation",dur:30,seuil:70,fichier:"cours/tel/tel-1/tel-01-metier-formation.html"},
-    {code:"TEL-02",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-02-circuits-cc-ca.html"},
-    {code:"TEL-03",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/tel/tel-1/tel-03-utilisation-ordinateur.html"},
-    {code:"TEL-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/tel/tel-1/tel-04-croquis-schemas.html"},
-    {code:"TEL-05",title:"Circuits d'électronique analogique",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-05-electronique-analogique.html"},
-    {code:"TEL-06",title:"Circuits d'oscillation et de filtration",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-06-oscillation-filtration.html"},
-    {code:"TEL-07",title:"Circuit d'électronique numérique",dur:75,seuil:80,fichier:"cours/tel/tel-1/tel-07-electronique-numerique.html"},
-    {code:"TEL-08",title:"Circuits de modulation",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-08-circuits-modulation.html"},
-    {code:"TEL-09",title:"Santé et sécurité au travail",dur:30,seuil:80,fichier:"cours/tel/tel-1/tel-09-sante-securite.html"},
-    {code:"TEL-10",title:"Transmissions et protocoles de communication",dur:60,seuil:75,fichier:"cours/tel/tel-1/tel-10-transmissions-protocoles.html"},
-    {code:"TEL-11",title:"Installation d'antennes",dur:75,seuil:85,fichier:"cours/tel/tel-1/tel-11-installation-antennes.html"},
-    {code:"TEL-12",title:"Terminologie anglaise",dur:45,seuil:75,fichier:"cours/tel/tel-1/tel-12-terminologie-anglaise.html"},
-    {code:"TEL-13",title:"Microprocesseurs et interfaces",dur:60,seuil:80,fichier:"cours/tel/tel-1/tel-13-microprocesseurs-interfaces.html"},
-    {code:"TEL-14",title:"Remplacement de composants",dur:30,seuil:80,fichier:"cours/tel/tel-1/tel-14-remplacement-composants.html"},
+  {code:"TEL-01",title:"Métier et Formation",dur:30,seuil:70,fichier:"cours/tel/tel-1/tel-01-metier-formation.html"},
+  {code:"TEL-02",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-02-circuits-cc-ca.html"},
+  {code:"TEL-03",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/tel/tel-1/tel-03-utilisation-ordinateur.html"},
+  {code:"TEL-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/tel/tel-1/tel-04-croquis-schemas.html"},
+  {code:"TEL-05",title:"Circuits d'électronique analogique",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-05-electronique-analogique.html"},
+  {code:"TEL-06",title:"Circuits d'oscillation et de filtration",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-06-oscillation-filtration.html"},
+  {code:"TEL-07",title:"Circuit d'électronique numérique",dur:75,seuil:80,fichier:"cours/tel/tel-1/tel-07-electronique-numerique.html"},
+  {code:"TEL-08",title:"Circuits de modulation",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-08-circuits-modulation.html"},
+  {code:"TEL-09",title:"Santé et sécurité au travail",dur:30,seuil:80,fichier:"cours/tel/tel-1/tel-09-sante-securite.html"},
+  {code:"TEL-10",title:"Transmissions et protocoles de communication",dur:60,seuil:75,fichier:"cours/tel/tel-1/tel-10-transmissions-protocoles.html"},
+  {code:"TEL-11",title:"Installation d'antennes",dur:75,seuil:85,fichier:"cours/tel/tel-1/tel-11-installation-antennes.html"},
+  {code:"TEL-12",title:"Terminologie anglaise",dur:45,seuil:75,fichier:"cours/tel/tel-1/tel-12-terminologie-anglaise.html"},
+  {code:"TEL-13",title:"Microprocesseurs et interfaces",dur:60,seuil:80,fichier:"cours/tel/tel-1/tel-13-microprocesseurs-interfaces.html"},
+  {code:"TEL-14",title:"Remplacement de composants",dur:30,seuil:80,fichier:"cours/tel/tel-1/tel-14-remplacement-composants.html"},
   ],
 };
 
-/* ══════════════════════════════════════
-   MODULES 2ÈME ANNÉE — TRI (28 modules)
-══════════════════════════════════════ */
 const MODULES_2 = {
   TRI:[
-    // Semestre 3
-    {code:"TRI-17",title:"Initiation à la réseautique",dur:75,seuil:75,sem:3,fichier:"cours/tri/tri-2/tri-17-initiation-reseautique.html"},
-    {code:"TRI-18",title:"Installation de serveur",dur:75,seuil:75,sem:3,fichier:"cours/tri/tri-2/tri-18-installation-serveur.html"},
-    {code:"TRI-19",title:"Routage et commutation",dur:90,seuil:80,sem:3,fichier:"cours/tri/tri-2/tri-19-routage-commutation.html"},
-    {code:"TRI-20",title:"Configuration des serveurs",dur:75,seuil:75,sem:3,fichier:"cours/tri/tri-2/tri-20-configuration-serveurs.html"},
-    {code:"TRI-21",title:"Évolutivité des réseaux",dur:90,seuil:80,sem:3,fichier:"cours/tri/tri-2/tri-21-evolutivite-reseaux.html"},
-    {code:"TRI-22",title:"Maintenance des serveurs",dur:75,seuil:75,sem:3,fichier:"cours/tri/tri-2/tri-22-maintenance-serveurs.html"},
-    // Semestre 4
-    {code:"TRI-23",title:"Câblage structuré",dur:90,seuil:80,sem:4,fichier:"cours/tri/tri-2/tri-23-cablage-structure.html"},
-    {code:"TRI-24",title:"Supervision et dépannage réseau",dur:75,seuil:75,sem:4,fichier:"cours/tri/tri-2/tri-24-supervision-depannage.html"},
-    {code:"TRI-25",title:"Connexion de réseaux",dur:75,seuil:75,sem:4,fichier:"cours/tri/tri-2/tri-25-connexion-reseaux.html"},
-    {code:"TRI-26",title:"Sécurité de réseau",dur:75,seuil:75,sem:4,fichier:"cours/tri/tri-2/tri-26-securite-reseau.html"},
-    {code:"TRI-27",title:"Implantation d'un réseau",dur:120,seuil:85,sem:4,fichier:"cours/tri/tri-2/tri-27-implantation-reseau.html"},
-    {code:"TRI-28",title:"Recherche d'emploi",dur:45,seuil:75,sem:4,fichier:"cours/tri/tri-2/tri-28-recherche-emploi.html"},
+  {code:"TRI-17",title:"Initiation à la réseautique",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-17-initiation-reseautique.html"},
+  {code:"TRI-18",title:"Installation de serveur",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-18-installation-serveur.html"},
+  {code:"TRI-19",title:"Routage et commutation",dur:90,seuil:80,fichier:"cours/tri/tri-2/tri-19-routage-commutation.html"},
+  {code:"TRI-20",title:"Configuration des serveurs",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-20-configuration-serveurs.html"},
+  {code:"TRI-21",title:"Évolutivité des réseaux",dur:90,seuil:80,fichier:"cours/tri/tri-2/tri-21-evolutivite-reseaux.html"},
+  {code:"TRI-22",title:"Maintenance des serveurs",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-22-maintenance-serveurs.html"},
+  {code:"TRI-23",title:"Câblage structuré",dur:90,seuil:80,fichier:"cours/tri/tri-2/tri-23-cablage-structure.html"},
+  {code:"TRI-24",title:"Supervision et dépannage réseau",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-24-supervision-depannage.html"},
+  {code:"TRI-25",title:"Connexion de réseaux",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-25-connexion-reseaux.html"},
+  {code:"TRI-26",title:"Sécurité de réseau",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-26-securite-reseau.html"},
+  {code:"TRI-27",title:"Implantation d'un réseau",dur:120,seuil:85,fichier:"cours/tri/tri-2/tri-27-implantation-reseau.html"},
+  {code:"TRI-28",title:"Recherche d'emploi",dur:45,seuil:75,fichier:"cours/tri/tri-2/tri-28-recherche-emploi.html"},
   ],
   MEI:[
-    // Semestre 3
-    {code:"MEI-14",title:"Entretien et réparation d'éléments de transmission",dur:90,seuil:80,sem:3,fichier:"cours/mei/mei-2/mei-14-elements-transmission.html"},
-    {code:"MEI-15",title:"Exécution de travaux sur tubes, tuyaux et boyaux",dur:90,seuil:80,sem:3,fichier:"cours/mei/mei-2/mei-15-tubes-tuyaux-boyaux.html"},
-    {code:"MEI-16",title:"Montage, entretien et réparation des pompes hydrauliques",dur:75,seuil:75,sem:3,fichier:"cours/mei/mei-2/mei-16-pompes-hydrauliques.html"},
-    {code:"MEI-19",title:"Techniques d'équilibrage statique et dynamique",dur:90,seuil:80,sem:3,fichier:"cours/mei/mei-2/mei-19-equilibrage.html"},
-    {code:"MEI-20",title:"Techniques d'analyse de vibrations",dur:90,seuil:80,sem:3,fichier:"cours/mei/mei-2/mei-20-analyse-vibrations.html"},
-    // Semestre 4
-    {code:"MEI-21",title:"Entretien de pompes à vide et compresseurs",dur:90,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-21-pompes-vide-compresseurs.html"},
-    {code:"MEI-22",title:"Montage et réparation de circuits hydrauliques",dur:90,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-22-circuits-hydrauliques.html"},
-    {code:"MEI-23",title:"Montage et réparation de circuits pneumatiques",dur:90,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-23-circuits-pneumatiques.html"},
-    {code:"MEI-25",title:"Maintenance préventive de l'équipement industriel",dur:90,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-25-maintenance-preventive.html"},
-    {code:"MEI-26",title:"Installation d'équipement industriel",dur:90,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-26-installation-equipement.html"},
-    {code:"MEI-27",title:"Dépannage d'équipement industriel",dur:90,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-27-depannage-equipement.html"},
-    {code:"MEI-28",title:"Préparation au marché du travail",dur:45,seuil:80,sem:4,fichier:"cours/mei/mei-2/mei-28-marche-travail.html"},
+  {code:"MEI-14",title:"Éléments de transmission",dur:75,seuil:85,fichier:"cours/mei/mei-2/mei-14-elements-transmission.html"},
+  {code:"MEI-15",title:"Tubes, tuyaux et boyaux",dur:60,seuil:80,fichier:"cours/mei/mei-2/mei-15-tubes-tuyaux-boyaux.html"},
+  {code:"MEI-16",title:"Pompes hydrauliques",dur:75,seuil:85,fichier:"cours/mei/mei-2/mei-16-pompes-hydrauliques.html"},
+  {code:"MEI-19",title:"Équilibrage",dur:75,seuil:85,fichier:"cours/mei/mei-2/mei-19-equilibrage.html"},
+  {code:"MEI-20",title:"Analyse de vibrations",dur:75,seuil:85,fichier:"cours/mei/mei-2/mei-20-analyse-vibrations.html"},
+  {code:"MEI-21",title:"Pompes à vide et compresseurs",dur:90,seuil:85,fichier:"cours/mei/mei-2/mei-21-pompes-vide-compresseurs.html"},
+  {code:"MEI-22",title:"Circuits hydrauliques",dur:90,seuil:85,fichier:"cours/mei/mei-2/mei-22-circuits-hydrauliques.html"},
+  {code:"MEI-23",title:"Circuits pneumatiques",dur:90,seuil:85,fichier:"cours/mei/mei-2/mei-23-circuits-pneumatiques.html"},
+  {code:"MEI-25",title:"Maintenance préventive",dur:90,seuil:85,fichier:"cours/mei/mei-2/mei-25-maintenance-preventive.html"},
+  {code:"MEI-26",title:"Installation d'équipement",dur:90,seuil:85,fichier:"cours/mei/mei-2/mei-26-installation-equipement.html"},
+  {code:"MEI-27",title:"Dépannage d'équipement",dur:90,seuil:85,fichier:"cours/mei/mei-2/mei-27-depannage-equipement.html"},
+  {code:"MEI-28",title:"Marché du travail",dur:45,seuil:75,fichier:"cours/mei/mei-2/mei-28-marche-travail.html"},
   ],
   ELM:[
-    // Semestre 3
-    {code:"ELM-12",title:"Installation de groupes électrogènes, onduleurs et panneaux solaires",dur:90,seuil:85,sem:3,fichier:"cours/elm/elm-2/elm-12-groupes-onduleurs-solaires.html"},
-    {code:"ELM-16",title:"Fonctionnement des moteurs à essence et diesel",dur:90,seuil:85,sem:3,fichier:"cours/elm/elm-2/elm-16-moteurs-essence-diesel.html"},
-    {code:"ELM-17",title:"Réparation et entretien de groupes électrogènes",dur:90,seuil:85,sem:3,fichier:"cours/elm/elm-2/elm-17-groupes-electrogenes.html"},
-    {code:"ELM-18",title:"Circuits pneumatiques et électropneumatiques",dur:90,seuil:85,sem:3,fichier:"cours/elm/elm-2/elm-18-circuits-pneumatiques-electropneumatiques.html"},
-    {code:"ELM-19",title:"Circuits hydrauliques et électrohydrauliques",dur:90,seuil:85,sem:3,fichier:"cours/elm/elm-2/elm-19-circuits-hydrauliques-electrohydrauliques.html"},
-    // Semestre 4
-    {code:"ELM-20",title:"Électronique de puissance",dur:90,seuil:80,sem:4,fichier:"cours/elm/elm-2/elm-20-electronique-puissance.html"},
-    {code:"ELM-21",title:"Programmation d'un automate",dur:90,seuil:85,sem:4,fichier:"cours/elm/elm-2/elm-21-programmation-automate.html"},
-    {code:"ELM-22",title:"Raccordement d'automates",dur:90,seuil:85,sem:4,fichier:"cours/elm/elm-2/elm-22-raccordement-automates.html"},
-    {code:"ELM-23",title:"Dépannage d'un système automatisé",dur:90,seuil:85,sem:4,fichier:"cours/elm/elm-2/elm-23-depannage-systeme-automatise.html"},
-    {code:"ELM-24",title:"Maintenance planifiée",dur:75,seuil:80,sem:4,fichier:"cours/elm/elm-2/elm-24-maintenance-planifiee.html"},
-    {code:"ELM-25",title:"Entrepreneuriat",dur:30,seuil:75,sem:4,fichier:"cours/elm/elm-2/elm-25-entrepreneuriat.html"},
-    {code:"ELM-26",title:"Préparation au marché du travail",dur:45,seuil:70,sem:4,fichier:"cours/elm/elm-2/elm-26-marche-travail.html"},
+  {code:"ELM-12",title:"Installation de groupes électrogènes, onduleurs et panneaux solaires",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-12-groupes-onduleurs-solaires.html"},
+  {code:"ELM-16",title:"Fonctionnement des moteurs à essence et diesel",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-16-moteurs-essence-diesel.html"},
+  {code:"ELM-17",title:"Réparation et entretien de groupes électrogènes",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-17-groupes-electrogenes.html"},
+  {code:"ELM-18",title:"Circuits pneumatiques et électropneumatiques",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-18-circuits-pneumatiques-electropneumatiques.html"},
+  {code:"ELM-19",title:"Circuits hydrauliques et électrohydrauliques",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-19-circuits-hydrauliques-electrohydrauliques.html"},
+  {code:"ELM-20",title:"Électronique de puissance",dur:90,seuil:80,fichier:"cours/elm/elm-2/elm-20-electronique-puissance.html"},
+  {code:"ELM-21",title:"Programmation d'un automate",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-21-programmation-automate.html"},
+  {code:"ELM-22",title:"Raccordement d'automates",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-22-raccordement-automates.html"},
+  {code:"ELM-23",title:"Dépannage d'un système automatisé",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-23-depannage-systeme-automatise.html"},
+  {code:"ELM-24",title:"Maintenance planifiée",dur:75,seuil:80,fichier:"cours/elm/elm-2/elm-24-maintenance-planifiee.html"},
+  {code:"ELM-25",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/elm/elm-2/elm-25-entrepreneuriat.html"},
+  {code:"ELM-26",title:"Préparation au marché du travail",dur:45,seuil:70,fichier:"cours/elm/elm-2/elm-26-marche-travail.html"},
   ],
   TEL:[
-    // Semestre 3
-    {code:"TEL-15",title:"Communication radio",dur:90,seuil:85,sem:3,fichier:"cours/tel/tel-2/tel-15-communication-radio.html"},
-    {code:"TEL-16",title:"Câblage structuré",dur:90,seuil:85,sem:3,fichier:"cours/tel/tel-2/tel-16-cablage-structure.html"},
-    {code:"TEL-17",title:"Réseau informatique",dur:90,seuil:85,sem:3,fichier:"cours/tel/tel-2/tel-17-reseau-informatique.html"},
-    {code:"TEL-18",title:"Système téléphonique",dur:90,seuil:85,sem:3,fichier:"cours/tel/tel-2/tel-18-systeme-telephonique.html"},
-    {code:"TEL-19",title:"Fibre optique",dur:90,seuil:85,sem:3,fichier:"cours/tel/tel-2/tel-19-fibre-optique.html"},
-    // Semestre 4
-    {code:"TEL-20",title:"Communication sans fil",dur:90,seuil:85,sem:4,fichier:"cours/tel/tel-2/tel-20-communication-sans-fil.html"},
-    {code:"TEL-21",title:"Téléphonie IP",dur:75,seuil:80,sem:4,fichier:"cours/tel/tel-2/tel-21-telephonie-ip.html"},
-    {code:"TEL-22",title:"Installation et réparation de matériels de câblodistribution",dur:90,seuil:85,sem:4,fichier:"cours/tel/tel-2/tel-22-cablodistribution.html"},
-    {code:"TEL-23",title:"Téléphonie sans fil",dur:90,seuil:85,sem:4,fichier:"cours/tel/tel-2/tel-23-telephonie-sans-fil.html"},
-    {code:"TEL-24",title:"Systèmes d'alimentation d'appoint",dur:90,seuil:85,sem:4,fichier:"cours/tel/tel-2/tel-24-alimentation-appoint.html"},
-    {code:"TEL-25",title:"Entrepreneuriat",dur:30,seuil:75,sem:4,fichier:"cours/tel/tel-2/tel-25-entrepreneuriat.html"},
-    {code:"TEL-26",title:"Préparation au marché du travail",dur:45,seuil:70,sem:4,fichier:"cours/tel/tel-2/tel-26-marche-travail.html"},
+  {code:"TEL-15",title:"Communication radio AM et FM",dur:75,seuil:85,fichier:"cours/tel/tel-2/tel-15-communication-radio.html"},
+  {code:"TEL-16",title:"Câblage structuré",dur:75,seuil:85,fichier:"cours/tel/tel-2/tel-16-cablage-structure.html"},
+  {code:"TEL-17",title:"Réseau informatique",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-17-reseau-informatique.html"},
+  {code:"TEL-18",title:"Système téléphonique",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-18-systeme-telephonique.html"},
+  {code:"TEL-19",title:"Fibre optique",dur:90,seuil:85,fichier:"cours/tel/tel-2/tel-19-fibre-optique.html"},
+  {code:"TEL-20",title:"Communication sans fil",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-20-communication-sans-fil.html"},
+  {code:"TEL-21",title:"Téléphonie IP",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-21-telephonie-ip.html"},
+  {code:"TEL-22",title:"Câblodistribution",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-22-cablodistribution.html"},
+  {code:"TEL-23",title:"Téléphonie sans fil",dur:60,seuil:80,fichier:"cours/tel/tel-2/tel-23-telephonie-sans-fil.html"},
+  {code:"TEL-24",title:"Alimentation d'appoint",dur:60,seuil:80,fichier:"cours/tel/tel-2/tel-24-alimentation-appoint.html"},
+  {code:"TEL-25",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/tel/tel-2/tel-25-entrepreneuriat.html"},
+  {code:"TEL-26",title:"Marché du travail",dur:45,seuil:75,fichier:"cours/tel/tel-2/tel-26-marche-travail.html"},
   ],
 };
+
+
 
 /* ══════════════════════════════════════
    BANQUE D'EXAMENS
@@ -5742,10 +5754,23 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ══ COURS VIEWER ══ -->
 <div class="cours-viewer" id="cours-viewer">
   <div class="cours-viewer-bar">
-    <span style="font-size:1rem">📖</span>
+    <span style="font-size:1rem" id="cv-bar-icon">📖</span>
     <span class="cours-viewer-title" id="cours-viewer-title">Cours</span>
     <button class="cours-viewer-close" onclick="closeCoursViewer()">✕ Fermer</button>
   </div>
+
+  <!-- HERO BANNER MODULE -->
+  <div class="cv-hero" id="cv-hero">
+    <div class="cv-hero-bg" id="cv-hero-bg"></div>
+    <div class="cv-hero-overlay" id="cv-hero-overlay"></div>
+    <div class="cv-hero-line" id="cv-hero-line"></div>
+    <div class="cv-hero-content">
+      <div class="cv-hero-tag" id="cv-hero-tag">📚 MODULE</div>
+      <div class="cv-hero-title" id="cv-hero-title">Chargement…</div>
+      <div class="cv-hero-meta" id="cv-hero-meta"></div>
+    </div>
+  </div>
+
   <div class="cours-viewer-body">
     <div class="cours-viewer-spinner" id="cours-spinner">
       <div class="spin-ring"></div>
@@ -5779,6 +5804,84 @@ function openCoursViewer(fichier, titre) {
     _currentCoursTitle = titre || mod.title;
   }
   _currentCoursFile = fichier;
+
+  // ── Déterminer le programme depuis le code du module ou le fichier ──
+  const rawCode = (titre||'').split('·')[0].trim() || fichier;
+  const progCode = rawCode.startsWith('TRI')?'TRI':rawCode.startsWith('MEI')?'MEI':rawCode.startsWith('ELM')?'ELM':rawCode.startsWith('TEL')?'TEL':'TRI';
+
+  // ── Trouver les métadonnées du module ──
+  const allM = [...(MODULES[progCode]||[]),...(MODULES_2[progCode]||[])];
+  const modCode = rawCode.split('·')[0].trim() || rawCode.split('/').pop().split('.')[0].toUpperCase();
+  const modData = allM.find(m=>m.code===modCode) || allM.find(m=>fichier.includes(m.code.toLowerCase().replace('-','-')));
+
+  // ── Config hero par programme ──
+  const HERO_CONFIG = {
+    TRI:{
+      bg:'assets/images/hero/slide-tri.jpg',
+      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(12,31,61,.80) 55%,rgba(27,58,140,.45) 100%)',
+      line:'linear-gradient(90deg,transparent,#3B7BFF,#1B3A8C,transparent)',
+      icon:'🌐', label:'Réseaux Informatiques', chip:'MODULE TRI'
+    },
+    MEI:{
+      bg:'assets/images/hero/Slide-mei.jpg',
+      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(30,16,0,.80) 55%,rgba(139,94,0,.45) 100%)',
+      line:'linear-gradient(90deg,transparent,#C98A00,#8B5E00,transparent)',
+      icon:'🔧', label:'Mécanique Industrielle', chip:'MODULE MEI'
+    },
+    ELM:{
+      bg:'assets/images/hero/Slide-elm.jpg',
+      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(0,20,15,.80) 55%,rgba(0,107,70,.45) 100%)',
+      line:'linear-gradient(90deg,transparent,#00A066,#006B46,transparent)',
+      icon:'⚡', label:'Électromécanique Industrielle', chip:'MODULE ELM'
+    },
+    TEL:{
+      bg:'assets/images/hero/Slide-tel.jpg',
+      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(20,8,40,.80) 55%,rgba(91,45,142,.45) 100%)',
+      line:'linear-gradient(90deg,transparent,#8A50CC,#5B2D8E,transparent)',
+      icon:'📡', label:'Télécommunications', chip:'MODULE TEL'
+    }
+  };
+  const hc = HERO_CONFIG[progCode] || HERO_CONFIG.TRI;
+
+  // Chercher d'abord l'image Slide-XX.png existante, fallback vers un gradient
+  const slideImages = {
+    TRI:'assets/images/hero/slide-tri.jpg',
+    MEI:'assets/images/hero/slide-mei.jpg',
+    ELM:'assets/images/hero/slide-elm.jpg',
+    TEL:'assets/images/hero/slide-tel.jpg'
+  };
+  const bgImg = slideImages[progCode] || slideImages.TRI;
+
+  // ── Peupler le hero ──
+  const heroEl    = document.getElementById('cv-hero');
+  const heroBg    = document.getElementById('cv-hero-bg');
+  const heroOvl   = document.getElementById('cv-hero-overlay');
+  const heroLine  = document.getElementById('cv-hero-line');
+  const heroTag   = document.getElementById('cv-hero-tag');
+  const heroTitle = document.getElementById('cv-hero-title');
+  const heroMeta  = document.getElementById('cv-hero-meta');
+  const barIcon   = document.getElementById('cv-bar-icon');
+
+  if(heroBg)  heroBg.style.backgroundImage   = `url('${bgImg}')`;
+  if(heroOvl) heroOvl.style.background        = hc.overlay;
+  if(heroLine)heroLine.style.background        = hc.line;
+  if(heroTag) heroTag.innerHTML                = `${hc.icon} ${hc.chip}${modData?' · '+(modData.code.includes('an2')||false?'2ÈME ANNÉE':'1ÈRE ANNÉE'):''}`;
+  if(barIcon) barIcon.textContent              = hc.icon;
+
+  // Titre : extraire la partie après le code
+  const titreClean = (titre||'').includes('·') ? (titre||'').split('·').slice(1).join('·').trim() : (titre||modData?.title||'Module');
+  if(heroTitle) heroTitle.textContent = titreClean;
+
+  // Méta
+  if(heroMeta && modData) {
+    heroMeta.innerHTML = `
+      <span>⏱ Durée : <strong>${modData.dur}h</strong></span>
+      <span>🎯 Seuil : <strong>${modData.seuil}%</strong></span>
+      <span>📚 <strong>${hc.label}</strong></span>`;
+  } else if(heroMeta) {
+    heroMeta.innerHTML = `<span>📚 <strong>${hc.label}</strong></span>`;
+  }
+
   document.getElementById('cours-viewer-title').textContent = titre || 'Cours';
   document.getElementById('cours-spinner').style.display = 'flex';
   document.getElementById('cours-iframe').src = fichier;

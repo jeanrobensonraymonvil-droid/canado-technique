@@ -369,21 +369,136 @@ let currentDossier = null;
 ════════════════════════════════════ */
 const MODULES_ADMIN = {
   TRI:{
-    1:[{code:'TRI-01',titre:"Métier et formation en réseaux"},{code:'TRI-02',titre:"Utilisation de l'ordinateur"},{code:'TRI-03',titre:"Principes d'électricité"},{code:'TRI-04',titre:"Composantes matérielles"},{code:'TRI-05',titre:"Système d'exploitation"},{code:'TRI-06',titre:"Câblage réseau"},{code:'TRI-07',titre:"Conception de réseaux locaux"},{code:'TRI-08',titre:"Logiciels de bureautique"},{code:'TRI-09',titre:"Sécurité informatique de base"},{code:'TRI-10',titre:"Réseau sans fil"},{code:'TRI-11',titre:"Introduction à TCP/IP"},{code:'TRI-12',titre:"Protocoles de routage"},{code:'TRI-13',titre:"Technologies et services internet"}],
-    2:[{code:'TRI-14',titre:"Virtualisation et cloud"},{code:'TRI-15',titre:"Administration Linux"},{code:'TRI-16',titre:"CCNA — Commutation avancée"},{code:'TRI-17',titre:"CCNA — Routage avancé"},{code:'TRI-18',titre:"Administration Windows Server"},{code:'TRI-19',titre:"Sécurité réseau avancée"},{code:'TRI-20',titre:"VPN et accès distant"},{code:'TRI-21',titre:"Supervision réseau"},{code:'TRI-22',titre:"Projet intégrateur"},{code:'TRI-23',titre:"Entrepreneuriat"},{code:'TRI-24',titre:"Préparation marché du travail"}]
+    1:[
+      {code:"TRI-01",titre:"Métier et formation",heures:30},
+      {code:"TRI-02",titre:"Gestion du temps",heures:30},
+      {code:"TRI-03",titre:"Mathématiques en informatique",heures:60},
+      {code:"TRI-04",titre:"Anglais technique",heures:30},
+      {code:"TRI-05",titre:"Système d\'exploitation",heures:75},
+      {code:"TRI-06",titre:"Résolution de problèmes",heures:30},
+      {code:"TRI-07",titre:"Recherche d\'information",heures:15},
+      {code:"TRI-08",titre:"Logiciels de bureautique",heures:105},
+      {code:"TRI-09",titre:"Communication professionnelle",heures:60},
+      {code:"TRI-10",titre:"Installation d\'un poste",heures:90},
+      {code:"TRI-11",titre:"Base de données",heures:75},
+      {code:"TRI-12",titre:"Dépannage d\'un poste",heures:90},
+      {code:"TRI-13",titre:"Technologies et services internet",heures:45},
+      {code:"TRI-14",titre:"Programmation de scripts",heures:90},
+      {code:"TRI-15",titre:"Assistance technique",heures:45},
+      {code:"TRI-16",titre:"Entrepreneuriat",heures:30}
+    ],
+    2:[
+      {code:"TRI-17",titre:"Initiation à la réseautique",heures:75},
+      {code:"TRI-18",titre:"Installation de serveur",heures:75},
+      {code:"TRI-19",titre:"Routage et commutation",heures:90},
+      {code:"TRI-20",titre:"Configuration des serveurs",heures:75},
+      {code:"TRI-21",titre:"Évolutivité des réseaux",heures:90},
+      {code:"TRI-22",titre:"Maintenance des serveurs",heures:75},
+      {code:"TRI-23",titre:"Câblage structuré",heures:90},
+      {code:"TRI-24",titre:"Supervision et dépannage réseau",heures:75},
+      {code:"TRI-25",titre:"Connexion de réseaux",heures:75},
+      {code:"TRI-26",titre:"Sécurité de réseau",heures:75},
+      {code:"TRI-27",titre:"Implantation d\'un réseau",heures:120},
+      {code:"TRI-28",titre:"Recherche d\'emploi",heures:45}
+    ]
   },
   MEI:{
-    1:[{code:'MEI-01',titre:"Métier et formation"},{code:'MEI-02',titre:"Utilisation de l'ordinateur"},{code:'MEI-03',titre:"Croquis, schémas et dessins"},{code:'MEI-04',titre:"Interprétation de plans"},{code:'MEI-05',titre:"Santé et sécurité au travail"},{code:'MEI-06',titre:"Instruments de mesure"},{code:'MEI-07',titre:"Usinage manuel"},{code:'MEI-08',titre:"Coupage et soudage"},{code:'MEI-09',titre:"Usinage par machines-outils"},{code:'MEI-10',titre:"Lubrification"}],
-    2:[{code:'MEI-14',titre:"Éléments de transmission"},{code:'MEI-15',titre:"Tubes, tuyaux et boyaux"},{code:'MEI-16',titre:"Pompes hydrauliques"},{code:'MEI-19',titre:"Équilibrage"},{code:'MEI-20',titre:"Analyse de vibrations"},{code:'MEI-25',titre:"Maintenance préventive"},{code:'MEI-26',titre:"Installation d'équipement"},{code:'MEI-27',titre:"Dépannage d'équipement"}]
+    1:[
+      {code:"MEI-01",titre:"Métier et formation",heures:30},
+      {code:"MEI-02",titre:"Utilisation de l\'ordinateur",heures:45},
+      {code:"MEI-03",titre:"Croquis, schémas et dessins",heures:60},
+      {code:"MEI-04",titre:"Interprétation de plans",heures:60},
+      {code:"MEI-05",titre:"Santé et sécurité au travail",heures:30},
+      {code:"MEI-06",titre:"Instruments de mesure",heures:60},
+      {code:"MEI-07",titre:"Usinage manuel",heures:105},
+      {code:"MEI-08",titre:"Coupage et soudage",heures:105},
+      {code:"MEI-09",titre:"Usinage par machines-outils",heures:105},
+      {code:"MEI-10",titre:"Lubrification",heures:60},
+      {code:"MEI-11",titre:"Levage et manutention",heures:60},
+      {code:"MEI-12",titre:"Techniques d\'alignement",heures:75},
+      {code:"MEI-13",titre:"Arbres et roulements",heures:75},
+      {code:"MEI-17",titre:"Façonnage",heures:90},
+      {code:"MEI-18",titre:"Circuits électriques",heures:90},
+      {code:"MEI-24",titre:"Entrepreneuriat",heures:30}
+    ],
+    2:[
+      {code:"MEI-14",titre:"Éléments de transmission",heures:75},
+      {code:"MEI-15",titre:"Tubes, tuyaux et boyaux",heures:60},
+      {code:"MEI-16",titre:"Pompes hydrauliques",heures:75},
+      {code:"MEI-19",titre:"Équilibrage",heures:75},
+      {code:"MEI-20",titre:"Analyse de vibrations",heures:75},
+      {code:"MEI-21",titre:"Pompes à vide et compresseurs",heures:90},
+      {code:"MEI-22",titre:"Circuits hydrauliques",heures:90},
+      {code:"MEI-23",titre:"Circuits pneumatiques",heures:90},
+      {code:"MEI-25",titre:"Maintenance préventive",heures:90},
+      {code:"MEI-26",titre:"Installation d\'équipement",heures:90},
+      {code:"MEI-27",titre:"Dépannage d\'équipement",heures:90},
+      {code:"MEI-28",titre:"Marché du travail",heures:45}
+    ]
   },
   ELM:{
-    1:[{code:'ELM-01',titre:"Métier et formation"},{code:'ELM-02',titre:"Sécurité et environnement"},{code:'ELM-03',titre:"Circuits CC et CA"},{code:'ELM-04',titre:"Lecture de plans"},{code:'ELM-05',titre:"Moteurs électriques"},{code:'ELM-06',titre:"Installations électriques"},{code:'ELM-07',titre:"Automatismes industriels"},{code:'ELM-08',titre:"Pneumatique"},{code:'ELM-09',titre:"Moteurs, générateurs et transformateurs"}],
-    2:[{code:'ELM-10',titre:"Automates programmables (API)"},{code:'ELM-11',titre:"Commande de moteurs avancée"},{code:'ELM-12',titre:"Variateurs de vitesse"},{code:'ELM-13',titre:"Maintenance électromécanique"},{code:'ELM-14',titre:"Énergies renouvelables"},{code:'ELM-15',titre:"Projet intégrateur"},{code:'ELM-16',titre:"Entrepreneuriat"},{code:'ELM-17',titre:"Marché du travail"}]
+    1:[
+      {code:"ELM-01",titre:"Métier et formation",heures:30},
+      {code:"ELM-02",titre:"Utilisation de l\'ordinateur",heures:45},
+      {code:"ELM-03",titre:"Circuits à courant continu et à courant alternatif",heures:90},
+      {code:"ELM-04",titre:"Croquis et schémas",heures:30},
+      {code:"ELM-05",titre:"Plan et devis",heures:45},
+      {code:"ELM-06",titre:"Santé et sécurité au travail",heures:30},
+      {code:"ELM-07",titre:"Usinage manuel et assemblage",heures:105},
+      {code:"ELM-08",titre:"Électrification de bâtiments",heures:120},
+      {code:"ELM-09",titre:"Fonctionnement des moteurs, générateurs et transformateurs",heures:75},
+      {code:"ELM-10",titre:"Raccordement et entretien des moteurs et circuits de commandes",heures:90},
+      {code:"ELM-11",titre:"Terminologie anglaise",heures:45},
+      {code:"ELM-14",titre:"Circuits d\'électronique analogique",heures:60},
+      {code:"ELM-15",titre:"Circuits d\'électronique numérique",heures:60}
+    ],
+    2:[
+      {code:"ELM-12",titre:"Installation de groupes électrogènes, onduleurs et panneaux solaires",heures:90},
+      {code:"ELM-16",titre:"Fonctionnement des moteurs à essence et diesel",heures:90},
+      {code:"ELM-17",titre:"Réparation et entretien de groupes électrogènes",heures:90},
+      {code:"ELM-18",titre:"Circuits pneumatiques et électropneumatiques",heures:90},
+      {code:"ELM-19",titre:"Circuits hydrauliques et électrohydrauliques",heures:90},
+      {code:"ELM-20",titre:"Électronique de puissance",heures:90},
+      {code:"ELM-21",titre:"Programmation d\'un automate",heures:90},
+      {code:"ELM-22",titre:"Raccordement d\'automates",heures:90},
+      {code:"ELM-23",titre:"Dépannage d\'un système automatisé",heures:90},
+      {code:"ELM-24",titre:"Maintenance planifiée",heures:75},
+      {code:"ELM-25",titre:"Entrepreneuriat",heures:30},
+      {code:"ELM-26",titre:"Préparation au marché du travail",heures:45}
+    ]
   },
   TEL:{
-    1:[{code:'TEL-01',titre:"Métier et formation en télécoms"},{code:'TEL-02',titre:"Circuits CC et CA"},{code:'TEL-03',titre:"Composantes électroniques"},{code:'TEL-04',titre:"Signaux et modulation"},{code:'TEL-05',titre:"Antennes et propagation"},{code:'TEL-06',titre:"Réseaux téléphoniques"},{code:'TEL-07',titre:"Circuit d'électronique numérique"},{code:'TEL-08',titre:"Systèmes de transmission"},{code:'TEL-09',titre:"Fibre optique"}],
-    2:[{code:'TEL-10',titre:"Protocoles de communication avancés"},{code:'TEL-11',titre:"4G/5G et réseaux mobiles"},{code:'TEL-12',titre:"Satellite et radiodiffusion"},{code:'TEL-13',titre:"Sécurité des télécoms"},{code:'TEL-14',titre:"Projet intégrateur télécoms"},{code:'TEL-15',titre:"CompTIA A+ — préparation"}]
-  }
+    1:[
+      {code:"TEL-01",titre:"Métier et Formation",heures:30},
+      {code:"TEL-02",titre:"Circuits à courant continu et à courant alternatif",heures:90},
+      {code:"TEL-03",titre:"Utilisation de l\'ordinateur",heures:45},
+      {code:"TEL-04",titre:"Croquis et schémas",heures:30},
+      {code:"TEL-05",titre:"Circuits d\'électronique analogique",heures:90},
+      {code:"TEL-06",titre:"Circuits d\'oscillation et de filtration",heures:90},
+      {code:"TEL-07",titre:"Circuit d\'électronique numérique",heures:75},
+      {code:"TEL-08",titre:"Circuits de modulation",heures:90},
+      {code:"TEL-09",titre:"Santé et sécurité au travail",heures:30},
+      {code:"TEL-10",titre:"Transmissions et protocoles de communication",heures:60},
+      {code:"TEL-11",titre:"Installation d\'antennes",heures:75},
+      {code:"TEL-12",titre:"Terminologie anglaise",heures:45},
+      {code:"TEL-13",titre:"Microprocesseurs et interfaces",heures:60},
+      {code:"TEL-14",titre:"Remplacement de composants",heures:30}
+    ],
+    2:[
+      {code:"TEL-15",titre:"Communication radio AM et FM",heures:75},
+      {code:"TEL-16",titre:"Câblage structuré",heures:75},
+      {code:"TEL-17",titre:"Réseau informatique",heures:75},
+      {code:"TEL-18",titre:"Système téléphonique",heures:75},
+      {code:"TEL-19",titre:"Fibre optique",heures:90},
+      {code:"TEL-20",titre:"Communication sans fil",heures:75},
+      {code:"TEL-21",titre:"Téléphonie IP",heures:75},
+      {code:"TEL-22",titre:"Câblodistribution",heures:75},
+      {code:"TEL-23",titre:"Téléphonie sans fil",heures:60},
+      {code:"TEL-24",titre:"Alimentation d\'appoint",heures:60},
+      {code:"TEL-25",titre:"Entrepreneuriat",heures:30},
+      {code:"TEL-26",titre:"Marché du travail",heures:45}
+    ]
+  },
 };
 
 /* ════════════════════════════════════
