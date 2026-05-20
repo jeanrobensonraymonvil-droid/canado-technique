@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport de Pilotage — Canado Technique</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #040D1A;
+  --navy2:  #081428;
+  --navy3:  #0C1F3D;
+  --blue:   #1B3A8C;
+  --blueL:  #2B56C0;
+  --blueG:  #3B7BFF;
+  --red:    #E8192C;
+  --redD:   #C8101E;
+  --gold:   #F5C518;
+  --green:  #00A066;
+  --greenD: #006B46;
+  --orange: #E8782A;
+  --white:  #FFFFFF;
+  --g50:    #F8FAFF;
+  --g100:   #E8EEFF;
+  --g200:   #D4DEFC;
+  --g300:   #C0CCEE;
+  --g500:   #7B8DB8;
+  --g700:   #3A4A6B;
+  --text:   #0B1525;
+  --bdr:    rgba(100,130,220,.18);
+  --bdrDk:  rgba(255,255,255,.08);
+  --fD:     'Syne', sans-serif;
+  --fB:     'DM Sans', sans-serif;
+  --r:      10px;
+  --rL:     16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:var(--fB);background:#060f1e;color:var(--white);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--navy2)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(4,13,26,.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdrDk);height:60px;
+  display:flex;align-items:center;padding:0 2rem;gap:1rem;
+  justify-content:space-between;
+}
+.topbar-left{display:flex;align-items:center;gap:.75rem}
+.top-logo{width:36px;height:36px;background:#fff;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fD);font-weight:800;font-size:9px;color:var(--blue);flex-shrink:0}
+.top-brand{font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff}
+.top-brand span{color:var(--red)}
+.top-brand small{display:block;font-size:.55rem;font-weight:400;color:rgba(255,255,255,.3);
+  letter-spacing:.12em;text-transform:uppercase}
+.top-sep{width:1px;height:28px;background:var(--bdrDk)}
+.top-title{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.5);
+  display:flex;align-items:center;gap:.4rem}
+.top-title-badge{padding:2px 8px;background:rgba(232,25,44,.15);border:1px solid rgba(232,25,44,.3);
+  border-radius:12px;font-size:.6rem;font-weight:700;color:#ff7b87;text-transform:uppercase;letter-spacing:.08em}
+.topbar-right{display:flex;align-items:center;gap:.6rem}
+.top-btn{padding:.3rem .8rem;border-radius:7px;font-size:.72rem;font-weight:600;
+  background:rgba(255,255,255,.06);border:1px solid var(--bdrDk);color:rgba(255,255,255,.55);
+  transition:all .2s;cursor:pointer}
+.top-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.top-btn.primary{background:var(--blueG);border-color:var(--blueG);color:#fff}
+.top-btn.primary:hover{background:#5590ff}
+.top-live{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+
+/* ═══ LAYOUT ═══ */
+.main{padding-top:60px;display:flex;min-height:100vh}
+.sidebar{width:220px;flex-shrink:0;background:rgba(4,13,26,.6);
+  border-right:1px solid var(--bdrDk);position:sticky;top:60px;
+  height:calc(100vh - 60px);overflow-y:auto;padding:1.2rem .8rem}
+.sidebar-label{font-size:.6rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;color:rgba(255,255,255,.2);padding:.5rem .6rem .3rem;margin-top:.5rem}
+.sidebar-label:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:.55rem;padding:.45rem .7rem;
+  border-radius:8px;font-size:.78rem;color:rgba(255,255,255,.5);
+  cursor:pointer;transition:all .2s;margin-bottom:1px}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8)}
+.nav-item.act{background:rgba(59,123,255,.12);color:#7BA7FF;font-weight:600}
+.nav-item .ni{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.nav-badge{margin-left:auto;min-width:18px;height:18px;border-radius:9px;
+  background:rgba(232,25,44,.2);border:1px solid rgba(232,25,44,.3);
+  font-size:.6rem;font-weight:700;color:#ff7b87;
+  display:flex;align-items:center;justify-content:center;padding:0 4px}
+.nav-badge.green{background:rgba(0,160,102,.15);border-color:rgba(0,160,102,.3);color:var(--green)}
+
+.content{flex:1;padding:2rem;max-width:1100px;overflow-x:hidden}
+
+/* ═══ PAGE SECTIONS ═══ */
+.section{display:none;animation:fadeUp .3s ease both}
+.section.act{display:block}
+
+/* ═══ PAGE HEADER ═══ */
+.page-head{margin-bottom:2rem}
+.page-head h1{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:#fff;margin-bottom:.3rem}
+.page-head p{font-size:.82rem;color:rgba(255,255,255,.35);line-height:1.5}
+.page-head-row{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap}
+.last-update{font-size:.7rem;color:rgba(255,255,255,.2);display:flex;align-items:center;gap:.4rem;margin-top:.3rem}
+
+/* ═══ KPI GRID ═══ */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi-card{background:rgba(255,255,255,.03);border:1px solid var(--bdrDk);
+  border-radius:var(--rL);padding:1.1rem 1.2rem;position:relative;overflow:hidden;transition:border-color .2s}
+.kpi-card:hover{border-color:rgba(59,123,255,.25)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px}
+.kpi-card.blue::before{background:linear-gradient(90deg,transparent,var(--blueG),transparent)}
+.kpi-card.green::before{background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.kpi-card.gold::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.kpi-card.red::before{background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.kpi-icon{font-size:1.4rem;margin-bottom:.6rem}
+.kpi-val{font-family:var(--fD);font-weight:800;font-size:1.8rem;color:#fff;line-height:1}
+.kpi-label{font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.3rem}
+.kpi-trend{font-size:.68rem;margin-top:.4rem;display:flex;align-items:center;gap:.25rem}
+.kpi-trend.up{color:var(--green)}
+.kpi-trend.down{color:var(--red)}
+.kpi-trend.neutral{color:var(--gold)}
+
+/* ═══ ALERTE DIRECTEUR ═══ */
+.brief-box{border-radius:var(--rL);overflow:hidden;margin-bottom:2rem;border:1px solid rgba(59,123,255,.2)}
+.brief-head{background:linear-gradient(135deg,#0C1F3D,#081428);
+  padding:1rem 1.5rem;display:flex;align-items:center;gap:.8rem;
+  border-bottom:1px solid rgba(255,255,255,.06)}
+.brief-head-icon{width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blueG),#5590ff);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.brief-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff}
+.brief-head p{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:1px}
+.brief-body{padding:1.5rem;background:rgba(8,20,40,.8)}
+.brief-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem}
+@media(max-width:800px){.brief-cols{grid-template-columns:1fr}}
+
+.brief-col{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:1rem 1.1rem}
+.brief-col-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;
+  padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.brief-col-head span{font-size:.85rem}
+.brief-col-head strong{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.8);
+  font-family:var(--fD)}
+.col-status{margin-left:auto;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.col-status.green{background:var(--green);box-shadow:0 0 8px rgba(0,160,102,.5)}
+.col-status.red{background:var(--red);box-shadow:0 0 8px rgba(232,25,44,.5)}
+.col-status.gold{background:var(--gold);box-shadow:0 0 8px rgba(245,197,24,.5)}
+
+.brief-items{display:flex;flex-direction:column;gap:.4rem}
+.brief-item{font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5;
+  padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:.4rem}
+.brief-item:last-child{border-bottom:none}
+.brief-item::before{content:'·';color:rgba(255,255,255,.2);flex-shrink:0}
+.brief-item.strong{color:rgba(255,255,255,.8);font-weight:500}
+.brief-item.warn{color:#ffaa70}
+.brief-item.alert{color:#ff7b87}
+.brief-item.good{color:#4dd9a0}
+.brief-empty{font-size:.75rem;color:rgba(255,255,255,.2);font-style:italic;text-align:center;padding:.5rem 0}
+
+/* ═══ SECTION TITRE ═══ */
+.sec-title{font-family:var(--fD);font-weight:700;font-size:.95rem;color:#fff;
+  margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.sec-title-line{flex:1;height:1px;background:var(--bdrDk)}
+.sec-title-count{font-size:.7rem;color:rgba(255,255,255,.25);font-weight:400;font-family:var(--fB)}
+
+/* ═══ MODULE CARDS ═══ */
+.modules-list{display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem}
+.mod-card{background:rgba(255,255,255,.03);border:1px solid var(--bdrDk);
+  border-radius:var(--rL);overflow:hidden;transition:border-color .2s,transform .15s}
+.mod-card:hover{border-color:rgba(59,123,255,.2);transform:translateY(-1px)}
+.mod-card-top{padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem;cursor:pointer}
+.mod-prog-badge{width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.mod-info{flex:1;min-width:0}
+.mod-name{font-weight:700;font-size:.85rem;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-meta{font-size:.68rem;color:rgba(255,255,255,.3);margin-top:2px;display:flex;gap:.75rem}
+.mod-scores{display:flex;gap:.6rem;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.mod-score-pill{padding:.25rem .65rem;border-radius:20px;font-size:.7rem;font-weight:700;
+  display:flex;align-items:center;gap:.3rem;border:1px solid}
+.mod-score-pill.stars{background:rgba(245,197,24,.1);border-color:rgba(245,197,24,.3);color:var(--gold)}
+.mod-score-pill.sat{background:rgba(59,123,255,.1);border-color:rgba(59,123,255,.25);color:#7BA7FF}
+.mod-score-pill.yn{background:rgba(0,160,102,.1);border-color:rgba(0,160,102,.25);color:var(--green)}
+.mod-score-pill.bad{background:rgba(232,25,44,.1);border-color:rgba(232,25,44,.25);color:#ff7b87}
+.mod-score-pill.warn{background:rgba(232,120,42,.1);border-color:rgba(232,120,42,.25);color:#ffaa70}
+.mod-alert-flag{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:.85rem;flex-shrink:0}
+.mod-alert-flag.red{background:rgba(232,25,44,.15)}
+.mod-alert-flag.gold{background:rgba(245,197,24,.12)}
+.mod-alert-flag.green{background:rgba(0,160,102,.12)}
+.mod-expand{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.04);
+  border:1px solid var(--bdrDk);color:rgba(255,255,255,.3);font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.mod-card.open .mod-expand{background:rgba(59,123,255,.1);color:#7BA7FF;transform:rotate(180deg)}
+
+/* MODULE DETAIL */
+.mod-detail{display:none;border-top:1px solid var(--bdrDk);background:rgba(0,0,0,.15)}
+.mod-card.open .mod-detail{display:block;animation:fadeIn .25s ease both}
+.mod-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border-bottom:1px solid var(--bdrDk)}
+@media(max-width:700px){.mod-detail-grid{grid-template-columns:1fr}}
+.mod-detail-col{padding:1rem 1.2rem}
+.mod-detail-col:first-child{border-right:1px solid var(--bdrDk)}
+.md-label{font-size:.65rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:rgba(255,255,255,.25);margin-bottom:.6rem}
+.md-bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+.md-bar-name{font-size:.75rem;color:rgba(255,255,255,.55);min-width:140px;flex-shrink:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.md-bar-track{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.md-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.md-bar-val{font-size:.7rem;font-weight:700;min-width:28px;text-align:right}
+
+/* AGENDA PROF */
+.agenda-box{background:rgba(232,25,44,.06);border:1px solid rgba(232,25,44,.2);
+  border-radius:12px;padding:1rem 1.2rem;margin:0 1.2rem 1.2rem}
+.agenda-title{font-family:var(--fD);font-weight:700;font-size:.8rem;color:#ff7b87;
+  margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.agenda-list{display:flex;flex-direction:column;gap:.3rem}
+.agenda-item{font-size:.78rem;color:rgba(255,255,255,.65);
+  display:flex;gap:.5rem;align-items:flex-start;line-height:1.45}
+.agenda-item .ag-icon{flex-shrink:0;font-size:.8rem;margin-top:.05rem}
+.agenda-item .ag-text{flex:1}
+.agenda-item.critical .ag-text{color:#ff7b87;font-weight:600}
+.agenda-item.warning .ag-text{color:#ffaa70}
+
+/* COMMENTS */
+.comments-section{padding:0 1.2rem 1.2rem}
+.comments-title{font-size:.65rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:rgba(255,255,255,.2);margin-bottom:.6rem}
+.comment-list{display:flex;flex-direction:column;gap:.5rem}
+.comment-chip{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  border-radius:8px;padding:.55rem .8rem;font-size:.75rem;
+  color:rgba(255,255,255,.5);line-height:1.5;position:relative}
+.comment-chip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.comment-chip.fort::before{background:var(--green)}
+.comment-chip.faible::before{background:var(--red)}
+.comment-chip.suggestion::before{background:var(--gold)}
+.comment-chip .cc-type{font-size:.6rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:.2rem}
+.comment-chip.fort .cc-type{color:var(--green)}
+.comment-chip.faible .cc-type{color:#ff7b87}
+.comment-chip.suggestion .cc-type{color:var(--gold)}
+
+/* ═══ TABLEAU PROG ═══ */
+.prog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:2rem}
+@media(max-width:700px){.prog-grid{grid-template-columns:1fr}}
+.prog-card{background:rgba(255,255,255,.03);border:1px solid var(--bdrDk);
+  border-radius:var(--rL);padding:1.3rem;transition:border-color .2s}
+.prog-card:hover{border-color:rgba(59,123,255,.2)}
+.prog-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.prog-icon-box{width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.prog-name{font-family:var(--fD);font-weight:700;font-size:.95rem;color:#fff}
+.prog-count{font-size:.68rem;color:rgba(255,255,255,.3)}
+.prog-score-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem}
+.prog-big-score{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1}
+.prog-big-label{font-size:.65rem;color:rgba(255,255,255,.3);margin-top:.2rem}
+.mini-bars{display:flex;flex-direction:column;gap:.3rem;flex:1}
+.mini-bar-row{display:flex;align-items:center;gap:.5rem}
+.mini-bar-lbl{font-size:.65rem;color:rgba(255,255,255,.3);min-width:65px}
+.mini-bar-track{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.mini-bar-fill{height:100%;border-radius:2px}
+
+/* ═══ VIDE STATE ═══ */
+.empty-state{text-align:center;padding:4rem 2rem;animation:fadeIn .4s ease both}
+.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.4}
+.empty-title{font-family:var(--fD);font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.4);margin-bottom:.5rem}
+.empty-sub{font-size:.82rem;color:rgba(255,255,255,.2);line-height:1.6;max-width:380px;margin:0 auto 1.5rem}
+.empty-demo-btn{padding:.5rem 1.2rem;border-radius:8px;background:rgba(59,123,255,.15);
+  border:1px solid rgba(59,123,255,.3);color:#7BA7FF;font-size:.78rem;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:var(--fB)}
+.empty-demo-btn:hover{background:rgba(59,123,255,.25)}
+
+/* ═══ FILTRE BAR ═══ */
+.filter-bar{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+.filter-chip{padding:.3rem .8rem;border-radius:20px;font-size:.72rem;font-weight:600;
+  background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s}
+.filter-chip:hover{border-color:rgba(59,123,255,.3);color:rgba(255,255,255,.7)}
+.filter-chip.act{background:rgba(59,123,255,.15);border-color:rgba(59,123,255,.4);color:#7BA7FF}
+.filter-chip.red-chip.act{background:rgba(232,25,44,.1);border-color:rgba(232,25,44,.35);color:#ff7b87}
+.filter-chip.gold-chip.act{background:rgba(245,197,24,.1);border-color:rgba(245,197,24,.35);color:var(--gold)}
+.filter-chip.green-chip.act{background:rgba(0,160,102,.1);border-color:rgba(0,160,102,.3);color:var(--green)}
+.filter-spacer{flex:1}
+
+/* ═══ LOADING ═══ */
+.loading-overlay{position:fixed;inset:0;background:#060f1e;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  transition:opacity .5s}
+.loading-overlay.done{opacity:0;pointer-events:none}
+.spin-ring{width:40px;height:40px;border:3px solid rgba(59,123,255,.2);
+  border-top-color:var(--blueG);border-radius:50%;animation:spin 1s linear infinite}
+.loading-text{font-size:.8rem;color:rgba(255,255,255,.35)}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;
+  background:#1a2f52;border:1px solid rgba(59,123,255,.35);
+  border-radius:10px;padding:.7rem 1.1rem;font-size:.78rem;color:#fff;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  animation:fadeUp .3s ease both;
+  max-width:320px;line-height:1.4}
+
+/* ═══ MODAL COMMENTAIRES ═══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;
+  display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex;animation:fadeIn .2s ease both}
+.modal-box{background:#0c1f3d;border:1px solid rgba(59,123,255,.3);
+  border-radius:var(--rL);padding:1.5rem;width:100%;max-width:560px;
+  max-height:80vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.modal-head h3{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff}
+.modal-close{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.5);font-size:.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.modal-close:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ═══ RESPONSIVE SIDEBAR ═══ */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .content{padding:1.2rem}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .brief-cols{grid-template-columns:1fr}
+  .prog-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spin-ring"></div>
+  <div class="loading-text">Analyse des évaluations…</div>
+</div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="top-logo">CT</div>
+    <div class="top-brand">Canado <span>Technique</span><small>Centre de Formation · Haïti</small></div>
+    <div class="top-sep"></div>
+    <div class="top-title">
+      📊 Rapport de Pilotage
+      <span class="top-title-badge">Direction</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="top-live"></div>
+    <span style="font-size:.68rem;color:rgba(255,255,255,.25)" id="lastRefresh">—</span>
+    <button class="top-btn" onclick="refreshData()">↺ Actualiser</button>
+    <button class="top-btn primary" onclick="loadDemoData()">⚙ Données démo</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-label">Vue générale</div>
+    <div class="nav-item act" data-section="synthese" onclick="goSection('synthese', this)">
+      <span class="ni">📊</span> Synthèse direction
+    </div>
+    <div class="nav-item" data-section="programmes" onclick="goSection('programmes', this)">
+      <span class="ni">🎓</span> Par programme
+    </div>
+    <div class="sidebar-label">Détail modules</div>
+    <div class="nav-item" data-section="modules" onclick="goSection('modules', this)">
+      <span class="ni">📋</span> Tous les modules
+      <span class="nav-badge" id="alertBadge">0</span>
+    </div>
+    <div class="nav-item" data-section="alertes" onclick="goSection('alertes', this)">
+      <span class="ni">🚨</span> Alertes critiques
+      <span class="nav-badge" id="alertBadge2">0</span>
+    </div>
+    <div class="sidebar-label">Commentaires</div>
+    <div class="nav-item" data-section="verbatim" onclick="goSection('verbatim', this)">
+      <span class="ni">💬</span> Verbatim étudiants
+    </div>
+    <div class="sidebar-label">Profs</div>
+    <div class="nav-item" data-section="profs" onclick="goSection('profs', this)">
+      <span class="ni">👨‍🏫</span> Agenda de rencontres
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content" id="mainContent">
+
+    <!-- ══ SECTION SYNTHESE ══ -->
+    <div class="section act" id="sec-synthese">
+      <div class="page-head">
+        <div class="page-head-row">
+          <div>
+            <h1>Synthèse de pilotage</h1>
+            <p>Tableau de bord consolidé des évaluations étudiants — tous programmes confondus</p>
+          </div>
+          <div class="last-update">🕐 Données au <span id="dateDisplay">—</span></div>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card blue">
+          <div class="kpi-icon">📝</div>
+          <div class="kpi-val" id="kpi-total">—</div>
+          <div class="kpi-label">Évaluations reçues</div>
+          <div class="kpi-trend neutral" id="kpi-modules-eval">— modules évalués</div>
+        </div>
+        <div class="kpi-card gold">
+          <div class="kpi-icon">⭐</div>
+          <div class="kpi-val" id="kpi-stars">—</div>
+          <div class="kpi-label">Note moyenne globale / 5</div>
+          <div class="kpi-trend" id="kpi-stars-trend">—</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-icon">😊</div>
+          <div class="kpi-val" id="kpi-satis">—</div>
+          <div class="kpi-label">Satisfaction globale</div>
+          <div class="kpi-trend" id="kpi-satis-trend">—</div>
+        </div>
+        <div class="kpi-card red">
+          <div class="kpi-icon">🚨</div>
+          <div class="kpi-val" id="kpi-alertes">—</div>
+          <div class="kpi-label">Modules à surveiller</div>
+          <div class="kpi-trend down" id="kpi-alertes-sub">nécessitent attention</div>
+        </div>
+      </div>
+
+      <!-- BRIEF DIRECTION -->
+      <div class="brief-box" id="briefBox">
+        <div class="brief-head">
+          <div class="brief-head-icon">🧭</div>
+          <div>
+            <h2>Briefing direction — l'essentiel en 30 secondes</h2>
+            <p>Synthèse automatique à partir des évaluations reçues</p>
+          </div>
+        </div>
+        <div class="brief-body">
+          <div class="brief-cols">
+            <div class="brief-col">
+              <div class="brief-col-head">
+                <span>✅</span>
+                <strong>Points forts</strong>
+                <div class="col-status green"></div>
+              </div>
+              <div class="brief-items" id="brief-forts"></div>
+            </div>
+            <div class="brief-col">
+              <div class="brief-col-head">
+                <span>⚠️</span>
+                <strong>Points à améliorer</strong>
+                <div class="col-status gold"></div>
+              </div>
+              <div class="brief-items" id="brief-faibles"></div>
+            </div>
+            <div class="brief-col">
+              <div class="brief-col-head">
+                <span>🗣️</span>
+                <strong>À évoquer avec les profs</strong>
+                <div class="col-status red"></div>
+              </div>
+              <div class="brief-items" id="brief-profs"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOP / BOTTOM MODULES -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem" id="topBottomGrid">
+        <div>
+          <div class="sec-title">🏆 Modules les mieux notés <div class="sec-title-line"></div></div>
+          <div id="topModules" class="modules-list"></div>
+        </div>
+        <div>
+          <div class="sec-title">⚠️ Modules les plus faibles <div class="sec-title-line"></div></div>
+          <div id="bottomModules" class="modules-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SECTION PROGRAMMES ══ -->
+    <div class="section" id="sec-programmes">
+      <div class="page-head">
+        <h1>Vue par programme</h1>
+        <p>Comparaison des 4 filières selon les évaluations étudiants</p>
+      </div>
+      <div class="prog-grid" id="progGrid"></div>
+    </div>
+
+    <!-- ══ SECTION MODULES ══ -->
+    <div class="section" id="sec-modules">
+      <div class="page-head">
+        <h1>Tous les modules évalués</h1>
+        <p>Cliquez sur un module pour voir le détail et les points à aborder avec le professeur</p>
+      </div>
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-chip act" data-filter="all" onclick="setFilter('all', this)">Tous</button>
+        <button class="filter-chip red-chip" data-filter="critical" onclick="setFilter('critical', this)">🚨 Critiques</button>
+        <button class="filter-chip gold-chip" data-filter="warning" onclick="setFilter('warning', this)">⚠️ À surveiller</button>
+        <button class="filter-chip green-chip" data-filter="good" onclick="setFilter('good', this)">✅ Satisfaisants</button>
+        <div class="filter-spacer"></div>
+        <span style="font-size:.7rem;color:rgba(255,255,255,.25)" id="filterCount"></span>
+      </div>
+      <div id="allModules" class="modules-list"></div>
+    </div>
+
+    <!-- ══ SECTION ALERTES ══ -->
+    <div class="section" id="sec-alertes">
+      <div class="page-head">
+        <h1>Alertes critiques</h1>
+        <p>Modules avec note inférieure à 2.5/5 ou satisfaction inférieure à 50% — action requise</p>
+      </div>
+      <div id="alertesContent" class="modules-list"></div>
+    </div>
+
+    <!-- ══ SECTION VERBATIM ══ -->
+    <div class="section" id="sec-verbatim">
+      <div class="page-head">
+        <h1>Verbatim étudiants</h1>
+        <p>Tous les commentaires libres reçus, classés par type</p>
+      </div>
+      <div id="verbatimContent"></div>
+    </div>
+
+    <!-- ══ SECTION PROFS ══ -->
+    <div class="section" id="sec-profs">
+      <div class="page-head">
+        <h1>Agenda de rencontres professeurs</h1>
+        <p>Pour chaque professeur, les points précis à aborder en entretien — générés automatiquement depuis les évaluations</p>
+      </div>
+      <div id="profsContent"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL COMMENTAIRES -->
+<div class="modal-overlay" id="commentModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle">Commentaires</h3>
+      <button class="modal-close" onclick="closeCommentModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   ÉTAT GLOBAL
+════════════════════════════════════════════════ */
+let allEvals = [];
+let currentFilter = 'all';
+let moduleStats = {};   // code → stats agrégées
+
+/* ════════════════════════════════════════════════
+   CHARGEMENT DONNÉES
+════════════════════════════════════════════════ */
+function loadData() {
+  try {
+    const raw = localStorage.getItem('canado_evaluations');
+    allEvals = raw ? JSON.parse(raw) : [];
+  } catch(e) { allEvals = []; }
+}
+
+function refreshData() {
+  loadData();
+  buildStats();
+  renderAll();
+  showToast('✓ Données actualisées — ' + allEvals.length + ' évaluations');
+  document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+}
+
+/* ════════════════════════════════════════════════
+   DONNÉES DE DÉMO
+════════════════════════════════════════════════ */
+function loadDemoData() {
+  const MODULES_DEMO = [
+    { code:'TRI-01', titre:'Métier et formation', prog:'TRI', prof:'Prof. Jean-Baptiste' },
+    { code:'TRI-02', titre:'Santé et sécurité', prog:'TRI', prof:'Prof. Jean-Baptiste' },
+    { code:'TRI-03', titre:'Arithmétique binaire', prog:'TRI', prof:'Prof. Desrosiers' },
+    { code:'TRI-04', titre:'Modèle OSI / TCP-IP', prog:'TRI', prof:'Prof. Desrosiers' },
+    { code:'TRI-05', titre:'Câblage structuré', prog:'TRI', prof:'Prof. Larose' },
+    { code:'MEI-01', titre:'Métier et formation', prog:'MEI', prof:'Prof. Geffrard' },
+    { code:'MEI-02', titre:'Utilisation ordinateur', prog:'MEI', prof:'Prof. Geffrard' },
+    { code:'MEI-07', titre:'Usinage manuel', prog:'MEI', prof:'Prof. Pierre-Louis' },
+    { code:'ELM-01', titre:'Métier et formation', prog:'ELM', prof:'Prof. Morency' },
+    { code:'TEL-01', titre:'Métier et formation', prog:'TEL', prof:'Prof. Augustin' },
+  ];
+
+  const SCENARIOS = [
+    // Scénario bon module
+    { clarte:5, prof:5, supports:4, rythme:4, utilite:5, environnement:4,
+      satis_global:5, satis_charge:5, satis_recommande:5,
+      yn_objectifs:'oui', yn_questions:'oui', yn_pratique:'oui', yn_pret:'oui', yn_materiel:'oui',
+      fort:'Les explications du prof sont très claires, j\'ai tout compris.', faible:'Rien à signaler.', suggestion:'' },
+    { clarte:4, prof:5, supports:5, rythme:4, utilite:4, environnement:4,
+      satis_global:4, satis_charge:5, satis_recommande:5,
+      yn_objectifs:'oui', yn_questions:'oui', yn_pratique:'oui', yn_pret:'oui', yn_materiel:'oui',
+      fort:'Les exercices pratiques sont très utiles.', faible:'', suggestion:'Plus de travaux pratiques svp.' },
+    // Scénario moyen
+    { clarte:3, prof:3, supports:3, rythme:2, environnement:3, utilite:3,
+      satis_global:3, satis_charge:3, satis_recommande:3,
+      yn_objectifs:'oui', yn_questions:'non', yn_pratique:'oui', yn_pret:'non', yn_materiel:'non',
+      fort:'Le contenu est intéressant.', faible:'Le rythme est trop rapide, difficile de suivre.', suggestion:'Revoir le rythme du cours.' },
+    { clarte:2, prof:3, supports:2, rythme:2, environnement:2, utilite:3,
+      satis_global:2, satis_charge:1, satis_recommande:2,
+      yn_objectifs:'non', yn_questions:'non', yn_pratique:'non', yn_pret:'non', yn_materiel:'non',
+      fort:'', faible:'Le matériel est insuffisant, les explications manquent de clarté.', suggestion:'Il faut plus d\'équipements.' },
+    // Scénario critique
+    { clarte:1, prof:2, supports:1, rythme:1, environnement:1, utilite:2,
+      satis_global:1, satis_charge:1, satis_recommande:1,
+      yn_objectifs:'non', yn_questions:'non', yn_pratique:'non', yn_pret:'non', yn_materiel:'non',
+      fort:'', faible:'Le prof n\'explique pas bien. On ne comprend rien.', suggestion:'Il faut changer de méthode pédagogique.' },
+  ];
+
+  const demoEvals = [];
+  const NOW = new Date();
+
+  MODULES_DEMO.forEach((mod, mi) => {
+    const nb = 5 + Math.floor(Math.random() * 8); // 5 à 12 étudiants
+    for (let i = 0; i < nb; i++) {
+      // Distribution: TRI-03 et MEI-07 ont de mauvaises notes
+      let scenIdx;
+      if (mod.code === 'TRI-03' || mod.code === 'MEI-07') {
+        scenIdx = Math.random() < .6 ? 4 : 3;
+      } else if (mod.code === 'TRI-05' || mod.code === 'ELM-01') {
+        scenIdx = Math.random() < .7 ? 0 : 1;
+      } else {
+        const r = Math.random();
+        scenIdx = r < .3 ? 0 : r < .55 ? 1 : r < .75 ? 2 : 3;
+      }
+      const sc = SCENARIOS[scenIdx];
+      const d = new Date(NOW - Math.random() * 14 * 24 * 3600000);
+      const ratings = { clarte:sc.clarte, prof:sc.prof, supports:sc.supports,
+        rythme:sc.rythme, utilite:sc.utilite, environnement:sc.environnement };
+      const satis = { satis_global:sc.satis_global, satis_charge:sc.satis_charge,
+        satis_recommande:sc.satis_recommande };
+      const yesno = { yn_objectifs:sc.yn_objectifs, yn_questions:sc.yn_questions,
+        yn_pratique:sc.yn_pratique, yn_pret:sc.yn_pret, yn_materiel:sc.yn_materiel };
+      const starVals = Object.values(ratings);
+      const avgStars = (starVals.reduce((a,b)=>a+b,0)/starVals.length).toFixed(1);
+      const satisVals = Object.values(satis);
+      const avgSatis = Math.round(satisVals.reduce((a,b)=>a+b,0)/satisVals.length*20);
+      const ynVals = Object.values(yesno);
+      const pctOui = Math.round(ynVals.filter(v=>v==='oui').length/ynVals.length*100);
+      demoEvals.push({
+        moduleCode: mod.code, moduleTitre: mod.titre,
+        progCode: mod.prog, profNom: mod.prof,
+        timestamp: d.toISOString(), mode:'demo',
+        ratings, satis, yesno,
+        comments: { fort:sc.fort, faible:sc.faible, suggestion:sc.suggestion },
+        scores: { avgStars, avgSatis, pctOui }
+      });
+    }
+  });
+
+  localStorage.setItem('canado_evaluations', JSON.stringify(demoEvals));
+  allEvals = demoEvals;
+  buildStats();
+  renderAll();
+  showToast('✓ ' + demoEvals.length + ' évaluations démo chargées');
+}
+
+/* ════════════════════════════════════════════════
+   CALCUL STATISTIQUES
+════════════════════════════════════════════════ */
+function buildStats() {
+  moduleStats = {};
+  allEvals.forEach(ev => {
+    const k = ev.moduleCode;
+    if (!moduleStats[k]) {
+      moduleStats[k] = {
+        code: k, titre: ev.moduleTitre, prog: ev.progCode,
+        prof: ev.profNom || null, count: 0,
+        stars: {}, satis: {}, yesno: {}, comments: { fort:[], faible:[], suggestion:[] }
+      };
+    }
+    const m = moduleStats[k];
+    m.count++;
+    // Stars
+    if (ev.ratings) {
+      Object.entries(ev.ratings).forEach(([key, val]) => {
+        if (!m.stars[key]) m.stars[key] = [];
+        m.stars[key].push(val);
+      });
+    }
+    // Satis
+    if (ev.satis) {
+      Object.entries(ev.satis).forEach(([key, val]) => {
+        if (!m.satis[key]) m.satis[key] = [];
+        m.satis[key].push(val);
+      });
+    }
+    // YN
+    if (ev.yesno) {
+      Object.entries(ev.yesno).forEach(([key, val]) => {
+        if (!m.yesno[key]) m.yesno[key] = { oui:0, non:0 };
+        m.yesno[key][val]++;
+      });
+    }
+    // Comments
+    if (ev.comments) {
+      if (ev.comments.fort && ev.comments.fort.trim()) m.comments.fort.push(ev.comments.fort.trim());
+      if (ev.comments.faible && ev.comments.faible.trim()) m.comments.faible.push(ev.comments.faible.trim());
+      if (ev.comments.suggestion && ev.comments.suggestion.trim()) m.comments.suggestion.push(ev.comments.suggestion.trim());
+    }
+  });
+
+  // Calculer moyennes pour chaque module
+  Object.values(moduleStats).forEach(m => {
+    // Avg stars par critère
+    m.avgStars = {};
+    let totalStarSum = 0, totalStarN = 0;
+    Object.entries(m.stars).forEach(([k, vals]) => {
+      m.avgStars[k] = vals.reduce((a,b)=>a+b,0) / vals.length;
+      totalStarSum += m.avgStars[k];
+      totalStarN++;
+    });
+    m.avgStarGlobal = totalStarN ? totalStarSum / totalStarN : null;
+
+    // Avg satis
+    m.avgSatis = {};
+    let satisSum = 0, satisN = 0;
+    Object.entries(m.satis).forEach(([k, vals]) => {
+      m.avgSatis[k] = vals.reduce((a,b)=>a+b,0) / vals.length;
+      satisSum += m.avgSatis[k];
+      satisN++;
+    });
+    m.avgSatisGlobal = satisN ? Math.round(satisSum / satisN * 20) : null;
+
+    // % Oui par question
+    m.pctOui = {};
+    let ouiSum = 0, ouiN = 0;
+    Object.entries(m.yesno).forEach(([k, counts]) => {
+      const total = counts.oui + counts.non;
+      m.pctOui[k] = total ? Math.round(counts.oui / total * 100) : null;
+      if (m.pctOui[k] !== null) { ouiSum += m.pctOui[k]; ouiN++; }
+    });
+    m.pctOuiGlobal = ouiN ? Math.round(ouiSum / ouiN) : null;
+
+    // Score composite et statut
+    const s = m.avgStarGlobal || 0;
+    const sat = m.avgSatisGlobal || 0;
+    const yn = m.pctOuiGlobal || 0;
+    m.score = (s/5*0.5 + sat/100*0.3 + yn/100*0.2) * 100;
+
+    if (s < 2.5 || sat < 45 || yn < 40) m.status = 'critical';
+    else if (s < 3.5 || sat < 65 || yn < 65) m.status = 'warning';
+    else m.status = 'good';
+
+    // Générer l'agenda prof (points à aborder)
+    m.agendaProf = generateAgenda(m);
+  });
+}
+
+/* ════════════════════════════════════════════════
+   GÉNÉRATION AGENDA PROF
+════════════════════════════════════════════════ */
+const CRITERE_LABELS = {
+  clarte: 'Clarté du contenu',
+  prof: 'Qualité pédagogique',
+  supports: 'Supports pédagogiques',
+  rythme: 'Rythme du cours',
+  utilite: 'Utilité pratique / terrain',
+  environnement: 'Environnement / matériel'
+};
+const SATIS_LABELS = {
+  satis_global: 'Satisfaction globale',
+  satis_charge: 'Charge de travail',
+  satis_recommande: 'Recommandation du module'
+};
+const YN_LABELS = {
+  yn_objectifs: 'Clarté des objectifs en début de cours',
+  yn_questions: 'Possibilité de poser des questions',
+  yn_pratique: 'Lien exercices ↔ théorie',
+  yn_pret: 'Sentiment de préparation à l\'évaluation',
+  yn_materiel: 'Disponibilité du matériel'
+};
+
+function generateAgenda(m) {
+  const agenda = [];
+
+  // Critères stars sous 3
+  Object.entries(m.avgStars).forEach(([k, v]) => {
+    if (v < 2.5) agenda.push({ level:'critical', text: `${CRITERE_LABELS[k]||k} noté ${v.toFixed(1)}/5 en moyenne — à revoir en priorité` });
+    else if (v < 3.5) agenda.push({ level:'warning', text: `${CRITERE_LABELS[k]||k} noté ${v.toFixed(1)}/5 — marge d'amélioration` });
+  });
+
+  // YN à problème
+  Object.entries(m.pctOui).forEach(([k, pct]) => {
+    if (pct !== null && pct < 50) agenda.push({ level:'critical', text: `Seulement ${pct}% ont répondu "Oui" à : ${YN_LABELS[k]||k}` });
+    else if (pct !== null && pct < 70) agenda.push({ level:'warning', text: `${pct}% ont répondu "Oui" à : ${YN_LABELS[k]||k}` });
+  });
+
+  // Satisfaction globale
+  if (m.avgSatisGlobal !== null && m.avgSatisGlobal < 50) {
+    agenda.push({ level:'critical', text: `Satisfaction globale très basse (${m.avgSatisGlobal}%) — intervention urgente` });
+  }
+
+  // Commentaires faibles comme signal
+  if (m.comments.faible.length >= 2) {
+    agenda.push({ level:'warning', text: `${m.comments.faible.length} étudiants ont signalé des difficultés — voir verbatim` });
+  }
+
+  // Si tout va bien
+  if (agenda.length === 0 && m.avgStarGlobal >= 4) {
+    agenda.push({ level:'good', text: `Module bien noté (${m.avgStarGlobal.toFixed(1)}/5) — féliciter et maintenir le cap` });
+  }
+
+  return agenda;
+}
+
+/* ════════════════════════════════════════════════
+   RENDU GLOBAL
+════════════════════════════════════════════════ */
+function renderAll() {
+  const mods = Object.values(moduleStats);
+  document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+  // KPI
+  const totalEvals = allEvals.length;
+  const avgStars = mods.length ? (mods.reduce((a,m) => a + (m.avgStarGlobal||0), 0) / mods.length) : 0;
+  const avgSatis = mods.length ? Math.round(mods.reduce((a,m) => a + (m.avgSatisGlobal||0), 0) / mods.length) : 0;
+  const alertCount = mods.filter(m => m.status === 'critical').length;
+  const warnCount = mods.filter(m => m.status === 'warning').length;
+
+  document.getElementById('kpi-total').textContent = totalEvals;
+  document.getElementById('kpi-modules-eval').textContent = mods.length + ' modules évalués';
+  document.getElementById('kpi-stars').textContent = avgStars.toFixed(1);
+  const starClass = avgStars >= 4 ? 'up' : avgStars >= 3 ? 'neutral' : 'down';
+  document.getElementById('kpi-stars-trend').className = 'kpi-trend ' + starClass;
+  document.getElementById('kpi-stars-trend').textContent = avgStars >= 4 ? '↑ Excellent niveau' : avgStars >= 3 ? '→ Niveau acceptable' : '↓ En dessous de la moyenne';
+  document.getElementById('kpi-satis').textContent = avgSatis + '%';
+  const satisClass = avgSatis >= 70 ? 'up' : avgSatis >= 50 ? 'neutral' : 'down';
+  document.getElementById('kpi-satis-trend').className = 'kpi-trend ' + satisClass;
+  document.getElementById('kpi-satis-trend').textContent = avgSatis >= 70 ? '↑ Étudiants satisfaits' : avgSatis >= 50 ? '→ À améliorer' : '↓ Insatisfaction notable';
+  document.getElementById('kpi-alertes').textContent = alertCount;
+  document.getElementById('kpi-alertes-sub').textContent = warnCount + ' en surveillance · ' + alertCount + ' critiques';
+
+  // Badge sidebar
+  document.getElementById('alertBadge').textContent = alertCount + warnCount;
+  document.getElementById('alertBadge2').textContent = alertCount;
+
+  // Brief direction
+  renderBrief(mods, avgStars, avgSatis, alertCount);
+
+  // Top/Bottom modules
+  const sorted = [...mods].sort((a,b) => (b.avgStarGlobal||0) - (a.avgStarGlobal||0));
+  renderMiniModuleList('topModules', sorted.slice(0, 3), false);
+  renderMiniModuleList('bottomModules', sorted.slice(-3).reverse(), true);
+
+  // All modules
+  renderModuleList('allModules', mods, currentFilter);
+  renderModuleList('alertesContent', mods.filter(m => m.status === 'critical'), null);
+
+  // Programmes
+  renderProgrammes(mods);
+
+  // Verbatim
+  renderVerbatim(mods);
+
+  // Profs agenda
+  renderProfsAgenda(mods);
+
+  if (mods.length === 0) {
+    document.getElementById('allModules').innerHTML = emptyState();
+    document.getElementById('alertesContent').innerHTML = `<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-title">Aucune alerte</div><div class="empty-sub">Aucun module critique pour le moment.</div></div>`;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   BRIEF DIRECTION
+════════════════════════════════════════════════ */
+function renderBrief(mods, avgStars, avgSatis, alertCount) {
+  const forts = [];
+  const faibles = [];
+  const profPoints = [];
+
+  if (!mods.length) {
+    ['brief-forts','brief-faibles','brief-profs'].forEach(id => {
+      document.getElementById(id).innerHTML = '<div class="brief-empty">Aucune donnée disponible</div>';
+    });
+    return;
+  }
+
+  // Points forts globaux
+  const goodMods = mods.filter(m => m.status === 'good');
+  if (goodMods.length) forts.push({ cls:'good', text: `${goodMods.length} module(s) avec satisfaction ≥ 70% — bonne dynamique pédagogique` });
+
+  // Meilleur critère moyen
+  const allCriteria = {};
+  mods.forEach(m => {
+    Object.entries(m.avgStars).forEach(([k,v]) => {
+      if (!allCriteria[k]) allCriteria[k] = [];
+      allCriteria[k].push(v);
+    });
+  });
+  let bestK = null, bestV = 0;
+  Object.entries(allCriteria).forEach(([k,vals]) => {
+    const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+    if (avg > bestV) { bestV = avg; bestK = k; }
+  });
+  if (bestK && bestV >= 3.5) forts.push({ cls:'good', text: `${CRITERE_LABELS[bestK]||bestK} est le critère le mieux évalué (${bestV.toFixed(1)}/5 en moyenne)` });
+
+  const highOui = Object.entries(mods[0]?.pctOui || {}).filter(([,v]) => v >= 80);
+  if (highOui.length) forts.push({ cls:'good', text: `Bonne interaction en classe : la majorité des étudiants peuvent poser des questions` });
+  if (forts.length === 0) forts.push({ cls:'', text: `Données insuffisantes pour identifier des points forts significatifs` });
+
+  // Points faibles
+  const critMods = mods.filter(m => m.status === 'critical');
+  const warnMods = mods.filter(m => m.status === 'warning');
+  if (critMods.length) faibles.push({ cls:'alert', text: `${critMods.length} module(s) en situation critique — intervention immédiate nécessaire` });
+  if (warnMods.length) faibles.push({ cls:'warn', text: `${warnMods.length} module(s) sous la moyenne — à surveiller de près` });
+
+  // Pire critère
+  let worstK = null, worstV = 5;
+  Object.entries(allCriteria).forEach(([k,vals]) => {
+    const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+    if (avg < worstV) { worstV = avg; worstK = k; }
+  });
+  if (worstK && worstV < 3.5) faibles.push({ cls:'warn', text: `${CRITERE_LABELS[worstK]||worstK} est le point le plus faible (${worstV.toFixed(1)}/5) — à corriger en priorité` });
+
+  // Matériel
+  const mats = mods.filter(m => m.pctOui.yn_materiel !== undefined && m.pctOui.yn_materiel < 60);
+  if (mats.length) faibles.push({ cls:'warn', text: `${mats.length} module(s) signalent un manque de matériel ou d'équipements` });
+  if (faibles.length === 0) faibles.push({ cls:'', text: `Aucun point critique majeur identifié pour le moment` });
+
+  // Points profs
+  critMods.slice(0,3).forEach(m => {
+    const worstCrit = Object.entries(m.avgStars).sort((a,b)=>a[1]-b[1])[0];
+    profPoints.push({ cls:'strong', text: `[${m.code}] Revoir avec ${m.prof||'le prof'} : ${worstCrit ? (CRITERE_LABELS[worstCrit[0]]||worstCrit[0]) : 'pédagogie globale'}` });
+  });
+  warnMods.slice(0,2).forEach(m => {
+    profPoints.push({ cls:'', text: `[${m.code}] Suivre l'évolution avec ${m.prof||'le prof'} — amélioration attendue` });
+  });
+  if (profPoints.length === 0) profPoints.push({ cls:'good', text: `Aucun entretien urgent requis — suivi de routine conseillé` });
+
+  const render = (id, items) => {
+    document.getElementById(id).innerHTML = items.map(i =>
+      `<div class="brief-item ${i.cls||''}">${i.text}</div>`
+    ).join('');
+  };
+  render('brief-forts', forts);
+  render('brief-faibles', faibles);
+  render('brief-profs', profPoints);
+}
+
+/* ════════════════════════════════════════════════
+   LISTE MODULES
+════════════════════════════════════════════════ */
+const PROG_COLORS = {
+  TRI:  'rgba(59,130,246,.2)',
+  MEI:  'rgba(239,68,68,.2)',
+  ELM:  'rgba(16,185,129,.2)',
+  TEL:  'rgba(245,158,11,.2)'
+};
+const PROG_ICONS = { TRI:'🌐', MEI:'🔩', ELM:'⚙️', TEL:'📡' };
+
+function renderMiniModuleList(containerId, mods, bottom) {
+  const c = document.getElementById(containerId);
+  if (!mods.length) { c.innerHTML = '<div class="empty-state" style="padding:2rem"><div class="empty-icon" style="font-size:1.5rem">📭</div><div class="empty-title" style="font-size:.85rem">Aucune donnée</div></div>'; return; }
+  c.innerHTML = mods.map(m => miniModCard(m, bottom)).join('');
+}
+
+function miniModCard(m, isBottom) {
+  const starColor = (m.avgStarGlobal||0) >= 4 ? 'stars' : (m.avgStarGlobal||0) >= 3 ? 'sat' : 'bad';
+  const flag = m.status === 'critical' ? '<div class="mod-alert-flag red">🚨</div>' :
+               m.status === 'warning'  ? '<div class="mod-alert-flag gold">⚠️</div>' :
+               '<div class="mod-alert-flag green">✅</div>';
+  return `
+  <div class="mod-card" style="cursor:default">
+    <div class="mod-card-top">
+      <div class="mod-prog-badge" style="background:${PROG_COLORS[m.prog]||'rgba(255,255,255,.1)'}">${PROG_ICONS[m.prog]||'📋'}</div>
+      <div class="mod-info">
+        <div class="mod-name">${m.code} — ${m.titre}</div>
+        <div class="mod-meta"><span>${m.count} éval.</span><span>${m.prof||'—'}</span></div>
+      </div>
+      <div class="mod-scores">
+        <div class="mod-score-pill ${starColor}">⭐ ${m.avgStarGlobal?.toFixed(1)||'—'}/5</div>
+        <div class="mod-score-pill sat">${m.avgSatisGlobal||'—'}%</div>
+      </div>
+      ${flag}
+    </div>
+  </div>`;
+}
+
+function renderModuleList(containerId, mods, filter) {
+  const c = document.getElementById(containerId);
+  let filtered = mods;
+  if (filter && filter !== 'all') filtered = mods.filter(m => m.status === filter);
+
+  if (document.getElementById('filterCount')) {
+    document.getElementById('filterCount').textContent = filtered.length + ' module(s)';
+  }
+
+  if (!filtered.length) { c.innerHTML = emptyState(); return; }
+  filtered = [...filtered].sort((a,b) => (a.avgStarGlobal||0) - (b.avgStarGlobal||0));
+  c.innerHTML = filtered.map(m => fullModCard(m)).join('');
+}
+
+function fullModCard(m) {
+  const starColor = (m.avgStarGlobal||0) >= 4 ? 'stars' : (m.avgStarGlobal||0) >= 3 ? 'sat' : 'bad';
+  const satColor  = (m.avgSatisGlobal||0) >= 70 ? 'yn'  : (m.avgSatisGlobal||0) >= 50 ? 'sat' : 'bad';
+  const ynColor   = (m.pctOuiGlobal||0) >= 70  ? 'yn'   : (m.pctOuiGlobal||0) >= 50  ? 'sat' : 'bad';
+  const flag = m.status === 'critical' ? '<div class="mod-alert-flag red">🚨</div>' :
+               m.status === 'warning'  ? '<div class="mod-alert-flag gold">⚠️</div>' :
+               '<div class="mod-alert-flag green">✅</div>';
+
+  // Barres critères
+  const barRows = Object.entries(m.avgStars).map(([k,v]) => {
+    const pct = Math.round(v/5*100);
+    const col = v >= 4 ? '#00A066' : v >= 3 ? '#3B7BFF' : v >= 2 ? '#E8782A' : '#E8192C';
+    return `<div class="md-bar-row">
+      <div class="md-bar-name">${CRITERE_LABELS[k]||k}</div>
+      <div class="md-bar-track"><div class="md-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="md-bar-val" style="color:${col}">${v.toFixed(1)}</div>
+    </div>`;
+  }).join('');
+
+  // Barres oui/non
+  const ynRows = Object.entries(m.pctOui).map(([k,pct]) => {
+    if (pct === null) return '';
+    const col = pct >= 70 ? '#00A066' : pct >= 50 ? '#3B7BFF' : '#E8192C';
+    return `<div class="md-bar-row">
+      <div class="md-bar-name">${YN_LABELS[k]||k}</div>
+      <div class="md-bar-track"><div class="md-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="md-bar-val" style="color:${col}">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  // Agenda prof
+  const agendaHtml = m.agendaProf.length ? m.agendaProf.map(ag =>
+    `<div class="agenda-item ${ag.level}"><span class="ag-icon">${ag.level==='critical'?'🔴':ag.level==='warning'?'🟡':'🟢'}</span><span class="ag-text">${ag.text}</span></div>`
+  ).join('') : '<div class="agenda-item"><span class="ag-icon">✅</span><span class="ag-text">Aucun point critique — maintenir le cap</span></div>';
+
+  // Commentaires
+  const cFort = m.comments.fort.slice(0,2).map(c => `<div class="comment-chip fort"><div class="cc-type">✅ Point fort</div>${c}</div>`).join('');
+  const cFaible = m.comments.faible.slice(0,2).map(c => `<div class="comment-chip faible"><div class="cc-type">⚠️ Point faible</div>${c}</div>`).join('');
+  const hasMore = m.comments.fort.length > 2 || m.comments.faible.length > 2 || m.comments.suggestion.length > 0;
+  const moreBtn = hasMore ? `<button onclick="openComments('${m.code}')" style="margin-top:.5rem;padding:.3rem .8rem;border-radius:7px;background:rgba(59,123,255,.1);border:1px solid rgba(59,123,255,.2);color:#7BA7FF;font-size:.7rem;cursor:pointer;font-family:var(--fB)">Voir tous les commentaires (${m.comments.fort.length + m.comments.faible.length + m.comments.suggestion.length})</button>` : '';
+
+  return `
+  <div class="mod-card" id="mcard-${m.code}">
+    <div class="mod-card-top" onclick="toggleMod('${m.code}')">
+      <div class="mod-prog-badge" style="background:${PROG_COLORS[m.prog]||'rgba(255,255,255,.1)'}">${PROG_ICONS[m.prog]||'📋'}</div>
+      <div class="mod-info">
+        <div class="mod-name">${m.code} — ${m.titre}</div>
+        <div class="mod-meta">
+          <span>📊 ${m.count} évaluation(s)</span>
+          <span>👤 ${m.prog}</span>
+          ${m.prof ? `<span>🏫 ${m.prof}</span>` : ''}
+        </div>
+      </div>
+      <div class="mod-scores">
+        <div class="mod-score-pill ${starColor}">⭐ ${m.avgStarGlobal?.toFixed(1)||'—'}/5</div>
+        <div class="mod-score-pill ${satColor}">😊 ${m.avgSatisGlobal||'—'}%</div>
+        <div class="mod-score-pill ${ynColor}">✓ ${m.pctOuiGlobal||'—'}%</div>
+      </div>
+      ${flag}
+      <div class="mod-expand">▼</div>
+    </div>
+    <div class="mod-detail">
+      <div class="mod-detail-grid">
+        <div class="mod-detail-col">
+          <div class="md-label">Critères détaillés (notes /5)</div>
+          ${barRows}
+        </div>
+        <div class="mod-detail-col">
+          <div class="md-label">Questions Oui / Non (%Oui)</div>
+          ${ynRows}
+        </div>
+      </div>
+      <div class="agenda-box">
+        <div class="agenda-title">🗣️ Points à aborder avec le professeur</div>
+        <div class="agenda-list">${agendaHtml}</div>
+      </div>
+      ${(cFort || cFaible) ? `<div class="comments-section">
+        <div class="comments-title">Exemples de commentaires</div>
+        <div class="comment-list">${cFort}${cFaible}${moreBtn}</div>
+      </div>` : ''}
+    </div>
+  </div>`;
+}
+
+function toggleMod(code) {
+  const el = document.getElementById('mcard-' + code);
+  if (el) el.classList.toggle('open');
+}
+
+/* ════════════════════════════════════════════════
+   PROGRAMMES
+════════════════════════════════════════════════ */
+function renderProgrammes(mods) {
+  const byProg = {};
+  mods.forEach(m => {
+    if (!byProg[m.prog]) byProg[m.prog] = [];
+    byProg[m.prog].push(m);
+  });
+  const c = document.getElementById('progGrid');
+  if (!Object.keys(byProg).length) { c.innerHTML = emptyState(); return; }
+
+  c.innerHTML = Object.entries(byProg).map(([prog, pmods]) => {
+    const avgStar = pmods.reduce((a,m)=>a+(m.avgStarGlobal||0),0)/pmods.length;
+    const avgSatis = pmods.reduce((a,m)=>a+(m.avgSatisGlobal||0),0)/pmods.length;
+    const critCount = pmods.filter(m=>m.status==='critical').length;
+    const totalEvals = pmods.reduce((a,m)=>a+m.count,0);
+    const col = prog==='TRI'?'#3B7BFF':prog==='MEI'?'#EF4444':prog==='ELM'?'#10B981':'#F59E0B';
+    const miniBarData = [
+      { label:'Note /5', val: Math.round(avgStar/5*100), color: col },
+      { label:'Satisfaction', val: Math.round(avgSatis), color: col },
+      { label:'Modules OK', val: Math.round(pmods.filter(m=>m.status==='good').length/pmods.length*100), color:'#00A066' },
+    ];
+    return `
+    <div class="prog-card">
+      <div class="prog-head">
+        <div class="prog-icon-box" style="background:${col}22">${PROG_ICONS[prog]||'📋'}</div>
+        <div>
+          <div class="prog-name">${prog}</div>
+          <div class="prog-count">${pmods.length} modules · ${totalEvals} évaluations</div>
+        </div>
+        ${critCount > 0 ? `<div style="margin-left:auto;padding:.2rem .6rem;border-radius:8px;background:rgba(232,25,44,.15);border:1px solid rgba(232,25,44,.25);font-size:.65rem;font-weight:700;color:#ff7b87">${critCount} critique${critCount>1?'s':''}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:1.2rem;margin-bottom:.9rem">
+        <div>
+          <div class="prog-big-score" style="color:${col}">${avgStar.toFixed(1)}</div>
+          <div class="prog-big-label">Note moy. / 5</div>
+        </div>
+        <div class="mini-bars" style="flex:1">
+          ${miniBarData.map(b => `
+          <div class="mini-bar-row">
+            <div class="mini-bar-lbl">${b.label}</div>
+            <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${b.val}%;background:${b.color}"></div></div>
+            <div style="font-size:.68rem;font-weight:700;color:${b.color};min-width:30px;text-align:right">${b.val}%</div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--bdrDk);padding-top:.75rem">
+        ${pmods.filter(m=>m.status!=='good').slice(0,2).map(m =>
+          `<div style="font-size:.72rem;color:rgba(255,255,255,.4);padding:.2rem 0;display:flex;gap:.4rem">
+            <span>${m.status==='critical'?'🚨':'⚠️'}</span>
+            <span>${m.code} — ${m.titre.slice(0,35)}${m.titre.length>35?'…':''}</span>
+          </div>`
+        ).join('') || `<div style="font-size:.72rem;color:var(--green)">✅ Tous les modules sont satisfaisants</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   VERBATIM
+════════════════════════════════════════════════ */
+function renderVerbatim(mods) {
+  const c = document.getElementById('verbatimContent');
+  const allFort = [], allFaible = [], allSugg = [];
+  mods.forEach(m => {
+    m.comments.fort.forEach(t => allFort.push({ code:m.code, text:t }));
+    m.comments.faible.forEach(t => allFaible.push({ code:m.code, text:t }));
+    m.comments.suggestion.forEach(t => allSugg.push({ code:m.code, text:t }));
+  });
+
+  if (!allFort.length && !allFaible.length && !allSugg.length) {
+    c.innerHTML = emptyState(); return;
+  }
+
+  const renderSection = (title, icon, items, cls) => `
+    <div style="margin-bottom:2rem">
+      <div class="sec-title">${icon} ${title} <div class="sec-title-line"></div><span class="sec-title-count">${items.length}</span></div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        ${items.map(i => `<div class="comment-chip ${cls}">
+          <div class="cc-type">${i.code}</div>
+          ${i.text}
+        </div>`).join('') || '<div style="color:rgba(255,255,255,.2);font-size:.78rem;font-style:italic">Aucun commentaire</div>'}
+      </div>
+    </div>`;
+
+  c.innerHTML = renderSection('Points forts signalés', '✅', allFort, 'fort') +
+                renderSection('Points faibles signalés', '⚠️', allFaible, 'faible') +
+                renderSection('Suggestions', '💡', allSugg, 'suggestion');
+}
+
+/* ════════════════════════════════════════════════
+   AGENDA PROFS
+════════════════════════════════════════════════ */
+function renderProfsAgenda(mods) {
+  const c = document.getElementById('profsContent');
+  const byProf = {};
+  mods.forEach(m => {
+    const p = m.prof || 'Professeur non identifié';
+    if (!byProf[p]) byProf[p] = [];
+    byProf[p].push(m);
+  });
+
+  if (!Object.keys(byProf).length) { c.innerHTML = emptyState(); return; }
+
+  c.innerHTML = Object.entries(byProf).sort((a,b) => {
+    const critA = a[1].filter(m=>m.status==='critical').length;
+    const critB = b[1].filter(m=>m.status==='critical').length;
+    return critB - critA;
+  }).map(([prof, pmods]) => {
+    const critMods = pmods.filter(m=>m.status==='critical');
+    const warnMods = pmods.filter(m=>m.status==='warning');
+    const urgency = critMods.length > 0 ? 'critical' : warnMods.length > 0 ? 'warning' : 'good';
+    const urgLabel = urgency==='critical'?'🔴 Entretien urgent':urgency==='warning'?'🟡 Entretien conseillé':'🟢 Suivi de routine';
+    const urgColor = urgency==='critical'?'rgba(232,25,44,.15)':urgency==='warning'?'rgba(245,197,24,.1)':'rgba(0,160,102,.1)';
+    const urgBorderColor = urgency==='critical'?'rgba(232,25,44,.3)':urgency==='warning'?'rgba(245,197,24,.25)':'rgba(0,160,102,.25)';
+
+    const allAgendaItems = pmods.flatMap(m => m.agendaProf.map(ag => ({ ...ag, modCode: m.code })));
+    const critItems = allAgendaItems.filter(ag => ag.level === 'critical');
+    const warnItems = allAgendaItems.filter(ag => ag.level === 'warning');
+
+    return `
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--bdrDk);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem">
+      <div style="padding:1rem 1.3rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--bdrDk)">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(59,123,255,.12);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">👨‍🏫</div>
+        <div style="flex:1">
+          <div style="font-family:var(--fD);font-weight:700;font-size:.9rem;color:#fff">${prof}</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.3);margin-top:2px">${pmods.map(m=>m.code).join(' · ')}</div>
+        </div>
+        <div style="padding:.25rem .8rem;border-radius:20px;background:${urgColor};border:1px solid ${urgBorderColor};font-size:.68rem;font-weight:700;color:#fff">${urgLabel}</div>
+      </div>
+      <div style="padding:1rem 1.3rem">
+        ${critItems.length ? `
+        <div style="margin-bottom:.75rem">
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#ff7b87;margin-bottom:.4rem">Points critiques à aborder</div>
+          ${critItems.map(ag => `<div style="font-size:.78rem;color:rgba(255,255,255,.7);padding:.3rem 0 .3rem .8rem;border-left:2px solid var(--red);margin-bottom:.3rem;line-height:1.4">[${ag.modCode}] ${ag.text}</div>`).join('')}
+        </div>` : ''}
+        ${warnItems.length ? `
+        <div style="margin-bottom:.75rem">
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:.4rem">Points à améliorer</div>
+          ${warnItems.map(ag => `<div style="font-size:.78rem;color:rgba(255,255,255,.55);padding:.3rem 0 .3rem .8rem;border-left:2px solid var(--gold);margin-bottom:.3rem;line-height:1.4">[${ag.modCode}] ${ag.text}</div>`).join('')}
+        </div>` : ''}
+        ${!critItems.length && !warnItems.length ? `<div style="font-size:.78rem;color:var(--green)">✅ Aucun point critique — féliciter le professeur pour la qualité de son enseignement</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   FILTRES & NAVIGATION
+════════════════════════════════════════════════ */
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('act'));
+  if (btn) btn.classList.add('act');
+  renderModuleList('allModules', Object.values(moduleStats), filter);
+}
+
+function goSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('act'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('act'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.add('act');
+  if (el) el.classList.add('act');
+}
+
+/* ════════════════════════════════════════════════
+   MODAL COMMENTAIRES
+════════════════════════════════════════════════ */
+function openComments(code) {
+  const m = moduleStats[code];
+  if (!m) return;
+  document.getElementById('modalTitle').textContent = `💬 Commentaires — ${code}`;
+  const all = [
+    ...m.comments.fort.map(t => ({ cls:'fort', type:'✅ Point fort', text:t })),
+    ...m.comments.faible.map(t => ({ cls:'faible', type:'⚠️ Point faible', text:t })),
+    ...m.comments.suggestion.map(t => ({ cls:'suggestion', type:'💡 Suggestion', text:t })),
+  ];
+  document.getElementById('modalBody').innerHTML = all.length ?
+    `<div style="display:flex;flex-direction:column;gap:.5rem">${all.map(i =>
+      `<div class="comment-chip ${i.cls}"><div class="cc-type">${i.type}</div>${i.text}</div>`
+    ).join('')}</div>` :
+    '<p style="color:rgba(255,255,255,.3);font-size:.82rem">Aucun commentaire pour ce module.</p>';
+  document.getElementById('commentModal').classList.add('open');
+}
+function closeCommentModal() { document.getElementById('commentModal').classList.remove('open'); }
+function closeModal(e) { if (e.target === document.getElementById('commentModal')) closeCommentModal(); }
+
+/* ════════════════════════════════════════════════
+   UTILS
+════════════════════════════════════════════════ */
+function emptyState() {
+  return `<div class="empty-state">
+    <div class="empty-icon">📭</div>
+    <div class="empty-title">Aucune évaluation disponible</div>
+    <div class="empty-sub">Les évaluations soumises par les étudiants apparaîtront ici automatiquement. Utilisez les données démo pour prévisualiser le rapport.</div>
+    <button class="empty-demo-btn" onclick="loadDemoData()">⚙ Charger des données de démonstration</button>
+  </div>`;
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toastEl');
+  if (t) t.remove();
+  const el = document.createElement('div');
+  el.className = 'toast'; el.id = 'toastEl'; el.textContent = msg;
+  document.body.appendChild(el);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.remove(), 3000);
+}
+
+/* ════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  buildStats();
+  renderAll();
+  document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').classList.add('done');
+  }, 700);
+});
+</script>
+</body>
+</html>
