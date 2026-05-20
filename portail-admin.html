@@ -347,6 +347,7 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
       <div class="fg"><label>Programmes enseignés *</label>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem" id="pm-progs-check"></div>
       </div>
+      <div id="pm-modules-wrap" style="margin-top:.2rem"></div>
       <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:.5rem" onclick="saveProf()">💾 Enregistrer le compte</button>
     </div>
   </div>
@@ -360,6 +361,28 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
 ════════════════════════════════════ */
 let currentUser = null;
 let currentDossier = null;
+
+/* ════════════════════════════════════
+   MODULES PAR PROGRAMME
+════════════════════════════════════ */
+const MODULES_ADMIN = {
+  TRI:{
+    1:[{code:'TRI-01',titre:"Métier et formation en réseaux"},{code:'TRI-02',titre:"Utilisation de l'ordinateur"},{code:'TRI-03',titre:"Principes d'électricité"},{code:'TRI-04',titre:"Composantes matérielles"},{code:'TRI-05',titre:"Système d'exploitation"},{code:'TRI-06',titre:"Câblage réseau"},{code:'TRI-07',titre:"Conception de réseaux locaux"},{code:'TRI-08',titre:"Logiciels de bureautique"},{code:'TRI-09',titre:"Sécurité informatique de base"},{code:'TRI-10',titre:"Réseau sans fil"},{code:'TRI-11',titre:"Introduction à TCP/IP"},{code:'TRI-12',titre:"Protocoles de routage"},{code:'TRI-13',titre:"Technologies et services internet"}],
+    2:[{code:'TRI-14',titre:"Virtualisation et cloud"},{code:'TRI-15',titre:"Administration Linux"},{code:'TRI-16',titre:"CCNA — Commutation avancée"},{code:'TRI-17',titre:"CCNA — Routage avancé"},{code:'TRI-18',titre:"Administration Windows Server"},{code:'TRI-19',titre:"Sécurité réseau avancée"},{code:'TRI-20',titre:"VPN et accès distant"},{code:'TRI-21',titre:"Supervision réseau"},{code:'TRI-22',titre:"Projet intégrateur"},{code:'TRI-23',titre:"Entrepreneuriat"},{code:'TRI-24',titre:"Préparation marché du travail"}]
+  },
+  MEI:{
+    1:[{code:'MEI-01',titre:"Métier et formation"},{code:'MEI-02',titre:"Utilisation de l'ordinateur"},{code:'MEI-03',titre:"Croquis, schémas et dessins"},{code:'MEI-04',titre:"Interprétation de plans"},{code:'MEI-05',titre:"Santé et sécurité au travail"},{code:'MEI-06',titre:"Instruments de mesure"},{code:'MEI-07',titre:"Usinage manuel"},{code:'MEI-08',titre:"Coupage et soudage"},{code:'MEI-09',titre:"Usinage par machines-outils"},{code:'MEI-10',titre:"Lubrification"}],
+    2:[{code:'MEI-14',titre:"Éléments de transmission"},{code:'MEI-15',titre:"Tubes, tuyaux et boyaux"},{code:'MEI-16',titre:"Pompes hydrauliques"},{code:'MEI-19',titre:"Équilibrage"},{code:'MEI-20',titre:"Analyse de vibrations"},{code:'MEI-25',titre:"Maintenance préventive"},{code:'MEI-26',titre:"Installation d'équipement"},{code:'MEI-27',titre:"Dépannage d'équipement"}]
+  },
+  ELM:{
+    1:[{code:'ELM-01',titre:"Métier et formation"},{code:'ELM-02',titre:"Sécurité et environnement"},{code:'ELM-03',titre:"Circuits CC et CA"},{code:'ELM-04',titre:"Lecture de plans"},{code:'ELM-05',titre:"Moteurs électriques"},{code:'ELM-06',titre:"Installations électriques"},{code:'ELM-07',titre:"Automatismes industriels"},{code:'ELM-08',titre:"Pneumatique"},{code:'ELM-09',titre:"Moteurs, générateurs et transformateurs"}],
+    2:[{code:'ELM-10',titre:"Automates programmables (API)"},{code:'ELM-11',titre:"Commande de moteurs avancée"},{code:'ELM-12',titre:"Variateurs de vitesse"},{code:'ELM-13',titre:"Maintenance électromécanique"},{code:'ELM-14',titre:"Énergies renouvelables"},{code:'ELM-15',titre:"Projet intégrateur"},{code:'ELM-16',titre:"Entrepreneuriat"},{code:'ELM-17',titre:"Marché du travail"}]
+  },
+  TEL:{
+    1:[{code:'TEL-01',titre:"Métier et formation en télécoms"},{code:'TEL-02',titre:"Circuits CC et CA"},{code:'TEL-03',titre:"Composantes électroniques"},{code:'TEL-04',titre:"Signaux et modulation"},{code:'TEL-05',titre:"Antennes et propagation"},{code:'TEL-06',titre:"Réseaux téléphoniques"},{code:'TEL-07',titre:"Circuit d'électronique numérique"},{code:'TEL-08',titre:"Systèmes de transmission"},{code:'TEL-09',titre:"Fibre optique"}],
+    2:[{code:'TEL-10',titre:"Protocoles de communication avancés"},{code:'TEL-11',titre:"4G/5G et réseaux mobiles"},{code:'TEL-12',titre:"Satellite et radiodiffusion"},{code:'TEL-13',titre:"Sécurité des télécoms"},{code:'TEL-14',titre:"Projet intégrateur télécoms"},{code:'TEL-15',titre:"CompTIA A+ — préparation"}]
+  }
+};
 
 /* ════════════════════════════════════
    AUTH
@@ -854,17 +877,22 @@ function renderProfs(){
   const container=document.getElementById('profs-list');
   if(!users.length){container.innerHTML='<div class="empty"><div class="empty-icon">👨‍🏫</div><h4>Aucun professeur</h4></div>';return;}
   container.innerHTML=`<div class="tw"><table>
-    <thead><tr><th>Nom</th><th>E-mail</th><th>Titre</th><th>Programmes</th><th>Actions</th></tr></thead>
-    <tbody>${users.map(u=>`<tr>
-      <td style="font-weight:700">${u.nom}</td>
+    <thead><tr><th>Nom</th><th>E-mail</th><th>Programmes</th><th>Modules assignés</th><th>Actions</th></tr></thead>
+    <tbody>${users.map(u=>{
+      const totalMods = Object.values(u.modules||{}).reduce((s,arr)=>s+arr.length,0);
+      const modsSummary = Object.entries(u.modules||{}).map(([p,codes])=>
+        `<span style="font-size:.65rem;background:#f0f4ff;color:#1B3A8C;padding:1px 6px;border-radius:5px;border:1px solid #c0ccee;margin-right:2px;margin-bottom:2px;display:inline-block">${p}: ${codes.length}</span>`
+      ).join('');
+      return`<tr>
+      <td><div style="font-weight:700">${u.nom}</div><div style="font-size:.7rem;color:var(--g500)">${u.titre||'—'}</div></td>
       <td style="font-size:.78rem">${u.email}</td>
-      <td style="font-size:.78rem;color:var(--g500)">${u.titre||'—'}</td>
-      <td>${(u.programmes||[]).map(p=>`<span style="font-size:.68rem;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:8px;font-weight:700;margin-right:3px">${p}</span>`).join('')}</td>
+      <td>${(u.programmes||[]).map(p=>`<span style="font-size:.7rem;background:#e8eeff;color:#1B3A8C;padding:2px 8px;border-radius:8px;font-weight:700;margin-right:3px;display:inline-block">${p}</span>`).join('')}</td>
+      <td>${totalMods ? `<div style="display:flex;flex-wrap:wrap;gap:2px">${modsSummary}</div><div style="font-size:.68rem;color:var(--g500);margin-top:2px">${totalMods} module${totalMods>1?'s':''} au total</div>`:'<span style="font-size:.75rem;color:var(--g300)">Aucun module assigné</span>'}</td>
       <td><div style="display:flex;gap:.3rem">
         <button class="btn btn-outline btn-sm" onclick="editProf('${u.id}')">✏️ Modifier</button>
         ${u.id!=='adm1'?`<button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red)" onclick="deleteProf('${u.id}')">🗑</button>`:''}
       </div></td>
-    </tr>`).join('')}</tbody></table></div>`;
+    </tr>`;}).join('')}</tbody></table></div>`;
 }
 
 function buildProgCheckboxes() {
@@ -872,7 +900,7 @@ function buildProgCheckboxes() {
   if(!wrap) return;
   wrap.innerHTML = ['TRI','MEI','ELM','TEL'].map(p=>`
     <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;background:#f0f4ff;border:1.5px solid var(--g200);border-radius:8px;padding:.4rem .85rem;font-size:.82rem;font-weight:700;color:var(--text);transition:all .18s;user-select:none" id="plabel-${p}">
-      <input type="checkbox" value="${p}" id="pcheck-${p}" style="width:15px;height:15px;cursor:pointer;accent-color:var(--blue)" onchange="updateProgLabel('${p}')"> ${p}
+      <input type="checkbox" value="${p}" id="pcheck-${p}" style="width:15px;height:15px;cursor:pointer;accent-color:var(--blue)" onchange="updateProgLabel('${p}');buildModulesSection()"> ${p}
     </label>`).join('');
 }
 
@@ -884,12 +912,70 @@ function updateProgLabel(p){
   else          { lbl.style.background='#f0f4ff'; lbl.style.borderColor='var(--g200)'; lbl.style.color='var(--text)'; }
 }
 
+function buildModulesSection() {
+  const progs = ['TRI','MEI','ELM','TEL'].filter(p=>document.getElementById('pcheck-'+p)?.checked);
+  const wrap  = document.getElementById('pm-modules-wrap');
+  if(!wrap) return;
+  if(!progs.length) { wrap.innerHTML=''; return; }
+
+  const progColors = {TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+
+  wrap.innerHTML = progs.map(p=>{
+    const all = [...(MODULES_ADMIN[p]?.[1]||[]),...(MODULES_ADMIN[p]?.[2]||[])];
+    return `
+    <div style="border:1.5px solid var(--g200);border-radius:10px;overflow:hidden;margin-bottom:.7rem">
+      <div style="background:${progColors[p]};padding:.5rem .9rem;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-family:var(--fD);font-weight:700;font-size:.8rem;color:#fff">${p} — Modules enseignés</div>
+        <div style="display:flex;gap:.5rem">
+          <button type="button" style="font-size:.68rem;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:2px 8px;cursor:pointer" onclick="selectAllMods('${p}',true)">Tout</button>
+          <button type="button" style="font-size:.68rem;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:2px 8px;cursor:pointer" onclick="selectAllMods('${p}',false)">Aucun</button>
+        </div>
+      </div>
+      <div style="padding:.6rem .8rem;display:flex;flex-direction:column;gap:.3rem;max-height:200px;overflow-y:auto;background:#fff" id="mods-${p}">
+        ${all.map(m=>`
+        <label style="display:flex;align-items:center;gap:.5rem;padding:.3rem .4rem;border-radius:6px;cursor:pointer;font-size:.78rem;color:var(--text);transition:background .15s" onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background=''">
+          <input type="checkbox" id="mod-${m.code}" value="${m.code}" data-prog="${p}" style="width:13px;height:13px;cursor:pointer;accent-color:${progColors[p]};flex-shrink:0">
+          <code style="font-size:.7rem;font-weight:700;color:${progColors[p]};background:rgba(0,0,0,.05);padding:1px 5px;border-radius:4px;flex-shrink:0">${m.code}</code>
+          <span style="line-height:1.3">${m.titre}</span>
+        </label>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectAllMods(prog, checked) {
+  const wrap = document.getElementById('mods-'+prog);
+  if(!wrap) return;
+  wrap.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked=checked);
+}
+
+function getSelectedModules() {
+  const result = {};
+  ['TRI','MEI','ELM','TEL'].forEach(p=>{
+    const wrap = document.getElementById('mods-'+p);
+    if(!wrap) return;
+    const selected = [...wrap.querySelectorAll('input:checked')].map(cb=>cb.value);
+    if(selected.length) result[p] = selected;
+  });
+  return result;
+}
+
+function setSelectedModules(modulesMap) {
+  if(!modulesMap) return;
+  Object.entries(modulesMap).forEach(([prog, codes])=>{
+    codes.forEach(code=>{
+      const cb = document.getElementById('mod-'+code);
+      if(cb) cb.checked=true;
+    });
+  });
+}
+
 function openProfModal(id){
   document.getElementById('prof-modal-title').textContent=id?'✏️ Modifier le compte':'👨‍🏫 Nouveau compte professeur';
   document.getElementById('pm-id').value=id||'';
   ['pm-nom','pm-titre','pm-email','pm-password'].forEach(x=>document.getElementById(x).value='');
-  // Build checkboxes dynamically (fixes ${p} literal bug)
   buildProgCheckboxes();
+  buildModulesSection(); // reset
   if(id){
     const users=JSON.parse(localStorage.getItem('canado_users')||'[]');
     const u=users.find(x=>x.id===id);
@@ -902,6 +988,8 @@ function openProfModal(id){
       const cb=document.getElementById('pcheck-'+p);
       if(cb){cb.checked=true;updateProgLabel(p);}
     });
+    buildModulesSection(); // build with programmes checked
+    setTimeout(()=>setSelectedModules(u.modules||{}),30); // then set modules
   }
   document.getElementById('prof-modal').classList.add('show');
 }
@@ -921,10 +1009,11 @@ function saveProf(){
   const email=document.getElementById('pm-email').value.trim();
   const pass=document.getElementById('pm-password').value;
   const progs=['TRI','MEI','ELM','TEL'].filter(p=>document.getElementById('pcheck-'+p)?.checked);
+  const modules=getSelectedModules();
   if(!nom||!email||!pass){toast('⚠️ Nom, email et mot de passe obligatoires');return;}
   if(!progs.length){toast('⚠️ Sélectionnez au moins un programme');return;}
   const users=JSON.parse(localStorage.getItem('canado_users')||'[]');
-  const prof={id:id||'pr_'+Date.now(),email,password:pass,role:'prof',nom,titre,programmes:progs};
+  const prof={id:id||'pr_'+Date.now(),email,password:pass,role:'prof',nom,titre,programmes:progs,modules};
   if(id){const idx=users.findIndex(u=>u.id===id);if(idx>=0)users[idx]=prof;else users.push(prof);}
   else users.push(prof);
   localStorage.setItem('canado_users',JSON.stringify(users));

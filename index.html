@@ -2435,7 +2435,7 @@ function renderProgs() {
           </div>
           <div style="margin-left:auto;display:flex;gap:.5rem">
             <button class="btn btn-blue btn-sm" onclick="showLogin()">Accéder →</button>
-            <button class="btn btn-red btn-sm" onclick="openPayModal('${prog}','1')">S'inscrire</button>
+            <button class="btn btn-red btn-sm" onclick="openInscriptionModal('regulier','${prog}','',{annee:'1'})">S'inscrire</button>
           </div>
         </div>
         <div class="tw">
@@ -2477,7 +2477,7 @@ function renderProgs() {
           </div>
           <div style="margin-left:auto;display:flex;gap:.5rem">
             <button class="btn btn-blue btn-sm" onclick="showLogin()">Accéder →</button>
-            <button class="btn btn-red btn-sm" onclick="openPayModal('${prog}','2')">S'inscrire</button>
+            <button class="btn btn-red btn-sm" onclick="openInscriptionModal('regulier','${prog}','',{annee:'2'})">S'inscrire</button>
           </div>
         </div>
         <div class="tw">
@@ -2548,7 +2548,7 @@ function renderCours() {
         <p style="font-size:.76rem;color:var(--g500);line-height:1.65;margin-bottom:.9rem">Le professeur active chaque module. Connectez-vous avec votre matricule pour accéder aux cours disponibles.</p>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap">
           <button class="btn btn-blue btn-sm" onclick="event.stopPropagation();showLogin()" style="font-size:.78rem">🔓 Se connecter</button>
-          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openPayModal('${prog}','1')" style="font-size:.78rem">S'inscrire</button>
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openInscriptionModal('regulier','${prog}','',{annee:'1'})" style="font-size:.78rem">S'inscrire</button>
         </div>
       </div>
     </div>`;
@@ -3040,15 +3040,15 @@ function renderPaiement() {
         </div>
         <div style="padding:1rem">
           <div style="display:flex;flex-direction:column;gap:.5rem">
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:#e8eeff;border:1px solid #c0ccee;cursor:pointer" onclick="openPayModal('${prog}','1')">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:#e8eeff;border:1px solid #c0ccee;cursor:pointer" onclick="openInscriptionModal('regulier','${prog}','',{annee:'1'})">
               <div><div style="font-size:.8rem;font-weight:600;color:#0B1525">1ère Année</div><div style="font-size:.7rem;color:#3A4A6B">${MODULES[prog].length} modules</div></div>
               <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:#0B1525">${fmtPriceDual(t.an1)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:#e8eeff;border:1px solid #c0ccee;cursor:pointer" onclick="openPayModal('${prog}','2')">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:#e8eeff;border:1px solid #c0ccee;cursor:pointer" onclick="openInscriptionModal('regulier','${prog}','',{annee:'2'})">
               <div><div style="font-size:.8rem;font-weight:600;color:#0B1525">2ème Année</div><div style="font-size:.7rem;color:#3A4A6B">${MODULES_2[prog]?.length||0} modules</div></div>
               <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:#0B1525">${fmtPriceDual(t.an2)}</div><div class="btn btn-blue btn-sm" style="margin-top:3px">S'inscrire →</div></div>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:rgba(245,197,24,.06);border:1.5px solid rgba(245,197,24,.2);cursor:pointer" onclick="openPayModal('${prog}','full')">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;border-radius:8px;background:rgba(245,197,24,.06);border:1.5px solid rgba(245,197,24,.2);cursor:pointer" onclick="openInscriptionModal('regulier','${prog}','',{annee:'full'})">
               <div><div style="font-size:.8rem;font-weight:700;color:var(--text)">⭐ Programme complet</div><div style="font-size:.7rem;color:var(--g500)">1ère + 2ème + Diplôme</div></div>
               <div style="text-align:right"><div style="font-family:var(--fD);font-weight:800;color:var(--goldD)">${fmtPriceDual(t.full)}</div><div style="font-size:.68rem;color:var(--green)">Économie ${fmtPriceDual(t.an1+t.an2-t.full)}</div></div>
             </div>
