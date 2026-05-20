@@ -648,8 +648,26 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
   cursor:pointer;transition:all .2s;white-space:nowrap}
 .cours-viewer-close:hover{background:var(--red);color:#fff}
 
-
-.cours-viewer-body{flex:1;overflow:hidden;position:relative}
+/* ── MODULE HERO — même modèle que page-hero-banner ── */
+.cv-hero{position:relative;min-height:220px;flex-shrink:0;overflow:hidden;display:flex;align-items:flex-end}
+.cv-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;
+  transition:transform .4s ease}
+.cv-hero:hover .cv-hero-bg{transform:scale(1.03)}
+.cv-hero-overlay{position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(12,31,61,.78) 60%,rgba(27,58,140,.35) 100%)}
+.cv-hero-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(to top,rgba(4,13,26,.85),transparent)}
+.cv-hero-line{position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
+.cv-hero-content{position:relative;z-index:2;padding:1.8rem 2rem 1.6rem;width:100%}
+.cv-hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.28rem .9rem;
+  border-radius:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);font-size:.68rem;font-weight:700;color:rgba(255,255,255,.85);
+  letter-spacing:.06em;margin-bottom:.65rem}
+.cv-hero-title{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;
+  line-height:1.1;margin-bottom:.7rem;max-width:700px}
+.cv-hero-meta{display:flex;gap:1.2rem;flex-wrap:wrap}
+.cv-hero-meta span{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.4rem}
+.cv-hero-meta strong{color:#fff;font-weight:700}
 .cours-viewer-body iframe{width:100%;height:100%;border:none;display:block}
 .cours-viewer-spinner{position:absolute;inset:0;display:flex;align-items:center;
   justify-content:center;background:var(--navy);flex-direction:column;gap:1rem}
@@ -5735,9 +5753,22 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ══ COURS VIEWER ══ -->
 <div class="cours-viewer" id="cours-viewer">
   <div class="cours-viewer-bar">
-    <span style="font-size:1rem">📖</span>
+    <span style="font-size:1rem" id="cv-bar-icon">📖</span>
     <span class="cours-viewer-title" id="cours-viewer-title">Cours</span>
     <button class="cours-viewer-close" onclick="closeCoursViewer()">✕ Fermer</button>
+  </div>
+
+  <!-- HERO MODULE — identique au modèle page-hero-banner (Programmes) -->
+  <div class="cv-hero" id="cv-hero">
+    <div class="cv-hero-bg"      id="cv-hero-bg"></div>
+    <div class="cv-hero-overlay" id="cv-hero-overlay"></div>
+    <div class="cv-hero-overlay-bottom"></div>
+    <div class="cv-hero-line"    id="cv-hero-line"></div>
+    <div class="cv-hero-content">
+      <div class="cv-hero-tag"   id="cv-hero-tag">📚 MODULE</div>
+      <div class="cv-hero-title" id="cv-hero-title">Chargement…</div>
+      <div class="cv-hero-meta"  id="cv-hero-meta"></div>
+    </div>
   </div>
 
   <div class="cours-viewer-body">
@@ -5771,6 +5802,38 @@ function openCoursViewer(fichier, titre) {
     _currentCoursTitle = titre || mod.title;
   }
   _currentCoursFile = fichier;
+
+  // ── Programme depuis le code du module ──
+  const rawCode  = (titre||'').split('·')[0].trim();
+  const progCode = rawCode.startsWith('TRI')?'TRI':rawCode.startsWith('MEI')?'MEI':rawCode.startsWith('ELM')?'ELM':rawCode.startsWith('TEL')?'TEL':'TRI';
+  const allM     = [...(MODULES[progCode]||[]),...(MODULES_2[progCode]||[])];
+  const modData  = allM.find(m => m.code===rawCode);
+
+  // ── Config hero par programme ──
+  const PROG_HERO = {
+    TRI:{ bg:'assets/images/hero/slide-tri.jpg', overlay:'linear-gradient(135deg,rgba(4,13,26,.92),rgba(12,31,61,.78) 55%,rgba(27,58,140,.35))', line:'linear-gradient(90deg,transparent,#3B7BFF,#1B3A8C,transparent)', icon:'🌐', label:'Réseaux Informatiques' },
+    MEI:{ bg:'assets/images/hero/slide-mei.jpg', overlay:'linear-gradient(135deg,rgba(4,13,26,.92),rgba(30,16,0,.80) 55%,rgba(139,94,0,.35))',   line:'linear-gradient(90deg,transparent,#C98A00,#8B5E00,transparent)', icon:'🔧', label:'Mécanique Industrielle'  },
+    ELM:{ bg:'assets/images/hero/slide-elm.jpg', overlay:'linear-gradient(135deg,rgba(4,13,26,.92),rgba(0,20,15,.80) 55%,rgba(0,107,70,.35))',    line:'linear-gradient(90deg,transparent,#00A066,#006B46,transparent)', icon:'⚡', label:'Électromécanique'        },
+    TEL:{ bg:'assets/images/hero/slide-tel.jpg', overlay:'linear-gradient(135deg,rgba(4,13,26,.92),rgba(20,8,40,.80) 55%,rgba(91,45,142,.35))',   line:'linear-gradient(90deg,transparent,#8A50CC,#5B2D8E,transparent)', icon:'📡', label:'Télécommunications'       },
+  };
+  const hc      = PROG_HERO[progCode] || PROG_HERO.TRI;
+  const isAn2   = !!(MODULES_2[progCode]||[]).find(m=>m.code===rawCode);
+  const anLabel = isAn2 ? '2ÈME ANNÉE' : '1ÈRE ANNÉE';
+
+  document.getElementById('cv-hero-bg').style.backgroundImage    = `url('${hc.bg}')`;
+  document.getElementById('cv-hero-overlay').style.background    = hc.overlay;
+  document.getElementById('cv-hero-line').style.background       = hc.line;
+  document.getElementById('cv-hero-tag').innerHTML               = `${hc.icon} MODULE ${progCode} · ${anLabel}`;
+  document.getElementById('cv-bar-icon').textContent             = hc.icon;
+
+  const titreClean = (titre||'').includes('·') ? (titre||'').split('·').slice(1).join('·').trim() : (titre||modData?.title||'Module');
+  document.getElementById('cv-hero-title').textContent = titreClean;
+
+  const metaEl = document.getElementById('cv-hero-meta');
+  metaEl.innerHTML = modData
+    ? `<span>⏱ Durée : <strong>${modData.dur}h</strong></span><span>🎯 Seuil : <strong>${modData.seuil}%</strong></span><span>📚 <strong>${hc.label}</strong></span>`
+    : `<span>📚 <strong>${hc.label}</strong></span>`;
+
   document.getElementById('cours-viewer-title').textContent = titre || 'Cours';
   document.getElementById('cours-spinner').style.display = 'flex';
   document.getElementById('cours-iframe').src = fichier;
@@ -5864,15 +5927,31 @@ function hideCoursSpinner() {
   const iframe = document.getElementById('cours-iframe');
   if (!iframe.src || iframe.src === 'about:blank') return;
   document.getElementById('cours-spinner').style.display = 'none';
-  // Détection contenu vide : si l'iframe est chargé mais vide, afficher un message d'aide
+
+  // ── Masquer le hero du fichier cours dans l'iframe (même domaine) ──
   try {
-    const body = iframe.contentDocument && iframe.contentDocument.body;
-    if (body && body.innerHTML.trim() === '') {
-      const spinner = document.getElementById('cours-spinner');
-      spinner.style.display = 'flex';
-      spinner.innerHTML = '<div style="text-align:center"><div style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:1rem">Le cours ne peut pas s\'afficher ici.</div><button class="btn btn-blue btn-sm" onclick="openCoursNewTab()">↗ Ouvrir dans un nouvel onglet</button></div>';
+    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (doc && doc.body) {
+      if (doc.body.innerHTML.trim() === '') {
+        const spinner = document.getElementById('cours-spinner');
+        spinner.style.display = 'flex';
+        spinner.innerHTML = '<div style="text-align:center"><div style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:1rem">Le cours ne peut pas s\'afficher ici.</div><button class="btn btn-blue btn-sm" onclick="openCoursNewTab()">↗ Ouvrir dans un nouvel onglet</button></div>';
+        return;
+      }
+      // Injecter CSS pour masquer le hero interne du fichier cours
+      // (les cours ont leur propre header/hero qu'on remplace par le nôtre)
+      const style = doc.createElement('style');
+      style.textContent = `
+        .cours-hero, .module-hero, .hero-section, .mod-hero,
+        .ep-header, .ep-hero, .cours-header,
+        [class*="hero"]:first-of-type,
+        body > *:first-child .hero,
+        .ch-hero { display: none !important; }
+        body { padding-top: 0 !important; margin-top: 0 !important; }
+      `;
+      doc.head.appendChild(style);
     }
-  } catch(e) { /* cross-origin, ignorer */ }
+  } catch(e) { /* cross-origin si hébergé ailleurs */ }
 }
 
 // Close on Escape key
