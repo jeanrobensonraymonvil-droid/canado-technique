@@ -212,12 +212,18 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
       <!-- DASHBOARD -->
       <div id="sec-dashboard">
         <div class="stat-grid" id="dash-stats"></div>
-        <div class="section">
-          <div class="section-head"><h3>📅 Mes sessions d'examens actives</h3><button class="btn btn-blue btn-sm" onclick="showSection('examens')">Voir tout →</button></div>
-          <div class="section-body"><div id="dash-examens-list"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem">
+          <div class="section">
+            <div class="section-head"><h3>📚 Mes modules assignés</h3></div>
+            <div class="section-body" id="dash-modules-assigned"></div>
+          </div>
+          <div class="section">
+            <div class="section-head"><h3>📅 Sessions actives</h3><button class="btn btn-blue btn-sm" onclick="showSection('examens')">Gérer →</button></div>
+            <div class="section-body" id="dash-examens-list"></div>
+          </div>
         </div>
         <div class="section">
-          <div class="section-head"><h3>👥 Accès étudiants actifs</h3><button class="btn btn-outline btn-sm" onclick="showSection('acces')">Voir tout →</button></div>
+          <div class="section-head"><h3>👥 Accès étudiants récents</h3><button class="btn btn-outline btn-sm" onclick="showSection('acces')">Voir tout →</button></div>
           <div class="section-body"><div id="dash-acces-list"></div></div>
         </div>
       </div>
@@ -612,11 +618,37 @@ function renderDashboard() {
   const acces = getMyAcces();
   const open = examens.filter(e=>e.statut==='ouvert').length;
 
+  // Modules assignés depuis le profil
+  const users = JSON.parse(localStorage.getItem('canado_users')||'[]');
+  const me = users.find(u=>u.id===currentUser.id);
+  const myModules = me?.modules || {};
+  const totalMods = Object.values(myModules).reduce((s,arr)=>s+arr.length,0);
+
   document.getElementById('dash-stats').innerHTML = `
     <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num">${examens.length}</div><div class="stat-label">Sessions d'examens</div></div>
     <div class="stat-card"><div class="stat-icon">🟢</div><div class="stat-num">${open}</div><div class="stat-label">Sessions actives</div></div>
     <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-num">${cds.filter(c=>c.actif).length}</div><div class="stat-label">Cours détachés actifs</div></div>
     <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num">${acces.length}</div><div class="stat-label">Accès étudiants actifs</div></div>`;
+
+  // Modules assignés
+  const modsEl = document.getElementById('dash-modules-assigned');
+  if(modsEl) {
+    const progColors = {TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+    if(!totalMods) {
+      modsEl.innerHTML='<div class="empty"><div class="empty-icon">📚</div><h4>Aucun module assigné</h4><p>L\'administration vous assignera vos modules.</p></div>';
+    } else {
+      modsEl.innerHTML = Object.entries(myModules).map(([prog,codes])=>`
+        <div style="margin-bottom:.8rem">
+          <div style="font-size:.72rem;font-weight:700;color:${progColors[prog]||'#1B3A8C'};margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem">
+            <span style="background:${progColors[prog]||'#1B3A8C'};color:#fff;padding:1px 7px;border-radius:6px;font-size:.65rem">${prog}</span>
+            ${codes.length} module${codes.length>1?'s':''}
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+            ${codes.map(code=>`<code style="font-size:.7rem;background:#f0f4ff;color:${progColors[prog]||'#1B3A8C'};padding:2px 8px;border-radius:5px;border:1px solid ${progColors[prog]||'#1B3A8C'}22;font-weight:700">${code}</code>`).join('')}
+          </div>
+        </div>`).join('');
+    }
+  }
 
   const activeExams = examens.filter(e=>e.statut==='ouvert').slice(0,3);
   document.getElementById('dash-examens-list').innerHTML = activeExams.length ? activeExams.map(e=>examCard(e)).join('') :
