@@ -191,7 +191,7 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
       <div class="sb-nav-section">Pédagogie</div>
       <button class="sb-link" id="sl-examens" onclick="showSection('examens')">📅 Gérer les examens <span class="badge" id="sb-exam-badge" style="display:none">0</span></button>
       <button class="sb-link" id="sl-cours-det" onclick="showSection('cours-det')">🛒 Cours Détachés</button>
-      <button class="sb-link" id="sl-evaluations" onclick="showSection('evaluations')">📋 Évaluations <span class="badge" id="sb-eval-badge" style="display:none">0</span></button>
+      <button class="sb-link" id="sl-acces" onclick="showSection('acces')">👥 Accès Étudiants</button>
     </nav>
     <div class="sb-footer">
       <button onclick="doLogout()">🚪 Déconnexion</button>
@@ -217,8 +217,8 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
           <div class="section-body"><div id="dash-examens-list"></div></div>
         </div>
         <div class="section">
-          <div class="section-head"><h3>📋 Dernières évaluations reçues</h3><button class="btn btn-outline btn-sm" onclick="showSection('evaluations')">Voir tout →</button></div>
-          <div class="section-body"><div id="dash-evals-list"></div></div>
+          <div class="section-head"><h3>👥 Accès étudiants actifs</h3><button class="btn btn-outline btn-sm" onclick="showSection('acces')">Voir tout →</button></div>
+          <div class="section-body"><div id="dash-acces-list"></div></div>
         </div>
       </div>
 
@@ -254,19 +254,19 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
         </div>
       </div>
 
-      <!-- ÉVALUATIONS -->
-      <div id="sec-evaluations" style="display:none">
+      <!-- ACCÈS ÉTUDIANTS -->
+      <div id="sec-acces" style="display:none">
         <div class="section">
           <div class="section-head">
-            <h3>📋 Fiches d'évaluation reçues</h3>
-            <div style="display:flex;gap:.5rem">
-              <select id="eval-filter" onchange="renderEvaluations()" style="width:auto;font-size:.78rem;padding:.3rem .6rem">
-                <option value="all">Tous les modules</option>
-              </select>
-              <button class="btn btn-outline btn-sm" onclick="exportEvals()">📥 Exporter CSV</button>
-            </div>
+            <h3>👥 Accès Étudiants aux modules</h3>
+            <button class="btn btn-blue btn-sm" onclick="openAccesModal()">+ Activer un accès</button>
           </div>
-          <div class="section-body"><div id="evaluations-table"></div></div>
+          <div class="section-body">
+            <p style="font-size:.78rem;color:var(--g500);margin-bottom:1rem;padding:.6rem .8rem;background:#f0f4ff;border-radius:8px;border:1px solid var(--g200)">
+              👥 Accordez l'accès à un module pour un étudiant individuel ou un groupe entier. Chaque accès est géré séparément et peut être révoqué à tout moment.
+            </p>
+            <div id="acces-list"></div>
+          </div>
         </div>
       </div>
 
@@ -359,11 +359,71 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
   </div>
 </div>
 
-<!-- ════ MODAL ÉVALUATION DÉTAIL ════ -->
-<div class="modal" id="eval-modal">
-  <div class="modal-box" style="max-width:500px">
-    <div class="modal-head"><h3>📋 Fiche d'évaluation</h3><button class="close-btn" onclick="document.getElementById('eval-modal').classList.remove('show')">✕</button></div>
-    <div class="modal-body" id="eval-modal-body"></div>
+<!-- ════ MODAL ACCÈS ÉTUDIANTS ════ -->
+<div class="modal" id="acces-modal">
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-head">
+      <h3 id="acces-modal-title">👥 Activer un accès module</h3>
+      <button class="close-btn" onclick="closeAccesModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ac-id">
+      <div class="fg"><label>Programme *</label>
+        <select id="ac-programme" onchange="populateAccesModules()" style="width:100%">
+          <option value="">— Sélectionner —</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Année *</label>
+          <select id="ac-annee" onchange="populateAccesModules()" style="width:100%">
+            <option value="1">1ère Année</option><option value="2">2ème Année</option>
+          </select>
+        </div>
+        <div class="fg"><label>Module *</label>
+          <select id="ac-module" style="width:100%"><option value="">— Choisir le programme d'abord —</option></select>
+        </div>
+      </div>
+
+      <!-- Type d'accès -->
+      <div class="fg">
+        <label>Type d'accès *</label>
+        <div style="display:flex;gap:.6rem;margin-top:.3rem">
+          <label style="flex:1;display:flex;align-items:center;gap:.5rem;cursor:pointer;background:#f0f4ff;border:1.5px solid var(--g200);border-radius:8px;padding:.55rem .9rem;font-size:.82rem;font-weight:600;color:var(--text);transition:all .18s" id="ac-type-ind-label">
+            <input type="radio" name="ac-type" value="individuel" id="ac-type-ind" onchange="switchAccesType()" checked style="width:15px;height:15px;accent-color:var(--blue)"> 👤 Individuel
+          </label>
+          <label style="flex:1;display:flex;align-items:center;gap:.5rem;cursor:pointer;background:#f0f4ff;border:1.5px solid var(--g200);border-radius:8px;padding:.55rem .9rem;font-size:.82rem;font-weight:600;color:var(--text);transition:all .18s" id="ac-type-grp-label">
+            <input type="radio" name="ac-type" value="groupe" id="ac-type-grp" onchange="switchAccesType()" style="width:15px;height:15px;accent-color:var(--blue)"> 👥 Groupe
+          </label>
+        </div>
+      </div>
+
+      <!-- Individuel -->
+      <div id="ac-form-ind">
+        <div class="frow">
+          <div class="fg"><label>Nom complet étudiant *</label><input type="text" id="ac-etud-nom" placeholder="Jean-Marc Duval"></div>
+          <div class="fg"><label>E-mail étudiant *</label><input type="email" id="ac-etud-email" placeholder="jean@email.com"></div>
+        </div>
+        <div class="fg"><label>Matricule (optionnel)</label><input type="text" id="ac-etud-matricule" placeholder="CT-TRI-2026-XXXX"></div>
+      </div>
+
+      <!-- Groupe -->
+      <div id="ac-form-grp" style="display:none">
+        <div class="fg"><label>Nom du groupe *</label><input type="text" id="ac-grp-nom" placeholder="Ex : Groupe A — TRI 1ère Année"></div>
+        <div class="fg">
+          <label>Liste des étudiants * <span style="font-size:.7rem;font-weight:400;color:var(--g500)">(un par ligne : Nom, email)</span></label>
+          <textarea id="ac-grp-liste" rows="5" placeholder="Jean Duval, jean@email.com&#10;Marie Joseph, marie@email.com&#10;Pierre Louis, pierre@email.com" style="resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.65rem .8rem;font-size:.8rem;color:var(--text);min-height:110px"></textarea>
+        </div>
+        <div id="ac-grp-preview" style="display:none;font-size:.75rem;color:var(--g500);background:#f0f4ff;border-radius:8px;padding:.5rem .8rem;margin-top:-.4rem">
+          <span id="ac-grp-count">0</span> étudiant(s) détectés
+        </div>
+      </div>
+
+      <div class="fg" style="margin-top:.3rem"><label>Notes / Instructions</label>
+        <textarea id="ac-notes" rows="2" placeholder="Ex. : Accès jusqu'au 30 juin. Examen prévu le 15 juin." style="resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.65rem .8rem;font-size:.8rem;color:var(--text)"></textarea>
+      </div>
+
+      <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:.5rem" onclick="saveAcces()">✅ Activer l'accès</button>
+    </div>
   </div>
 </div>
 
@@ -523,23 +583,24 @@ function populateProgrammeSelects() {
 }
 
 function showSection(sec) {
-  ['dashboard','examens','cours-det','evaluations'].forEach(s=>{
+  ['dashboard','examens','cours-det','acces'].forEach(s=>{
     const el=document.getElementById('sec-'+s);
     const sl=document.getElementById('sl-'+s);
     if(el) el.style.display=s===sec?'block':'none';
     if(sl) sl.className=s===sec?'sb-link act':'sb-link';
-    if(sl?.querySelector('.badge')&&s===sec) sl.querySelector('.badge') && null;
   });
-  const titles={dashboard:{title:'Tableau de bord',sub:'Vue d\'ensemble de votre activité pédagogique'},
+  const titles={
+    dashboard:{title:'Tableau de bord',sub:'Vue d\'ensemble de votre activité pédagogique'},
     examens:{title:'Gestion des examens',sub:'Publiez et gérez vos sessions d\'examens'},
     'cours-det':{title:'Cours Détachés',sub:'Activez des modules disponibles à l\'achat individuel'},
-    evaluations:{title:'Évaluations étudiants',sub:'Fiches d\'évaluation soumises après les modules'}};
+    acces:{title:'Accès Étudiants',sub:'Gérez l\'accès aux modules par étudiant ou par groupe'}
+  };
   const t=titles[sec];
   if(t){document.getElementById('main-title').textContent=t.title;document.getElementById('main-sub').textContent=t.sub;}
   if(sec==='dashboard') renderDashboard();
   if(sec==='examens') renderExamens();
   if(sec==='cours-det') renderCoursDetaches();
-  if(sec==='evaluations') renderEvaluations();
+  if(sec==='acces') renderAcces();
 }
 
 /* ════════════════════════════════════
@@ -548,24 +609,22 @@ function showSection(sec) {
 function renderDashboard() {
   const examens = getMyExamens();
   const cds = getMyCDs();
-  const evals = getMyEvals();
+  const acces = getMyAcces();
   const open = examens.filter(e=>e.statut==='ouvert').length;
 
   document.getElementById('dash-stats').innerHTML = `
     <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num">${examens.length}</div><div class="stat-label">Sessions d'examens</div></div>
     <div class="stat-card"><div class="stat-icon">🟢</div><div class="stat-num">${open}</div><div class="stat-label">Sessions actives</div></div>
     <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-num">${cds.filter(c=>c.actif).length}</div><div class="stat-label">Cours détachés actifs</div></div>
-    <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num">${evals.length}</div><div class="stat-label">Évaluations reçues</div></div>`;
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num">${acces.length}</div><div class="stat-label">Accès étudiants actifs</div></div>`;
 
-  // Active exams preview
   const activeExams = examens.filter(e=>e.statut==='ouvert').slice(0,3);
   document.getElementById('dash-examens-list').innerHTML = activeExams.length ? activeExams.map(e=>examCard(e)).join('') :
     '<div class="empty"><div class="empty-icon">📅</div><h4>Aucune session active</h4><p>Créez votre première session d\'examen</p></div>';
 
-  // Recent evals
-  const recentEvals = evals.slice(0,3);
-  document.getElementById('dash-evals-list').innerHTML = recentEvals.length ? recentEvals.map(ev=>evalRow(ev)).join('') :
-    '<div class="empty"><div class="empty-icon">📋</div><h4>Aucune évaluation reçue</h4><p>Les étudiants soumettent les fiches après chaque module</p></div>';
+  const recentAcces = acces.slice(0,3);
+  document.getElementById('dash-acces-list').innerHTML = recentAcces.length ? recentAcces.map(a=>accesCard(a)).join('') :
+    '<div class="empty"><div class="empty-icon">👥</div><h4>Aucun accès actif</h4><p>Accordez l\'accès à un module pour un étudiant ou groupe</p></div>';
 }
 
 /* ════════════════════════════════════
@@ -783,114 +842,194 @@ function saveCD(){
 }
 
 /* ════════════════════════════════════
-   ÉVALUATIONS
+   ACCÈS ÉTUDIANTS
 ════════════════════════════════════ */
-function getMyEvals() {
-  const all = JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
-  const progs = currentUser.programmes || [];
-  return all.filter(ev=>progs.includes(ev.programme));
+function getMyAcces() {
+  const all = JSON.parse(localStorage.getItem('canado_acces_modules')||'[]');
+  return all.filter(a=>a.prof_id===currentUser.id);
 }
 
-function renderEvaluations() {
-  const evals = getMyEvals();
-  const filterEl = document.getElementById('eval-filter');
-  // Populate filter
-  const modules = [...new Set(evals.map(e=>e.module_code))];
-  const currentFilter = filterEl.value;
-  filterEl.innerHTML = '<option value="all">Tous les modules</option>';
-  modules.forEach(m=>filterEl.innerHTML+=`<option value="${m}" ${currentFilter===m?'selected':''}>${m}</option>`);
-
-  const filtered = currentFilter==='all' ? evals : evals.filter(e=>e.module_code===currentFilter);
-  const container = document.getElementById('evaluations-table');
-
-  if(!filtered.length){
-    container.innerHTML='<div class="empty"><div class="empty-icon">📋</div><h4>Aucune évaluation</h4><p>Les étudiants remplissent la fiche à la fin de chaque module.</p></div>';
+function renderAcces() {
+  const acces = getMyAcces();
+  const container = document.getElementById('acces-list');
+  if(!acces.length){
+    container.innerHTML='<div class="empty"><div class="empty-icon">👥</div><h4>Aucun accès configuré</h4><p>Cliquez sur "+ Activer un accès" pour donner accès à un module.</p></div>';
     return;
   }
-
-  // Average ratings
-  const avgContenu = (evals.reduce((s,e)=>s+(e.note_contenu||0),0)/evals.length).toFixed(1);
-  const avgProf = (evals.reduce((s,e)=>s+(e.note_prof||0),0)/evals.length).toFixed(1);
-
-  container.innerHTML=`
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1.2rem">
-    ${[{l:'Contenu du cours',v:avgContenu,c:'#1B3A8C'},{l:'Professeur',v:avgProf,c:'#006B46'},{l:'Total évaluations',v:evals.length,c:'#5B2D8E',noStar:true}].map(s=>`
-    <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;text-align:center">
-      <div style="font-family:var(--fD);font-weight:800;font-size:1.4rem;color:${s.c}">${s.v}${!s.noStar?'/5':''}</div>
-      <div style="font-size:.7rem;color:var(--g500);margin-top:2px">${s.l}</div>
-    </div>`).join('')}
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Date</th><th>Module</th><th>Étudiant</th><th>Contenu</th><th>Prof</th><th>Support</th><th>Action</th></tr></thead>
-    <tbody>${filtered.map(ev=>`<tr>
-      <td style="font-size:.75rem;color:var(--g500);white-space:nowrap">${new Date(ev.date).toLocaleDateString('fr-HT')}</td>
-      <td><span style="font-size:.72rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:8px">${ev.module_code}</span></td>
-      <td style="font-size:.8rem"><div style="font-weight:600">${ev.nom_etudiant}</div><div style="font-size:.7rem;color:var(--g500)">${ev.email_etudiant||''}</div></td>
-      <td>${stars(ev.note_contenu)}</td>
-      <td>${stars(ev.note_prof)}</td>
-      <td>${stars(ev.note_support)}</td>
-      <td><button class="btn btn-outline btn-sm" onclick="viewEval(${JSON.stringify(ev).replace(/"/g,'&quot;')})">👁</button></td>
-    </tr>`).join('')}</tbody></table></div>`;
+  container.innerHTML=`<div class="tw"><table>
+    <thead><tr><th>Programme</th><th>Module</th><th>Type</th><th>Bénéficiaires</th><th>Notes</th><th>Actions</th></tr></thead>
+    <tbody>${acces.map(a=>{
+      const isGrp = a.type==='groupe';
+      const count = isGrp ? (a.etudiants||[]).length : 1;
+      return`<tr>
+        <td><span style="font-size:.72rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:2px 8px;border-radius:10px">${a.programme}</span></td>
+        <td><div style="font-weight:600;font-size:.82rem">${a.module_code}</div><div style="font-size:.7rem;color:var(--g500)">${a.module_titre}</div></td>
+        <td><span class="chip ${isGrp?'chip-future':'chip-open'}">${isGrp?`👥 Groupe (${count})` : '👤 Individuel'}</span></td>
+        <td style="font-size:.8rem">
+          ${isGrp ? `<strong>${a.nom_groupe||'Groupe'}</strong><br><span style="font-size:.7rem;color:var(--g500)">${(a.etudiants||[]).slice(0,2).map(e=>e.nom).join(', ')}${count>2?'…':''}</span>`
+                  : `${a.etudiant_nom||'—'}<br><span style="font-size:.7rem;color:var(--g500)">${a.etudiant_email||''}</span>`}
+        </td>
+        <td style="font-size:.75rem;color:var(--g500);max-width:150px">${a.notes||'—'}</td>
+        <td><div style="display:flex;gap:.3rem">
+          <button class="btn btn-outline btn-sm" onclick="editAcces('${a.id}')">✏️</button>
+          <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red)" onclick="revokeAcces('${a.id}')">🚫</button>
+        </div></td>
+      </tr>`;
+    }).join('')}</tbody></table></div>`;
 }
 
-function evalRow(ev){
-  return `<div style="display:flex;align-items:center;gap:.8rem;padding:.65rem;border:1px solid var(--g100);border-radius:8px;margin-bottom:.4rem;background:#f8faff">
-    <div style="flex:1"><div style="font-weight:600;font-size:.8rem">${ev.nom_etudiant} — ${ev.module_code}</div>
-    <div style="font-size:.7rem;color:var(--g500)">${new Date(ev.date).toLocaleDateString('fr-HT')}</div></div>
-    <div>${stars(ev.note_contenu)}</div>
+function accesCard(a){
+  const isGrp = a.type==='groupe';
+  return `<div style="display:flex;align-items:center;gap:.8rem;padding:.7rem;border:1px solid var(--g100);border-radius:10px;margin-bottom:.4rem;background:#f8faff">
+    <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1B3A8C,#2B56C0);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0">${isGrp?'👥':'👤'}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700;font-size:.8rem">${a.module_code} — ${a.module_titre}</div>
+      <div style="font-size:.7rem;color:var(--g500)">${isGrp?(a.nom_groupe+' · '+(a.etudiants||[]).length+' étudiants'):a.etudiant_nom}</div>
+    </div>
+    <span class="chip chip-open">Actif</span>
   </div>`;
 }
 
-function stars(n){
-  const full='⭐'.repeat(Math.round(n||0));
-  return `<span style="font-size:.8rem" title="${n}/5">${full||'—'}</span>`;
+function openAccesModal(id) {
+  document.getElementById('acces-modal-title').textContent = id ? '✏️ Modifier l\'accès' : '👥 Activer un accès module';
+  document.getElementById('ac-id').value = id||'';
+  populateAccesProgSelects();
+
+  if(id) {
+    const all = JSON.parse(localStorage.getItem('canado_acces_modules')||'[]');
+    const a = all.find(x=>x.id===id);
+    if(!a) return;
+    document.getElementById('ac-programme').value = a.programme;
+    document.getElementById('ac-annee').value = a.annee||'1';
+    populateAccesModules();
+    setTimeout(()=>document.getElementById('ac-module').value=a.module_code,50);
+    document.getElementById('ac-notes').value = a.notes||'';
+    if(a.type==='groupe') {
+      document.getElementById('ac-type-grp').checked=true;
+      document.getElementById('ac-grp-nom').value = a.nom_groupe||'';
+      document.getElementById('ac-grp-liste').value = (a.etudiants||[]).map(e=>e.nom+', '+e.email).join('\n');
+    } else {
+      document.getElementById('ac-type-ind').checked=true;
+      document.getElementById('ac-etud-nom').value = a.etudiant_nom||'';
+      document.getElementById('ac-etud-email').value = a.etudiant_email||'';
+      document.getElementById('ac-etud-matricule').value = a.etudiant_matricule||'';
+    }
+    switchAccesType();
+  } else {
+    ['ac-etud-nom','ac-etud-email','ac-etud-matricule','ac-grp-nom','ac-grp-liste','ac-notes'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});
+    document.getElementById('ac-type-ind').checked=true;
+    switchAccesType();
+  }
+  document.getElementById('acces-modal').classList.add('show');
 }
 
-function viewEval(ev){
-  document.getElementById('eval-modal-body').innerHTML=`
-    <div style="display:grid;gap:.9rem">
-      <div style="display:flex;gap:.8rem;flex-wrap:wrap">
-        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
-          <div style="font-size:1.2rem;font-weight:800;color:#1B3A8C">${ev.note_contenu}/5</div>
-          <div style="font-size:.7rem;color:var(--g500)">Contenu</div>
-        </div>
-        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
-          <div style="font-size:1.2rem;font-weight:800;color:#006B46">${ev.note_prof}/5</div>
-          <div style="font-size:.7rem;color:var(--g500)">Professeur</div>
-        </div>
-        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
-          <div style="font-size:1.2rem;font-weight:800;color:#5B2D8E">${ev.note_support}/5</div>
-          <div style="font-size:.7rem;color:var(--g500)">Support</div>
-        </div>
-        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
-          <div style="font-size:1.2rem;font-weight:800;color:#8B5E00">${ev.note_organisation||'—'}/5</div>
-          <div style="font-size:.7rem;color:var(--g500)">Organisation</div>
-        </div>
-      </div>
-      ${ev.commentaire?`<div style="background:#fffbeb;border:1px solid rgba(245,197,24,.25);border-radius:8px;padding:.8rem"><div style="font-size:.72rem;font-weight:700;color:#8B5E00;margin-bottom:.3rem">💬 Commentaire :</div><p style="font-size:.82rem;color:var(--text);line-height:1.65">${ev.commentaire}</p></div>`:''}
-      <div style="font-size:.75rem;color:var(--g500)">
-        Étudiant : <strong>${ev.nom_etudiant}</strong> · ${ev.email_etudiant||''}<br>
-        Module : <strong>${ev.module_code}</strong> — ${ev.module_titre||''}<br>
-        Date : ${new Date(ev.date).toLocaleString('fr-HT')}
-        ${ev.recommande!==undefined?`<br>Recommande le cours : <strong>${ev.recommande?'✅ Oui':'❌ Non'}</strong>`:''}
-      </div>
-    </div>`;
-  document.getElementById('eval-modal').classList.add('show');
+function closeAccesModal(){ document.getElementById('acces-modal').classList.remove('show'); }
+function editAcces(id){ openAccesModal(id); }
+
+function populateAccesProgSelects() {
+  const progs = currentUser.programmes || ['TRI','MEI','ELM','TEL'];
+  const sel = document.getElementById('ac-programme');
+  sel.innerHTML = '<option value="">— Sélectionner —</option>';
+  progs.forEach(p => sel.innerHTML += `<option value="${p}">${p}</option>`);
 }
 
-function exportEvals(){
-  const evals=getMyEvals();
-  if(!evals.length){toast('Aucune évaluation à exporter');return;}
-  const header='Date,Module,Programme,Étudiant,Email,Note Contenu,Note Prof,Note Support,Commentaire,Recommande';
-  const rows=evals.map(e=>[
-    new Date(e.date).toLocaleDateString('fr-HT'),e.module_code,e.programme,
-    e.nom_etudiant,e.email_etudiant||'',e.note_contenu,e.note_prof,e.note_support,
-    '"'+(e.commentaire||'').replace(/"/g,'""')+'"',e.recommande?'Oui':'Non'
-  ].join(','));
-  const blob=new Blob([[header,...rows].join('\n')],{type:'text/csv'});
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:`evaluations-${new Date().toISOString().split('T')[0]}.csv`});
-  a.click();
-  toast('📥 Export CSV téléchargé');
+function populateAccesModules() {
+  const prog = document.getElementById('ac-programme').value;
+  const an   = parseInt(document.getElementById('ac-annee').value)||1;
+  const sel  = document.getElementById('ac-module');
+  const mods = (MODULES_DATA[prog]||{})[an]||[];
+  sel.innerHTML = '<option value="">— Sélectionner le module —</option>';
+  mods.forEach(m => sel.innerHTML += `<option value="${m.code}" data-titre="${m.titre}">${m.code} — ${m.titre}</option>`);
+}
+
+function switchAccesType() {
+  const isGrp = document.getElementById('ac-type-grp').checked;
+  document.getElementById('ac-form-ind').style.display = isGrp ? 'none' : 'block';
+  document.getElementById('ac-form-grp').style.display = isGrp ? 'block' : 'none';
+  // Visual feedback on radio labels
+  document.getElementById('ac-type-ind-label').style.background = isGrp ? '#f0f4ff' : '#dbeafe';
+  document.getElementById('ac-type-ind-label').style.borderColor = isGrp ? 'var(--g200)' : 'var(--blue)';
+  document.getElementById('ac-type-ind-label').style.color = isGrp ? 'var(--text)' : 'var(--blue)';
+  document.getElementById('ac-type-grp-label').style.background = isGrp ? '#dbeafe' : '#f0f4ff';
+  document.getElementById('ac-type-grp-label').style.borderColor = isGrp ? 'var(--blue)' : 'var(--g200)';
+  document.getElementById('ac-type-grp-label').style.color = isGrp ? 'var(--blue)' : 'var(--text)';
+}
+
+// Live preview of group count
+document.addEventListener('input', e => {
+  if(e.target.id==='ac-grp-liste') {
+    const lines = e.target.value.split('\n').filter(l=>l.trim());
+    const prev = document.getElementById('ac-grp-preview');
+    document.getElementById('ac-grp-count').textContent = lines.length;
+    prev.style.display = lines.length ? 'block' : 'none';
+  }
+});
+
+function saveAcces() {
+  const prog   = document.getElementById('ac-programme').value;
+  const annee  = document.getElementById('ac-annee').value;
+  const modEl  = document.getElementById('ac-module');
+  const modCode= modEl.value;
+  const modTitre = modEl.options[modEl.selectedIndex]?.getAttribute('data-titre')||'';
+  const isGrp  = document.getElementById('ac-type-grp').checked;
+  const notes  = document.getElementById('ac-notes').value;
+
+  if(!prog||!modCode) { toast('⚠️ Sélectionnez programme et module'); return; }
+
+  let acRecord = {
+    id: document.getElementById('ac-id').value || 'ac_'+Date.now(),
+    prof_id: currentUser.id, prof_nom: currentUser.nom,
+    programme: prog, annee: parseInt(annee),
+    module_code: modCode, module_titre: modTitre,
+    type: isGrp ? 'groupe' : 'individuel',
+    notes, date: new Date().toISOString()
+  };
+
+  if(isGrp) {
+    const nomGrp = document.getElementById('ac-grp-nom').value.trim();
+    const raw    = document.getElementById('ac-grp-liste').value.trim();
+    if(!nomGrp) { toast('⚠️ Donnez un nom au groupe'); return; }
+    if(!raw)    { toast('⚠️ Ajoutez au moins un étudiant'); return; }
+    const etudiants = raw.split('\n').filter(l=>l.trim()).map(l=>{
+      const parts = l.split(',').map(s=>s.trim());
+      return { nom: parts[0]||'', email: parts[1]||'' };
+    });
+    acRecord.nom_groupe = nomGrp;
+    acRecord.etudiants  = etudiants;
+  } else {
+    const nom   = document.getElementById('ac-etud-nom').value.trim();
+    const email = document.getElementById('ac-etud-email').value.trim();
+    if(!nom||!email) { toast('⚠️ Nom et email de l\'étudiant requis'); return; }
+    acRecord.etudiant_nom       = nom;
+    acRecord.etudiant_email     = email;
+    acRecord.etudiant_matricule = document.getElementById('ac-etud-matricule').value.trim();
+  }
+
+  const all = JSON.parse(localStorage.getItem('canado_acces_modules')||'[]');
+  const existId = acRecord.id !== 'ac_'+Date.now() ? acRecord.id : null;
+  const existingId = document.getElementById('ac-id').value;
+  if(existingId) { const idx=all.findIndex(a=>a.id===existingId); if(idx>=0)all[idx]=acRecord; else all.push(acRecord); }
+  else all.push(acRecord);
+  localStorage.setItem('canado_acces_modules', JSON.stringify(all));
+
+  // Notification admin
+  const notifs = JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+  notifs.unshift({id:'n_'+Date.now(),type:'acces',
+    message:`👥 Accès activé : ${modCode} pour ${isGrp?acRecord.nom_groupe:acRecord.etudiant_nom} par ${currentUser.nom}`,
+    lu:false, date:new Date().toISOString()});
+  localStorage.setItem('canado_notifications', JSON.stringify(notifs));
+
+  closeAccesModal();
+  renderAcces();
+  toast(existingId ? '✅ Accès mis à jour' : '✅ Accès activé avec succès !');
+}
+
+function revokeAcces(id) {
+  if(!confirm('Révoquer cet accès ?')) return;
+  const all = JSON.parse(localStorage.getItem('canado_acces_modules')||'[]');
+  localStorage.setItem('canado_acces_modules', JSON.stringify(all.filter(a=>a.id!==id)));
+  renderAcces();
+  toast('Accès révoqué');
 }
 
 /* ════════════════════════════════════

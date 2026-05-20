@@ -345,12 +345,7 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
         <div class="fg"><label>Mot de passe *</label><input type="text" id="pm-password" placeholder="Prof2026!"></div>
       </div>
       <div class="fg"><label>Programmes enseignés *</label>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem" id="pm-progs-check">
-          ${['TRI','MEI','ELM','TEL'].map(p=>`
-          <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;background:#f0f4ff;border:1.5px solid var(--g200);border-radius:8px;padding:.4rem .8rem;font-size:.8rem;font-weight:600;color:var(--text);transition:all .18s;user-select:none" id="plabel-${p}">
-            <input type="checkbox" value="${p}" id="pcheck-${p}" style="width:14px;height:14px;border:none;padding:0;margin:0;cursor:pointer;accent-color:var(--blue)" onchange="updateProgLabel('${p}')"> ${p}
-          </label>`).join('')}
-        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem" id="pm-progs-check"></div>
       </div>
       <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:.5rem" onclick="saveProf()">💾 Enregistrer le compte</button>
     </div>
@@ -872,24 +867,29 @@ function renderProfs(){
     </tr>`).join('')}</tbody></table></div>`;
 }
 
+function buildProgCheckboxes() {
+  const wrap = document.getElementById('pm-progs-check');
+  if(!wrap) return;
+  wrap.innerHTML = ['TRI','MEI','ELM','TEL'].map(p=>`
+    <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;background:#f0f4ff;border:1.5px solid var(--g200);border-radius:8px;padding:.4rem .85rem;font-size:.82rem;font-weight:700;color:var(--text);transition:all .18s;user-select:none" id="plabel-${p}">
+      <input type="checkbox" value="${p}" id="pcheck-${p}" style="width:15px;height:15px;cursor:pointer;accent-color:var(--blue)" onchange="updateProgLabel('${p}')"> ${p}
+    </label>`).join('');
+}
+
 function updateProgLabel(p){
-  const cb=document.getElementById('pcheck-'+p);
-  const lbl=document.getElementById('plabel-'+p);
-  if(!cb||!lbl)return;
-  if(cb.checked){lbl.style.background='#dbeafe';lbl.style.borderColor='var(--blue)';lbl.style.color='var(--blue)';}
-  else{lbl.style.background='#f0f4ff';lbl.style.borderColor='var(--g200)';lbl.style.color='var(--text)';}
+  const cb  = document.getElementById('pcheck-'+p);
+  const lbl = document.getElementById('plabel-'+p);
+  if(!cb||!lbl) return;
+  if(cb.checked){ lbl.style.background='#dbeafe'; lbl.style.borderColor='var(--blue)'; lbl.style.color='var(--blue)'; }
+  else          { lbl.style.background='#f0f4ff'; lbl.style.borderColor='var(--g200)'; lbl.style.color='var(--text)'; }
 }
 
 function openProfModal(id){
   document.getElementById('prof-modal-title').textContent=id?'✏️ Modifier le compte':'👨‍🏫 Nouveau compte professeur';
   document.getElementById('pm-id').value=id||'';
   ['pm-nom','pm-titre','pm-email','pm-password'].forEach(x=>document.getElementById(x).value='');
-  // Reset all checkboxes and labels
-  ['TRI','MEI','ELM','TEL'].forEach(p=>{
-    const cb=document.getElementById('pcheck-'+p);
-    if(cb)cb.checked=false;
-    updateProgLabel(p);
-  });
+  // Build checkboxes dynamically (fixes ${p} literal bug)
+  buildProgCheckboxes();
   if(id){
     const users=JSON.parse(localStorage.getItem('canado_users')||'[]');
     const u=users.find(x=>x.id===id);
