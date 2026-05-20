@@ -637,7 +637,7 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
 
 /* ═══ OVERLAY PAIEMENT ═══ */
 .cours-viewer{position:fixed;inset:0;z-index:1050;display:flex;flex-direction:column;
-  background:var(--navy);opacity:0;pointer-events:none;transition:opacity .25s}
+  background:#fff;opacity:0;pointer-events:none;transition:opacity .25s}
 .cours-viewer.show{opacity:1;pointer-events:all}
 .cours-viewer-bar{height:52px;background:rgba(4,13,26,.97);border-bottom:1px solid var(--bdrDk);
   display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0}
@@ -649,24 +649,23 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
 .cours-viewer-close:hover{background:var(--red);color:#fff}
 
 /* ── MODULE HERO — même modèle que page-hero-banner ── */
-.cv-hero{position:relative;min-height:220px;flex-shrink:0;overflow:hidden;display:flex;align-items:flex-end}
+.cv-hero{position:relative;min-height:130px;flex-shrink:0;overflow:hidden;display:flex;align-items:flex-end}
 .cv-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;
   transition:transform .4s ease}
 .cv-hero:hover .cv-hero-bg{transform:scale(1.03)}
 .cv-hero-overlay{position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(12,31,61,.78) 60%,rgba(27,58,140,.35) 100%)}
-.cv-hero-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:80px;
-  background:linear-gradient(to top,rgba(4,13,26,.85),transparent)}
+.cv-hero-overlay-bottom{display:none}
 .cv-hero-line{position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
-.cv-hero-content{position:relative;z-index:2;padding:1.8rem 2rem 1.6rem;width:100%}
-.cv-hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.28rem .9rem;
+.cv-hero-content{position:relative;z-index:2;padding:.9rem 2rem .9rem;width:100%}
+.cv-hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.22rem .8rem;
   border-radius:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);
-  backdrop-filter:blur(8px);font-size:.68rem;font-weight:700;color:rgba(255,255,255,.85);
-  letter-spacing:.06em;margin-bottom:.65rem}
-.cv-hero-title{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;
-  line-height:1.1;margin-bottom:.7rem;max-width:700px}
-.cv-hero-meta{display:flex;gap:1.2rem;flex-wrap:wrap}
-.cv-hero-meta span{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.4rem}
+  backdrop-filter:blur(8px);font-size:.65rem;font-weight:700;color:rgba(255,255,255,.85);
+  letter-spacing:.06em;margin-bottom:.45rem}
+.cv-hero-title{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:#fff;
+  line-height:1.1;margin-bottom:.5rem;max-width:700px}
+.cv-hero-meta{display:flex;gap:1rem;flex-wrap:wrap}
+.cv-hero-meta span{font-size:.75rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.35rem}
 .cv-hero-meta strong{color:#fff;font-weight:700}
 .cours-viewer-body iframe{width:100%;height:100%;border:none;display:block}
 .cours-viewer-spinner{position:absolute;inset:0;display:flex;align-items:center;
@@ -5938,16 +5937,17 @@ function hideCoursSpinner() {
         spinner.innerHTML = '<div style="text-align:center"><div style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:1rem">Le cours ne peut pas s\'afficher ici.</div><button class="btn btn-blue btn-sm" onclick="openCoursNewTab()">↗ Ouvrir dans un nouvel onglet</button></div>';
         return;
       }
-      // Injecter CSS pour masquer le hero interne du fichier cours
-      // (les cours ont leur propre header/hero qu'on remplace par le nôtre)
+      // Injecter CSS pour masquer le hero interne + tout footer sombre du fichier cours
       const style = doc.createElement('style');
       style.textContent = `
         .cours-hero, .module-hero, .hero-section, .mod-hero,
-        .ep-header, .ep-hero, .cours-header,
-        [class*="hero"]:first-of-type,
-        body > *:first-child .hero,
-        .ch-hero { display: none !important; }
-        body { padding-top: 0 !important; margin-top: 0 !important; }
+        .ep-header, .ep-hero, .cours-header, .ch-hero,
+        [class*="hero"]:first-of-type { display: none !important; }
+        footer, .footer, .cours-footer, [class*="footer"],
+        .page-footer, .site-footer { display: none !important; }
+        body { padding-top: 0 !important; margin-top: 0 !important;
+               background: #f8faff !important; min-height: 100vh; }
+        html { background: #f8faff !important; }
       `;
       doc.head.appendChild(style);
     }
