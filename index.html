@@ -648,25 +648,6 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
   cursor:pointer;transition:all .2s;white-space:nowrap}
 .cours-viewer-close:hover{background:var(--red);color:#fff}
 
-/* ── MODULE HERO BANNER ── */
-.cv-hero{position:relative;height:180px;flex-shrink:0;overflow:hidden}
-.cv-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;
-  transition:transform .4s ease}
-.cv-hero:hover .cv-hero-bg{transform:scale(1.03)}
-.cv-hero-overlay{position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(4,13,26,.92) 0%,rgba(12,31,61,.78) 60%,rgba(27,58,140,.3) 100%)}
-.cv-hero-line{position:absolute;top:0;left:0;right:0;height:3px}
-.cv-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;
-  justify-content:flex-end;padding:1.4rem 1.8rem;gap:.6rem}
-.cv-hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .9rem;
-  border-radius:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);
-  backdrop-filter:blur(8px);font-size:.68rem;font-weight:700;color:rgba(255,255,255,.8);
-  letter-spacing:.06em;width:fit-content}
-.cv-hero-title{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:#fff;
-  line-height:1.15;max-width:700px}
-.cv-hero-meta{display:flex;gap:1rem;flex-wrap:wrap}
-.cv-hero-meta span{font-size:.75rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.35rem}
-.cv-hero-meta strong{color:rgba(255,255,255,.9);font-weight:700}
 
 .cours-viewer-body{flex:1;overflow:hidden;position:relative}
 .cours-viewer-body iframe{width:100%;height:100%;border:none;display:block}
@@ -5754,21 +5735,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ══ COURS VIEWER ══ -->
 <div class="cours-viewer" id="cours-viewer">
   <div class="cours-viewer-bar">
-    <span style="font-size:1rem" id="cv-bar-icon">📖</span>
+    <span style="font-size:1rem">📖</span>
     <span class="cours-viewer-title" id="cours-viewer-title">Cours</span>
     <button class="cours-viewer-close" onclick="closeCoursViewer()">✕ Fermer</button>
-  </div>
-
-  <!-- HERO BANNER MODULE -->
-  <div class="cv-hero" id="cv-hero">
-    <div class="cv-hero-bg" id="cv-hero-bg"></div>
-    <div class="cv-hero-overlay" id="cv-hero-overlay"></div>
-    <div class="cv-hero-line" id="cv-hero-line"></div>
-    <div class="cv-hero-content">
-      <div class="cv-hero-tag" id="cv-hero-tag">📚 MODULE</div>
-      <div class="cv-hero-title" id="cv-hero-title">Chargement…</div>
-      <div class="cv-hero-meta" id="cv-hero-meta"></div>
-    </div>
   </div>
 
   <div class="cours-viewer-body">
@@ -5794,9 +5763,7 @@ function openCoursViewer(fichier, titre) {
     const arr2  = MODULES_2[prog] || [];
     const allMods = [...arr1, ...arr2];
     const mod   = allMods.find(m => m.fichier === fichier);
-    // Vérifier que le fichier appartient au programme de l'étudiant
     if (!mod) { toast('🔒 Ce cours ne fait pas partie de votre programme'); return; }
-    // Vérifier activation
     const modYear = arr2.find(m=>m.code===mod.code) ? 2 : 1;
     const states  = getModuleStates(prog, modYear);
     if (!states[mod.code]) { toast('🔒 Ce module n\'est pas encore activé par votre professeur'); return; }
@@ -5804,84 +5771,6 @@ function openCoursViewer(fichier, titre) {
     _currentCoursTitle = titre || mod.title;
   }
   _currentCoursFile = fichier;
-
-  // ── Déterminer le programme depuis le code du module ou le fichier ──
-  const rawCode = (titre||'').split('·')[0].trim() || fichier;
-  const progCode = rawCode.startsWith('TRI')?'TRI':rawCode.startsWith('MEI')?'MEI':rawCode.startsWith('ELM')?'ELM':rawCode.startsWith('TEL')?'TEL':'TRI';
-
-  // ── Trouver les métadonnées du module ──
-  const allM = [...(MODULES[progCode]||[]),...(MODULES_2[progCode]||[])];
-  const modCode = rawCode.split('·')[0].trim() || rawCode.split('/').pop().split('.')[0].toUpperCase();
-  const modData = allM.find(m=>m.code===modCode) || allM.find(m=>fichier.includes(m.code.toLowerCase().replace('-','-')));
-
-  // ── Config hero par programme ──
-  const HERO_CONFIG = {
-    TRI:{
-      bg:'assets/images/hero/slide-tri.jpg',
-      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(12,31,61,.80) 55%,rgba(27,58,140,.45) 100%)',
-      line:'linear-gradient(90deg,transparent,#3B7BFF,#1B3A8C,transparent)',
-      icon:'🌐', label:'Réseaux Informatiques', chip:'MODULE TRI'
-    },
-    MEI:{
-      bg:'assets/images/hero/Slide-mei.jpg',
-      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(30,16,0,.80) 55%,rgba(139,94,0,.45) 100%)',
-      line:'linear-gradient(90deg,transparent,#C98A00,#8B5E00,transparent)',
-      icon:'🔧', label:'Mécanique Industrielle', chip:'MODULE MEI'
-    },
-    ELM:{
-      bg:'assets/images/hero/Slide-elm.jpg',
-      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(0,20,15,.80) 55%,rgba(0,107,70,.45) 100%)',
-      line:'linear-gradient(90deg,transparent,#00A066,#006B46,transparent)',
-      icon:'⚡', label:'Électromécanique Industrielle', chip:'MODULE ELM'
-    },
-    TEL:{
-      bg:'assets/images/hero/Slide-tel.jpg',
-      overlay:'linear-gradient(135deg,rgba(4,13,26,.93) 0%,rgba(20,8,40,.80) 55%,rgba(91,45,142,.45) 100%)',
-      line:'linear-gradient(90deg,transparent,#8A50CC,#5B2D8E,transparent)',
-      icon:'📡', label:'Télécommunications', chip:'MODULE TEL'
-    }
-  };
-  const hc = HERO_CONFIG[progCode] || HERO_CONFIG.TRI;
-
-  // Chercher d'abord l'image Slide-XX.png existante, fallback vers un gradient
-  const slideImages = {
-    TRI:'assets/images/hero/slide-tri.jpg',
-    MEI:'assets/images/hero/slide-mei.jpg',
-    ELM:'assets/images/hero/slide-elm.jpg',
-    TEL:'assets/images/hero/slide-tel.jpg'
-  };
-  const bgImg = slideImages[progCode] || slideImages.TRI;
-
-  // ── Peupler le hero ──
-  const heroEl    = document.getElementById('cv-hero');
-  const heroBg    = document.getElementById('cv-hero-bg');
-  const heroOvl   = document.getElementById('cv-hero-overlay');
-  const heroLine  = document.getElementById('cv-hero-line');
-  const heroTag   = document.getElementById('cv-hero-tag');
-  const heroTitle = document.getElementById('cv-hero-title');
-  const heroMeta  = document.getElementById('cv-hero-meta');
-  const barIcon   = document.getElementById('cv-bar-icon');
-
-  if(heroBg)  heroBg.style.backgroundImage   = `url('${bgImg}')`;
-  if(heroOvl) heroOvl.style.background        = hc.overlay;
-  if(heroLine)heroLine.style.background        = hc.line;
-  if(heroTag) heroTag.innerHTML                = `${hc.icon} ${hc.chip}${modData?' · '+(modData.code.includes('an2')||false?'2ÈME ANNÉE':'1ÈRE ANNÉE'):''}`;
-  if(barIcon) barIcon.textContent              = hc.icon;
-
-  // Titre : extraire la partie après le code
-  const titreClean = (titre||'').includes('·') ? (titre||'').split('·').slice(1).join('·').trim() : (titre||modData?.title||'Module');
-  if(heroTitle) heroTitle.textContent = titreClean;
-
-  // Méta
-  if(heroMeta && modData) {
-    heroMeta.innerHTML = `
-      <span>⏱ Durée : <strong>${modData.dur}h</strong></span>
-      <span>🎯 Seuil : <strong>${modData.seuil}%</strong></span>
-      <span>📚 <strong>${hc.label}</strong></span>`;
-  } else if(heroMeta) {
-    heroMeta.innerHTML = `<span>📚 <strong>${hc.label}</strong></span>`;
-  }
-
   document.getElementById('cours-viewer-title').textContent = titre || 'Cours';
   document.getElementById('cours-spinner').style.display = 'flex';
   document.getElementById('cours-iframe').src = fichier;
