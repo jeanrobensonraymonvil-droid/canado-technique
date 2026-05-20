@@ -1250,10 +1250,7 @@ td{color:var(--text)!important}
 <nav id="app-nav">
   <div class="nav-in">
     <div class="nav-logo" onclick="goPage('accueil')">
-      <img src="assets/images/logo/cfph.png" alt="CFPH Logo" id="nav-logo-img"
-        style="height:38px;width:auto;border-radius:9px;display:block"
-        onerror="this.style.display='none';document.getElementById('nav-logo-fallback').style.display='flex'">
-      <div class="nav-logo-box" id="nav-logo-fallback" style="display:none">CT</div>
+      <img src="assets/images/logo/cfph.png" alt="CFPH Logo" style="height:38px;width:auto;border-radius:9px;display:block">
       <div class="nav-brand">Canado <span>Technique</span><small>Centre de Formation Professionnelle d'Haiti</small></div>
     </div>
     <div class="nav-links">
@@ -2546,183 +2543,7 @@ function renderCours() {
    EXAMENS PUBLICS
 ══════════════════════════════════════ */
 function renderPubExams() {
-  // Si connecté, afficher la vue personnalisée selon le rôle
-  if (currentRole === 'etud') {
-    _renderExamsEtudiant();
-    return;
-  }
-  if (['prof','admin','dg','detudes','devals','adm'].includes(currentRole)) {
-    _renderExamsStaff();
-    return;
-  }
-  // Visiteur non connecté — vue publique
-  _renderExamsPublic();
-}
-
-function _renderExamsEtudiant() {
-  const prog = etudProg || 'TRI';
-  const yr   = parseInt(etudYear) || 1;
-  const arr  = yr === 1 ? (MODULES[prog] || []) : (MODULES_2[prog] || []);
-  const states = getModuleStates(prog, yr);
-  const info = PROG_INFO[prog];
-  const anneeLabel = yr === 1 ? '1ère' : '2ème';
-
-  const examStatuses = {
-    'TRI-05':'Disponible','TRI-13':'Disponible','TRI-08':'Disponible','TRI-03':'Disponible',
-    'MEI-07':'Disponible','MEI-03':'Disponible','MEI-05':'En attente',
-    'ELM-03':'Disponible','ELM-09':'Disponible','ELM-08':'En attente',
-    'TEL-02':'Disponible','TEL-05':'Disponible','TEL-07':'Fermé',
-  };
-
-  const cards = arr.map(m => {
-    const isActive = states[m.code] === true;
-    const examSt   = examStatuses[m.code] || '—';
-    const hasExam  = !!EXAMS[m.code] && isActive && examSt === 'Disponible';
-    const isDone   = states[m.code + '_done'] === true;
-
-    let statusBadge, actionBtn;
-    if (!isActive) {
-      statusBadge = `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(27,58,140,.08);color:#3A4A6B;font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(27,58,140,.15)">🔒 Module verrouillé</span>`;
-      actionBtn   = `<button class="btn btn-ghost btn-sm" style="font-size:.72rem;opacity:.45" disabled>Indisponible</button>`;
-    } else if (isDone) {
-      statusBadge = `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066">✅ Déjà validé</span>`;
-      actionBtn   = `<button class="btn btn-outline btn-sm" style="font-size:.72rem" onclick="startExam('${m.code}','A');goPage('portail');showPanel('choisir-exam')">↺ Repasser</button>`;
-    } else if (hasExam) {
-      statusBadge = `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066"><span style="width:7px;height:7px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible</span>`;
-      actionBtn   = `<button class="btn btn-blue btn-sm" style="font-size:.72rem" onclick="goPage('portail');showPanel('choisir-exam')">▶ Passer l'examen</button>`;
-    } else if (examSt === 'En attente') {
-      statusBadge = `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(245,197,24,.1);color:#A07000;font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(245,197,24,.3)">◐ En attente du professeur</span>`;
-      actionBtn   = `<button class="btn btn-ghost btn-sm" style="font-size:.72rem;opacity:.5" disabled>Bientôt</button>`;
-    } else {
-      statusBadge = `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(27,58,140,.08);color:#3A4A6B;font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(27,58,140,.15)">— Non disponible</span>`;
-      actionBtn   = `<button class="btn btn-ghost btn-sm" style="font-size:.72rem;opacity:.5" disabled>Indisponible</button>`;
-    }
-
-    const sc = m.seuil>=85?'cr':m.seuil>=80?'cgd':'cg';
-    return `<div style="background:#fff;border:1.5px solid ${hasExam?'rgba(0,160,102,.3)':'var(--bdr)'};border-radius:var(--rL);overflow:hidden;transition:all .22s${hasExam?';box-shadow:0 2px 12px rgba(0,107,70,.1)':''}">
-      <div style="background:${info.color};padding:.85rem 1rem;display:flex;align-items:center;gap:.7rem">
-        <span style="font-size:1.05rem">${info.icon}</span>
-        <code style="font-size:.74rem;color:#fff;font-family:monospace;letter-spacing:.06em;font-weight:800">${m.code}</code>
-        <span style="font-size:.68rem;color:rgba(255,255,255,.6);margin-left:auto">${m.dur}h · Seuil <span class="chip ${sc}" style="font-size:.6rem">${m.seuil}%</span></span>
-      </div>
-      <div style="padding:.9rem 1rem">
-        <div style="font-weight:700;font-size:.82rem;color:#0B1525;line-height:1.4;margin-bottom:.7rem">${m.title}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
-          ${statusBadge}
-          ${actionBtn}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-
-  const dispo = arr.filter(m => states[m.code] === true && (!!EXAMS[m.code]) && (examStatuses[m.code]==='Disponible')).length;
-
-  const examPage = document.getElementById('page-examens-pub');
-  const body = examPage.querySelector('[style*="background:var(--g50)"]') || examPage.querySelector('.si');
-
-  // Remplacer le contenu du corps
-  const wrapper = examPage.querySelector('[style*="background:var(--g50)"]');
-  if (wrapper) {
-    wrapper.innerHTML = `<div style="max-width:1150px;margin:0 auto;padding:1.5rem">
-      <!-- Bannière étudiant connecté -->
-      <div style="background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.2rem 1.6rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:0 4px 20px rgba(27,58,140,.25)">
-        <div style="width:44px;height:44px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff;flex-shrink:0">ML</div>
-        <div style="flex:1">
-          <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff">Mes examens — ${info.label}</div>
-          <div style="font-size:.73rem;color:rgba(255,255,255,.55);margin-top:2px">${anneeLabel} année · ${dispo} examen${dispo>1?'s':''} disponible${dispo>1?'s':''}</div>
-        </div>
-        <button class="btn btn-red btn-sm" onclick="goPage('portail');showPanel('choisir-exam')">🎓 Espace examens →</button>
-      </div>
-      <!-- Grille examens -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">
-        ${cards || '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:var(--g500)">Aucun module dans votre programme.</div>'}
-      </div>
-    </div>`;
-  }
-}
-
-function _renderExamsStaff() {
-  const wrapper = document.getElementById('page-examens-pub').querySelector('[style*="background:var(--g50)"]');
-  if (!wrapper) return;
-  const r = ROLES[currentRole];
-  wrapper.innerHTML = `<div style="max-width:1150px;margin:0 auto;padding:1.5rem">
-    <div style="background:linear-gradient(135deg,#0C1F3D,#081428);border-radius:var(--rL);padding:1.2rem 1.6rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:0 4px 20px rgba(4,13,26,.4)">
-      <div style="font-size:1.5rem">🖥️</div>
-      <div style="flex:1">
-        <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff">Espace ${r.role}</div>
-        <div style="font-size:.73rem;color:rgba(255,255,255,.5)">Accédez à la gestion des examens depuis votre portail</div>
-      </div>
-      <button class="btn btn-red btn-sm" onclick="goPage('portail');showPanel('exam-builder')">📝 Gérer les examens →</button>
-    </div>
-    <div id="etab-sessions-content-pub">
-      <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden">
-        <div style="padding:1.1rem 1.4rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem">
-          <div>
-            <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--blue)">Sessions d'examens — Juin · Juillet 2026</div>
-            <div style="font-size:.72rem;color:var(--g500);margin-top:2px">Toutes filières · Calendrier officiel MENFP</div>
-          </div>
-          <div style="display:flex;gap:.5rem">
-            <span class="chip cg" style="font-size:.68rem">● Disponible</span>
-            <span class="chip cgd" style="font-size:.68rem">● En attente</span>
-            <span class="chip cgy" style="font-size:.68rem">● Fermé</span>
-          </div>
-        </div>
-        <div class="tw" id="pub-exam-table-staff"></div>
-      </div>
-    </div>
-  </div>`;
-  // Render la table
-  _renderExamTable('pub-exam-table-staff');
-}
-
-function _renderExamsPublic() {
-  // Remettre le contenu original si on revient en mode public
-  const wrapper = document.getElementById('page-examens-pub').querySelector('[style*="background:var(--g50)"]');
-  if (!wrapper) return;
-  wrapper.innerHTML = `<div style="max-width:1150px;margin:0 auto">
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;padding:.5rem;background:#fff;border-radius:var(--rL);border:1px solid var(--bdr);box-shadow:0 2px 12px rgba(27,58,140,.07)">
-      <button id="etab-sessions" onclick="showExamTab('sessions')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(27,58,140,.3)">📅 Sessions actives</button>
-      <button id="etab-modules" onclick="showExamTab('modules')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,#006B46,#00A066);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(0,107,70,.25);opacity:.75">📚 Catalogue modules</button>
-      <button id="etab-process" onclick="showExamTab('process')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,#8B5E00,#C98A00);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(139,94,0,.25);opacity:.75">🔄 Comment ça marche</button>
-      <button id="etab-certif" onclick="showExamTab('certif')" style="flex:1;min-width:120px;padding:.7rem 1rem;border-radius:10px;border:none;background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--fB);box-shadow:0 2px 8px rgba(91,45,142,.25);opacity:.75">🏆 Certifications</button>
-    </div>
-    <div id="etab-sessions-content">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
-        <div style="background:#fff;border:1.5px solid rgba(27,58,140,.18);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(27,58,140,.07)" onclick="showLogin()">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blueG));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🖥️</div>
-          <div style="min-width:0"><div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--blue)">Espace enseignant</div><div style="font-size:.74rem;color:var(--g500);margin-top:2px">Créer · Gérer · Analyser les examens</div></div>
-          <div style="margin-left:auto;color:var(--blue);font-size:.9rem;flex-shrink:0">→</div>
-        </div>
-        <div style="background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(27,58,140,.2)" onclick="showLogin()">
-          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🎓</div>
-          <div style="min-width:0"><div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:#fff">Passer un examen</div><div style="font-size:.74rem;color:rgba(255,255,255,.55);margin-top:2px">Accéder avec votre matricule</div></div>
-          <div style="margin-left:auto;color:rgba(255,255,255,.6);font-size:.9rem;flex-shrink:0">→</div>
-        </div>
-      </div>
-      <div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden">
-        <div style="padding:1.1rem 1.4rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem">
-          <div><div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--blue)">Sessions d'examens — Juin · Juillet 2026</div><div style="font-size:.72rem;color:var(--g500);margin-top:2px">Toutes filières · Calendrier officiel MENFP</div></div>
-          <div style="display:flex;gap:.5rem"><span class="chip cg" style="font-size:.68rem">● Disponible</span><span class="chip cgd" style="font-size:.68rem">● En attente</span><span class="chip cgy" style="font-size:.68rem">● Fermé</span></div>
-        </div>
-        <div class="tw" id="pub-exam-table"></div>
-      </div>
-    </div>
-    <div id="etab-modules-content" style="display:none">
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
-        <button class="btn btn-blue btn-sm exam-filter-btn act" data-prog="ALL" onclick="filterExamModules('ALL',this)">Tous</button>
-        <button class="btn btn-sm exam-filter-btn" data-prog="TRI" onclick="filterExamModules('TRI',this)" style="background:linear-gradient(135deg,#1B3A8C,#2B56C0);color:#fff;border:none;box-shadow:0 2px 8px rgba(27,58,140,.3)">🌐 TRI</button>
-        <button class="btn btn-sm exam-filter-btn" data-prog="MEI" onclick="filterExamModules('MEI',this)" style="background:linear-gradient(135deg,#6B4500,#C98A00);color:#fff;border:none;box-shadow:0 2px 8px rgba(139,94,0,.3)">🔧 MEI</button>
-        <button class="btn btn-sm exam-filter-btn" data-prog="ELM" onclick="filterExamModules('ELM',this)" style="background:linear-gradient(135deg,#004D30,#00A066);color:#fff;border:none;box-shadow:0 2px 8px rgba(0,107,70,.3)">⚡ ELM</button>
-        <button class="btn btn-sm exam-filter-btn" data-prog="TEL" onclick="filterExamModules('TEL',this)" style="background:linear-gradient(135deg,#3D1A6E,#8A50CC);color:#fff;border:none;box-shadow:0 2px 8px rgba(91,45,142,.3)">📡 TEL</button>
-      </div>
-      <div id="exam-modules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem"></div>
-    </div>
-  </div>`;
-  _renderExamTable('pub-exam-table');
-  renderExamModules('ALL');
-}
-
-function _renderExamTable(containerId) {
+  // Table sessions
   const sample = [
     {prog:'TRI',code:'TRI-05',title:"Système d'exploitation",ver:'A·B·C',dur:75,q:30,status:'Disponible',sc:'cg'},
     {prog:'TRI',code:'TRI-13',title:'Technologies et services internet',ver:'A·B·C',dur:45,q:30,status:'Disponible',sc:'cg'},
@@ -2736,18 +2557,32 @@ function _renderExamTable(containerId) {
   ];
   const pc = {TRI:'cb',MEI:'cgd',ELM:'cg',TEL:'cgy'};
   const progIcons = {TRI:'🌐',MEI:'🔧',ELM:'⚡',TEL:'📡'};
-  let h = `<table><thead><tr><th>Programme</th><th>Code</th><th>Module</th><th>Versions</th><th>Durée</th><th>Questions</th><th>Statut</th><th>Action</th></tr></thead><tbody>`;
+  // Sessions avec dates (remplace Versions/Durée/Questions)
+  const sampleDates = {
+    'TRI-05': {ouverture:'02 Juin 2026', cloture:'20 Juin 2026'},
+    'TRI-13': {ouverture:'05 Juin 2026', cloture:'25 Juin 2026'},
+    'TRI-08': {ouverture:'10 Juin 2026', cloture:'30 Juin 2026'},
+    'MEI-07': {ouverture:'03 Juin 2026', cloture:'23 Juin 2026'},
+    'MEI-05': {ouverture:'—',           cloture:'—'},
+    'ELM-03': {ouverture:'06 Juin 2026', cloture:'26 Juin 2026'},
+    'ELM-09': {ouverture:'09 Juin 2026', cloture:'29 Juin 2026'},
+    'TEL-02': {ouverture:'04 Juin 2026', cloture:'24 Juin 2026'},
+    'TEL-07': {ouverture:'—',           cloture:'—'},
+  };
+  let h = `<table><thead><tr><th>Programme</th><th>Code</th><th>Module</th><th>📅 Ouverture</th><th>📅 Clôture</th><th>Statut</th><th>Action</th></tr></thead><tbody>`;
   sample.forEach(e=>{
     const canTry = e.status==='Disponible';
+    const dates = sampleDates[e.code] || {ouverture:'—', cloture:'—'};
     h+=`<tr>
       <td><span class="chip ${pc[e.prog]}" style="display:inline-flex;align-items:center;gap:3px">${progIcons[e.prog]} ${e.prog}</span></td>
       <td><code style="font-size:.74rem;background:#fff;padding:4px 10px;border-radius:8px;color:#1B3A8C;font-family:monospace;font-weight:800;letter-spacing:.06em;border:1.5px solid #c0ccee;box-shadow:0 1px 4px rgba(27,58,140,.12)">${e.code}</code></td>
       <td style="font-weight:600;font-size:.82rem;color:var(--text);max-width:200px">${e.title}</td>
-      <td style="font-size:.78rem"><span style="letter-spacing:.05em;color:var(--blue);font-weight:700">${e.ver}</span></td>
-      <td style="font-size:.78rem;white-space:nowrap"><span style="color:var(--g500)">⏱</span> ${e.dur} min</td>
-      <td style="font-size:.78rem;font-weight:600;color:var(--text)">${e.q} Q.</td>
+      <td style="font-size:.78rem;white-space:nowrap;color:var(--green);font-weight:600">${dates.ouverture}</td>
+      <td style="font-size:.78rem;white-space:nowrap;color:var(--red);font-weight:600">${dates.cloture}</td>
       <td>${canTry
-        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066"><span style="width:8px;height:8px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible</span>`
+        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066">
+             <span style="width:8px;height:8px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible
+           </span>`
         : `<span class="chip ${e.sc}" style="font-size:.68rem">◐ ${e.status}</span>`
       }</td>
       <td>${canTry
@@ -2757,8 +2592,10 @@ function _renderExamTable(containerId) {
     </tr>`;
   });
   h+=`</tbody></table>`;
-  const el = document.getElementById(containerId);
-  if(el) el.innerHTML = h;
+  document.getElementById('pub-exam-table').innerHTML = h;
+
+  // Render module catalog
+  renderExamModules('ALL');
 }
 
 function showExamTab(tab) {
@@ -3527,18 +3364,9 @@ function doLogin() {
   showPanel('dash');
   toast('Bienvenue, '+r.name.split(' ')[0]+' ! 👋');
   showToastNotif('🔐 Connexion sécurisée','Authentification 2FA réussie. Session active.');
-  // Afficher le bouton "Nouvel onglet" maintenant que l'utilisateur est connecté
-  const ntb = document.getElementById('cours-newtab-btn');
-  if(ntb) ntb.style.display = '';
 }
 
-function doLogout() {
-  currentRole = '';
-  const ntb = document.getElementById('cours-newtab-btn');
-  if(ntb) ntb.style.display = 'none';
-  goPage('accueil');
-  toast('Déconnexion réussie');
-}
+function doLogout() { goPage('accueil'); toast('Déconnexion réussie'); }
 
 function buildSidebar() {
   const r = ROLES[currentRole];
@@ -5399,7 +5227,6 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="cours-viewer-bar">
     <span style="font-size:1rem">📖</span>
     <span class="cours-viewer-title" id="cours-viewer-title">Cours</span>
-    <button id="cours-newtab-btn" class="cours-viewer-close" style="background:rgba(59,123,255,.15);border:1px solid rgba(59,123,255,.3);color:#7fb3ff;margin-right:.4rem;display:none" onclick="openCoursNewTab()">↗ Nouvel onglet</button>
     <button class="cours-viewer-close" onclick="closeCoursViewer()">✕ Fermer</button>
   </div>
   <div class="cours-viewer-body">
@@ -5443,12 +5270,7 @@ function openCoursViewer(fichier, titre) {
 }
 
 function openCoursNewTab() {
-  if (!_currentCoursFile) return;
-  if (!currentRole) {
-    toast('🔒 Connexion requise pour accéder à ce cours');
-    return;
-  }
-  window.open(_currentCoursFile, '_blank');
+  if (_currentCoursFile) window.open(_currentCoursFile, '_blank');
 }
 
 function closeCoursViewer() {
