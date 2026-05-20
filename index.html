@@ -5937,17 +5937,10 @@ function hideCoursSpinner() {
         spinner.innerHTML = '<div style="text-align:center"><div style="color:rgba(255,255,255,.6);font-size:.85rem;margin-bottom:1rem">Le cours ne peut pas s\'afficher ici.</div><button class="btn btn-blue btn-sm" onclick="openCoursNewTab()">↗ Ouvrir dans un nouvel onglet</button></div>';
         return;
       }
-      // Injecter CSS pour masquer le hero interne + tout footer sombre du fichier cours
+      // Injecter uniquement le reset du padding/margin du body dans le fichier cours
       const style = doc.createElement('style');
       style.textContent = `
-        .cours-hero, .module-hero, .hero-section, .mod-hero,
-        .ep-header, .ep-hero, .cours-header, .ch-hero,
-        [class*="hero"]:first-of-type { display: none !important; }
-        footer, .footer, .cours-footer, [class*="footer"],
-        .page-footer, .site-footer { display: none !important; }
-        body { padding-top: 0 !important; margin-top: 0 !important;
-               background: #f8faff !important; min-height: 100vh; }
-        html { background: #f8faff !important; }
+        body { padding-top: 0 !important; margin-top: 0 !important; }
       `;
       doc.head.appendChild(style);
     }
