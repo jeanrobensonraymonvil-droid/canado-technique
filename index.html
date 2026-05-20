@@ -1268,6 +1268,8 @@ td{color:var(--text)!important}
       </div>
       <button class="nav-notif-btn" onclick="toggleNotifCenter()" title="Notifications">🔔<span class="notif-dot"></span></button>
       <button class="btn btn-ghost btn-sm nav-login-desktop" onclick="showLogin()">Se connecter</button>
+      <a href="portail-prof.html" class="btn btn-ghost btn-sm nav-login-desktop" style="font-size:.72rem;opacity:.75;border-color:rgba(255,255,255,.15)">🎓 Portail Prof</a>
+      <a href="portail-admin.html" class="btn btn-ghost btn-sm nav-login-desktop" style="font-size:.72rem;opacity:.75;border-color:rgba(255,255,255,.15)">🛡 Admin</a>
       <button class="btn btn-red btn-sm nav-register-desktop" onclick="goPage('paiement')">S'inscrire</button>
       <button class="nav-menu-btn" id="nav-hamburger" onclick="toggleMobMenu()" aria-label="Menu">☰</button>
     </div>
@@ -1650,15 +1652,24 @@ td{color:var(--text)!important}
     </div>
   </div>
   <div style="background:var(--g50);padding:1rem 1.5rem;border-bottom:1px solid var(--bdr)">
-    <div style="max-width:1150px;margin:0 auto;display:flex;gap:.5rem;flex-wrap:wrap">
-      <button class="btn btn-blue btn-sm" onclick="filterProgs('all')" id="pf-all">Tous les programmes</button>
-      <button class="btn btn-outline btn-sm" onclick="filterProgs('TRI')" id="pf-TRI">🌐 TRI</button>
-      <button class="btn btn-outline btn-sm" onclick="filterProgs('MEI')" id="pf-MEI">🔧 MEI</button>
-      <button class="btn btn-outline btn-sm" onclick="filterProgs('ELM')" id="pf-ELM">⚡ ELM</button>
-      <button class="btn btn-outline btn-sm" onclick="filterProgs('TEL')" id="pf-TEL">📡 TEL</button>
-      <div style="margin-left:auto;display:flex;gap:.5rem">
-        <button class="btn btn-outline btn-sm" onclick="filterProgs('an1')" id="pf-an1">1ère Année</button>
-        <button class="btn btn-outline btn-sm" onclick="filterProgs('an2')" id="pf-an2">2ème Année <span class="new-badge">NEW</span></button>
+    <div style="max-width:1150px;margin:0 auto">
+      <!-- TYPE SELECTOR -->
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:2px solid var(--bdr)">
+        <button onclick="setProgType('regulier')" id="pt-regulier" class="btn btn-blue btn-sm">📚 Programme Régulier</button>
+        <button onclick="setProgType('specialisation')" id="pt-specialisation" class="btn btn-outline btn-sm">🎓 Spécialisation <span class="new-badge">3ème Année</span></button>
+        <button onclick="setProgType('cours_detache')" id="pt-cours_detache" class="btn btn-outline btn-sm">🛒 Cours Détachés</button>
+      </div>
+      <!-- FILTRE PAR PROGRAMME (visible en mode Régulier) -->
+      <div id="prog-filter-bar" style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-blue btn-sm" onclick="filterProgs('all')" id="pf-all">Tous les programmes</button>
+        <button class="btn btn-outline btn-sm" onclick="filterProgs('TRI')" id="pf-TRI">🌐 TRI</button>
+        <button class="btn btn-outline btn-sm" onclick="filterProgs('MEI')" id="pf-MEI">🔧 MEI</button>
+        <button class="btn btn-outline btn-sm" onclick="filterProgs('ELM')" id="pf-ELM">⚡ ELM</button>
+        <button class="btn btn-outline btn-sm" onclick="filterProgs('TEL')" id="pf-TEL">📡 TEL</button>
+        <div style="margin-left:auto;display:flex;gap:.5rem">
+          <button class="btn btn-outline btn-sm" onclick="filterProgs('an1')" id="pf-an1">1ère Année</button>
+          <button class="btn btn-outline btn-sm" onclick="filterProgs('an2')" id="pf-an2">2ème Année <span class="new-badge">NEW</span></button>
+        </div>
       </div>
     </div>
   </div>
@@ -2358,7 +2369,7 @@ function goPage(p) {
   if(nb) nb.classList.add('act');
   currentPage = p;
   window.scrollTo(0,0);
-  if(p==='programmes') renderProgs();
+  if(p==='programmes') { currentProgType==='specialisation'?renderSpecialisation():currentProgType==='cours_detache'?renderCoursDetaches():renderProgs(); }
   if(p==='cours') renderCours();
   if(p==='examens-pub') renderPubExams();
   if(p==='paiement') renderPaiement();
@@ -2540,59 +2551,203 @@ function renderCours() {
 }
 
 /* ══════════════════════════════════════
+   TYPES DE PROGRAMMES
+══════════════════════════════════════ */
+let currentProgType = 'regulier';
+
+function setProgType(type) {
+  currentProgType = type;
+  ['regulier','specialisation','cours_detache'].forEach(t => {
+    const btn = document.getElementById('pt-'+t);
+    if(!btn) return;
+    btn.className = t===type ? 'btn btn-blue btn-sm' : 'btn btn-outline btn-sm';
+  });
+  const filterBar = document.getElementById('prog-filter-bar');
+  if(filterBar) filterBar.style.display = type==='regulier' ? 'flex' : 'none';
+
+  if(type==='regulier') renderProgs();
+  else if(type==='specialisation') renderSpecialisation();
+  else renderCoursDetaches();
+}
+
+function renderSpecialisation() {
+  const c = document.getElementById('prog-content');
+  const specs = [
+    {
+      from:'TEL', to:'TRI',
+      labelFrom:'Télécommunications', labelTo:'Réseaux Informatiques',
+      iconFrom:'📡', iconTo:'🌐',
+      colorFrom:'#8A50CC', colorTo:'#2B56C0',
+      desc:'Vous avez complété les 2 ans en TEL ? Passez à la spécialisation TRI et obtenez une double compétence reconnue avec les modules de 2ème année TRI.',
+      modules: MODULES_2['TRI'] || []
+    },
+    {
+      from:'TRI', to:'TEL',
+      labelFrom:'Réseaux Informatiques', labelTo:'Télécommunications',
+      iconFrom:'🌐', iconTo:'📡',
+      colorFrom:'#2B56C0', colorTo:'#8A50CC',
+      desc:'Vous avez complété les 2 ans en TRI ? Élargissez vos compétences avec la spécialisation TEL — les modules de 2ème année Télécommunications.',
+      modules: MODULES_2['TEL'] || []
+    }
+  ];
+
+  c.innerHTML = specs.map(sp => {
+    const total = sp.modules.reduce((s,m)=>s+(m.dur||m.heures||0),0);
+    return `
+    <div style="margin-bottom:2.5rem;background:#fff;border-radius:var(--rL);overflow:hidden;border:2px solid var(--bdr);box-shadow:0 4px 18px rgba(27,58,140,.09)">
+      <div style="background:linear-gradient(135deg,${sp.colorFrom},${sp.colorTo});padding:1.5rem 1.6rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.5rem">${sp.iconFrom}</div>
+          <div style="color:#fff;font-family:var(--fD);font-size:.78rem;font-weight:700">Après 2 ans de<br><span style="font-size:1.05rem">${sp.labelFrom}</span></div>
+        </div>
+        <div style="color:rgba(255,255,255,.6);font-size:1.4rem;font-weight:300">→</div>
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.5rem">${sp.iconTo}</div>
+          <div style="color:#fff;font-family:var(--fD);font-size:.78rem;font-weight:700">Spécialisation<br><span style="font-size:1.05rem">${sp.labelTo}</span></div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:#fff;border:1.5px solid rgba(255,255,255,.3);font-size:.75rem" onclick="openInscriptionModal('specialisation','${sp.to}','',{specFrom:'${sp.from}'})">📋 S'inscrire →</button>
+        </div>
+      </div>
+      <div style="padding:1.2rem 1.6rem;border-bottom:1px solid var(--bdr);background:#f8faff">
+        <p style="font-size:.82rem;color:var(--g700);line-height:1.65">${sp.desc}</p>
+        <div style="display:flex;gap:.8rem;margin-top:.7rem;flex-wrap:wrap">
+          <span style="font-size:.72rem;background:#e8eeff;color:#1B3A8C;padding:3px 10px;border-radius:20px;font-weight:600">🎓 3ème Année / Spécialisation</span>
+          <span style="font-size:.72rem;background:#e8eeff;color:#1B3A8C;padding:3px 10px;border-radius:20px;font-weight:600">📚 ${sp.modules.length} modules</span>
+          <span style="font-size:.72rem;background:#e8eeff;color:#1B3A8C;padding:3px 10px;border-radius:20px;font-weight:600">⏱ ${total}h de formation</span>
+        </div>
+      </div>
+      <div class="tw" style="padding:1rem 1.6rem">
+        <table>
+          <thead><tr><th>Code</th><th>Titre du module</th><th>Durée</th><th>Seuil</th><th>Action</th></tr></thead>
+          <tbody>
+            ${sp.modules.map(m=>{
+              const sc = (m.seuil||m.threshold||80)>=85?'cr':(m.seuil||m.threshold||80)>=80?'cgd':'cg';
+              return `<tr>
+                <td><span class="chip" style="background:#ede7f6;color:#5B2D8E;font-weight:700">${m.code}</span></td>
+                <td style="font-weight:500">${m.title||m.titre}</td>
+                <td>${m.dur||m.heures}h</td>
+                <td><span class="chip ${sc}">${m.seuil||m.threshold||80}%</span></td>
+                <td><button class="btn btn-outline btn-sm" onclick="showLogin()">Aperçu →</button></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderCoursDetaches() {
+  const c = document.getElementById('prog-content');
+  const stored = localStorage.getItem('canado_cours_detaches');
+  const cours = stored ? JSON.parse(stored) : [];
+  const actifs = cours.filter(cd => cd.actif);
+
+  if(actifs.length === 0) {
+    c.innerHTML = `<div style="text-align:center;padding:3rem 1rem;background:#fff;border-radius:var(--rL);border:2px dashed var(--bdr)">
+      <div style="font-size:2.5rem;margin-bottom:.8rem">🛒</div>
+      <h3 style="font-family:var(--fD);font-weight:800;color:var(--text);margin-bottom:.5rem">Aucun cours détaché disponible</h3>
+      <p style="color:var(--g500);font-size:.84rem">Les professeurs n'ont pas encore activé de cours individuels. Revenez bientôt !</p>
+    </div>`;
+    return;
+  }
+
+  const progColors = {TRI:'linear-gradient(135deg,#1B3A8C,#2B56C0)',MEI:'linear-gradient(135deg,#6B4500,#C98A00)',ELM:'linear-gradient(135deg,#004D30,#00A066)',TEL:'linear-gradient(135deg,#3D1A6E,#8A50CC)'};
+  const progIcons = {TRI:'🌐',MEI:'🔩',ELM:'⚙️',TEL:'📡'};
+
+  c.innerHTML = `
+  <div style="margin-bottom:1.4rem;padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(245,197,24,.08),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--r)">
+    <h4 style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--goldD);margin-bottom:.4rem">🛒 Cours Détachés — Achat individuel de modules</h4>
+    <p style="font-size:.78rem;color:var(--g700)">Achetez uniquement les modules qui vous intéressent. Après paiement, le professeur et l'administration seront notifiés pour vous donner accès.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem">
+    ${actifs.map(cd=>{
+      const bg = progColors[cd.programme] || 'linear-gradient(135deg,#1B3A8C,#2B56C0)';
+      const icon = progIcons[cd.programme] || '📚';
+      const isUSD = document.body.classList.contains('usd');
+      const prix = isUSD ? ('$'+(Math.round(cd.prix_htg/133))+' USD') : (cd.prix_htg.toLocaleString()+' HTG');
+      return `<div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;transition:all .22s"
+        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(27,58,140,.13)'"
+        onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="background:${bg};padding:.9rem 1.1rem;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:.6rem">
+            <span style="font-size:1.1rem">${icon}</span>
+            <div>
+              <code style="font-size:.7rem;color:rgba(255,255,255,.7);font-family:monospace">${cd.module_code}</code>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.5)">${cd.programme} · Année ${cd.annee||'?'}</div>
+            </div>
+          </div>
+          <span style="background:rgba(245,197,24,.2);color:#F5C518;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:8px;border:1px solid rgba(245,197,24,.3)">${prix}</span>
+        </div>
+        <div style="padding:1rem">
+          <h4 style="font-family:var(--fD);font-weight:700;font-size:.85rem;color:var(--text);margin-bottom:.4rem;line-height:1.35">${cd.titre}</h4>
+          <p style="font-size:.76rem;color:var(--g500);line-height:1.6;margin-bottom:.8rem">${cd.description||'Accédez à ce module en achat individuel.'}</p>
+          <div style="display:flex;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap">
+            ${cd.heures?`<span style="font-size:.68rem;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:5px">⏱ ${cd.heures}h</span>`:''}
+            ${cd.prof_nom?`<span style="font-size:.68rem;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:5px">👤 ${cd.prof_nom}</span>`:''}
+          </div>
+          <button class="btn btn-blue btn-sm" style="width:100%;justify-content:center;font-size:.8rem"
+            onclick="openInscriptionModal('cours_detache','${cd.programme}','${cd.module_code}',{prix_htg:${cd.prix_htg},titre:'${cd.titre.replace(/'/g,"\\'")}',annee:${cd.annee||1}})">
+            🛒 Acheter ce cours →
+          </button>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+/* ══════════════════════════════════════
    EXAMENS PUBLICS
 ══════════════════════════════════════ */
 function renderPubExams() {
-  // Table sessions
-  const sample = [
-    {prog:'TRI',code:'TRI-05',title:"Système d'exploitation",ver:'A·B·C',dur:75,q:30,status:'Disponible',sc:'cg'},
-    {prog:'TRI',code:'TRI-13',title:'Technologies et services internet',ver:'A·B·C',dur:45,q:30,status:'Disponible',sc:'cg'},
-    {prog:'TRI',code:'TRI-08',title:'Logiciels de bureautique',ver:'A·B',dur:105,q:35,status:'Disponible',sc:'cg'},
-    {prog:'MEI',code:'MEI-07',title:"Exécution de travaux d'usinage manuel",ver:'A·B',dur:90,q:25,status:'Disponible',sc:'cg'},
-    {prog:'MEI',code:'MEI-05',title:'Santé et sécurité au travail',ver:'A',dur:30,q:20,status:'En attente',sc:'cgd'},
-    {prog:'ELM',code:'ELM-03',title:'Circuits CC et CA',ver:'A·B',dur:90,q:30,status:'Disponible',sc:'cg'},
-    {prog:'ELM',code:'ELM-09',title:'Moteurs, générateurs et transformateurs',ver:'A·B',dur:75,q:28,status:'Disponible',sc:'cg'},
-    {prog:'TEL',code:'TEL-02',title:'Circuits CC et CA',ver:'A·B',dur:90,q:30,status:'Disponible',sc:'cg'},
-    {prog:'TEL',code:'TEL-07',title:"Circuit d'électronique numérique",ver:'A',dur:75,q:25,status:'Fermé',sc:'cgy'},
-  ];
   const pc = {TRI:'cb',MEI:'cgd',ELM:'cg',TEL:'cgy'};
   const progIcons = {TRI:'🌐',MEI:'🔧',ELM:'⚡',TEL:'📡'};
-  // Sessions avec dates (remplace Versions/Durée/Questions)
-  const sampleDates = {
-    'TRI-05': {ouverture:'02 Juin 2026', cloture:'20 Juin 2026'},
-    'TRI-13': {ouverture:'05 Juin 2026', cloture:'25 Juin 2026'},
-    'TRI-08': {ouverture:'10 Juin 2026', cloture:'30 Juin 2026'},
-    'MEI-07': {ouverture:'03 Juin 2026', cloture:'23 Juin 2026'},
-    'MEI-05': {ouverture:'—',           cloture:'—'},
-    'ELM-03': {ouverture:'06 Juin 2026', cloture:'26 Juin 2026'},
-    'ELM-09': {ouverture:'09 Juin 2026', cloture:'29 Juin 2026'},
-    'TEL-02': {ouverture:'04 Juin 2026', cloture:'24 Juin 2026'},
-    'TEL-07': {ouverture:'—',           cloture:'—'},
-  };
+
+  // Charger depuis localStorage (défini par les professeurs)
+  const stored = localStorage.getItem('canado_examens');
+  let examens = stored ? JSON.parse(stored) : [];
+
+  // Si aucun examen prof disponible, afficher message
+  const tableEl = document.getElementById('pub-exam-table');
+  if(!tableEl) return;
+
+  if(examens.length === 0) {
+    tableEl.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--g500);font-size:.84rem">
+      <div style="font-size:2rem;margin-bottom:.6rem">📅</div>
+      Aucune session d'examen active pour le moment.<br>
+      <span style="font-size:.75rem">Les professeurs publient les sessions dans leur portail.</span>
+    </div>`;
+    renderExamModules('ALL');
+    return;
+  }
+
+  const today = new Date().toISOString().split('T')[0];
   let h = `<table><thead><tr><th>Programme</th><th>Code</th><th>Module</th><th>📅 Ouverture</th><th>📅 Clôture</th><th>Statut</th><th>Action</th></tr></thead><tbody>`;
-  sample.forEach(e=>{
-    const canTry = e.status==='Disponible';
-    const dates = sampleDates[e.code] || {ouverture:'—', cloture:'—'};
+  examens.forEach(e=>{
+    const isOpen = e.statut==='ouvert' && e.date_ouverture<=today && e.date_cloture>=today;
+    const isFuture = e.statut==='ouvert' && e.date_ouverture>today;
+    const isClosed = e.statut==='ferme' || e.date_cloture<today;
+    const statusLabel = isOpen?'Disponible':isFuture?'À venir':'Fermé';
+    const statusClass = isOpen?'cg':isFuture?'cgd':'cgy';
+    const fmtDate = d => d ? new Date(d+'T00:00:00').toLocaleDateString('fr-HT',{day:'2-digit',month:'short',year:'numeric'}) : '—';
     h+=`<tr>
-      <td><span class="chip ${pc[e.prog]}" style="display:inline-flex;align-items:center;gap:3px">${progIcons[e.prog]} ${e.prog}</span></td>
-      <td><code style="font-size:.74rem;background:#fff;padding:4px 10px;border-radius:8px;color:#1B3A8C;font-family:monospace;font-weight:800;letter-spacing:.06em;border:1.5px solid #c0ccee;box-shadow:0 1px 4px rgba(27,58,140,.12)">${e.code}</code></td>
-      <td style="font-weight:600;font-size:.82rem;color:var(--text);max-width:200px">${e.title}</td>
-      <td style="font-size:.78rem;white-space:nowrap;color:var(--green);font-weight:600">${dates.ouverture}</td>
-      <td style="font-size:.78rem;white-space:nowrap;color:var(--red);font-weight:600">${dates.cloture}</td>
-      <td>${canTry
-        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066">
-             <span style="width:8px;height:8px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible
-           </span>`
-        : `<span class="chip ${e.sc}" style="font-size:.68rem">◐ ${e.status}</span>`
-      }</td>
-      <td>${canTry
-        ? `<button class="btn btn-sm" style="font-size:.72rem;background:linear-gradient(135deg,#006B46,#00A066);color:#fff;border:none;box-shadow:0 2px 8px rgba(0,107,70,.3)" onclick="event.stopPropagation();showLogin()">▶ Démarrer</button>`
-        : `<span style="color:var(--g300);font-size:.78rem">—</span>`
+      <td><span class="chip ${pc[e.programme]||'cb'}" style="display:inline-flex;align-items:center;gap:3px">${progIcons[e.programme]||'📚'} ${e.programme}</span></td>
+      <td><code style="font-size:.74rem;background:#fff;padding:4px 10px;border-radius:8px;color:#1B3A8C;font-family:monospace;font-weight:800;letter-spacing:.06em;border:1.5px solid #c0ccee">${e.module_code}</code></td>
+      <td style="font-weight:600;font-size:.82rem;color:var(--text);max-width:200px">${e.module_titre}</td>
+      <td style="font-size:.78rem;white-space:nowrap;color:var(--green);font-weight:600">${fmtDate(e.date_ouverture)}</td>
+      <td style="font-size:.78rem;white-space:nowrap;color:var(--red);font-weight:600">${fmtDate(e.date_cloture)}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:700;${isOpen?'background:#e6f9f0;color:#006B46;border:1.5px solid #00A066':isFuture?'background:#fffbeb;color:#8B5E00;border:1.5px solid #C98A00':'background:#f5f5f5;color:#888;border:1.5px solid #ddd'}">
+        ${isOpen?'<span style="width:8px;height:8px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>':''} ${statusLabel}
+      </span></td>
+      <td>${isOpen
+        ?`<button class="btn btn-sm" style="font-size:.72rem;background:linear-gradient(135deg,#006B46,#00A066);color:#fff;border:none" onclick="event.stopPropagation();showLogin()">▶ Démarrer</button>`
+        :`<span style="color:var(--g300);font-size:.78rem">—</span>`
       }</td>
     </tr>`;
   });
   h+=`</tbody></table>`;
-  document.getElementById('pub-exam-table').innerHTML = h;
+  tableEl.innerHTML = h;
 
   // Render module catalog
   renderExamModules('ALL');
@@ -2792,57 +2947,223 @@ function renderPaiement() {
 }
 
 function openPayModal(prog, an) {
-  const info = PROG_INFO[prog];
-  const t = TARIFS[prog];
-  const isAn1 = an==='1', isAn2 = an==='2', isFull = an==='full';
-  const price = isAn1?t.an1:isAn2?t.an2:t.full;
-  const mods = isAn1?MODULES[prog]:isAn2?MODULES_2[prog]:[...MODULES[prog],...(MODULES_2[prog]||[])];
-  const label = isAn1?'1ère Année':isAn2?'2ème Année':'Programme Complet';
+  openInscriptionModal('regulier', prog, '', {annee: an});
+}
+
+function openInscriptionModal(type, programme, moduleCode, extra) {
+  const info = PROG_INFO[programme] || {label:programme, icon:'📚', light:'#e8eeff', color:'#1B3A8C'};
+  const t = TARIFS[programme] || {an1:4500, an2:5000, full:8500};
+  const an = extra?.annee || '1';
+  const specFrom = extra?.specFrom || null;
+  const prixHtg = type==='cours_detache' ? (extra?.prix_htg||1500) :
+                  type==='specialisation' ? (t.an2||5000) :
+                  an==='1'?t.an1:an==='2'?t.an2:t.full;
+
+  let typeLabel = '';
+  let typeDesc = '';
+  if(type==='regulier') { typeLabel = an==='1'?'1ère Année':an==='2'?'2ème Année':'Programme Complet'; typeDesc = `${programme} — ${info.label}`; }
+  else if(type==='specialisation') { typeLabel = `Spécialisation ${programme}`; typeDesc = `${specFrom}→${programme} · Modules 2ème année ${programme}`; }
+  else if(type==='cours_detache') { typeLabel = `Cours Détaché`; typeDesc = `${moduleCode} — ${extra?.titre||''}` ; }
+
   const c = document.getElementById('pay-modal-content');
   c.innerHTML = `
-  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:1.4rem;padding:1rem;background:${info.light};border-radius:var(--r)">
+  <!-- En-tête programme -->
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:1.3rem;padding:1rem;background:${info.light||'#e8eeff'};border-radius:var(--r)">
     <span style="font-size:1.8rem">${info.icon}</span>
-    <div>
-      <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text)">${info.label}</div>
-      <div style="font-size:.78rem;color:var(--g500)">${label} · ${mods.length} modules</div>
+    <div style="flex:1">
+      <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:var(--text)">${typeLabel}</div>
+      <div style="font-size:.75rem;color:var(--g500)">${typeDesc}</div>
     </div>
-    <div style="margin-left:auto;font-family:var(--fD);font-weight:800;font-size:1.5rem;color:${isFull?'var(--goldD)':'var(--greenL)'}">${fmtPriceDual(price)}</div>
+    <div style="font-family:var(--fD);font-weight:800;font-size:1.3rem;color:var(--greenL)">${prixHtg.toLocaleString()} HTG<br><span style="font-size:.65rem;font-weight:500;color:var(--g500)">≈ $${Math.round(prixHtg/133)} USD</span></div>
   </div>
+
+  <!-- TYPE D'INSCRIPTION (hidden) -->
+  <input type="hidden" id="ins-type" value="${type}">
+  <input type="hidden" id="ins-programme" value="${programme}">
+  <input type="hidden" id="ins-annee" value="${an}">
+  <input type="hidden" id="ins-spec-from" value="${specFrom||''}">
+  <input type="hidden" id="ins-module-code" value="${moduleCode||''}">
+  <input type="hidden" id="ins-prix-htg" value="${prixHtg}">
+
+  <!-- SECTION 1 : Identité -->
   <div class="fsec">
-    <h4>Informations personnelles</h4>
+    <h4>👤 Informations personnelles</h4>
     <div class="frow">
-      <div class="fg"><label>Prénom</label><input type="text" placeholder="Marie" id="pay-prenom"></div>
-      <div class="fg"><label>Nom de famille</label><input type="text" placeholder="Louisiane" id="pay-nom"></div>
+      <div class="fg"><label>Prénom *</label><input type="text" id="ins-prenom" placeholder="Jean-Marc" required></div>
+      <div class="fg"><label>Nom de famille *</label><input type="text" id="ins-nom" placeholder="Duvalier" required></div>
     </div>
     <div class="frow">
-      <div class="fg"><label>Téléphone (WhatsApp)</label><input type="tel" placeholder="+509 3xxx xxxx" id="pay-tel"></div>
-      <div class="fg"><label>Adresse e-mail</label><input type="email" placeholder="marie@example.com" id="pay-email"></div>
+      <div class="fg"><label>Date de naissance *</label><input type="date" id="ins-dob" required></div>
+      <div class="fg"><label>Sexe *</label>
+        <select id="ins-sexe" style="width:100%;padding:.6rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82rem;color:var(--text)">
+          <option value="">— Sélectionner —</option>
+          <option>Masculin</option><option>Féminin</option><option>Autre</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Nationalité *</label><input type="text" id="ins-nationalite" placeholder="Haïtienne" value="Haïtienne" required></div>
+      <div class="fg"><label>CIN / N° Passeport</label><input type="text" id="ins-cin" placeholder="CIN-123456"></div>
     </div>
   </div>
+
+  <!-- SECTION 2 : Contacts -->
+  <div class="fsec">
+    <h4>📞 Coordonnées</h4>
+    <div class="frow">
+      <div class="fg"><label>Adresse e-mail *</label><input type="email" id="ins-email" placeholder="jean@email.com" required></div>
+      <div class="fg"><label>Téléphone *</label><input type="tel" id="ins-tel" placeholder="+509 3xxx xxxx" required></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>WhatsApp (si différent)</label><input type="tel" id="ins-whatsapp" placeholder="+509 3xxx xxxx"></div>
+      <div class="fg"><label>Ville *</label><input type="text" id="ins-ville" placeholder="Port-au-Prince" required></div>
+    </div>
+    <div class="frow">
+      <div class="fg" style="flex:2"><label>Adresse complète *</label><input type="text" id="ins-adresse" placeholder="157 Ave Martin Luther King" required></div>
+      <div class="fg"><label>Pays *</label><input type="text" id="ins-pays" placeholder="Haïti" value="Haïti" required></div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : Parcours académique -->
+  <div class="fsec">
+    <h4>🎓 Parcours académique</h4>
+    <div class="frow">
+      <div class="fg"><label>Niveau d'études *</label>
+        <select id="ins-niveau" style="width:100%;padding:.6rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82rem;color:var(--text)">
+          <option value="">— Sélectionner —</option>
+          <option>Moins que le baccalauréat</option>
+          <option>Baccalauréat (Rhéto)</option>
+          <option>Baccalauréat + Philosophie</option>
+          <option>Formation technique antérieure</option>
+          <option>Licence / Bachelor</option>
+          <option>Master ou plus</option>
+        </select>
+      </div>
+      <div class="fg"><label>Établissement précédent</label><input type="text" id="ins-ecole" placeholder="Lycée Pétion, etc."></div>
+    </div>
+    ${type==='specialisation' ? `
+    <div class="fg" style="margin-top:.5rem">
+      <label>Programme complété (2 ans) *</label>
+      <input type="text" id="ins-prog-prior" value="${specFrom||programme}" readonly style="background:#f0f4ff;font-weight:600">
+    </div>` : ''}
+  </div>
+
+  <!-- SECTION 4 : Paiement -->
+  <div class="fsec">
+    <h4>💳 Paiement & Preuve</h4>
+    <div style="background:#fffbeb;border:1px solid rgba(245,197,24,.3);border-radius:8px;padding:.8rem;margin-bottom:.8rem;font-size:.78rem;color:#5c4000">
+      📍 <strong>Modes de paiement acceptés :</strong> Virement bancaire · Paiement en caisse au bureau Canado Technique (157 Ave MLK, Port-au-Prince).<br>
+      <strong>Montant total :</strong> <span style="color:var(--greenL);font-weight:700">${prixHtg.toLocaleString()} HTG</span> ou <span style="color:var(--greenL);font-weight:700">≈ $${Math.round(prixHtg/133)} USD</span>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Moyen de paiement *</label>
+        <select id="ins-moyen-paiement" style="width:100%;padding:.6rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82rem;color:var(--text)">
+          <option value="">— Sélectionner —</option>
+          <option>Virement bancaire</option>
+          <option>Paiement en caisse</option>
+          <option>MonCash</option>
+          <option>NatCash</option>
+        </select>
+      </div>
+      <div class="fg"><label>Numéro de référence / reçu</label><input type="text" id="ins-ref" placeholder="REF-2026-XXXX"></div>
+    </div>
+    <div class="fg" style="margin-top:.5rem">
+      <label>📎 Preuve de paiement * <span style="font-size:.7rem;color:var(--g500)">(Photo reçu, capture MonCash, ou virement — max 5MB)</span></label>
+      <input type="file" id="ins-preuve" accept="image/*,application/pdf" style="width:100%;padding:.6rem .8rem;border:1.5px dashed var(--bdr);border-radius:8px;font-size:.8rem;background:#f8faff;cursor:pointer">
+      <div id="ins-preuve-preview" style="margin-top:.4rem;display:none">
+        <img id="ins-preuve-img" style="max-height:80px;border-radius:6px;border:1px solid var(--bdr)">
+        <span id="ins-preuve-name" style="font-size:.72rem;color:var(--g500);margin-left:.5rem"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Résumé -->
   <div class="order-summary" style="margin-bottom:1.2rem">
-    <div class="os-line"><span>Programme</span><span style="font-weight:600">${info.label}</span></div>
-    <div class="os-line"><span>Formule</span><span>${label}</span></div>
-    <div class="os-line"><span>Modules inclus</span><span>${mods.length} modules</span></div>
-    ${isFull?`<div class="os-line"><span>Économie réalisée</span><span class="os-discount">${fmtPriceDual(t.an1+t.an2-t.full)}</span></div>`:''}
-    <div class="os-line" style="border-top:2px solid var(--bdr);padding-top:.6rem;margin-top:.3rem"><span class="os-total">Total à payer</span><span class="os-price">${fmtPriceDual(price)}</span></div>
+    <div class="os-line"><span>Type</span><span style="font-weight:600">${typeLabel}</span></div>
+    <div class="os-line"><span>Programme</span><span>${typeDesc}</span></div>
+    <div class="os-line" style="border-top:2px solid var(--bdr);padding-top:.6rem;margin-top:.3rem"><span class="os-total">Montant total</span><span class="os-price">${prixHtg.toLocaleString()} HTG</span></div>
   </div>
-  <div style="background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.12);border-radius:var(--r);padding:.9rem;margin-bottom:1.2rem;font-size:.78rem;color:var(--g700)">
-    📍 <strong>Comment payer :</strong> Apportez ce bon de commande au bureau Canado Technique, ou effectuez un virement bancaire. Votre matricule sera créé dans 24h ouvrables après réception du paiement.
-  </div>
-  <button class="btn btn-red" style="width:100%;justify-content:center" onclick="confirmPayment('${prog}','${an}')">📋 Confirmer la demande d'inscription</button>`;
+
+  <button class="btn btn-red" style="width:100%;justify-content:center;font-size:.9rem;padding:.85rem" onclick="submitInscription()">
+    📋 Soumettre ma demande d'inscription
+  </button>
+  <p style="font-size:.72rem;color:var(--g500);text-align:center;margin-top:.6rem">✅ Après soumission, votre dossier sera traité sous 24-48h. Vous recevrez votre matricule par email.</p>`;
+
+  // Preview image
+  setTimeout(()=>{
+    const fileInput = document.getElementById('ins-preuve');
+    if(fileInput) fileInput.addEventListener('change', e=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const prev = document.getElementById('ins-preuve-preview');
+      const img = document.getElementById('ins-preuve-img');
+      const name = document.getElementById('ins-preuve-name');
+      if(file.type.startsWith('image/')) { img.src = URL.createObjectURL(file); prev.style.display='flex';prev.style.alignItems='center'; }
+      if(name) name.textContent = file.name;
+    });
+  },100);
 
   document.getElementById('pay-modal').classList.add('show');
 }
 
-function closePayModal() { document.getElementById('pay-modal').classList.remove('show'); }
+function submitInscription() {
+  const required = ['ins-prenom','ins-nom','ins-dob','ins-sexe','ins-nationalite','ins-email','ins-tel','ins-ville','ins-adresse','ins-pays','ins-niveau','ins-moyen-paiement'];
+  for(const id of required) {
+    const el = document.getElementById(id);
+    if(!el || !el.value.trim()) { toast('⚠️ Veuillez remplir tous les champs obligatoires (*)'); el?.focus(); return; }
+  }
 
-function confirmPayment(prog, an) {
-  const prenom = document.getElementById('pay-prenom')?.value;
-  const nom = document.getElementById('pay-nom')?.value;
-  if(!prenom || !nom) { toast('⚠️ Veuillez remplir vos informations personnelles'); return; }
-  closePayModal();
-  showToastNotif('🎉 Demande enregistrée !', `Bienvenue ${prenom} ! Votre demande d'inscription en ${prog} a été envoyée. Vous recevrez votre matricule sous 24h.`);
-  toast('✅ Demande d\'inscription envoyée avec succès !');
+  const fileInput = document.getElementById('ins-preuve');
+  if(!fileInput || !fileInput.files[0]) { toast('⚠️ Veuillez joindre une preuve de paiement'); return; }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = e => {
+    const ins = {
+      id: 'ins_' + Date.now(),
+      type: document.getElementById('ins-type').value,
+      programme: document.getElementById('ins-programme').value,
+      annee: document.getElementById('ins-annee').value,
+      spec_from: document.getElementById('ins-spec-from').value,
+      module_code: document.getElementById('ins-module-code').value,
+      prix_htg: parseInt(document.getElementById('ins-prix-htg').value)||0,
+      prenom: document.getElementById('ins-prenom').value,
+      nom: document.getElementById('ins-nom').value,
+      date_naissance: document.getElementById('ins-dob').value,
+      sexe: document.getElementById('ins-sexe').value,
+      nationalite: document.getElementById('ins-nationalite').value,
+      cin: document.getElementById('ins-cin').value,
+      email: document.getElementById('ins-email').value,
+      telephone: document.getElementById('ins-tel').value,
+      whatsapp: document.getElementById('ins-whatsapp').value,
+      adresse: document.getElementById('ins-adresse').value,
+      ville: document.getElementById('ins-ville').value,
+      pays: document.getElementById('ins-pays').value,
+      niveau: document.getElementById('ins-niveau').value,
+      ecole_precedente: document.getElementById('ins-ecole').value,
+      moyen_paiement: document.getElementById('ins-moyen-paiement').value,
+      ref_paiement: document.getElementById('ins-ref').value,
+      preuve_paiement: e.target.result,
+      preuve_nom: file.name,
+      statut: 'en_attente',
+      date_soumission: new Date().toISOString(),
+      username: null, password_temp: null, code_etudiant: null
+    };
+
+    const all = JSON.parse(localStorage.getItem('canado_inscriptions')||'[]');
+    all.push(ins);
+    localStorage.setItem('canado_inscriptions', JSON.stringify(all));
+
+    // Notifier admin
+    const notifs = JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+    notifs.unshift({id:'n_'+Date.now(), type:'inscription', message:`Nouvelle inscription : ${ins.prenom} ${ins.nom} (${ins.programme}${ins.module_code?' — '+ins.module_code:''})`, lu:false, date:new Date().toISOString()});
+    localStorage.setItem('canado_notifications', JSON.stringify(notifs));
+
+    closePayModal();
+    showToastNotif('🎉 Demande envoyée !', `Merci ${ins.prenom} ! Votre dossier a été soumis. L'administration vous contactera sous 24-48h à l'adresse ${ins.email}.`);
+    toast('✅ Inscription soumise avec succès !');
+  };
+  reader.readAsDataURL(file);
 }
 
 /* ══════════════════════════════════════

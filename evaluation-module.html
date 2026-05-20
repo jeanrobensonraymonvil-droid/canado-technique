@@ -541,6 +541,50 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
   .presentiel-banner { margin: 1.2rem 1.2rem; }
   .criteria-row { flex-direction: column; align-items: flex-start; }
 }
+
+/* ═══ IDENTITÉ ÉTUDIANT ═══ */
+.id-grid { display: flex; flex-direction: column; gap: .9rem; }
+.id-row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+@media(max-width:520px){ .id-row { grid-template-columns: 1fr; } }
+.id-field { display: flex; flex-direction: column; gap: .4rem; }
+.id-field label {
+  font-size: .72rem; font-weight: 700; color: rgba(255,255,255,.4);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.id-field input {
+  background: rgba(255,255,255,.05);
+  border: 1.5px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  padding: .65rem .9rem;
+  font-size: .84rem;
+  color: #fff;
+  font-family: var(--fB);
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.id-field input::placeholder { color: rgba(255,255,255,.2); }
+.id-field input:focus {
+  border-color: rgba(59,123,255,.5);
+  background: rgba(59,123,255,.05);
+}
+.id-field input.err { border-color: rgba(232,25,44,.6); background: rgba(232,25,44,.05); }
+.id-notice {
+  display: flex; align-items: flex-start; gap: .6rem;
+  background: rgba(245,197,24,.06); border: 1px dashed rgba(245,197,24,.25);
+  border-radius: 10px; padding: .75rem 1rem;
+  font-size: .76rem; color: rgba(255,255,255,.4); line-height: 1.55;
+}
+.id-notice strong { color: rgba(245,197,24,.8); }
+
+/* ═══ TOAST INTERNE ═══ */
+.eval-toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: rgba(232,25,44,.9); color: #fff; padding: .6rem 1.2rem;
+  border-radius: 10px; font-size: .8rem; font-weight: 600; z-index: 999;
+  opacity: 0; transition: all .3s; pointer-events: none; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
+}
+.eval-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -554,6 +598,9 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
 -->
 
 <div class="eval-wrap" id="evalForm">
+
+  <!-- TOAST -->
+  <div class="eval-toast" id="evalToast"></div>
 
   <!-- HEADER -->
   <div class="eval-header">
@@ -575,25 +622,30 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
     <span class="presentiel-arrow">→</span>
   </a>
 
-  <!-- STEPS -->
+  <!-- STEPS — 5 étapes dont Identité en premier -->
   <div class="eval-steps" id="evalSteps">
     <div class="eval-step act" data-step="0">
       <div class="eval-step-dot">1</div>
-      <span class="eval-step-label">Notes</span>
+      <span class="eval-step-label">Identité</span>
       <div class="eval-step-line"></div>
     </div>
     <div class="eval-step" data-step="1">
       <div class="eval-step-dot">2</div>
-      <span class="eval-step-label">Satisfaction</span>
+      <span class="eval-step-label">Notes</span>
       <div class="eval-step-line"></div>
     </div>
     <div class="eval-step" data-step="2">
       <div class="eval-step-dot">3</div>
-      <span class="eval-step-label">Oui / Non</span>
+      <span class="eval-step-label">Satisfaction</span>
       <div class="eval-step-line"></div>
     </div>
     <div class="eval-step" data-step="3">
       <div class="eval-step-dot">4</div>
+      <span class="eval-step-label">Oui / Non</span>
+      <div class="eval-step-line"></div>
+    </div>
+    <div class="eval-step" data-step="4">
+      <div class="eval-step-dot">5</div>
       <span class="eval-step-label">Commentaires</span>
     </div>
   </div>
@@ -601,8 +653,40 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
   <!-- BODY -->
   <div class="eval-body" id="evalBody">
 
-    <!-- SECTION 1: NOTES ÉTOILES -->
+    <!-- SECTION 0: IDENTITÉ ÉTUDIANT (NOUVELLE) -->
     <div class="eval-section act" id="sec-0">
+      <div class="eval-section-title">Vos informations</div>
+      <div class="eval-section-sub">Ces informations permettent au professeur et à l'administration de suivre votre progression</div>
+      <div class="id-grid">
+        <div class="id-row">
+          <div class="id-field">
+            <label>Prénom *</label>
+            <input type="text" id="id-prenom" placeholder="Jean-Marc" autocomplete="given-name">
+          </div>
+          <div class="id-field">
+            <label>Nom de famille *</label>
+            <input type="text" id="id-nom" placeholder="Duval" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="id-row">
+          <div class="id-field">
+            <label>Adresse e-mail *</label>
+            <input type="email" id="id-email" placeholder="jean@email.com" autocomplete="email">
+          </div>
+          <div class="id-field">
+            <label>Matricule étudiant <span style="font-size:.65rem;opacity:.5;font-weight:400;text-transform:none">(optionnel)</span></label>
+            <input type="text" id="id-matricule" placeholder="CT-TRI-2026-XXXX">
+          </div>
+        </div>
+        <div class="id-notice">
+          <span style="font-size:1rem">🔒</span>
+          <div>
+            <strong>Confidentialité :</strong> Vos informations sont utilisées uniquement par votre professeur et l'administration de Canado Technique pour le suivi pédagogique. Elles ne sont jamais partagées à l'extérieur.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="eval-section" id="sec-1">
       <div class="eval-section-title">Notez les critères suivants</div>
       <div class="eval-section-sub">Cliquez sur les étoiles pour donner votre note (1 = très insuffisant, 5 = excellent)</div>
       <div class="criteria-grid">
@@ -706,7 +790,7 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
     </div>
 
     <!-- SECTION 2: SATISFACTION -->
-    <div class="eval-section" id="sec-1">
+    <div class="eval-section" id="sec-2">
       <div class="eval-section-title">Niveau de satisfaction global</div>
       <div class="eval-section-sub">Choisissez l'option qui correspond le mieux à votre ressenti</div>
       <div class="satis-grid">
@@ -742,7 +826,7 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
     </div>
 
     <!-- SECTION 3: OUI / NON -->
-    <div class="eval-section" id="sec-2">
+    <div class="eval-section" id="sec-3">
       <div class="eval-section-title">Questions rapides</div>
       <div class="eval-section-sub">Répondez simplement par Oui ou Non</div>
       <div class="yesno-grid">
@@ -785,7 +869,7 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
     </div>
 
     <!-- SECTION 4: COMMENTAIRES -->
-    <div class="eval-section" id="sec-3">
+    <div class="eval-section" id="sec-4">
       <div class="eval-section-title">Vos commentaires</div>
       <div class="eval-section-sub">Partagez librement vos observations — chaque retour est précieux</div>
       <div class="comment-grid">
@@ -808,7 +892,7 @@ body{font-family:var(--fB);background:transparent;color:var(--text);-webkit-font
 
   <!-- FOOTER -->
   <div class="eval-footer" id="evalFooter">
-    <div class="eval-progress-text">Étape <span id="step-cur">1</span> sur <span>4</span></div>
+    <div class="eval-progress-text">Étape <span id="step-cur">1</span> sur <span>5</span></div>
     <div class="eval-btns">
       <button class="btn-prev" id="btnPrev" onclick="evalPrev()" style="display:none">← Retour</button>
       <button class="btn-next" id="btnNext" onclick="evalNext()">Suivant →</button>
@@ -834,35 +918,40 @@ const EVAL_CONFIG = {
   moduleCode:  'TRI-01',
   moduleTitre: 'Métier et formation en réseaux informatiques',
   progCode:    'TRI',
-  // URL de soumission (à adapter)
-  // En mode offline : stockage localStorage
-  submitUrl:   null
+  submitUrl:   null   // Pointer vers backend quand prêt
 };
 
-// Lecture des paramètres URL (quand ouvert depuis index.html)
+// Lecture des paramètres URL
 (function() {
   const p = new URLSearchParams(window.location.search);
-  if (p.get('code')) {
-    EVAL_CONFIG.moduleCode = p.get('code');
-    const parts = EVAL_CONFIG.moduleCode.split('-');
-    if (parts.length > 0) EVAL_CONFIG.progCode = parts[0];
-  }
-  if (p.get('titre')) EVAL_CONFIG.moduleTitre = p.get('titre');
+  if (p.get('code'))  { EVAL_CONFIG.moduleCode = p.get('code'); EVAL_CONFIG.progCode = p.get('code').split('-')[0]; }
+  if (p.get('titre')) EVAL_CONFIG.moduleTitre = decodeURIComponent(p.get('titre'));
+  if (p.get('prog'))  EVAL_CONFIG.progCode = p.get('prog');
 })();
 
 /* ══════════════════════════════════════
    STATE
 ══════════════════════════════════════ */
 let currentStep = 0;
-const TOTAL_STEPS = 4;
-const ratings = {};   // star ratings
-const satis   = {};   // satisfaction
-const yesno   = {};   // yes/no
-// comments récupérés à la soumission
+const TOTAL_STEPS = 5;
+const ratings = {};
+const satis   = {};
+const yesno   = {};
 
 /* Init badge */
+const progIcons = {TRI:'🌐', MEI:'🔩', ELM:'⚙️', TEL:'📡'};
 document.getElementById('eval-badge').textContent =
-  `${EVAL_CONFIG.progCode === 'TRI' ? '🌐' : EVAL_CONFIG.progCode === 'MEI' ? '🔩' : EVAL_CONFIG.progCode === 'ELM' ? '⚙️' : '📡'} ${EVAL_CONFIG.moduleCode} — ${EVAL_CONFIG.moduleTitre}`;
+  `${progIcons[EVAL_CONFIG.progCode] || '📚'} ${EVAL_CONFIG.moduleCode} — ${EVAL_CONFIG.moduleTitre}`;
+
+/* ══════════════════════════════════════
+   TOAST INTERNE
+══════════════════════════════════════ */
+function evalToast(msg) {
+  const t = document.getElementById('evalToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 
 /* ══════════════════════════════════════
    STAR RATINGS
@@ -895,12 +984,9 @@ document.querySelectorAll('.satis-options').forEach(grp => {
   const key = grp.dataset.key;
   grp.querySelectorAll('.satis-opt').forEach(btn => {
     btn.addEventListener('click', () => {
-      grp.querySelectorAll('.satis-opt').forEach(b => {
-        b.className = 'satis-opt';
-      });
-      const v = btn.dataset.val;
-      satis[key] = +v;
-      btn.classList.add(`sel-${v}`);
+      grp.querySelectorAll('.satis-opt').forEach(b => b.className = 'satis-opt');
+      satis[key] = +btn.dataset.val;
+      btn.classList.add(`sel-${btn.dataset.val}`);
     });
   });
 });
@@ -912,9 +998,7 @@ function setYN(btn, val) {
   const grp = btn.closest('.yesno-btns');
   const key = grp.dataset.key;
   yesno[key] = val;
-  grp.querySelectorAll('.yn-btn').forEach(b => {
-    b.classList.remove('yes-sel','no-sel');
-  });
+  grp.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('yes-sel','no-sel'));
   btn.classList.add(val === 'oui' ? 'yes-sel' : 'no-sel');
 }
 
@@ -944,70 +1028,119 @@ function updateSteps() {
 }
 
 function evalNext() {
-  if (currentStep < TOTAL_STEPS - 1) {
-    currentStep++;
-    updateSteps();
-  } else {
-    submitEval();
+  // Validation étape 0 — identité obligatoire
+  if (currentStep === 0) {
+    const prenom  = document.getElementById('id-prenom').value.trim();
+    const nom     = document.getElementById('id-nom').value.trim();
+    const email   = document.getElementById('id-email').value.trim();
+    ['id-prenom','id-nom','id-email'].forEach(id => {
+      document.getElementById(id).classList.remove('err');
+    });
+    if (!prenom) { document.getElementById('id-prenom').classList.add('err'); evalToast('⚠️ Prénom requis'); return; }
+    if (!nom)    { document.getElementById('id-nom').classList.add('err');    evalToast('⚠️ Nom requis');    return; }
+    if (!email || !email.includes('@')) { document.getElementById('id-email').classList.add('err'); evalToast('⚠️ E-mail invalide'); return; }
   }
+  if (currentStep < TOTAL_STEPS - 1) { currentStep++; updateSteps(); }
+  else { submitEval(); }
 }
+
 function evalPrev() {
   if (currentStep > 0) { currentStep--; updateSteps(); }
 }
 
 /* ══════════════════════════════════════
-   SUBMIT
+   SUBMIT — Format compatible portails
 ══════════════════════════════════════ */
 function submitEval() {
-  const data = {
-    moduleCode:  EVAL_CONFIG.moduleCode,
-    moduleTitre: EVAL_CONFIG.moduleTitre,
-    progCode:    EVAL_CONFIG.progCode,
-    timestamp:   new Date().toISOString(),
-    mode:        'enligne',
-    ratings,
-    satis,
-    yesno,
-    comments: {
-      fort:       document.getElementById('c-fort').value,
-      faible:     document.getElementById('c-faible').value,
-      suggestion: document.getElementById('c-suggestion').value
-    }
+  // Identité
+  const prenom    = document.getElementById('id-prenom').value.trim();
+  const nom       = document.getElementById('id-nom').value.trim();
+  const email     = document.getElementById('id-email').value.trim();
+  const matricule = document.getElementById('id-matricule').value.trim();
+
+  // Scores clés mappés vers les champs des portails
+  const note_contenu      = ratings['clarte']       || ratings['utilite']  || 0;
+  const note_prof         = ratings['prof']          || 0;
+  const note_support      = ratings['supports']      || 0;
+  const note_organisation = ratings['rythme']        || ratings['environnement'] || 0;
+
+  // Recommande
+  const recommande = (satis['satis_recommande'] || 0) >= 4;
+
+  // Commentaire synthétique
+  const fort       = document.getElementById('c-fort').value.trim();
+  const faible     = document.getElementById('c-faible').value.trim();
+  const suggestion = document.getElementById('c-suggestion').value.trim();
+  const commentaire = [fort && `✅ Fort : ${fort}`, faible && `⚠️ À améliorer : ${faible}`, suggestion && `💡 Suggestion : ${suggestion}`].filter(Boolean).join('\n');
+
+  // Score global
+  const starVals  = Object.values(ratings);
+  const avgStars  = starVals.length ? (starVals.reduce((a,b)=>a+b,0)/starVals.length).toFixed(1) : 0;
+  const satisVals = Object.values(satis);
+  const avgSatis  = satisVals.length ? Math.round(satisVals.reduce((a,b)=>a+b,0)/satisVals.length*20) : 0;
+  const ynVals    = Object.values(yesno);
+  const pctOui    = ynVals.length ? Math.round(ynVals.filter(v=>v==='oui').length/ynVals.length*100) : 0;
+
+  /* ── Format standard portails ── */
+  const evalRecord = {
+    id:               'ev_' + Date.now(),
+    module_code:      EVAL_CONFIG.moduleCode,
+    module_titre:     EVAL_CONFIG.moduleTitre,
+    programme:        EVAL_CONFIG.progCode,
+    nom_etudiant:     prenom + ' ' + nom,
+    email_etudiant:   email,
+    matricule:        matricule,
+    note_contenu:     note_contenu,
+    note_prof:        note_prof,
+    note_support:     note_support,
+    note_organisation:note_organisation,
+    recommande:       recommande,
+    commentaire:      commentaire,
+    date:             new Date().toISOString(),
+    lu_admin:         false,
+    // Données détaillées complètes
+    ratings, satis, yesno,
+    scores: { avgStars, avgSatis, pctOui }
   };
 
-  // Score global calculé
-  const starVals = Object.values(ratings);
-  const avgStars = starVals.length ? (starVals.reduce((a,b)=>a+b,0)/starVals.length).toFixed(1) : '—';
-  const satisVals = Object.values(satis);
-  const avgSatis = satisVals.length ? Math.round(satisVals.reduce((a,b)=>a+b,0)/satisVals.length*20) : '—';
-  const ynVals = Object.values(yesno);
-  const pctOui = ynVals.length ? Math.round(ynVals.filter(v=>v==='oui').length/ynVals.length*100) : '—';
-
-  data.scores = { avgStars, avgSatis, pctOui };
-
-  // Sauvegarde locale (offline-first)
+  /* ── Sauvegarde localStorage ── */
   try {
-    const key = `eval_${EVAL_CONFIG.progCode}_${EVAL_CONFIG.moduleCode}_${Date.now()}`;
-    localStorage.setItem(key, JSON.stringify(data));
-    // Aussi dans une liste globale pour le dashboard
     const all = JSON.parse(localStorage.getItem('canado_evaluations') || '[]');
-    all.push(data);
+    all.push(evalRecord);
     localStorage.setItem('canado_evaluations', JSON.stringify(all));
+  } catch(e) { console.warn('localStorage indisponible', e); }
+
+  /* ── Notifications — prof ET admin ── */
+  try {
+    // Chercher le prof responsable du module dans les examens publiés
+    const examens = JSON.parse(localStorage.getItem('canado_examens') || '[]');
+    const exam = examens.find(e => e.module_code === EVAL_CONFIG.moduleCode || e.programme === EVAL_CONFIG.progCode);
+    const profNom = exam ? exam.prof_nom : null;
+
+    const notifs = JSON.parse(localStorage.getItem('canado_notifications') || '[]');
+    notifs.unshift({
+      id:      'n_' + Date.now(),
+      type:    'evaluation',
+      message: `📋 Nouvelle évaluation : ${prenom} ${nom} — ${EVAL_CONFIG.moduleCode} (${EVAL_CONFIG.progCode})${profNom ? ' · Prof : ' + profNom : ''}`,
+      lu:      false,
+      date:    new Date().toISOString()
+    });
+    localStorage.setItem('canado_notifications', JSON.stringify(notifs));
   } catch(e) {}
 
-  // Si URL définie, envoyer au serveur
+  /* ── Envoi serveur si URL configurée ── */
   if (EVAL_CONFIG.submitUrl) {
     fetch(EVAL_CONFIG.submitUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(evalRecord)
     }).catch(() => {});
   }
 
-  // Afficher succès
-  document.getElementById('evalBody').style.display = 'none';
-  document.getElementById('evalFooter').style.display = 'none';
-  document.getElementById('evalSteps').style.display = 'none';
+  /* ── Affichage succès ── */
+  document.getElementById('evalBody').style.display    = 'none';
+  document.getElementById('evalFooter').style.display  = 'none';
+  document.getElementById('evalSteps').style.display   = 'none';
   document.getElementById('presentiel-link').style.display = 'none';
 
   const sc = document.getElementById('evalSuccess');
@@ -1019,23 +1152,19 @@ function submitEval() {
   `;
 
   // Notifier la page parente (si dans iframe)
-  try {
-    window.parent.postMessage({ type: 'eval_submitted', data }, '*');
-  } catch(e) {}
+  try { window.parent.postMessage({ type: 'eval_submitted', data: evalRecord }, '*'); } catch(e) {}
 }
 
-/* Fermer l'évaluation et notifier la page parente */
+/* Fermer et notifier la page parente */
 function closeAndValidate() {
-  try {
-    window.parent.postMessage({ type: 'evalComplete', code: EVAL_CONFIG.moduleCode }, '*');
-  } catch(e) {}
+  try { window.parent.postMessage({ type: 'evalComplete', code: EVAL_CONFIG.moduleCode }, '*'); } catch(e) {}
+  // Si page autonome, retourner au site principal
+  if (window.parent === window) window.history.back();
 }
 
 /* Lien présentiel */
 function openPresentielForm(e) {
   e.preventDefault();
-  // Ouvre le même formulaire en mode présentiel dans un nouvel onglet ou redirige
-  // Personnalisez selon votre workflow
   const url = `evaluation-presentiel.html?module=${EVAL_CONFIG.moduleCode}&prog=${EVAL_CONFIG.progCode}`;
   window.open(url, '_blank');
 }

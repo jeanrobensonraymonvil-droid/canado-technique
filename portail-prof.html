@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portail Professeur — Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#040D1A;--navy2:#081428;--navy3:#0C1F3D;
+  --blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--goldD:#D4A800;
+  --green:#006B46;--greenL:#00A066;
+  --white:#FFFFFF;--g50:#F8FAFF;--g100:#E8EEFF;
+  --g200:#D4DEFC;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;
+  --r:10px;--rL:18px;--shadow:0 4px 24px rgba(4,13,26,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--fB);background:#091525;color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input,select,textarea{font-family:inherit;outline:none;border:1.5px solid var(--bdr);border-radius:8px;padding:.6rem .8rem;font-size:.82rem;color:var(--text);background:#fff;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,58,140,.1)}
+label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bottom:.3rem}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--navy2)}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 20%,rgba(27,58,140,.25) 0%,transparent 60%),linear-gradient(180deg,#040D1A,#091525)}
+.login-box{width:100%;max-width:400px;padding:2rem;animation:fadeUp .4s both}
+.login-logo{display:flex;align-items:center;gap:.8rem;margin-bottom:2rem;justify-content:center}
+.login-logo img{height:42px;border-radius:10px}
+.login-logo-text{font-family:var(--fD);font-weight:800;font-size:1.1rem}
+.login-logo-text small{display:block;font-size:.65rem;font-weight:400;color:var(--g500)}
+.login-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--rL);padding:2rem}
+.login-card h2{font-family:var(--fD);font-weight:800;font-size:1.3rem;margin-bottom:.4rem}
+.login-card p{font-size:.8rem;color:var(--g500);margin-bottom:1.5rem}
+.login-card label{color:rgba(255,255,255,.5)}
+.login-card input{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#fff}
+.login-card input::placeholder{color:rgba(255,255,255,.25)}
+.login-card input:focus{border-color:var(--blueL);background:rgba(255,255,255,.1)}
+.btn-login{width:100%;padding:.85rem;border-radius:var(--r);background:linear-gradient(135deg,var(--blue),var(--blueL));color:#fff;font-family:var(--fD);font-weight:700;font-size:.9rem;margin-top:1rem;transition:all .2s}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(27,58,140,.4)}
+.login-hint{font-size:.72rem;color:rgba(255,255,255,.25);text-align:center;margin-top:1rem}
+
+/* LAYOUT */
+.app{display:none;min-height:100vh}
+.app.show{display:flex}
+.sidebar{width:240px;min-height:100vh;background:rgba(4,13,26,.95);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;flex-shrink:0}
+.sb-header{padding:1.4rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+.sb-logo img{height:34px;border-radius:8px}
+.sb-logo-text{font-family:var(--fD);font-weight:700;font-size:.82rem;line-height:1.2}
+.sb-logo-text small{display:block;font-size:.6rem;font-weight:400;color:var(--g500)}
+.sb-user{background:rgba(27,58,140,.15);border-radius:10px;padding:.75rem;border:1px solid rgba(27,58,140,.2)}
+.sb-user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blueL));display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.85rem;flex-shrink:0}
+.sb-user-info{min-width:0}
+.sb-user-info .name{font-weight:700;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-user-info .role{font-size:.65rem;color:var(--g500);margin-top:1px}
+.sb-nav{flex:1;padding:1rem 0}
+.sb-nav-section{padding:.4rem 1rem .2rem;font-size:.62rem;font-weight:700;color:var(--g500);letter-spacing:.08em;text-transform:uppercase}
+.sb-link{display:flex;align-items:center;gap:.7rem;padding:.65rem 1.2rem;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;transition:all .18s;border:none;background:none;width:100%;text-align:left}
+.sb-link:hover{background:rgba(255,255,255,.05);color:#fff}
+.sb-link.act{background:rgba(27,58,140,.18);color:#fff;border-right:2.5px solid var(--blueL)}
+.sb-link .badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px;min-width:18px;text-align:center}
+.sb-footer{padding:1rem;border-top:1px solid rgba(255,255,255,.07)}
+.sb-footer button{width:100%;padding:.6rem;border-radius:8px;background:rgba(232,25,44,.1);color:var(--red);border:1px solid rgba(232,25,44,.2);font-size:.78rem;font-weight:600}
+
+.main{flex:1;background:#f0f4ff;min-height:100vh;overflow-y:auto}
+.main-header{background:#fff;padding:1rem 1.8rem;border-bottom:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between}
+.main-header h1{font-family:var(--fD);font-weight:800;font-size:1.15rem;color:var(--text)}
+.main-header p{font-size:.78rem;color:var(--g500);margin-top:2px}
+.main-body{padding:1.5rem 1.8rem}
+
+/* CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:#fff;border:1px solid var(--g100);border-radius:var(--rL);padding:1.1rem}
+.stat-card .stat-icon{font-size:1.4rem;margin-bottom:.5rem}
+.stat-card .stat-num{font-family:var(--fD);font-weight:800;font-size:1.6rem;color:var(--text)}
+.stat-card .stat-label{font-size:.72rem;color:var(--g500);margin-top:2px}
+
+/* SECTION */
+.section{background:#fff;border:1px solid var(--g100);border-radius:var(--rL);margin-bottom:1.2rem;overflow:hidden}
+.section-head{padding:1rem 1.4rem;border-bottom:1px solid var(--g100);display:flex;align-items:center;justify-content:space-between}
+.section-head h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text)}
+.section-body{padding:1.2rem 1.4rem}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:8px;font-size:.8rem;font-weight:600;transition:all .18s;cursor:pointer;border:none;font-family:var(--fB)}
+.btn-blue{background:linear-gradient(135deg,var(--blue),var(--blueL));color:#fff}
+.btn-blue:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(27,58,140,.35)}
+.btn-red{background:linear-gradient(135deg,var(--red),#C8101E);color:#fff}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(232,25,44,.35)}
+.btn-outline{background:#fff;color:var(--g700);border:1.5px solid var(--g200)}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--greenL));color:#fff}
+.btn-sm{padding:.35rem .7rem;font-size:.75rem}
+.btn-gold{background:linear-gradient(135deg,#8B5E00,var(--goldD));color:#fff}
+
+/* TABLE */
+.tw{overflow-x:auto}
+.tw table{width:100%;border-collapse:collapse;font-size:.8rem}
+.tw th{background:var(--g50);color:var(--g700);font-weight:700;padding:.65rem .9rem;text-align:left;border-bottom:1.5px solid var(--g100);white-space:nowrap}
+.tw td{padding:.65rem .9rem;border-bottom:1px solid var(--g100);color:var(--text);vertical-align:middle}
+.tw tr:last-child td{border-bottom:none}
+.tw tr:hover td{background:#f8faff}
+
+/* FORM */
+.fg{margin-bottom:.9rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media(max-width:640px){.frow{grid-template-columns:1fr}.sidebar{width:0;overflow:hidden}.main{width:100%}}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(4,13,26,.7);z-index:999;align-items:center;justify-content:center;padding:1rem}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:var(--rL);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.35);animation:fadeUp .25s both}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.4rem;border-bottom:1px solid var(--g100)}
+.modal-head h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text)}
+.modal-body{padding:1.4rem}
+.close-btn{width:28px;height:28px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.9rem;display:flex;align-items:center;justify-content:center}
+
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:.7rem;font-weight:700}
+.chip-open{background:#e6f9f0;color:#006B46;border:1px solid #00A066}
+.chip-closed{background:#f5f5f5;color:#888;border:1px solid #ddd}
+.chip-future{background:#fffbeb;color:#8B5E00;border:1px solid #C98A00}
+.chip-pending{background:#ffe8e8;color:#C8101E;border:1px solid #E8192C}
+
+/* EMPTY */
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--g500)}
+.empty .empty-icon{font-size:2.2rem;margin-bottom:.6rem}
+.empty h4{font-family:var(--fD);font-weight:700;font-size:.9rem;color:var(--g700);margin-bottom:.3rem}
+.empty p{font-size:.78rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:#fff;padding:.75rem 1.2rem;border-radius:10px;font-size:.82rem;box-shadow:0 4px 24px rgba(0,0,0,.3);z-index:9999;display:none;max-width:320px}
+.toast.show{display:block;animation:fadeUp .3s both}
+</style>
+</head>
+<body>
+
+<!-- ════════ LOGIN ════════ -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="assets/images/logo/cfph.png" alt="Canado" onerror="this.style.display='none'">
+      <div class="login-logo-text">Canado Technique<small>Portail Professeur</small></div>
+    </div>
+    <div class="login-card">
+      <h2>🎓 Connexion</h2>
+      <p>Accédez à votre espace pédagogique</p>
+      <div class="fg"><label>Adresse e-mail</label><input type="email" id="login-email" placeholder="prof.tri@canado.edu" value="prof.tri@canado.edu"></div>
+      <div class="fg"><label>Mot de passe</label><input type="password" id="login-pass" placeholder="••••••••" value="Prof2026!"></div>
+      <button class="btn-login" onclick="doLogin()">Se connecter →</button>
+      <p id="login-err" style="color:var(--red);font-size:.75rem;margin-top:.6rem;display:none">Email ou mot de passe incorrect.</p>
+      <p class="login-hint">Comptes démo : prof.tri@canado.edu / Prof2026! · prof.tel@canado.edu / Prof2026!</p>
+    </div>
+    <p style="text-align:center;margin-top:1rem;font-size:.72rem;color:rgba(255,255,255,.25)">
+      <a href="index.html" style="color:rgba(255,255,255,.3)">← Retour au site</a>
+      &nbsp;·&nbsp;
+      <a href="portail-admin.html" style="color:rgba(255,255,255,.3)">Portail Admin →</a>
+    </p>
+  </div>
+</div>
+
+<!-- ════════ APP ════════ -->
+<div class="app" id="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <div class="sb-logo">
+        <img src="assets/images/logo/cfph.png" alt="" onerror="this.style.display='none'">
+        <div class="sb-logo-text">Canado Technique<small>Portail Professeur</small></div>
+      </div>
+      <div class="sb-user" style="display:flex;align-items:center;gap:.7rem">
+        <div class="sb-user-avatar" id="sb-avatar">JP</div>
+        <div class="sb-user-info">
+          <div class="name" id="sb-name">Chargement…</div>
+          <div class="role" id="sb-role">Professeur</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-nav-section">Général</div>
+      <button class="sb-link act" id="sl-dashboard" onclick="showSection('dashboard')">📊 Tableau de bord</button>
+      <div class="sb-nav-section">Pédagogie</div>
+      <button class="sb-link" id="sl-examens" onclick="showSection('examens')">📅 Gérer les examens <span class="badge" id="sb-exam-badge" style="display:none">0</span></button>
+      <button class="sb-link" id="sl-cours-det" onclick="showSection('cours-det')">🛒 Cours Détachés</button>
+      <button class="sb-link" id="sl-evaluations" onclick="showSection('evaluations')">📋 Évaluations <span class="badge" id="sb-eval-badge" style="display:none">0</span></button>
+    </nav>
+    <div class="sb-footer">
+      <button onclick="doLogout()">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <h1 id="main-title">Tableau de bord</h1>
+        <p id="main-sub">Bienvenue dans votre espace pédagogique</p>
+      </div>
+      <a href="index.html" style="font-size:.78rem;color:var(--g500);display:flex;align-items:center;gap:.4rem">← Site principal</a>
+    </div>
+    <div class="main-body">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard">
+        <div class="stat-grid" id="dash-stats"></div>
+        <div class="section">
+          <div class="section-head"><h3>📅 Mes sessions d'examens actives</h3><button class="btn btn-blue btn-sm" onclick="showSection('examens')">Voir tout →</button></div>
+          <div class="section-body"><div id="dash-examens-list"></div></div>
+        </div>
+        <div class="section">
+          <div class="section-head"><h3>📋 Dernières évaluations reçues</h3><button class="btn btn-outline btn-sm" onclick="showSection('evaluations')">Voir tout →</button></div>
+          <div class="section-body"><div id="dash-evals-list"></div></div>
+        </div>
+      </div>
+
+      <!-- EXAMENS -->
+      <div id="sec-examens" style="display:none">
+        <div class="section">
+          <div class="section-head">
+            <h3>📅 Sessions d'examens</h3>
+            <button class="btn btn-blue btn-sm" onclick="openExamModal()">+ Nouvelle session</button>
+          </div>
+          <div class="section-body">
+            <p style="font-size:.78rem;color:var(--g500);margin-bottom:1rem;padding:.6rem .8rem;background:#f0f4ff;border-radius:8px;border:1px solid var(--g200)">
+              📢 Les sessions que vous publiez ici apparaissent automatiquement sur la page <strong>Examens</strong> du site public.
+            </p>
+            <div id="examens-table"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COURS DÉTACHÉS -->
+      <div id="sec-cours-det" style="display:none">
+        <div class="section">
+          <div class="section-head">
+            <h3>🛒 Cours Détachés</h3>
+            <button class="btn btn-gold btn-sm" onclick="openCoursDetModal()">+ Activer un module</button>
+          </div>
+          <div class="section-body">
+            <p style="font-size:.78rem;color:var(--g500);margin-bottom:1rem;padding:.6rem .8rem;background:#fffbeb;border-radius:8px;border:1px solid rgba(245,197,24,.25)">
+              🛒 Les modules que vous activez ici apparaissent dans la section <strong>Cours Détachés</strong> des Programmes. Les étudiants peuvent les acheter individuellement.
+            </p>
+            <div id="cours-det-table"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉVALUATIONS -->
+      <div id="sec-evaluations" style="display:none">
+        <div class="section">
+          <div class="section-head">
+            <h3>📋 Fiches d'évaluation reçues</h3>
+            <div style="display:flex;gap:.5rem">
+              <select id="eval-filter" onchange="renderEvaluations()" style="width:auto;font-size:.78rem;padding:.3rem .6rem">
+                <option value="all">Tous les modules</option>
+              </select>
+              <button class="btn btn-outline btn-sm" onclick="exportEvals()">📥 Exporter CSV</button>
+            </div>
+          </div>
+          <div class="section-body"><div id="evaluations-table"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ════ MODAL EXAMEN ════ -->
+<div class="modal" id="exam-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="exam-modal-title">📅 Nouvelle session d'examen</h3>
+      <button class="close-btn" onclick="closeExamModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="em-id">
+      <div class="fg"><label>Programme *</label>
+        <select id="em-programme" onchange="populateModules()" style="width:100%">
+          <option value="">— Sélectionner —</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Année *</label>
+          <select id="em-annee" onchange="populateModules()" style="width:100%">
+            <option value="1">1ère Année</option><option value="2">2ème Année</option>
+          </select>
+        </div>
+        <div class="fg"><label>Module *</label>
+          <select id="em-module" style="width:100%"><option value="">— Choisir le programme d'abord —</option></select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>📅 Date d'ouverture *</label><input type="date" id="em-ouverture"></div>
+        <div class="fg"><label>📅 Date de clôture *</label><input type="date" id="em-cloture"></div>
+      </div>
+      <div class="fg"><label>Statut</label>
+        <select id="em-statut" style="width:100%">
+          <option value="ouvert">✅ Ouvert — Visible sur le site</option>
+          <option value="ferme">🔒 Fermé — Masqué du site</option>
+        </select>
+      </div>
+      <div class="fg"><label>Notes / Instructions pour les étudiants</label>
+        <textarea id="em-notes" rows="2" placeholder="Ex. : L'examen couvre les modules 1 à 5. Avoir son matricule à portée." style="resize:vertical;min-height:60px;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.6rem .8rem;font-size:.82rem;color:var(--text)"></textarea>
+      </div>
+      <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:.5rem" onclick="saveExam()">💾 Enregistrer la session</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL COURS DÉTACHÉ ════ -->
+<div class="modal" id="cd-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="cd-modal-title">🛒 Activer un cours détaché</h3>
+      <button class="close-btn" onclick="closeCDModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cd-id">
+      <div class="fg"><label>Programme *</label>
+        <select id="cd-programme" onchange="populateCDModules()" style="width:100%">
+          <option value="">— Sélectionner —</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Année *</label>
+          <select id="cd-annee" onchange="populateCDModules()" style="width:100%">
+            <option value="1">1ère Année</option><option value="2">2ème Année</option>
+          </select>
+        </div>
+        <div class="fg"><label>Module *</label>
+          <select id="cd-module" onchange="autoFillCDTitle()" style="width:100%"><option value="">— Choisir d'abord le programme —</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Titre du cours (pour l'affichage)</label><input type="text" id="cd-titre" placeholder="Titre automatique ou personnalisé"></div>
+      <div class="fg"><label>Description courte</label>
+        <textarea id="cd-desc" rows="2" placeholder="Présentation du contenu du module pour les étudiants" style="resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.6rem .8rem;font-size:.82rem;color:var(--text)"></textarea>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Prix HTG *</label><input type="number" id="cd-prix-htg" placeholder="1500" min="0"></div>
+        <div class="fg"><label>Prix USD (optionnel)</label><input type="number" id="cd-prix-usd" placeholder="12" min="0"></div>
+      </div>
+      <div class="fg"><label>Statut</label>
+        <select id="cd-statut" style="width:100%">
+          <option value="true">✅ Actif — Visible sur le site</option>
+          <option value="false">🔒 Inactif — Masqué</option>
+        </select>
+      </div>
+      <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:.5rem" onclick="saveCD()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL ÉVALUATION DÉTAIL ════ -->
+<div class="modal" id="eval-modal">
+  <div class="modal-box" style="max-width:500px">
+    <div class="modal-head"><h3>📋 Fiche d'évaluation</h3><button class="close-btn" onclick="document.getElementById('eval-modal').classList.remove('show')">✕</button></div>
+    <div class="modal-body" id="eval-modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════
+   DATA & STATE
+════════════════════════════════════ */
+let currentUser = null;
+
+// Modules data (same as main site)
+const MODULES_DATA = {
+  TRI:{
+    1:[
+      {code:'TRI-01',titre:"Métier et formation en réseaux informatiques",heures:30},
+      {code:'TRI-02',titre:"Utilisation de l'ordinateur",heures:30},
+      {code:'TRI-03',titre:"Principes d'électricité",heures:45},
+      {code:'TRI-04',titre:"Composantes matérielles d'un ordinateur",heures:45},
+      {code:'TRI-05',titre:"Système d'exploitation",heures:75},
+      {code:'TRI-06',titre:"Câblage réseau",heures:60},
+      {code:'TRI-07',titre:"Conception de réseaux locaux",heures:75},
+      {code:'TRI-08',titre:"Logiciels de bureautique",heures:105},
+      {code:'TRI-09',titre:"Sécurité informatique de base",heures:45},
+      {code:'TRI-10',titre:"Réseau sans fil",heures:60},
+      {code:'TRI-11',titre:"Introduction à TCP/IP",heures:90},
+      {code:'TRI-12',titre:"Protocoles de routage",heures:90},
+      {code:'TRI-13',titre:"Technologies et services internet",heures:45},
+    ],
+    2:[
+      {code:'TRI-14',titre:"Virtualisation et cloud",heures:90},
+      {code:'TRI-15',titre:"Administration Linux",heures:90},
+      {code:'TRI-16',titre:"CCNA — Commutation avancée",heures:120},
+      {code:'TRI-17',titre:"CCNA — Routage avancé",heures:120},
+      {code:'TRI-18',titre:"Administration Windows Server",heures:90},
+      {code:'TRI-19',titre:"Sécurité réseau avancée",heures:75},
+      {code:'TRI-20',titre:"VPN et accès distant",heures:60},
+      {code:'TRI-21',titre:"Supervision réseau",heures:45},
+      {code:'TRI-22',titre:"Projet intégrateur",heures:75},
+      {code:'TRI-23',titre:"Entrepreneuriat",heures:30},
+      {code:'TRI-24',titre:"Préparation au marché du travail",heures:45},
+    ]
+  },
+  MEI:{
+    1:[
+      {code:'MEI-01',titre:"Métier et formation",heures:30},{code:'MEI-02',titre:"Utilisation de l'ordinateur",heures:45},
+      {code:'MEI-03',titre:"Croquis, schémas et dessins",heures:60},{code:'MEI-04',titre:"Interprétation de plans",heures:60},
+      {code:'MEI-05',titre:"Santé et sécurité au travail",heures:30},{code:'MEI-06',titre:"Instruments de mesure",heures:60},
+      {code:'MEI-07',titre:"Usinage manuel",heures:105},{code:'MEI-08',titre:"Coupage et soudage",heures:105},
+      {code:'MEI-09',titre:"Usinage par machines-outils",heures:105},{code:'MEI-10',titre:"Lubrification",heures:60},
+    ],
+    2:[
+      {code:'MEI-14',titre:"Éléments de transmission",heures:75},{code:'MEI-15',titre:"Tubes, tuyaux et boyaux",heures:60},
+      {code:'MEI-16',titre:"Pompes hydrauliques",heures:75},{code:'MEI-19',titre:"Équilibrage",heures:75},
+      {code:'MEI-20',titre:"Analyse de vibrations",heures:75},{code:'MEI-25',titre:"Maintenance préventive",heures:90},
+      {code:'MEI-26',titre:"Installation d'équipement",heures:90},{code:'MEI-27',titre:"Dépannage d'équipement",heures:90},
+    ]
+  },
+  ELM:{
+    1:[
+      {code:'ELM-01',titre:"Métier et formation",heures:30},{code:'ELM-02',titre:"Sécurité et environnement",heures:30},
+      {code:'ELM-03',titre:"Circuits CC et CA",heures:90},{code:'ELM-04',titre:"Lecture de plans",heures:60},
+      {code:'ELM-05',titre:"Moteurs électriques",heures:75},{code:'ELM-06',titre:"Installations électriques",heures:90},
+      {code:'ELM-07',titre:"Automatismes industriels",heures:90},{code:'ELM-08',titre:"Pneumatique",heures:75},
+      {code:'ELM-09',titre:"Moteurs, générateurs et transformateurs",heures:75},
+    ],
+    2:[
+      {code:'ELM-10',titre:"Automates programmables (API)",heures:90},{code:'ELM-11',titre:"Commande de moteurs avancée",heures:90},
+      {code:'ELM-12',titre:"Variateurs de vitesse",heures:75},{code:'ELM-13',titre:"Maintenance électromécanique",heures:90},
+      {code:'ELM-14',titre:"Énergies renouvelables",heures:60},{code:'ELM-15',titre:"Projet intégrateur",heures:75},
+      {code:'ELM-16',titre:"Entrepreneuriat",heures:30},{code:'ELM-17',titre:"Marché du travail",heures:45},
+    ]
+  },
+  TEL:{
+    1:[
+      {code:'TEL-01',titre:"Métier et formation en télécommunications",heures:30},
+      {code:'TEL-02',titre:"Circuits CC et CA",heures:90},{code:'TEL-03',titre:"Composantes électroniques",heures:75},
+      {code:'TEL-04',titre:"Signaux et modulation",heures:75},{code:'TEL-05',titre:"Antennes et propagation",heures:60},
+      {code:'TEL-06',titre:"Réseaux téléphoniques",heures:60},{code:'TEL-07',titre:"Circuit d'électronique numérique",heures:75},
+      {code:'TEL-08',titre:"Systèmes de transmission",heures:75},{code:'TEL-09',titre:"Fibre optique",heures:60},
+    ],
+    2:[
+      {code:'TEL-10',titre:"Protocoles de communication avancés",heures:90},{code:'TEL-11',titre:"4G/5G et réseaux mobiles",heures:75},
+      {code:'TEL-12',titre:"Satellite et radiodiffusion",heures:60},{code:'TEL-13',titre:"Sécurité des télécoms",heures:60},
+      {code:'TEL-14',titre:"Projet intégrateur télécoms",heures:75},{code:'TEL-15',titre:"CompTIA A+ — préparation",heures:90},
+    ]
+  }
+};
+
+/* Seeder — comptes par défaut si absents */
+function seedUsers() {
+  if(!localStorage.getItem('canado_users')) {
+    localStorage.setItem('canado_users', JSON.stringify([
+      {id:'adm1',email:'admin@canado.edu',password:'Admin2026!',role:'admin',nom:'Gary Pierre',titre:'Directeur'},
+      {id:'pr1',email:'prof.tri@canado.edu',password:'Prof2026!',role:'prof',nom:'Jean-Marie Duval',titre:'Professeur TRI · MEI',programmes:['TRI','MEI']},
+      {id:'pr2',email:'prof.tel@canado.edu',password:'Prof2026!',role:'prof',nom:'Marie Céline Joseph',titre:'Professeure TEL · ELM',programmes:['TEL','ELM']}
+    ]));
+  }
+}
+
+/* ════════════════════════════════════
+   AUTH
+════════════════════════════════════ */
+function doLogin() {
+  seedUsers();
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('login-pass').value;
+  const users = JSON.parse(localStorage.getItem('canado_users')||'[]');
+  const user  = users.find(u => u.email.toLowerCase()===email && u.password===pass && u.role==='prof');
+  if(!user){ document.getElementById('login-err').style.display='block'; return; }
+  currentUser = user;
+  localStorage.setItem('canado_prof_session', JSON.stringify({id:user.id,ts:Date.now()}));
+  startApp();
+}
+
+function checkSession() {
+  seedUsers();
+  const sess = localStorage.getItem('canado_prof_session');
+  if(!sess) return false;
+  const {id, ts} = JSON.parse(sess);
+  if(Date.now()-ts > 8*3600*1000) { localStorage.removeItem('canado_prof_session'); return false; }
+  const users = JSON.parse(localStorage.getItem('canado_users')||'[]');
+  currentUser = users.find(u=>u.id===id && u.role==='prof');
+  return !!currentUser;
+}
+
+function doLogout() {
+  localStorage.removeItem('canado_prof_session');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('login-screen').style.display='flex';
+}
+
+/* ════════════════════════════════════
+   APP INIT
+════════════════════════════════════ */
+function startApp() {
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').classList.add('show');
+  // Header user
+  const initials = currentUser.nom.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('sb-avatar').textContent = initials;
+  document.getElementById('sb-name').textContent = currentUser.nom;
+  document.getElementById('sb-role').textContent = currentUser.titre||'Professeur';
+  // Populate programme selects with user's programmes
+  populateProgrammeSelects();
+  showSection('dashboard');
+}
+
+function populateProgrammeSelects() {
+  const progs = currentUser.programmes || ['TRI','MEI','ELM','TEL'];
+  ['em-programme','cd-programme'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">— Sélectionner —</option>';
+    progs.forEach(p => sel.innerHTML += `<option value="${p}">${p}</option>`);
+  });
+}
+
+function showSection(sec) {
+  ['dashboard','examens','cours-det','evaluations'].forEach(s=>{
+    const el=document.getElementById('sec-'+s);
+    const sl=document.getElementById('sl-'+s);
+    if(el) el.style.display=s===sec?'block':'none';
+    if(sl) sl.className=s===sec?'sb-link act':'sb-link';
+    if(sl?.querySelector('.badge')&&s===sec) sl.querySelector('.badge') && null;
+  });
+  const titles={dashboard:{title:'Tableau de bord',sub:'Vue d\'ensemble de votre activité pédagogique'},
+    examens:{title:'Gestion des examens',sub:'Publiez et gérez vos sessions d\'examens'},
+    'cours-det':{title:'Cours Détachés',sub:'Activez des modules disponibles à l\'achat individuel'},
+    evaluations:{title:'Évaluations étudiants',sub:'Fiches d\'évaluation soumises après les modules'}};
+  const t=titles[sec];
+  if(t){document.getElementById('main-title').textContent=t.title;document.getElementById('main-sub').textContent=t.sub;}
+  if(sec==='dashboard') renderDashboard();
+  if(sec==='examens') renderExamens();
+  if(sec==='cours-det') renderCoursDetaches();
+  if(sec==='evaluations') renderEvaluations();
+}
+
+/* ════════════════════════════════════
+   DASHBOARD
+════════════════════════════════════ */
+function renderDashboard() {
+  const examens = getMyExamens();
+  const cds = getMyCDs();
+  const evals = getMyEvals();
+  const open = examens.filter(e=>e.statut==='ouvert').length;
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num">${examens.length}</div><div class="stat-label">Sessions d'examens</div></div>
+    <div class="stat-card"><div class="stat-icon">🟢</div><div class="stat-num">${open}</div><div class="stat-label">Sessions actives</div></div>
+    <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-num">${cds.filter(c=>c.actif).length}</div><div class="stat-label">Cours détachés actifs</div></div>
+    <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num">${evals.length}</div><div class="stat-label">Évaluations reçues</div></div>`;
+
+  // Active exams preview
+  const activeExams = examens.filter(e=>e.statut==='ouvert').slice(0,3);
+  document.getElementById('dash-examens-list').innerHTML = activeExams.length ? activeExams.map(e=>examCard(e)).join('') :
+    '<div class="empty"><div class="empty-icon">📅</div><h4>Aucune session active</h4><p>Créez votre première session d\'examen</p></div>';
+
+  // Recent evals
+  const recentEvals = evals.slice(0,3);
+  document.getElementById('dash-evals-list').innerHTML = recentEvals.length ? recentEvals.map(ev=>evalRow(ev)).join('') :
+    '<div class="empty"><div class="empty-icon">📋</div><h4>Aucune évaluation reçue</h4><p>Les étudiants soumettent les fiches après chaque module</p></div>';
+}
+
+/* ════════════════════════════════════
+   EXAMENS
+════════════════════════════════════ */
+function getMyExamens() {
+  const all = JSON.parse(localStorage.getItem('canado_examens')||'[]');
+  return all.filter(e=>e.prof_id===currentUser.id || (currentUser.programmes||[]).includes(e.programme));
+}
+
+function renderExamens() {
+  const examens = getMyExamens();
+  const container = document.getElementById('examens-table');
+  if(!examens.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">📅</div><h4>Aucune session créée</h4><p>Cliquez sur "+ Nouvelle session" pour publier un examen sur le site.</p></div>';
+    return;
+  }
+  container.innerHTML = `<div class="tw"><table>
+    <thead><tr><th>Programme</th><th>Module</th><th>Ouverture</th><th>Clôture</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody>${examens.map(e=>`<tr>
+      <td><span class="chip chip-${e.statut==='ouvert'?'open':'closed'}" style="background:#e8eeff;color:#1B3A8C;border:none">${e.programme}</span></td>
+      <td><div style="font-weight:600;font-size:.82rem;color:var(--text)">${e.module_code}</div><div style="font-size:.72rem;color:var(--g500)">${e.module_titre}</div></td>
+      <td style="font-size:.78rem;color:var(--green);font-weight:600">${fmtDate(e.date_ouverture)}</td>
+      <td style="font-size:.78rem;color:var(--red);font-weight:600">${fmtDate(e.date_cloture)}</td>
+      <td><span class="chip chip-${e.statut==='ouvert'?'open':'closed'}">${e.statut==='ouvert'?'✅ Ouvert':'🔒 Fermé'}</span></td>
+      <td><div style="display:flex;gap:.4rem">
+        <button class="btn btn-outline btn-sm" onclick="editExam('${e.id}')">✏️</button>
+        <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red)" onclick="deleteExam('${e.id}')">🗑</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+
+function examCard(e) {
+  return `<div style="display:flex;align-items:center;gap:.8rem;padding:.75rem;border:1px solid var(--g100);border-radius:10px;margin-bottom:.5rem;background:#f8faff">
+    <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#1B3A8C,#2B56C0);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0">${e.programme}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700;font-size:.8rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.module_code} — ${e.module_titre}</div>
+      <div style="font-size:.7rem;color:var(--g500)">Du ${fmtDate(e.date_ouverture)} au ${fmtDate(e.date_cloture)}</div>
+    </div>
+    <span class="chip chip-open">✅ Actif</span>
+  </div>`;
+}
+
+function openExamModal(id) {
+  const modal = document.getElementById('exam-modal');
+  document.getElementById('exam-modal-title').textContent = id ? '✏️ Modifier la session' : '📅 Nouvelle session d\'examen';
+  if(id) {
+    const all = JSON.parse(localStorage.getItem('canado_examens')||'[]');
+    const e = all.find(x=>x.id===id);
+    if(!e) return;
+    document.getElementById('em-id').value = id;
+    document.getElementById('em-programme').value = e.programme;
+    document.getElementById('em-annee').value = e.annee||'1';
+    populateModules();
+    setTimeout(()=>{ document.getElementById('em-module').value = e.module_code; },50);
+    document.getElementById('em-ouverture').value = e.date_ouverture;
+    document.getElementById('em-cloture').value = e.date_cloture;
+    document.getElementById('em-statut').value = e.statut;
+    document.getElementById('em-notes').value = e.notes||'';
+  } else {
+    document.getElementById('em-id').value = '';
+    ['em-programme','em-module','em-ouverture','em-cloture','em-notes'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; });
+    document.getElementById('em-annee').value='1';
+    document.getElementById('em-statut').value='ouvert';
+  }
+  modal.classList.add('show');
+}
+function closeExamModal(){ document.getElementById('exam-modal').classList.remove('show'); }
+function editExam(id){ openExamModal(id); }
+function deleteExam(id){
+  if(!confirm('Supprimer cette session d\'examen ?')) return;
+  const all = JSON.parse(localStorage.getItem('canado_examens')||'[]');
+  localStorage.setItem('canado_examens', JSON.stringify(all.filter(e=>e.id!==id)));
+  renderExamens(); toast('Session supprimée');
+}
+
+function populateModules() {
+  const prog = document.getElementById('em-programme').value;
+  const an = parseInt(document.getElementById('em-annee').value)||1;
+  const sel = document.getElementById('em-module');
+  const mods = (MODULES_DATA[prog]||{})[an]||[];
+  sel.innerHTML = '<option value="">— Sélectionner le module —</option>';
+  mods.forEach(m => sel.innerHTML += `<option value="${m.code}" data-titre="${m.titre}">${m.code} — ${m.titre} (${m.heures}h)</option>`);
+}
+
+function saveExam() {
+  const prog = document.getElementById('em-programme').value;
+  const annee = document.getElementById('em-annee').value;
+  const modEl = document.getElementById('em-module');
+  const modCode = modEl.value;
+  const modTitre = modEl.options[modEl.selectedIndex]?.text?.split(' — ').slice(1).join(' — ').replace(/\s*\(\d+h\)$/,'') || '';
+  const ouv = document.getElementById('em-ouverture').value;
+  const clo = document.getElementById('em-cloture').value;
+  const statut = document.getElementById('em-statut').value;
+  if(!prog||!modCode||!ouv||!clo){ toast('⚠️ Remplissez tous les champs obligatoires'); return; }
+  if(ouv>clo){ toast('⚠️ La date de clôture doit être après l\'ouverture'); return; }
+
+  const all = JSON.parse(localStorage.getItem('canado_examens')||'[]');
+  const existingId = document.getElementById('em-id').value;
+  const exam = {
+    id: existingId || 'exam_'+Date.now(),
+    programme: prog, annee, module_code: modCode,
+    module_titre: modTitre, date_ouverture: ouv, date_cloture: clo,
+    statut, notes: document.getElementById('em-notes').value,
+    prof_id: currentUser.id, prof_nom: currentUser.nom,
+    created: existingId ? (all.find(e=>e.id===existingId)?.created||new Date().toISOString()) : new Date().toISOString()
+  };
+  if(existingId) { const idx=all.findIndex(e=>e.id===existingId); if(idx>=0) all[idx]=exam; else all.push(exam); }
+  else all.push(exam);
+  localStorage.setItem('canado_examens', JSON.stringify(all));
+  closeExamModal(); renderExamens();
+  toast(existingId ? '✅ Session mise à jour' : '✅ Session publiée sur le site public !');
+}
+
+/* ════════════════════════════════════
+   COURS DÉTACHÉS
+════════════════════════════════════ */
+function getMyCDs() {
+  const all = JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]');
+  return all.filter(c=>c.prof_id===currentUser.id || (currentUser.programmes||[]).includes(c.programme));
+}
+
+function renderCoursDetaches() {
+  const cds = getMyCDs();
+  const container = document.getElementById('cours-det-table');
+  if(!cds.length){
+    container.innerHTML='<div class="empty"><div class="empty-icon">🛒</div><h4>Aucun cours activé</h4><p>Activez des modules pour qu\'ils soient disponibles à l\'achat individuel.</p></div>';
+    return;
+  }
+  container.innerHTML=`<div class="tw"><table>
+    <thead><tr><th>Programme</th><th>Module</th><th>Titre</th><th>Prix HTG</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody>${cds.map(c=>`<tr>
+      <td><span style="font-size:.72rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:2px 8px;border-radius:10px">${c.programme}</span></td>
+      <td><code style="font-size:.72rem;background:#f0f4ff;padding:2px 7px;border-radius:5px;color:#1B3A8C;font-weight:700">${c.module_code}</code></td>
+      <td style="font-weight:600;font-size:.8rem;max-width:200px">${c.titre}</td>
+      <td style="font-family:var(--fD);font-weight:700;color:var(--green)">${(c.prix_htg||0).toLocaleString()} HTG</td>
+      <td><span class="chip ${c.actif?'chip-open':'chip-closed'}">${c.actif?'✅ Actif':'🔒 Inactif'}</span></td>
+      <td><div style="display:flex;gap:.4rem">
+        <button class="btn btn-outline btn-sm" onclick="editCD('${c.id}')">✏️</button>
+        <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red)" onclick="deleteCD('${c.id}')">🗑</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+
+function openCoursDetModal(id) {
+  document.getElementById('cd-modal-title').textContent = id ? '✏️ Modifier le cours détaché' : '🛒 Activer un cours détaché';
+  document.getElementById('cd-id').value = id||'';
+  if(id) {
+    const all = JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]');
+    const c = all.find(x=>x.id===id);
+    if(!c) return;
+    document.getElementById('cd-programme').value=c.programme;
+    document.getElementById('cd-annee').value=c.annee||'1';
+    populateCDModules();
+    setTimeout(()=>document.getElementById('cd-module').value=c.module_code,50);
+    document.getElementById('cd-titre').value=c.titre;
+    document.getElementById('cd-desc').value=c.description||'';
+    document.getElementById('cd-prix-htg').value=c.prix_htg||'';
+    document.getElementById('cd-prix-usd').value=c.prix_usd||'';
+    document.getElementById('cd-statut').value=String(c.actif);
+  } else {
+    ['cd-programme','cd-module','cd-titre','cd-desc','cd-prix-htg','cd-prix-usd'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});
+    document.getElementById('cd-annee').value='1';
+    document.getElementById('cd-statut').value='true';
+  }
+  document.getElementById('cd-modal').classList.add('show');
+}
+function closeCDModal(){ document.getElementById('cd-modal').classList.remove('show'); }
+function editCD(id){ openCoursDetModal(id); }
+function deleteCD(id){
+  if(!confirm('Désactiver ce cours détaché ?')) return;
+  const all = JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]');
+  localStorage.setItem('canado_cours_detaches', JSON.stringify(all.filter(c=>c.id!==id)));
+  renderCoursDetaches(); toast('Cours supprimé');
+}
+function populateCDModules(){
+  const prog=document.getElementById('cd-programme').value;
+  const an=parseInt(document.getElementById('cd-annee').value)||1;
+  const sel=document.getElementById('cd-module');
+  const mods=(MODULES_DATA[prog]||{})[an]||[];
+  sel.innerHTML='<option value="">— Sélectionner le module —</option>';
+  mods.forEach(m=>sel.innerHTML+=`<option value="${m.code}" data-titre="${m.titre}" data-heures="${m.heures}">${m.code} — ${m.titre}</option>`);
+}
+function autoFillCDTitle(){
+  const sel=document.getElementById('cd-module');
+  const opt=sel.options[sel.selectedIndex];
+  if(opt&&opt.value){
+    const titre=opt.getAttribute('data-titre')||'';
+    const heures=opt.getAttribute('data-heures')||'';
+    document.getElementById('cd-titre').value=titre;
+    document.getElementById('cd-heures-hidden'||'cd-titre').dataset.heures=heures;
+  }
+}
+function saveCD(){
+  const prog=document.getElementById('cd-programme').value;
+  const an=document.getElementById('cd-annee').value;
+  const modEl=document.getElementById('cd-module');
+  const modCode=modEl.value;
+  const opt=modEl.options[modEl.selectedIndex];
+  const heures=opt?parseInt(opt.getAttribute('data-heures'))||0:0;
+  const titre=document.getElementById('cd-titre').value;
+  const desc=document.getElementById('cd-desc').value;
+  const prixHtg=parseInt(document.getElementById('cd-prix-htg').value)||0;
+  const prixUsd=parseInt(document.getElementById('cd-prix-usd').value)||Math.round(prixHtg/133);
+  const actif=document.getElementById('cd-statut').value==='true';
+  if(!prog||!modCode||!titre||!prixHtg){toast('⚠️ Remplissez programme, module, titre et prix');return;}
+  const all=JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]');
+  const existingId=document.getElementById('cd-id').value;
+  const cd={id:existingId||'cd_'+Date.now(),programme:prog,annee:parseInt(an),module_code:modCode,titre,description:desc,prix_htg:prixHtg,prix_usd:prixUsd,heures,actif,prof_id:currentUser.id,prof_nom:currentUser.nom};
+  if(existingId){const idx=all.findIndex(c=>c.id===existingId);if(idx>=0)all[idx]=cd;else all.push(cd);}
+  else all.push(cd);
+  localStorage.setItem('canado_cours_detaches',JSON.stringify(all));
+  closeCDModal();renderCoursDetaches();
+  toast(existingId?'✅ Cours mis à jour':'✅ Cours détaché publié sur le site !');
+}
+
+/* ════════════════════════════════════
+   ÉVALUATIONS
+════════════════════════════════════ */
+function getMyEvals() {
+  const all = JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
+  const progs = currentUser.programmes || [];
+  return all.filter(ev=>progs.includes(ev.programme));
+}
+
+function renderEvaluations() {
+  const evals = getMyEvals();
+  const filterEl = document.getElementById('eval-filter');
+  // Populate filter
+  const modules = [...new Set(evals.map(e=>e.module_code))];
+  const currentFilter = filterEl.value;
+  filterEl.innerHTML = '<option value="all">Tous les modules</option>';
+  modules.forEach(m=>filterEl.innerHTML+=`<option value="${m}" ${currentFilter===m?'selected':''}>${m}</option>`);
+
+  const filtered = currentFilter==='all' ? evals : evals.filter(e=>e.module_code===currentFilter);
+  const container = document.getElementById('evaluations-table');
+
+  if(!filtered.length){
+    container.innerHTML='<div class="empty"><div class="empty-icon">📋</div><h4>Aucune évaluation</h4><p>Les étudiants remplissent la fiche à la fin de chaque module.</p></div>';
+    return;
+  }
+
+  // Average ratings
+  const avgContenu = (evals.reduce((s,e)=>s+(e.note_contenu||0),0)/evals.length).toFixed(1);
+  const avgProf = (evals.reduce((s,e)=>s+(e.note_prof||0),0)/evals.length).toFixed(1);
+
+  container.innerHTML=`
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1.2rem">
+    ${[{l:'Contenu du cours',v:avgContenu,c:'#1B3A8C'},{l:'Professeur',v:avgProf,c:'#006B46'},{l:'Total évaluations',v:evals.length,c:'#5B2D8E',noStar:true}].map(s=>`
+    <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;text-align:center">
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.4rem;color:${s.c}">${s.v}${!s.noStar?'/5':''}</div>
+      <div style="font-size:.7rem;color:var(--g500);margin-top:2px">${s.l}</div>
+    </div>`).join('')}
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Date</th><th>Module</th><th>Étudiant</th><th>Contenu</th><th>Prof</th><th>Support</th><th>Action</th></tr></thead>
+    <tbody>${filtered.map(ev=>`<tr>
+      <td style="font-size:.75rem;color:var(--g500);white-space:nowrap">${new Date(ev.date).toLocaleDateString('fr-HT')}</td>
+      <td><span style="font-size:.72rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:8px">${ev.module_code}</span></td>
+      <td style="font-size:.8rem"><div style="font-weight:600">${ev.nom_etudiant}</div><div style="font-size:.7rem;color:var(--g500)">${ev.email_etudiant||''}</div></td>
+      <td>${stars(ev.note_contenu)}</td>
+      <td>${stars(ev.note_prof)}</td>
+      <td>${stars(ev.note_support)}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="viewEval(${JSON.stringify(ev).replace(/"/g,'&quot;')})">👁</button></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+
+function evalRow(ev){
+  return `<div style="display:flex;align-items:center;gap:.8rem;padding:.65rem;border:1px solid var(--g100);border-radius:8px;margin-bottom:.4rem;background:#f8faff">
+    <div style="flex:1"><div style="font-weight:600;font-size:.8rem">${ev.nom_etudiant} — ${ev.module_code}</div>
+    <div style="font-size:.7rem;color:var(--g500)">${new Date(ev.date).toLocaleDateString('fr-HT')}</div></div>
+    <div>${stars(ev.note_contenu)}</div>
+  </div>`;
+}
+
+function stars(n){
+  const full='⭐'.repeat(Math.round(n||0));
+  return `<span style="font-size:.8rem" title="${n}/5">${full||'—'}</span>`;
+}
+
+function viewEval(ev){
+  document.getElementById('eval-modal-body').innerHTML=`
+    <div style="display:grid;gap:.9rem">
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:800;color:#1B3A8C">${ev.note_contenu}/5</div>
+          <div style="font-size:.7rem;color:var(--g500)">Contenu</div>
+        </div>
+        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:800;color:#006B46">${ev.note_prof}/5</div>
+          <div style="font-size:.7rem;color:var(--g500)">Professeur</div>
+        </div>
+        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:800;color:#5B2D8E">${ev.note_support}/5</div>
+          <div style="font-size:.7rem;color:var(--g500)">Support</div>
+        </div>
+        <div style="background:#f8faff;border:1px solid var(--g100);border-radius:10px;padding:.8rem;flex:1;min-width:120px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:800;color:#8B5E00">${ev.note_organisation||'—'}/5</div>
+          <div style="font-size:.7rem;color:var(--g500)">Organisation</div>
+        </div>
+      </div>
+      ${ev.commentaire?`<div style="background:#fffbeb;border:1px solid rgba(245,197,24,.25);border-radius:8px;padding:.8rem"><div style="font-size:.72rem;font-weight:700;color:#8B5E00;margin-bottom:.3rem">💬 Commentaire :</div><p style="font-size:.82rem;color:var(--text);line-height:1.65">${ev.commentaire}</p></div>`:''}
+      <div style="font-size:.75rem;color:var(--g500)">
+        Étudiant : <strong>${ev.nom_etudiant}</strong> · ${ev.email_etudiant||''}<br>
+        Module : <strong>${ev.module_code}</strong> — ${ev.module_titre||''}<br>
+        Date : ${new Date(ev.date).toLocaleString('fr-HT')}
+        ${ev.recommande!==undefined?`<br>Recommande le cours : <strong>${ev.recommande?'✅ Oui':'❌ Non'}</strong>`:''}
+      </div>
+    </div>`;
+  document.getElementById('eval-modal').classList.add('show');
+}
+
+function exportEvals(){
+  const evals=getMyEvals();
+  if(!evals.length){toast('Aucune évaluation à exporter');return;}
+  const header='Date,Module,Programme,Étudiant,Email,Note Contenu,Note Prof,Note Support,Commentaire,Recommande';
+  const rows=evals.map(e=>[
+    new Date(e.date).toLocaleDateString('fr-HT'),e.module_code,e.programme,
+    e.nom_etudiant,e.email_etudiant||'',e.note_contenu,e.note_prof,e.note_support,
+    '"'+(e.commentaire||'').replace(/"/g,'""')+'"',e.recommande?'Oui':'Non'
+  ].join(','));
+  const blob=new Blob([[header,...rows].join('\n')],{type:'text/csv'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:`evaluations-${new Date().toISOString().split('T')[0]}.csv`});
+  a.click();
+  toast('📥 Export CSV téléchargé');
+}
+
+/* ════════════════════════════════════
+   UTILS
+════════════════════════════════════ */
+function fmtDate(d){ return d?new Date(d+'T00:00:00').toLocaleDateString('fr-HT',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ════════ INIT ════════ */
+if(checkSession()) startApp();
+document.getElementById('login-pass').addEventListener('keydown',e=>e.key==='Enter'&&doLogin());
+</script>
+</body>
+</html>
