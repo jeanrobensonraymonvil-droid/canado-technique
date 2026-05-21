@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <link rel="icon" href="assets/images/logo/cfph.png" type="image/png">
 <link rel="shortcut icon" href="assets/images/logo/cfph.png">
+<script>
+  // ── URL du backend Rooby ──
+  // Changer cette ligne selon l'environnement :
+  // window.ROOBY_API_URL = 'https://api.canadotechnique.tech/api/rooby';
+  window.ROOBY_API_URL = 'https://canado-backend-production.up.railway.app/api/rooby';
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canado Technique — Centre de Formation Professionnelle d'Haiti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5071,45 +5077,44 @@ async function callRoobyAI(userMsg) {
   document.getElementById('rooby-send-btn').disabled = true;
   addRoobyTyping();
 
-  // Build conversation history from existing messages
+  // ── URL du backend (adapter selon l'hébergement) ──
+  // Développement local : 'http://localhost:3000/api/rooby'
+  // Production          : 'https://api.canadotechnique.tech/api/rooby'
+  //                   ou : 'https://canadotechnique.tech/api/rooby'
+  const BACKEND_URL = window.ROOBY_API_URL || 'http://localhost:3000/api/rooby';
+
+  // Construire l'historique depuis les bulles affichées
   const msgs = document.getElementById('rooby-msgs');
   const history = [];
   msgs.querySelectorAll('.rmsg').forEach(el => {
     if(el.id === 'rooby-typing-indicator') return;
     const isUser = el.classList.contains('user');
     const bubble = el.querySelector('.rmsg-bubble');
-    if(bubble) {
-      history.push({
-        role: isUser ? 'user' : 'assistant',
-        content: bubble.innerText
-      });
-    }
+    if(bubble) history.push({ role: isUser?'user':'assistant', content: bubble.innerText });
   });
-  // Remove the last user message we just added from history (will be sent as current)
-  // Keep history minus last 2 (user + potential assistant)
-  const historyToSend = history.slice(0, -1);
+  // Retirer le dernier message user (on l'envoie comme message courant)
+  const historyToSend = history.slice(0,-1);
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch(BACKEND_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: ROOBY_CONTEXT,
         messages: [
           ...historyToSend.slice(-10),
           { role: 'user', content: userMsg }
         ]
       })
     });
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
-    const reply = data.content?.map(i => i.text || '').join('') || 'Désolé, je rencontre un problème. Veuillez réessayer.';
+    const reply = data.reply || 'Désolé, je rencontre un problème. Veuillez réessayer.';
     removeRoobyTyping();
     addRoobyMsg('bot', reply);
   } catch(err) {
+    console.error('[Rooby]', err);
     removeRoobyTyping();
-    addRoobyMsg('bot', 'Désolé, je suis temporairement indisponible. Pour plus d\'informations, contactez-nous à info@canadotechnique.tech ou visitez canadotechnique.tech 📧');
+    addRoobyMsg('bot', 'Désolé, je suis temporairement indisponible. Contactez-nous à info@canadotechnique.tech 📧');
   } finally {
     roobyTyping = false;
     document.getElementById('rooby-send-btn').disabled = false;
