@@ -252,6 +252,7 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
           <div class="section-head">
             <h3>📋 Toutes les évaluations</h3>
             <button class="btn btn-outline btn-sm" onclick="exportEvals()">📥 Export CSV</button>
+            <button class="btn btn-sm" style="background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;border:none" onclick="openSyntheseModal()">✨ Synthétiser avec IA</button>
           </div>
           <div class="section-body" id="evals-list"></div>
         </div>
@@ -351,6 +352,34 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
       </div>
       <div id="pm-modules-wrap" style="margin-top:.2rem"></div>
       <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:.5rem" onclick="saveProf()">💾 Enregistrer le compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL SYNTHÈSE IA ════ -->
+<div class="modal" id="synthese-modal">
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-head">
+      <h3>✨ Synthèse IA des évaluations</h3>
+      <button class="close-btn" onclick="document.getElementById('synthese-modal').classList.remove('show')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.8rem;color:var(--g700);margin-bottom:1rem;line-height:1.65">
+        Sélectionnez un module pour que l'IA génère un rapport de synthèse pédagogique à partir des évaluations des étudiants. Ce rapport sera envoyé au professeur responsable dans son espace.
+      </p>
+      <div class="fg">
+        <label>Sélectionner le module à synthétiser *</label>
+        <select id="synthese-module-select" style="width:100%;padding:.6rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82rem;color:var(--text)">
+          <option value="">— Choisir un module —</option>
+        </select>
+      </div>
+      <div id="synthese-module-info" style="display:none;background:#f8faff;border:1px solid var(--g100);border-radius:8px;padding:.75rem;margin-bottom:.8rem;font-size:.78rem;color:var(--g700)"></div>
+      <div id="synthese-result" style="display:none"></div>
+      <button class="btn btn-sm" id="synthese-btn"
+        style="width:100%;justify-content:center;background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;border:none;font-size:.85rem;padding:.75rem"
+        onclick="lancerSynthese()">
+        🤖 Lancer la synthèse IA
+      </button>
     </div>
   </div>
 </div>
@@ -941,6 +970,122 @@ function renderEvaluations(){
       <td>${stars(ev.note_support)}</td>
       <td style="font-size:.8rem">${ev.recommande?'✅':'❌'}</td>
     </tr>`).join('')}</tbody></table></div>`;
+}
+
+/* ════════════════════════════════════
+   SYNTHÈSE IA DES ÉVALUATIONS
+════════════════════════════════════ */
+const RAILWAY_ADMIN_URL = 'https://canado-backend-production.up.railway.app';
+
+function openSyntheseModal() {
+  const evals = JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
+  const sel = document.getElementById('synthese-module-select');
+  sel.innerHTML = '<option value="">— Choisir un module —</option>';
+
+  // Grouper par module et compter
+  const moduleMap = {};
+  evals.forEach(ev => {
+    const k = ev.module_code;
+    if(!moduleMap[k]) moduleMap[k] = { code:k, titre:ev.module_titre, programme:ev.programme, evals:[] };
+    moduleMap[k].evals.push(ev);
+  });
+
+  Object.values(moduleMap)
+    .sort((a,b) => b.evals.length - a.evals.length)
+    .forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.code;
+      opt.textContent = `${m.code} — ${m.titre} (${m.evals.length} éval.)`;
+      opt.dataset.titre = m.titre;
+      opt.dataset.programme = m.programme;
+      opt.dataset.nb = m.evals.length;
+      sel.appendChild(opt);
+    });
+
+  sel.onchange = () => {
+    const opt = sel.options[sel.selectedIndex];
+    const info = document.getElementById('synthese-module-info');
+    if(!opt.value) { info.style.display='none'; return; }
+    const m = moduleMap[opt.value];
+    if(!m) return;
+    const avgContenu = (m.evals.reduce((s,e)=>s+(e.note_contenu||0),0)/m.evals.length).toFixed(1);
+    const avgProf    = (m.evals.reduce((s,e)=>s+(e.note_prof||0),0)/m.evals.length).toFixed(1);
+    info.style.display = 'block';
+    info.innerHTML = `📊 <strong>${m.evals.length} évaluations</strong> disponibles · Note contenu moy. <strong>${avgContenu}/5</strong> · Note prof moy. <strong>${avgProf}/5</strong>`;
+  };
+
+  document.getElementById('synthese-result').style.display='none';
+  document.getElementById('synthese-btn').disabled=false;
+  document.getElementById('synthese-btn').textContent='🤖 Lancer la synthèse IA';
+  document.getElementById('synthese-modal').classList.add('show');
+}
+
+async function lancerSynthese() {
+  const sel = document.getElementById('synthese-module-select');
+  const modCode = sel.value;
+  if(!modCode) { toast('⚠️ Sélectionnez un module'); return; }
+
+  const opt = sel.options[sel.selectedIndex];
+  const modTitre = opt.dataset.titre;
+  const programme = opt.dataset.programme;
+
+  const evals = JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
+  const modEvals = evals.filter(e => e.module_code === modCode);
+  if(!modEvals.length) { toast('⚠️ Aucune évaluation pour ce module'); return; }
+
+  const btn = document.getElementById('synthese-btn');
+  const resultEl = document.getElementById('synthese-result');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyse en cours…';
+
+  try {
+    const resp = await fetch(`${RAILWAY_ADMIN_URL}/api/synthesize-evals`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ module_code:modCode, module_titre:modTitre, programme, evaluations:modEvals })
+    });
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const synthese = await resp.json();
+
+    // Sauvegarder la synthèse avec ID unique
+    synthese.id = 'syn_'+Date.now();
+    synthese.lu_prof = false;
+    synthese.validee_par = currentUser.nom;
+    synthese.date_validation = new Date().toISOString();
+
+    const all = JSON.parse(localStorage.getItem('canado_syntheses')||'[]');
+    // Remplacer si déjà une synthèse pour ce module, sinon ajouter
+    const existingIdx = all.findIndex(s => s.module_code === modCode);
+    if(existingIdx >= 0) all[existingIdx] = synthese;
+    else all.push(synthese);
+    localStorage.setItem('canado_syntheses', JSON.stringify(all));
+
+    // Notifier le prof dans les notifications
+    addNotif(`🤖 Rapport IA envoyé au prof — ${modCode} : ${modTitre} (${modEvals.length} évaluations analysées)`, 'ia_synthese');
+
+    // Afficher le résumé
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `
+      <div style="background:linear-gradient(135deg,rgba(91,45,142,.08),rgba(27,58,140,.05));border:1.5px solid rgba(91,45,142,.2);border-radius:10px;padding:1rem;margin-bottom:.8rem">
+        <div style="font-size:.78rem;font-weight:700;color:#5B2D8E;margin-bottom:.5rem">✅ Synthèse générée et envoyée au prof</div>
+        <p style="font-size:.78rem;color:var(--g700);line-height:1.6;font-style:italic">${synthese.resume_executif}</p>
+        <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">
+          <span style="font-size:.68rem;background:#e6f9f0;color:#006B46;padding:2px 8px;border-radius:8px;font-weight:600">✓ ${synthese.points_forts?.length||0} points forts</span>
+          <span style="font-size:.68rem;background:#fff5f5;color:var(--red);padding:2px 8px;border-radius:8px;font-weight:600">⚠ ${synthese.points_amelioration?.length||0} points à améliorer</span>
+          <span style="font-size:.68rem;background:#f0eeff;color:#5B2D8E;padding:2px 8px;border-radius:8px;font-weight:600">🎯 ${synthese.recommandations_pedagogiques?.length||0} recommandations</span>
+        </div>
+      </div>`;
+
+    btn.textContent = '✅ Synthèse envoyée !';
+    toast(`✅ Rapport IA envoyé au prof pour ${modCode}`);
+
+  } catch(err) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `<div style="color:var(--red);font-size:.78rem;padding:.5rem">❌ Erreur : ${err.message}</div>`;
+    btn.disabled = false;
+    btn.textContent = '🔄 Réessayer';
+    toast('❌ Erreur lors de la synthèse');
+  }
 }
 
 function exportEvals(){

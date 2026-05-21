@@ -194,6 +194,7 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
       <button class="sb-link" id="sl-examens" onclick="showSection('examens')">📅 Gérer les examens <span class="badge" id="sb-exam-badge" style="display:none">0</span></button>
       <button class="sb-link" id="sl-cours-det" onclick="showSection('cours-det')">🛒 Cours Détachés</button>
       <button class="sb-link" id="sl-acces" onclick="showSection('acces')">👥 Accès Étudiants</button>
+      <button class="sb-link" id="sl-rapports-ia" onclick="showSection('rapports-ia')">🤖 Rapports IA <span class="badge" id="sb-rapports-badge" style="display:none">0</span></button>
     </nav>
     <div class="sb-footer">
       <button onclick="doLogout()">🚪 Déconnexion</button>
@@ -278,13 +279,29 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
         </div>
       </div>
 
+      <!-- ══ RAPPORTS IA ══ -->
+      <div id="sec-rapports-ia" style="display:none">
+        <div class="section">
+          <div class="section-head">
+            <h3>🤖 Rapports de synthèse IA</h3>
+            <span style="font-size:.75rem;color:var(--g500)">Générés par la direction des études</span>
+          </div>
+          <div class="section-body">
+            <p style="font-size:.78rem;color:var(--g500);margin-bottom:1rem;padding:.6rem .8rem;background:#f0eeff;border-radius:8px;border:1px solid rgba(91,45,142,.15)">
+              🤖 Ces rapports sont générés par l'IA après validation des évaluations étudiants par la direction des études. Ils contiennent des points forts, points à améliorer et recommandations pédagogiques pour chacun de vos modules.
+            </p>
+            <div id="rapports-ia-list"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 </div>
 
 <!-- ════ MODAL EXAMEN ════ -->
 <div class="modal" id="exam-modal">
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:640px">
     <div class="modal-head">
       <h3 id="exam-modal-title">📅 Nouvelle session d'examen</h3>
       <button class="close-btn" onclick="closeExamModal()">✕</button>
@@ -305,6 +322,29 @@ label{font-size:.76rem;font-weight:600;color:var(--g700);display:block;margin-bo
         <div class="fg"><label>Module *</label>
           <select id="em-module" style="width:100%"><option value="">— Choisir le programme d'abord —</option></select>
         </div>
+      </div>
+
+      <!-- BOUTON GÉNÉRATION IA -->
+      <div style="margin:-.2rem 0 .9rem;padding:.7rem .9rem;background:linear-gradient(135deg,rgba(91,45,142,.06),rgba(27,58,140,.04));border:1.5px dashed rgba(91,45,142,.25);border-radius:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+          <div>
+            <div style="font-size:.78rem;font-weight:700;color:#5B2D8E;margin-bottom:2px">✨ Générer les questions avec l'IA</div>
+            <div style="font-size:.7rem;color:var(--g500)">L'IA génère des QCM adaptés au module sélectionné</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <select id="em-nb-questions" style="width:auto;font-size:.75rem;padding:.3rem .5rem;border:1px solid var(--bdr);border-radius:6px;color:var(--text)">
+              <option value="5">5 questions</option>
+              <option value="10" selected>10 questions</option>
+              <option value="15">15 questions</option>
+              <option value="20">20 questions</option>
+            </select>
+            <button class="btn btn-sm" id="em-ia-btn"
+              style="background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;border:none;white-space:nowrap"
+              onclick="generateExamIA()">🤖 Générer</button>
+          </div>
+        </div>
+        <!-- Résultat IA -->
+        <div id="em-ia-result" style="display:none;margin-top:.8rem"></div>
       </div>
       <div class="frow">
         <div class="fg"><label>📅 Date d'ouverture *</label><input type="date" id="em-ouverture"></div>
@@ -648,7 +688,7 @@ function populateProgrammeSelects() {
 }
 
 function showSection(sec) {
-  ['dashboard','examens','cours-det','acces'].forEach(s=>{
+  ['dashboard','examens','cours-det','acces','rapports-ia'].forEach(s=>{
     const el=document.getElementById('sec-'+s);
     const sl=document.getElementById('sl-'+s);
     if(el) el.style.display=s===sec?'block':'none';
@@ -658,7 +698,8 @@ function showSection(sec) {
     dashboard:{title:'Tableau de bord',sub:'Vue d\'ensemble de votre activité pédagogique'},
     examens:{title:'Gestion des examens',sub:'Publiez et gérez vos sessions d\'examens'},
     'cours-det':{title:'Cours Détachés',sub:'Activez des modules disponibles à l\'achat individuel'},
-    acces:{title:'Accès Étudiants',sub:'Gérez l\'accès aux modules par étudiant ou par groupe'}
+    acces:{title:'Accès Étudiants',sub:'Gérez l\'accès aux modules par étudiant ou par groupe'},
+    'rapports-ia':{title:'Rapports IA',sub:'Synthèses pédagogiques générées par l\'IA · Direction des études'}
   };
   const t=titles[sec];
   if(t){document.getElementById('main-title').textContent=t.title;document.getElementById('main-sub').textContent=t.sub;}
@@ -666,6 +707,7 @@ function showSection(sec) {
   if(sec==='examens') renderExamens();
   if(sec==='cours-det') renderCoursDetaches();
   if(sec==='acces') renderAcces();
+  if(sec==='rapports-ia') renderRapportsIA();
 }
 
 /* ════════════════════════════════════
@@ -1126,6 +1168,172 @@ function revokeAcces(id) {
 /* ════════════════════════════════════
    UTILS
 ════════════════════════════════════ */
+/* ════════════════════════════════════
+   IA — GÉNÉRATION D'EXAMENS
+════════════════════════════════════ */
+const RAILWAY_URL = 'https://canado-backend-production.up.railway.app';
+
+async function generateExamIA() {
+  const prog   = document.getElementById('em-programme').value;
+  const annee  = document.getElementById('em-annee').value;
+  const modEl  = document.getElementById('em-module');
+  const modCode = modEl.value;
+  const modTitre = modEl.options[modEl.selectedIndex]?.text?.split(' — ')[1]?.replace(/\s*\(\d+h\)$/,'') || '';
+  const nb = document.getElementById('em-nb-questions').value;
+
+  if(!prog || !modCode) { toast('⚠️ Sélectionnez d\'abord le programme et le module'); return; }
+
+  const btn = document.getElementById('em-ia-btn');
+  const resultEl = document.getElementById('em-ia-result');
+  btn.disabled = true;
+  btn.textContent = '⏳ Génération…';
+  resultEl.style.display = 'none';
+
+  try {
+    const resp = await fetch(`${RAILWAY_URL}/api/generate-exam`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ module_code: modCode, module_titre: modTitre, programme: prog, annee, nb_questions: parseInt(nb) })
+    });
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const questions = data.questions || [];
+
+    if(!questions.length) throw new Error('Aucune question générée');
+
+    // Afficher les questions générées
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `
+      <div style="border-top:1px solid rgba(91,45,142,.2);margin-top:.6rem;padding-top:.7rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+          <div style="font-size:.75rem;font-weight:700;color:#5B2D8E">✅ ${questions.length} questions générées</div>
+          <button class="btn btn-sm" style="background:#5B2D8E;color:#fff;border:none;font-size:.7rem"
+            onclick="saveIAExam(${JSON.stringify(questions).replace(/"/g,'&quot;')})">💾 Enregistrer dans les notes</button>
+        </div>
+        <div style="max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem">
+          ${questions.map((q,i) => `
+          <div style="background:#fff;border:1px solid rgba(91,45,142,.15);border-radius:8px;padding:.6rem .8rem">
+            <div style="font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:.4rem">${i+1}. ${q.question}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+              ${['A','B','C','D'].map(l => `
+              <div style="font-size:.7rem;padding:2px 5px;border-radius:4px;${q.reponse===l?'background:#e6f9f0;color:#006B46;font-weight:700':'color:var(--g700)'}">
+                ${l}. ${q.choix[l]}${q.reponse===l?' ✓':''}
+              </div>`).join('')}
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+
+    // Auto-remplir les notes
+    const notesEl = document.getElementById('em-notes');
+    if(notesEl && !notesEl.value) {
+      notesEl.value = `[IA] ${questions.length} questions QCM générées pour ${modCode}. Vérifiez avant publication.`;
+    }
+    toast(`✅ ${questions.length} questions générées !`);
+
+  } catch(err) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `<div style="font-size:.75rem;color:var(--red);padding:.4rem">❌ Erreur : ${err.message}. Réessayez.</div>`;
+    toast('❌ Erreur de génération');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🤖 Générer';
+  }
+}
+
+function saveIAExam(questions) {
+  // Sauvegarder les questions dans localStorage pour utilisation future
+  const key = 'canado_ia_questions';
+  const all = JSON.parse(localStorage.getItem(key)||'[]');
+  const modCode = document.getElementById('em-module').value;
+  const entry = { id:'iq_'+Date.now(), module_code:modCode, questions, date:new Date().toISOString() };
+  all.push(entry);
+  localStorage.setItem(key, JSON.stringify(all));
+  toast('💾 Questions sauvegardées dans la banque IA');
+}
+
+/* ════════════════════════════════════
+   RAPPORTS IA — VUE PROF
+════════════════════════════════════ */
+function renderRapportsIA() {
+  const all = JSON.parse(localStorage.getItem('canado_syntheses')||'[]');
+  const myProgs = currentUser.programmes || [];
+  const myRapports = all.filter(r => myProgs.includes(r.programme));
+  const container = document.getElementById('rapports-ia-list');
+  if(!container) return;
+
+  // Update badge
+  const unread = myRapports.filter(r => !r.lu_prof).length;
+  const badge = document.getElementById('sb-rapports-badge');
+  if(badge) { badge.textContent=unread; badge.style.display=unread?'inline':'none'; }
+
+  if(!myRapports.length) {
+    container.innerHTML=`<div class="empty"><div class="empty-icon">🤖</div><h4>Aucun rapport reçu</h4><p>La direction des études vous enverra des rapports de synthèse après validation des évaluations.</p></div>`;
+    return;
+  }
+
+  const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+
+  container.innerHTML = myRapports.sort((a,b)=>new Date(b.date_synthese)-new Date(a.date_synthese)).map(r => {
+    const color = progColors[r.programme]||'#1B3A8C';
+    const isNew = !r.lu_prof;
+    return `<div style="background:#fff;border:1.5px solid ${isNew?'rgba(91,45,142,.3)':'var(--g100)'};border-radius:var(--rL);overflow:hidden;margin-bottom:1rem;${isNew?'box-shadow:0 4px 18px rgba(91,45,142,.12)':''}">
+      <div style="background:linear-gradient(135deg,${color},${color}cc);padding:1rem 1.3rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:2px">
+            ${isNew?'<span style="background:var(--gold);color:#000;font-size:.6rem;font-weight:800;padding:1px 7px;border-radius:10px">NOUVEAU</span>':''}
+            <code style="font-size:.75rem;font-weight:800;color:rgba(255,255,255,.8)">${r.module_code}</code>
+          </div>
+          <div style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff">${r.module_titre}</div>
+          <div style="font-size:.68rem;color:rgba(255,255,255,.5);margin-top:2px">${r.nb_evaluations} évaluations analysées · ${new Date(r.date_synthese).toLocaleDateString('fr-HT',{day:'2-digit',month:'long',year:'numeric'})}</div>
+        </div>
+        <div style="display:flex;gap:.8rem;text-align:center">
+          ${[['Contenu',r.notes?.contenu],['Prof',r.notes?.prof],['Support',r.notes?.support]].map(([l,v])=>`
+          <div><div style="font-family:var(--fD);font-weight:800;font-size:1.1rem;color:${+v>=4?'#00d68f':+v>=3?'#FFD166':'#FF6B6B'}">${v}/5</div><div style="font-size:.6rem;color:rgba(255,255,255,.5)">${l}</div></div>`).join('')}
+        </div>
+      </div>
+      <div style="padding:1.1rem 1.3rem">
+        <div style="font-size:.82rem;color:var(--g700);line-height:1.65;margin-bottom:1rem;font-style:italic;border-left:3px solid ${color};padding-left:.8rem">${r.resume_executif||''}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem">
+          <div style="background:#e6f9f0;border-radius:10px;padding:.8rem">
+            <div style="font-size:.72rem;font-weight:700;color:#006B46;margin-bottom:.5rem">✅ Points forts</div>
+            ${(r.points_forts||[]).map(p=>`<div style="font-size:.76rem;color:var(--text);margin-bottom:.3rem;display:flex;gap:.4rem"><span>›</span><span>${p}</span></div>`).join('')}
+          </div>
+          <div style="background:#fff5f5;border-radius:10px;padding:.8rem">
+            <div style="font-size:.72rem;font-weight:700;color:var(--red);margin-bottom:.5rem">⚠️ À améliorer</div>
+            ${(r.points_amelioration||[]).map(p=>`<div style="font-size:.76rem;color:var(--text);margin-bottom:.3rem;display:flex;gap:.4rem"><span>›</span><span>${p}</span></div>`).join('')}
+          </div>
+        </div>
+        <div style="background:#f0eeff;border-radius:10px;padding:.8rem;margin-bottom:.8rem">
+          <div style="font-size:.72rem;font-weight:700;color:#5B2D8E;margin-bottom:.5rem">🎯 Recommandations pédagogiques</div>
+          ${(r.recommandations_pedagogiques||[]).map((p,i)=>`<div style="font-size:.76rem;color:var(--text);margin-bottom:.3rem;display:flex;gap:.4rem"><span style="font-weight:700;color:#5B2D8E">${i+1}.</span><span>${p}</span></div>`).join('')}
+        </div>
+        ${r.message_prof?`<div style="background:#fffbeb;border:1px solid rgba(245,197,24,.25);border-radius:8px;padding:.75rem;font-size:.78rem;color:var(--text);line-height:1.6">
+          💌 <em>${r.message_prof}</em></div>`:''}
+        <div style="display:flex;justify-content:flex-end;margin-top:.6rem">
+          <button class="btn btn-outline btn-sm" onclick="markRapportLu('${r.id}')" style="font-size:.7rem">
+            ${isNew?'✓ Marquer comme lu':'✅ Lu'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Mark all as read when viewed
+  myRapports.forEach(r => r.lu_prof = true);
+  const allSyntheses = JSON.parse(localStorage.getItem('canado_syntheses')||'[]');
+  allSyntheses.forEach(r => { if(myProgs.includes(r.programme)) r.lu_prof = true; });
+  localStorage.setItem('canado_syntheses', JSON.stringify(allSyntheses));
+  if(badge) badge.style.display = 'none';
+}
+
+function markRapportLu(id) {
+  const all = JSON.parse(localStorage.getItem('canado_syntheses')||'[]');
+  const idx = all.findIndex(r=>r.id===id);
+  if(idx>=0) { all[idx].lu_prof=true; localStorage.setItem('canado_syntheses',JSON.stringify(all)); }
+  renderRapportsIA();
+}
+
 function fmtDate(d){ return d?new Date(d+'T00:00:00').toLocaleDateString('fr-HT',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
 
 function toast(msg){
