@@ -4070,7 +4070,8 @@ function renderCoursMgmt(c) {
             : '<span class="chip cgy" style="font-size:.65rem">Sans fichier</span>';
           const coursBtn = hasFile
             ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)"
-                onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title.replace(/'/g,'&#39;')}')">📖 Prévisualiser</button>`
+                data-fichier="${m.fichier}" data-titre="${m.code} · ${m.title.replace(/"/g,'&quot;')}"
+                onclick="openCoursViewer(this.dataset.fichier, this.dataset.titre)">📖 Prévisualiser</button>`
             : '';
           return `<div class="mrow">
             <div class="mnum">${String(i+1).padStart(2,'0')}</div>
@@ -4585,7 +4586,8 @@ function renderMesCours(c) {
       const doneLabel = states[m.code+'_done'] ? '✅ Validé' : '▶ En cours';
       statusBadge = `<span class="chip ${doneClass}">${doneLabel}</span>`;
       actionBtns  = `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" 
-          onclick="openCoursViewer('${m.fichier}','${m.code} · ${m.title.replace(/'/g,'&#39;')}')">📖 Ouvrir le cours</button>
+          data-fichier="${m.fichier}" data-titre="${m.code} · ${m.title.replace(/"/g,'&quot;')}"
+          onclick="openCoursViewer(this.dataset.fichier,this.dataset.titre)">📖 Ouvrir le cours</button>
         <button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>`;
     } else {
       // Module actif sans fichier HTML
