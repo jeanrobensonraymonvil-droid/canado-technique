@@ -2073,8 +2073,19 @@ td{color:var(--text)!important}
     <!-- Login error message -->
     <div id="login-error" style="display:none;background:rgba(232,25,44,.1);border:1px solid rgba(232,25,44,.25);border-radius:8px;padding:.55rem .9rem;font-size:.77rem;color:#ff6b7a;margin-bottom:.75rem"></div>
     <!-- Login hint -->
-    <div id="login-hint" style="background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.15);border-radius:8px;padding:.55rem .9rem;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:.75rem;line-height:1.6">
-      Comptes démo : <strong style="color:rgba(255,255,255,.75)">etudiant / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">prof / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">admin / 1234</strong> · <strong style="color:rgba(255,255,255,.75)">dg / 1234</strong>
+    <div id="login-hint" style="background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.15);border-radius:8px;padding:.65rem .9rem;font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:.75rem;line-height:1.8">
+      <div style="font-weight:700;color:rgba(255,255,255,.6);margin-bottom:.3rem">Comptes de démonstration (mot de passe : 1234)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.1rem .8rem">
+        <span>👑 <strong style="color:rgba(255,255,255,.75)">dg</strong> — Dir. Général</span>
+        <span>🛡 <strong style="color:rgba(255,255,255,.75)">admin</strong> — Admin Système</span>
+        <span>📋 <strong style="color:rgba(255,255,255,.75)">adm</strong> — Administration</span>
+        <span>📚 <strong style="color:rgba(255,255,255,.75)">detudes</strong> — Dir. Études</span>
+        <span>📊 <strong style="color:rgba(255,255,255,.75)">devals</strong> — Dir. Évaluations</span>
+        <span>🎓 <strong style="color:rgba(255,255,255,.75)">prof</strong> — Professeur</span>
+        <span>📖 <strong style="color:rgba(255,255,255,.75)">etudiant</strong> — Étudiant</span>
+        <span>👨‍👩‍👧 <strong style="color:rgba(255,255,255,.75)">parent</strong> — Parent</span>
+        <span>🤝 <strong style="color:rgba(255,255,255,.75)">alumni</strong> — Alumni</span>
+      </div>
     </div>
     <!-- 2FA BOX -->
     <div class="tfa-box" id="tfa-box">
@@ -3723,6 +3734,7 @@ const ROLES = {
       {id:'dash',icon:'📊',label:'Tableau de bord'},
       {id:'etudiants',icon:'👥',label:'Étudiants inscrits'},
       {id:'cours-mgmt',icon:'📚',label:'Gestion des cours'},
+      {id:'assign-cours',icon:'🔗',label:'Assigner cours → Prof'},
       {id:'rapport-direction',icon:'📋',label:'Rapport de direction'},
       {id:'exam-builder',icon:'📝',label:'Créer examen IA'},
       {id:'validation-hub',icon:'✅',label:'File de validation'},
@@ -3745,7 +3757,7 @@ const ROLES = {
       {id:'dash',icon:'📊',label:'Tableau de bord'},
       {id:'cours-mgmt',icon:'📚',label:'Programmes & modules'},
       {id:'rapport-direction',icon:'📋',label:'Rapport de direction'},
-      {id:'rapports-ia',icon:'🤖',label:'Synthèses IA'},
+      {id:'rapports-ia',icon:'🤖',label:'Rapport Pédagogique'},
       {id:'validation-hub',icon:'✅',label:'Validation pédagogique'},
       {id:'epreuve-pratique',icon:'🧪',label:'Épreuve Pratique A'},
       {id:'rapports',icon:'📈',label:'Rapports académiques'},
@@ -3764,10 +3776,13 @@ const ROLES = {
     sidebar:[
       {id:'dash',icon:'📊',label:'Tableau de bord'},
       {id:'cours-mgmt',icon:'📚',label:'Mes cours & modules'},
+      {id:'creer-cours',icon:'✏️',label:'Créer un cours'},
+      {id:'sessions-examens',icon:'📅',label:'Sessions d\'examens'},
+      {id:'cours-detache-prof',icon:'🛒',label:'Cours détachés'},
+      {id:'acces-etudiants',icon:'👥',label:'Accès étudiants'},
       {id:'exam-builder',icon:'📝',label:'Créer examen IA'},
-      {id:'rapports-ia',icon:'🤖',label:'Rapports IA'},
+      {id:'rapports-ia',icon:'🤖',label:'Rapport Pédagogique'},
       {id:'epreuve-pratique',icon:'🧪',label:'Épreuve Pratique A'},
-      {id:'reservations',icon:'📅',label:'Demandes pratique'},
       {id:'zoom-panel',icon:'🎥',label:'Séances Zoom'},
       {id:'rapports',icon:'📈',label:'Résultats étudiants'},
     ]},
@@ -3837,7 +3852,13 @@ const CREDENTIALS = {
   'directeur': {role:'dg',    pass:'1234'},
   'jean':      {role:'dg',    pass:'1234'},
   'detudes':   {role:'detudes',pass:'1234'},
+  'marie':     {role:'detudes',pass:'1234'},
   'devals':    {role:'devals', pass:'1234'},
+  'christophe':{role:'devals', pass:'1234'},
+  'parent':    {role:'parent', pass:'1234'},
+  'jean-pierre':{role:'parent',pass:'1234'},
+  'alumni':    {role:'alumni', pass:'1234'},
+  'samuel':    {role:'alumni', pass:'1234'},
 };
 
 function initLogin() {
@@ -3958,6 +3979,11 @@ function showPanel(id) {
     case 'absences':        renderAbsences(c); break;
     case 'resultats-parent':renderResultatsParent(c); break;
     case 'mentoring':       renderMentoring(c); break;
+    case 'creer-cours':     renderCreerCours(c); break;
+    case 'sessions-examens':renderSessionsExamens(c); break;
+    case 'cours-detache-prof': renderCoursDetacheProf(c); break;
+    case 'acces-etudiants': renderAccesEtudiants(c); break;
+    case 'assign-cours':    renderAssignCours(c); break;
   }
 }
 
@@ -4166,9 +4192,9 @@ let aiExamGenerating = false;
 let generatedExam = null;
 
 function renderExamBuilder(c) {
-  c.innerHTML = `<div class="ph2">Créer un examen <span class="ai-badge">✨ IA</span></div>
+  c.innerHTML = `<div class="ph2">Créer un examen <span class="ai-badge">🤖 Rooby vous assiste</span></div>
   <div class="ai-gen-box">
-    <h4>🤖 Génération intelligente multi-sections <span class="ai-badge">Claude AI</span></h4>
+    <h4>📝 Génération intelligente multi-sections <span class="ai-badge">Rooby vous assiste</span></h4>
     <p style="font-size:.78rem;color:var(--g500);margin-bottom:1.1rem">L'IA adapte automatiquement le contenu, les sections et la difficulté selon le module et le programme choisis. Jusqu'à <strong>5 versions</strong> différentes en une seule génération.</p>
 
     <div class="frow3" style="margin-bottom:.8rem">
@@ -4521,7 +4547,7 @@ function renderRapportsIAProf(c) {
 
   const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
 
-  c.innerHTML = `<div class="ph2">🤖 Rapports IA <span class="ai-badge">Synthèses pédagogiques</span></div>
+  c.innerHTML = `<div class="ph2">🤖 Rapport Pédagogique <span class="ai-badge">Synthèses pédagogiques</span></div>
   ${currentRole!=='prof'?`
   <div style="background:rgba(91,45,142,.08);border:1.5px dashed rgba(91,45,142,.3);border-radius:var(--rL);padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
     <div style="font-size:1.4rem">✨</div>
@@ -6473,15 +6499,15 @@ function renderJumeauNumerique(c) {
     </div>
     <div style="padding:1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:.7rem;align-content:center">
       ${[
-        ['📚 Modules complétés',`${done} / ${mods.length}`,'var(--greenL)'],
-        ['⚡ En cours',`${active} module(s)`,'var(--goldD)'],
-        ['📈 Moyenne générale',`${avgScore}%`,'var(--blue)'],
-        ['⏱ Rythme',`${velocity} mod/sem`,'#8A50CC'],
-        ['🎯 Estimation fin',projWeeks>0?`${projWeeks} semaines`:'Terminé !','var(--text)'],
+        ['📚 Modules complétés',`${done} / ${mods.length}`,'#1B3A8C'],
+        ['⚡ En cours',`${active} module(s)`,'#C98A00'],
+        ['📈 Moyenne générale',`${avgScore}%`,'#1B3A8C'],
+        ['⏱ Rythme',`${velocity} mod/sem`,'#5B2D8E'],
+        ['🎯 Estimation fin',projWeeks>0?`${projWeeks} semaines`:'Terminé !','#0B1525'],
         ['🔰 Statut',riskLabels[riskLevel],riskColors[riskLevel]],
       ].map(([l,v,col])=>`
-      <div style="background:var(--g50);border:1px solid var(--g100);border-radius:10px;padding:.7rem .9rem">
-        <div style="font-size:.7rem;color:var(--g500);margin-bottom:.2rem">${l}</div>
+      <div style="background:#ffffff;border:1.5px solid #E8EEFF;border-radius:10px;padding:.7rem .9rem">
+        <div style="font-size:.7rem;color:#7B8DB8;margin-bottom:.2rem">${l}</div>
         <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:${col}">${v}</div>
       </div>`).join('')}
     </div>
@@ -6960,8 +6986,292 @@ offlineStyle.textContent = `
 .offline-mode::before{content:'📴 Mode hors-ligne';position:fixed;top:0;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:.72rem;font-weight:700;padding:4px 16px;border-radius:0 0 10px 10px;z-index:9999}
 .rbPAR.rbadge{background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;font-weight:800}
 .rbALU.rbadge{background:linear-gradient(135deg,#8B5E00,var(--goldD));color:#fff;font-weight:800}
+/* Proctoring */
+.proctor-overlay{position:fixed;inset:0;background:rgba(4,13,26,.97);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:var(--fB)}
+.proctor-cam{width:160px;height:120px;border-radius:12px;background:#111;border:2px solid rgba(255,255,255,.15);object-fit:cover;margin:1rem auto}
+.proctor-warning{background:rgba(232,25,44,.12);border:1px solid rgba(232,25,44,.3);border-radius:8px;padding:.6rem 1rem;font-size:.78rem;color:#ff6b7a;margin:.4rem 0}
 `;
 document.head.appendChild(offlineStyle);
+
+/* ══════════════════════════════════════════════════════════
+   FIX 3 — POLITIQUE ANTI-TRICHE (EXAMENS OFFICIELS)
+══════════════════════════════════════════════════════════ */
+let proctorActive=false,proctorViolations=0,proctorStream=null;
+async function startProctoring(onReady){
+  const overlay=document.createElement('div');
+  overlay.className='proctor-overlay';overlay.id='proctor-overlay';
+  overlay.innerHTML=`<div style="max-width:480px;width:100%;padding:2rem;text-align:center">
+    <div style="font-size:2rem;margin-bottom:.8rem">🔒</div>
+    <div style="font-family:var(--fD);font-weight:800;font-size:1.2rem;margin-bottom:.5rem">Examen officiel sécurisé</div>
+    <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1.2rem;line-height:1.7">En démarrant, vous acceptez la politique anti-triche de Canado Technique.</div>
+    <div style="text-align:left;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.2rem">
+      ${['📸 Caméra activée pendant l\'examen','🖥️ Activité écran surveillée','🚫 Toute sortie de page est enregistrée','📋 Copier-coller désactivé','🕐 Temps compté — pas de pause','⚠️ 3 violations = soumission automatique'].map(r=>`<div class="proctor-warning">${r}</div>`).join('')}
+    </div>
+    <video id="proctor-cam-preview" class="proctor-cam" autoplay muted playsinline></video>
+    <div id="proctor-cam-status" style="font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:1rem">Activation caméra…</div>
+    <div style="display:flex;gap:.7rem;justify-content:center">
+      <button class="btn btn-red" onclick="acceptProctoring()" id="proctor-accept-btn" disabled>🔒 J'accepte — Démarrer</button>
+      <button class="btn btn-outline" onclick="cancelProctoring()" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2)">Annuler</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  try{
+    proctorStream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+    const vid=document.getElementById('proctor-cam-preview');
+    if(vid)vid.srcObject=proctorStream;
+    document.getElementById('proctor-cam-status').textContent='✅ Caméra active';
+    document.getElementById('proctor-cam-status').style.color='#4ADE80';
+    document.getElementById('proctor-accept-btn').disabled=false;
+  }catch(e){
+    document.getElementById('proctor-cam-status').textContent='⚠️ Caméra indisponible — vous pouvez continuer';
+    document.getElementById('proctor-cam-status').style.color='#FACC15';
+    const btn=document.getElementById('proctor-accept-btn');
+    if(btn){btn.disabled=false;btn.textContent='⚠️ Continuer sans caméra';}
+  }
+  window._proctorOnReady=onReady;
+}
+function acceptProctoring(){
+  proctorActive=true;proctorViolations=0;
+  document.getElementById('proctor-overlay')?.remove();
+  document.addEventListener('visibilitychange',_proctorVis);
+  document.addEventListener('copy',_proctorCopy);
+  document.addEventListener('paste',_proctorCopy);
+  window.addEventListener('blur',_proctorBlur);
+  const badge=document.createElement('div');
+  badge.id='proctor-badge';
+  badge.style.cssText='position:fixed;top:.5rem;right:.5rem;background:rgba(232,25,44,.9);color:#fff;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;z-index:8999;display:flex;align-items:center;gap:.4rem';
+  badge.innerHTML='<span style="width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite;display:inline-block"></span> Surveillance active';
+  document.body.appendChild(badge);
+  if(window._proctorOnReady)window._proctorOnReady();
+}
+function cancelProctoring(){if(proctorStream)proctorStream.getTracks().forEach(t=>t.stop());document.getElementById('proctor-overlay')?.remove();}
+function _proctorVis(){if(!proctorActive||!document.hidden)return;proctorViolations++;showToastNotif(`⚠️ Violation ${proctorViolations}/3`,'Vous avez quitté la page de l\'examen.');if(proctorViolations>=3)_proctorForce();}
+function _proctorCopy(e){if(!proctorActive)return;e.preventDefault();toast('🚫 Copier-coller désactivé');}
+function _proctorBlur(){if(!proctorActive)return;proctorViolations++;if(proctorViolations>=3)_proctorForce();}
+function _proctorForce(){proctorActive=false;document.removeEventListener('visibilitychange',_proctorVis);document.removeEventListener('copy',_proctorCopy);document.removeEventListener('paste',_proctorCopy);window.removeEventListener('blur',_proctorBlur);document.getElementById('proctor-badge')?.remove();if(proctorStream)proctorStream.getTracks().forEach(t=>t.stop());showToastNotif('🔴 Examen soumis automatiquement','3 violations détectées.');}
+function stopProctoring(){proctorActive=false;document.removeEventListener('visibilitychange',_proctorVis);document.removeEventListener('copy',_proctorCopy);document.removeEventListener('paste',_proctorCopy);window.removeEventListener('blur',_proctorBlur);document.getElementById('proctor-badge')?.remove();if(proctorStream)proctorStream.getTracks().forEach(t=>t.stop());}
+
+/* ══════════════════════════════════════════════════════════
+   FIX 5 — CRÉER UN COURS (PROF)
+══════════════════════════════════════════════════════════ */
+function renderCreerCours(c){
+  const prog=etudProg||'TRI';
+  const allMods=[...(MODULES[prog]||[]),...(MODULES_2[prog]||[])];
+  const inscrits=JSON.parse(localStorage.getItem('canado_inscriptions')||'[]').filter(i=>i.statut==='valide'&&i.programme===prog);
+  c.innerHTML=`
+  <div class="ph2">✏️ Créer un cours <span class="ai-badge">Assigner à des étudiants</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+    <div><div class="fsec"><h4>📚 Paramètres du cours</h4>
+      <div class="fg"><label>Titre *</label><input type="text" id="cc-titre" placeholder="Ex : TRI-05 Groupe A"></div>
+      <div class="fg"><label>Module *</label><select id="cc-module" style="width:100%"><option value="">— Sélectionner —</option>${allMods.map(m=>`<option value="${m.code}">${m.code} — ${m.title}</option>`).join('')}</select></div>
+      <div class="fg"><label>Type</label><select id="cc-type" style="width:100%"><option value="regulier">📚 Régulier en ligne</option><option value="presentiel">🏫 Présentiel programmé</option><option value="detache">🛒 Cours détaché</option></select></div>
+      <div class="frow"><div class="fg"><label>Début</label><input type="date" id="cc-debut"></div><div class="fg"><label>Fin</label><input type="date" id="cc-fin"></div></div>
+      <div class="fg"><label>Description</label><textarea id="cc-desc" style="height:70px;resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.5rem .7rem;font-size:.8rem;font-family:var(--fB)" placeholder="Instructions…"></textarea></div>
+    </div></div>
+    <div><div class="fsec"><h4>👥 Assigner étudiants</h4>
+      <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
+        <button class="btn btn-outline btn-sm" onclick="ccSelectAll(true)">Tous</button>
+        <button class="btn btn-outline btn-sm" onclick="ccSelectAll(false)">Aucun</button>
+      </div>
+      <div style="max-height:240px;overflow-y:auto;border:1.5px solid var(--bdr);border-radius:8px;padding:.4rem">
+        ${inscrits.length?inscrits.map(e=>`
+        <label style="display:flex;align-items:center;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background=''">
+          <input type="checkbox" class="cc-etud-cb" value="${e.id}" data-nom="${e.prenom} ${e.nom}" style="width:14px;height:14px;accent-color:var(--blue)">
+          <div><div style="font-weight:600;font-size:.8rem">${e.prenom} ${e.nom}</div><div style="font-size:.68rem;color:var(--g500)">${e.email}</div></div>
+        </label>`).join(''):`<div style="text-align:center;padding:1.5rem;color:var(--g500);font-size:.78rem">Aucun étudiant validé pour ${prog}</div>`}
+      </div>
+      <div style="font-size:.7rem;color:var(--g500);margin-top:.3rem"><span id="cc-count">0</span> sélectionné(s)</div>
+    </div></div>
+  </div>
+  <div style="margin-top:1rem;display:flex;gap:.7rem;justify-content:flex-end">
+    <button class="btn btn-blue" onclick="saveCours()">💾 Créer et assigner</button>
+  </div>
+  <div class="fsec" style="margin-top:1rem"><h4>Mes cours créés</h4><div id="cc-list">${renderMesCoursCreesHTML()}</div></div>`;
+  document.querySelectorAll('.cc-etud-cb').forEach(cb=>cb.addEventListener('change',()=>{const el=document.getElementById('cc-count');if(el)el.textContent=document.querySelectorAll('.cc-etud-cb:checked').length;}));
+}
+function ccSelectAll(val){document.querySelectorAll('.cc-etud-cb').forEach(cb=>cb.checked=val);const el=document.getElementById('cc-count');if(el)el.textContent=document.querySelectorAll('.cc-etud-cb:checked').length;}
+function saveCours(){
+  const titre=document.getElementById('cc-titre')?.value.trim();
+  const modCode=document.getElementById('cc-module')?.value;
+  if(!titre||!modCode){toast('⚠️ Titre et module obligatoires');return;}
+  const etuds=[...document.querySelectorAll('.cc-etud-cb:checked')].map(cb=>({id:cb.value,nom:cb.getAttribute('data-nom')}));
+  const all=JSON.parse(localStorage.getItem('canado_cours_profs')||'[]');
+  all.push({id:'cours_'+Date.now(),titre,module_code:modCode,type:document.getElementById('cc-type')?.value,etudiants:etuds,prof:ROLES[currentRole]?.name,date_creation:new Date().toISOString()});
+  localStorage.setItem('canado_cours_profs',JSON.stringify(all));
+  toast(`✅ Cours créé et assigné à ${etuds.length} étudiant(s) !`);
+  renderCreerCours(document.getElementById('p-content'));
+}
+function renderMesCoursCreesHTML(){
+  const all=JSON.parse(localStorage.getItem('canado_cours_profs')||'[]');
+  if(!all.length)return'<p style="font-size:.78rem;color:var(--g500)">Aucun cours créé.</p>';
+  return`<div style="display:flex;flex-direction:column;gap:.4rem">${all.slice(-5).reverse().map(c=>`
+  <div style="background:#f8faff;border:1px solid var(--g100);border-radius:8px;padding:.7rem .9rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap">
+    <code style="font-size:.7rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:1px 6px;border-radius:4px">${c.module_code}</code>
+    <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:.8rem">${c.titre}</div><div style="font-size:.7rem;color:var(--g500)">${c.etudiants?.length||0} étudiant(s) · ${c.type}</div></div>
+    <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red);font-size:.7rem" onclick="deleteCours('${c.id}')">Supprimer</button>
+  </div>`).join('')}</div>`;
+}
+function deleteCours(id){if(!confirm('Supprimer ?'))return;localStorage.setItem('canado_cours_profs',JSON.stringify(JSON.parse(localStorage.getItem('canado_cours_profs')||'[]').filter(c=>c.id!==id)));renderCreerCours(document.getElementById('p-content'));}
+
+/* ══════════════════════════════════════════════════════════
+   FIX 7 — SESSIONS D'EXAMENS (PROF)
+══════════════════════════════════════════════════════════ */
+const MODULES_PROF={TRI:{1:[{code:'TRI-01',titre:"Métier et formation",heures:30},{code:'TRI-02',titre:"Gestion du temps",heures:30},{code:'TRI-03',titre:"Mathématiques",heures:60},{code:'TRI-04',titre:"Anglais technique",heures:60},{code:'TRI-05',titre:"Système d'exploitation",heures:75},{code:'TRI-06',titre:"Résolution problèmes",heures:45},{code:'TRI-07',titre:"Recherche information",heures:45},{code:'TRI-08',titre:"Logiciels bureautique",heures:105},{code:'TRI-09',titre:"Communication pro",heures:45},{code:'TRI-10',titre:"Installation poste",heures:60},{code:'TRI-11',titre:"Base de données",heures:75},{code:'TRI-12',titre:"Dépannage poste",heures:75},{code:'TRI-13',titre:"Technologies internet",heures:45},{code:'TRI-14',titre:"Programmation scripts",heures:60},{code:'TRI-15',titre:"Assistance technique",heures:60},{code:'TRI-16',titre:"Entrepreneuriat",heures:30}],2:[{code:'TRI-17',titre:"Initiation réseautique",heures:75},{code:'TRI-18',titre:"Installation serveur",heures:90},{code:'TRI-19',titre:"Routage commutation",heures:90},{code:'TRI-20',titre:"Configuration serveurs",heures:90},{code:'TRI-21',titre:"Évolutivité réseaux",heures:60},{code:'TRI-22',titre:"Maintenance serveurs",heures:75},{code:'TRI-23',titre:"Câblage structuré",heures:60},{code:'TRI-24',titre:"Supervision dépannage",heures:75},{code:'TRI-25',titre:"Connexion réseaux",heures:60},{code:'TRI-26',titre:"Sécurité réseau",heures:75},{code:'TRI-27',titre:"Implantation réseau",heures:90},{code:'TRI-28',titre:"Recherche emploi",heures:30}]},MEI:{1:[{code:'MEI-01',titre:"Métier et formation",heures:30},{code:'MEI-02',titre:"Utilisation ordinateur",heures:45},{code:'MEI-03',titre:"Croquis et schémas",heures:60},{code:'MEI-04',titre:"Interprétation plans",heures:60},{code:'MEI-05',titre:"Santé et sécurité",heures:30},{code:'MEI-06',titre:"Instruments mesure",heures:60},{code:'MEI-07',titre:"Usinage manuel",heures:105},{code:'MEI-08',titre:"Coupage soudage",heures:105},{code:'MEI-09',titre:"Usinage machines",heures:105},{code:'MEI-10',titre:"Lubrification",heures:60}],2:[{code:'MEI-14',titre:"Éléments transmission",heures:75},{code:'MEI-15',titre:"Tubes tuyaux",heures:60},{code:'MEI-16',titre:"Pompes hydrauliques",heures:75},{code:'MEI-19',titre:"Équilibrage",heures:75},{code:'MEI-20',titre:"Analyse vibrations",heures:75},{code:'MEI-25',titre:"Maintenance préventive",heures:90},{code:'MEI-26',titre:"Installation équipement",heures:90},{code:'MEI-27',titre:"Dépannage équipement",heures:90}]},ELM:{1:[{code:'ELM-01',titre:"Métier et formation",heures:30},{code:'ELM-02',titre:"Utilisation ordinateur",heures:45},{code:'ELM-03',titre:"Circuits CC et CA",heures:90},{code:'ELM-04',titre:"Croquis et schémas",heures:60},{code:'ELM-05',titre:"Plans et devis",heures:60},{code:'ELM-06',titre:"Santé sécurité",heures:30},{code:'ELM-07',titre:"Usinage assemblage",heures:90},{code:'ELM-08',titre:"Électrification bâtiments",heures:90},{code:'ELM-09',titre:"Moteurs générateurs",heures:75}],2:[{code:'ELM-12',titre:"Groupes onduleurs",heures:90},{code:'ELM-16',titre:"Moteurs diesel",heures:90},{code:'ELM-17',titre:"Groupes électrogènes",heures:75},{code:'ELM-18',titre:"Circuits pneumatiques",heures:75},{code:'ELM-19',titre:"Circuits hydrauliques",heures:75},{code:'ELM-20',titre:"Électronique puissance",heures:75},{code:'ELM-21',titre:"Programmation automate",heures:90},{code:'ELM-22',titre:"Raccordement automates",heures:75},{code:'ELM-23',titre:"Dépannage automatisé",heures:75},{code:'ELM-24',titre:"Maintenance planifiée",heures:90}]},TEL:{1:[{code:'TEL-01',titre:"Métier et formation",heures:30},{code:'TEL-02',titre:"Circuits CC et CA",heures:90},{code:'TEL-03',titre:"Utilisation ordinateur",heures:45},{code:'TEL-04',titre:"Croquis et schémas",heures:60},{code:'TEL-05',titre:"Électronique analogique",heures:75},{code:'TEL-06',titre:"Oscillation filtration",heures:75},{code:'TEL-07',titre:"Électronique numérique",heures:75},{code:'TEL-08',titre:"Circuits modulation",heures:75},{code:'TEL-09',titre:"Santé sécurité",heures:30},{code:'TEL-10',titre:"Transmissions protocoles",heures:90},{code:'TEL-11',titre:"Installation antennes",heures:60},{code:'TEL-12',titre:"Terminologie anglaise",heures:45},{code:'TEL-13',titre:"Microprocesseurs",heures:75},{code:'TEL-14',titre:"Remplacement composants",heures:75}],2:[{code:'TEL-15',titre:"Communication radio",heures:75},{code:'TEL-16',titre:"Câblage structuré",heures:75},{code:'TEL-17',titre:"Réseau informatique",heures:90},{code:'TEL-18',titre:"Système téléphonique",heures:75},{code:'TEL-19',titre:"Fibre optique",heures:60},{code:'TEL-20',titre:"Communication sans fil",heures:75},{code:'TEL-21',titre:"Téléphonie IP",heures:75},{code:'TEL-22',titre:"Câblodistribution",heures:60},{code:'TEL-23',titre:"Téléphonie sans fil",heures:60},{code:'TEL-24',titre:"Alimentation appoint",heures:60},{code:'TEL-25',titre:"Entrepreneuriat",heures:30},{code:'TEL-26',titre:"Marché du travail",heures:30}]}};
+
+function renderSessionsExamens(c){
+  const examens=JSON.parse(localStorage.getItem('canado_examens')||'[]');
+  const today=new Date().toISOString().split('T')[0];
+  const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+  c.innerHTML=`
+  <div class="ph2">📅 Sessions d'examens</div>
+  <div style="background:#f0f8ff;border:1px solid rgba(27,58,140,.15);border-radius:10px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.78rem;color:#1B3A8C">
+    📢 Les sessions publiées ici apparaissent automatiquement dans la section <strong>Examens</strong> du site public.
+  </div>
+  <div class="fsec"><h4>+ Nouvelle session</h4>
+    <div class="frow">
+      <div class="fg"><label>Programme</label><select id="ses-prog" onchange="sesFillModules()" style="width:100%"><option value="">— Sélectionner —</option><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option></select></div>
+      <div class="fg"><label>Année</label><select id="ses-annee" onchange="sesFillModules()" style="width:100%"><option value="1">1ère</option><option value="2">2ème</option></select></div>
+      <div class="fg"><label>Module</label><select id="ses-module" style="width:100%"><option>— Choisir programme —</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>📅 Ouverture</label><input type="date" id="ses-ouv"></div>
+      <div class="fg"><label>📅 Clôture</label><input type="date" id="ses-clo"></div>
+      <div class="fg"><label>Statut</label><select id="ses-statut" style="width:100%"><option value="ouvert">✅ Ouvert</option><option value="ferme">🔒 Fermé</option></select></div>
+    </div>
+    <div class="fg"><label>Notes</label><textarea id="ses-notes" style="height:50px;resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.5rem .7rem;font-size:.8rem;font-family:var(--fB)" placeholder="Instructions pour les étudiants…"></textarea></div>
+    <button class="btn btn-blue btn-sm" onclick="saveSession()">💾 Publier la session</button>
+  </div>
+  <div id="ses-list">
+    ${examens.length?`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem">
+    <thead><tr>${['Prog','Module','Ouverture','Clôture','Statut','Actions'].map(h=>`<th style="background:#f8faff;color:#3A4A6B;font-weight:700;padding:.55rem .7rem;text-align:left;border-bottom:1.5px solid #E8EEFF;white-space:nowrap">${h}</th>`).join('')}</tr></thead>
+    <tbody>${examens.map(e=>{
+      const isOpen=e.statut==='ouvert'&&e.date_ouverture<=today&&e.date_cloture>=today;
+      const fd=d=>d?new Date(d+'T00:00:00').toLocaleDateString('fr-HT',{day:'2-digit',month:'short'}):'—';
+      return`<tr style="border-bottom:1px solid #E8EEFF">
+        <td style="padding:.55rem .7rem"><span style="font-size:.68rem;font-weight:700;background:${(progColors[e.programme]||'#1B3A8C')}18;color:${progColors[e.programme]||'#1B3A8C'};padding:1px 7px;border-radius:6px">${e.programme}</span></td>
+        <td style="padding:.55rem .7rem"><div style="font-weight:600;font-size:.78rem">${e.module_code}</div><div style="font-size:.68rem;color:#7B8DB8">${e.module_titre||''}</div></td>
+        <td style="padding:.55rem .7rem;color:#006B46;font-weight:600;font-size:.75rem">${fd(e.date_ouverture)}</td>
+        <td style="padding:.55rem .7rem;color:#C8101E;font-weight:600;font-size:.75rem">${fd(e.date_cloture)}</td>
+        <td style="padding:.55rem .7rem"><span style="font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:15px;${isOpen?'background:#e6f9f0;color:#006B46':'background:#f5f5f5;color:#888'}">${isOpen?'🟢 Ouvert':'🔒'}</span></td>
+        <td style="padding:.55rem .7rem"><button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red);font-size:.68rem" onclick="deleteSession('${e.id}')">✕</button></td>
+      </tr>`;}).join('')}</tbody></table></div>`
+    :'<p style="font-size:.78rem;color:var(--g500);text-align:center;padding:1.2rem">Aucune session. Créez la première ci-dessus.</p>'}
+  </div>`;
+}
+function sesFillModules(){const prog=document.getElementById('ses-prog')?.value;const an=parseInt(document.getElementById('ses-annee')?.value)||1;const sel=document.getElementById('ses-module');if(!sel||!prog)return;const mods=(MODULES_PROF[prog]||{})[an]||[];sel.innerHTML='<option value="">— Sélectionner —</option>';mods.forEach(m=>sel.innerHTML+=`<option value="${m.code}" data-titre="${m.titre}">${m.code} — ${m.titre}</option>`);}
+function saveSession(){const prog=document.getElementById('ses-prog')?.value;const an=document.getElementById('ses-annee')?.value;const modEl=document.getElementById('ses-module');const modCode=modEl?.value;const modTitre=modEl?.options[modEl.selectedIndex]?.getAttribute('data-titre')||'';const ouv=document.getElementById('ses-ouv')?.value;const clo=document.getElementById('ses-clo')?.value;const statut=document.getElementById('ses-statut')?.value;if(!prog||!modCode||!ouv||!clo){toast('⚠️ Tous les champs sont requis');return;}if(ouv>clo){toast('⚠️ Clôture doit être après ouverture');return;}const all=JSON.parse(localStorage.getItem('canado_examens')||'[]');all.push({id:'exam_'+Date.now(),programme:prog,annee:an,module_code:modCode,module_titre:modTitre,date_ouverture:ouv,date_cloture:clo,statut,notes:document.getElementById('ses-notes')?.value||'',prof_id:ROLES[currentRole]?.name||'Prof',date_creation:new Date().toISOString()});localStorage.setItem('canado_examens',JSON.stringify(all));toast('✅ Session publiée !');renderSessionsExamens(document.getElementById('p-content'));}
+function deleteSession(id){if(!confirm('Supprimer cette session ?'))return;localStorage.setItem('canado_examens',JSON.stringify(JSON.parse(localStorage.getItem('canado_examens')||'[]').filter(e=>e.id!==id)));renderSessionsExamens(document.getElementById('p-content'));toast('Session supprimée');}
+
+/* ══════════════════════════════════════════════════════════
+   FIX 8 — COURS DÉTACHÉS (PROF)
+══════════════════════════════════════════════════════════ */
+function renderCoursDetacheProf(c){
+  const cds=JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]');
+  const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+  c.innerHTML=`
+  <div class="ph2">🛒 Cours Détachés</div>
+  <div style="background:#fffbeb;border:1px solid rgba(245,197,24,.3);border-radius:10px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.78rem;color:#5c4000">
+    🛒 Ces modules apparaissent dans la section <strong>Cours Détachés</strong> de la page d'inscription publique.
+  </div>
+  <div class="fsec"><h4>+ Activer un module</h4>
+    <div class="frow">
+      <div class="fg"><label>Programme</label><select id="cd-prog" onchange="cdFillModules()" style="width:100%"><option value="">—</option><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option></select></div>
+      <div class="fg"><label>Année</label><select id="cd-an" onchange="cdFillModules()" style="width:100%"><option value="1">1ère</option><option value="2">2ème</option></select></div>
+      <div class="fg"><label>Module</label><select id="cd-mod" onchange="cdAutoTitle()" style="width:100%"><option>— Choisir —</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Titre affiché</label><input type="text" id="cd-titre" placeholder="Titre pour les étudiants"></div>
+      <div class="fg"><label>Prix HTG</label><input type="number" id="cd-prix" placeholder="1500" min="0"></div>
+    </div>
+    <div class="fg"><label>Description</label><textarea id="cd-desc" style="height:50px;resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.5rem .7rem;font-size:.8rem;font-family:var(--fB)" placeholder="Ce que l'étudiant apprendra…"></textarea></div>
+    <div style="display:flex;gap:.7rem;align-items:center">
+      <label style="font-size:.8rem;display:flex;align-items:center;gap:.4rem;cursor:pointer"><input type="checkbox" id="cd-actif" checked style="width:14px;height:14px;accent-color:var(--blue)"> Visible immédiatement</label>
+      <button class="btn btn-gold btn-sm" onclick="saveCoursDet()">💾 Activer</button>
+    </div>
+  </div>
+  <div id="cd-list">${cds.length?`<div style="display:flex;flex-direction:column;gap:.4rem">${cds.map(cd=>`
+  <div style="background:#fff;border:1.5px solid var(--g100);border-radius:8px;padding:.7rem .9rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap">
+    <code style="font-size:.7rem;font-weight:700;background:${(progColors[cd.programme]||'#1B3A8C')}18;color:${progColors[cd.programme]||'#1B3A8C'};padding:1px 6px;border-radius:4px">${cd.module_code}</code>
+    <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:.8rem">${cd.titre}</div><div style="font-size:.7rem;color:var(--g500)">${(cd.prix_htg||0).toLocaleString()} HTG · ${cd.actif?'✅ Visible':'🔒 Masqué'}</div></div>
+    <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red);font-size:.68rem" onclick="deleteCoursDet('${cd.id}')">✕</button>
+  </div>`).join('')}</div>`:'<p style="font-size:.78rem;color:var(--g500);text-align:center;padding:1rem">Aucun cours détaché. Activez votre premier module ci-dessus.</p>'}</div>`;
+}
+function cdFillModules(){const prog=document.getElementById('cd-prog')?.value;const an=parseInt(document.getElementById('cd-an')?.value)||1;const sel=document.getElementById('cd-mod');if(!sel||!prog)return;const mods=(MODULES_PROF[prog]||{})[an]||[];sel.innerHTML='<option value="">— Sélectionner —</option>';mods.forEach(m=>sel.innerHTML+=`<option value="${m.code}" data-titre="${m.titre}" data-h="${m.heures}">${m.code} — ${m.titre}</option>`);}
+function cdAutoTitle(){const sel=document.getElementById('cd-mod');const opt=sel?.options[sel.selectedIndex];if(opt?.value)document.getElementById('cd-titre').value=opt.getAttribute('data-titre')||'';}
+function saveCoursDet(){const prog=document.getElementById('cd-prog')?.value;const an=parseInt(document.getElementById('cd-an')?.value)||1;const modEl=document.getElementById('cd-mod');const modCode=modEl?.value;const titre=document.getElementById('cd-titre')?.value.trim();const prix=parseInt(document.getElementById('cd-prix')?.value)||0;if(!prog||!modCode||!titre||!prix){toast('⚠️ Tous les champs requis');return;}const all=JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]');all.push({id:'cd_'+Date.now(),programme:prog,annee:an,module_code:modCode,titre,description:document.getElementById('cd-desc')?.value,prix_htg:prix,actif:document.getElementById('cd-actif')?.checked,prof_id:ROLES[currentRole]?.name||'Prof',date:new Date().toISOString()});localStorage.setItem('canado_cours_detaches',JSON.stringify(all));toast('✅ Cours détaché publié !');renderCoursDetacheProf(document.getElementById('p-content'));}
+function deleteCoursDet(id){if(!confirm('Supprimer ?'))return;localStorage.setItem('canado_cours_detaches',JSON.stringify(JSON.parse(localStorage.getItem('canado_cours_detaches')||'[]').filter(c=>c.id!==id)));renderCoursDetacheProf(document.getElementById('p-content'));toast('Supprimé');}
+
+/* ══════════════════════════════════════════════════════════
+   ACCÈS ÉTUDIANTS (PROF)
+══════════════════════════════════════════════════════════ */
+function renderAccesEtudiants(c){
+  const acces=JSON.parse(localStorage.getItem('canado_acces_modules')||'[]');
+  c.innerHTML=`
+  <div class="ph2">👥 Accès Étudiants</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem">
+    <div class="fsec"><h4>Étudiant</h4>
+      <div class="fg"><label>Nom *</label><input type="text" id="ac-nom" placeholder="Marie Louisiane"></div>
+      <div class="fg"><label>Email</label><input type="email" id="ac-email" placeholder="marie@email.com"></div>
+      <div class="fg"><label>Matricule</label><input type="text" id="ac-matricule" placeholder="CT-TRI-2026-XXXX"></div>
+    </div>
+    <div class="fsec"><h4>Module à activer</h4>
+      <div class="fg"><label>Programme</label><select id="ac-prog" onchange="acFillModules()" style="width:100%"><option value="">—</option><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option></select></div>
+      <div class="fg"><label>Année</label><select id="ac-an" onchange="acFillModules()" style="width:100%"><option value="1">1ère</option><option value="2">2ème</option></select></div>
+      <div class="fg"><label>Module</label><select id="ac-mod" style="width:100%"><option>— Choisir —</option></select></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:.7rem;margin-bottom:1rem">
+    <button class="btn btn-blue" onclick="saveAcces('individuel')">👤 Accès individuel</button>
+    <button class="btn btn-outline" onclick="saveAcces('groupe')">👥 Accès groupe</button>
+  </div>
+  <div class="fsec"><h4>Accès actifs</h4>
+    ${acces.length?`<div style="display:flex;flex-direction:column;gap:.4rem">${acces.slice(-8).reverse().map(a=>`
+    <div style="background:#f8faff;border:1px solid var(--g100);border-radius:8px;padding:.6rem .8rem;display:flex;align-items:center;gap:.7rem">
+      <code style="font-size:.68rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:1px 5px;border-radius:4px">${a.module_code}</code>
+      <div style="flex:1;font-size:.8rem;font-weight:600">${a.nom||a.groupe}</div>
+      <span style="font-size:.68rem;color:var(--g500)">${a.type==='individuel'?'👤':'👥'}</span>
+      <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red);font-size:.68rem" onclick="revokeAcces('${a.id}')">Révoquer</button>
+    </div>`).join('')}</div>`:'<p style="font-size:.78rem;color:var(--g500)">Aucun accès accordé.</p>'}
+  </div>`;
+}
+function acFillModules(){const prog=document.getElementById('ac-prog')?.value;const an=parseInt(document.getElementById('ac-an')?.value)||1;const sel=document.getElementById('ac-mod');if(!sel||!prog)return;const mods=(MODULES_PROF[prog]||{})[an]||[];sel.innerHTML='<option value="">— Sélectionner —</option>';mods.forEach(m=>sel.innerHTML+=`<option value="${m.code}">${m.code} — ${m.titre}</option>`);}
+function saveAcces(type){const nom=document.getElementById('ac-nom')?.value.trim()||'Groupe';const modCode=document.getElementById('ac-mod')?.value;if(!modCode){toast('⚠️ Sélectionnez un module');return;}const all=JSON.parse(localStorage.getItem('canado_acces_modules')||'[]');all.push({id:'ac_'+Date.now(),type,nom,email:document.getElementById('ac-email')?.value.trim()||'',module_code:modCode,prof:ROLES[currentRole]?.name||'Prof',date:new Date().toISOString()});localStorage.setItem('canado_acces_modules',JSON.stringify(all));toast(`✅ Accès accordé à ${nom} pour ${modCode}`);renderAccesEtudiants(document.getElementById('p-content'));}
+function revokeAcces(id){if(!confirm('Révoquer ?'))return;localStorage.setItem('canado_acces_modules',JSON.stringify(JSON.parse(localStorage.getItem('canado_acces_modules')||'[]').filter(a=>a.id!==id)));renderAccesEtudiants(document.getElementById('p-content'));toast('Accès révoqué');}
+
+/* ══════════════════════════════════════════════════════════
+   FIX 6 — ASSIGNER COURS → PROF (ADMIN)
+══════════════════════════════════════════════════════════ */
+function renderAssignCours(c){
+  const users=JSON.parse(localStorage.getItem('canado_users')||'[]').filter(u=>u.role==='prof');
+  const assignments=JSON.parse(localStorage.getItem('canado_assignments')||'[]');
+  const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+  c.innerHTML=`
+  <div class="ph2">🔗 Assigner cours → Professeur</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem">
+    <div class="fsec"><h4>Assignation</h4>
+      <div class="fg"><label>Professeur *</label>
+        <select id="as-prof" style="width:100%"><option value="">— Sélectionner —</option>${users.map(u=>`<option value="${u.id}" data-nom="${u.nom}">${u.nom} (${(u.programmes||[]).join(', ')||'aucun'})</option>`).join('')}</select>
+      </div>
+      <div class="fg"><label>Programme *</label><select id="as-prog" onchange="asFillModules()" style="width:100%"><option value="">—</option><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option></select></div>
+      <div class="fg"><label>Année</label><select id="as-an" onchange="asFillModules()" style="width:100%"><option value="1">1ère</option><option value="2">2ème</option></select></div>
+      <div class="fg"><label>Module (vide = tout le programme)</label><select id="as-mod" style="width:100%"><option value="">Tous les modules</option></select></div>
+      <div class="fg"><label>Notes</label><textarea id="as-notes" style="height:50px;resize:vertical;width:100%;border:1.5px solid var(--bdr);border-radius:8px;padding:.5rem .7rem;font-size:.8rem;font-family:var(--fB)" placeholder="Instructions…"></textarea></div>
+      <button class="btn btn-blue" onclick="saveAssignment()">🔗 Confirmer</button>
+    </div>
+    <div class="fsec"><h4>Assignations récentes</h4>
+      ${assignments.length?assignments.slice(-6).reverse().map(a=>`
+      <div style="background:#f8faff;border:1px solid var(--g100);border-radius:8px;padding:.6rem .8rem;margin-bottom:.4rem">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem">
+          <span style="font-size:.7rem;font-weight:700;background:${(progColors[a.prog]||'#1B3A8C')}18;color:${progColors[a.prog]||'#1B3A8C'};padding:1px 7px;border-radius:6px">${a.prog}</span>
+          <span style="font-weight:600;font-size:.8rem">${a.prof_nom}</span>
+        </div>
+        <div style="font-size:.7rem;color:var(--g500)">${a.mod||'Programme complet'} · ${new Date(a.date).toLocaleDateString('fr-HT')}</div>
+      </div>`).join(''):'<p style="font-size:.78rem;color:var(--g500)">Aucune assignation.</p>'}
+    </div>
+  </div>`;
+}
+function asFillModules(){const prog=document.getElementById('as-prog')?.value;const an=parseInt(document.getElementById('as-an')?.value)||1;const sel=document.getElementById('as-mod');if(!sel||!prog)return;const mods=(MODULES_PROF[prog]||{})[an]||[];sel.innerHTML='<option value="">Tous les modules</option>';mods.forEach(m=>sel.innerHTML+=`<option value="${m.code}">${m.code} — ${m.titre}</option>`);}
+function saveAssignment(){const profEl=document.getElementById('as-prof');const profId=profEl?.value;const profNom=profEl?.options[profEl.selectedIndex]?.getAttribute('data-nom')||'';const prog=document.getElementById('as-prog')?.value;const mod=document.getElementById('as-mod')?.value;if(!profId||!prog){toast('⚠️ Professeur et programme requis');return;}const all=JSON.parse(localStorage.getItem('canado_assignments')||'[]');all.push({id:'as_'+Date.now(),prof_id:profId,prof_nom:profNom,prog,mod,date:new Date().toISOString(),assigne_par:ROLES[currentRole]?.name||'Admin'});localStorage.setItem('canado_assignments',JSON.stringify(all));const users=JSON.parse(localStorage.getItem('canado_users')||'[]');const idx=users.findIndex(u=>u.id===profId);if(idx>=0&&!(users[idx].programmes||[]).includes(prog)){users[idx].programmes=[...(users[idx].programmes||[]),prog];localStorage.setItem('canado_users',JSON.stringify(users));}toast(`✅ ${prog} assigné à ${profNom} !`);renderAssignCours(document.getElementById('p-content'));}
 </script>
 
 <script>
