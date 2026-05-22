@@ -1296,14 +1296,6 @@ td{color:var(--text)!important}
     <div class="nav-right">
       <button class="nav-notif-btn" onclick="toggleNotifCenter()" title="Notifications">🔔<span class="notif-dot"></span></button>
       <button class="btn btn-ghost btn-sm nav-login-desktop" onclick="showLogin()">Se connecter</button>
-      <div class="nav-portails-wrap nav-login-desktop" style="position:relative">
-        <button class="btn btn-ghost btn-sm" style="font-size:.75rem;gap:.3rem" onclick="togglePortailMenu(this)">⚙️ Portails ▾</button>
-        <div id="portail-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#0C1F3D;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.4rem;min-width:150px;box-shadow:0 8px 28px rgba(0,0,0,.45);z-index:999">
-          <a onclick="currentRole?showPanel('cours-mgmt'):showLogin()" style="display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:7px;font-size:.78rem;color:rgba(255,255,255,.75);text-decoration:none;transition:background .15s;cursor:pointer" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background=''">🎓 Portail Prof</a>
-          <a onclick="currentRole&&ROLES[currentRole]?.level<=5?showPanel('etudiants'):showLogin()" style="display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:7px;font-size:.78rem;color:rgba(255,255,255,.75);text-decoration:none;transition:background .15s;cursor:pointer" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background=''">🛡️ Administration</a>
-          <a onclick="currentRole&&ROLES[currentRole]?.level<=3?showPanel('rapport-direction'):showLogin()" style="display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:7px;font-size:.78rem;color:rgba(255,255,255,.75);text-decoration:none;transition:background .15s;cursor:pointer" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background=''">📊 Rapport Direction</a>
-        </div>
-      </div>
       <button class="btn btn-red btn-sm nav-register-desktop" onclick="goPage('paiement')">S'inscrire</button>
       <button class="nav-menu-btn" id="nav-hamburger" onclick="toggleMobMenu()" aria-label="Menu">☰</button>
     </div>
