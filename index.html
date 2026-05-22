@@ -437,11 +437,9 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
   border-radius:8px;font-size:.82rem;color:var(--text);background:#fff;transition:border .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);
   box-shadow:0 0 0 3px rgba(27,58,140,.08)}
-.fsec{margin-bottom:1.4rem;background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--r);padding:1.1rem 1.2rem}
-.fsec h4{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#0B1525;
-  margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid #E8EEFF}
-.fsec label{color:#3A4A6B !important}
-.fsec input,.fsec select,.fsec textarea{color:#0B1525 !important;background:#fff !important}
+.fsec{margin-bottom:1.4rem}
+.fsec h4{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);
+  margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
 
 /* ═══ EXAM ═══ */
 .qblock{margin-bottom:1.3rem;padding:1.2rem;background:var(--g50);
@@ -4690,23 +4688,23 @@ function renderRapportDirection(c) {
   <div id="rd-kpi-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.4rem"></div>
 
   <!-- BRIEFING -->
-  <div id="rd-brief-box" style="background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem">
-    <div style="background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem">
+  <div id="rd-brief-box" style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem">
+    <div style="background:linear-gradient(135deg,var(--navy3),#1B3A8C);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem">
       <span style="font-size:1.5rem">🧭</span>
       <div><div style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff">Briefing direction — l'essentiel en 30 secondes</div>
-      <div style="font-size:.7rem;color:rgba(255,255,255,.5)">Synthèse automatique à partir des évaluations reçues</div></div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,.4)">Synthèse automatique à partir des évaluations reçues</div></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding:1.2rem;background:#fff" id="rd-brief-cols"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding:1.2rem" id="rd-brief-cols"></div>
   </div>
 
   <!-- TOP / BOTTOM MODULES -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.4rem">
-    <div style="background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--rL);overflow:hidden">
-      <div style="padding:.9rem 1.3rem;border-bottom:1px solid #E8EEFF;font-family:var(--fD);font-weight:700;font-size:.88rem;color:#0B1525">🏆 Modules les mieux notés</div>
+    <div style="background:#fff;border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
+      <div style="padding:.9rem 1.3rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">🏆 Modules les mieux notés</div>
       <div style="padding:1.1rem 1.3rem" id="rd-top-mods"></div>
     </div>
-    <div style="background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--rL);overflow:hidden">
-      <div style="padding:.9rem 1.3rem;border-bottom:1px solid #E8EEFF;font-family:var(--fD);font-weight:700;font-size:.88rem;color:#0B1525">⚠️ Modules les plus faibles</div>
+    <div style="background:#fff;border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
+      <div style="padding:.9rem 1.3rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">⚠️ Modules les plus faibles</div>
       <div style="padding:1.1rem 1.3rem" id="rd-bot-mods"></div>
     </div>
   </div>
@@ -4796,9 +4794,9 @@ function rdRenderAll() {
   if(!kGrid) return;
 
   if(!rdAllEvals.length) {
-    kGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:#4a5e8a">
+    kGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500)">
       <div style="font-size:2rem;margin-bottom:.5rem">📭</div>
-      <div style="font-weight:700;color:#3A4A6B">Aucune évaluation disponible</div>
+      <div style="font-weight:700;color:var(--g700)">Aucune évaluation disponible</div>
       <div style="font-size:.78rem;margin-top:.3rem">Cliquez sur "⚙ Démo" pour charger des données de test.</div>
     </div>`;
     document.getElementById('rd-brief-cols').innerHTML = '';
@@ -4814,7 +4812,7 @@ function rdRenderAll() {
   const alertCount = mods.filter(m=>m.isAlert).length;
   const recoRate = rdAllEvals.length ? Math.round(rdAllEvals.filter(ev=>ev.recommande).length/rdAllEvals.length*100) : 0;
 
-  const KPI_COLORS = ['#1B3A8C','var(--goldD)','var(--greenL)','var(--red)','#8A50CC'];
+  const KPI_COLORS = ['var(--blue)','var(--goldD)','var(--greenL)','var(--red)','#8A50CC'];
   const kpis = [
     {icon:'📝',val:rdAllEvals.length,lbl:'Évaluations reçues',sub:mods.length+' modules évalués',c:0},
     {icon:'⭐',val:avgStars+'/5',lbl:'Note moyenne',sub:'⭐'.repeat(Math.round(+avgStars||0)),c:1},
@@ -4823,10 +4821,10 @@ function rdRenderAll() {
     {icon:'👍',val:recoRate+'%',lbl:'Recommandation',sub:'taux de recommandation',c:4},
   ];
   kGrid.innerHTML = kpis.map(k=>`
-    <div style="background:#fff;border:1.5px solid var(--g100);border-top:4px solid ${KPI_COLORS[k.c]};border-radius:18px;padding:1.1rem">
+    <div style="background:#fff;border:1.5px solid var(--g100);border-top:4px solid ${KPI_COLORS[k.c]};border-radius:var(--rL);padding:1.1rem">
       <div style="font-size:1.2rem;margin-bottom:.4rem">${k.icon}</div>
-      <div style="font-family:var(--fD);font-weight:800;font-size:1.7rem;color:#0B1525">${k.val}</div>
-      <div style="font-size:.72rem;color:#4a5e8a;margin-top:.2rem">${k.lbl}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.7rem;color:var(--text)">${k.val}</div>
+      <div style="font-size:.72rem;color:var(--g500);margin-top:.2rem">${k.lbl}</div>
       <div style="font-size:.7rem;color:${KPI_COLORS[k.c]};margin-top:.3rem;font-weight:600">${k.sub}</div>
     </div>`).join('');
 
@@ -4834,28 +4832,25 @@ function rdRenderAll() {
   const sorted = [...mods].sort((a,b)=>b.score-a.score);
   const topMods = sorted.slice(0,3);
   const weakMods = sorted.slice(-3).reverse();
-  const mkItem = t => `<div style="display:flex;align-items:flex-start;gap:.4rem;margin-bottom:.4rem;font-size:.78rem;color:#3A4A6B"><span style="color:#1B3A8C;font-weight:700;flex-shrink:0">›</span><span>${t}</span></div>`;
-  const briefEl = document.getElementById('rd-brief-cols');
   const BRIEF_STYLES = [
-    {title:'✅ Points forts',    bg:'#e6f9f0', border:'#00A066', dot:'#00A066', titleColor:'#004D30', textColor:'#0B3020'},
-    {title:'⚠️ À améliorer',    bg:'#fffbeb', border:'#C98A00', dot:'#C98A00', titleColor:'#5c4000', textColor:'#5c4000'},
-    {title:'🗣️ Profs à rencontrer', bg:'#fff0f0', border:'#C8101E', dot:'#C8101E', titleColor:'#6B0010', textColor:'#6B0010'},
+    {title:'✅ Points forts',    dot:'#00A066', bg:'#e6f9f0', border:'#00A066', tc:'#004D30'},
+    {title:'⚠️ À améliorer',    dot:'#C98A00', bg:'#fffbeb', border:'#C98A00', tc:'#5c4000'},
+    {title:'🗣️ Profs à rencontrer', dot:'#C8101E', bg:'#fff0f0', border:'#C8101E', tc:'#6B0010'},
   ];
-  const mkItem2 = (t,s) => `<div style="display:flex;align-items:flex-start;gap:.4rem;margin-bottom:.4rem;font-size:.78rem;color:${s.textColor};line-height:1.5">
-    <span style="color:${s.dot};font-weight:700;flex-shrink:0">›</span><span>${t}</span></div>`;
+  const briefEl = document.getElementById('rd-brief-cols');
   if(briefEl) briefEl.innerHTML = [
     {items:topMods.map(m=>`<strong>${m.code}</strong> — ${m.titre} (${m.score.toFixed(1)}/5)`)},
     {items:[alertCount>0&&`${alertCount} module(s) sous le seuil acceptable`,weakMods[0]&&`${weakMods[0].code} le moins bien noté (${weakMods[0].score.toFixed(1)}/5)`].filter(Boolean)},
     {items:mods.filter(m=>m.score<3).slice(0,3).map(m=>`Prof de <strong>${m.code}</strong> · score ${m.score.toFixed(1)}/5`)},
   ].map((col,i)=>{
     const s=BRIEF_STYLES[i];
-    const items = col.items.length ? col.items : ['Aucun élément ✓'];
+    const items=col.items.length?col.items:['Aucun élément ✓'];
     return `<div style="background:${s.bg};border:1.5px solid ${s.border};border-radius:10px;padding:1rem">
-      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem">
-        <div style="width:9px;height:9px;border-radius:50%;background:${s.dot};flex-shrink:0"></div>
-        <strong style="font-size:.78rem;color:${s.titleColor}">${s.title}</strong>
+      <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.7rem">
+        <div style="width:8px;height:8px;border-radius:50%;background:${s.dot}"></div>
+        <strong style="font-size:.78rem;color:${s.tc}">${s.title}</strong>
       </div>
-      ${items.map(t=>mkItem2(t,s)).join('')}
+      ${items.map(t=>`<div style="display:flex;align-items:flex-start;gap:.4rem;margin-bottom:.4rem;font-size:.78rem;color:${s.tc};line-height:1.5"><span style="font-weight:700;flex-shrink:0">›</span><span>${t}</span></div>`).join('')}
     </div>`;
   }).join('');
 
@@ -4872,8 +4867,8 @@ function rdRenderAll() {
   };
   const topEl = document.getElementById('rd-top-mods');
   const botEl = document.getElementById('rd-bot-mods');
-  if(topEl) topEl.innerHTML = topMods.length ? topMods.map((m,i)=>mkMod(m,i,false)).join('') : '<p style="font-size:.78rem;color:#4a5e8a">Aucune donnée</p>';
-  if(botEl) botEl.innerHTML = weakMods.length ? weakMods.map((m,i)=>mkMod(m,i,true)).join('') : '<p style="font-size:.78rem;color:#4a5e8a">Aucune donnée</p>';
+  if(topEl) topEl.innerHTML = topMods.length ? topMods.map((m,i)=>mkMod(m,i,false)).join('') : '<p style="font-size:.78rem;color:var(--g500)">Aucune donnée</p>';
+  if(botEl) botEl.innerHTML = weakMods.length ? weakMods.map((m,i)=>mkMod(m,i,true)).join('') : '<p style="font-size:.78rem;color:var(--g500)">Aucune donnée</p>';
 }
 
 function rdShowTab(tab) {
@@ -4888,14 +4883,14 @@ function rdShowTab(tab) {
 
   if(tab==='programmes') {
     const progs=['TRI','MEI','ELM','TEL'];
-    if(!mods.length){el.innerHTML='<p style="color:#4a5e8a;font-size:.82rem">Aucune évaluation.</p>';return;}
+    if(!mods.length){el.innerHTML='<p style="color:var(--g500);font-size:.82rem">Aucune évaluation.</p>';return;}
     el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">
     ${progs.map(p=>{
       const pm=mods.filter(m=>m.prog===p);
       const avg=pm.length?(pm.reduce((s,m)=>s+m.score,0)/pm.length).toFixed(1):'—';
       const alerts=pm.filter(m=>m.isAlert).length;
       const barC=(+avg>=4?'#00A066':(+avg>=3?'#C98A00':'#C8101E'));
-      return `<div style="background:#f8faff;border:1.5px solid var(--g100);border-radius:18px;overflow:hidden">
+      return `<div style="background:var(--g50);border:1.5px solid var(--g100);border-radius:var(--rL);overflow:hidden">
         <div style="background:${progColors[p]||'#1B3A8C'};padding:.9rem 1.1rem;display:flex;align-items:center;gap:.7rem">
           <span style="font-size:1.1rem">${progIcons[p]}</span>
           <div><div style="font-family:var(--fD);font-weight:700;font-size:.82rem;color:#fff">${p}</div>
@@ -4906,7 +4901,7 @@ function rdShowTab(tab) {
           <div style="height:5px;background:var(--g200);border-radius:3px;margin-bottom:.5rem">
             <div style="height:5px;border-radius:3px;background:${barC};width:${Math.round((+avg||0)/5*100)}%"></div>
           </div>
-          <div style="font-size:.72rem;color:${alerts?'#C8101E':'#00A066'};font-weight:600">${alerts?'⚠ '+alerts+' alerte(s)':'✓ Aucune alerte'}</div>
+          <div style="font-size:.72rem;color:${alerts?'var(--red)':'var(--greenL)'};font-weight:600">${alerts?'⚠ '+alerts+' alerte(s)':'✓ Aucune alerte'}</div>
         </div>
       </div>`;
     }).join('')}</div>`;
@@ -4914,10 +4909,10 @@ function rdShowTab(tab) {
   } else if(tab==='modules') {
     const sorted=[...mods].sort((a,b)=>b.score-a.score);
     el.innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem">
-      <thead><tr>${['Programme','Code','Module','Évals','Note','Satis','Reco','Statut'].map(h=>`<th style="background:#1B3A8C;color:#fff;font-weight:700;padding:.6rem .8rem;text-align:left;border-bottom:2px solid #0C1F3D;white-space:nowrap">${h}</th>`).join('')}</tr></thead>
+      <thead><tr>${['Programme','Code','Module','Évals','Note','Satis','Reco','Statut'].map(h=>`<th style="background:var(--g50);color:var(--g700);font-weight:700;padding:.6rem .8rem;text-align:left;border-bottom:1.5px solid var(--g100);white-space:nowrap">${h}</th>`).join('')}</tr></thead>
       <tbody>${sorted.map(m=>{
         const c=m.score>=4?'#00A066':m.score>=3?'#C98A00':'#C8101E';
-        return `<tr style="border-bottom:1px solid #E8EEFF;">
+        return `<tr style="border-bottom:1px solid var(--g100)">
           <td style="padding:.6rem .8rem"><span style="font-size:.7rem;font-weight:700;background:${(progColors[m.prog]||'#1B3A8C')}18;color:${progColors[m.prog]||'#1B3A8C'};padding:2px 7px;border-radius:8px">${m.prog}</span></td>
           <td style="padding:.6rem .8rem"><code style="font-size:.72rem;font-weight:700;background:#f0f4ff;color:#1B3A8C;padding:2px 6px;border-radius:4px">${m.code}</code></td>
           <td style="padding:.6rem .8rem;font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.titre}</td>
@@ -4925,22 +4920,22 @@ function rdShowTab(tab) {
           <td style="padding:.6rem .8rem"><span style="font-family:var(--fD);font-weight:800;color:${c}">${m.score.toFixed(1)}/5</span></td>
           <td style="padding:.6rem .8rem;font-weight:700;color:${m.avgSatis>=70?'#006B46':m.avgSatis>=50?'#8B5E00':'#C8101E'}">${m.avgSatis}%</td>
           <td style="padding:.6rem .8rem;font-weight:700;color:${m.recoRate>=70?'#006B46':'#C8101E'}">${m.recoRate}%</td>
-          <td style="padding:.6rem .8rem"><span style="font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;${m.isAlert?'background:#fff0f0;color:#C8101E;border:1px solid #C8101E':'background:#e6f9f0;color:#006B46;border:1px solid #00A066'}">${m.isAlert?'⚠ Alerte':'✓ OK'}</span></td>
+          <td style="padding:.6rem .8rem"><span style="font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;${m.isAlert?'background:#fff0f0;color:#C8101E;border:1px solid var(--red)':'background:#e6f9f0;color:#006B46;border:1px solid #00A066'}">${m.isAlert?'⚠ Alerte':'✓ OK'}</span></td>
         </tr>`;
       }).join('')}</tbody></table></div>`;
 
   } else if(tab==='alertes') {
     const alerts=mods.filter(m=>m.isAlert).sort((a,b)=>a.score-b.score);
     el.innerHTML=alerts.length?alerts.map(m=>`
-      <div style="background:#fff5f5;border:1.5px solid rgba(232,25,44,.2);border-radius:18px;padding:1rem 1.2rem;margin-bottom:.8rem">
+      <div style="background:#fff5f5;border:1.5px solid rgba(232,25,44,.2);border-radius:var(--rL);padding:1rem 1.2rem;margin-bottom:.8rem">
         <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.6rem;flex-wrap:wrap">
           <code style="font-size:.8rem;font-weight:800;background:${(progColors[m.prog]||'#1B3A8C')}20;color:${progColors[m.prog]||'#1B3A8C'};padding:3px 9px;border-radius:6px">${m.code}</code>
           <div style="font-weight:700;font-size:.85rem;flex:1">${m.titre}</div>
           <span style="font-family:var(--fD);font-weight:800;font-size:1.1rem;color:#C8101E">${m.score.toFixed(1)}/5</span>
         </div>
-        <div style="font-size:.78rem;color:#3A4A6B">Satisfaction : ${m.avgSatis}% · Recommandation : ${m.recoRate}% · ${m.count} évaluation(s)</div>
+        <div style="font-size:.78rem;color:var(--g700)">Satisfaction : ${m.avgSatis}% · Recommandation : ${m.recoRate}% · ${m.count} évaluation(s)</div>
       </div>`).join(''):
-      `<div style="text-align:center;padding:2rem;color:#4a5e8a"><div style="font-size:1.5rem;margin-bottom:.5rem">✅</div><div style="font-weight:700">Aucune alerte — tous les modules sont satisfaisants</div></div>`;
+      `<div style="text-align:center;padding:2rem;color:var(--g500)"><div style="font-size:1.5rem;margin-bottom:.5rem">✅</div><div style="font-weight:700">Aucune alerte — tous les modules sont satisfaisants</div></div>`;
 
   } else if(tab==='verbatim') {
     const forts=[],faibles=[],suggs=[];
@@ -4952,16 +4947,16 @@ function rdShowTab(tab) {
       if(ev.commentaire&&!f&&!fa)faibles.push({text:ev.commentaire,code:ev.moduleCode});
     });
     const mkV=(items,empty)=>items.length?items.slice(0,6).map(it=>`
-      <div style="background:#f8faff;border:1px solid #E8EEFF;border-radius:10px;padding:.8rem 1rem;margin-bottom:.5rem;position:relative">
+      <div style="background:var(--g50);border:1px solid var(--g100);border-radius:var(--r);padding:.8rem 1rem;margin-bottom:.5rem;position:relative">
         <div style="font-size:2rem;color:var(--g200);position:absolute;top:.2rem;left:.5rem;line-height:1;font-family:Georgia,serif">"</div>
-        <div style="font-size:.82rem;color:#3A4A6B;line-height:1.6;padding-left:1.1rem">${it.text}</div>
-        <div style="font-size:.68rem;color:#4a5e8a;margin-top:.3rem;padding-left:1.1rem"><code style="background:#e8eeff;color:#1B3A8C;padding:1px 5px;border-radius:3px">${it.code}</code></div>
-      </div>`).join(''):`<p style="color:#4a5e8a;font-size:.78rem">${empty}</p>`;
+        <div style="font-size:.82rem;color:var(--g700);line-height:1.6;padding-left:1.1rem">${it.text}</div>
+        <div style="font-size:.68rem;color:var(--g500);margin-top:.3rem;padding-left:1.1rem"><code style="background:#e8eeff;color:#1B3A8C;padding:1px 5px;border-radius:3px">${it.code}</code></div>
+      </div>`).join(''):`<p style="color:var(--g500);font-size:.78rem">${empty}</p>`;
     el.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-      <div><div style="font-weight:700;font-size:.82rem;color:#0B1525;margin-bottom:.7rem">💪 Ce qui aide</div>${mkV(forts,'Aucun commentaire positif.')}</div>
-      <div><div style="font-weight:700;font-size:.82rem;color:#0B1525;margin-bottom:.7rem">⚠️ À améliorer</div>${mkV(faibles,'Aucun point faible signalé.')}</div>
+      <div><div style="font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:.7rem">💪 Ce qui aide</div>${mkV(forts,'Aucun commentaire positif.')}</div>
+      <div><div style="font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:.7rem">⚠️ À améliorer</div>${mkV(faibles,'Aucun point faible signalé.')}</div>
     </div>
-    <div style="font-weight:700;font-size:.82rem;color:#0B1525;margin-bottom:.7rem">💡 Suggestions</div>
+    <div style="font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:.7rem">💡 Suggestions</div>
     ${mkV(suggs,'Aucune suggestion.')}`;
 
   } else if(tab==='profs') {
@@ -4973,55 +4968,19 @@ function rdShowTab(tab) {
       const avg=pm.reduce((s,m)=>s+m.score,0)/pm.length;
       const alerts=pm.filter(m=>m.isAlert).length;
       const urgency=avg<3?'urgent':avg<3.5?'watch':'ok';
-      const statC={urgent:'background:#fff0f0;color:#C8101E;border:1px solid #C8101E',watch:'background:#fffbeb;color:#8B5E00;border:1px solid #C98A00',ok:'background:#e6f9f0;color:#006B46;border:1px solid #00A066'}[urgency];
+      const statC={urgent:'background:#fff0f0;color:#C8101E;border:1px solid var(--red)',watch:'background:#fffbeb;color:#8B5E00;border:1px solid #C98A00',ok:'background:#e6f9f0;color:#006B46;border:1px solid #00A066'}[urgency];
       const statL={urgent:'🔴 Rencontre urgente',watch:'🟡 À surveiller',ok:'🟢 Satisfaisant'}[urgency];
       const initials=u.nom.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
-      return`<div style="display:flex;align-items:center;gap:.9rem;padding:.75rem;background:#f8faff;border:1px solid #E8EEFF;border-radius:10px;margin-bottom:.5rem">
-        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1B3A8C,var(--blueL));display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0">${initials}</div>
+      return`<div style="display:flex;align-items:center;gap:.9rem;padding:.75rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--r);margin-bottom:.5rem">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blueL));display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0">${initials}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:.82rem;color:#0B1525">${u.nom}</div>
-          <div style="font-size:.72rem;color:#4a5e8a">${u.titre||progs.join(', ')} · Moy. ${avg.toFixed(1)}/5${alerts?` · <span style="color:#C8101E">⚠ ${alerts} alerte(s)</span>`:''}</div>
+          <div style="font-weight:700;font-size:.82rem;color:var(--text)">${u.nom}</div>
+          <div style="font-size:.72rem;color:var(--g500)">${u.titre||progs.join(', ')} · Moy. ${avg.toFixed(1)}/5${alerts?` · <span style="color:var(--red)">⚠ ${alerts} alerte(s)</span>`:''}</div>
         </div>
         <span style="font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;${statC}">${statL}</span>
       </div>`;
-    }).join(''):`<p style="color:#4a5e8a;font-size:.82rem">Aucun professeur configuré. Créez les comptes dans la section Administration.</p>`;
+    }).join(''):`<p style="color:var(--g500);font-size:.82rem">Aucun professeur configuré. Créez les comptes dans la section Administration.</p>`;
   }
-}
-
-function certFilter() {
-  const q=     (document.getElementById('cert-search')?.value||'').toLowerCase();
-  const prog=  document.getElementById('cert-prog-filter')?.value||'';
-  const status=document.getElementById('cert-status-filter')?.value||'';
-  const rows=  document.querySelectorAll('#cert-tbody tr');
-  let visible=0;
-  rows.forEach(row=>{
-    const show=(!q||row.dataset.nom?.includes(q)||row.textContent.toLowerCase().includes(q))
-            &&(!prog||row.dataset.prog===prog)
-            &&(!status||row.dataset.sent===status);
-    row.style.display=show?'':'none';
-    if(show)visible++;
-  });
-  const info=document.getElementById('cert-count-info');
-  if(info)info.textContent=`${visible} étudiant(s) affiché(s)`;
-}
-
-function markCertSent(id) {
-  const all=JSON.parse(localStorage.getItem('canado_inscriptions')||'[]');
-  const idx=all.findIndex(i=>i.id===id);
-  if(idx>=0){all[idx].credentials_sent=true;localStorage.setItem('canado_inscriptions',JSON.stringify(all));}
-  showPanel('certification');
-  toast('✅ Credentials marqués comme envoyés');
-}
-
-function exportCertCSV() {
-  const ins=JSON.parse(localStorage.getItem('canado_inscriptions')||'[]').filter(i=>i.statut==='valide'&&i.code_etudiant);
-  const csv='Matricule,Prénom,Nom,Programme,Année,Date,Credentials\n'+
-    ins.map(e=>`${e.code_etudiant||''},${e.prenom||''},${e.nom||''},${e.programme||''},${e.annee||''},${e.date_soumission||''},${e.credentials_sent?'Oui':'Non'}`).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download='certifications_canado.csv';
-  a.click();
-  toast('📥 Export CSV téléchargé');
 }
 
 function rdLoadDemo() {
@@ -6513,6 +6472,39 @@ function hideCoursSpinner() {
 // Close on Escape key
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeCoursViewer(); });
 
+/* ── CERTIFICATION HELPERS ── */
+function certFilter() {
+  const q=(document.getElementById('cert-search')?.value||'').toLowerCase();
+  const prog=document.getElementById('cert-prog-filter')?.value||'';
+  const status=document.getElementById('cert-status-filter')?.value||'';
+  let visible=0;
+  document.querySelectorAll('#cert-tbody tr').forEach(row=>{
+    const show=(!q||(row.dataset.nom||'').includes(q)||row.textContent.toLowerCase().includes(q))
+            &&(!prog||row.dataset.prog===prog)
+            &&(!status||row.dataset.sent===status);
+    row.style.display=show?'':'none';
+    if(show)visible++;
+  });
+  const info=document.getElementById('cert-count-info');
+  if(info)info.textContent=`${visible} étudiant(s) affiché(s)`;
+}
+function markCertSent(id) {
+  const all=JSON.parse(localStorage.getItem('canado_inscriptions')||'[]');
+  const idx=all.findIndex(i=>i.id===id);
+  if(idx>=0){all[idx].credentials_sent=true;localStorage.setItem('canado_inscriptions',JSON.stringify(all));}
+  showPanel('certification');
+  toast('✅ Credentials marqués comme envoyés');
+}
+function exportCertCSV() {
+  const ins=JSON.parse(localStorage.getItem('canado_inscriptions')||'[]').filter(i=>i.statut==='valide'&&i.code_etudiant);
+  const csv='Matricule,Prénom,Nom,Programme,Année,Date,Credentials\n'+
+    ins.map(e=>`${e.code_etudiant||''},${e.prenom||''},${e.nom||''},${e.programme||''},${e.annee||''},${e.date_soumission||''},${e.credentials_sent?'Oui':'Non'}`).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='certifications_canado.csv';a.click();
+  toast('📥 Export CSV téléchargé');
+}
+
 /* ══════════════════════════════════════════════════════════
    FEATURE 1 — JUMEAU NUMÉRIQUE (IA prédictive étudiant)
 ══════════════════════════════════════════════════════════ */
@@ -6649,61 +6641,62 @@ async function getConseilIA(btn, data) {
    FEATURE 2 — CERTIFICATION QR CODE VÉRIFIABLE
 ══════════════════════════════════════════════════════════ */
 function renderCertification(c) {
-  // ── Vue administration/direction : rapport de progression par programme ──
+  const PROG_INFO_MAP={TRI:'Techniques de Réseaux Informatiques',MEI:"Mécanique d'Entretien Industrielle",ELM:'Électromécanique Industrielle',TEL:'Télécommunications'};
+  const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
+  const progIcons={TRI:'🌐',MEI:'🔧',ELM:'⚡',TEL:'📡'};
+
+  // ── Vue ADMINISTRATION/DIRECTION : rapport de progression par programme ──
   if(currentRole !== 'etud') {
-    const progColors={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
-    const progIcons={TRI:'🌐',MEI:'🔧',ELM:'⚡',TEL:'📡'};
-    const PROG_LABELS={TRI:'Techniques de Réseaux Informatiques',MEI:"Mécanique d'Entretien Industrielle",ELM:'Électromécanique Industrielle',TEL:'Télécommunications'};
     const inscrits=JSON.parse(localStorage.getItem('canado_inscriptions')||'[]').filter(i=>i.statut==='valide');
-    const certifies=inscrits.filter(i=>i.code_etudiant); // ceux qui ont reçu leurs credentials
+    const certifies=inscrits.filter(i=>i.code_etudiant);
 
     c.innerHTML=`
-    <div class="ph2">🎓 Rapport de certifications <span class="ai-badge">Progression par programme</span></div>
+    <div class="ph2">🎓 Rapport de certifications <span class="ai-badge">Par programme</span></div>
 
-    <!-- KPI GLOBAL -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.4rem">
+    <!-- KPIs -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1.4rem">
       ${[
-        ['🎓','Certifiés',certifies.length,'#006B46'],
-        ['📚','Inscrits validés',inscrits.length,'#1B3A8C'],
-        ['⏳','En attente',JSON.parse(localStorage.getItem('canado_inscriptions')||'[]').filter(i=>i.statut==='en_attente').length,'#C98A00'],
-        ['📊','Taux certification',inscrits.length?Math.round(certifies.length/inscrits.length*100)+'%':'—','#5B2D8E'],
-      ].map(([icon,lbl,val,col])=>`
-      <div style="background:#fff;border:1.5px solid #E8EEFF;border-top:4px solid ${col};border-radius:var(--rL);padding:1rem;text-align:center">
+        ['🎓','Certifiés',certifies.length,'#006B46','#e6f9f0','#00A066'],
+        ['📚','Inscrits validés',inscrits.length,'#1B3A8C','#e8eeff','#1B3A8C'],
+        ['⏳','En attente',JSON.parse(localStorage.getItem('canado_inscriptions')||'[]').filter(i=>i.statut==='en_attente').length,'#8B5E00','#fffbeb','#C98A00'],
+        ['📊','Taux',inscrits.length?Math.round(certifies.length/inscrits.length*100)+'%':'—','#5B2D8E','#f0eeff','#8A50CC'],
+      ].map(([icon,lbl,val,col,bg,border])=>`
+      <div style="background:${bg};border:1.5px solid ${border};border-radius:var(--rL);padding:1rem;text-align:center">
         <div style="font-size:1.2rem;margin-bottom:.3rem">${icon}</div>
         <div style="font-family:var(--fD);font-weight:800;font-size:1.5rem;color:${col}">${val}</div>
-        <div style="font-size:.7rem;color:#7B8DB8;margin-top:2px">${lbl}</div>
+        <div style="font-size:.7rem;color:#4a5e8a;margin-top:2px;font-weight:600">${lbl}</div>
       </div>`).join('')}
     </div>
 
     <!-- PAR PROGRAMME -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:1.4rem">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.4rem">
       ${['TRI','MEI','ELM','TEL'].map(prog=>{
         const total=inscrits.filter(i=>i.programme===prog).length;
         const cert=certifies.filter(i=>i.programme===prog).length;
         const pct=total?Math.round(cert/total*100):0;
-        const barC=pct>=70?'#00A066':pct>=40?'#C98A00':'#C8101E';
+        const barC=pct>=70?'#006B46':pct>=40?'#C98A00':'#C8101E';
         const an1=inscrits.filter(i=>i.programme===prog&&i.annee==='1').length;
         const an2=inscrits.filter(i=>i.programme===prog&&i.annee==='2').length;
         return `<div style="background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--rL);overflow:hidden">
           <div style="background:${progColors[prog]};padding:.9rem 1.1rem;display:flex;align-items:center;gap:.7rem">
             <span style="font-size:1.1rem">${progIcons[prog]}</span>
             <div>
-              <div style="font-family:var(--fD);font-weight:700;font-size:.82rem;color:#fff">${PROG_LABELS[prog]}</div>
-              <div style="font-size:.65rem;color:rgba(255,255,255,.55)">${prog} · ${total} étudiant(s)</div>
+              <div style="font-family:var(--fD);font-weight:700;font-size:.82rem;color:#fff">${PROG_INFO_MAP[prog]}</div>
+              <div style="font-size:.65rem;color:rgba(255,255,255,.6)">${prog} · ${total} étudiant(s)</div>
             </div>
           </div>
           <div style="padding:.9rem 1.1rem">
             <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:.4rem">
               <div style="font-family:var(--fD);font-weight:800;font-size:1.4rem;color:${barC}">${pct}%</div>
-              <div style="font-size:.72rem;color:#7B8DB8">${cert}/${total} certifiés</div>
+              <div style="font-size:.72rem;color:#4a5e8a">${cert}/${total} certifiés</div>
             </div>
             <div style="height:7px;background:#E8EEFF;border-radius:4px;overflow:hidden;margin-bottom:.7rem">
               <div style="height:7px;border-radius:4px;background:${barC};width:${pct}%"></div>
             </div>
-            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-              <span style="font-size:.7rem;background:#e8eeff;color:#1B3A8C;padding:2px 8px;border-radius:8px;font-weight:600">1ère : ${an1}</span>
-              <span style="font-size:.7rem;background:#e8eeff;color:#1B3A8C;padding:2px 8px;border-radius:8px;font-weight:600">2ème : ${an2}</span>
-              <span style="font-size:.7rem;background:${pct>=70?'#e6f9f0':'#fff5f5'};color:${pct>=70?'#006B46':'#C8101E'};padding:2px 8px;border-radius:8px;font-weight:600">${pct>=70?'✓ Bon rythme':'⚠ À surveiller'}</span>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+              <span style="font-size:.7rem;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:8px;font-weight:600">1ère : ${an1}</span>
+              <span style="font-size:.7rem;background:#e8eeff;color:#1B3A8C;padding:2px 7px;border-radius:8px;font-weight:600">2ème : ${an2}</span>
+              <span style="font-size:.7rem;background:${pct>=70?'#e6f9f0':'#fff5f5'};color:${pct>=70?'#006B46':'#C8101E'};padding:2px 7px;border-radius:8px;font-weight:600">${pct>=70?'✓ Bon rythme':'⚠ À surveiller'}</span>
             </div>
           </div>
         </div>`;
@@ -6712,57 +6705,57 @@ function renderCertification(c) {
 
     <!-- LISTE DÉTAILLÉE -->
     <div style="background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--rL);overflow:hidden">
-      <div style="padding:.9rem 1.2rem;border-bottom:1px solid #E8EEFF;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap">
-        <div style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:#0B1525;flex:1">📋 Étudiants certifiés (${certifies.length})</div>
-        <input type="text" id="cert-search" placeholder="🔍 Rechercher par nom, matricule…"
-          style="padding:.4rem .8rem;border:1.5px solid #E8EEFF;border-radius:8px;font-size:.78rem;color:#0B1525;width:220px"
+      <div style="padding:.9rem 1.2rem;border-bottom:1px solid #E8EEFF;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
+        <div style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:#0B1525;flex:1">📋 Liste certifiés (${certifies.length})</div>
+        <input type="text" id="cert-search" placeholder="🔍 Nom, matricule…"
+          style="padding:.35rem .7rem;border:1.5px solid #E8EEFF;border-radius:8px;font-size:.76rem;color:#0B1525;width:170px"
           oninput="certFilter()">
         <select id="cert-prog-filter" onchange="certFilter()"
-          style="padding:.4rem .7rem;border:1.5px solid #E8EEFF;border-radius:8px;font-size:.78rem;color:#0B1525">
-          <option value="">Tous les programmes</option>
+          style="padding:.35rem .6rem;border:1.5px solid #E8EEFF;border-radius:8px;font-size:.76rem;color:#0B1525">
+          <option value="">Tous prog.</option>
           <option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option>
         </select>
         <select id="cert-status-filter" onchange="certFilter()"
-          style="padding:.4rem .7rem;border:1.5px solid #E8EEFF;border-radius:8px;font-size:.78rem;color:#0B1525">
-          <option value="">Tous les statuts</option>
-          <option value="sent">✅ Email envoyé</option>
+          style="padding:.35rem .6rem;border:1.5px solid #E8EEFF;border-radius:8px;font-size:.76rem;color:#0B1525">
+          <option value="">Tous statuts</option>
+          <option value="sent">✅ Envoyé</option>
           <option value="pending">⏳ En attente</option>
         </select>
+        <button class="btn btn-outline btn-sm" style="font-size:.72rem;color:#1B3A8C;border-color:#1B3A8C" onclick="exportCertCSV()">📥 CSV</button>
       </div>
-      <div style="padding:.8rem 1.2rem" id="cert-table-wrap">
-        ${certifies.length ? `<div style="overflow-x:auto"><table id="cert-table" style="width:100%;border-collapse:collapse;font-size:.8rem">
-          <thead><tr>${['Matricule','Nom','Programme','Année','Date inscription','Credentials'].map(h=>`<th style="background:#1B3A8C;color:#fff;font-weight:700;padding:.55rem .7rem;text-align:left;border-bottom:2px solid #0C1F3D;white-space:nowrap">${h}</th>`).join('')}</tr></thead>
+      <div style="padding:.8rem 1.2rem">
+        ${certifies.length?`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem">
+          <thead><tr>${['Matricule','Nom','Prog.','Année','Date','Credentials'].map(h=>`<th style="background:#1B3A8C;color:#fff;font-weight:700;padding:.5rem .7rem;text-align:left;border-bottom:2px solid #0C1F3D;white-space:nowrap">${h}</th>`).join('')}</tr></thead>
           <tbody id="cert-tbody">
-          ${certifies.map((e,i)=>`<tr data-nom="${(e.prenom+' '+e.nom).toLowerCase()}" data-prog="${e.programme||''}" data-sent="${e.credentials_sent?'sent':'pending'}" style="border-bottom:1px solid #E8EEFF">
-            <td style="padding:.55rem .7rem"><code style="font-size:.72rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:2px 6px;border-radius:4px">${e.code_etudiant||'—'}</code></td>
-            <td style="padding:.55rem .7rem;font-weight:600;color:#0B1525">${e.prenom} ${e.nom}</td>
-            <td style="padding:.55rem .7rem"><span style="font-size:.7rem;font-weight:700;background:${(progColors[e.programme]||'#1B3A8C')}18;color:${progColors[e.programme]||'#1B3A8C'};padding:1px 7px;border-radius:6px">${e.programme||'—'}</span></td>
-            <td style="padding:.55rem .7rem;font-size:.75rem;color:#4a5e8a">${e.annee||'1'}ère</td>
-            <td style="padding:.55rem .7rem;font-size:.75rem;color:#4a5e8a">${e.date_soumission?new Date(e.date_soumission).toLocaleDateString('fr-HT',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
-            <td style="padding:.55rem .7rem">
+          ${certifies.map(e=>`<tr data-nom="${(e.prenom+' '+e.nom).toLowerCase()}" data-prog="${e.programme||''}" data-sent="${e.credentials_sent?'sent':'pending'}" style="border-bottom:1px solid #E8EEFF">
+            <td style="padding:.5rem .7rem"><code style="font-size:.7rem;font-weight:700;background:#e8eeff;color:#1B3A8C;padding:2px 6px;border-radius:4px">${e.code_etudiant||'—'}</code></td>
+            <td style="padding:.5rem .7rem;font-weight:600;color:#0B1525">${e.prenom} ${e.nom}</td>
+            <td style="padding:.5rem .7rem"><span style="font-size:.68rem;font-weight:700;background:${(progColors[e.programme]||'#1B3A8C')}18;color:${progColors[e.programme]||'#1B3A8C'};padding:1px 7px;border-radius:6px">${e.programme||'—'}</span></td>
+            <td style="padding:.5rem .7rem;font-size:.75rem;color:#4a5e8a">${e.annee||'1'}ère</td>
+            <td style="padding:.5rem .7rem;font-size:.74rem;color:#4a5e8a">${e.date_soumission?new Date(e.date_soumission).toLocaleDateString('fr-HT',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+            <td style="padding:.5rem .7rem">
               <div style="display:flex;align-items:center;gap:.4rem">
                 <span style="font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:12px;${e.credentials_sent?'background:#e6f9f0;color:#006B46;border:1px solid #00A066':'background:#fff5f5;color:#C8101E;border:1px solid #C8101E'}">${e.credentials_sent?'✅ Envoyé':'⏳ En attente'}</span>
-                ${!e.credentials_sent?`<button class="btn btn-sm" style="background:#1B3A8C;color:#fff;border:none;font-size:.65rem;padding:2px 7px" onclick="markCertSent('${e.id}')">Envoyer</button>`:''}
+                ${!e.credentials_sent?`<button class="btn btn-sm" style="background:#1B3A8C;color:#fff;border:none;font-size:.62rem;padding:2px 7px" onclick="markCertSent('${e.id}')">Envoyer</button>`:''}
               </div>
             </td>
           </tr>`).join('')}
           </tbody>
-        </table></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.8rem;padding-top:.8rem;border-top:1px solid #E8EEFF">
+        </table>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.7rem;padding-top:.7rem;border-top:1px solid #E8EEFF">
           <div style="font-size:.72rem;color:#4a5e8a" id="cert-count-info">${certifies.length} étudiant(s) certifié(s)</div>
-          <button class="btn btn-outline btn-sm" style="font-size:.72rem;color:#1B3A8C;border-color:#1B3A8C" onclick="exportCertCSV()">📥 Exporter CSV</button>
-        </div>`
-        : `<div style="text-align:center;padding:2rem;color:#4a5e8a">
+        </div></div>`
+        :`<div style="text-align:center;padding:2rem;color:#4a5e8a">
           <div style="font-size:1.5rem;margin-bottom:.5rem">📋</div>
-          <div style="font-size:.82rem;color:#0B1525;font-weight:600">Aucun étudiant certifié</div>
-          <div style="font-size:.75rem;margin-top:.3rem">Les certifications apparaissent quand les credentials sont envoyés.</div>
+          <div style="font-size:.82rem;color:#0B1525;font-weight:600;margin-bottom:.3rem">Aucun étudiant certifié</div>
+          <div style="font-size:.75rem">Les certifications apparaissent quand les credentials sont envoyés.</div>
         </div>`}
       </div>
     </div>`;
     return;
   }
 
-  // ── Vue étudiant : son propre certificat ──
+  // ── Vue ÉTUDIANT : son propre certificat ──
   const prog = etudProg || 'TRI';
   const yr   = parseInt(etudYear) || 1;
   const mods = (yr===1?MODULES[prog]:MODULES_2[prog])||[];
@@ -6771,7 +6764,6 @@ function renderCertification(c) {
   const pct  = mods.length ? Math.round(done/mods.length*100) : 0;
   const certId = `CT-${prog}-${new Date().getFullYear()}-${Math.floor(Math.random()*9000)+1000}`;
   const isEligible = pct >= 80;
-  const PROG_INFO_MAP = {TRI:'Techniques de Réseaux Informatiques',MEI:"Mécanique d'Entretien Industrielle",ELM:'Électromécanique Industrielle',TEL:'Télécommunications'};
   const etudName = ROLES[currentRole]?.name || 'Étudiant';
   const qrData = `https://canadotechnique.tech/verify?cert=${certId}&prog=${prog}&yr=${yr}`;
 
@@ -6790,52 +6782,40 @@ function renderCertification(c) {
       <div style="height:8px;background:#E8EEFF;border-radius:4px;overflow:hidden;margin-bottom:.4rem">
         <div style="height:8px;border-radius:4px;background:${pct>=80?'linear-gradient(90deg,#006B46,#00A066)':'linear-gradient(90deg,#1B3A8C,#2B56C0)'};width:${pct}%;transition:width .5s"></div>
       </div>
-      <div style="font-size:.72rem;color:#7B8DB8">Seuil : 80% — Il te reste ${Math.max(0,Math.ceil(mods.length*0.8)-done)} module(s)</div>
+      <div style="font-size:.72rem;color:#4a5e8a">Seuil : 80% — Il te reste ${Math.max(0,Math.ceil(mods.length*0.8)-done)} module(s)</div>
     </div>
   </div>
-  ${isEligible ? `
+  ${isEligible?`
   <div style="background:#fff;border:3px solid #D4A800;border-radius:var(--rL);padding:2rem;margin-bottom:1.2rem;text-align:center;position:relative;overflow:hidden">
     <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#E8192C,#F5C518,#1B3A8C)"></div>
     <img src="assets/images/logo/cfph.png" style="height:50px;border-radius:10px;margin-bottom:1rem" onerror="this.style.display='none'">
-    <div style="font-size:.7rem;font-weight:700;letter-spacing:.15em;color:#7B8DB8;text-transform:uppercase;margin-bottom:.3rem">Centre de Formation Professionnelle d'Haïti</div>
-    <div style="font-size:.7rem;color:#7B8DB8;margin-bottom:1.2rem">Canado Technique · Port-au-Prince, Haïti</div>
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;color:#4a5e8a;text-transform:uppercase;margin-bottom:.3rem">Centre de Formation Professionnelle d'Haïti</div>
+    <div style="font-size:.7rem;color:#4a5e8a;margin-bottom:1.2rem">Canado Technique · Port-au-Prince, Haïti</div>
     <div style="font-size:.9rem;color:#3A4A6B;margin-bottom:.4rem">Certifie que</div>
     <div style="font-family:var(--fD);font-weight:800;font-size:1.8rem;color:#0B1525;margin-bottom:.4rem">${etudName}</div>
     <div style="font-size:.82rem;color:#3A4A6B;margin-bottom:.3rem">a complété avec succès le programme de</div>
     <div style="font-family:var(--fD);font-weight:700;font-size:1.1rem;color:#1B3A8C;margin-bottom:1.2rem">${PROG_INFO_MAP[prog]} (${prog}) · ${yr}ère Année</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:1.2rem;flex-wrap:wrap">
-      <div><div style="font-size:.65rem;color:#7B8DB8;text-transform:uppercase;letter-spacing:.08em">Délivré le</div><div style="font-weight:700;font-size:.82rem;color:#0B1525">${new Date().toLocaleDateString('fr-HT',{day:'2-digit',month:'long',year:'numeric'})}</div></div>
-      <div><div style="font-size:.65rem;color:#7B8DB8;text-transform:uppercase;letter-spacing:.08em">N° Certificat</div><div style="font-family:monospace;font-weight:800;font-size:.82rem;color:#1B3A8C">${certId}</div></div>
-      <div><div style="font-size:.65rem;color:#7B8DB8;text-transform:uppercase;letter-spacing:.08em">Résultat</div><div style="font-weight:700;font-size:.82rem;color:#006B46">${done}/${mods.length} modules · Mention Bien</div></div>
+      <div><div style="font-size:.65rem;color:#4a5e8a;text-transform:uppercase;letter-spacing:.08em">Délivré le</div><div style="font-weight:700;font-size:.82rem;color:#0B1525">${new Date().toLocaleDateString('fr-HT',{day:'2-digit',month:'long',year:'numeric'})}</div></div>
+      <div><div style="font-size:.65rem;color:#4a5e8a;text-transform:uppercase;letter-spacing:.08em">N° Certificat</div><div style="font-family:monospace;font-weight:800;font-size:.82rem;color:#1B3A8C">${certId}</div></div>
+      <div><div style="font-size:.65rem;color:#4a5e8a;text-transform:uppercase;letter-spacing:.08em">Résultat</div><div style="font-weight:700;font-size:.82rem;color:#006B46">${done}/${mods.length} modules · Mention Bien</div></div>
     </div>
     <div style="display:inline-block;padding:.8rem;background:#fff;border:2px solid #E8EEFF;border-radius:12px;margin-bottom:.8rem">
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrData)}" alt="QR" style="width:120px;height:120px;display:block">
-      <div style="font-size:.62rem;color:#7B8DB8;margin-top:.4rem;text-align:center">Scanner pour vérifier</div>
+      <div style="font-size:.62rem;color:#4a5e8a;margin-top:.4rem;text-align:center">Scanner pour vérifier</div>
     </div>
   </div>
   <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
     <button class="btn btn-blue btn-sm" onclick="window.print()">🖨️ Imprimer / PDF</button>
     <button class="btn btn-outline btn-sm" onclick="navigator.clipboard?.writeText('${qrData}').then(()=>toast('✓ Lien copié !'))">🔗 Copier le lien</button>
-  </div>` : `
+  </div>`:`
   <div style="text-align:center;padding:2rem;background:#fff;border:1.5px solid #E8EEFF;border-radius:var(--rL)">
     <div style="font-size:2.5rem;margin-bottom:.8rem">🎓</div>
     <div style="font-family:var(--fD);font-weight:700;font-size:1rem;color:#0B1525;margin-bottom:.4rem">Certification disponible à 80%</div>
-    <div style="font-size:.82rem;color:#7B8DB8;margin-bottom:1rem">Complète encore <strong style="color:#0B1525">${Math.max(0,Math.ceil(mods.length*0.8)-done)} module(s)</strong> pour débloquer ton certificat.</div>
+    <div style="font-size:.82rem;color:#4a5e8a;margin-bottom:1rem">Complète encore <strong style="color:#0B1525">${Math.max(0,Math.ceil(mods.length*0.8)-done)} module(s)</strong> pour débloquer ton certificat.</div>
     <button class="btn btn-blue btn-sm" onclick="showPanel('mes-cours')">📚 Continuer mes cours →</button>
   </div>`}`;
 }
-  const yr   = parseInt(etudYear) || 1;
-  const mods = (yr===1?MODULES[prog]:MODULES_2[prog])||[];
-  const states = getModuleStates(prog, yr);
-  const done = mods.filter(m=>states[m.code+'_done']).length;
-  const pct  = mods.length ? Math.round(done/mods.length*100) : 0;
-  const certId = `CT-${prog}-${new Date().getFullYear()}-${Math.floor(Math.random()*9000)+1000}`;
-  const isEligible = pct >= 80;
-  const PROG_INFO_MAP = {TRI:'Techniques de Réseaux Informatiques',MEI:"Mécanique d'Entretien Industrielle",ELM:'Électromécanique Industrielle',TEL:'Télécommunications'};
-  const etudName = ROLES[currentRole]?.name || 'Étudiant';
-
-  // QR data — en production pointera vers l'URL de vérification
-  const qrData = `https://canadotechnique.tech/verify?cert=${certId}&prog=${prog}&yr=${yr}`;
 
   c.innerHTML = `
   <div class="ph2">🎓 Mes certifications <span class="ai-badge">QR Vérifiable</span></div>
@@ -7040,22 +7020,22 @@ function renderProgEnfant(c) {
   <div class="ph2">📚 Progression de ${nom}</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.2rem">
     ${[['📊',pct+'%','Progression globale'],['✅',done+'/'+mods.length,'Modules validés'],['📈','78%','Moyenne générale'],['📅','Lun-Mer-Ven','Jours de cours']].map(([ico,v,l])=>`
-    <div style="background:#fff;border:1.5px solid #E8EEFF;border-radius:18px;padding:1rem;text-align:center">
+    <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1rem;text-align:center">
       <div style="font-size:1.3rem;margin-bottom:.4rem">${ico}</div>
-      <div style="font-family:var(--fD);font-weight:800;font-size:1.3rem;color:#0B1525">${v}</div>
-      <div style="font-size:.7rem;color:#4a5e8a">${l}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.3rem;color:var(--text)">${v}</div>
+      <div style="font-size:.7rem;color:var(--g500)">${l}</div>
     </div>`).join('')}
   </div>
-  <div style="background:#fff;border:1.5px solid #E8EEFF;border-radius:18px;padding:1.2rem;margin-bottom:1rem">
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
     <div style="font-family:var(--fD);font-weight:700;margin-bottom:.8rem">📅 Absences ce mois</div>
     ${[['Lun 5 mai','TRI-08 Logiciels bureau.','Présent','#e6f9f0','#006B46'],['Mer 7 mai','TRI-09 Sécurité réseau','Absent','#fff5f5','var(--red)'],['Lun 12 mai','TRI-10 Réseau sans fil','Présent','#e6f9f0','#006B46']].map(([d,m,s,bg,col])=>`
     <div style="display:flex;align-items:center;gap:.8rem;padding:.6rem .8rem;background:${bg};border-radius:8px;margin-bottom:.4rem">
       <div style="font-size:.75rem;color:var(--g700);width:80px;flex-shrink:0">${d}</div>
-      <div style="font-size:.8rem;color:#0B1525;flex:1">${m}</div>
+      <div style="font-size:.8rem;color:var(--text);flex:1">${m}</div>
       <span style="font-size:.7rem;font-weight:700;color:${col}">${s}</span>
     </div>`).join('')}
   </div>
-  <div style="background:#fffbeb;border:1px solid rgba(245,197,24,.3);border-radius:18px;padding:1rem;font-size:.8rem;color:#5c4000;line-height:1.65">
+  <div style="background:#fffbeb;border:1px solid rgba(245,197,24,.3);border-radius:var(--rL);padding:1rem;font-size:.8rem;color:#5c4000;line-height:1.65">
     💡 <strong>Message de l'administration :</strong> Marie affiche une excellente progression. Nous recommandons de l'encourager à préparer le module TRI-11 en avance. Prochain examen le 3 juin.
   </div>`;
 }
@@ -7110,7 +7090,7 @@ function renderResultatsParent(c) {
       </div>`).join('')}
     </div>
     <div style="background:#f8faff;border:1px solid #E8EEFF;border-radius:8px;padding:.8rem;text-align:center">
-      <p style="font-size:.78rem;color:#4a5e8a;margin:0">Détail complet des résultats disponible en production — connexion à la base de données requise.</p>
+      <p style="font-size:.78rem;color:#4a5e8a;margin:0">Détail complet disponible en production — connexion à la base de données requise.</p>
     </div>
   </div>`;
 }
