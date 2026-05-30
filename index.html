@@ -904,6 +904,14 @@ td{color:var(--text)!important}
 /* Chip cgy dans sections blanches */
 .sw .cgy{background:#e8eeff!important;color:#3A4A6B!important}
 .pcontent{background:#ffffff!important;color:#0B1525!important}
+/* Portail = thème clair complet : forcer aussi les fonds inline sombres à rester clairs */
+.pcontent [style*="background:var(--g50)"]{background:#f4f7fd!important}
+.pcontent [style*="background:var(--white)"]{background:#ffffff!important}
+.pcontent [style*="background:#fff"]{background:#ffffff!important}
+.pcontent code{color:inherit}
+/* Menus déroulants et champs du portail : fond clair lisible (évite noir sur gris en sombre) */
+.pcontent select,.pcontent input,.pcontent textarea{background:#fff!important;color:#0B1525!important;border-color:#c0ccee!important}
+.pcontent select option{background:#fff!important;color:#0B1525!important}
 .pcontent td{color:#0B1525!important}
 .pcontent th{color:#ffffff!important}
 .pcontent [style*="color:var(--text)"]{color:#0B1525!important}
@@ -4959,7 +4967,7 @@ function renderRapportsIAProf(c) {
       <div style="font-weight:700;font-size:.88rem;color:var(--text)">Synthétiser les évaluations d'un module</div>
       <div style="font-size:.74rem;color:var(--g500)">L'IA analyse les évaluations étudiants et génère un rapport pédagogique pour le professeur</div>
     </div>
-    <select id="rd-syn-sel" style="font-size:.8rem;padding:.4rem .7rem;border:1.5px solid var(--bdr);border-radius:8px;color:var(--text)">
+    <select id="rd-syn-sel" style="font-size:.8rem;padding:.4rem .7rem;border:1.5px solid #c0ccee;border-radius:8px;color:#0B1525;background:#fff">
       <option value="">— Choisir un module —</option>
       ${(() => {
         const ev=JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
@@ -5084,7 +5092,7 @@ function renderRapportDirection(c) {
   <div id="rd-kpi-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.4rem"></div>
 
   <!-- BRIEFING -->
-  <div id="rd-brief-box" style="background:var(--white);border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem">
+  <div id="rd-brief-box" style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem">
     <div style="background:linear-gradient(135deg,var(--navy3),#1B3A8C);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem">
       <span style="font-size:1.5rem">🧭</span>
       <div><div style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff">Briefing direction — l'essentiel en 30 secondes</div>
@@ -5095,11 +5103,11 @@ function renderRapportDirection(c) {
 
   <!-- TOP / BOTTOM MODULES -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.4rem">
-    <div style="background:var(--white);border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
+    <div style="background:#fff;border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
       <div style="padding:.9rem 1.3rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">🏆 Modules les mieux notés</div>
       <div style="padding:1.1rem 1.3rem" id="rd-top-mods"></div>
     </div>
-    <div style="background:var(--white);border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
+    <div style="background:#fff;border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
       <div style="padding:.9rem 1.3rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">⚠️ Modules les plus faibles</div>
       <div style="padding:1.1rem 1.3rem" id="rd-bot-mods"></div>
     </div>
