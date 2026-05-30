@@ -825,6 +825,7 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
 /* ═══ DARK MODE READY ═══ */
 @media(prefers-color-scheme:dark){
   :root{--text:#F0F4FF;--g50:#0C1F3D;--g100:#081428;--g200:#0C1F3D;
+    --g500:#9DB0D8;--g600:#B6C6E8;--g700:#C8D5F0;
     --bdr:rgba(100,130,220,.22);--white:#0B1525}
 }
 
@@ -1366,7 +1367,12 @@ td{color:var(--text)!important}
   .bib-chip{background:rgba(255,255,255,.1);color:rgba(255,255,255,.78)}
   .bib-cat{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14)}
   .bib-search input{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14);color:#F0F4FF}
+  .bib-search input::placeholder{color:rgba(255,255,255,.5)}
   .bib-card{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)}
+  /* Lisibilité des menus déroulants et champs en mode sombre */
+  select,input[type="text"],input[type="email"],input[type="password"],input[type="search"],textarea{
+    color:#F0F4FF}
+  select option{background:#0C1F3D;color:#F0F4FF}
 }
 </style>
 </head>
@@ -4957,8 +4963,15 @@ function renderRapportsIAProf(c) {
       <option value="">— Choisir un module —</option>
       ${(() => {
         const ev=JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
-        const mm={};ev.forEach(e=>{if(!mm[e.module_code])mm[e.module_code]={c:e.module_code,t:e.module_titre,p:e.programme,n:0};mm[e.module_code].n++;});
-        return Object.values(mm).map(m=>`<option value="${m.c}" data-titre="${m.t}" data-prog="${m.p}">${m.c} — ${m.t} (${m.n} évals.)</option>`).join('');
+        const mm={};
+        ev.forEach(e=>{
+          const code=e.module_code||e.code;
+          if(!code) return; // ignore les évaluations sans code de module valide
+          if(!mm[code])mm[code]={c:code,t:e.module_titre||e.module_title||'(titre non renseigné)',p:e.programme||e.prog||'',n:0};
+          mm[code].n++;
+        });
+        const opts=Object.values(mm).map(m=>`<option value="${escapeHtml(m.c)}" data-titre="${escapeHtml(m.t)}" data-prog="${escapeHtml(m.p)}">${escapeHtml(m.c)} — ${escapeHtml(m.t)} (${m.n} éval${m.n>1?'s':''}.)</option>`).join('');
+        return opts || '<option value="" disabled>Aucune évaluation disponible</option>';
       })()}
     </select>
     <button class="btn btn-sm" id="rd-syn-btn" style="background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;border:none;white-space:nowrap" onclick="lancerSyntheseIndex(this)">
@@ -5071,7 +5084,7 @@ function renderRapportDirection(c) {
   <div id="rd-kpi-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.4rem"></div>
 
   <!-- BRIEFING -->
-  <div id="rd-brief-box" style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem">
+  <div id="rd-brief-box" style="background:var(--white);border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem">
     <div style="background:linear-gradient(135deg,var(--navy3),#1B3A8C);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem">
       <span style="font-size:1.5rem">🧭</span>
       <div><div style="font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff">Briefing direction — l'essentiel en 30 secondes</div>
@@ -5082,11 +5095,11 @@ function renderRapportDirection(c) {
 
   <!-- TOP / BOTTOM MODULES -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.4rem">
-    <div style="background:#fff;border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
+    <div style="background:var(--white);border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
       <div style="padding:.9rem 1.3rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">🏆 Modules les mieux notés</div>
       <div style="padding:1.1rem 1.3rem" id="rd-top-mods"></div>
     </div>
-    <div style="background:#fff;border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
+    <div style="background:var(--white);border:1px solid var(--g100);border-radius:var(--rL);overflow:hidden">
       <div style="padding:.9rem 1.3rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">⚠️ Modules les plus faibles</div>
       <div style="padding:1.1rem 1.3rem" id="rd-bot-mods"></div>
     </div>
