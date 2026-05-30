@@ -1,0 +1,42 @@
+{
+  "name": "Canado Technique — Formation Professionnelle d'Haïti",
+  "short_name": "Canado Technique",
+  "description": "Plateforme e-learning du Centre de Formation Professionnelle d'Haïti. Cours, examens, bibliothèque et assistant IA Rooby.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#040D1A",
+  "theme_color": "#040D1A",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "assets/images/logo/cfph.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/logo/cfph.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cours en ligne",
+      "url": "./index.html#cours"
+    },
+    {
+      "name": "Bibliothèque",
+      "url": "./index.html#bibliotheque"
+    },
+    {
+      "name": "S'inscrire",
+      "url": "./index.html#paiement"
+    }
+  ]
+}

@@ -11,6 +11,30 @@
   window.ROOBY_API_URL = 'https://canado-backend-production.up.railway.app/api/rooby';
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#040D1A">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Canado Technique — Centre de Formation Professionnelle d'Haïti. Formation APC, certification internationale, plateforme e-learning intelligente.">
+
+<!-- ── Open Graph (partage WhatsApp / Facebook) ── -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Canado Technique">
+<meta property="og:title" content="Canado Technique — Centre de Formation Professionnelle d'Haïti">
+<meta property="og:description" content="Formation technique professionnelle, certification internationale et plateforme e-learning intelligente. Réseaux, électromécanique, mécanique et télécommunications.">
+<meta property="og:image" content="https://canadotechnique.tech/assets/images/logo/cfph.png">
+<meta property="og:url" content="https://canadotechnique.tech">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Canado Technique — Formation Professionnelle d'Haïti">
+<meta name="twitter:description" content="Plateforme e-learning intelligente. Réseaux, électromécanique, mécanique et télécommunications.">
+<meta name="twitter:image" content="https://canadotechnique.tech/assets/images/logo/cfph.png">
+
+<!-- ── PWA / installation sur mobile ── -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Canado Technique">
+<link rel="apple-touch-icon" href="assets/images/logo/cfph.png">
+
 <title>Canado Technique — Centre de Formation Professionnelle d'Haiti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
@@ -906,11 +930,6 @@ td{color:var(--text)!important}
 .psidebar{background:#f8faff!important}
 /* Progress percentage text in tables */
 .pcontent [style*="color:var(--g500)"]{color:#4a5e8a!important}
-/* ── Fix dark mode : fonds internes des cartes toujours clairs dans pcontent ── */
-.pcontent [style*="background:var(--g50)"],
-.pcontent [style*="background: var(--g50)"]{background:#f0f4ff!important}
-.pcontent [style*="background:var(--g100)"],
-.pcontent [style*="background: var(--g100)"]{background:#e8eeff!important}
 /* Chip text visibility */
 .chip{font-weight:700!important}
 /* Portal header bg */
@@ -1277,6 +1296,78 @@ td{color:var(--text)!important}
   .page-hero-banner { min-height: 180px; }
   .page-hero-banner-content { padding: 2rem 1rem 1.5rem; }
 }
+
+/* ═══════════════════════════════════════════
+   BIBLIOTHÈQUE EN LIGNE
+═══════════════════════════════════════════ */
+.bib-search-wrap{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.6rem;align-items:center}
+.bib-search{flex:1;min-width:220px;position:relative}
+.bib-search input{width:100%;padding:.85rem 1rem .85rem 2.6rem;border-radius:14px;
+  border:1px solid var(--bdr);background:var(--white);color:var(--text);font-size:.9rem;font-family:var(--fB);
+  transition:border-color .2s,box-shadow .2s}
+.bib-search input:focus{outline:none;border-color:var(--blueG);box-shadow:0 0 0 3px rgba(59,123,255,.12)}
+.bib-search .bib-search-ico{position:absolute;left:.95rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5;pointer-events:none}
+.bib-ai-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.2rem;border-radius:14px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#3B7BFF,#7BA7FF);color:#fff;font-size:.84rem;font-weight:700;font-family:var(--fB);
+  box-shadow:0 4px 16px rgba(59,123,255,.3);transition:transform .15s,box-shadow .15s;white-space:nowrap}
+.bib-ai-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,123,255,.4)}
+
+.bib-cats{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.8rem}
+.bib-cat{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1rem;border-radius:22px;cursor:pointer;
+  border:1px solid var(--bdr);background:var(--white);color:var(--g700);font-size:.8rem;font-weight:600;
+  transition:all .18s;white-space:nowrap}
+.bib-cat:hover{border-color:var(--blueG);color:var(--text)}
+.bib-cat.act{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 3px 10px rgba(27,58,140,.25)}
+
+.bib-section-lbl{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);
+  margin:2rem 0 1rem;display:flex;align-items:center;gap:.5rem}
+.bib-section-lbl::after{content:'';flex:1;height:1px;background:var(--bdr)}
+
+.bib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.1rem}
+.bib-card{background:var(--white);border:1px solid var(--bdr);border-radius:16px;padding:1.2rem;
+  display:flex;flex-direction:column;gap:.6rem;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.bib-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(4,13,26,.12);border-color:var(--blueG)}
+.bib-card-top{display:flex;align-items:flex-start;gap:.8rem}
+.bib-card-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;flex-shrink:0;color:#fff}
+.bib-card-head{flex:1;min-width:0}
+.bib-card-titre{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);line-height:1.25;margin-bottom:.15rem}
+.bib-card-auteur{font-size:.74rem;color:var(--g500)}
+.bib-card-desc{font-size:.82rem;color:var(--g700);line-height:1.55;flex:1}
+.bib-card-meta{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.2rem}
+.bib-chip{font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:8px;background:var(--g100);color:var(--g700)}
+.bib-chip.lang{background:rgba(59,123,255,.12);color:var(--blueL)}
+.bib-chip.gratuit{background:rgba(0,160,102,.14);color:var(--green)}
+.bib-card-actions{display:flex;gap:.5rem;margin-top:.7rem}
+.bib-open{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.6rem;border-radius:10px;
+  background:var(--blue);color:#fff;font-size:.78rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:background .15s}
+.bib-open:hover{background:var(--blueL)}
+.bib-rooby{display:inline-flex;align-items:center;justify-content:center;padding:.6rem .7rem;border-radius:10px;
+  background:rgba(59,123,255,.1);color:var(--blueL);font-size:.78rem;font-weight:700;border:1px solid rgba(59,123,255,.25);
+  cursor:pointer;transition:all .15s;white-space:nowrap}
+.bib-rooby:hover{background:var(--blueG);color:#fff}
+.bib-vedette-badge{position:absolute;top:0;right:0;background:var(--gold);color:var(--navy);
+  font-size:.6rem;font-weight:800;padding:3px 10px;border-bottom-left-radius:10px;text-transform:uppercase;letter-spacing:.05em}
+.bib-empty{text-align:center;padding:3rem 1rem;color:var(--g500)}
+.bib-empty-ico{font-size:2.5rem;margin-bottom:.6rem;opacity:.5}
+
+.bib-stats{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.bib-stat{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--g700)}
+.bib-stat strong{font-family:var(--fD);font-size:1.1rem;color:var(--blue)}
+
+@media(max-width:600px){
+  .bib-grid{grid-template-columns:1fr}
+  .bib-ai-btn{width:100%;justify-content:center}
+}
+@media(prefers-color-scheme:dark){
+  .bib-card-titre,.bib-section-lbl{color:#F0F4FF}
+  .bib-card-desc{color:rgba(255,255,255,.72)}
+  .bib-card-auteur,.bib-cat,.bib-stat{color:rgba(255,255,255,.6)}
+  .bib-chip{background:rgba(255,255,255,.1);color:rgba(255,255,255,.78)}
+  .bib-cat{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14)}
+  .bib-search input{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14);color:#F0F4FF}
+  .bib-card{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)}
+}
 </style>
 </head>
 <body>
@@ -1294,6 +1385,7 @@ td{color:var(--text)!important}
       <button id="nb-accueil" onclick="goPage('accueil')" class="act">Accueil</button>
       <button id="nb-programmes" onclick="goPage('programmes')">Programmes</button>
       <button id="nb-cours" onclick="goPage('cours')">Cours en ligne</button>
+      <button id="nb-bibliotheque" onclick="goPage('bibliotheque')">Bibliothèque</button>
       <button id="nb-examens-pub" onclick="goPage('examens-pub')">Examens</button>
       <button id="nb-paiement" onclick="goPage('paiement')">Inscription</button>
       <button id="nb-actualites" onclick="goPage('actualites')">Actualités</button>
@@ -1313,6 +1405,7 @@ td{color:var(--text)!important}
     <button onclick="goPage('accueil');closeMobMenu()">🏠 Accueil</button>
     <button onclick="goPage('programmes');closeMobMenu()">📚 Programmes</button>
     <button onclick="goPage('cours');closeMobMenu()">🎓 Cours en ligne</button>
+    <button onclick="goPage('bibliotheque');closeMobMenu()">📚 Bibliothèque en ligne</button>
     <button onclick="goPage('examens-pub');closeMobMenu()">📝 Examens</button>
     <button onclick="goPage('paiement');closeMobMenu()">💳 Inscription & Paiement</button>
     <button onclick="goPage('actualites');closeMobMenu()">📰 Actualités</button>
@@ -1569,7 +1662,7 @@ td{color:var(--text)!important}
         <div>
           <div class="ecole-photo">
             <img src="assets/images/hero/school-photo.jpg" alt="Campus Canado Technique"
-              onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'">
+              onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'" loading="lazy" decoding="async">
           </div>
         </div>
         <div>
@@ -1610,12 +1703,12 @@ td{color:var(--text)!important}
       </div>
       <div class="galerie-grid" id="galerie-container">
         <!-- Injecté par applyGalerie() depuis data.json -->
-        <div class="gal-item"><img src="assets/images/gallery/photo-01.jpg" alt="Atelier réseaux"><div class="gal-item-overlay"><span class="gal-item-label">Atelier réseaux</span></div></div>
-        <div class="gal-item"><img src="assets/images/gallery/photo-02.jpg" alt="Salon des compétences"><div class="gal-item-overlay"><span class="gal-item-label">Salon des compétences</span></div></div>
-        <div class="gal-item"><img src="assets/images/gallery/photo-03.jpg" alt="Laboratoire informatique"><div class="gal-item-overlay"><span class="gal-item-label">Laboratoire informatique</span></div></div>
-        <div class="gal-item"><img src="assets/images/gallery/photo-04.jpg" alt="Remise de diplômes"><div class="gal-item-overlay"><span class="gal-item-label">Remise de diplômes</span></div></div>
-        <div class="gal-item"><img src="assets/images/gallery/photo-05.jpg" alt="Atelier mécanique"><div class="gal-item-overlay"><span class="gal-item-label">Atelier mécanique</span></div></div>
-        <div class="gal-item"><img src="assets/images/gallery/photo-06.jpg" alt="Cours pratique ELM"><div class="gal-item-overlay"><span class="gal-item-label">Cours pratique ELM</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-01.jpg" alt="Atelier réseaux" loading="lazy" decoding="async"><div class="gal-item-overlay"><span class="gal-item-label">Atelier réseaux</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-02.jpg" alt="Salon des compétences" loading="lazy" decoding="async"><div class="gal-item-overlay"><span class="gal-item-label">Salon des compétences</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-03.jpg" alt="Laboratoire informatique" loading="lazy" decoding="async"><div class="gal-item-overlay"><span class="gal-item-label">Laboratoire informatique</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-04.jpg" alt="Remise de diplômes" loading="lazy" decoding="async"><div class="gal-item-overlay"><span class="gal-item-label">Remise de diplômes</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-05.jpg" alt="Atelier mécanique" loading="lazy" decoding="async"><div class="gal-item-overlay"><span class="gal-item-label">Atelier mécanique</span></div></div>
+        <div class="gal-item"><img src="assets/images/gallery/photo-06.jpg" alt="Cours pratique ELM" loading="lazy" decoding="async"><div class="gal-item-overlay"><span class="gal-item-label">Cours pratique ELM</span></div></div>
       </div>
     </div>
   </div>
@@ -1657,7 +1750,7 @@ td{color:var(--text)!important}
           <div style="display:flex;align-items:center;gap:.75rem">
             <img src="assets/images/logo/logo_cfph.png" alt="CFPH Logo"
               style="height:36px;width:auto;opacity:.9"
-              onerror="this.style.display='none'">
+              onerror="this.style.display='none'" loading="lazy" decoding="async">
             <span style="font-size:.75rem;color:rgba(255,255,255,.35)">© 2026 Canado Technique · Tous droits réservés</span>
           </div>
           <span style="font-size:.68rem;color:rgba(255,255,255,.22)">Conçu & développé par Rooby Design</span>
@@ -2010,6 +2103,42 @@ td{color:var(--text)!important}
 </div>
 
 <!-- ════════════════════════════════════════
+     PAGE BIBLIOTHÈQUE EN LIGNE
+════════════════════════════════════════ -->
+<div class="page" id="page-bibliotheque">
+  <div class="page-hero-banner" style="border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="page-hero-banner-bg" id="phb-bib" style="background-image:url('assets/images/hero/Slide-05.png')"></div>
+    <div class="page-hero-banner-overlay"></div>
+    <div class="page-hero-banner-overlay-bottom"></div>
+    <div class="page-hero-banner-content">
+      <div class="page-hero-banner-line"></div>
+      <div class="tag-r" style="margin-bottom:.6rem">📚 Bibliothèque numérique</div>
+      <h1 style="font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.4rem">La bibliothèque dans votre poche</h1>
+      <p style="color:rgba(255,255,255,.62);font-size:.84rem">Des milliers de livres et ressources gratuits · Lecture en ligne · Assistant Rooby intégré</p>
+    </div>
+  </div>
+  <div class="sw" style="background:var(--g50)">
+    <div class="si">
+
+      <div class="bib-stats" id="bib-stats"></div>
+
+      <div class="bib-search-wrap">
+        <div class="bib-search">
+          <span class="bib-search-ico">🔍</span>
+          <input type="text" id="bib-search-input" placeholder="Rechercher un livre, un sujet, une ressource…" oninput="renderBibliotheque()">
+        </div>
+        <button class="bib-ai-btn" onclick="askRoobyBiblio()">✨ Demander à Rooby</button>
+      </div>
+
+      <div class="bib-cats" id="bib-cats"></div>
+
+      <div id="bib-results"></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
      PAGE PORTAIL CONNECTÉ
 ════════════════════════════════════════ -->
 <div class="page" id="page-portail">
@@ -2104,7 +2233,7 @@ td{color:var(--text)!important}
         <input type="text" class="tfa-digit" maxlength="1" oninput="tfaNext(this,4)">
         <input type="text" class="tfa-digit" maxlength="1" oninput="tfaNext(this,5)">
       </div>
-      <div style="font-size:.72rem;color:var(--g500);margin-top:.6rem">Code démo : <strong>123456</strong></div>
+      <div style="font-size:.72rem;color:var(--g500);margin-top:.6rem">Entrez le code à 6 chiffres reçu par SMS ou email.</div>
     </div>
     <div id="tfa-step" style="display:none">
       <button class="btn btn-blue" style="width:100%;justify-content:center" onclick="verifyTFA()">✓ Vérifier le code</button>
@@ -2112,7 +2241,8 @@ td{color:var(--text)!important}
     <div id="normal-login-btn">
       <button class="btn btn-red" style="width:100%;justify-content:center;margin-top:.3rem" onclick="initLogin()">Se connecter →</button>
     </div>
-    <button style="width:100%;text-align:center;font-size:.75rem;color:var(--g500);background:transparent;border:none;padding:.6rem;cursor:pointer;margin-top:.3rem" onclick="hideLogin()">Annuler</button>
+    <button style="width:100%;text-align:center;font-size:.74rem;color:var(--blueG);background:transparent;border:none;padding:.5rem;cursor:pointer;margin-top:.2rem" onclick="forgotPassword()">Mot de passe oublié ?</button>
+    <button style="width:100%;text-align:center;font-size:.75rem;color:var(--g500);background:transparent;border:none;padding:.6rem;cursor:pointer" onclick="hideLogin()">Annuler</button>
   </div>
 </div>
 
@@ -2365,10 +2495,33 @@ const MODULES_2_FLAT = Object.entries(MODULES_2).flatMap(([prog,mods])=>mods.map
 
 // ─── Chargement data.json et synchronisation des fichiers ───
 let DATA_JSON = null;
+// Sécurité : échappe le HTML pour neutraliser les injections (XSS) dans le texte saisi par les utilisateurs.
+// À appliquer sur tout contenu utilisateur (commentaires, noms) avant insertion via innerHTML.
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+// Ordinal francophone correct : 1ère / 2ème (évite « 2ère année » ou « 1ère/ème année »).
+function anneeLabel(y) {
+  return Number(y) === 1 ? '1ère' : '2ème';
+}
+// Évite le double téléchargement : syncDataJson() et loadSiteData() partagent la même requête.
+let _dataJsonPromise = null;
+function fetchDataJson() {
+  if (!_dataJsonPromise) {
+    // Fraîcheur gérée par le service worker (réseau d'abord pour data.json).
+    _dataJsonPromise = fetch('./data.json').then(r => r.json());
+  }
+  return _dataJsonPromise;
+}
 (async function syncDataJson() {
   try {
-    const resp = await fetch('./data.json');
-    DATA_JSON = await resp.json();
+    DATA_JSON = await fetchDataJson();
     // Enrichir MODULES[] avec les chemins fichier de data.json
     if (DATA_JSON && DATA_JSON.filieres) {
       DATA_JSON.filieres.forEach(filiere => {
@@ -2404,6 +2557,7 @@ function goPage(p) {
   window.scrollTo(0,0);
   if(p==='programmes') { currentProgType==='specialisation'?renderSpecialisation():currentProgType==='cours_detache'?renderCoursDetaches():renderProgs(); }
   if(p==='cours') renderCours();
+  if(p==='bibliotheque') renderBibliotheque();
   if(p==='examens-pub') renderPubExams();
   if(p==='paiement') renderPaiement();
   if(p==='actualites' && SITE_DATA) applyArticles();
@@ -2549,7 +2703,7 @@ function renderCours() {
         ${coursImages.map(c=>`
           <div style="flex-shrink:0;width:110px;border-radius:9px;overflow:hidden;border:1px solid var(--bdr);background:#fff">
             <img src="${c.image}" alt="${c.titre}" style="width:100%;height:68px;object-fit:cover;display:block"
-              onerror="this.parentElement.style.background='var(--g100)';this.style.display='none'">
+              onerror="this.parentElement.style.background='var(--g100)';this.style.display='none'" loading="lazy" decoding="async">
             <div style="padding:.3rem .5rem;font-size:.62rem;color:var(--g700);line-height:1.35;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.titre}</div>
           </div>`).join('')}
       </div>` : '';
@@ -2581,6 +2735,141 @@ function renderCours() {
     </div>`;
   }).join('');
   document.getElementById('cours-grid').innerHTML = html;
+}
+
+/* ══════════════════════════════════════
+   BIBLIOTHÈQUE EN LIGNE
+   Données : SITE_DATA.bibliotheque (data.json)
+══════════════════════════════════════ */
+let bibFilter = 'all';
+
+const BIB_TYPE_ICON = {
+  bibliotheque:'📚', livre:'📖', cours:'🎓', documentation:'📄',
+  video:'🎬', simulation:'🧪', fiche:'📋'
+};
+
+function bibData() {
+  return (SITE_DATA && SITE_DATA.bibliotheque) ? SITE_DATA.bibliotheque : null;
+}
+
+function bibCatColor(catId, biblio) {
+  const c = (biblio.categories || []).find(x => x.id === catId);
+  return c ? c.couleur : 'var(--blue)';
+}
+
+function setBibFilter(id) {
+  bibFilter = id;
+  renderBibliotheque();
+}
+
+function renderBibliotheque() {
+  const biblio = bibData();
+  const results = document.getElementById('bib-results');
+  const catsEl  = document.getElementById('bib-cats');
+  const statsEl = document.getElementById('bib-stats');
+  if (!results) return;
+
+  if (!biblio) {
+    results.innerHTML = `<div class="bib-empty"><div class="bib-empty-ico">📚</div>
+      <div style="font-weight:700;color:var(--text)">Bibliothèque en cours de chargement…</div>
+      <div style="font-size:.82rem;margin-top:.3rem">Vérifiez votre connexion ou réessayez dans un instant.</div></div>`;
+    return;
+  }
+
+  const ressources = biblio.ressources || [];
+  const cats = biblio.categories || [];
+
+  // ── Stats ──
+  if (statsEl) {
+    statsEl.innerHTML = `
+      <div class="bib-stat"><strong>${ressources.length}</strong> ressources</div>
+      <div class="bib-stat"><strong>${cats.length}</strong> catégories</div>
+      <div class="bib-stat">💯 <strong>100%</strong> gratuit</div>`;
+  }
+
+  // ── Boutons de catégories ──
+  if (catsEl && !catsEl.dataset.built) {
+    let chips = `<div class="bib-cat ${bibFilter==='all'?'act':''}" onclick="setBibFilter('all')">🗂️ Tout</div>`;
+    chips += cats.map(c => `<div class="bib-cat ${bibFilter===c.id?'act':''}" onclick="setBibFilter('${c.id}')">${c.icon} ${c.nom}</div>`).join('');
+    catsEl.innerHTML = chips;
+    catsEl.dataset.built = '1';
+  } else if (catsEl) {
+    catsEl.querySelectorAll('.bib-cat').forEach((el,i) => {
+      const isAct = (i===0 && bibFilter==='all') || (cats[i-1] && cats[i-1].id===bibFilter);
+      el.classList.toggle('act', isAct);
+    });
+  }
+
+  // ── Filtrage : catégorie + recherche texte ──
+  const q = (document.getElementById('bib-search-input')?.value || '').toLowerCase().trim();
+  let list = ressources.filter(r => {
+    const okCat = bibFilter === 'all' || r.categorie === bibFilter;
+    const okTxt = !q || [r.titre, r.auteur, r.description, r.source, r.type]
+      .filter(Boolean).some(s => s.toLowerCase().includes(q));
+    return okCat && okTxt;
+  });
+
+  if (!list.length) {
+    results.innerHTML = `<div class="bib-empty"><div class="bib-empty-ico">🔍</div>
+      <div style="font-weight:700;color:var(--text)">Aucune ressource trouvée</div>
+      <div style="font-size:.82rem;margin-top:.3rem">Essayez un autre mot-clé, ou demandez à Rooby de vous orienter.</div>
+      <button class="bib-ai-btn" style="margin-top:1rem" onclick="askRoobyBiblio()">✨ Demander à Rooby</button></div>`;
+    return;
+  }
+
+  // ── Section vedettes (uniquement quand on affiche tout, sans recherche) ──
+  let html = '';
+  if (bibFilter === 'all' && !q) {
+    const vedettes = list.filter(r => r.vedette);
+    if (vedettes.length) {
+      html += `<div class="bib-section-lbl">⭐ Sélection recommandée</div>`;
+      html += `<div class="bib-grid">${vedettes.map(r => bibCard(r, biblio)).join('')}</div>`;
+      html += `<div class="bib-section-lbl">📚 Toutes les ressources</div>`;
+    }
+  }
+  html += `<div class="bib-grid">${list.map(r => bibCard(r, biblio)).join('')}</div>`;
+  results.innerHTML = html;
+}
+
+function bibCard(r, biblio) {
+  const color = bibCatColor(r.categorie, biblio);
+  const icon  = BIB_TYPE_ICON[r.type] || '📘';
+  const safeTitre = (r.titre || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  return `<div class="bib-card">
+    ${r.vedette ? '<div class="bib-vedette-badge">★ Recommandé</div>' : ''}
+    <div class="bib-card-top">
+      <div class="bib-card-ico" style="background:${color}">${icon}</div>
+      <div class="bib-card-head">
+        <div class="bib-card-titre">${escapeHtml(r.titre)}</div>
+        <div class="bib-card-auteur">${escapeHtml(r.auteur)}${r.source ? ' · ' + escapeHtml(r.source) : ''}</div>
+      </div>
+    </div>
+    <div class="bib-card-desc">${escapeHtml(r.description)}</div>
+    <div class="bib-card-meta">
+      ${r.format ? `<span class="bib-chip">${escapeHtml(r.format)}</span>` : ''}
+      ${r.langue ? `<span class="bib-chip lang">${escapeHtml(r.langue)}</span>` : ''}
+      <span class="bib-chip gratuit">Gratuit</span>
+    </div>
+    <div class="bib-card-actions">
+      <a class="bib-open" href="${encodeURI(r.url || '#')}" target="_blank" rel="noopener noreferrer">Ouvrir ↗</a>
+      <button class="bib-rooby" onclick="askRoobyBiblioRes('${safeTitre}')" title="Demander à Rooby">✨</button>
+    </div>
+  </div>`;
+}
+
+// Rooby — orientation générale dans la bibliothèque
+function askRoobyBiblio() {
+  const q = (document.getElementById('bib-search-input')?.value || '').trim();
+  const prompt = q
+    ? `Je cherche des ressources dans la bibliothèque sur « ${q} ». Peux-tu me recommander quoi lire et par où commencer ?`
+    : `Recommande-moi des livres et ressources gratuits dans la bibliothèque en ligne du Canado Technique, selon ma filière.`;
+  if (typeof askRooby === 'function') askRooby(prompt);
+}
+
+// Rooby — à propos d'une ressource précise
+function askRoobyBiblioRes(titre) {
+  const prompt = `Peux-tu me résumer la ressource « ${titre} » de la bibliothèque et me dire ce que je vais y apprendre ?`;
+  if (typeof askRooby === 'function') askRooby(prompt);
 }
 
 /* ══════════════════════════════════════
@@ -2621,6 +2910,22 @@ function renderSpecialisation() {
       colorFrom:'#2B56C0', colorTo:'#8A50CC',
       desc:'Vous avez complété les 2 ans en TRI ? Élargissez vos compétences avec la spécialisation TEL — les modules de 2ème année Télécommunications.',
       modules: MODULES_2['TEL'] || []
+    },
+    {
+      from:'ELM', to:'MEI',
+      labelFrom:'Électromécanique', labelTo:'Mécanique Industrielle',
+      iconFrom:'⚡', iconTo:'🔧',
+      colorFrom:'#00A066', colorTo:'#C98A00',
+      desc:'Vous avez complété les 2 ans en ELM ? Passez à la spécialisation MEI et obtenez une double compétence reconnue avec les modules de 2ème année Mécanique Industrielle.',
+      modules: MODULES_2['MEI'] || []
+    },
+    {
+      from:'MEI', to:'ELM',
+      labelFrom:'Mécanique Industrielle', labelTo:'Électromécanique',
+      iconFrom:'🔧', iconTo:'⚡',
+      colorFrom:'#C98A00', colorTo:'#00A066',
+      desc:'Vous avez complété les 2 ans en MEI ? Élargissez vos compétences avec la spécialisation ELM — les modules de 2ème année Électromécanique.',
+      modules: MODULES_2['ELM'] || []
     }
   ];
 
@@ -3294,7 +3599,7 @@ function openInscriptionModal(type, programme, moduleCode, extra) {
       <label>📎 Preuve de paiement * <span style="font-size:.7rem;color:var(--g500)">(Photo reçu, capture MonCash, ou virement — max 5MB)</span></label>
       <input type="file" id="ins-preuve" accept="image/*,application/pdf" style="width:100%;padding:.6rem .8rem;border:1.5px dashed var(--bdr);border-radius:8px;font-size:.8rem;background:#f8faff;cursor:pointer">
       <div id="ins-preuve-preview" style="margin-top:.4rem;display:none">
-        <img id="ins-preuve-img" style="max-height:80px;border-radius:6px;border:1px solid var(--bdr)">
+        <img id="ins-preuve-img" alt="Aperçu du justificatif de paiement" style="max-height:80px;border-radius:6px;border:1px solid var(--bdr)" loading="lazy" decoding="async">
         <span id="ins-preuve-name" style="font-size:.72rem;color:var(--g500);margin-left:.5rem"></span>
       </div>
     </div>
@@ -3404,9 +3709,9 @@ let SITE_DATA = null;
 
 async function loadSiteData() {
   try {
-    const res = await fetch(DATA_SOURCE);
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    SITE_DATA = await res.json();
+    SITE_DATA = await fetchDataJson();
+    if (!SITE_DATA) throw new Error('data.json vide');
+    if (!DATA_JSON) DATA_JSON = SITE_DATA;
     applyHomeData();
   } catch(e) {
     console.warn('data.json non trouvé — données statiques utilisées', e);
@@ -3463,7 +3768,7 @@ function applyGalerie() {
   container.innerHTML = galerie.map(g => `
     <div class="gal-item">
       <img src="${g.image}" alt="${g.titre}"
-        onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'">
+        onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'" loading="lazy" decoding="async">
       <div class="gal-item-overlay"><span class="gal-item-label">${g.titre}</span></div>
     </div>`).join('');
 }
@@ -3852,36 +4157,79 @@ function selRoleBtn(r, el) {
 function showLogin() { document.getElementById('login-overlay').classList.add('show'); }
 function hideLogin() { document.getElementById('login-overlay').classList.remove('show'); }
 
-// Credential → role mapping (demo system)
+/* ══════════════════════════════════════════════════════════
+   AUTHENTIFICATION
+   ──────────────────────────────────────────────────────────
+   ⚠️ POUR LE DÉVELOPPEUR — À LIRE AVANT MISE EN LIGNE :
+
+   • DEMO_MODE = true  → connexion locale de test (aucune sécurité).
+     À utiliser UNIQUEMENT en développement.
+   • DEMO_MODE = false → la connexion appelle le backend (AUTH_URL).
+     Le backend doit renvoyer un JSON : { ok:true, role:"etud|prof|admin|...",
+     token:"...", nom:"...", programme:"TRI", annee:1 }
+     Les mots de passe ne doivent JAMAIS être stockés côté client.
+
+   AVANT DE PASSER EN PRODUCTION :
+   1. Mettre DEMO_MODE = false
+   2. Renseigner AUTH_URL (endpoint de connexion du backend Railway)
+   3. Le backend valide identifiant + mot de passe et gère la 2FA réelle
+══════════════════════════════════════════════════════════ */
+const DEMO_MODE = true; // ⚠️ METTRE À false EN PRODUCTION
+const AUTH_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
+
+// Comptes de DÉMONSTRATION uniquement (ignorés si DEMO_MODE = false).
+// Identifiants de test communiqués séparément — pas de mot de passe universel.
 const CREDENTIALS = {
   // Étudiant
-  'etudiant':  {role:'etud',  pass:'1234'},
-  'marie':     {role:'etud',  pass:'1234'},
-  'etud':      {role:'etud',  pass:'1234'},
+  'etudiant':  {role:'etud',  pass:'demo2026'},
+  'marie':     {role:'etud',  pass:'demo2026'},
+  'etud':      {role:'etud',  pass:'demo2026'},
   // Professeur
-  'prof':      {role:'prof',  pass:'1234'},
-  'rooby':     {role:'prof',  pass:'1234'},
-  'professeur':{role:'prof',  pass:'1234'},
+  'prof':      {role:'prof',  pass:'demo2026'},
+  'rooby':     {role:'prof',  pass:'demo2026'},
+  'professeur':{role:'prof',  pass:'demo2026'},
   // Administration
-  'admin':     {role:'admin', pass:'1234'},
-  'gary':      {role:'admin', pass:'1234'},
-  'carline':   {role:'adm',   pass:'1234'},
-  'adm':       {role:'adm',   pass:'1234'},
+  'admin':     {role:'admin', pass:'demo2026'},
+  'gary':      {role:'admin', pass:'demo2026'},
+  'carline':   {role:'adm',   pass:'demo2026'},
+  'adm':       {role:'adm',   pass:'demo2026'},
   // Direction
-  'dg':        {role:'dg',    pass:'1234'},
-  'directeur': {role:'dg',    pass:'1234'},
-  'jean':      {role:'dg',    pass:'1234'},
-  'detudes':   {role:'detudes',pass:'1234'},
-  'marie':     {role:'detudes',pass:'1234'},
-  'devals':    {role:'devals', pass:'1234'},
-  'christophe':{role:'devals', pass:'1234'},
-  'parent':    {role:'parent', pass:'1234'},
-  'jean-pierre':{role:'parent',pass:'1234'},
-  'alumni':    {role:'alumni', pass:'1234'},
-  'samuel':    {role:'alumni', pass:'1234'},
+  'dg':        {role:'dg',    pass:'demo2026'},
+  'directeur': {role:'dg',    pass:'demo2026'},
+  'jean':      {role:'dg',    pass:'demo2026'},
+  'detudes':   {role:'detudes',pass:'demo2026'},
+  'devals':    {role:'devals', pass:'demo2026'},
+  'christophe':{role:'devals', pass:'demo2026'},
+  'parent':    {role:'parent', pass:'demo2026'},
+  'jean-pierre':{role:'parent',pass:'demo2026'},
+  'alumni':    {role:'alumni', pass:'demo2026'},
+  'samuel':    {role:'alumni', pass:'demo2026'},
 };
 
-function initLogin() {
+// Réinitialisation du mot de passe.
+// MODE DÉMO : message d'information. PRODUCTION : appelle le backend pour envoyer un lien/code par email ou SMS.
+async function forgotPassword() {
+  const user = (document.getElementById('luser').value || '').trim().toLowerCase();
+  if (DEMO_MODE) {
+    toast('ℹ️ En mode démo. En production, un lien de réinitialisation sera envoyé par email ou SMS.');
+    return;
+  }
+  if (!user) { toast('⚠️ Entrez d\'abord votre identifiant ou email.'); return; }
+  try {
+    const url = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/forgot-password';
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifiant: user })
+    });
+    const data = await res.json();
+    toast(data.ok ? '✅ Instructions de réinitialisation envoyées.' : '❌ ' + (data.message || 'Compte introuvable.'));
+  } catch(e) {
+    toast('❌ Service indisponible. Réessayez plus tard.');
+  }
+}
+
+async function initLogin() {
   const user = document.getElementById('luser').value.trim().toLowerCase();
   const pass = document.getElementById('lpass').value;
   const errEl = document.getElementById('login-error');
@@ -3893,13 +4241,42 @@ function initLogin() {
     return;
   }
 
+  // ── MODE PRODUCTION : authentification côté serveur ──
+  if (!DEMO_MODE) {
+    try {
+      const res = await fetch(AUTH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifiant: user, motdepasse: pass })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        errEl.textContent = '❌ ' + (data.message || 'Identifiant ou mot de passe incorrect.');
+        errEl.style.display = 'block';
+        return;
+      }
+      // Le backend renvoie le rôle (et idéalement un token de session)
+      selRole = data.role;
+      if (data.token) { try { sessionStorage.setItem('canado_token', data.token); } catch(e){} }
+      if (data.programme) document.getElementById('lprog').value = data.programme;
+      if (data.annee && document.getElementById('letud-year')) document.getElementById('letud-year').value = data.annee;
+      document.getElementById('lprog-wrap').style.display = (data.role === 'etud') ? 'block' : 'none';
+      doLogin();
+    } catch(e) {
+      errEl.textContent = '❌ Connexion au serveur impossible. Réessayez plus tard.';
+      errEl.style.display = 'block';
+    }
+    return;
+  }
+
+  // ── MODE DÉMO : vérification locale (développement uniquement) ──
   const cred = CREDENTIALS[user];
   if (!cred) {
-    errEl.textContent = '❌ Identifiant introuvable. Essayez: etudiant, prof ou admin.';
+    errEl.textContent = '❌ Identifiant introuvable. Essayez : etudiant, prof ou admin.';
     errEl.style.display = 'block';
     return;
   }
-  if (pass !== cred.pass && pass !== '1234') {
+  if (pass !== cred.pass) {
     errEl.textContent = '❌ Mot de passe incorrect.';
     errEl.style.display = 'block';
     return;
@@ -3922,11 +4299,12 @@ function tfaNext(el, idx) {
 
 function verifyTFA() {
   const code = Array.from(document.querySelectorAll('.tfa-digit')).map(el=>el.value).join('');
-  if(code === '123456' || code.length === 6) {
+  // ⚠️ En production, la 2FA doit être validée par le backend (envoi SMS/email + vérification serveur).
+  if(DEMO_MODE && code.length === 6) {
     tfaVerified = true;
     doLogin();
   } else {
-    toast('❌ Code incorrect. Essayez 123456');
+    toast('❌ Code à 6 chiffres requis.');
   }
 }
 
@@ -3947,7 +4325,7 @@ function doLogin() {
   const r = ROLES[currentRole];
   document.getElementById('p-avt').textContent = r.avt;
   document.getElementById('p-name').textContent = r.name;
-  document.getElementById('p-role').textContent = r.role+(currentRole==='etud'?` · ${etudProg} ${etudYear}ère/ème année`:'');
+  document.getElementById('p-role').textContent = r.role+(currentRole==='etud'?` · ${etudProg} ${anneeLabel(etudYear)} année`:'');
   document.getElementById('p-rbadge').textContent = r.badge;
   document.getElementById('p-rbadge').className = 'rbadge '+r.rbClass;
   buildSidebar();
@@ -4854,11 +5232,11 @@ function rdRenderAll() {
 
   // Top/Bottom modules
   const mkMod = (m,i,bad)=>{
-    const c=m.score>=4?'#00C47A':m.score>=3?'#D4A800':'#E8192C';
-    const progC={TRI:'#3B7BFF',MEI:'#D4A800',ELM:'#00A066',TEL:'#8A50CC'};
+    const c=m.score>=4?'#00A066':m.score>=3?'#C98A00':'#C8101E';
+    const progC={TRI:'#1B3A8C',MEI:'#8B5E00',ELM:'#006B46',TEL:'#5B2D8E'};
     return `<div style="display:flex;align-items:center;gap:.7rem;padding:.6rem .8rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--r);margin-bottom:.4rem">
-      <div style="width:22px;height:22px;border-radius:50%;background:${bad?'#E8192C':'#3B7BFF'};color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
-      <code style="font-size:.68rem;font-weight:700;background:${(progC[m.prog]||'#3B7BFF')}22;color:${progC[m.prog]||'#3B7BFF'};padding:1px 6px;border-radius:4px">${m.code}</code>
+      <div style="width:22px;height:22px;border-radius:50%;background:${bad?'#C8101E':'var(--blue)'};color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
+      <code style="font-size:.68rem;font-weight:700;background:${(progC[m.prog]||'#1B3A8C')}18;color:${progC[m.prog]||'#1B3A8C'};padding:1px 6px;border-radius:4px">${m.code}</code>
       <div style="font-size:.78rem;font-weight:600;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.titre}</div>
       <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:${c}">${m.score.toFixed(1)}</div>
     </div>`;
@@ -4947,8 +5325,8 @@ function rdShowTab(tab) {
     const mkV=(items,empty)=>items.length?items.slice(0,6).map(it=>`
       <div style="background:var(--g50);border:1px solid var(--g100);border-radius:var(--r);padding:.8rem 1rem;margin-bottom:.5rem;position:relative">
         <div style="font-size:2rem;color:var(--g200);position:absolute;top:.2rem;left:.5rem;line-height:1;font-family:Georgia,serif">"</div>
-        <div style="font-size:.82rem;color:var(--g700);line-height:1.6;padding-left:1.1rem">${it.text}</div>
-        <div style="font-size:.68rem;color:var(--g500);margin-top:.3rem;padding-left:1.1rem"><code style="background:#e8eeff;color:#1B3A8C;padding:1px 5px;border-radius:3px">${it.code}</code></div>
+        <div style="font-size:.82rem;color:var(--g700);line-height:1.6;padding-left:1.1rem">${escapeHtml(it.text)}</div>
+        <div style="font-size:.68rem;color:var(--g500);margin-top:.3rem;padding-left:1.1rem"><code style="background:#e8eeff;color:#1B3A8C;padding:1px 5px;border-radius:3px">${escapeHtml(it.code)}</code></div>
       </div>`).join(''):`<p style="color:var(--g500);font-size:.78rem">${empty}</p>`;
     el.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
       <div><div style="font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:.7rem">💪 Ce qui aide</div>${mkV(forts,'Aucun commentaire positif.')}</div>
@@ -4972,7 +5350,7 @@ function rdShowTab(tab) {
       return`<div style="display:flex;align-items:center;gap:.9rem;padding:.75rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--r);margin-bottom:.5rem">
         <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blueL));display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0">${initials}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:.82rem;color:var(--text)">${u.nom}</div>
+          <div style="font-weight:700;font-size:.82rem;color:var(--text)">${escapeHtml(u.nom)}</div>
           <div style="font-size:.72rem;color:var(--g500)">${u.titre||progs.join(', ')} · Moy. ${avg.toFixed(1)}/5${alerts?` · <span style="color:var(--red)">⚠ ${alerts} alerte(s)</span>`:''}</div>
         </div>
         <span style="font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;${statC}">${statL}</span>
@@ -5127,21 +5505,44 @@ function renderMesCours(c) {
   <div class="mlist">${rows || '<div style="padding:2rem;text-align:center;color:var(--g400)">Aucun module disponible pour cette année.</div>'}</div>`;
 }
 
+// Récupère l'ID vidéo YouTube d'un module depuis data.json (champ "video")
+// Le bibliothécaire/admin renseigne ce champ dans data.json → aucune modif de code nécessaire.
+function getModuleVideoId(code) {
+  try {
+    if (!DATA_JSON || !DATA_JSON.filieres) return '';
+    for (const f of DATA_JSON.filieres) {
+      for (const a of (f.annees || [])) {
+        const m = (a.modules || []).find(x => x.code === code);
+        if (m && m.video) return m.video;
+      }
+    }
+  } catch(e) {}
+  return '';
+}
+
 function openVideoPlayer(code) {
-  toast(`🎥 Chargement du cours vidéo ${code}...`);
   const c = document.getElementById('p-content');
+  const vid = (typeof getModuleVideoId==='function') ? getModuleVideoId(code) : '';
   const videoDiv = document.createElement('div');
   videoDiv.style.cssText = 'margin-top:1rem;background:var(--navy);border-radius:var(--rL);overflow:hidden';
+  const player = vid
+    ? `<div style="position:relative;padding-bottom:56.25%;background:#000">
+        <iframe src="https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1" 
+          style="position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen loading="lazy"></iframe>
+      </div>`
+    : `<div style="padding:3rem 1rem;text-align:center;color:rgba(255,255,255,.6)">
+        <div style="font-size:2.2rem;margin-bottom:.6rem">🎬</div>
+        <div style="font-weight:600;color:#fff;margin-bottom:.3rem">Vidéo bientôt disponible</div>
+        <div style="font-size:.78rem">Le cours vidéo de ce module est en préparation.</div>
+      </div>`;
   videoDiv.innerHTML = `<div style="padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdrDk)">
     <span style="font-size:.82rem;font-weight:600;color:#fff">🎥 Cours vidéo — ${code}</span>
     <button class="btn btn-ghost btn-sm" onclick="this.closest('div').remove()">Fermer</button>
   </div>
-  <div style="position:relative;padding-bottom:56.25%;background:#000">
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1" 
-      style="position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe>
-  </div>
+  ${player}
   <div style="padding:.8rem 1rem;font-size:.75rem;color:rgba(255,255,255,.4)">Contenu protégé · Accès exclusif étudiant · ${code}</div>`;
   c.appendChild(videoDiv);
+  if (vid) toast(`🎥 Chargement du cours vidéo ${code}...`);
 }
 
 /* ══════════════════════════════════════
@@ -6393,8 +6794,8 @@ function openEvalModal(code, titre) {
     <div style="width:100%;max-width:820px;max-height:90vh;overflow:hidden;border-radius:20px;box-shadow:0 24px 80px rgba(4,13,26,.7);display:flex;flex-direction:column;position:relative">
       <div style="background:linear-gradient(135deg,var(--navy3),var(--navy));padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdrDk);flex-shrink:0">
         <div style="display:flex;align-items:center;gap:.6rem">
-          <span style="font-size:1rem">📝</span>
-          <span style="font-size:.85rem;font-weight:700;color:#fff">Évaluation obligatoire — ${code}</span>
+          <span style="font-size:1rem">💬</span>
+          <span style="font-size:.85rem;font-weight:700;color:#fff">Quête de satisfaction — ${code}</span>
           <span style="font-size:.68rem;background:var(--red);color:#fff;padding:2px 8px;border-radius:6px;font-weight:700">OBLIGATOIRE</span>
         </div>
         <div style="font-size:.72rem;color:rgba(255,255,255,.4)">À compléter pour valider ce module</div>
@@ -6490,7 +6891,7 @@ function renderJumeauNumerique(c) {
   const riskColors = {eleve:'#C8101E',moyen:'#C98A00',faible:'#006B46'};
   const riskLabels = {eleve:'🔴 Risque élevé',moyen:'🟡 À surveiller',faible:'🟢 En bonne voie'};
   const predictions = [
-    pct < 30 && {icon:'⚠️',text:`À ce rythme, tu risques de ne pas valider ${prog} ${yr}ère année. Accelere !`,color:'#fff5f5',border:'var(--red)'},
+    pct < 30 && {icon:'⚠️',text:`À ce rythme, tu risques de ne pas valider ${prog} ${anneeLabel(yr)} année. Accelere !`,color:'#fff5f5',border:'var(--red)'},
     avgScore < 75 && {icon:'📉',text:`Ta moyenne (${avgScore}%) est proche du seuil. Concentre-toi sur les modules faibles.`,color:'#fffbeb',border:'#C98A00'},
     active > 3 && {icon:'📚',text:`Tu as ${active} modules en cours simultanément. Finis-en un avant d'ouvrir le suivant.`,color:'#f0eeff',border:'#8A50CC'},
     done === mods.length && {icon:'🎉',text:'Félicitations ! Tu as complété tous les modules. Prêt pour la certification.',color:'#e6f9f0',border:'#006B46'},
@@ -6515,7 +6916,7 @@ function renderJumeauNumerique(c) {
           <div style="font-size:.62rem;color:rgba(255,255,255,.5)">complété</div>
         </div>
       </div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.5);text-align:center">${prog} · ${yr}ère année</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.5);text-align:center">${prog} · ${anneeLabel(yr)} année</div>
     </div>
     <div style="padding:1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:.7rem;align-content:center">
       ${[
@@ -6547,7 +6948,7 @@ function renderJumeauNumerique(c) {
   <!-- PROGRESSION PAR MODULE -->
   <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.2rem">
     <div style="padding:.9rem 1.2rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">
-      📊 Progression détaillée — ${prog} ${yr}ère année
+      📊 Progression détaillée — ${prog} ${anneeLabel(yr)} année
     </div>
     <div style="padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.5rem">
       ${mods.slice(0,8).map(m=>{
@@ -6575,7 +6976,7 @@ function renderJumeauNumerique(c) {
       <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#8A50CC);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">🤖</div>
       <div>
         <div style="font-family:var(--fD);font-weight:700;font-size:.85rem;color:var(--text)">Rooby te conseille</div>
-        <div style="font-size:.68rem;color:var(--g500)">Basé sur ta progression en ${prog} ${yr}ère année</div>
+        <div style="font-size:.68rem;color:var(--g500)">Basé sur ta progression en ${prog} ${anneeLabel(yr)} année</div>
       </div>
       <button id="jumeau-conseil-btn" class="btn btn-sm" style="margin-left:auto;background:linear-gradient(135deg,var(--blue),#8A50CC);color:#fff;border:none" onclick="getConseilIA(this,${JSON.stringify({prog,yr,pct,done,mods:mods.length,avgScore}).replace(/"/g,'&quot;')})">
         ✨ Obtenir un conseil
@@ -6591,7 +6992,7 @@ async function getConseilIA(btn, data) {
   btn.disabled=true; btn.textContent='⏳ Analyse…';
   const BACKEND=window.ROOBY_API_URL||'https://canado-backend-production.up.railway.app/api/rooby';
   try{
-    const r=await fetch(BACKEND,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:`Tu es Rooby, tuteur IA de Canado Technique. Un étudiant en programme ${data.prog} (${data.yr}ère année) a complété ${data.done}/${data.mods} modules (${data.pct}%) avec une moyenne de ${data.avgScore}%. Donne-lui un conseil personnalisé, concis et motivant en 3-4 phrases maximum. Sois direct et pratique.`}]})});
+    const r=await fetch(BACKEND,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:`Tu es Rooby, tuteur IA de Canado Technique. Un étudiant en programme ${data.prog} (${anneeLabel(data.yr)} année) a complété ${data.done}/${data.mods} modules (${data.pct}%) avec une moyenne de ${data.avgScore}%. Donne-lui un conseil personnalisé, concis et motivant en 3-4 phrases maximum. Sois direct et pratique.`}]})});
     const d=await r.json();
     const el=document.getElementById('jumeau-conseil-result');
     if(el) el.innerHTML=`<strong>🤖 Rooby :</strong> ${d.reply||'Continue comme ça, tu es sur la bonne voie !'}`;
@@ -6632,7 +7033,7 @@ function renderCertification(c) {
           ${isEligible?'Félicitations ! Tu es éligible à ta certification':'En cours de formation'}
         </div>
         <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:3px">
-          ${PROG_INFO_MAP[prog]} · ${yr}ère Année · ${done}/${mods.length} modules validés
+          ${PROG_INFO_MAP[prog]} · ${anneeLabel(yr)} année · ${done}/${mods.length} modules validés
         </div>
       </div>
       <div style="font-family:var(--fD);font-weight:800;font-size:1.8rem;color:${isEligible?'#fff':'rgba(255,255,255,.7)'}">${pct}%</div>
@@ -6651,13 +7052,13 @@ function renderCertification(c) {
     <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red),var(--gold),var(--blue))"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(212,168,0,.04),transparent 60%)"></div>
     <div style="position:relative">
-      <img src="assets/images/logo/cfph.png" style="height:50px;border-radius:10px;margin-bottom:1rem" onerror="this.style.display='none'">
+      <img src="assets/images/logo/cfph.png" alt="Logo Canado Technique" style="height:50px;border-radius:10px;margin-bottom:1rem" onerror="this.style.display='none'" loading="lazy" decoding="async">
       <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;color:var(--g500);text-transform:uppercase;margin-bottom:.3rem">Centre de Formation Professionnelle d'Haïti</div>
       <div style="font-size:.68rem;color:var(--g500);margin-bottom:1.2rem">Canado Technique · Port-au-Prince, Haïti</div>
       <div style="font-size:1rem;color:var(--g700);margin-bottom:.4rem">Certifie que</div>
       <div style="font-family:var(--fD);font-weight:800;font-size:1.8rem;color:var(--text);margin-bottom:.4rem">${etudName}</div>
       <div style="font-size:.82rem;color:var(--g700);margin-bottom:.3rem">a complété avec succès le programme de</div>
-      <div style="font-family:var(--fD);font-weight:700;font-size:1.1rem;color:var(--blue);margin-bottom:1.2rem">${PROG_INFO_MAP[prog]} (${prog}) · ${yr}ère Année</div>
+      <div style="font-family:var(--fD);font-weight:700;font-size:1.1rem;color:var(--blue);margin-bottom:1.2rem">${PROG_INFO_MAP[prog]} (${prog}) · ${anneeLabel(yr)} année</div>
       <div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:1.2rem;flex-wrap:wrap">
         <div>
           <div style="font-size:.65rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">Délivré le</div>
@@ -6675,7 +7076,7 @@ function renderCertification(c) {
       <!-- QR CODE (généré via API publique) -->
       <div style="display:inline-block;padding:.8rem;background:#fff;border:2px solid var(--g200);border-radius:12px;margin-bottom:.8rem">
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrData)}" 
-          alt="QR Vérification" style="width:120px;height:120px;display:block">
+          alt="QR Vérification" style="width:120px;height:120px;display:block" loading="lazy" decoding="async">
         <div style="font-size:.62rem;color:var(--g500);margin-top:.4rem;text-align:center">Scanner pour vérifier</div>
       </div>
       <div style="font-size:.68rem;color:var(--g500)">Ce certificat est vérifiable en ligne via le QR code ci-dessus</div>
@@ -6882,7 +7283,7 @@ function renderResultatsParent(c) {
   c.innerHTML=`<div class="ph2">🏆 Résultats & Notes</div>
   <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem">
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1rem">
-      ${[['Moyenne générale','78%','#3B7BFF'],['Meilleur module','TRI-05 (92%)','#00A066'],['À renforcer','TRI-11 (65%)','#D4A800']].map(([l,v,c])=>`
+      ${[['Moyenne générale','78%','#1B3A8C'],['Meilleur module','TRI-05 (92%)','#006B46'],['À renforcer','TRI-11 (65%)','#C98A00']].map(([l,v,c])=>`
       <div style="text-align:center;padding:.9rem;background:var(--g50);border:1px solid var(--g100);border-radius:10px">
         <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">${l}</div>
         <div style="font-family:var(--fD);font-weight:800;font-size:1rem;color:${c}">${v}</div>
@@ -6954,7 +7355,7 @@ function getRoobyContext() {
     const states = getModuleStates(etudProg, parseInt(etudYear));
     const done = mods.filter(m=>states[m.code+'_done']).length;
     const pct  = mods.length ? Math.round(done/mods.length*100) : 0;
-    return `\n\n[CONTEXTE ÉTUDIANT]\nNom: ${r.name}\nProgramme: ${etudProg} · ${etudYear}ère année\nProgression: ${pct}% (${done}/${mods.length} modules)\nRôle: Étudiant Canado Technique`;
+    return `\n\n[CONTEXTE ÉTUDIANT]\nNom: ${r.name}\nProgramme: ${etudProg} · ${anneeLabel(etudYear)} année\nProgression: ${pct}% (${done}/${mods.length} modules)\nRôle: Étudiant Canado Technique`;
   }
   return `\n\n[CONTEXTE UTILISATEUR]\nNom: ${r.name}\nRôle: ${r.role}\nNiveau: ${r.level}`;
 }

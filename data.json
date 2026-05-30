@@ -1118,6 +1118,288 @@
       "vers": "TEL",
       "label": "Spécialisation TEL",
       "desc": "Modules 2ème année TEL après 2 ans en TRI"
+    },
+    {
+      "de": "ELM",
+      "vers": "MEI",
+      "label": "Spécialisation MEI",
+      "desc": "Modules 2ème année MEI après 2 ans en ELM"
+    },
+    {
+      "de": "MEI",
+      "vers": "ELM",
+      "label": "Spécialisation ELM",
+      "desc": "Modules 2ème année ELM après 2 ans en MEI"
     }
-  ]
+  ],
+  "bibliotheque": {
+    "intro": "Des milliers de livres, documents techniques et ressources — gratuits, légaux et accessibles partout, sans carte de bibliothèque.",
+    "categories": [
+      {
+        "id": "tri",
+        "nom": "Réseaux & Informatique",
+        "icon": "🌐",
+        "couleur": "#2B56C0"
+      },
+      {
+        "id": "elm",
+        "nom": "Électricité & Électronique",
+        "icon": "⚡",
+        "couleur": "#00A066"
+      },
+      {
+        "id": "mei",
+        "nom": "Mécanique industrielle",
+        "icon": "🔧",
+        "couleur": "#C98A00"
+      },
+      {
+        "id": "tel",
+        "nom": "Télécommunications",
+        "icon": "📡",
+        "couleur": "#8A50CC"
+      },
+      {
+        "id": "sciences",
+        "nom": "Sciences & Mathématiques",
+        "icon": "📐",
+        "couleur": "#1B3A8C"
+      },
+      {
+        "id": "general",
+        "nom": "Culture & développement perso.",
+        "icon": "📖",
+        "couleur": "#E8192C"
+      }
+    ],
+    "ressources": [
+      {
+        "titre": "Internet Archive",
+        "auteur": "Open Library",
+        "categorie": "general",
+        "type": "bibliotheque",
+        "format": "Web · PDF · EPUB",
+        "langue": "FR/EN",
+        "source": "archive.org",
+        "vedette": true,
+        "description": "Des millions de livres, documents et archives à lire en ligne ou télécharger gratuitement.",
+        "url": "https://archive.org/details/texts"
+      },
+      {
+        "titre": "Project Gutenberg",
+        "auteur": "Domaine public",
+        "categorie": "general",
+        "type": "bibliotheque",
+        "format": "EPUB · PDF",
+        "langue": "FR/EN",
+        "source": "gutenberg.org",
+        "vedette": true,
+        "description": "Plus de 70 000 livres classiques gratuits, dont une large collection en français.",
+        "url": "https://www.gutenberg.org/browse/languages/fr"
+      },
+      {
+        "titre": "Gallica — BnF",
+        "auteur": "Bibliothèque nationale de France",
+        "categorie": "general",
+        "type": "bibliotheque",
+        "format": "Web · PDF",
+        "langue": "FR",
+        "source": "gallica.bnf.fr",
+        "description": "La bibliothèque numérique francophone de référence : livres, revues, manuscrits, cartes.",
+        "url": "https://gallica.bnf.fr"
+      },
+      {
+        "titre": "Bibliothèque numérique mondiale",
+        "auteur": "Library of Congress · UNESCO",
+        "categorie": "general",
+        "type": "bibliotheque",
+        "format": "Web",
+        "langue": "FR/EN",
+        "source": "loc.gov",
+        "description": "Documents culturels et scientifiques rares de 60 pays, accès libre et multilingue.",
+        "url": "https://www.loc.gov/collections/world-digital-library/"
+      },
+      {
+        "titre": "Cisco Networking Academy",
+        "auteur": "Cisco",
+        "categorie": "tri",
+        "type": "cours",
+        "format": "Web · Cours",
+        "langue": "FR/EN",
+        "source": "netacad.com",
+        "vedette": true,
+        "description": "Cours officiels CCNA, réseaux, cybersécurité et programmation — la référence pour la filière TRI.",
+        "url": "https://www.netacad.com"
+      },
+      {
+        "titre": "The Linux Documentation Project",
+        "auteur": "TLDP",
+        "categorie": "tri",
+        "type": "documentation",
+        "format": "Web · PDF",
+        "langue": "EN",
+        "source": "tldp.org",
+        "description": "Guides complets sur Linux, l'administration système et les réseaux.",
+        "url": "https://tldp.org/guides.html"
+      },
+      {
+        "titre": "Réseaux informatiques — Wikilivres",
+        "auteur": "Contributeurs Wikibooks",
+        "categorie": "tri",
+        "type": "livre",
+        "format": "Web",
+        "langue": "FR",
+        "source": "fr.wikibooks.org",
+        "description": "Manuel collaboratif francophone couvrant les fondamentaux des réseaux.",
+        "url": "https://fr.wikibooks.org/wiki/Réseaux_TCP/IP"
+      },
+      {
+        "titre": "OpenStax — University Physics",
+        "auteur": "OpenStax (Rice University)",
+        "categorie": "elm",
+        "type": "livre",
+        "format": "PDF · Web",
+        "langue": "EN",
+        "source": "openstax.org",
+        "vedette": true,
+        "description": "Manuel de physique gratuit : électricité, magnétisme, circuits — base de l'électromécanique.",
+        "url": "https://openstax.org/subjects/science"
+      },
+      {
+        "titre": "Simulations PhET",
+        "auteur": "University of Colorado",
+        "categorie": "elm",
+        "type": "simulation",
+        "format": "Web interactif",
+        "langue": "FR",
+        "source": "phet.colorado.edu",
+        "description": "Simulations interactives de circuits, courant, tension — apprendre en manipulant.",
+        "url": "https://phet.colorado.edu/fr/simulations/filter?subjects=physics"
+      },
+      {
+        "titre": "Électronique — Wikiversité",
+        "auteur": "Contributeurs Wikiversité",
+        "categorie": "elm",
+        "type": "cours",
+        "format": "Web",
+        "langue": "FR",
+        "source": "fr.wikiversity.org",
+        "description": "Leçons progressives sur l'électronique analogique et numérique.",
+        "url": "https://fr.wikiversity.org/wiki/Catégorie:Électronique"
+      },
+      {
+        "titre": "MIT OpenCourseWare — Mechanical Eng.",
+        "auteur": "MIT",
+        "categorie": "mei",
+        "type": "cours",
+        "format": "Web · Vidéo",
+        "langue": "EN",
+        "source": "ocw.mit.edu",
+        "vedette": true,
+        "description": "Cours gratuits du MIT en génie mécanique : matériaux, thermodynamique, machines.",
+        "url": "https://ocw.mit.edu/search/?d=Mechanical%20Engineering"
+      },
+      {
+        "titre": "Mécanique — Wikilivres",
+        "auteur": "Contributeurs Wikibooks",
+        "categorie": "mei",
+        "type": "livre",
+        "format": "Web",
+        "langue": "FR",
+        "source": "fr.wikibooks.org",
+        "description": "Notions de mécanique des solides, des fluides et de résistance des matériaux.",
+        "url": "https://fr.wikibooks.org/wiki/Mécanique"
+      },
+      {
+        "titre": "Open Textbooks — BCcampus",
+        "auteur": "BCcampus",
+        "categorie": "mei",
+        "type": "livre",
+        "format": "PDF · EPUB",
+        "langue": "EN",
+        "source": "open.bccampus.ca",
+        "description": "Manuels techniques ouverts (trades, mécanique, dessin industriel).",
+        "url": "https://open.bccampus.ca/find-open-textbooks/"
+      },
+      {
+        "titre": "Télécommunications — Wikiversité",
+        "auteur": "Contributeurs Wikiversité",
+        "categorie": "tel",
+        "type": "cours",
+        "format": "Web",
+        "langue": "FR",
+        "source": "fr.wikiversity.org",
+        "vedette": true,
+        "description": "Modulation, transmission, fibre optique et systèmes de communication.",
+        "url": "https://fr.wikiversity.org/wiki/Catégorie:Télécommunications"
+      },
+      {
+        "titre": "Signal Processing — MIT OCW",
+        "auteur": "MIT",
+        "categorie": "tel",
+        "type": "cours",
+        "format": "Web · Vidéo",
+        "langue": "EN",
+        "source": "ocw.mit.edu",
+        "description": "Traitement du signal et systèmes de communication, cours complets et exercices.",
+        "url": "https://ocw.mit.edu/search/?q=signals%20and%20systems"
+      },
+      {
+        "titre": "Khan Academy",
+        "auteur": "Khan Academy",
+        "categorie": "sciences",
+        "type": "cours",
+        "format": "Web · Vidéo",
+        "langue": "FR",
+        "source": "khanacademy.org",
+        "vedette": true,
+        "description": "Cours gratuits en maths, physique et sciences, du collège au niveau avancé.",
+        "url": "https://fr.khanacademy.org"
+      },
+      {
+        "titre": "OpenStax — Mathématiques",
+        "auteur": "OpenStax",
+        "categorie": "sciences",
+        "type": "livre",
+        "format": "PDF · Web",
+        "langue": "EN",
+        "source": "openstax.org",
+        "description": "Manuels gratuits d'algèbre, trigonométrie et calcul.",
+        "url": "https://openstax.org/subjects/math"
+      },
+      {
+        "titre": "Mathématiques — Wikilivres",
+        "auteur": "Contributeurs Wikibooks",
+        "categorie": "sciences",
+        "type": "livre",
+        "format": "Web",
+        "langue": "FR",
+        "source": "fr.wikibooks.org",
+        "description": "Cours de mathématiques francophones, du niveau secondaire au supérieur.",
+        "url": "https://fr.wikibooks.org/wiki/Mathématiques"
+      },
+      {
+        "titre": "OpenLibrary",
+        "auteur": "Internet Archive",
+        "categorie": "general",
+        "type": "bibliotheque",
+        "format": "Web · EPUB",
+        "langue": "FR/EN",
+        "source": "openlibrary.org",
+        "description": "Catalogue de millions de livres, dont beaucoup empruntables gratuitement.",
+        "url": "https://openlibrary.org"
+      },
+      {
+        "titre": "Développement personnel — Gutenberg",
+        "auteur": "Domaine public",
+        "categorie": "general",
+        "type": "livre",
+        "format": "EPUB · PDF",
+        "langue": "FR",
+        "source": "gutenberg.org",
+        "description": "Grands classiques de la pensée, de la philosophie et de la réussite.",
+        "url": "https://www.gutenberg.org/ebooks/bookshelf/"
+      }
+    ]
+  }
 }
