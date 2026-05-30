@@ -336,13 +336,14 @@ img{max-width:100%;display:block}
 .pcard.MEI .pcard-cta{color:#E0A82E}
 .pcard.ELM .pcard-cta{color:#2BC48A}
 .pcard.TEL .pcard-cta{color:#B98AE0}
-/* Apparition au scroll */
-.pcard{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+/* Apparition au scroll — l'invisibilité initiale ne s'applique QUE si JS est actif (classe js-anim) */
+.js-anim .pcard{opacity:0;transform:translateY(24px)}
+.pcard{transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
 .pcard.reveal{opacity:1;transform:translateY(0)}
 .pcard:nth-child(2){transition-delay:.08s}
 .pcard:nth-child(3){transition-delay:.16s}
 .pcard:nth-child(4){transition-delay:.24s}
-@media(prefers-reduced-motion:reduce){.pcard{opacity:1;transform:none;transition:border-color .25s,box-shadow .25s}}
+@media(prefers-reduced-motion:reduce){.js-anim .pcard{opacity:1;transform:none}}
 .pmeta{display:flex;gap:.5rem;flex-wrap:wrap}
 .mchip{font-size:.67rem;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,.12);
   color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.02em}
@@ -2607,6 +2608,25 @@ function goPage(p) {
   if(p==='examens-pub') renderPubExams();
   if(p==='paiement') renderPaiement();
   if(p==='actualites' && SITE_DATA) applyArticles();
+
+  // Révélation animée des cartes filières (la page est maintenant visible)
+  if(p==='accueil') {
+    requestAnimationFrame(()=>{
+      const cards = document.querySelectorAll('#pgrid-container .pcard');
+      if(!cards.length) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduce || !('IntersectionObserver' in window)) {
+        cards.forEach(c=>c.classList.add('reveal'));
+        return;
+      }
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      cards.forEach(c=>io.observe(c));
+      // Filet de sécurité : si l'observer ne déclenche pas (cas limites), tout révéler après 1s
+      setTimeout(()=>cards.forEach(c=>c.classList.add('reveal')), 1000);
+    });
+  }
 }
 
 window.addEventListener('scroll',()=>{
@@ -6716,24 +6736,12 @@ function toggleCurrency() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('js-anim'); // active l'animation des cartes (sans JS, elles restent visibles)
   // Chargement des données depuis data.json (ou data.php en production)
   loadSiteData();
   renderOffers();
   applyCarrousel(); // Carrousel statique en attendant data.json
   goPage('accueil');
-
-  // Apparition en fondu des cartes filières au scroll
-  try {
-    const cards = document.querySelectorAll('.pcard');
-    if (cards.length && 'IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('reveal'); io.unobserve(e.target); } });
-      }, { threshold: 0.15 });
-      cards.forEach(c => io.observe(c));
-    } else {
-      cards.forEach(c => c.classList.add('reveal')); // fallback : tout afficher
-    }
-  } catch(e) { document.querySelectorAll('.pcard').forEach(c => c.classList.add('reveal')); }
 
   // Rooby input auto-resize
   const ri = document.getElementById('rooby-input');
