@@ -318,6 +318,31 @@ img{max-width:100%;display:block}
   justify-content:center;font-size:1.4rem;margin-bottom:1rem}
 .pcard h3{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:#ffffff;margin-bottom:.4rem}
 .pcard p{font-size:.79rem;color:rgba(255,255,255,.6);line-height:1.68;margin-bottom:1rem}
+/* ── Cartes filières enrichies ── */
+.pcard-icon{transition:transform .3s ease}
+.pcard:hover .pcard-icon{transform:scale(1.12) rotate(-4deg)}
+.pcard-badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.7rem}
+.pcard-badge{display:inline-flex;align-items:center;gap:4px;font-size:.66rem;font-weight:700;
+  padding:3px 9px;border-radius:7px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.12)}
+.pcard-badge.cert{background:rgba(245,197,24,.14);color:#F5C518;border-color:rgba(245,197,24,.3)}
+.pcard-jobs{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.55;margin-bottom:.9rem;
+  padding-top:.7rem;border-top:1px solid rgba(255,255,255,.08)}
+.pcard-jobs b{color:rgba(255,255,255,.82);font-weight:700;display:block;margin-bottom:.2rem;font-size:.68rem;
+  text-transform:uppercase;letter-spacing:.04em}
+.pcard-cta{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;font-weight:700;
+  color:#7BA7FF;transition:gap .2s}
+.pcard:hover .pcard-cta{gap:.7rem}
+.pcard.MEI .pcard-cta{color:#E0A82E}
+.pcard.ELM .pcard-cta{color:#2BC48A}
+.pcard.TEL .pcard-cta{color:#B98AE0}
+/* Apparition au scroll */
+.pcard{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.pcard.reveal{opacity:1;transform:translateY(0)}
+.pcard:nth-child(2){transition-delay:.08s}
+.pcard:nth-child(3){transition-delay:.16s}
+.pcard:nth-child(4){transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){.pcard{opacity:1;transform:none;transition:border-color .25s,box-shadow .25s}}
 .pmeta{display:flex;gap:.5rem;flex-wrap:wrap}
 .mchip{font-size:.67rem;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,.12);
   color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.02em}
@@ -1545,42 +1570,49 @@ td{color:var(--text)!important}
           <div class="pcard-icon" style="background:rgba(27,58,140,.1)">🌐</div>
           <h3>Techniques de Réseaux Informatiques</h3>
           <p>Maîtrisez les fondamentaux des réseaux, systèmes, programmation et infrastructure IT. Formation Cisco CCNA intégrée en 2ème année.</p>
-          <div class="pmeta">
-            <span class="mchip">TRI</span>
-            <span class="mchip">16 modules 1ère année</span>
-            <span class="mchip">28 modules 2ème année</span>
-            <span class="mchip">Cisco · Microsoft</span>
+          <div class="pcard-badges">
+            <span class="pcard-badge">⏱ 2 ans</span>
+            <span class="pcard-badge">📦 28 modules</span>
+            <span class="pcard-badge cert">🏅 Cisco CCNA</span>
           </div>
+          <div class="pcard-jobs"><b>Débouchés</b>Administrateur réseau · Technicien support IT · Installateur d'infrastructure</div>
+          <div class="pcard-cta">Découvrir la filière →</div>
         </div>
         <div class="pcard MEI" onclick="goPage('programmes')">
           <div class="pcard-icon" style="background:rgba(139,94,0,.08)">🔧</div>
           <h3>Mécanique d'Entretien Industrielle</h3>
           <p>Entretien, usinage et maintenance des équipements industriels. Formation pratique en atelier équipé.</p>
-          <div class="pmeta">
-            <span class="mchip">MEI</span>
-            <span class="mchip">16 modules</span>
-            <span class="mchip">Atelier pratique</span>
+          <div class="pcard-badges">
+            <span class="pcard-badge">⏱ 2 ans</span>
+            <span class="pcard-badge">📦 28 modules</span>
+            <span class="pcard-badge cert">🏅 Atelier pratique</span>
           </div>
+          <div class="pcard-jobs"><b>Débouchés</b>Technicien de maintenance · Opérateur d'usinage · Mécanicien industriel</div>
+          <div class="pcard-cta">Découvrir la filière →</div>
         </div>
         <div class="pcard ELM" onclick="goPage('programmes')">
           <div class="pcard-icon" style="background:rgba(0,107,70,.08)">⚡</div>
           <h3>Électromécanique Industrielle</h3>
           <p>Circuits électriques, automatisation, moteurs et systèmes de commande industrielle.</p>
-          <div class="pmeta">
-            <span class="mchip">ELM</span>
-            <span class="mchip">13 modules</span>
-            <span class="mchip">Électricité · Automatisation</span>
+          <div class="pcard-badges">
+            <span class="pcard-badge">⏱ 2 ans</span>
+            <span class="pcard-badge">📦 25 modules</span>
+            <span class="pcard-badge cert">🏅 Automatisation</span>
           </div>
+          <div class="pcard-jobs"><b>Débouchés</b>Électromécanicien · Technicien automate · Agent de maintenance électrique</div>
+          <div class="pcard-cta">Découvrir la filière →</div>
         </div>
         <div class="pcard TEL" onclick="goPage('programmes')">
           <div class="pcard-icon" style="background:rgba(91,45,142,.08)">📡</div>
           <h3>Télécommunications</h3>
           <p>Signaux, protocoles, antennes, microprocesseurs et systèmes de télécommunications modernes.</p>
-          <div class="pmeta">
-            <span class="mchip">TEL</span>
-            <span class="mchip">14 modules</span>
-            <span class="mchip">RF · Protocoles</span>
+          <div class="pcard-badges">
+            <span class="pcard-badge">⏱ 2 ans</span>
+            <span class="pcard-badge">📦 26 modules</span>
+            <span class="pcard-badge cert">🏅 RF · Protocoles</span>
           </div>
+          <div class="pcard-jobs"><b>Débouchés</b>Technicien télécom · Installateur fibre/antennes · Agent réseau mobile</div>
+          <div class="pcard-cta">Découvrir la filière →</div>
         </div>
       </div>
     </div>
@@ -6689,6 +6721,19 @@ document.addEventListener('DOMContentLoaded', () => {
   renderOffers();
   applyCarrousel(); // Carrousel statique en attendant data.json
   goPage('accueil');
+
+  // Apparition en fondu des cartes filières au scroll
+  try {
+    const cards = document.querySelectorAll('.pcard');
+    if (cards.length && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('reveal'); io.unobserve(e.target); } });
+      }, { threshold: 0.15 });
+      cards.forEach(c => io.observe(c));
+    } else {
+      cards.forEach(c => c.classList.add('reveal')); // fallback : tout afficher
+    }
+  } catch(e) { document.querySelectorAll('.pcard').forEach(c => c.classList.add('reveal')); }
 
   // Rooby input auto-resize
   const ri = document.getElementById('rooby-input');
