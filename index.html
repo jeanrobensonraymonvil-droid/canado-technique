@@ -378,6 +378,24 @@ img{max-width:100%;display:block}
   justify-content:center;font-size:1.2rem;margin-bottom:.9rem}
 .feat-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);margin-bottom:.35rem}
 .feat-desc{font-size:.77rem;color:var(--g500);line-height:1.65}
+/* ── Cartes fonctionnalités enrichies ── */
+.sn2 .feat-card{position:relative;overflow:hidden}
+.feat-card .feat-icon{transition:transform .3s ease}
+.feat-card:hover .feat-icon{transform:scale(1.1) rotate(-4deg)}
+.feat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.9rem}
+.feat-status{font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;
+  letter-spacing:.04em;white-space:nowrap;flex-shrink:0}
+.feat-status.live{background:rgba(0,160,102,.18);color:#2BC48A;border:1px solid rgba(0,160,102,.35)}
+.feat-status.soon{background:rgba(245,197,24,.15);color:#F5C518;border:1px solid rgba(245,197,24,.3)}
+.feat-card.reveal-f{opacity:1;transform:translateY(0)}
+.js-anim .sn2 .feat-card{opacity:0;transform:translateY(20px)}
+.sn2 .feat-card{transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+.sn2 .feat-card:nth-child(2){transition-delay:.06s}
+.sn2 .feat-card:nth-child(3){transition-delay:.12s}
+.sn2 .feat-card:nth-child(4){transition-delay:.18s}
+.sn2 .feat-card:nth-child(5){transition-delay:.24s}
+.sn2 .feat-card:nth-child(6){transition-delay:.3s}
+@media(prefers-reduced-motion:reduce){.js-anim .sn2 .feat-card{opacity:1;transform:none}}
 
 /* ═══ ÉVÉNEMENTS ═══ */
 .ev-dk{background:#0d2038;padding:3rem 1.5rem}
@@ -1625,38 +1643,56 @@ td{color:var(--text)!important}
       <div class="sh dark">
         <div class="tag-b" style="background:rgba(27,58,140,.2);color:#7BA7FF">Plateforme intelligente</div>
         <h2>Une Plateforme Conçue pour Apprendre</h2>
-        <p>Toutes les outils pour réussir votre formation</p>
+        <p>Des outils pensés pour la réussite des étudiants haïtiens, du premier cours au diplôme</p>
       </div>
       <div class="feat-grid">
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
-          <div class="feat-icon" style="background:rgba(27,58,140,.15)">🤖</div>
+          <div class="feat-head">
+            <div class="feat-icon" style="background:rgba(27,58,140,.15)">🤖</div>
+            <span class="feat-status live">● Disponible</span>
+          </div>
           <div class="feat-title" style="color:#fff">Assistant IA Rooby</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Posez vos questions 24h/24 sur l'école, les cours et les programmes. Rooby répond intelligemment grâce à l'IA Claude d'Anthropic.</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.62)">Votre tuteur intelligent, disponible 24h/24 en français et en créole. Rooby répond à vos questions sur les cours, les programmes et l'école — propulsé par l'IA Claude d'Anthropic.</div>
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
-          <div class="feat-icon" style="background:rgba(232,25,44,.12)">📝</div>
+          <div class="feat-head">
+            <div class="feat-icon" style="background:rgba(232,25,44,.12)">📝</div>
+            <span class="feat-status live">● Disponible</span>
+          </div>
           <div class="feat-title" style="color:#fff">Examens IA Multi-versions</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Les professeurs génèrent automatiquement plusieurs versions d'examens différents par module grâce à l'intelligence artificielle.</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.62)">Les professeurs génèrent automatiquement plusieurs versions d'un même examen par module, pour un apprentissage équitable et sans triche.</div>
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
-          <div class="feat-icon" style="background:rgba(0,107,70,.12)">📅</div>
+          <div class="feat-head">
+            <div class="feat-icon" style="background:rgba(0,107,70,.12)">📅</div>
+            <span class="feat-status live">● Disponible</span>
+          </div>
           <div class="feat-title" style="color:#fff">Réservation de Laboratoire</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Réservez vos journées pratiques depuis votre espace étudiant. Notifications automatiques aux professeurs et admins.</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.62)">Réservez vos journées pratiques en atelier depuis votre espace étudiant. Les professeurs et l'administration sont notifiés automatiquement.</div>
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
-          <div class="feat-icon" style="background:rgba(245,197,24,.1)">💳</div>
-          <div class="feat-title" style="color:#fff">Paiement en HTG</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Payez vos cours en gourdes haïtiennes. MonCash, NatCash et carte bancaire bientôt disponibles.</div>
+          <div class="feat-head">
+            <div class="feat-icon" style="background:rgba(245,197,24,.1)">💳</div>
+            <span class="feat-status soon">Bientôt</span>
+          </div>
+          <div class="feat-title" style="color:#fff">Paiement en gourdes (HTG)</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.62)">Réglez votre formation en gourdes haïtiennes, adapté à la réalité locale. MonCash, NatCash et carte bancaire bientôt intégrés.</div>
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
-          <div class="feat-icon" style="background:rgba(27,58,140,.15)">🎥</div>
+          <div class="feat-head">
+            <div class="feat-icon" style="background:rgba(27,58,140,.15)">🎥</div>
+            <span class="feat-status live">● Disponible</span>
+          </div>
           <div class="feat-title" style="color:#fff">Cours Vidéo Sécurisés</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Accédez aux cours vidéo sécurisés depuis votre espace étudiant. Contenu protégé — accès exclusif aux étudiants inscrits.</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.62)">Suivez les cours vidéo depuis votre espace, où que vous soyez. Contenu protégé, réservé exclusivement aux étudiants inscrits.</div>
         </div>
         <div class="feat-card" style="background:rgba(255,255,255,.04);border-color:var(--bdrDk)">
-          <div class="feat-icon" style="background:rgba(91,45,142,.12)">🔐</div>
+          <div class="feat-head">
+            <div class="feat-icon" style="background:rgba(91,45,142,.12)">🔐</div>
+            <span class="feat-status live">● Disponible</span>
+          </div>
           <div class="feat-title" style="color:#fff">Authentification 2FA</div>
-          <div class="feat-desc" style="color:rgba(255,255,255,.45)">Connexion sécurisée avec vérification à deux facteurs pour les étudiants, professeurs et administrateurs.</div>
+          <div class="feat-desc" style="color:rgba(255,255,255,.62)">Vos données protégées par une vérification à deux facteurs — pour les étudiants, professeurs et administrateurs.</div>
         </div>
       </div>
     </div>
@@ -2625,6 +2661,20 @@ function goPage(p) {
       cards.forEach(c=>io.observe(c));
       // Filet de sécurité : si l'observer ne déclenche pas (cas limites), tout révéler après 1s
       setTimeout(()=>cards.forEach(c=>c.classList.add('reveal')), 1000);
+
+      // Cartes fonctionnalités (section "Plateforme")
+      const feats = document.querySelectorAll('.sn2 .feat-card');
+      if(feats.length) {
+        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+          feats.forEach(c=>c.classList.add('reveal-f'));
+        } else {
+          const io2 = new IntersectionObserver((entries)=>{
+            entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal-f'); io2.unobserve(e.target); } });
+          }, { threshold: 0.1 });
+          feats.forEach(c=>io2.observe(c));
+          setTimeout(()=>feats.forEach(c=>c.classList.add('reveal-f')), 1200);
+        }
+      }
     });
   }
 }
