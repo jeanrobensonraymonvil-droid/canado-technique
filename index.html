@@ -3274,7 +3274,7 @@ function renderPaiement() {
   <!-- ── SPÉCIALISATION ── -->
   <div id="ptab-spec" style="display:none">
     <div style="background:#f0eeff;border:1.5px solid rgba(91,45,142,.18);border-radius:var(--rL);padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:.82rem;color:#3D1A6E;line-height:1.65">
-      🎓 <strong>Spécialisation 3ème Année</strong> — Après avoir complété les 2 ans d'un programme TRI ou TEL, vous pouvez vous inscrire en spécialisation et suivre les modules de 2ème année de l'autre programme pour obtenir une double compétence certifiée.
+      🎓 <strong>Spécialisation 3ème Année</strong> — Après avoir complété les 2 ans d'un programme, vous pouvez vous inscrire en spécialisation et suivre les modules de 2ème année d'un programme apparenté (TRI ↔ TEL, ou ELM ↔ MEI) pour obtenir une double compétence certifiée.
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem">
 
@@ -3313,6 +3313,44 @@ function renderPaiement() {
             <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#5B2D8E">${fmtPriceDual(TARIFS.TEL.an2)}</div>
           </div>
           <button class="btn btn-sm" style="width:100%;justify-content:center;font-size:.82rem;background:linear-gradient(135deg,#5B2D8E,#8A50CC);color:#fff;border:none" onclick="openInscriptionModal('specialisation','TEL','',{specFrom:'TRI'})">📋 S'inscrire — Spécialisation TEL →</button>
+        </div>
+      </div>
+
+      <!-- MEI → ELM -->
+      <div style="background:#fff;border:2px solid rgba(0,107,70,.2);border-radius:var(--rL);overflow:hidden;transition:all .25s" onmouseover="this.style.boxShadow='0 8px 28px rgba(0,107,70,.15)'" onmouseout="this.style.boxShadow=''">
+        <div style="background:linear-gradient(135deg,#C98A00,#006B46);padding:1.1rem 1.2rem;display:flex;align-items:center;gap:.8rem">
+          <div style="font-size:1.3rem">🔧→⚡</div>
+          <div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:#fff">Spécialisation ELM</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.55)">Pour étudiants ayant complété 2 ans en MEI</div>
+          </div>
+        </div>
+        <div style="padding:1.1rem">
+          <div style="font-size:.8rem;color:var(--g700);line-height:1.6;margin-bottom:.8rem">Accédez aux modules de 2ème année <strong>Électromécanique (ELM)</strong> pour obtenir une double qualification MEI + ELM.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem .8rem;background:#e3f5ec;border-radius:8px;border:1px solid rgba(0,107,70,.2);margin-bottom:.5rem">
+            <div><div style="font-size:.8rem;font-weight:700;color:#0B1525">Spécialisation ELM</div><div style="font-size:.7rem;color:var(--g500)">${(MODULES_2['ELM']||[]).length} modules 2ème année</div></div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#006B46">${fmtPriceDual(TARIFS.ELM.an2)}</div>
+          </div>
+          <button class="btn btn-sm" style="width:100%;justify-content:center;font-size:.82rem;background:linear-gradient(135deg,#006B46,#1D9E75);color:#fff;border:none" onclick="openInscriptionModal('specialisation','ELM','',{specFrom:'MEI'})">📋 S'inscrire — Spécialisation ELM →</button>
+        </div>
+      </div>
+
+      <!-- ELM → MEI -->
+      <div style="background:#fff;border:2px solid rgba(201,138,0,.25);border-radius:var(--rL);overflow:hidden;transition:all .25s" onmouseover="this.style.boxShadow='0 8px 28px rgba(201,138,0,.15)'" onmouseout="this.style.boxShadow=''">
+        <div style="background:linear-gradient(135deg,#006B46,#C98A00);padding:1.1rem 1.2rem;display:flex;align-items:center;gap:.8rem">
+          <div style="font-size:1.3rem">⚡→🔧</div>
+          <div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.88rem;color:#fff">Spécialisation MEI</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.55)">Pour étudiants ayant complété 2 ans en ELM</div>
+          </div>
+        </div>
+        <div style="padding:1.1rem">
+          <div style="font-size:.8rem;color:var(--g700);line-height:1.6;margin-bottom:.8rem">Accédez aux modules de 2ème année <strong>Mécanique Industrielle (MEI)</strong> pour obtenir une double qualification ELM + MEI.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem .8rem;background:#fdf3dd;border-radius:8px;border:1px solid rgba(201,138,0,.25);margin-bottom:.5rem">
+            <div><div style="font-size:.8rem;font-weight:700;color:#0B1525">Spécialisation MEI</div><div style="font-size:.7rem;color:var(--g500)">${(MODULES_2['MEI']||[]).length} modules 2ème année</div></div>
+            <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#8B5E00">${fmtPriceDual(TARIFS.MEI.an2)}</div>
+          </div>
+          <button class="btn btn-sm" style="width:100%;justify-content:center;font-size:.82rem;background:linear-gradient(135deg,#8B5E00,#C98A00);color:#fff;border:none" onclick="openInscriptionModal('specialisation','MEI','',{specFrom:'ELM'})">📋 S'inscrire — Spécialisation MEI →</button>
         </div>
       </div>
 
