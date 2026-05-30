@@ -336,14 +336,9 @@ img{max-width:100%;display:block}
 .pcard.MEI .pcard-cta{color:#E0A82E}
 .pcard.ELM .pcard-cta{color:#2BC48A}
 .pcard.TEL .pcard-cta{color:#B98AE0}
-/* Apparition au scroll — l'invisibilité initiale ne s'applique QUE si JS est actif (classe js-anim) */
-.js-anim .pcard{opacity:0;transform:translateY(24px)}
-.pcard{transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
+/* Cartes filières : toujours visibles (animation survol uniquement, pas de fondu au scroll) */
+.pcard{transition:border-color .25s,box-shadow .25s,transform .25s}
 .pcard.reveal{opacity:1;transform:translateY(0)}
-.pcard:nth-child(2){transition-delay:.08s}
-.pcard:nth-child(3){transition-delay:.16s}
-.pcard:nth-child(4){transition-delay:.24s}
-@media(prefers-reduced-motion:reduce){.js-anim .pcard{opacity:1;transform:none}}
 .pmeta{display:flex;gap:.5rem;flex-wrap:wrap}
 .mchip{font-size:.67rem;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,.12);
   color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.02em}
@@ -388,14 +383,7 @@ img{max-width:100%;display:block}
 .feat-status.live{background:rgba(0,160,102,.18);color:#2BC48A;border:1px solid rgba(0,160,102,.35)}
 .feat-status.soon{background:rgba(245,197,24,.15);color:#F5C518;border:1px solid rgba(245,197,24,.3)}
 .feat-card.reveal-f{opacity:1;transform:translateY(0)}
-.js-anim .sn2 .feat-card{opacity:0;transform:translateY(20px)}
-.sn2 .feat-card{transition:opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .25s}
-.sn2 .feat-card:nth-child(2){transition-delay:.06s}
-.sn2 .feat-card:nth-child(3){transition-delay:.12s}
-.sn2 .feat-card:nth-child(4){transition-delay:.18s}
-.sn2 .feat-card:nth-child(5){transition-delay:.24s}
-.sn2 .feat-card:nth-child(6){transition-delay:.3s}
-@media(prefers-reduced-motion:reduce){.js-anim .sn2 .feat-card{opacity:1;transform:none}}
+.sn2 .feat-card{transition:border-color .25s,box-shadow .25s}
 
 /* ═══ ÉVÉNEMENTS ═══ */
 .ev-dk{background:#0d2038;padding:3rem 1.5rem}
@@ -2644,39 +2632,6 @@ function goPage(p) {
   if(p==='examens-pub') renderPubExams();
   if(p==='paiement') renderPaiement();
   if(p==='actualites' && SITE_DATA) applyArticles();
-
-  // Révélation animée des cartes filières (la page est maintenant visible)
-  if(p==='accueil') {
-    requestAnimationFrame(()=>{
-      const cards = document.querySelectorAll('#pgrid-container .pcard');
-      if(!cards.length) return;
-      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(reduce || !('IntersectionObserver' in window)) {
-        cards.forEach(c=>c.classList.add('reveal'));
-        return;
-      }
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); } });
-      }, { threshold: 0.12 });
-      cards.forEach(c=>io.observe(c));
-      // Filet de sécurité : si l'observer ne déclenche pas (cas limites), tout révéler après 1s
-      setTimeout(()=>cards.forEach(c=>c.classList.add('reveal')), 1000);
-
-      // Cartes fonctionnalités (section "Plateforme")
-      const feats = document.querySelectorAll('.sn2 .feat-card');
-      if(feats.length) {
-        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-          feats.forEach(c=>c.classList.add('reveal-f'));
-        } else {
-          const io2 = new IntersectionObserver((entries)=>{
-            entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal-f'); io2.unobserve(e.target); } });
-          }, { threshold: 0.1 });
-          feats.forEach(c=>io2.observe(c));
-          setTimeout(()=>feats.forEach(c=>c.classList.add('reveal-f')), 1200);
-        }
-      }
-    });
-  }
 }
 
 window.addEventListener('scroll',()=>{
@@ -6786,7 +6741,6 @@ function toggleCurrency() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('js-anim'); // active l'animation des cartes (sans JS, elles restent visibles)
   // Chargement des données depuis data.json (ou data.php en production)
   loadSiteData();
   renderOffers();
