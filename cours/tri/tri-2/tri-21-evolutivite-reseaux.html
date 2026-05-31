@@ -1,565 +1,1562 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-21 — Évolutivité des réseaux</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-21 — Évolutivité des réseaux · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --orange:#C8570A;--teal:#006868;--purple:#6B2D8E;--purpleL:#9B4DBE;
+  --g100:#EEF2FF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px;
+  --accent:#6B2D8E;--accentL:#9B4DBE;--accentG:rgba(107,45,142,.15)
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#f0ebff;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#1a0a2e 55%,#6B2D8E 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 25% 50%,rgba(155,77,190,.2) 0%,transparent 60%),radial-gradient(circle at 75% 20%,rgba(59,123,255,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
-.mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(155,77,190,.25);border:1px solid rgba(155,77,190,.5);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#D4A0FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
+.mod-header h1 em{color:#D4A0FF;font-style:normal}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:520px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accentL),#D4A0FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500)}.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--accent)}.toc-item.act{background:rgba(107,45,142,.1);color:var(--accent);font-weight:600}
+.toc-item.done{color:var(--accentL)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--accentL)}.toc-item.done .toc-dot{background:var(--accentL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#1a0a2e,#6B2D8E);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--accentL)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.purple{background:rgba(107,45,142,.06);border:1px solid rgba(107,45,142,.2);color:#2a0a3a}.ibox.purple .ibox-label{color:var(--accent)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.orange{background:rgba(200,87,10,.06);border:1px solid rgba(200,87,10,.2);color:#5a2000}.ibox.orange .ibox-label{color:var(--orange)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#1a0a2e;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(107,45,142,.03)}
+.mono{font-family:var(--fM);color:var(--accent);font-size:.8em;font-weight:700;background:rgba(107,45,142,.08);padding:1px 5px;border-radius:4px}
+/* CODE */
+.codeblock{background:#120820;border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.codeblock-header{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.codeblock-lang{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+.codeblock-copy{font-size:.65rem;padding:2px 8px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.codeblock-copy:hover{background:rgba(155,77,190,.2);color:#D4A0FF}
+.codeblock pre{padding:1rem 1.1rem;overflow-x:auto}
+.codeblock code{font-family:var(--fM);font-size:.8rem;color:#E0C8FF;line-height:1.75;white-space:pre}
+.cmd{color:#50fa7b}.cmt{color:#5a4a7a;font-style:italic}.val{color:#f1fa8c}.str{color:#ff9b50}.kw{color:#ff79c6}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#1a0a2e);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(155,77,190,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(155,77,190,.2);border:1px solid rgba(155,77,190,.4);font-size:.6rem;font-weight:800;color:#D4A0FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--accentL);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--accent);background:rgba(107,45,142,.04)}
+.qopt.sel{border-color:var(--accent);background:rgba(107,45,142,.07);font-weight:600;color:var(--accent)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--accent);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--accent);color:var(--accent)}
+/* INTERACTIVE — EtherChannel Builder */
+.eth-builder{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin:1rem 0}
+.eth-title{font-family:var(--fD);font-weight:700;font-size:.85rem;color:var(--text);margin-bottom:.9rem}
+.eth-scene{display:flex;align-items:center;justify-content:space-around;gap:1rem;flex-wrap:wrap;padding:.8rem}
+.eth-switch{background:linear-gradient(135deg,#1a0a2e,#3a1a5e);border-radius:12px;padding:1rem;text-align:center;min-width:120px}
+.eth-sw-lbl{font-size:.68rem;font-weight:700;color:#D4A0FF;font-family:var(--fD);margin-bottom:.5rem}
+.eth-ports{display:flex;flex-direction:column;gap:.3rem}
+.eth-port{padding:3px 8px;border-radius:5px;font-size:.66rem;font-family:var(--fM);background:rgba(155,77,190,.15);border:1px solid rgba(155,77,190,.3);color:#C090F0;transition:all .3s;cursor:pointer}
+.eth-port:hover{background:rgba(155,77,190,.3);border-color:var(--accentL)}
+.eth-port.active{background:rgba(0,160,102,.2);border-color:var(--greenL);color:#80FFB0}
+.eth-bundle{display:flex;flex-direction:column;align-items:center;gap:.4rem;min-width:80px}
+.eth-channel{background:rgba(107,45,142,.08);border:2px dashed rgba(107,45,142,.3);border-radius:10px;padding:.5rem .8rem;text-align:center;transition:all .4s}
+.eth-channel.ready{border-style:solid;border-color:var(--accentL);background:rgba(107,45,142,.15)}
+.eth-ch-lbl{font-size:.67rem;font-weight:700;color:var(--g700);font-family:var(--fD)}
+.eth-ch-val{font-size:.72rem;color:var(--g500);font-family:var(--fM)}
+.eth-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.ethbtn{padding:.38rem .85rem;border-radius:7px;font-size:.74rem;font-weight:700}
+.ethbtn-lacp{background:var(--accentL);color:#fff}.ethbtn-pagp{background:var(--blue);color:#fff}.ethbtn-on{background:var(--teal);color:#fff}.ethbtn-reset{background:rgba(0,0,0,.07);color:var(--g700);border:1px solid var(--bdr)}
+.eth-status{margin-top:.8rem;padding:.6rem .9rem;border-radius:8px;font-size:.8rem;background:var(--g100);color:var(--g700);min-height:40px;font-family:var(--fM)}
+/* INTERACTIVE — DHCP Simulator */
+.dhcp-sim{background:#071224;border-radius:var(--rL);padding:1.2rem;margin:1rem 0;border:1px solid rgba(107,45,142,.2)}
+.dhcp-title{font-family:var(--fD);font-weight:700;font-size:.83rem;color:#fff;margin-bottom:1rem}
+.dhcp-scene{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.dhcp-node{text-align:center;min-width:80px}
+.dhcp-icon{font-size:2rem;margin-bottom:.3rem}
+.dhcp-lbl{font-size:.67rem;font-weight:700;font-family:var(--fD);color:rgba(255,255,255,.5)}
+.dhcp-ip{font-size:.64rem;font-family:var(--fM);color:#D4A0FF;margin-top:.2rem;min-height:14px}
+.dhcp-arrows{display:flex;flex-direction:column;gap:.3rem;align-items:center;flex:1;min-width:60px}
+.dhcp-msg{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.3);text-align:center;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:all .4s}
+.dhcp-msg.active{color:#D4A0FF;background:rgba(107,45,142,.2);border-color:rgba(107,45,142,.4)}
+.dhcp-btns{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
+.dhbtn{padding:.38rem .9rem;border-radius:7px;font-size:.74rem;font-weight:700}
+.dhbtn-play{background:var(--accentL);color:#fff}.dhbtn-reset{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.1)}
+.dhcp-log{margin-top:.8rem;background:rgba(0,0,0,.3);border-radius:8px;padding:.6rem .9rem;font-family:var(--fM);font-size:.72rem;color:rgba(255,255,255,.5);min-height:50px;max-height:120px;overflow-y:auto}
+/* DONE */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--accent);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:var(--accentL)}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--accent),var(--accentL));border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}body{background:#fff!important}}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
+/* ═══ HERO BANNER IMAGE ═══ */
+.mod-header{position:relative}
+.mod-hero-img{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  opacity:.18;pointer-events:none;z-index:0
 }
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
-
+.mod-header-in{position:relative;z-index:1}
 </style>
 </head>
 <body>
+
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('assets/images/hero/slide-tri.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">📈 Module TRI-21 · 1ère Année</div>
+    <div class="mod-tag">🌐 TRI-21 · 2ème Année · Cisco SRWE v7.0</div>
     <h1>Évolutivité des <em>réseaux</em></h1>
+    <p class="mod-desc">10 chapitres · VLANs avancés, STP, EtherChannel, Routage inter-VLAN, DHCPv4, SLAAC &amp; DHCPv6, Sécurité sans-fil — avec simulateur DHCP, constructeur EtherChannel et CLI interactif.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>90 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo VLAN/STP (oblig.)</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Évolutivité réseau</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Schéma réseau évolutif</strong></div>
+      <div class="mod-meta-item">⏱ <strong>140 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
+      <div class="mod-meta-item">📚 <strong>10 chapitres</strong></div>
+      <div class="mod-meta-item">🔬 <strong>Packet Tracer</strong></div>
+      <div class="mod-meta-item">🏆 <strong>CCNA Préparatoire</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-txt" id="prog-txt">0 / 10 chapitres</span>
     </div>
-  </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Architecture hiérarchique Cisco</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>VLANs avancés et inter-VLAN routing</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Spanning Tree avancé</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>EtherChannel et redondance WAN</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo VLAN/STP/EtherChannel</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Démo architecture évolutive</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Schéma réseau hiérarchique</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Architecture hiérarchique Cisco</h2>
-      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">Core/Distribution/Access · Collapsed Core</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Architecture réseau hiérarchique Cisco — Core/Distribution/Access</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Le modèle en 3 couches (5 min)</strong> — Access layer (switches d'accès connectant les postes), Distribution layer (switches de distribution, routage inter-VLAN, politiques), Core layer (backbone haute vitesse, pas de filtrage).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Pourquoi cette architecture ? (4 min)</strong> — Scalabilité: ajouter des switches d'accès sans toucher le core. Résilience: redondance à chaque couche. Performances: trafic optimisé.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Architecture 2 couches (Collapsed Core) (3 min)</strong> — Pour les PME: Accès + Core/Distribution fusionnés. Plus simple, moins coûteux.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Exemple haïtien (3 min)</strong> — Architecture pour une banque avec 3 étages à Port-au-Prince. 1 switch de core, 3 switches de distribution (1 par étage), N switches d'accès.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 Modèle hiérarchique Cisco — 3 couches</h3><table class="data-table"><thead><tr><th>Couche</th><th>Équipements</th><th>Rôle principal</th><th>Caractéristiques</th></tr></thead><tbody><tr><td>Core (Backbone)</td><td>Switches L3 haute vitesse (Catalyst 6500, Nexus)</td><td>Transport rapide, haute disponibilité, pas de filtrage</td><td>Redondance totale, latence minimale, liens à 10G+</td></tr><tr><td>Distribution</td><td>Switches L3 (Catalyst 3750, 4500)</td><td>Routage inter-VLAN, ACL, QoS, aggrégation des accès</td><td>Liaisons trunk vers access, routage vers core</td></tr><tr><td>Access (Accès)</td><td>Switches L2 (Catalyst 2960, 3650)</td><td>Connexion directe des hôtes, port security, VLAN</td><td>Ports access pour postes, ports trunk vers distribution</td></tr></tbody></table><div class="info-box"><span class="info-box-label">🇭🇹 Architecture adaptée aux entreprises haïtiennes</span>Pour une PME haïtienne (50-200 employés, 1-2 étages): utiliser le modèle 2 couches (collapsed core). 1-2 switches L3 au centre (core+distribution), des switches L2 d'accès à chaque étage. Cette architecture est moins coûteuse et suffisante pour la plupart des besoins locaux.</div></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quel est le rôle de la couche "Distribution" dans l'architecture Cisco à 3 couches ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Connecter directement les postes de travail</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Routage inter-VLAN, application des politiques QoS et ACL, agrégation des switches d'accès</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Fournir un backbone haute vitesse sans filtrage</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Connecter l'entreprise à internet</button></div>
-    <div class="quiz-expl" id="expl-q0_1">La couche Distribution est le cerveau du réseau: elle route entre les VLANs (inter-VLAN routing), applique les politiques de sécurité (ACL), gère la qualité de service (QoS), et agrège les liens montants des switches d'accès vers le core.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi le modèle "collapsed core" (2 couches) est-il recommandé pour les PME ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Il est plus rapide que le modèle 3 couches</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Il est moins complexe et moins coûteux, suffisant pour des réseaux de taille moyenne</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Il n'utilise pas de switches</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Il n'y a aucune redondance</button></div>
-    <div class="quiz-expl" id="expl-q1_1">Le collapsed core fusionne les couches Core et Distribution en un ou deux switches L3 centraux. Moins d'équipements = moins de coût, moins de complexité, moins de maintenance. Pour une PME de 50-200 personnes, c'est amplement suffisant.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi la couche Core ne doit-elle pas effectuer de filtrage ou de routage complexe ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Les switches Core ne supportent pas les ACL</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Pour minimiser la latence — le Core doit transporter les trames le plus vite possible</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>C'est une obligation légale</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Le filtrage est uniquement pour la couche Access</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Le Core est le backbone: sa priorité absolue est la vitesse de transmission. Chaque traitement supplémentaire (filtrage ACL, QoS) ajoute de la latence. Le filtrage et les politiques sont appliqués aux couches Distribution et Access, pas au Core.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="2">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Quelle couche connecte directement les postes de travail, imprimantes et téléphones IP ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Core</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Distribution</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Access (Accès)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>DMZ</button></div>
-    <div class="quiz-expl" id="expl-q3_1">La couche Access (accès) est celle qui connecte directement les équipements terminaux (postes de travail, imprimantes, téléphones IP, caméras IP). Elle opère typiquement à la couche 2 (L2) avec des switches non gérés ou gérés simples.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>VLANs avancés et routage inter-VLAN</h2>
-      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">Router-on-a-Stick · SVI · VTP · VLAN Voice</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — VLANs avancés et routage inter-VLAN</div><div class="video-subtitle">Durée : 18 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Router-on-a-Stick (4 min)</strong> — Un seul lien trunk entre routeur et switch. Sous-interfaces du routeur (interface Fa0/0.10, .20, .30) avec encapsulation dot1Q pour chaque VLAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Routage inter-VLAN sur switch L3 (5 min)</strong> — Interface SVI (Switched Virtual Interface): interface vlan 10, ip address 192.168.10.1 255.255.255.0, no shutdown. Plus performant que Router-on-a-Stick.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>VTP (VLAN Trunking Protocol) (4 min)</strong> — Propager automatiquement les VLANs sur tous les switches du domaine VTP. Modes: Server, Client, Transparent. Danger du mode Server sans prudence.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>VLAN Voice (VLAN auxiliaire) (3 min)</strong> — Configurer un VLAN dédié pour la voix IP (QoS). switchport voice vlan 100 sur les ports avec téléphones IP.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Routage inter-VLAN — Comparatif des méthodes</h3><table class="data-table"><thead><tr><th>Méthode</th><th>Avantages</th><th>Inconvénients</th><th>Commandes clés</th></tr></thead><tbody><tr><td>Router-on-a-Stick</td><td>Simple, utilise un routeur existant</td><td>Goulot d'étranglement sur le lien trunk unique</td><td>interface Fa0/0.10 + encapsulation dot1Q 10</td></tr><tr><td>Switch L3 SVI</td><td>Performant — routage en hardware</td><td>Nécessite un switch L3 (plus coûteux)</td><td>interface vlan 10 + ip address + ip routing</td></tr><tr><td>Routeur dédié par VLAN</td><td>Interface physique par VLAN — aucun goulot</td><td>Coûteux — une interface routeur par VLAN</td><td>interface Fa0/1 + ip address (pas de trunk)</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Dans la configuration "Router-on-a-Stick", que signifie "encapsulation dot1Q 10" ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Chiffrer le VLAN 10</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Que cette sous-interface traite les trames taguées VLAN 10 (802.1Q)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Bloquer le VLAN 10 sur cette interface</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Créer un tunnel vers le VLAN 10</button></div>
-    <div class="quiz-expl" id="expl-q0_2">encapsulation dot1Q 10 dit au routeur que cette sous-interface (ex: Fa0/0.10) doit traiter les trames portant le tag VLAN 10 (protocole IEEE 802.1Q). Le routeur route le trafic VLAN 10 via cette sous-interface.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Qu'est-ce qu'une SVI (Switched Virtual Interface) sur un switch L3 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Un type de câble spécial</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Une interface logique associée à un VLAN qui sert de passerelle par défaut pour ce VLAN</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Un protocole de sécurité Cisco</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Un type de trunk 802.1Q</button></div>
-    <div class="quiz-expl" id="expl-q1_2">Une SVI (interface vlan X) est une interface logique sur un switch L3 qui représente un VLAN. Elle a une adresse IP et sert de passerelle par défaut pour tous les hôtes de ce VLAN. Le switch L3 route entre les SVIs directement en hardware — bien plus rapide que Router-on-a-Stick.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Quel est le principal danger du mode "VTP Server" mal configuré ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Il ralentit la propagation des VLANs</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Un switch avec un numéro de révision VTP plus élevé peut écraser la base VLAN de tout le domaine</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Il ne supporte que 12 VLANs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Le mode Server nécessite une licence spéciale</button></div>
-    <div class="quiz-expl" id="expl-q2_2">Un switch VTP Server avec un numéro de révision VTP supérieur à celui du domaine va propager sa base VLAN (peut-être vide ou incorrecte) à tous les switches du domaine, supprimant tous les VLANs existants. Catastrophique. Solution: utiliser le mode VTP Transparent ou VTP version 3 avec mot de passe.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Pourquoi créer un VLAN Voice dédié pour les téléphones IP ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Les téléphones IP ne supportent qu'un seul VLAN</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Pour appliquer la QoS (priorité) au trafic voix et l'isoler du trafic données</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Pour limiter le nombre d'appels simultanés</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Pour économiser des ports sur le switch</button></div>
-    <div class="quiz-expl" id="expl-q3_2">La voix IP est sensible à la latence et la gigue. En isolant le trafic voix dans un VLAN dédié, on peut appliquer des politiques QoS qui lui donnent priorité sur le trafic données. switchport voice vlan 100 configure automatiquement le port pour supporter deux VLANs (données + voix).</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+
+<div class="timer-bar">
+  ⏱ Session : <strong id="session-timer">0m 0s</strong>
+  &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns">
+    <button class="tbtn" onclick="window.print()">🖨 Imprimer</button>
+    <button class="tbtn" onclick="toggleToc()">☰ Sommaire</button>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Spanning Tree avancé</h2>
-      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">Root Bridge · PortFast · BPDU Guard · Rapid PVST+</span></div>
-    </div>
+
+<div class="wrap">
+<div class="layout">
+
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-21</div>
+  <div class="toc-item act" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Architecture hiérarchique</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Commutation avancée</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>VLANs avancés 🔀</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Routage inter-VLAN L3</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>STP avancé — RSTP/PVST+</span></div>
+  <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>EtherChannel ⚡</span></div>
+  <div class="toc-item" onclick="goTo(7)" id="ti-7"><div class="toc-dot"></div><span class="toc-num">07</span><span>DHCPv4 🎬</span></div>
+  <div class="toc-item" onclick="goTo(8)" id="ti-8"><div class="toc-dot"></div><span class="toc-num">08</span><span>SLAAC &amp; DHCPv6</span></div>
+  <div class="toc-item" onclick="goTo(9)" id="ti-9"><div class="toc-dot"></div><span class="toc-num">09</span><span>Sécurité réseau</span></div>
+  <div class="toc-item" onclick="goTo(10)" id="ti-10"><div class="toc-dot"></div><span class="toc-num">10</span><span>Dépannage TRI-21</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr);font-size:.64rem;color:var(--g500);line-height:1.7">⚡ EtherChannel interactif · 🎬 Animation DHCP · 🔀 VLANs · ⌨ CLI Simulateur</div>
+</div>
+
+<div id="main-content">
+
+<!-- ══ CH 1 — Architecture hiérarchique ══ -->
+<div class="chapter" id="ch-1">
+<div class="ch-header"><div class="ch-num">01</div>
+<div class="ch-info"><h2>Architecture hiérarchique Cisco</h2>
+<div class="ch-meta"><span>🕐 8h</span><span class="ch-badge">Couche Accès · Distribution · Cœur · Redondance · HA</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Modèle à 3 couches et évolutivité</div><div class="vsub">14 min · Architecture Cisco · Accès · Distribution · Cœur</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp1"><div class="vplay" onclick="openVideo(1)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf1" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Modèle 3 couches (5 min)</strong> — Accès (ports hôtes, PoE, port security), Distribution (routage inter-VLAN, politiques), Cœur (haute vitesse, redondance). Pourquoi cette architecture ?</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Scalabilité et redondance (5 min)</strong> — HSRP/VRRP, uplinks redondants, EtherChannel. Comment dimensionner un réseau d'école ou d'entreprise.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Équipements Cisco (4 min)</strong> — Catalyst 2960/3750/9200 à la couche accès. Catalyst 3850/9300 à la distribution. Routeurs ISR à la couche cœur.</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Spanning Tree Protocol — Configuration avancée</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Rappel STP et RSTP (4 min)</strong> — Élection du Root Bridge (priorité + adresse MAC), rôles des ports (Root, Designated, Blocked/Alternate).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>PortFast et BPDU Guard (4 min)</strong> — PortFast: ignorer les délais STP sur les ports d'accès (démarrage immédiat). BPDU Guard: désactiver le port si un switch non autorisé y est connecté. Critique pour la sécurité.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Choisir le Root Bridge (3 min)</strong> — Configurer la priorité STP pour forcer le Root Bridge sur le switch souhaité. spanning-tree vlan X priority 0 (ou 4096).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Rapid PVST+ (2 min)</strong> — PVST+ = STP par VLAN (Cisco). Rapid PVST+ = RSTP par VLAN. Configuration: spanning-tree mode rapid-pvst.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Commandes STP essentielles</h3><table class="data-table"><thead><tr><th>Commande</th><th>Description</th></tr></thead><tbody><tr><td>spanning-tree mode rapid-pvst</td><td>Activer Rapid PVST+ (recommandé sur Cisco)</td></tr><tr><td>spanning-tree vlan 10 priority 0</td><td>Forcer ce switch comme Root Bridge pour VLAN 10 (priorité la plus basse = Root)</td></tr><tr><td>spanning-tree vlan 10 priority 4096</td><td>Configurer comme Root Bridge secondaire (backup)</td></tr><tr><td>interface Fa0/1 + spanning-tree portfast</td><td>Activer PortFast sur un port d'accès (convergence instantanée)</td></tr><tr><td>interface Fa0/1 + spanning-tree bpduguard enable</td><td>Désactiver le port si une BPDU est reçue (protection anti-switch non autorisé)</td></tr><tr><td>show spanning-tree vlan 10</td><td>Voir l'état STP pour le VLAN 10 (Root Bridge, rôles des ports)</td></tr><tr><td>show spanning-tree summary</td><td>Vue d'ensemble de STP sur tous les VLANs</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quel switch devient Root Bridge lors de l'élection STP ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Le switch le plus rapide</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Le switch avec la priorité STP la plus BASSE, à égalité le plus petit MAC</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Le switch le plus récent</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Le switch avec le plus de ports</button></div>
-    <div class="quiz-expl" id="expl-q0_3">L'élection STP se fait en deux temps: 1) Le switch avec la priorité la plus BASSE gagne (défaut: 32768). 2) Si deux switches ont la même priorité, celui avec la plus petite adresse MAC gagne. On configure explicitement le Root Bridge souhaité avec une priorité 0 ou 4096.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Que fait BPDU Guard sur un port d'accès ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Il accélère la convergence STP</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Il désactive automatiquement le port si une BPDU STP est reçue (détecte un switch non autorisé)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Il bloque le trafic VLAN sur ce port</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Il active le mode trunk automatiquement</button></div>
-    <div class="quiz-expl" id="expl-q1_3">BPDU Guard protège les ports d'accès: si une BPDU (message STP) arrive sur ce port, c'est qu'un switch y est connecté — ce qui n'est pas prévu et potentiellement malveillant. Le port est immédiatement mis en état err-disabled pour protéger la topologie STP.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">PortFast sur un port d'accès permet de...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Augmenter la vitesse du port à 1 Gbps</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Passer immédiatement à l'état "Forwarding" sans attendre les délais STP (Listening + Learning = 30s)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Bloquer les trames STP</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Activer le mode trunk</button></div>
-    <div class="quiz-expl" id="expl-q2_3">Sans PortFast, un port met 30-50 secondes avant de passer en Forwarding (états: Blocking→Listening 15s→Learning 15s→Forwarding). Un PC met 30 secondes à obtenir son IP DHCP après connexion — inacceptable. PortFast saute directement en Forwarding. Ne jamais activer PortFast sur un port trunk.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="2">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Comment forcer un switch Cisco à devenir Root Bridge pour le VLAN 10 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>spanning-tree vlan 10 root primary</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>spanning-tree vlan 10 priority 0</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Les deux méthodes fonctionnent</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Configurer la vitesse du port à 10 Gbps</button></div>
-    <div class="quiz-expl" id="expl-q3_3">spanning-tree vlan X priority 0 fixe la priorité à 0 (minimum), garantissant que ce switch gagne toujours l'élection Root Bridge pour ce VLAN. Alternativement, spanning-tree vlan X root primary configure automatiquement une priorité suffisamment basse pour gagner l'élection actuelle.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  <div class="vurl"><input type="text" id="vi1" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(1)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>1.1 Modèle hiérarchique à 3 couches</h3>
+<table class="dtable">
+<thead><tr><th>Couche</th><th>Rôle</th><th>Équipements typiques</th><th>Fonctions clés</th></tr></thead>
+<tbody>
+<tr><td><strong>Accès (Access)</strong></td><td>Connecter les hôtes finaux</td><td>Catalyst 2960, 2960X, 9200</td><td>PoE, Port Security, VLANs, STP PortFast, DHCP Relay</td></tr>
+<tr><td><strong>Distribution</strong></td><td>Agrégation + politiques</td><td>Catalyst 3850, 3750, 9300</td><td>Routage inter-VLAN (L3), ACL, QoS, HSRP/VRRP, Summarization</td></tr>
+<tr><td><strong>Cœur (Core)</strong></td><td>Backbone haute vitesse</td><td>Catalyst 9500, Nexus 7K, Routeurs ISR</td><td>Redondance maximale, haut débit (10/40/100G), pas de politiques complexes</td></tr>
+</tbody></table>
+<div class="ibox purple"><span class="ibox-label">📐 Règle d'or — Cisco 3-Tier</span>
+<strong>Ne jamais mettre de logique complexe (ACL, QoS lourde) au niveau Core</strong> — le Cœur doit transmettre les paquets le plus rapidement possible. Les politiques et le filtrage sont appliqués à la couche Distribution. Les connexions hôtes sont gérées à la couche Accès.</div>
+</div>
+
+<div class="section">
+<h3>1.2 Collapsed Core — Architecture à 2 couches</h3>
+<div class="ibox blue"><span class="ibox-label">🏫 Architecture pour Canado Technique</span>
+Pour une école de taille moyenne, le modèle <strong>Collapsed Core</strong> est idéal : Distribution et Core fusionnent sur un switch L3 central. Les switchs d'accès se connectent en étoile vers ce switch central.<br><br>
+<strong>Exemple Canado Technique :</strong><br>
+• SW-Core (Catalyst 3750) — Collapsed Core + Distribution : routage inter-VLAN, SVI par VLAN<br>
+• SW-Salle-A, SW-Salle-B (Catalyst 2960) — Accès : ports étudiant, prof, labo<br>
+• R-Internet (ISR 4321) — Connexion ISP, NAT, DHCP serveur central</div>
+</div>
+
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle couche du modèle hiérarchique est responsable du routage inter-VLAN et des ACLs ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Couche Accès</button>
+      <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Couche Distribution</button>
+      <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Couche Cœur</button>
+      <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Couche Internet</button>
+    </div>
+    <div class="qexpl" id="qe-1-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi évite-t-on de configurer des ACLs complexes sur la couche Core ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Car le Core ne supporte pas les ACLs</button>
+      <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Car le traitement des politiques ralentirait le backbone — le Core doit maximiser la vitesse de forwarding</button>
+      <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Car les ACLs sont uniquement configurées à la couche Accès</button>
+      <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Car le Core n'a pas d'interface de management</button>
+    </div>
+    <div class="qexpl" id="qe-1-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Qu'est-ce que le "Collapsed Core" (Architecture 2 couches) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Un réseau sans couche Core du tout</button>
+      <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>La fusion des couches Distribution et Core en un seul équipement ou couche</button>
+      <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Une panne totale du réseau Core</button>
+      <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Un réseau avec uniquement des hubs à la couche Accès</button>
+    </div>
+    <div class="qexpl" id="qe-1-2"></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1],['La couche Distribution est le centre d\'intelligence du réseau : routage inter-VLAN (SVIs sur switch L3), ACLs pour filtrage entre VLANs, QoS, résumé de routes, et politiques de sécurité. La couche Accès gère uniquement la connectivité des hôtes (port security, PoE, VLANs).','La couche Core est un backbone à haute vitesse — son seul rôle est de transmettre les paquets le plus vite possible entre les switchs de distribution. Ajouter des ACLs complexes introduirait de la latence et réduirait les performances. Principle: «Never do in the Core what can be done in the Distribution».','Collapsed Core = fusionner Distribution et Core sur un seul switch L3 (ex: Catalyst 3750 ou 3850). Avantage : moins d\'équipements et coût réduit. Convient aux réseaux de taille petite à moyenne (école, PME). Inconvénient : moins de redondance si ce switch tombe.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>EtherChannel et haute disponibilité</h2>
-      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">LACP · HSRP · Dual WAN · Stack</span></div>
-    </div>
+
+<!-- ══ CH 2 — Commutation avancée ══ -->
+<div class="chapter" id="ch-2">
+<div class="ch-header"><div class="ch-num">02</div>
+<div class="ch-info"><h2>Commutation avancée</h2>
+<div class="ch-meta"><span>🕐 8h</span><span class="ch-badge">Table CAM · MAC Flooding · Switch L3 · Port Security avancé</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Sécurité commutation et Switch L3</div><div class="vsub">12 min · SRWE Module 2 · MAC Table · L3 Switching</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp2"><div class="vplay" onclick="openVideo(2)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf2" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Table CAM avancée (4 min)</strong> — Aging time, taille de la table, débordement (MAC flooding attack). Comment un attaquant sature la table CAM pour transformer le switch en hub.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Switch L3 — ip routing (4 min)</strong> — Différence entre switch L2 et L3. Activer "ip routing" sur un Catalyst. Routes directement connectées. ip routing + SVIs = routeur sans sous-interfaces.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Port Security récapitulatif (4 min)</strong> — Maximum, modes violation (Protect/Restrict/Shutdown). Vérification err-disabled. Récupération automatique avec errdisable recovery.</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — EtherChannel et redondance — Haute disponibilité</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>EtherChannel / LAG (4 min)</strong> — Regrouper 2-8 liens physiques en un seul lien logique. Doubler ou quadrupler la bande passante. Protocoles: PAgP (Cisco propriétaire), LACP (802.3ad, standard).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>HSRP (Hot Standby Router Protocol) (4 min)</strong> — Routeur virtuel avec IP virtuelle. Un routeur actif, un routeur standby. Basculement automatique en cas de panne. Contexte: deux routeurs sur un LAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Redondance WAN (4 min)</strong> — Dual WAN: deux connexions internet (Natcom + Digicel). Load balancing ou failover. Routeur avec deux interfaces WAN. Cas d'usage haïtien.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Stack de switches (3 min)</strong> — Cisco StackWise: empiler jusqu'à 9 switches en un seul équipement logique. Administration simplifiée, redondance intégrée.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 EtherChannel — Configuration LACP sur Cisco</h3><table class="data-table"><thead><tr><th>Étape</th><th>Commandes</th><th>Description</th></tr></thead><tbody><tr><td>1. Configurer les interfaces membres</td><td>interface range Fa0/1-2</td><td>Sélectionner les interfaces à agréger</td></tr><tr><td>2. Mode LACP actif</td><td>channel-protocol lacp / channel-group 1 mode active</td><td>Activer LACP en mode actif sur toutes les interfaces</td></tr><tr><td>3. Configurer le port-channel</td><td>interface Port-channel 1</td><td>Configurer le lien logique résultant</td></tr><tr><td>4. Mode trunk sur port-channel</td><td>switchport mode trunk / switchport trunk allowed vlan all</td><td>Si EtherChannel entre switches</td></tr><tr><td>5. Vérifier</td><td>show etherchannel summary</td><td>Voir l'état et les membres du groupe</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">EtherChannel regroupant 4 liens FastEthernet 100 Mbps donne un débit logique de...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>100 Mbps (le débit d'un seul lien)</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>200 Mbps</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>400 Mbps</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>1 Gbps</button></div>
-    <div class="quiz-expl" id="expl-q0_4">EtherChannel additionne la bande passante: 4 × 100 Mbps = 400 Mbps de bande passante totale sur le lien logique. STP voit ce lien comme un seul port — pas de blocage, toute la bande passante est utilisée.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">HSRP (Hot Standby Router Protocol) est utilisé pour...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Doubler la bande passante entre routeurs</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Fournir une passerelle par défaut redondante avec basculement automatique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Chiffrer le trafic entre routeurs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Équilibrer le trafic entre VLANs</button></div>
-    <div class="quiz-expl" id="expl-q1_4">HSRP crée une IP virtuelle partagée entre deux routeurs (actif + standby). Les hôtes utilisent l'IP virtuelle comme passerelle. Si le routeur actif tombe en panne, le standby prend l'IP virtuelle — les hôtes ne changent pas leur configuration. Basculement en quelques secondes.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Dans un contexte haïtien, pourquoi configurer une redondance WAN avec 2 FAI différents (Natcom + Digicel) ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Pour doubler la vitesse uniquement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Si l'un des FAI a une panne (coupure de câble, incident technique), l'autre prend le relais automatiquement</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Pour économiser sur les coûts internet</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Les FAI haïtiens n'offrent pas de SLA</button></div>
-    <div class="quiz-expl" id="expl-q2_4">La redondance WAN avec deux FAI différents est cruciale en Haïti où les coupures de service FAI sont relativement fréquentes. Si Natcom a une panne sur son backbone, Digicel reste disponible. Le routeur bascule automatiquement le trafic vers l'interface WAN active.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Quel protocole EtherChannel est standard IEEE (non propriétaire Cisco) ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>PAgP (Port Aggregation Protocol)</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>LACP (802.3ad — Link Aggregation Control Protocol)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>STP (Spanning Tree Protocol)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>VTP (VLAN Trunking Protocol)</button></div>
-    <div class="quiz-expl" id="expl-q3_4">LACP (IEEE 802.3ad) est le standard ouvert pour l'agrégation de liens. Il fonctionne entre équipements de marques différentes. PAgP est propriétaire Cisco — uniquement entre équipements Cisco. En déploiement multi-vendor, toujours utiliser LACP.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  <div class="vurl"><input type="text" id="vi2" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(2)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>2.1 Switch Layer 3 — Configuration ip routing</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Switch L3 avec SVIs</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === SWITCH L3 — ip routing activé (alternative au Router-on-a-Stick) ===</span>
+SW-Core(config)# <span class="cmd">ip routing</span>                     <span class="cmt">← activer le routage L3 sur le switch</span>
+
+<span class="cmt">! Créer les SVIs (interfaces virtuelles VLAN) qui servent de passerelles</span>
+SW-Core(config)# <span class="cmd">interface vlan 10</span>
+SW-Core(config-if)# <span class="cmd">ip address</span> <span class="val">192.168.10.1</span> <span class="val">255.255.255.0</span>
+SW-Core(config-if)# <span class="cmd">no shutdown</span>
+SW-Core(config-if)# <span class="cmd">exit</span>
+
+SW-Core(config)# <span class="cmd">interface vlan 20</span>
+SW-Core(config-if)# <span class="cmd">ip address</span> <span class="val">192.168.20.1</span> <span class="val">255.255.255.0</span>
+SW-Core(config-if)# <span class="cmd">no shutdown</span>
+SW-Core(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Route statique par défaut vers le routeur Internet</span>
+SW-Core(config)# <span class="cmd">ip route</span> <span class="val">0.0.0.0 0.0.0.0</span> <span class="val">203.0.113.1</span>
+
+<span class="cmt">! Vérification</span>
+SW-Core# <span class="cmd">show ip route</span>          <span class="cmt">← doit montrer C 192.168.10.0/24 et C 192.168.20.0/24</span>
+SW-Core# <span class="cmd">show ip interface brief</span> <span class="cmt">← SVIs en état up/up</span></code></pre>
+</div>
+</div>
+
+<div class="section">
+<h3>2.2 Modes de violation Port Security</h3>
+<table class="dtable">
+<thead><tr><th>Mode</th><th>Comportement violation</th><th>Syslog</th><th>Compteur</th><th>Port état</th></tr></thead>
+<tbody>
+<tr><td><strong>Protect</strong></td><td>Paquets non autorisés silencieusement supprimés</td><td>❌</td><td>❌</td><td>Reste up</td></tr>
+<tr><td><strong>Restrict</strong></td><td>Paquets supprimés + alerte</td><td>✅</td><td>✅</td><td>Reste up</td></tr>
+<tr><td><strong>Shutdown</strong> (défaut)</td><td>Port passe en err-disabled immédiatement</td><td>✅</td><td>✅</td><td>err-disabled</td></tr>
+</tbody></table>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Récupération err-disabled</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Récupération manuelle d'un port err-disabled</span>
+SW(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+SW(config-if)# <span class="cmd">shutdown</span>
+SW(config-if)# <span class="cmd">no shutdown</span>          <span class="cmt">← remet le port en service</span>
+
+<span class="cmt">! Récupération automatique (évite intervention manuelle)</span>
+SW(config)# <span class="cmd">errdisable recovery cause psecure-violation</span>
+SW(config)# <span class="cmd">errdisable recovery interval 300</span>    <span class="cmt">← récupère après 5 minutes</span>
+
+<span class="cmt">! Vérification</span>
+SW# <span class="cmd">show errdisable recovery</span>
+SW# <span class="cmd">show port-security interface GigabitEthernet0/1</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle commande active le routage IP sur un switch Cisco Catalyst L3 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>router ospf 1</button>
+      <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>ip routing</button>
+      <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>enable routing</button>
+      <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>switchport routed</button>
+    </div>
+    <div class="qexpl" id="qe-2-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">En mode violation "Restrict", que se passe-t-il quand une adresse MAC non autorisée est détectée ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Le port est mis en err-disabled</button>
+      <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Les paquets sont supprimés et un message syslog est généré mais le port reste actif</button>
+      <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Les paquets sont acceptés et loggés</button>
+      <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Le switch redémarre automatiquement</button>
+    </div>
+    <div class="qexpl" id="qe-2-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle est la différence principale entre Switch L2 et Switch L3 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Le Switch L3 a plus de ports que le L2</button>
+      <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Le Switch L3 peut router des paquets entre VLANs sans routeur externe grâce à "ip routing"</button>
+      <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Le Switch L2 supporte PoE, pas le L3</button>
+      <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Il n'y a aucune différence fonctionnelle</button>
+    </div>
+    <div class="qexpl" id="qe-2-2"></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1],['La commande «ip routing» active la fonction de routage IP au niveau global sur un switch Catalyst L3. Sans elle, le switch fonctionne uniquement en couche 2. Avec «ip routing» + des SVIs (interfaces VLAN avec adresses IP), le switch peut router entre VLANs sans routeur externe.','Mode Restrict : paquets non autorisés supprimés + compteur de violation incrémenté + message syslog généré. Le port RESTE actif. Différence avec Shutdown (port err-disabled) et Protect (supprime silencieusement sans log ni compteur). Restrict est le bon compromis : sécurité + visibilité sans interruption de service.','Un Switch L3 (ex: Catalyst 3750, 9300) peut effectuer du routage IP entre VLANs grâce à «ip routing» + SVIs. Plus besoin d\'un routeur externe pour le Router-on-a-Stick. Avantage : performances bien meilleures (hardware ASIC) et pas de bottleneck sur le lien trunk vers le routeur.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
 </div></div>
-</div><div class="pratique-block">
-  <div class="pratique-header">
-    <div class="pratique-icon-wrap">🔬</div>
-    <div class="pratique-header-info">
-      <h3>Séance Pratique — SP-TRI-21-01</h3>
-      <span>Labo — Architecture VLAN, STP et EtherChannel complète</span>
-    </div>
-    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
+
+<!-- ══ CH 3 — VLANs avancés ══ -->
+<div class="chapter" id="ch-3">
+<div class="ch-header"><div class="ch-num">03</div>
+<div class="ch-info"><h2>VLANs avancés — DTP et sécurité</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">🔀 DTP · Voice VLAN · VLAN Hopping · Sécurité trunk</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — DTP, Voice VLAN et sécurité VLAN avancée</div><div class="vsub">14 min · SRWE Module 3 · DTP · Voice VLAN · Attaques</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp3"><div class="vplay" onclick="openVideo(3)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf3" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>DTP — Dynamic Trunking Protocol (5 min)</strong> — Modes : Dynamic Auto, Dynamic Desirable, Trunk, Access, Nonegotiate. Matrice de négociation. Pourquoi désactiver DTP en production (sécurité).</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Voice VLAN (5 min)</strong> — Port avec deux VLANs simultanés : data VLAN (PC) + voice VLAN (téléphone IP). Configuration switchport voice vlan. CDP entre switch et téléphone IP.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Attaques VLAN Hopping (4 min)</strong> — Switch Spoofing (DTP exploitation), Double Tagging. Contre-mesures : désactiver DTP, changer native VLAN, pruning VLAN.</div></div>
   </div>
-  <div class="pratique-body">
-    <p class="pratique-desc">Séance OBLIGATOIRE. Tu vas construire une architecture réseau évolutive complète avec VLANs, Spanning Tree optimisé et EtherChannel. Durée: 4 heures.</p>
-    <div class="pratique-grid">
-      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Configurer 4 VLANs sur 2 switches avec ports trunk et access</li><li>Vérifier et optimiser le Root Bridge STP (le forcer sur le bon switch)</li><li>Activer PortFast + BPDU Guard sur tous les ports d'accès</li><li>Configurer EtherChannel LACP entre les deux switches</li><li>Configurer le routage inter-VLAN via SVI sur un switch L3</li><li>Tester la connectivité complète entre tous les VLANs</li></ul></div>
-      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Switches Cisco 2960 ou 3750 du labo (ou Packet Tracer)</li><li>Câbles RJ45 pour les connexions trunk</li><li>Accès console pour chaque switch</li><li>Carnet de notes pour documenter chaque étape</li></ul></div>
+  <div class="vurl"><input type="text" id="vi3" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(3)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>3.1 Matrice de négociation DTP</h3>
+<table class="dtable">
+<thead><tr><th>Port local \ Port distant</th><th>Dynamic Auto</th><th>Dynamic Desirable</th><th>Trunk</th><th>Access</th></tr></thead>
+<tbody>
+<tr><td><strong>Dynamic Auto</strong></td><td>Access</td><td><strong>Trunk ✅</strong></td><td><strong>Trunk ✅</strong></td><td>Access</td></tr>
+<tr><td><strong>Dynamic Desirable</strong></td><td><strong>Trunk ✅</strong></td><td><strong>Trunk ✅</strong></td><td><strong>Trunk ✅</strong></td><td>Access</td></tr>
+<tr><td><strong>Trunk</strong></td><td><strong>Trunk ✅</strong></td><td><strong>Trunk ✅</strong></td><td><strong>Trunk ✅</strong></td><td>Désaccord ⚠️</td></tr>
+<tr><td><strong>Access</strong></td><td>Access</td><td>Access</td><td>Désaccord ⚠️</td><td>Access</td></tr>
+</tbody></table>
+<div class="ibox red"><span class="ibox-label">⚠️ Sécurité DTP — Toujours désactiver en production</span>
+DTP permet une attaque "Switch Spoofing" : un attaquant envoie des paquets DTP pour négocier un trunk et accéder à tous les VLANs.<br>
+<strong>Bonne pratique :</strong> <code>switchport nonegotiate</code> + forcer le mode statiquement.<br>
+<code>SW(config-if)# switchport mode trunk<br>SW(config-if)# switchport nonegotiate</code></div>
+</div>
+
+<div class="section">
+<h3>3.2 Voice VLAN — Port à double VLAN</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Voice VLAN (téléphone IP)</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Port connecté à un téléphone IP Cisco (qui a un port PC intégré)</span>
+<span class="cmt">! VLAN 10 = données PC derrière le téléphone</span>
+<span class="cmt">! VLAN 50 = voix (priorité QoS automatique : DSCP EF)</span>
+SW(config)# <span class="cmd">interface GigabitEthernet0/3</span>
+SW(config-if)# <span class="cmd">switchport mode access</span>
+SW(config-if)# <span class="cmd">switchport access vlan 10</span>         <span class="cmt">← données du PC</span>
+SW(config-if)# <span class="cmd">switchport voice vlan 50</span>           <span class="cmt">← voix du téléphone IP</span>
+SW(config-if)# <span class="cmd">mls qos trust cos</span>                 <span class="cmt">← faire confiance au marquage QoS du téléphone</span>
+SW(config-if)# <span class="cmd">spanning-tree portfast</span>             <span class="cmt">← port hôte, pas de wait STP</span>
+SW(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Le téléphone IP apprend le VLAN Voice via CDP automatiquement</span>
+SW# <span class="cmd">show interfaces GigabitEthernet0/3 switchport</span>
+<span class="val">  Administrative Mode: static access
+  Access Mode VLAN: 10 (Data)
+  Voice VLAN: 50 (Voix)</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Deux ports configurés "Dynamic Auto" se connectent. Quel sera le résultat ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Trunk</button>
+      <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Access</button>
+      <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Désaccord — lien en err-disabled</button>
+      <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Le lien ne monte pas du tout</button>
     </div>
-    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
-    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00 (4h)')">Lun 19 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 13h00 (4h)')">Lun 19 Mai — 13h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00 (4h)')">Mar 20 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00 (4h)')">Mer 21 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00 (4h)')">Jeu 22 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00 (4h)')">Ven 23 Mai — 8h00 (4h)</button></div>
-    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-21-01')">📅 Confirmer ma réservation</button>
-    <div class="pratique-confirm" id="confirm-sp-21-01"></div>
+    <div class="qexpl" id="qe-3-0"></div>
   </div>
-</div><div class="demo-block">
-  <div class="demo-header">
-    <div class="demo-icon-wrap">🎭</div>
-    <div class="demo-header-info">
-      <h3>Démonstration — DEM-TRI-21-01</h3>
-      <span>Évaluation (20 min)</span>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quelle commande désactive la négociation DTP sur un port trunk ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>no dtp negotiate</button>
+      <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>switchport nonegotiate</button>
+      <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>switchport mode static</button>
+      <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>no switchport dynamic</button>
     </div>
-    <div class="demo-badge">Évaluation pratique</div>
+    <div class="qexpl" id="qe-3-1"></div>
   </div>
-  <div class="demo-body">
-    <p class="demo-desc">Tu présenteras l'architecture réseau que tu as configurée et expliqueras tes choix de conception.</p>
-    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
-    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Présenter la topologie</strong> — Expliquer le schéma, les VLANs, la numérotation choisie</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Démontrer les VLANs</strong> — show vlan brief + ping inter-VLAN réussi</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Démontrer STP</strong> — show spanning-tree + expliquer quel switch est Root Bridge et pourquoi</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Démontrer EtherChannel</strong> — show etherchannel summary + montrer le débit agrégé</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Justifier les choix</strong> — Expliquer pourquoi cette architecture est évolutive</div></div>
-    <div class="demo-eval">
-      <div class="demo-eval-label">✅ Critères d'évaluation</div>
-      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>VLANs configurés correctement</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Connectivité inter-VLAN fonctionnelle</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Root Bridge sur le bon switch</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>EtherChannel actif</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>PortFast + BPDU Guard sur les ports access</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Justification des choix de conception</div></div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle est l'attaque VLAN Hopping qui exploite DTP ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Double Tagging</button>
+      <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Switch Spoofing</button>
+      <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>MAC Flooding</button>
+      <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>ARP Poisoning</button>
+    </div>
+    <div class="qexpl" id="qe-3-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,1,1],['Dynamic Auto = «je veux bien être trunk si l\'autre demande». Mais si les DEUX sont Auto, aucun des deux ne demande → résultat : Access. Pour qu\'un trunk se forme, au moins un port doit être en Desirable ou Trunk statique.','switchport nonegotiate désactive DTP sur le port. Le switch n\'enverra plus de paquets DTP. Utilisé en combinaison avec switchport mode trunk (ou access) statique pour éviter le Switch Spoofing. Cisco recommande cette commande sur tous les ports de production.','Switch Spoofing exploite DTP : l\'attaquant configure son PC/équipement pour envoyer des trames DTP et convaincre le switch de former un trunk. Une fois trunk établi, l\'attaquant a accès à tous les VLANs. Contre-mesure : désactiver DTP avec switchport nonegotiate.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 4 — Routage inter-VLAN L3 ══ -->
+<div class="chapter" id="ch-4">
+<div class="ch-header"><div class="ch-num">04</div>
+<div class="ch-info"><h2>Routage inter-VLAN — Switch L3</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">SVIs · ip routing · Router-on-a-Stick · Dépannage inter-VLAN</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Switch L3 vs Router-on-a-Stick : comparaison</div><div class="vsub">16 min · SRWE Module 4 · SVIs · ip routing · Dépannage</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp4"><div class="vplay" onclick="openVideo(4)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf4" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Comparaison méthodes (5 min)</strong> — Legacy inter-VLAN (1 port par VLAN) vs Router-on-a-Stick (sous-interfaces) vs Switch L3 (SVIs). Avantages/inconvénients de chaque.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Configuration Switch L3 complète (7 min)</strong> — ip routing, VLANs, SVIs, routes statiques, vérification avec ping inter-VLAN et traceroute.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Dépannage inter-VLAN (4 min)</strong> — Erreurs courantes : SVI down, VLAN non créé, ip routing manquant, trunk mal configuré. Méthodologie show commands.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi4" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(4)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>4.1 Comparaison des méthodes de routage inter-VLAN</h3>
+<table class="dtable">
+<thead><tr><th>Méthode</th><th>Équipement</th><th>Performance</th><th>Scalabilité</th><th>Recommandation</th></tr></thead>
+<tbody>
+<tr><td><strong>Legacy (1 port/VLAN)</strong></td><td>Routeur + Switch L2</td><td>Mauvaise</td><td>Très faible (ports épuisés)</td><td>❌ Obsolète</td></tr>
+<tr><td><strong>Router-on-a-Stick</strong></td><td>Routeur ISR + Switch L2</td><td>Moyenne (bottleneck trunk)</td><td>Bonne (sous-interfaces)</td><td>✅ PME / École</td></tr>
+<tr><td><strong>Switch L3 + SVIs</strong></td><td>Switch Catalyst L3</td><td>Excellente (hardware ASIC)</td><td>Très bonne</td><td>✅✅ Préféré entreprise</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>4.2 Dépannage inter-VLAN — Checklist</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Dépannage inter-VLAN systématique</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! ÉTAPE 1 : ip routing est-il activé ?</span>
+SW-Core# <span class="cmd">show running-config | include ip routing</span>
+<span class="val">ip routing</span>                     <span class="cmt">← doit être présent. Sinon : SW-Core(config)# ip routing</span>
+
+<span class="cmt">! ÉTAPE 2 : Les SVIs existent-elles et sont-elles up/up ?</span>
+SW-Core# <span class="cmd">show ip interface brief</span>
+<span class="val">Vlan10      192.168.10.1    YES manual  up     up      ← OK
+Vlan20      192.168.20.1    YES manual  up     up      ← OK
+Vlan20      unassigned      YES unset   down   down    ← problème : VLAN 20 pas créé !</span>
+
+<span class="cmt">! ÉTAPE 3 : Si SVI est down — le VLAN existe-t-il ?</span>
+SW-Core# <span class="cmd">show vlan brief</span>              <span class="cmt">← VLAN doit être présent et "active"</span>
+<span class="cmt">! Si absent : SW-Core(config)# vlan 20</span>
+
+<span class="cmt">! ÉTAPE 4 : Les ports sont-ils dans le bon VLAN ?</span>
+SW-Core# <span class="cmd">show interfaces GigabitEthernet0/1 switchport</span>
+
+<span class="cmt">! ÉTAPE 5 : Test de connectivité inter-VLAN</span>
+SW-Core# <span class="cmd">ping 192.168.20.10 source vlan 10</span>    <span class="cmt">← ping inter-VLAN depuis switch</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Une SVI VLAN 20 reste en état "down/down" malgré la configuration ip address. Quelle est la cause la plus probable ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>L'adresse IP est incorrecte</button>
+      <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Le VLAN 20 n'a pas été créé ou aucun port actif ne lui est assigné</button>
+      <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>ip routing n'est pas configuré</button>
+      <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Il manque une route statique</button>
+    </div>
+    <div class="qexpl" id="qe-4-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi le Switch L3 avec SVIs est-il plus performant que le Router-on-a-Stick pour le routage inter-VLAN ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Car le Switch L3 a plus de mémoire RAM</button>
+      <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Car le routage est effectué par un ASIC hardware dédié, sans bottleneck sur un seul lien trunk</button>
+      <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Car le Switch L3 supporte plus de VLANs</button>
+      <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Car le Switch L3 n'utilise pas STP</button>
+    </div>
+    <div class="qexpl" id="qe-4-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle commande teste la connectivité inter-VLAN depuis un switch L3 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>ping 192.168.20.10</button>
+      <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>ping 192.168.20.10 source vlan 10</button>
+      <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>traceroute vlan 10 to vlan 20</button>
+      <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>test inter-vlan 10 20</button>
+    </div>
+    <div class="qexpl" id="qe-4-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1],['Une SVI est up uniquement si : 1) le VLAN correspondant existe dans la base (show vlan brief), 2) au moins un port physique actif (up/up) est assigné à ce VLAN. Si le VLAN n\'existe pas ou tous les ports sont down, la SVI reste down même avec une adresse IP configurée.','Le routage L3 sur un switch Catalyst est effectué par des ASICs hardware spécialisés (ex: EARL, MLS). C\'est beaucoup plus rapide que le routage logiciel d\'un routeur ISR. De plus, avec SVIs, le trafic inter-VLAN ne passe pas par un seul lien trunk → pas de bottleneck.','«ping [IP] source vlan [X]» force le switch à utiliser la SVI du VLAN 10 comme source du ping, simulant exactement un paquet inter-VLAN. Sans «source vlan», le switch utiliserait son IP de management et le test serait moins représentatif du trafic hôte réel.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 5 — STP avancé ══ -->
+<div class="chapter" id="ch-5">
+<div class="ch-header"><div class="ch-num">05</div>
+<div class="ch-info"><h2>STP avancé — RSTP et PVST+</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">RSTP · PVST+ · Rapid PVST+ · Load Balancing STP · Tuning</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — RSTP, PVST+ et tuning STP avancé</div><div class="vsub">14 min · SRWE Module 5 · Rapid PVST+ · Load Balancing</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp5"><div class="vplay" onclick="openVideo(5)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf5" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>RSTP — Rapid STP (5 min)</strong> — 802.1w. États : Discarding, Learning, Forwarding (3 au lieu de 5). Types de ports : Root, Designated, Alternate, Backup. Convergence sub-seconde.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>PVST+ et load balancing (5 min)</strong> — Un arbre STP par VLAN. Comment faire du load balancing : Root Bridge différent par VLAN. SW-Core = Root VLAN 10, SW-Dist = Root VLAN 20.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Tuning STP (4 min)</strong> — Hello time, Forward Delay, Max Age. Quand les modifier. BPDU Filter vs BPDU Guard. Loop Guard et Root Guard.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi5" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(5)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>5.1 Comparaison STP 802.1D vs RSTP 802.1w</h3>
+<table class="dtable">
+<thead><tr><th>Caractéristique</th><th>STP 802.1D (classique)</th><th>RSTP 802.1w</th></tr></thead>
+<tbody>
+<tr><td>États des ports</td><td>Blocking, Listening, Learning, Forwarding, Disabled (5)</td><td>Discarding, Learning, Forwarding (3)</td></tr>
+<tr><td>Convergence</td><td>30–50 secondes (Listening 15s + Learning 15s)</td><td>Sub-seconde (1–6 secondes)</td></tr>
+<tr><td>Types de ports</td><td>Root, Designated, Non-designated (Blocked)</td><td>Root, Designated, Alternate, Backup</td></tr>
+<tr><td>Mécanisme</td><td>Timers basés</td><td>Négociation P/A (Proposal/Agreement)</td></tr>
+<tr><td>Cisco PVST+</td><td>PVST+ (par VLAN)</td><td>Rapid PVST+ (par VLAN, rapide)</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>5.2 Load balancing STP avec PVST+</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — STP Load Balancing</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Topologie : SW-Core et SW-Dist reliés par 2 trunks redondants</span>
+<span class="cmt">! Objectif : VLAN 10 trafic passe par Trunk1, VLAN 20 par Trunk2</span>
+
+<span class="cmt">! === SW-Core : Root Bridge pour VLAN 10, secondaire pour VLAN 20 ===</span>
+SW-Core(config)# <span class="cmd">spanning-tree vlan 10 root primary</span>       <span class="cmt">← priorité 24576</span>
+SW-Core(config)# <span class="cmd">spanning-tree vlan 20 root secondary</span>     <span class="cmt">← priorité 28672</span>
+
+<span class="cmt">! === SW-Dist : Root Bridge pour VLAN 20, secondaire pour VLAN 10 ===</span>
+SW-Dist(config)# <span class="cmd">spanning-tree vlan 20 root primary</span>
+SW-Dist(config)# <span class="cmd">spanning-tree vlan 10 root secondary</span>
+
+<span class="cmt">! Activer Rapid PVST+ (recommandé sur tous les switches)</span>
+SW(config)# <span class="cmd">spanning-tree mode rapid-pvst</span>
+
+<span class="cmt">! Root Guard — empêche un switch non autorisé de devenir Root Bridge</span>
+SW-Core(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+SW-Core(config-if)# <span class="cmd">spanning-tree guard root</span>
+
+<span class="cmt">! Vérification</span>
+SW# <span class="cmd">show spanning-tree vlan 10</span>
+SW# <span class="cmd">show spanning-tree vlan 20</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="5">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Combien d'états de port RSTP (802.1w) y a-t-il ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>5 (comme STP classique)</button>
+      <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>3 (Discarding, Learning, Forwarding)</button>
+      <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>2 (Blocking et Forwarding)</button>
+      <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>4 (Blocking, Learning, Forwarding, Disabled)</button>
+    </div>
+    <div class="qexpl" id="qe-5-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Qu'est-ce que Root Guard sur un port STP ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>Empêche les BPDUs d'être envoyés sur ce port</button>
+      <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>Empêche un switch connecté sur ce port de devenir Root Bridge (place le port en Inconsistent si BPDU supérieur reçu)</button>
+      <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Active PortFast sur tous les ports access</button>
+      <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Protège la configuration Root Bridge des modifications</button>
+    </div>
+    <div class="qexpl" id="qe-5-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Comment réaliser du load balancing STP avec PVST+ sur 2 trunks redondants ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Activer LACP sur les deux trunks</button>
+      <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>Configurer un Root Bridge différent par VLAN : SW-A = Root VLAN 10, SW-B = Root VLAN 20</button>
+      <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Augmenter la priorité STP sur tous les VLANs</button>
+      <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>Désactiver STP sur un des deux trunks</button>
+    </div>
+    <div class="qexpl" id="qe-5-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,1],['RSTP 802.1w réduit les états de 5 (STP classique) à 3 : Discarding (remplace Blocking+Listening), Learning, Forwarding. Discarding = le port ne transfère pas de données mais peut participer à la sélection STP. Cette simplification + la négociation P/A permet une convergence sub-seconde.','Root Guard protège la topologie STP en empêchant un switch non autorisé de devenir Root Bridge. Si un port avec Root Guard reçoit un BPDU supérieur (meilleur Bridge ID), le port passe en état «Root Inconsistent» (Discarding). Il revient automatiquement quand les BPDUs supérieurs s\'arrêtent.','PVST+ = 1 instance STP par VLAN. En configurant SW-A comme Root pour VLAN 10 et SW-B comme Root pour VLAN 20, les ports bloqués diffèrent par VLAN : Trunk1 bloqué pour VLAN 20, Trunk2 bloqué pour VLAN 10. Résultat : utilisation des deux trunks simultanément = load balancing réel.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-5"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 6 — EtherChannel ══ -->
+<div class="chapter" id="ch-6">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a2e,#3a0a5e)">
+<div class="ch-num">06</div>
+<div class="ch-info"><h2>EtherChannel — Agrégation de liens</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">⚡ Interactif · LACP · PAgP · Mode On · Port-Channel · Dépannage</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 6 — EtherChannel : LACP, PAgP et configuration</div><div class="vsub">14 min · SRWE Module 6 · LACP · PAgP · Port-Channel</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp6"><div class="vplay" onclick="openVideo(6)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf6" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Qu'est-ce qu'EtherChannel ? (5 min)</strong> — Regrouper 2 à 8 liens physiques en un lien logique. Avantages : bande passante agrégée + redondance. STP voit le bundle comme un seul lien = pas de blocage.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>LACP vs PAgP vs Mode On (5 min)</strong> — LACP (802.3ad, standard ouvert) : Active/Passive. PAgP (Cisco propriétaire) : Desirable/Auto. Mode On (statique, sans négociation). Matrice de compatibilité.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Dépannage EtherChannel (4 min)</strong> — Erreurs de configuration sur les ports membres : vitesse/duplex différents, VLANs différents, native VLAN différent. show etherchannel summary.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi6" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(6)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>6.1 ⚡ Constructeur EtherChannel interactif</h3>
+<p>Sélectionne un protocole et active les ports membres pour simuler la formation d'un bundle EtherChannel.</p>
+<div class="eth-builder">
+  <div class="eth-title">🔗 Simulateur EtherChannel — SW-Core ↔ SW-Dist</div>
+  <div class="eth-scene">
+    <div class="eth-switch">
+      <div class="eth-sw-lbl">SW-Core</div>
+      <div class="eth-ports">
+        <div class="eth-port" onclick="toggleEthPort(0)" id="ep0">Gi0/1 ●</div>
+        <div class="eth-port" onclick="toggleEthPort(1)" id="ep1">Gi0/2 ●</div>
+        <div class="eth-port" onclick="toggleEthPort(2)" id="ep2">Gi0/3 ●</div>
+        <div class="eth-port" onclick="toggleEthPort(3)" id="ep3">Gi0/4 ●</div>
+      </div>
+    </div>
+    <div class="eth-bundle">
+      <div class="eth-channel" id="eth-channel">
+        <div class="eth-ch-lbl">Port-Channel 1</div>
+        <div class="eth-ch-val" id="eth-ch-val">Inactif</div>
+      </div>
+      <div style="font-size:.6rem;color:var(--g500);text-align:center;margin-top:.2rem" id="eth-bw">0 Gbps</div>
+    </div>
+    <div class="eth-switch">
+      <div class="eth-sw-lbl">SW-Dist</div>
+      <div class="eth-ports">
+        <div class="eth-port" onclick="toggleEthPort(0)" id="ep0b">Gi0/1 ●</div>
+        <div class="eth-port" onclick="toggleEthPort(1)" id="ep1b">Gi0/2 ●</div>
+        <div class="eth-port" onclick="toggleEthPort(2)" id="ep2b">Gi0/3 ●</div>
+        <div class="eth-port" onclick="toggleEthPort(3)" id="ep3b">Gi0/4 ●</div>
+      </div>
     </div>
   </div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-21 — Schéma d'architecture réseau évolutive — Multi-sites haïtien</h3>
-      <span>Conception d'une infrastructure réseau d'entreprise scalable</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
+  <div class="eth-btns">
+    <button class="ethbtn ethbtn-lacp" onclick="setEthProto('lacp')">LACP (802.3ad)</button>
+    <button class="ethbtn ethbtn-pagp" onclick="setEthProto('pagp')">PAgP (Cisco)</button>
+    <button class="ethbtn ethbtn-on" onclick="setEthProto('on')">Mode On (statique)</button>
+    <button class="ethbtn ethbtn-reset" onclick="resetEth()">↺ Reset</button>
   </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Conçois l'architecture réseau complète d'une organisation haïtienne (banque, ministère ou grande ONG) avec 3 sites et une exigence de haute disponibilité.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Dessine le <strong>schéma hiérarchique complet</strong> en 3 couches (Core, Distribution, Access) pour le site principal, et en 2 couches pour les deux sites secondaires.</li><li>Définis le <strong>plan VLAN complet</strong>: au minimum 6 VLANs (Directions, Finance, IT, Voix, Serveurs, Invités), avec numérotation, nommage et usage.</li><li>Configure le <strong>plan de redondance</strong>: redondance STP (Root Bridge principal et secondaire), EtherChannel sur les liens critiques, HSRP pour la passerelle.</li><li>Définis la <strong>stratégie WAN</strong>: quel FAI pour chaque site, quelle redondance, quel type de lien (fibre, 4G backup).</li><li>Estime le <strong>budget matériel</strong> indicatif: nombre et modèle des switches/routeurs recommandés, coût approximatif en HTG.</li></ol>
+  <div class="eth-status" id="eth-status">Sélectionne un protocole, puis active des ports membres (min. 2).</div>
+</div>
+</div>
+
+<div class="section">
+<h3>6.2 Configuration EtherChannel</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — EtherChannel LACP, PAgP, Mode On</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === LACP — 802.3ad (recommandé, multi-vendeur) ===</span>
+SW-Core(config)# <span class="cmd">interface range GigabitEthernet0/1 - 2</span>
+SW-Core(config-if-range)# <span class="cmd">channel-group 1 mode active</span>      <span class="cmt">← Active initie LACP</span>
+SW-Core(config-if-range)# <span class="cmd">exit</span>
+
+<span class="cmt">! Configuration du port-channel (interface logique)</span>
+SW-Core(config)# <span class="cmd">interface port-channel 1</span>
+SW-Core(config-if)# <span class="cmd">switchport mode trunk</span>
+SW-Core(config-if)# <span class="cmd">switchport trunk native vlan 99</span>
+SW-Core(config-if)# <span class="cmd">switchport trunk allowed vlan 10,20,30</span>
+SW-Core(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! === PAgP — Cisco propriétaire ===</span>
+SW-Core(config)# <span class="cmd">interface range GigabitEthernet0/3 - 4</span>
+SW-Core(config-if-range)# <span class="cmd">channel-group 2 mode desirable</span>   <span class="cmt">← Desirable initie PAgP</span>
+SW-Core(config-if-range)# <span class="cmd">exit</span>
+
+<span class="cmt">! === Mode On — statique, sans négociation (risque boucle si mal configuré) ===</span>
+SW-Core(config)# <span class="cmd">interface range GigabitEthernet0/5 - 6</span>
+SW-Core(config-if-range)# <span class="cmd">channel-group 3 mode on</span>
+
+<span class="cmt">! Vérification EtherChannel</span>
+SW# <span class="cmd">show etherchannel summary</span>
+<span class="val">Group  Port-channel  Protocol  Ports
+------+-------------+---------+--------
+1      Po1(SU)       LACP      Gi0/1(P) Gi0/2(P)
+  SU = Layer2, In use — P = bundled in port-channel</span>
+SW# <span class="cmd">show etherchannel port-channel</span></code></pre>
+</div>
+</div>
+
+<div class="section">
+<h3>6.3 Matrice de compatibilité EtherChannel</h3>
+<table class="dtable">
+<thead><tr><th>SW-Core \ SW-Dist</th><th>Active (LACP)</th><th>Passive (LACP)</th><th>Desirable (PAgP)</th><th>Auto (PAgP)</th><th>On</th></tr></thead>
+<tbody>
+<tr><td><strong>Active</strong></td><td>✅ LACP</td><td>✅ LACP</td><td>❌</td><td>❌</td><td>❌</td></tr>
+<tr><td><strong>Passive</strong></td><td>✅ LACP</td><td>❌ (les deux attendent)</td><td>❌</td><td>❌</td><td>❌</td></tr>
+<tr><td><strong>Desirable</strong></td><td>❌</td><td>❌</td><td>✅ PAgP</td><td>✅ PAgP</td><td>❌</td></tr>
+<tr><td><strong>Auto</strong></td><td>❌</td><td>❌</td><td>✅ PAgP</td><td>❌ (les deux attendent)</td><td>❌</td></tr>
+<tr><td><strong>On</strong></td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅ (statique)</td></tr>
+</tbody></table>
+</div>
+
+<div class="qblock" data-qid="6">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">4 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 4</div>
+    <div class="q-text">Pourquoi EtherChannel est-il préférable à deux liens trunk redondants gérés par STP seul ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',0,0)"><span class="qletter">A</span>EtherChannel désactive STP</button>
+      <button class="qopt" onclick="selQ(this,'6',0,1)"><span class="qletter">B</span>STP bloquerait un des deux liens — EtherChannel les regroupe en un bundle que STP voit comme 1 seul lien, utilisant ainsi toute la bande passante</button>
+      <button class="qopt" onclick="selQ(this,'6',0,2)"><span class="qletter">C</span>EtherChannel offre plus de sécurité</button>
+      <button class="qopt" onclick="selQ(this,'6',0,3)"><span class="qletter">D</span>EtherChannel augmente la portée du signal</button>
     </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Schéma hiérarchique complet et cohérent</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Plan VLAN complet avec justification</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Plan de redondance (STP + EtherChannel + HSRP)</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Stratégie WAN multi-sites</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Budget matériel indicatif réaliste</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
+    <div class="qexpl" id="qe-6-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 4</div>
+    <div class="q-text">Quel protocole EtherChannel est recommandé dans un réseau multi-vendeur (Cisco + autre marque) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',1,0)"><span class="qletter">A</span>PAgP (Cisco propriétaire)</button>
+      <button class="qopt" onclick="selQ(this,'6',1,1)"><span class="qletter">B</span>LACP (IEEE 802.3ad, standard ouvert)</button>
+      <button class="qopt" onclick="selQ(this,'6',1,2)"><span class="qletter">C</span>Mode On (statique)</button>
+      <button class="qopt" onclick="selQ(this,'6',1,3)"><span class="qletter">D</span>DTP (Dynamic Trunking Protocol)</button>
+    </div>
+    <div class="qexpl" id="qe-6-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 4</div>
+    <div class="q-text">Deux switches : SW-Core en mode "Active" (LACP), SW-Dist en mode "Passive". Résultat ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',2,0)"><span class="qletter">A</span>Pas de bundle — incompatible</button>
+      <button class="qopt" onclick="selQ(this,'6',2,1)"><span class="qletter">B</span>Bundle LACP formé — Active initie, Passive répond</button>
+      <button class="qopt" onclick="selQ(this,'6',2,2)"><span class="qletter">C</span>Bundle PAgP formé</button>
+      <button class="qopt" onclick="selQ(this,'6',2,3)"><span class="qletter">D</span>Bundle en mode On</button>
+    </div>
+    <div class="qexpl" id="qe-6-2"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 4 / 4</div>
+    <div class="q-text">Quelle commande affiche un résumé de tous les bundles EtherChannel et l'état de leurs membres ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',3,0)"><span class="qletter">A</span>show port-channel</button>
+      <button class="qopt" onclick="selQ(this,'6',3,1)"><span class="qletter">B</span>show etherchannel summary</button>
+      <button class="qopt" onclick="selQ(this,'6',3,2)"><span class="qletter">C</span>show lacp neighbor</button>
+      <button class="qopt" onclick="selQ(this,'6',3,3)"><span class="qletter">D</span>show interfaces bundle</button>
+    </div>
+    <div class="qexpl" id="qe-6-3"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('6',[1,1,1,1],['Sans EtherChannel, STP bloque obligatoirement un des deux liens redondants pour éviter les boucles (seulement 1 lien actif à la fois). EtherChannel regroupe plusieurs liens physiques en 1 interface logique (port-channel). STP voit ce bundle comme 1 seul lien, donc aucun port bloqué — toute la bande passante est utilisée + redondance si un lien physique tombe.','LACP (Link Aggregation Control Protocol) est le standard IEEE 802.3ad, donc supporté par Cisco, HP, Aruba, Juniper, etc. PAgP (Port Aggregation Protocol) est propriétaire Cisco — uniquement Cisco-Cisco. Dans un réseau multi-vendeur, toujours utiliser LACP.','LACP Active = initie la négociation en envoyant des LACPDUs. LACP Passive = répond aux LACPDUs mais n\'initie pas. Active + Passive → bundle LACP formé. Passive + Passive → aucun bundle (les deux attendent). Recommandation : mettre Active des deux côtés pour garantir la formation.','show etherchannel summary est LA commande de diagnostic : liste les groupes (Group), interfaces logiques (Port-channel), protocole (LACP/PAgP), et état de chaque port membre (P=bundled, D=down, I=stand-alone). «SU» = Layer2 et In Use.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',4)">↺ Réessayer</button>
+  <span class="qscore" id="qs-6"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 7 — DHCPv4 avec Animation ══ -->
+<div class="chapter" id="ch-7">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a2e,#2a1a5e)">
+<div class="ch-num">07</div>
+<div class="ch-info"><h2>DHCPv4 — Attribution dynamique d'adresses</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">🎬 Animation DORA · Serveur · Relay Agent · DHCPv4 Client</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 7 — DHCPv4 : processus DORA et configuration</div><div class="vsub">16 min · SRWE Module 7 · DORA · ip helper-address · Dépannage</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp7"><div class="vplay" onclick="openVideo(7)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf7" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Processus DORA (6 min)</strong> — Discover (broadcast) → Offer → Request → Acknowledge. Bail (lease). Renouvellement à 50% et 87.5% du bail. Simulation ci-dessous.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Configuration serveur DHCP Cisco (6 min)</strong> — ip dhcp pool, network, default-router, dns-server, lease. Exclusions (ip dhcp excluded-address). Cas : routeur comme serveur DHCP.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>DHCP Relay Agent — ip helper-address (4 min)</strong> — Problème : DHCP Discover = broadcast non routé. Solution : ip helper-address sur l'interface SVI du switch L3. Dépannage : show ip dhcp binding.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi7" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(7)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>7.1 🎬 Animation DHCP — Processus DORA</h3>
+<p>Clique sur "Démarrer DORA" pour simuler l'obtention d'une adresse IP par un client DHCP.</p>
+<div class="dhcp-sim">
+  <div class="dhcp-title">🔄 Simulation DHCPv4 — Processus DORA</div>
+  <div class="dhcp-scene">
+    <div class="dhcp-node">
+      <div class="dhcp-icon">💻</div>
+      <div class="dhcp-lbl">CLIENT</div>
+      <div class="dhcp-ip" id="dhcp-client-ip">Sans IP</div>
+    </div>
+    <div class="dhcp-arrows">
+      <div class="dhcp-msg" id="dm-discover">→ DISCOVER (broadcast)</div>
+      <div class="dhcp-msg" id="dm-offer">← OFFER (IP proposée)</div>
+      <div class="dhcp-msg" id="dm-request">→ REQUEST (je veux cette IP)</div>
+      <div class="dhcp-msg" id="dm-ack">← ACK (confirmé !)</div>
+    </div>
+    <div class="dhcp-node">
+      <div class="dhcp-icon">🖥</div>
+      <div class="dhcp-lbl">SERVEUR DHCP</div>
+      <div class="dhcp-ip" id="dhcp-srv-ip">192.168.10.254</div>
     </div>
   </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-21 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+  <div class="dhcp-btns">
+    <button class="dhbtn dhbtn-play" onclick="startDHCP()">▶ Démarrer DORA</button>
+    <button class="dhbtn dhbtn-reset" onclick="resetDHCP()">↺ Reset</button>
+  </div>
+  <div class="dhcp-log" id="dhcp-log">En attente du démarrage...</div>
+</div>
+</div>
+
+<div class="section">
+<h3>7.2 Configuration serveur DHCP sur routeur Cisco</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Serveur DHCPv4 complet</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === ROUTEUR CISCO COMME SERVEUR DHCP ===</span>
+<span class="cmt">! Exclure les adresses réservées (passerelles, serveurs, imprimantes)</span>
+R(config)# <span class="cmd">ip dhcp excluded-address</span> <span class="val">192.168.10.1</span> <span class="val">192.168.10.20</span>
+R(config)# <span class="cmd">ip dhcp excluded-address</span> <span class="val">192.168.20.1</span> <span class="val">192.168.20.10</span>
+
+<span class="cmt">! Pool DHCP pour VLAN 10 — Étudiants</span>
+R(config)# <span class="cmd">ip dhcp pool</span> <span class="val">VLAN10-Etudiants</span>
+R(config-dhcp)# <span class="cmd">network</span> <span class="val">192.168.10.0</span> <span class="val">255.255.255.0</span>
+R(config-dhcp)# <span class="cmd">default-router</span> <span class="val">192.168.10.1</span>
+R(config-dhcp)# <span class="cmd">dns-server</span> <span class="val">8.8.8.8</span> <span class="val">8.8.4.4</span>
+R(config-dhcp)# <span class="cmd">domain-name</span> <span class="val">canado.edu.ht</span>
+R(config-dhcp)# <span class="cmd">lease</span> <span class="val">7</span>                          <span class="cmt">← bail de 7 jours</span>
+R(config-dhcp)# <span class="cmd">exit</span>
+
+<span class="cmt">! Pool DHCP pour VLAN 20 — Enseignants</span>
+R(config)# <span class="cmd">ip dhcp pool</span> <span class="val">VLAN20-Enseignants</span>
+R(config-dhcp)# <span class="cmd">network</span> <span class="val">192.168.20.0</span> <span class="val">255.255.255.0</span>
+R(config-dhcp)# <span class="cmd">default-router</span> <span class="val">192.168.20.1</span>
+R(config-dhcp)# <span class="cmd">dns-server</span> <span class="val">8.8.8.8</span>
+R(config-dhcp)# <span class="cmd">lease</span> <span class="val">1</span>
+R(config-dhcp)# <span class="cmd">exit</span>
+
+<span class="cmt">! DHCP Relay Agent sur switch L3 (si serveur DHCP sur autre réseau)</span>
+SW-Core(config)# <span class="cmd">interface vlan 10</span>
+SW-Core(config-if)# <span class="cmd">ip helper-address</span> <span class="val">192.168.1.100</span>    <span class="cmt">← IP serveur DHCP distant</span>
+SW-Core(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show ip dhcp pool</span>               <span class="cmt">← pools configurés</span>
+R# <span class="cmd">show ip dhcp binding</span>            <span class="cmt">← IPs attribuées</span>
+R# <span class="cmd">show ip dhcp conflict</span>           <span class="cmt">← conflits d'adresse</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="7">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 7</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Dans le processus DORA, quelle est la nature du message DHCP Discover ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',0,0)"><span class="qletter">A</span>Unicast vers le serveur DHCP connu</button>
+      <button class="qopt" onclick="selQ(this,'7',0,1)"><span class="qletter">B</span>Broadcast Layer 2 et Layer 3 (255.255.255.255) car le client n'a pas d'IP</button>
+      <button class="qopt" onclick="selQ(this,'7',0,2)"><span class="qletter">C</span>Multicast vers le groupe DHCP</button>
+      <button class="qopt" onclick="selQ(this,'7',0,3)"><span class="qletter">D</span>Anycast vers le serveur DHCP le plus proche</button>
+    </div>
+    <div class="qexpl" id="qe-7-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi configure-t-on "ip helper-address" sur une interface SVI ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',1,0)"><span class="qletter">A</span>Pour activer DHCP sur le switch</button>
+      <button class="qopt" onclick="selQ(this,'7',1,1)"><span class="qletter">B</span>Pour relayer les broadcasts DHCP des clients vers un serveur DHCP situé sur un autre réseau (subnet)</button>
+      <button class="qopt" onclick="selQ(this,'7',1,2)"><span class="qletter">C</span>Pour exclure des adresses du pool DHCP</button>
+      <button class="qopt" onclick="selQ(this,'7',1,3)"><span class="qletter">D</span>Pour sécuriser le DHCP contre les attaques</button>
+    </div>
+    <div class="qexpl" id="qe-7-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle commande affiche les IPs actuellement attribuées par un serveur DHCP Cisco ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',2,0)"><span class="qletter">A</span>show ip dhcp pool</button>
+      <button class="qopt" onclick="selQ(this,'7',2,1)"><span class="qletter">B</span>show ip dhcp binding</button>
+      <button class="qopt" onclick="selQ(this,'7',2,2)"><span class="qletter">C</span>show ip dhcp lease</button>
+      <button class="qopt" onclick="selQ(this,'7',2,3)"><span class="qletter">D</span>show dhcp clients</button>
+    </div>
+    <div class="qexpl" id="qe-7-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('7',[1,1,1],['DHCP Discover est envoyé en broadcast car le client n\'a pas d\'adresse IP et ne connaît pas le serveur DHCP. Source : 0.0.0.0 / Destination : 255.255.255.255. Le switch flood ce broadcast sur tous les ports du même VLAN. Si le serveur DHCP est sur un autre réseau, il faut un Relay Agent (ip helper-address).','Le DHCP Discover est un broadcast Layer 3 — les routeurs ne font pas suivre les broadcasts entre sous-réseaux. ip helper-address configure le switch L3 (ou routeur) comme Relay Agent : il intercepte les broadcasts DHCP et les retransmet en unicast vers le serveur DHCP situé sur un autre réseau.','«show ip dhcp binding» liste tous les baux DHCP actifs : adresse MAC du client, adresse IP attribuée, durée du bail, type. C\'est la commande clé pour diagnostiquer pourquoi un client n\'obtient pas d\'IP. «show ip dhcp pool» montre la configuration du pool.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-7" style="display:none" onclick="retryQ('7',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-7"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(7)">✓ Chapitre 7 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 8 — SLAAC et DHCPv6 ══ -->
+<div class="chapter" id="ch-8">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a2e,#0a1a3e)">
+<div class="ch-num">08</div>
+<div class="ch-info"><h2>SLAAC et DHCPv6</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">GUA · SLAAC · DHCPv6 Stateful/Stateless · RA · DAD</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 8 — IPv6 : SLAAC, DHCPv6 et attribution automatique</div><div class="vsub">16 min · SRWE Module 8 · SLAAC · RA · DAD · DHCPv6</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp8"><div class="vplay" onclick="openVideo(8)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf8" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>SLAAC (6 min)</strong> — Stateless Address AutoConfiguration. Le client IPv6 utilise les Router Advertisements (RA) du routeur pour construire sa propre adresse GUA (préfixe /64 + EUI-64 ou random). Drapeaux M et O.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>DHCPv6 Stateless vs Stateful (6 min)</strong> — Stateless : RA donne préfixe + O flag → DHCPv6 pour infos supplémentaires (DNS). Stateful : M flag → DHCPv6 donne l'IP complète (comme DHCPv4).</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>DAD et Link-Local (4 min)</strong> — DAD (Duplicate Address Detection) : le client vérifie que son adresse n'est pas déjà utilisée avant de l'utiliser. Adresses Link-Local FE80::/10.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi8" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(8)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>8.1 Méthodes d'attribution d'adresses IPv6</h3>
+<table class="dtable">
+<thead><tr><th>Méthode</th><th>Qui attribue l'IP ?</th><th>Drapeaux RA</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><strong>SLAAC seul</strong></td><td>Client (auto-configure avec préfixe RA)</td><td>M=0, O=0</td><td>Réseaux simples, pas besoin de DNS personnalisé</td></tr>
+<tr><td><strong>SLAAC + Stateless DHCPv6</strong></td><td>Client construit IP, DHCPv6 donne DNS</td><td>M=0, O=1</td><td>SLAAC pour l'IP + infos supplémentaires via DHCPv6</td></tr>
+<tr><td><strong>DHCPv6 Stateful</strong></td><td>Serveur DHCPv6 (comme DHCPv4)</td><td>M=1, O=1</td><td>Contrôle total sur l'attribution, suivi des baux</td></tr>
+<tr><td><strong>Statique manuelle</strong></td><td>Administrateur</td><td>—</td><td>Serveurs, routeurs, infrastructure</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>8.2 Configuration DHCPv6 Stateless et Stateful</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — DHCPv6 Stateless et Stateful</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Activer le routage IPv6 (obligatoire)</span>
+R(config)# <span class="cmd">ipv6 unicast-routing</span>
+
+<span class="cmt">! === DHCPv6 STATELESS — clients SLAAC + DNS via DHCPv6 ===</span>
+R(config)# <span class="cmd">ipv6 dhcp pool</span> <span class="val">SLAAC-DNS</span>
+R(config-dhcpv6)# <span class="cmd">dns-server</span> <span class="val">2001:4860:4860::8888</span>   <span class="cmt">← Google DNS IPv6</span>
+R(config-dhcpv6)# <span class="cmd">domain-name</span> <span class="val">canado.edu.ht</span>
+R(config-dhcpv6)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">interface GigabitEthernet0/0</span>
+R(config-if)# <span class="cmd">ipv6 address</span> <span class="val">2001:DB8:ACAD:1::1/64</span>
+R(config-if)# <span class="cmd">ipv6 dhcp server SLAAC-DNS</span>
+R(config-if)# <span class="cmd">ipv6 nd other-config-flag</span>        <span class="cmt">← O=1 : DHCPv6 pour DNS</span>
+R(config-if)# <span class="cmd">no shutdown</span>
+
+<span class="cmt">! === DHCPv6 STATEFUL — serveur donne IP complète ===</span>
+R(config)# <span class="cmd">ipv6 dhcp pool</span> <span class="val">STATEFUL-POOL</span>
+R(config-dhcpv6)# <span class="cmd">address prefix</span> <span class="val">2001:DB8:ACAD:1::/64</span> <span class="cmd">lifetime</span> <span class="val">3600 3000</span>
+R(config-dhcpv6)# <span class="cmd">dns-server</span> <span class="val">2001:4860:4860::8888</span>
+R(config-dhcpv6)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R(config-if)# <span class="cmd">ipv6 dhcp server STATEFUL-POOL</span>
+R(config-if)# <span class="cmd">ipv6 nd managed-config-flag</span>        <span class="cmt">← M=1 : DHCPv6 stateful</span>
+R(config-if)# <span class="cmd">no shutdown</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show ipv6 dhcp pool</span>
+R# <span class="cmd">show ipv6 dhcp binding</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="8">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 8</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Que signifie le drapeau M=1 dans un Router Advertisement IPv6 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',0,0)"><span class="qletter">A</span>Le client doit utiliser SLAAC pour l'adresse + DHCPv6 pour les infos (DNS)</button>
+      <button class="qopt" onclick="selQ(this,'8',0,1)"><span class="qletter">B</span>Le client doit utiliser DHCPv6 Stateful pour obtenir une adresse IP complète</button>
+      <button class="qopt" onclick="selQ(this,'8',0,2)"><span class="qletter">C</span>Le client doit utiliser SLAAC seul</button>
+      <button class="qopt" onclick="selQ(this,'8',0,3)"><span class="qletter">D</span>Le client doit obtenir son adresse manuellement</button>
+    </div>
+    <div class="qexpl" id="qe-8-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Qu'est-ce que DAD (Duplicate Address Detection) en IPv6 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',1,0)"><span class="qletter">A</span>Un protocole pour détecter les doublons de serveurs DHCP</button>
+      <button class="qopt" onclick="selQ(this,'8',1,1)"><span class="qletter">B</span>Un mécanisme où le client vérifie que son adresse IPv6 n'est pas déjà utilisée avant de l'activer</button>
+      <button class="qopt" onclick="selQ(this,'8',1,2)"><span class="qletter">C</span>Une méthode pour dupliquer les adresses entre VLANs</button>
+      <button class="qopt" onclick="selQ(this,'8',1,3)"><span class="qletter">D</span>Une fonctionnalité réservée à IPv4</button>
+    </div>
+    <div class="qexpl" id="qe-8-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle commande est obligatoire pour qu'un routeur Cisco envoie des Router Advertisements (RA) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',2,0)"><span class="qletter">A</span>ipv6 router ra</button>
+      <button class="qopt" onclick="selQ(this,'8',2,1)"><span class="qletter">B</span>ipv6 unicast-routing</button>
+      <button class="qopt" onclick="selQ(this,'8',2,2)"><span class="qletter">C</span>ipv6 slaac enable</button>
+      <button class="qopt" onclick="selQ(this,'8',2,3)"><span class="qletter">D</span>router ipv6 1</button>
+    </div>
+    <div class="qexpl" id="qe-8-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('8',[1,1,1],['Le drapeau M (Managed) = 1 dans le RA indique au client IPv6 qu\'il doit utiliser DHCPv6 Stateful pour obtenir son adresse. M=0 + O=0 = SLAAC seul. M=0 + O=1 = SLAAC pour l\'IP + DHCPv6 Stateless pour les infos (DNS). M=1 = DHCPv6 Stateful comme DHCPv4.','DAD (Duplicate Address Detection) utilise les Neighbor Solicitation messages pour vérifier qu\'une adresse IPv6 n\'est pas déjà utilisée sur le réseau. Avant d\'activer son adresse tentative (tentative address), le client envoie un NS vers l\'adresse. Si quelqu\'un répond, l\'adresse est déjà prise.','«ipv6 unicast-routing» active le routage IPv6 sur le routeur ET permet au routeur d\'envoyer des Router Advertisements (RA) sur ses interfaces IPv6. Sans cette commande, le routeur n\'envoie pas de RA → les clients ne peuvent pas utiliser SLAAC.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-8" style="display:none" onclick="retryQ('8',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-8"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(8)">✓ Chapitre 8 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 9 — Sécurité réseau ══ -->
+<div class="chapter" id="ch-9">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a2e,#3a0808)">
+<div class="ch-num">09</div>
+<div class="ch-info"><h2>Sécurité réseau — Bonnes pratiques</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">DHCP Snooping · DAI · 802.1X · Storm Control · Sécurité L2</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 9 — Sécurité couche 2 : DHCP Snooping, DAI, 802.1X</div><div class="vsub">14 min · Sécurité L2 · DHCP Snooping · ARP Inspection</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp9"><div class="vplay" onclick="openVideo(9)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf9" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>DHCP Snooping (5 min)</strong> — Protège contre les faux serveurs DHCP. Ports Trusted (uplinks, serveur DHCP) vs Untrusted (ports hôtes). Binding table. Exemple d'attaque sans Snooping.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>DAI — Dynamic ARP Inspection (5 min)</strong> — Protège contre ARP Poisoning/Spoofing. Utilise la DHCP Snooping binding table pour valider les ARP. Ports Trusted/Untrusted.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Storm Control (4 min)</strong> — Limite les broadcasts/multicasts/unicasts excessifs. Seuils en % ou pps. Protection contre les tempêtes de broadcast et les attaques DoS L2.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi9" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(9)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>9.1 DHCP Snooping — Protection contre les rogue servers</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — DHCP Snooping + DAI</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === DHCP SNOOPING ===</span>
+SW(config)# <span class="cmd">ip dhcp snooping</span>                       <span class="cmt">← activer globalement</span>
+SW(config)# <span class="cmd">ip dhcp snooping vlan 10,20,30</span>          <span class="cmt">← activer sur les VLANs</span>
+SW(config)# <span class="cmd">no ip dhcp snooping information option</span>  <span class="cmt">← désactiver option 82 (évite problèmes)</span>
+
+<span class="cmt">! Port Trusted = uplink vers routeur/serveur DHCP réel</span>
+SW(config)# <span class="cmd">interface GigabitEthernet1/1</span>          <span class="cmt">← port trunk vers SW-Core</span>
+SW(config-if)# <span class="cmd">ip dhcp snooping trust</span>
+SW(config-if)# <span class="cmd">exit</span>
+<span class="cmt">! Tous les autres ports (hôtes) = Untrusted par défaut</span>
+<span class="cmt">! → les DHCP Offers venant de ports Untrusted sont bloqués !</span>
+
+<span class="cmt">! === DAI — Dynamic ARP Inspection ===</span>
+SW(config)# <span class="cmd">ip arp inspection vlan 10,20,30</span>
+<span class="cmt">! Port trusted (idem que DHCP snooping)</span>
+SW(config)# <span class="cmd">interface GigabitEthernet1/1</span>
+SW(config-if)# <span class="cmd">ip arp inspection trust</span>
+SW(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! === STORM CONTROL ===</span>
+SW(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+SW(config-if)# <span class="cmd">storm-control broadcast level 20</span>      <span class="cmt">← bloque si broadcast > 20%</span>
+SW(config-if)# <span class="cmd">storm-control action shutdown</span>
+SW(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+SW# <span class="cmd">show ip dhcp snooping binding</span>             <span class="cmt">← table de liaison DHCP</span>
+SW# <span class="cmd">show ip arp inspection vlan 10</span>            <span class="cmt">← statistiques DAI</span></code></pre>
+</div>
+</div>
+
+<div class="section">
+<h3>9.2 Résumé des menaces L2 et contre-mesures</h3>
+<table class="dtable">
+<thead><tr><th>Attaque</th><th>Description</th><th>Contre-mesure Cisco</th></tr></thead>
+<tbody>
+<tr><td><strong>MAC Flooding</strong></td><td>Saturer la table CAM → switch se comporte comme hub</td><td>Port Security (max MAC)</td></tr>
+<tr><td><strong>VLAN Hopping</strong></td><td>Accéder à d'autres VLANs via DTP ou double tag</td><td>switchport nonegotiate + changer native VLAN</td></tr>
+<tr><td><strong>Rogue DHCP</strong></td><td>Faux serveur DHCP distribue mauvaises IP/GW</td><td>DHCP Snooping</td></tr>
+<tr><td><strong>ARP Spoofing</strong></td><td>Empoisonner la cache ARP → man-in-the-middle</td><td>DAI (Dynamic ARP Inspection)</td></tr>
+<tr><td><strong>Storm de broadcast</strong></td><td>Inonder le réseau de broadcasts → DoS</td><td>Storm Control + STP</td></tr>
+<tr><td><strong>CDP/LLDP info leak</strong></td><td>Fuites d'infos réseau via CDP/LLDP</td><td>no cdp run / no lldp run sur ports hôtes</td></tr>
+</tbody></table>
+</div>
+
+<div class="qblock" data-qid="9">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 9</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">DHCP Snooping est activé. Un PC connecté sur un port "Untrusted" essaie d'envoyer un DHCP Offer. Que se passe-t-il ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',0,0)"><span class="qletter">A</span>Le DHCP Offer est accepté et transmis</button>
+      <button class="qopt" onclick="selQ(this,'9',0,1)"><span class="qletter">B</span>Le DHCP Offer est bloqué par DHCP Snooping (seuls les ports Trusted peuvent envoyer des Offers)</button>
+      <button class="qopt" onclick="selQ(this,'9',0,2)"><span class="qletter">C</span>Le port est mis en err-disabled</button>
+      <button class="qopt" onclick="selQ(this,'9',0,3)"><span class="qletter">D</span>DHCP Snooping ignore les Offers</button>
+    </div>
+    <div class="qexpl" id="qe-9-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quelle fonctionnalité protège contre les attaques ARP Spoofing (Man-in-the-Middle) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',1,0)"><span class="qletter">A</span>DHCP Snooping</button>
+      <button class="qopt" onclick="selQ(this,'9',1,1)"><span class="qletter">B</span>DAI — Dynamic ARP Inspection</button>
+      <button class="qopt" onclick="selQ(this,'9',1,2)"><span class="qletter">C</span>Port Security</button>
+      <button class="qopt" onclick="selQ(this,'9',1,3)"><span class="qletter">D</span>Storm Control</button>
+    </div>
+    <div class="qexpl" id="qe-9-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Pourquoi est-il recommandé de configurer "no cdp run" sur les ports connectés aux hôtes finaux ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',2,0)"><span class="qletter">A</span>CDP consomme trop de bande passante</button>
+      <button class="qopt" onclick="selQ(this,'9',2,1)"><span class="qletter">B</span>CDP révèle des informations sensibles (modèle, IOS, adresses IP) qui pourraient être exploitées par un attaquant</button>
+      <button class="qopt" onclick="selQ(this,'9',2,2)"><span class="qletter">C</span>CDP est incompatible avec Port Security</button>
+      <button class="qopt" onclick="selQ(this,'9',2,3)"><span class="qletter">D</span>CDP empêche le fonctionnement de DHCP Snooping</button>
+    </div>
+    <div class="qexpl" id="qe-9-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('9',[1,1,1],['DHCP Snooping classe les ports en Trusted (uplinks vers serveur DHCP légitime) et Untrusted (ports hôtes). Seul un port Trusted peut envoyer des DHCP Offers. Sur un port Untrusted, tout DHCP Offer est silencieusement supprimé. Cela empêche un PC malveillant de jouer le rôle de serveur DHCP (rogue server).','DAI (Dynamic ARP Inspection) valide chaque paquet ARP en le comparant à la DHCP Snooping binding table (IP ↔ MAC ↔ port). Si un ARP prétend que l\'IP X correspond à la MAC Y alors que la table dit X→Z, le paquet est supprimé. Protection efficace contre ARP Spoofing/Poisoning.','CDP (Cisco Discovery Protocol) envoie des messages contenant : modèle de l\'équipement, version IOS, adresses IP des interfaces, capacités. Ces informations sont précieuses pour un attaquant qui planifie une attaque ciblée. Désactiver CDP sur les ports hôtes avec «no cdp enable» (interface) ou «no cdp run» (global).'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-9" style="display:none" onclick="retryQ('9',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-9"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(9)">✓ Chapitre 9 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 10 — Dépannage TRI-21 ══ -->
+<div class="chapter" id="ch-10">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a2e,#006B46)">
+<div class="ch-num">10</div>
+<div class="ch-info"><h2>Dépannage TRI-21 — Méthodologie complète</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">EtherChannel · DHCPv4 · DHCP Snooping · STP · VLANs · Checklist</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 10 — Dépannage réseau TRI-21 : méthode OSI bottom-up</div><div class="vsub">14 min · EtherChannel · DHCP · STP · VLANs · Outils</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp10"><div class="vplay" onclick="openVideo(10)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf10" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Méthodologie OSI bottom-up (5 min)</strong> — Couche 1 (câbles, ports) → L2 (MAC, VLAN, STP, EtherChannel) → L3 (IP, DHCP, routage) → L4 (ports, ACL). Toujours commencer par le bas.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Dépannage EtherChannel (5 min)</strong> — Raisons d'échec : protocoles incompatibles (LACP+PAgP), vitesse/duplex différents, VLANs trunk différents, native VLAN mismatch. show etherchannel summary.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Dépannage DHCP (4 min)</strong> — Client sans IP : pool épuisé ? ip helper-address manquant ? DHCP Snooping bloque ? show ip dhcp binding + debug ip dhcp server events.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi10" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(10)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>10.1 Dépannage EtherChannel — Erreurs fréquentes</h3>
+<table class="dtable">
+<thead><tr><th>Symptôme</th><th>Cause</th><th>Vérification</th><th>Solution</th></tr></thead>
+<tbody>
+<tr><td>Port-Channel down (D dans show summary)</td><td>Protocoles incompatibles LACP/PAgP</td><td><span class="mono">show etherchannel summary</span></td><td>Uniformiser : Active/Active ou Active/Passive</td></tr>
+<tr><td>Bundle formé mais pas de trafic</td><td>Configuration trunk différente sur Po1 vs ports membres</td><td><span class="mono">show interfaces Po1 trunk</span></td><td>Configurer sur port-channel, pas les ports individuels</td></tr>
+<tr><td>Ports membres instables (fluctuent)</td><td>Vitesse ou duplex différents entre membres</td><td><span class="mono">show interfaces Gi0/1</span></td><td>Uniformiser speed/duplex sur tous les membres</td></tr>
+<tr><td>Native VLAN mismatch</td><td>Native VLAN différent des deux côtés du trunk</td><td><span class="mono">show interfaces trunk</span></td><td>Configurer même native VLAN des deux côtés</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>10.2 Référence rapide — Commandes TRI-21</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Commandes de dépannage TRI-21</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === ETHERCHANNEL ===</span>
+SW# <span class="cmd">show etherchannel summary</span>              <span class="cmt">← état bundles (SU=up, D=down, P=membre bundlé)</span>
+SW# <span class="cmd">show etherchannel port-channel</span>         <span class="cmt">← détails port-channel</span>
+SW# <span class="cmd">show lacp neighbor</span>                    <span class="cmt">← infos voisin LACP</span>
+
+<span class="cmt">! === STP ===</span>
+SW# <span class="cmd">show spanning-tree vlan 10</span>            <span class="cmt">← root, ports, états</span>
+SW# <span class="cmd">show spanning-tree inconsistentports</span>  <span class="cmt">← ports Root Guard déclenchés</span>
+
+<span class="cmt">! === VLAN ===</span>
+SW# <span class="cmd">show vlan brief</span>                       <span class="cmt">← VLANs et ports membres</span>
+SW# <span class="cmd">show interfaces trunk</span>                 <span class="cmt">← trunks actifs, VLANs autorisés</span>
+SW# <span class="cmd">show interfaces Gi0/1 switchport</span>      <span class="cmt">← mode access/trunk, VLAN assigné</span>
+
+<span class="cmt">! === DHCP ===</span>
+R# <span class="cmd">show ip dhcp binding</span>                  <span class="cmt">← IPs attribuées</span>
+R# <span class="cmd">show ip dhcp conflict</span>                 <span class="cmt">← conflits d'adresse</span>
+R# <span class="cmd">show ip dhcp pool</span>                     <span class="cmt">← pools + adresses restantes</span>
+R# <span class="cmd">debug ip dhcp server events</span>           <span class="cmt">← debug en temps réel (attention !)</span>
+
+<span class="cmt">! === DHCP SNOOPING / DAI ===</span>
+SW# <span class="cmd">show ip dhcp snooping binding</span>         <span class="cmt">← table de liaison</span>
+SW# <span class="cmd">show ip dhcp snooping statistics</span>      <span class="cmt">← compteurs de paquets bloqués</span>
+SW# <span class="cmd">show ip arp inspection statistics vlan 10</span>  <span class="cmt">← ARP validés/bloqués</span>
+
+<span class="cmt">! === SWITCH L3 ===</span>
+SW# <span class="cmd">show ip route</span>                         <span class="cmt">← table de routage</span>
+SW# <span class="cmd">show ip interface brief</span>               <span class="cmt">← SVIs up/down</span>
+SW# <span class="cmd">ping 192.168.20.10 source vlan 10</span>    <span class="cmt">← test inter-VLAN</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="10">
+<div class="qblock-header"><span>📝</span><h3>Quiz Final — Chapitre 10</h3><span class="qblock-count">4 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 4</div>
+    <div class="q-text">show etherchannel summary montre "Po1(SD)" pour un bundle LACP. Que signifie "D" ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',0,0)"><span class="qletter">A</span>D = Dynamic (LACP actif)</button>
+      <button class="qopt" onclick="selQ(this,'10',0,1)"><span class="qletter">B</span>D = Down (le port-channel n'est pas opérationnel)</button>
+      <button class="qopt" onclick="selQ(this,'10',0,2)"><span class="qletter">C</span>D = Desirable (PAgP)</button>
+      <button class="qopt" onclick="selQ(this,'10',0,3)"><span class="qletter">D</span>D = Duplex mismatch</button>
+    </div>
+    <div class="qexpl" id="qe-10-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 4</div>
+    <div class="q-text">Un client VLAN 10 n'obtient pas d'IP DHCP. Le pool existe sur le routeur distant. Quelle est la cause probable ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',1,0)"><span class="qletter">A</span>Le pool DHCP est mal configuré</button>
+      <button class="qopt" onclick="selQ(this,'10',1,1)"><span class="qletter">B</span>ip helper-address manquant sur la SVI VLAN 10 du switch L3</button>
+      <button class="qopt" onclick="selQ(this,'10',1,2)"><span class="qletter">C</span>Le client VLAN 10 est mal configuré</button>
+      <button class="qopt" onclick="selQ(this,'10',1,3)"><span class="qletter">D</span>STP bloque le port du client</button>
+    </div>
+    <div class="qexpl" id="qe-10-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 4</div>
+    <div class="q-text">Après activation de DHCP Snooping, les clients ne reçoivent plus d'IP. Quelle est la cause la plus fréquente ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',2,0)"><span class="qletter">A</span>DHCP Snooping n'est pas activé sur les bons VLANs</button>
+      <button class="qopt" onclick="selQ(this,'10',2,1)"><span class="qletter">B</span>L'uplink vers le serveur DHCP n'est pas marqué comme Trusted</button>
+      <button class="qopt" onclick="selQ(this,'10',2,2)"><span class="qletter">C</span>Il faut redémarrer le switch après activation</button>
+      <button class="qopt" onclick="selQ(this,'10',2,3)"><span class="qletter">D</span>DHCP Snooping est incompatible avec DHCPv4</button>
+    </div>
+    <div class="qexpl" id="qe-10-2"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 4 / 4</div>
+    <div class="q-text">Pourquoi ne doit-on pas configurer les VLANs trunk sur les interfaces physiques membres d'un EtherChannel ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',3,0)"><span class="qletter">A</span>Les interfaces membres ne supportent pas la configuration trunk</button>
+      <button class="qopt" onclick="selQ(this,'10',3,1)"><span class="qletter">B</span>La configuration doit être sur l'interface port-channel logique — les membres héritent de la config du port-channel</button>
+      <button class="qopt" onclick="selQ(this,'10',3,2)"><span class="qletter">C</span>Configurer sur les membres individuels double la bande passante</button>
+      <button class="qopt" onclick="selQ(this,'10',3,3)"><span class="qletter">D</span>La configuration trunk n'est pas supportée sur EtherChannel</button>
+    </div>
+    <div class="qexpl" id="qe-10-3"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('10',[1,1,1,1],['Dans show etherchannel summary : S=Layer2, U=In use (bundle actif), D=Down (port ou bundle inactif), P=bundled (membre actif dans le bundle), I=stand-alone (pas dans bundle). «Po1(SD)» = port-channel défini mais Down = pas de membres actifs ou protocole incompatible.','Le DHCP Discover est un broadcast L3. Les routeurs et switches L3 ne routent pas les broadcasts entre sous-réseaux. Sans «ip helper-address» sur la SVI VLAN 10, le Discover est bloqué au niveau du switch et n\'atteint jamais le serveur DHCP distant. Ajouter : SW-Core(config-if)# ip helper-address [IP serveur DHCP].','Sans DHCP Snooping, tout port peut envoyer des DHCP Offers. Avec Snooping actif, seuls les ports Trusted peuvent envoyer des Offers. Si l\'uplink vers le vrai serveur DHCP n\'est pas marqué Trusted, les Offers légitimes sont bloqués → les clients n\'obtiennent plus d\'IP. Toujours marquer les uplinks et ports serveur DHCP comme Trusted.','L\'interface port-channel (Po1) est l\'interface logique qui représente le bundle. C\'est sur Po1 qu\'on configure le mode trunk, native VLAN, VLANs autorisés. Les interfaces physiques membres héritent automatiquement de cette configuration. Configurer sur les membres individuellement peut créer des incohérences et faire tomber le bundle.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-10" style="display:none" onclick="retryQ('10',4)">↺ Réessayer</button>
+  <span class="qscore" id="qs-10"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(10)" style="background:linear-gradient(135deg,var(--accent),var(--accentL));font-size:.86rem;padding:.6rem 1.4rem">🎓 Chapitre 10 terminé — Module TRI-21 complété !</button></div>
+</div></div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🎉 Félicitations — Module TRI-21 complété !</h2>
+  <p>Tu maîtrises maintenant l'architecture hiérarchique, EtherChannel, DHCP, SLAAC/DHCPv6 et la sécurité L2. Prochaine étape : TRI-22 !</p>
+</div>
+
+</div><!-- /#main-content -->
+</div><!-- /.layout -->
+</div><!-- /.wrap -->
+<div id="mob-overlay" onclick="toggleToc()"></div>
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+// ═══ STATE ═══
+var ST={done:{},qs:{},sel:{}};var K='TRI21v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){
+    var el=document.getElementById('qs-'+qid);
+    if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}
+  });
+  initTimer();updateProg();
+});
+
+// ═══ PROGRESS ═══
+function updateProg(){
+  var total=10,done=Object.keys(ST.done).filter(function(k){return ST.done[k];}).length;
+  var pct=Math.round(done/total*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';if(t)t.textContent=done+' / '+total+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+
+// ═══ TOC ═══
+function goTo(n){
+  var el=document.getElementById('ch-'+n);if(!el){toast('ℹ️ Chapitre bientôt disponible.');return;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');
+  if(window.innerWidth<=768)toggleToc();
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function toggleToc(){
+  var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');
+  t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+
+// ═══ QUIZ ═══
+function selQ(btn,qid,qi,val){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var items=block.querySelectorAll('.q-item');var idx=parseInt(qi);
+  if(items[idx])items[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
+function submitQ(qid,answers,expls){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var sel=ST.sel[qid]||{},total=answers.length;
+  for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions d\'abord.');return;}}
+  var ok=0;var items=block.querySelectorAll('.q-item');
+  for(var i=0;i<total;i++){
+    var correct=answers[i],chosen=sel[i],item=items[i];if(!item)continue;
+    item.querySelectorAll('.qopt').forEach(function(b,j){
+      b.disabled=true;if(j===correct)b.classList.add('ok');else if(j===chosen&&chosen!==correct)b.classList.add('ko');
+    });
+    var ex=document.getElementById('qe-'+qid+'-'+i);
+    if(ex){ex.textContent=expls[i];ex.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}
+    if(chosen===correct)ok++;
+  }
+  ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';
+  updateProg();toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');
 }
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
+function retryQ(qid){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});
+  block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});
+  if(ST.sel[qid])ST.sel[qid]={};
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';
 }
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+
+// ═══ ETHERCHANNEL BUILDER ═══
+var ethProto=null;var ethPorts=[false,false,false,false];
+function setEthProto(proto){
+  ethProto=proto;
+  var labels={'lacp':'LACP (802.3ad) — Active/Passive','pagp':'PAgP (Cisco) — Desirable/Auto','on':'Mode On — Statique (sans négociation)'};
+  updateEthStatus();toast('Protocole : '+labels[proto]);
+}
+function toggleEthPort(idx){
+  ethPorts[idx]=!ethPorts[idx];
+  var ep=document.getElementById('ep'+idx);var epb=document.getElementById('ep'+idx+'b');
+  if(ep)ep.classList.toggle('active',ethPorts[idx]);
+  if(epb)epb.classList.toggle('active',ethPorts[idx]);
+  updateEthStatus();
+}
+function updateEthStatus(){
+  var active=ethPorts.filter(Boolean).length;
+  var ch=document.getElementById('eth-channel');var val=document.getElementById('eth-ch-val');var bw=document.getElementById('eth-bw');var st=document.getElementById('eth-status');
+  if(active>=2&&ethProto){
+    if(ch)ch.classList.add('ready');
+    if(val)val.textContent=active+' × 1GbE actifs';
+    if(bw)bw.textContent='Bande passante : '+active+'Gbps agrégés';
+    var cmd='channel-group 1 mode '+(ethProto==='lacp'?'active':ethProto==='pagp'?'desirable':'on');
+    if(st)st.innerHTML='<strong>Bundle formé ✅</strong><br>Protocole : '+(ethProto.toUpperCase())+'<br>Commande IOS : <code>'+cmd+'</code><br>STP voit Po1 comme 1 seul lien — '+(active)+'Gbps disponibles sans port bloqué.';
+  } else {
+    if(ch)ch.classList.remove('ready');
+    if(val)val.textContent=active===0?'Inactif':active+' port(s) — min. 2 requis';
+    if(bw)bw.textContent=active===0?'0 Gbps':active+'Gbps (bundle non formé)';
+    if(st){
+      if(!ethProto)st.textContent='Sélectionne un protocole, puis active des ports membres (min. 2).';
+      else if(active<2)st.textContent='Active au moins 2 ports membres pour former le bundle.';
+    }
   }
 }
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+function resetEth(){ethProto=null;ethPorts=[false,false,false,false];['ep0','ep1','ep2','ep3','ep0b','ep1b','ep2b','ep3b'].forEach(function(id){var el=document.getElementById(id);if(el)el.classList.remove('active');});updateEthStatus();}
 
+// ═══ DHCP ANIMATION ═══
+var dhcpRunning=false;
+function startDHCP(){
+  if(dhcpRunning)return;dhcpRunning=true;
+  var msgs=['dm-discover','dm-offer','dm-request','dm-ack'];
+  var logs=['[0.00s] Client envoie DHCP Discover (broadcast 255.255.255.255)','[0.12s] Serveur reçoit Discover — propose 192.168.10.50','[0.13s] Serveur envoie DHCP Offer (unicast → client MAC)','[0.25s] Client envoie DHCP Request (broadcast — accepte l\'offre)','[0.26s] Serveur envoie DHCP ACK — bail de 7 jours confirmé','[0.27s] Client configure 192.168.10.50/24 — GW 192.168.10.1'];
+  var clientIp=document.getElementById('dhcp-client-ip');var logEl=document.getElementById('dhcp-log');
+  if(clientIp)clientIp.textContent='En cours...';if(logEl)logEl.textContent='';
+  msgs.forEach(function(id){var el=document.getElementById(id);if(el)el.classList.remove('active');});
+  var delay=0;
+  msgs.forEach(function(id,i){
+    delay+=800;
+    setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('active');if(logEl&&logs[i*1]){logEl.textContent+=logs[i]+'\n';logEl.scrollTop=logEl.scrollHeight;}},delay);
+  });
+  setTimeout(function(){if(logEl){logEl.textContent+=logs[4]+'\n'+logs[5]+'\n';logEl.scrollTop=logEl.scrollHeight;}if(clientIp)clientIp.textContent='192.168.10.50/24';dhcpRunning=false;toast('✅ DHCP : IP attribuée avec succès !');},delay+800);
+}
+function resetDHCP(){
+  dhcpRunning=false;
+  ['dm-discover','dm-offer','dm-request','dm-ack'].forEach(function(id){var el=document.getElementById(id);if(el)el.classList.remove('active');});
+  var c=document.getElementById('dhcp-client-ip');if(c)c.textContent='Sans IP';
+  var l=document.getElementById('dhcp-log');if(l)l.textContent='En attente du démarrage...';
+}
+
+// ═══ VIDEO ═══
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';}
+function copyCode(btn){var code=btn.closest('.codeblock').querySelector('code');if(!code)return;navigator.clipboard.writeText(code.innerText||code.textContent).then(function(){btn.textContent='✓ Copié!';setTimeout(function(){btn.textContent='Copier';},2000);});}
+
+// ═══ TIMER + TOAST ═══
+var timerStart=Date.now();
+function initTimer(){var saved=ld('time',0);timerStart=Date.now()-saved*1000;setInterval(function(){var e=Math.floor((Date.now()-timerStart)/1000);sv('time',e);var el=document.getElementById('session-timer');if(el){var h=Math.floor(e/3600),m=Math.floor((e%3600)/60),s=e%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}},1000);}
+var _tt;
+function toast(msg){var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#120820;border:1px solid rgba(155,77,190,.3);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#E0C8FF;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);}
 </script>
-
-<div id="mod-code-data" data-code="TRI-21" style="display:none"></div>
-<div id="seuil-data" data-seuil="80" style="display:none"></div>
 </body>
 </html>

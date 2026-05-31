@@ -213,11 +213,21 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 #mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
 @media(max-width:768px){#mob-toc-btn{display:flex!important}}
 @media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}body{background:#fff!important}}
+
+/* ═══ HERO BANNER IMAGE ═══ */
+.mod-header{position:relative}
+.mod-hero-img{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  opacity:.18;pointer-events:none;z-index:0
+}
+.mod-header-in{position:relative;z-index:1}
 </style>
 </head>
 <body>
 
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('assets/images/hero/slide-tri.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">🔀 TRI-19 · 2ème Année · Cisco SRWE v7.0</div>
     <h1>Routage et <em>commutation</em></h1>

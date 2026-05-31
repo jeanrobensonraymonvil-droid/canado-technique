@@ -247,18 +247,28 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 #mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
 @media(max-width:768px){#mob-toc-btn{display:flex!important}}
 @media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}body{background:#fff!important}}
+
+/* ═══ HERO BANNER IMAGE ═══ */
+.mod-header{position:relative}
+.mod-hero-img{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  opacity:.18;pointer-events:none;z-index:0
+}
+.mod-header-in{position:relative;z-index:1}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('assets/images/hero/slide-tri.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">🌐 TRI-17 · 1ère Année · Cisco ITN v7.0</div>
     <h1>Initiation à la <em>réseautique</em></h1>
     <p class="mod-desc">17 chapitres · Cisco CCNA — Théorie enrichie, simulateur CLI interactif, calculateur de sous-réseaux, animations ARP/TCP/DHCP, convertisseur binaire et quiz de validation.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ <strong>90 heures</strong></div>
+      <div class="mod-meta-item">⏱ <strong>150 heures</strong></div>
       <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
       <div class="mod-meta-item">📚 <strong>17 chapitres</strong></div>
       <div class="mod-meta-item">🏆 <strong>CCNA Préparatoire</strong></div>
