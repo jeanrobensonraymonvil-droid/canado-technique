@@ -1,565 +1,1332 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-26 — Sécurité de réseau</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-26 — Sécurité des réseaux · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--red:#E8192C;--redD:#8B0000;--redL:#FF4D5E;
+  --gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;
+  --g100:#FFF0F0;--g300:#FFB3B3;--g500:#8A4040;--g700:#3A0A0A;
+  --text:#0B1525;--bdr:rgba(232,25,44,.15);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px;
+  --accent:#E8192C;--accentL:#FF4D5E;--accentG:rgba(232,25,44,.08)
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#fff0f0;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#1a0505 55%,#8B0000 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 25% 50%,rgba(232,25,44,.18) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.06) 0%,transparent 50%);pointer-events:none}
+.mod-hero-img{position:absolute;inset:0;background-image:url('../../slide-tri.jpg');background-size:cover;background-position:center;opacity:.15;pointer-events:none;z-index:0}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
-.mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
-
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
-
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(232,25,44,.2);border:1px solid rgba(232,25,44,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#FF9999;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
+.mod-header h1 em{color:#FF9999;font-style:normal}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:520px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#FF9999);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500)}.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--accent)}.toc-item.act{background:rgba(232,25,44,.08);color:var(--accent);font-weight:600}
+.toc-item.done{color:var(--accentL)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0}
+.toc-item.act .toc-dot,.toc-item.done .toc-dot{background:var(--accentL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#1a0505,#8B0000);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--accentL)}
+.section p{font-size:.84rem;color:#2a0a0a;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a0a0a;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--accent)}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.orange{background:rgba(200,87,10,.06);border:1px solid rgba(200,87,10,.2);color:#5a2000}.ibox.orange .ibox-label{color:var(--orange)}
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#1a0505;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(232,25,44,.02)}
+.mono{font-family:var(--fM);color:var(--accent);font-size:.8em;font-weight:700;background:rgba(232,25,44,.06);padding:1px 5px;border-radius:4px}
+.codeblock{background:#0a0005;border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.codeblock-header{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.codeblock-lang{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+.codeblock-copy{font-size:.65rem;padding:2px 8px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.codeblock-copy:hover{background:rgba(232,25,44,.2);color:#FF9999}
+.codeblock pre{padding:1rem 1.1rem;overflow-x:auto}
+.codeblock code{font-family:var(--fM);font-size:.8rem;color:#FFB3B3;line-height:1.75;white-space:pre}
+.cmd{color:#50fa7b}.cmt{color:#5a2a2a;font-style:italic}.val{color:#f1fa8c}.str{color:#ff9b50}.kw{color:#ff79c6}
+.vblock{background:linear-gradient(135deg,#040D1A,#1a0505);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(232,25,44,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(232,25,44,.2);border:1px solid rgba(232,25,44,.4);font-size:.6rem;font-weight:800;color:#FF9999;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--accent);color:#fff;font-size:.75rem;font-weight:700}
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--accent);background:rgba(232,25,44,.03)}
+.qopt.sel{border-color:var(--accent);background:rgba(232,25,44,.06);font-weight:600;color:var(--accent)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--accent);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--accent);color:var(--accent)}
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--accent);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:var(--accentL)}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--redD),var(--accent));border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}body{background:#fff!important}}
 </style>
 </head>
 <body>
 <div class="mod-header">
+  <div class="mod-hero-img"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🛡️ Module TRI-26 · 1ère Année</div>
-    <h1>Sécurité de <em>réseau</em></h1>
+    <div class="mod-tag">🔒 TRI-26 · 2ème Année · Cisco ENSA v7.0</div>
+    <h1>Sécurité des <em>réseaux</em></h1>
+    <p class="mod-desc">10 chapitres · Menaces, ACL avancées, Pare-feu, IDS/IPS, AAA, Cryptographie, PKI, Sécurité sans-fil, Endpoint Security — avec simulateur ACL, analyseur de menaces et laboratoires pratiques.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>75 heures</strong></div>
+      <div class="mod-meta-item">⏱ <strong>140 heures</strong></div>
       <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo pare-feu/ACL</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Audit de sécurité</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Politique de sécurité</strong></div>
+      <div class="mod-meta-item">📚 <strong>10 chapitres</strong></div>
+      <div class="mod-meta-item">🔬 <strong>Packet Tracer</strong></div>
+      <div class="mod-meta-item">🏆 <strong>CCNA Security</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-txt" id="prog-txt">0 / 10 chapitres</span>
     </div>
-  </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Menaces et vulnérabilités réseau</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>ACL Cisco — Contrôle d'accès</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Pare-feu et DMZ</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>IDS/IPS et sécurité avancée</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo pare-feu et ACL Cisco</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Audit de sécurité réseau</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Politique de sécurité réseau</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Menaces et vulnérabilités réseau</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">CIA Triad · Menaces · Défense en profondeur</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Menaces, vulnérabilités et modèle de sécurité réseau</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Paysage des menaces en Haïti (3 min)</strong> — Menaces les plus courantes: phishing/hameçonnage ciblant les employés, ransomware sur les partages réseau, accès non autorisé via Wi-Fi non sécurisé, attaques depuis internet.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Les 3 piliers de la sécurité — CIA Triad (4 min)</strong> — Confidentialité (les données ne sont accessibles qu'aux personnes autorisées), Intégrité (les données ne sont pas modifiées sans autorisation), Disponibilité (les systèmes sont accessibles quand nécessaire).</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Vecteurs d'attaque réseau (5 min)</strong> — Attaques réseau: DoS/DDoS, Man-in-the-Middle (ARP spoofing), Port scanning (Nmap), VLAN hopping, attaques par dictionnaire (Telnet/SSH).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Défense en profondeur (3 min)</strong> — Pas une seule ligne de défense mais plusieurs couches: pare-feu périmétrique, segmentation VLAN, ACL sur les switches, authentification forte, monitoring continu.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 Menaces réseau et contre-mesures</h3><table class="data-table"><thead><tr><th>Menace</th><th>Description</th><th>Impact</th><th>Contre-mesure</th></tr></thead><tbody><tr><td>ARP Spoofing</td><td>Fausses réponses ARP pour intercepter le trafic</td><td>Man-in-the-Middle — vol de données en clair</td><td>Dynamic ARP Inspection (DAI), HTTPS partout, VPN</td></tr><tr><td>VLAN Hopping</td><td>Accéder à un VLAN non autorisé via DTP ou double tagging</td><td>Contournement de la segmentation VLAN</td><td>Désactiver DTP, VLAN natif ≠ VLAN utilisateurs</td></tr><tr><td>Port Scanning (Nmap)</td><td>Découverte des services ouverts sur les hôtes</td><td>Reconnaissance avant une attaque ciblée</td><td>ACL pour limiter les accès, IDS pour détecter les scans</td></tr><tr><td>Brute Force SSH/Telnet</td><td>Tentatives répétées de connexion pour deviner le mot de passe</td><td>Accès non autorisé aux équipements</td><td>SSH v2 uniquement, clés RSA, fail2ban, désactiver Telnet</td></tr><tr><td>DoS/DDoS</td><td>Saturation d'un service par des requêtes massives</td><td>Indisponibilité du service</td><td>Rate limiting, ACL, scrubbing DDoS en amont FAI</td></tr><tr><td>Ransomware via réseau</td><td>Propagation via partages SMB mal sécurisés</td><td>Chiffrement et perte de toutes les données</td><td>Segmentation réseau, sauvegardes offline, antivirus</td></tr></tbody></table><div class="info-box"><span class="info-box-label">🇭🇹 Menaces prioritaires en Haïti</span>Les attaques les plus fréquemment rencontrées dans les entreprises haïtiennes: (1) Phishing par email ciblant les finances et la direction. (2) Accès non autorisé au Wi-Fi d'entreprise (mots de passe partagés ou trop simples). (3) Vol d'équipements avec données non chiffrées. (4) Employés ex-internes conservant des accès actifs.</div></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">La triade CIA en sécurité informatique signifie...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Central Intelligence Agency</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Confidentialité + Intégrité + Authenticité</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Confidentialité + Intégrité + Disponibilité (Availability)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Configuration + Installation + Autorisation</button></div>
-    <div class="quiz-expl" id="expl-q0_1">CIA = Confidentiality + Integrity + Availability (Disponibilité). C'est le modèle fondamental de la sécurité informatique. Tout incident de sécurité affecte au moins un de ces trois piliers: une panne = Disponibilité, un vol de données = Confidentialité, une modification non autorisée = Intégrité.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Une attaque ARP Spoofing vise à...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Saturer le réseau de trames ARP pour créer une panne</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Usurper l'identité d'un équipement (routeur ou serveur) pour intercepter et lire le trafic des autres hôtes</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Découvrir les équipements actifs sur le réseau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Contourner les VLANs de sécurité</button></div>
-    <div class="quiz-expl" id="expl-q1_1">ARP Spoofing: l'attaquant envoie de fausses réponses ARP en disant "l'IP du routeur c'est mon adresse MAC". Les hôtes mettent à jour leur cache ARP et envoient leur trafic vers l'attaquant (qui peut le lire, le modifier et le retransmettre = MITM silencieux).</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi Telnet est-il interdit sur les équipements réseau de production ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Il est trop lent</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Il transmet toutes les données (login, mot de passe, commandes) en clair — lisible par Wireshark</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Il ne fonctionne pas sur les switches Cisco</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Il utilise trop de bande passante</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Telnet = port 23, protocole texte clair. N'importe qui avec Wireshark sur le réseau peut capturer le login, le mot de passe et toutes les commandes d'administration. Utiliser exclusivement SSH (port 22, chiffré). Désactiver Telnet: line vty 0 4 → transport input ssh.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">La "défense en profondeur" en sécurité réseau signifie...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Installer un pare-feu très puissant à la frontière du réseau</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Multiplier les couches de sécurité (périmètre, interne, hôte) pour qu'une seule faille ne compromette pas tout</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Former les utilisateurs uniquement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Chiffrer toutes les données stockées</button></div>
-    <div class="quiz-expl" id="expl-q3_1">La défense en profondeur (defense in depth): si le pare-feu périmétrique est contourné (phishing), les ACL internes limitent la propagation. Si les ACL sont contournées, la segmentation VLAN isole l'impact. Si le VLAN est compromis, les droits AD limités protègent les données. Chaque couche ralentit l'attaquant.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>ACL Cisco — Contrôle d'accès</h2>
-      <div class="chapter-meta"><span>🕐 20 heures</span><span class="chapter-badge">Standard/Étendue/Named · Anti-spoofing · Established</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — ACL Cisco avancées — Filtrage et sécurité</div><div class="video-subtitle">Durée : 18 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>ACL standard vs étendue (rappel + approfondissement) (4 min)</strong> — Standard: filtre uniquement sur l'IP source (numéros 1-99, 1300-1999). Étendue: filtre sur source + destination + protocole + port (100-199, 2000-2699).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Named ACL (4 min)</strong> — ip access-list extended NOM. Avantages: nom descriptif, réordonnable (permit/deny ajoutables à n'importe quelle position), plus lisible.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Cas d'usage sécurité (5 min)</strong> — Bloquer Telnet entrant, autoriser uniquement SSH, bloquer les RFC 1918 entrants sur l'interface WAN, implémenter des règles anti-spoofing.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Remarque finale des ACL (3 min)</strong> — Implicit deny all en fin de chaque ACL. Tester avec "show access-list" et les compteurs de hits.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 ACL de sécurité essentielles sur routeur Cisco</h3><table class="data-table"><thead><tr><th>Règle ACL</th><th>Commande</th><th>Justification sécurité</th></tr></thead><tbody><tr><td>Bloquer adresses RFC 1918 en entrée WAN</td><td>deny ip 192.168.0.0 0.0.255.255 any / deny ip 10.0.0.0 0.255.255.255 any / deny ip 172.16.0.0 0.15.255.255 any</td><td>Anti-spoofing: les IPs privées ne doivent jamais venir d'internet</td></tr><tr><td>Bloquer adresses loopback/réservées</td><td>deny ip 127.0.0.0 0.255.255.255 any / deny ip 0.0.0.0 0.255.255.255 any</td><td>Les paquets avec ces sources sur internet = falsifiés</td></tr><tr><td>Autoriser SSH uniquement (bloquer Telnet)</td><td>permit tcp any host MGMT_IP eq 22 / deny tcp any host MGMT_IP eq 23</td><td>SSH chiffré autorisé, Telnet interdit</td></tr><tr><td>Bloquer ICMP depuis internet (ou limiter)</td><td>deny icmp any any echo</td><td>Limite la reconnaissance réseau (ping sweep, traceroute)</td></tr><tr><td>Autoriser seulement le trafic établi en retour</td><td>permit tcp any any established</td><td>Autorise uniquement les connexions initiées de l'intérieur</td></tr><tr><td>Deny all final (implicite)</td><td>(implicite — pas besoin de la taper)</td><td>Tout ce qui n'est pas explicitement autorisé est refusé</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi bloquer les adresses RFC 1918 (192.168.x.x, 10.x.x.x, 172.16.x.x) sur l'interface WAN en entrée ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Pour économiser la bande passante WAN</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Ces adresses privées ne devraient jamais venir d'internet — leur présence indique une adresse source falsifiée (spoofing)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Pour accélérer le routage NAT</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Ces adresses sont réservées aux routeurs Cisco uniquement</button></div>
-    <div class="quiz-expl" id="expl-q0_2">Anti-spoofing: les adresses RFC 1918 sont non routables sur internet (privées). Si un paquet arrive sur l'interface WAN avec une source 192.168.x.x, c'est 100% falsifié. Bloquer ces paquets au niveau WAN évite les attaques de spoofing d'IP interne.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Le "deny implicite" en fin de chaque ACL Cisco signifie...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>La dernière règle écrite est toujours un deny</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Si aucune règle ne correspond au paquet, il est REFUSÉ par défaut — sans avoir besoin d'écrire "deny any any"</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>L'ACL refuse tout le trafic sauf si on écrit un "permit any"</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Uniquement les ACL étendues ont un deny implicite</button></div>
-    <div class="quiz-expl" id="expl-q1_2">Toutes les ACL Cisco ont un "deny any any" implicite à la fin. Conséquence: si on crée une ACL et qu'on l'applique à une interface SANS mettre de règles permit, TOUT le trafic est bloqué. Toujours vérifier qu'il y a suffisamment de règles permit avant d'appliquer une ACL sur une interface de production.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">La règle ACL "permit tcp any any established" autorise...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Toutes les connexions TCP</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Les connexions TCP dont le bit ACK est mis à 1 — c'est-à-dire des connexions initiées de l'intérieur et dont la réponse revient de l'extérieur</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Les connexions Telnet établies uniquement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Les connexions TCP vers n'importe quel port</button></div>
-    <div class="quiz-expl" id="expl-q2_2">"established" correspond aux paquets TCP avec le bit ACK ou RST mis à 1. Cela autorise les paquets de retour pour les connexions initiées depuis le réseau interne. Les tentatives de connexion de l'extérieur vers l'intérieur (SYN sans ACK) sont bloquées.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Une ACL Named (ip access-list extended NOM) est préférable à une ACL numérotée car...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Elle est plus rapide à traiter</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>On peut ajouter/supprimer des règles à n'importe quelle position, et le nom descriptif la rend plus lisible et maintenable</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Elle supporte plus de règles</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Elle est disponible uniquement sur les routeurs haut de gamme</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Les ACL Named permettent de: nommer de façon descriptive (INBOUND-SECURITY plutôt que 101), insérer une règle à une position précise (sans réécrire toute l'ACL), supprimer une règle individuelle. Les ACL numérotées nécessitent de réécrire l'ACL entière pour tout modification.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+<div class="timer-bar">
+  ⏱ Session : <strong id="session-timer">0m 0s</strong>
+  &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns">
+    <button class="tbtn" onclick="window.print()">🖨 Imprimer</button>
+    <button class="tbtn" onclick="toggleToc()">☰ Sommaire</button>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Pare-feu et DMZ</h2>
-      <div class="chapter-meta"><span>🕐 19 heures</span><span class="chapter-badge">Types · pfSense · Architecture DMZ · Règles</span></div>
-    </div>
+<div class="wrap">
+<div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-26</div>
+  <div class="toc-item act" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Menaces et vulnérabilités</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>ACL avancées 🛡️</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Pare-feu et DMZ</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>IDS/IPS — Détection</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>AAA — Authentification 🔐</span></div>
+  <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>Cryptographie et PKI</span></div>
+  <div class="toc-item" onclick="goTo(7)" id="ti-7"><div class="toc-dot"></div><span class="toc-num">07</span><span>Sécurité sans-fil 📡</span></div>
+  <div class="toc-item" onclick="goTo(8)" id="ti-8"><div class="toc-dot"></div><span class="toc-num">08</span><span>Endpoint Security</span></div>
+  <div class="toc-item" onclick="goTo(9)" id="ti-9"><div class="toc-dot"></div><span class="toc-num">09</span><span>Sécurité cloud et DevSecOps</span></div>
+  <div class="toc-item" onclick="goTo(10)" id="ti-10"><div class="toc-dot"></div><span class="toc-num">10</span><span>Audit et réponse incidents</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr);font-size:.64rem;color:var(--g500);line-height:1.7">🛡️ Simulateur ACL · 🔐 AAA · 📡 WiFi Security · ⌨ CLI</div>
+</div>
+<div id="main-content">
+
+<!-- ══ CH 1 — Menaces et vulnérabilités ══ -->
+<div class="chapter" id="ch-1">
+<div class="ch-header"><div class="ch-num">01</div>
+<div class="ch-info"><h2>Menaces et vulnérabilités réseau</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">DoS · DDoS · MitM · Phishing · Malware · Social Engineering</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Panorama des menaces réseau modernes</div><div class="vsub">16 min · ENSA Module 1 · CIA · Menaces · Vecteurs d'attaque</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp1"><div class="vplay" onclick="openVideo(1)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf1" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Triade CIA (5 min)</strong> — Confidentialité (données accessibles seulement aux autorisés), Intégrité (données non modifiées sans autorisation), Disponibilité (systèmes accessibles quand nécessaire). Chaque attaque cible un ou plusieurs de ces piliers.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Types d'attaques (6 min)</strong> — DoS/DDoS (saturation ressources), Man-in-the-Middle (interception), Phishing (ingénierie sociale), Ransomware (chiffrement données), SQL Injection (bases de données), Zero-Day (vulnérabilités non publiées).</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Vecteurs et surfaces d'attaque (5 min)</strong> — Email, web, USB, réseau WiFi, chaîne d'approvisionnement. Principe du moindre privilège. Défense en profondeur. Cas réels : SolarWinds, Colonial Pipeline.</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Pare-feu et architecture DMZ</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Types de pare-feu (4 min)</strong> — Pare-feu stateless (filtre par IP/port, sans état). Pare-feu stateful (suit l'état des connexions TCP). NGFW (Next Generation Firewall): inspection applicative, IPS intégré, anti-malware. Cisco ASA, Fortinet FortiGate, pfSense (open source).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>DMZ — Zone démilitarisée (5 min)</strong> — Zone réseau entre internet et le LAN interne pour les serveurs publics (web, mail). Règles: internet peut accéder à la DMZ (ports limités), la DMZ ne peut pas initier de connexion vers le LAN interne, le LAN interne peut accéder à la DMZ.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Configuration pfSense (4 min)</strong> — pfSense = pare-feu open source basé sur FreeBSD. Installation sur PC dédié ou VM. Interface WAN, LAN, DMZ. Règles de filtrage. Idéal pour les PME haïtiennes avec budget limité.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>NAT et PAT sur pare-feu (2 min)</strong> — Différence entre NAT sur routeur Cisco et NAT sur pare-feu. NAT statique pour les serveurs DMZ (1 IP publique → 1 serveur DMZ).</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Architecture DMZ — Règles de trafic</h3><table class="data-table"><thead><tr><th>Source → Destination</th><th>Règle</th><th>Justification</th></tr></thead><tbody><tr><td>Internet → DMZ</td><td>Autorisé sur ports spécifiques (80, 443, 25)</td><td>Les services publics doivent être accessibles depuis internet</td></tr><tr><td>Internet → LAN Interne</td><td>REFUSÉ par défaut</td><td>Le LAN interne ne doit jamais être directement accessible depuis internet</td></tr><tr><td>LAN Interne → DMZ</td><td>Autorisé (maintenance des serveurs DMZ)</td><td>Les admins internes doivent pouvoir gérer les serveurs DMZ</td></tr><tr><td>LAN Interne → Internet</td><td>Autorisé (avec inspection)</td><td>Les utilisateurs internes accèdent à internet normalement</td></tr><tr><td>DMZ → LAN Interne</td><td>REFUSÉ par défaut</td><td>Si un serveur DMZ est compromis, il ne doit pas pouvoir attaquer le LAN</td></tr><tr><td>DMZ → Internet</td><td>Autorisé sur ports limités (DNS, NTP, mises à jour)</td><td>Les serveurs DMZ ont besoin d'accès internet limité</td></tr></tbody></table><div class="info-box danger"><span class="info-box-label">🛡️ Règle d'or de la DMZ</span>Un serveur en DMZ peut être compromis — c'est pour ça qu'il est en DMZ et pas dans le LAN. La règle critique: la DMZ ne peut JAMAIS initier de connexion vers le LAN interne. Un serveur web piraté ne doit pas pouvoir accéder aux bases de données ou aux partages de fichiers internes.</div></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi placer les serveurs web et email en DMZ plutôt que directement dans le LAN ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Pour accélérer leur vitesse</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Pour isoler les serveurs exposés à internet — si l'un est compromis, l'attaquant reste bloqué en DMZ et ne peut pas accéder au LAN interne</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Pour économiser des adresses IP</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Pour faciliter la mise à jour des serveurs</button></div>
-    <div class="quiz-expl" id="expl-q0_3">La DMZ est un périmètre d'isolation: les serveurs publics (web, mail) sont exposés à internet et donc à risque. En les plaçant en DMZ, une compromission ne donne pas accès au réseau interne (base de données, serveurs AD, partages fichiers).</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Un NGFW (Next Generation Firewall) peut faire ce qu'un pare-feu stateful classique ne peut pas, notamment...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Filtrer par adresse IP et port</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Inspecter le contenu des applications (couche 7): détecter les malwares dans les flux HTTP, bloquer les applications spécifiques (TikTok, BitTorrent)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Créer des VLANs</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Établir des connexions VPN IPSec</button></div>
-    <div class="quiz-expl" id="expl-q1_3">Un pare-feu stateful classique voit TCP port 443 = HTTPS = OK. Un NGFW déchiffre le TLS (avec SSL inspection), inspecte le contenu à la recherche de malwares, identifie l'application réelle (YouTube, Dropbox, Teams), et applique des politiques par application.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi pfSense est-il recommandé pour les PME haïtiennes comme solution pare-feu ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>pfSense est développé en Haïti</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>C'est une solution open source gratuite, fonctionnelle sur du matériel standard, avec toutes les fonctionnalités d'un pare-feu entreprise (stateful, VPN, IDS, rapport)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>pfSense est le seul pare-feu compatible avec les FAI haïtiens</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>pfSense est le plus simple à configurer</button></div>
-    <div class="quiz-expl" id="expl-q2_3">pfSense = FreeBSD + firewall open source gratuit. Il fonctionne sur un PC standard (même de récupération). Fonctionnalités: pare-feu stateful, VPN IPSec/OpenVPN, DHCP, DNS resolver, IDS/IPS Snort, rapport de trafic. Équivalent à des appliances commerciales à 2000-5000 USD pour le prix d'un PC.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">La règle "DMZ → LAN Interne : REFUSÉ" est critique car...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Elle protège la DMZ des attaques du LAN</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Si un serveur DMZ est piraté, l'attaquant ne peut pas utiliser ce serveur comme tremplin pour attaquer le réseau interne</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Elle est obligatoire selon les normes ISO 27001</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Elle empêche les virus de se propager dans la DMZ</button></div>
-    <div class="quiz-expl" id="expl-q3_3">C'est LE principe fondamental de la DMZ: l'isolation. Un attaquant qui prend le contrôle d'un serveur web en DMZ ne doit pas pouvoir accéder aux serveurs AD, aux bases de données, aux partages de fichiers du LAN interne. La règle "DMZ no-access to LAN" garantit cette isolation.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  <div class="vurl"><input type="text" id="vi1" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(1)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>1.1 Triade CIA — Fondement de la sécurité</h3>
+<table class="dtable">
+<thead><tr><th>Pilier</th><th>Définition</th><th>Menace associée</th><th>Contre-mesure</th></tr></thead>
+<tbody>
+<tr><td><strong>Confidentialité</strong></td><td>Données accessibles uniquement aux personnes autorisées</td><td>Interception, espionnage, vol de données</td><td>Chiffrement, contrôle d'accès, VPN</td></tr>
+<tr><td><strong>Intégrité</strong></td><td>Données non modifiées sans autorisation</td><td>Altération, injection, MITM</td><td>Hachage (SHA-256), signatures numériques</td></tr>
+<tr><td><strong>Disponibilité</strong></td><td>Systèmes et données accessibles quand nécessaire</td><td>DoS, DDoS, ransomware, panne</td><td>Redondance, backup, anti-DDoS</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>1.2 Types d'attaques réseau</h3>
+<div class="ibox red"><span class="ibox-label">⚠️ Attaques les plus courantes</span>
+<strong>DoS / DDoS</strong> — Déni de service : saturer les ressources d'un serveur jusqu'à le rendre inaccessible. DDoS = attaque distribuée depuis des milliers de machines compromises (botnet). Ex : attaque SYN flood, UDP flood, HTTP flood.<br><br>
+<strong>Man-in-the-Middle (MitM)</strong> — L'attaquant s'intercale entre deux parties qui communiquent. Peut écouter, modifier ou rejouer les communications. Ex : ARP Poisoning, DNS Spoofing, SSL Stripping.<br><br>
+<strong>Phishing / Spear Phishing</strong> — Email frauduleux imitant une entité légitime pour voler des identifiants ou installer des malwares. Spear phishing = ciblé sur une personne spécifique.<br><br>
+<strong>Ransomware</strong> — Malware qui chiffre les données de la victime et exige une rançon (souvent en crypto-monnaie). Ex : WannaCry (2017) a paralysé des hôpitaux mondiaux.</div>
+</div>
+
+<div class="section">
+<h3>1.3 Sécuriser les équipements Cisco — Base</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Durcissement de base (Hardening)</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === Durcissement minimal de tout équipement Cisco ===</span>
+
+<span class="cmt">! Bannière d'avertissement légal (OBLIGATOIRE avant login)</span>
+R(config)# <span class="cmd">banner motd</span> <span class="val">^</span>
+<span class="str">ACCES AUTORISE UNIQUEMENT. Toute connexion non autorisee
+est interdite et sera poursuivie. Canado Technique.</span>
+<span class="val">^</span>
+
+<span class="cmt">! Désactiver les services inutiles</span>
+R(config)# <span class="cmd">no service finger</span>
+R(config)# <span class="cmd">no ip http server</span>          <span class="cmt">← désactiver HTTP (utiliser HTTPS)</span>
+R(config)# <span class="cmd">no ip bootp server</span>
+R(config)# <span class="cmd">no cdp run</span>                  <span class="cmt">← désactiver CDP si non nécessaire</span>
+R(config)# <span class="cmd">no ip source-route</span>
+
+<span class="cmt">! Sécuriser les accès</span>
+R(config)# <span class="cmd">service password-encryption</span>
+R(config)# <span class="cmd">security passwords min-length 12</span>
+R(config)# <span class="cmd">login block-for 120 attempts 5 within 60</span>  <span class="cmt">← anti brute-force</span>
+
+<span class="cmt">! SSH obligatoire (interdire Telnet)</span>
+R(config)# <span class="cmd">ip domain-name canado.edu.ht</span>
+R(config)# <span class="cmd">crypto key generate rsa modulus 2048</span>
+R(config)# <span class="cmd">ip ssh version 2</span>
+R(config)# <span class="cmd">line vty 0 4</span>
+R(config-line)# <span class="cmd">transport input ssh</span>
+R(config-line)# <span class="cmd">exec-timeout 10 0</span>
+R(config-line)# <span class="cmd">exit</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Un ransomware qui chiffre les données d'une organisation attaque principalement quel pilier de la triade CIA ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Confidentialité uniquement</button>
+      <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Disponibilité (et intégrité) — les données sont inaccessibles</button>
+      <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Intégrité uniquement</button>
+      <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Aucun pilier CIA — c'est une attaque financière</button>
+    </div>
+    <div class="qexpl" id="qe-1-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi faut-il configurer "login block-for 120 attempts 5 within 60" sur un routeur Cisco ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Pour bloquer le trafic réseau pendant 120 secondes</button>
+      <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Pour bloquer les tentatives de connexion après 5 échecs en 60s — protection contre les attaques brute-force</button>
+      <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Pour limiter le nombre d'utilisateurs connectés simultanément</button>
+      <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Pour activer le chiffrement des mots de passe</button>
+    </div>
+    <div class="qexpl" id="qe-1-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Dans une attaque Man-in-the-Middle par ARP Poisoning, qu'est-ce que l'attaquant accomplit ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Il supprime les tables ARP de tous les switches</button>
+      <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Il envoie de fausses réponses ARP pour associer son adresse MAC à l'IP d'une autre machine, interceptant le trafic</button>
+      <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Il désactive le protocole ARP sur le réseau</button>
+      <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Il modifie les tables de routage des routeurs</button>
+    </div>
+    <div class="qexpl" id="qe-1-2"></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1],['Un ransomware chiffre les fichiers de la victime rendant les données inaccessibles — attaque directe sur la Disponibilité. Il peut aussi affecter l\'Intégrité en modifiant les fichiers. La Confidentialité peut être compromise si l\'attaquant exfiltre d\'abord les données avant de les chiffrer (double extorsion). La disponibilité est l\'impact le plus immédiat et visible.','La commande login block-for est une protection anti brute-force. Si quelqu\'un tente 5 connexions échouées en moins de 60 secondes, le routeur bloque tous les accès VTY pendant 120 secondes. Cela ralentit considérablement les attaques par dictionnaire qui nécessitent des milliers de tentatives.','Dans l\'ARP Poisoning, l\'attaquant envoie des réponses ARP non sollicitées (gratuitous ARP) avec sa propre adresse MAC associée à l\'adresse IP d\'une autre machine (ex : la passerelle). Les victimes mettent à jour leur cache ARP avec cette fausse association et envoient leur trafic vers l\'attaquant qui peut l\'intercepter, le modifier, puis le retransmettre.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>IDS/IPS et audit de sécurité</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">Snort · 802.1X · Hardening Cisco · Nessus</span></div>
-    </div>
+
+<!-- ══ CH 2 — ACL avancées ══ -->
+<div class="chapter" id="ch-2">
+<div class="ch-header"><div class="ch-num">02</div>
+<div class="ch-info"><h2>ACL avancées — Contrôle d'accès</h2>
+<div class="ch-meta"><span>🕐 14h</span><span class="ch-badge">🛡️ ACL standard · ACL étendue · ACL nommée · PACL · VACL · Time-based ACL</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — ACL avancées : filtrage précis et cas pratiques</div><div class="vsub">18 min · ENSA Module 4 · ACL étendue · VACL · Time-based · Dépannage</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp2"><div class="vplay" onclick="openVideo(2)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf2" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>ACL standard vs étendue (6 min)</strong> — Standard : filtre sur IP source uniquement, placée près de la destination. Étendue : filtre source, destination, protocole, port — placée près de la source. Numéros 1-99 (standard) vs 100-199 (étendue).</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>ACL nommées et time-based (6 min)</strong> — ACL nommées : plus lisibles, modification possible sans tout réécrire. Time-based ACL : autoriser l'accès uniquement pendant les heures de bureau. time-range + ip access-list.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>VACL + Dépannage (6 min)</strong> — VLAN ACL (VACL) pour filtrer le trafic intra-VLAN. Commandes show ip access-lists, show ip interface, debug ip packet. Erreurs communes et solutions.</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — IDS/IPS, authentification forte et audit de sécurité</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>IDS vs IPS (4 min)</strong> — IDS (Intrusion Detection System): détecte et alerte. IPS (Intrusion Prevention System): détecte et bloque automatiquement. Snort (open source, dans pfSense/Suricata). HIDS (basé sur l'hôte) vs NIDS (réseau).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>802.1X — Authentification réseau (4 min)</strong> — Contrôle l'accès au réseau: avant d'obtenir une IP, l'équipement doit s'authentifier (via AD, certificat). Empêche les connexions non autorisées au réseau (visiteurs, équipements inconnus). RADIUS server.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Audit de sécurité réseau (4 min)</strong> — Nmap pour la découverte, Nessus/OpenVAS pour les vulnérabilités, revue des ACL et règles pare-feu, test d'intrusion (pentest) avec autorisation.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Checklist de durcissement Cisco (3 min)</strong> — Désactiver CDP sur les interfaces publiques, désactiver les services inutiles (ip http server, telnet), activer SSH v2, NTP sécurisé, SNMP v3 uniquement.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 Checklist de durcissement (hardening) des équipements Cisco</h3><table class="data-table"><thead><tr><th>Catégorie</th><th>Commande</th><th>Description</th></tr></thead><tbody><tr><td>Accès</td><td>no service telnet / transport input ssh</td><td>Désactiver Telnet, autoriser SSH uniquement</td></tr><tr><td>Accès</td><td>ip ssh version 2</td><td>Forcer SSH version 2 (plus sécurisé que v1)</td></tr><tr><td>Accès</td><td>service password-encryption</td><td>Chiffrer les mots de passe en clair dans la config</td></tr><tr><td>Accès</td><td>login block-for 120 attempts 5 within 60</td><td>Bloquer 120s après 5 tentatives échouées en 60s</td></tr><tr><td>Services</td><td>no ip http server / no ip http secure-server</td><td>Désactiver le serveur HTTP de gestion si non utilisé</td></tr><tr><td>Services</td><td>no ip finger / no service finger</td><td>Désactiver le service finger (découverte d'utilisateurs)</td></tr><tr><td>CDP</td><td>no cdp run (globalement) ou no cdp enable (par interface)</td><td>Désactiver CDP sur les interfaces connectées à internet</td></tr><tr><td>Logs</td><td>logging buffered 16384 / logging host IP_SYSLOG</td><td>Activer les logs locaux et vers un serveur syslog central</td></tr><tr><td>NTP</td><td>ntp server NTP_IP + ntp authenticate</td><td>Synchronisation horaire pour les logs cohérents</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">La différence principale entre un IDS et un IPS est...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>L'IPS coûte plus cher</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>L'IDS détecte et alerte uniquement; l'IPS détecte ET bloque automatiquement le trafic malveillant</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>L'IDS est plus précis</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>L'IPS utilise plus de bande passante</button></div>
-    <div class="quiz-expl" id="expl-q0_4">IDS = alarme qui sonne mais n'empêche pas le voleur d'entrer. IPS = alarme + porte qui se verrouille automatiquement. L'IPS doit être placé en ligne (inline) dans le flux réseau pour pouvoir bloquer. L'IDS est placé en parallèle (SPAN port) et ne peut qu'alerter.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Le protocole 802.1X contrôle...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>La vitesse des ports switch</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>L'accès physique au réseau — un équipement doit s'authentifier avant d'obtenir une adresse IP et un accès réseau</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Le chiffrement Wi-Fi</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Les VLANs sur les ports trunk</button></div>
-    <div class="quiz-expl" id="expl-q1_4">802.1X (NAC — Network Access Control): quand un équipement se connecte à un port switch, le switch demande une authentification via RADIUS (AD). Si l'authentification échoue, le port reste en VLAN de quarantaine ou est bloqué. Empêche les équipements personnels non autorisés de rejoindre le réseau d'entreprise.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi désactiver CDP (Cisco Discovery Protocol) sur les interfaces connectées à internet ou aux visiteurs ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>CDP consomme trop de bande passante</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>CDP diffuse des informations sensibles sur les équipements (modèle, version IOS, adresses IP) — un attaquant peut les collecter pour cibler son attaque</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>CDP n'est pas compatible avec internet</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>CDP ralentit les interfaces</button></div>
-    <div class="quiz-expl" id="expl-q2_4">CDP diffuse régulièrement des trames avec: le hostname du switch/routeur, le modèle exact (Catalyst 2960, ISR 4321), la version IOS, les adresses IP de toutes les interfaces. Un attaquant connecté (ou un visiteur malveillant) obtient gratuitement une cartographie de l'infrastructure.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Nessus et OpenVAS sont des outils utilisés pour...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Configurer les pare-feux</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Scanner les vulnérabilités d'une infrastructure réseau et identifier les failles connues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Analyser le trafic réseau en temps réel</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Gérer les certificats SSL</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Nessus (Tenable) et OpenVAS (open source) scannent une infrastructure et identifient les vulnérabilités connues (CVE): OS non patchés, services vulnérables, configurations faibles. Ils produisent des rapports priorisés. À utiliser régulièrement en audit de sécurité interne (avec autorisation).</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  <div class="vurl"><input type="text" id="vi2" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(2)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>2.1 ACL étendues — Configuration avancée</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — ACL avancées</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === ACL étendue nommée — Sécurité périmétrique ===</span>
+R(config)# <span class="cmd">ip access-list extended</span> <span class="val">SECURITE-WAN</span>
+
+<span class="cmt">! Autoriser SSH entrant depuis réseau admin seulement</span>
+R(config-ext-nacl)# <span class="cmd">permit tcp</span> <span class="val">192.168.100.0 0.0.0.255 any eq 22</span>
+
+<span class="cmt">! Autoriser HTTP/HTTPS vers serveur web DMZ</span>
+R(config-ext-nacl)# <span class="cmd">permit tcp any host</span> <span class="val">10.0.0.100 eq 80</span>
+R(config-ext-nacl)# <span class="cmd">permit tcp any host</span> <span class="val">10.0.0.100 eq 443</span>
+
+<span class="cmt">! Bloquer ICMP depuis Internet (anti-ping sweep)</span>
+R(config-ext-nacl)# <span class="cmd">deny icmp any any</span>
+
+<span class="cmt">! Autoriser trafic établi (connexions initiées de l'intérieur)</span>
+R(config-ext-nacl)# <span class="cmd">permit tcp any any established</span>
+
+<span class="cmt">! Refus implicite de tout le reste (déjà implicite mais on log)</span>
+R(config-ext-nacl)# <span class="cmd">deny ip any any log</span>
+R(config-ext-nacl)# <span class="cmd">exit</span>
+
+<span class="cmt">! Appliquer sur interface WAN — trafic entrant</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R(config-if)# <span class="cmd">ip access-group SECURITE-WAN in</span>
+
+<span class="cmt">! === Time-based ACL — Accès Internet uniquement aux heures de bureau ===</span>
+R(config)# <span class="cmd">time-range</span> <span class="val">HEURES-BUREAU</span>
+R(config-time-range)# <span class="cmd">periodic weekdays 08:00 to 17:00</span>
+R(config-time-range)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">ip access-list extended</span> <span class="val">ACCES-HORAIRE</span>
+R(config-ext-nacl)# <span class="cmd">permit ip</span> <span class="val">192.168.1.0 0.0.0.255 any</span> <span class="cmd">time-range</span> <span class="val">HEURES-BUREAU</span>
+R(config-ext-nacl)# <span class="cmd">deny ip any any</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show ip access-lists</span>           <span class="cmt">← voir les compteurs de hits</span>
+R# <span class="cmd">show ip interface GigabitEthernet0/1</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Où doit-on placer une ACL étendue pour un filtrage optimal ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Le plus près de la destination pour éviter de bloquer du trafic légitime</button>
+      <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Le plus près de la source pour bloquer le trafic indésirable le plus tôt possible</button>
+      <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Au centre du réseau sur le routeur core</button>
+      <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Sur tous les routeurs simultanément</button>
+    </div>
+    <div class="qexpl" id="qe-2-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Que fait "permit tcp any any established" dans une ACL ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Autorise toutes les nouvelles connexions TCP depuis n'importe où</button>
+      <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Autorise uniquement les paquets TCP appartenant à des connexions déjà établies (bit ACK ou RST présent)</button>
+      <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Bloque les connexions TCP non établies</button>
+      <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Autorise uniquement le protocole SSH et HTTPS</button>
+    </div>
+    <div class="qexpl" id="qe-2-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle commande affiche le nombre de fois que chaque règle ACL a été appliquée ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>show ip interface</button>
+      <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>show ip access-lists</button>
+      <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>show access-list summary</button>
+      <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>show ip route acl</button>
+    </div>
+    <div class="qexpl" id="qe-2-2"></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1],['Les ACL étendues se placent le plus près de la source du trafic indésirable. Ainsi, le trafic bloqué ne traverse pas inutilement le réseau. Les ACL standard, qui filtrent uniquement sur l\'adresse source, se placent près de la destination pour éviter de bloquer du trafic légitime vers d\'autres destinations.','Le mot-clé «established» vérifie si le bit ACK ou RST est positionné dans l\'en-tête TCP. Ces bits indiquent que le paquet appartient à une connexion déjà initiée. Cela permet d\'autoriser les réponses aux connexions sorties de l\'intérieur tout en bloquant les nouvelles connexions entrantes — comportement similaire à un stateful firewall basique.','show ip access-lists affiche les détails de toutes les ACL configurées avec le compteur de hits (matches) pour chaque règle. Ces compteurs sont précieux pour diagnostiquer si une règle s\'applique, et combien de paquets sont filtrés. Utile pour vérifier qu\'une ACL fonctionne comme prévu.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
 </div></div>
-</div><div class="pratique-block">
-  <div class="pratique-header">
-    <div class="pratique-icon-wrap">🔬</div>
-    <div class="pratique-header-info">
-      <h3>Séance Pratique — SP-TRI-26-01</h3>
-      <span>Labo sécurité — ACL, pare-feu pfSense et audit de sécurité</span>
-    </div>
-    <div class="pratique-badge-option">🟡 Optionnelle</div>
+
+<!-- ══ CH 3 — Pare-feu et DMZ ══ -->
+<div class="chapter" id="ch-3">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0505,#3a0a0a)">
+<div class="ch-num">03</div>
+<div class="ch-info"><h2>Pare-feu et DMZ</h2>
+<div class="ch-meta"><span>🕐 14h</span><span class="ch-badge">Firewall stateful · Zone-Based · ASA · DMZ · Inspection · NAT</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Pare-feu Zone-Based et architecture DMZ</div><div class="vsub">18 min · ENSA Module 3 · ZBF · ASA · DMZ · Stateful inspection</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp3"><div class="vplay" onclick="openVideo(3)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf3" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Firewall stateful vs stateless (5 min)</strong> — Stateless = filtre paquet par paquet (ACL). Stateful = maintient une table d'état des connexions → plus intelligent. Inspecte les sessions TCP/UDP complètes. Reconnaît les paquets de retour légitimes.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Zone-Based Firewall (7 min)</strong> — ZBF sur IOS : zones de sécurité (INSIDE, OUTSIDE, DMZ), class-map, policy-map, zone-pair. Trafic par défaut : DROP entre zones. Plus flexible et lisible que les ACL classiques.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Architecture DMZ (6 min)</strong> — Zone démilitarisée pour les serveurs accessibles depuis Internet (web, mail, DNS). Firewall à 3 interfaces : Inside (LAN), Outside (Internet), DMZ. Règles : Internet→DMZ limité, DMZ→Inside interdit.</div></div>
   </div>
-  <div class="pratique-body">
-    <p class="pratique-desc">Tu vas configurer des ACL de sécurité sur un routeur Cisco, installer un pare-feu pfSense, et effectuer un audit de sécurité de base. Durée: 3 heures.</p>
-    <div class="pratique-grid">
-      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Configurer une ACL étendue named avec les règles anti-spoofing et sécurité sur le routeur</li><li>Vérifier le blocage avec des tests et show access-lists (compteurs de hits)</li><li>Installer pfSense (VM) et configurer les 3 zones: WAN, LAN, DMZ</li><li>Créer les règles pare-feu pfSense pour la DMZ</li><li>Scanner la topologie avec Nmap et identifier les ports ouverts</li><li>Appliquer la checklist de durcissement Cisco sur le routeur du labo</li></ul></div>
-      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Accès aux routeurs Cisco du labo pour les ACL</li><li>VM pfSense préinstallée ou ISO pfSense</li><li>Nmap installé sur un PC du labo</li><li>Checklist de durcissement fournie par le professeur</li></ul></div>
+  <div class="vurl"><input type="text" id="vi3" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(3)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>3.1 Zone-Based Firewall — Configuration IOS</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Zone-Based Firewall (ZBF)</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === ÉTAPE 1 : Définir les zones de sécurité ===</span>
+R(config)# <span class="cmd">zone security</span> <span class="val">INSIDE</span>
+R(config)# <span class="cmd">zone security</span> <span class="val">OUTSIDE</span>
+R(config)# <span class="cmd">zone security</span> <span class="val">DMZ</span>
+
+<span class="cmt">! === ÉTAPE 2 : Classifier le trafic autorisé ===</span>
+R(config)# <span class="cmd">class-map type inspect match-any</span> <span class="val">TRAFIC-SORTANT</span>
+R(config-cmap)# <span class="cmd">match protocol http</span>
+R(config-cmap)# <span class="cmd">match protocol https</span>
+R(config-cmap)# <span class="cmd">match protocol dns</span>
+R(config-cmap)# <span class="cmd">match protocol ssh</span>
+R(config-cmap)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">class-map type inspect match-any</span> <span class="val">TRAFIC-DMZ</span>
+R(config-cmap)# <span class="cmd">match protocol http</span>
+R(config-cmap)# <span class="cmd">match protocol https</span>
+R(config-cmap)# <span class="cmd">exit</span>
+
+<span class="cmt">! === ÉTAPE 3 : Définir les politiques ===</span>
+R(config)# <span class="cmd">policy-map type inspect</span> <span class="val">INSIDE-TO-OUTSIDE</span>
+R(config-pmap)# <span class="cmd">class</span> <span class="val">TRAFIC-SORTANT</span>
+R(config-pmap-c)# <span class="cmd">inspect</span>              <span class="cmt">← inspection stateful</span>
+R(config-pmap-c)# <span class="cmd">exit</span>
+R(config-pmap)# <span class="cmd">class class-default</span>
+R(config-pmap-c)# <span class="cmd">drop</span>                  <span class="cmt">← tout le reste est bloqué</span>
+R(config-pmap)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">policy-map type inspect</span> <span class="val">OUTSIDE-TO-DMZ</span>
+R(config-pmap)# <span class="cmd">class</span> <span class="val">TRAFIC-DMZ</span>
+R(config-pmap-c)# <span class="cmd">inspect</span>
+R(config-pmap-c)# <span class="cmd">exit</span>
+R(config-pmap)# <span class="cmd">class class-default</span>
+R(config-pmap-c)# <span class="cmd">drop log</span>
+R(config-pmap)# <span class="cmd">exit</span>
+
+<span class="cmt">! === ÉTAPE 4 : Créer les zone-pairs ===</span>
+R(config)# <span class="cmd">zone-pair security</span> <span class="val">IN-OUT</span> <span class="cmd">source</span> <span class="val">INSIDE</span> <span class="cmd">destination</span> <span class="val">OUTSIDE</span>
+R(config-sec-zone-pair)# <span class="cmd">service-policy type inspect INSIDE-TO-OUTSIDE</span>
+R(config-sec-zone-pair)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">zone-pair security</span> <span class="val">OUT-DMZ</span> <span class="cmd">source</span> <span class="val">OUTSIDE</span> <span class="cmd">destination</span> <span class="val">DMZ</span>
+R(config-sec-zone-pair)# <span class="cmd">service-policy type inspect OUTSIDE-TO-DMZ</span>
+R(config-sec-zone-pair)# <span class="cmd">exit</span>
+
+<span class="cmt">! === ÉTAPE 5 : Assigner les interfaces aux zones ===</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/0</span>
+R(config-if)# <span class="cmd">zone-member security INSIDE</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R(config-if)# <span class="cmd">zone-member security OUTSIDE</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/2</span>
+R(config-if)# <span class="cmd">zone-member security DMZ</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quel est le comportement par défaut du Zone-Based Firewall entre deux zones sans zone-pair configuré ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Tout le trafic est autorisé par défaut</button>
+      <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Tout le trafic est bloqué (DROP) par défaut entre zones</button>
+      <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Le trafic est inspecté mais autorisé</button>
+      <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Le trafic est redirigé vers le routeur par défaut</button>
     </div>
-    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
-    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00')">Lun 19 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00')">Mar 20 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00')">Mer 21 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00')">Jeu 22 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00')">Ven 23 Mai — 8h00</button></div>
-    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-26-01')">📅 Confirmer ma réservation</button>
-    <div class="pratique-confirm" id="confirm-sp-26-01"></div>
+    <div class="qexpl" id="qe-3-0"></div>
   </div>
-</div><div class="demo-block">
-  <div class="demo-header">
-    <div class="demo-icon-wrap">🎭</div>
-    <div class="demo-header-info">
-      <h3>Démonstration — DEM-TRI-26-01</h3>
-      <span>Évaluation pratique (20 min)</span>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi place-t-on les serveurs web et mail en DMZ plutôt que sur le réseau interne ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Pour améliorer les performances des serveurs</button>
+      <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Pour isoler les serveurs accessibles depuis Internet — si un serveur est compromis, l'attaquant ne peut pas accéder au réseau interne</button>
+      <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Parce que la DMZ offre plus de bande passante</button>
+      <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Pour contourner les règles du pare-feu interne</button>
     </div>
-    <div class="demo-badge">Évaluation pratique</div>
+    <div class="qexpl" id="qe-3-1"></div>
   </div>
-  <div class="demo-body">
-    <p class="demo-desc">Tu effectueras un audit de sécurité express sur une topologie fournie et présenteras tes conclusions.</p>
-    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
-    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Scan Nmap</strong> — Scanner la topologie et identifier tous les ports et services ouverts</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Vérification ACL</strong> — Vérifier les ACL existantes et identifier les règles manquantes ou trop permissives</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Checklist hardening</strong> — Appliquer la checklist de durcissement sur l'équipement assigné</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Rapport verbal</strong> — Présenter en 5 minutes les 3 failles les plus critiques identifiées</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Corriger une faille</strong> — Appliquer la correction de la faille la plus critique</div></div>
-    <div class="demo-eval">
-      <div class="demo-eval-label">✅ Critères d'évaluation</div>
-      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Scan Nmap complet et interprété</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>ACL vérifiées et lacunes identifiées</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Au moins 5 points de hardening appliqués</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>3 failles présentées avec niveau de risque</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Correction de la faille critique appliquée et vérifiée</div></div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle est la différence entre "inspect" et "pass" dans une policy-map ZBF ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>inspect = autorise et maintient l'état de la session (stateful), pass = autorise sans suivi d'état (stateless)</button>
+      <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>inspect = bloque le trafic, pass = autorise</button>
+      <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Il n'y a pas de différence fonctionnelle</button>
+      <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>inspect = gratuit, pass = nécessite licence</button>
     </div>
+    <div class="qexpl" id="qe-3-2"></div>
   </div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-26 — Politique de sécurité réseau — Organisation haïtienne</h3>
-      <span>Rédaction d'un document de politique de sécurité professionnelle</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,0,0],['En ZBF, le principe de sécurité par défaut est le refus implicite (implicit deny). Sans zone-pair configuré entre deux zones, aucun trafic ne passe. Cela force l\'administrateur à explicitement autoriser ce qui est permis — beaucoup plus sécurisé que les ACL traditionnelles qui peuvent avoir des trous si mal configurées.','La DMZ est un réseau tampon entre Internet et le réseau interne. Les serveurs en DMZ sont accessibles depuis Internet (nécessaire pour leur fonction) mais isolés du réseau interne. Si un serveur web est compromis, l\'attaquant se retrouve en DMZ, pas sur le réseau interne. Le firewall bloque les connexions de DMZ→Interne.','inspect maintient une table d\'état des connexions — il autorise ET suit la session. Les paquets de retour sont automatiquement autorisés car le firewall reconnaît qu\'ils appartiennent à une session initiée de l\'intérieur. pass autorise le trafic sans suivi d\'état — les paquets de retour doivent être explicitement autorisés dans l\'autre direction.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 4 — IDS/IPS ══ -->
+<div class="chapter" id="ch-4">
+<div class="ch-header"><div class="ch-num">04</div>
+<div class="ch-info"><h2>IDS/IPS — Détection et prévention</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">IDS · IPS · SNORT · Signatures · Anomalie · Cisco IOS IPS</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — IDS vs IPS : détection et prévention d'intrusions</div><div class="vsub">14 min · ENSA Module 5 · IDS · IPS · SNORT · Signatures</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp4"><div class="vplay" onclick="openVideo(4)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf4" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>IDS vs IPS (5 min)</strong> — IDS (Intrusion Detection System) : mode passif, détecte et alerte mais ne bloque pas. IPS (Intrusion Prevention System) : mode inline, bloque activement les attaques. Faux positifs vs faux négatifs.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Méthodes de détection (5 min)</strong> — Basée sur les signatures : compare le trafic à une base de signatures d'attaques connues. Basée sur les anomalies : détecte les déviations du comportement normal (machine learning). Basée sur les politiques.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>SNORT et Cisco IOS IPS (4 min)</strong> — SNORT : IDS/IPS open-source leader du marché. Règles SNORT. Cisco IOS IPS : intégration directe dans IOS. Configuration de base et vérification.</div></div>
   </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Rédige la politique de sécurité réseau complète pour une institution haïtienne fictive (banque, ministère, ou grande ONG) de 100 employés.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Rédige le <strong>contexte de menaces</strong>: les 5 principales menaces auxquelles cette institution est exposée, avec leur probabilité et leur impact potentiel.</li><li>Définis la <strong>politique d'accès réseau</strong>: qui peut accéder à quoi (par rôle: direction, finance, IT, opérations, visiteurs), depuis où et avec quels équipements.</li><li>Rédige les <strong>règles de sécurité Wi-Fi</strong>: séparation WPA2/WPA3 entreprise pour les employés, WPA2 isolé pour les visiteurs, authentification 802.1X.</li><li>Documente la <strong>politique de gestion des comptes</strong>: création, modification, désactivation des comptes AD, règles de mots de passe, authentification multi-facteur.</li><li>Rédige le <strong>plan de réponse aux incidents</strong>: que faire en cas de ransomware, de violation de données, ou d'accès non autorisé détecté.</li></ol>
+  <div class="vurl"><input type="text" id="vi4" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(4)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>4.1 IDS vs IPS — Comparaison</h3>
+<table class="dtable">
+<thead><tr><th>Critère</th><th>IDS (Détection)</th><th>IPS (Prévention)</th></tr></thead>
+<tbody>
+<tr><td><strong>Mode de fonctionnement</strong></td><td>Passif (hors bande — port miroir)</td><td>Inline (dans le flux de trafic)</td></tr>
+<tr><td><strong>Action sur menace</strong></td><td>Alerte/Log uniquement</td><td>Bloque, réinitialise, alerte</td></tr>
+<tr><td><strong>Impact sur performances</strong></td><td>Aucun (trafic non modifié)</td><td>Légère latence ajoutée</td></tr>
+<tr><td><strong>Risque faux positif</strong></td><td>Alerte inutile</td><td>Blocage de trafic légitime</td></tr>
+<tr><td><strong>Placement réseau</strong></td><td>SPAN/Mirror port switch</td><td>Inline entre routeur et LAN</td></tr>
+<tr><td><strong>Exemples</strong></td><td>SNORT (mode IDS), Suricata</td><td>Cisco Firepower, SNORT (inline)</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>4.2 Cisco IOS IPS — Configuration de base</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — IPS intégré</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === Configuration Cisco IOS IPS ===</span>
+
+<span class="cmt">! Créer le répertoire pour les signatures IPS</span>
+R# <span class="cmd">mkdir flash:/ipsdir</span>
+
+<span class="cmt">! Configurer l'IPS</span>
+R(config)# <span class="cmd">ip ips config location flash:/ipsdir</span>
+R(config)# <span class="cmd">ip ips name</span> <span class="val">IPS-LAN</span>
+
+<span class="cmt">! Activer les catégories de signatures</span>
+R(config)# <span class="cmd">ip ips signature-category</span>
+R(config-ips-category)# <span class="cmd">category all</span>
+R(config-ips-category-action)# <span class="cmd">retired true</span>   <span class="cmt">← désactiver toutes par défaut</span>
+R(config-ips-category-action)# <span class="cmd">exit</span>
+R(config-ips-category)# <span class="cmd">category ios_ips basic</span>
+R(config-ips-category-action)# <span class="cmd">retired false</span>  <span class="cmt">← activer les signatures de base</span>
+R(config-ips-category-action)# <span class="cmd">exit</span>
+R(config-ips-category)# <span class="cmd">exit</span>
+
+<span class="cmt">! Appliquer l'IPS sur l'interface WAN</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R(config-if)# <span class="cmd">ip ips IPS-LAN in</span>     <span class="cmt">← inspection du trafic entrant</span>
+R(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show ip ips configuration</span>
+R# <span class="cmd">show ip ips signatures</span>
+R# <span class="cmd">show ip ips statistics</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Un "faux positif" dans un IPS est dangereux car :</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Il laisse passer une vraie attaque sans la détecter</button>
+      <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Il bloque du trafic légitime, perturbant les opérations normales</button>
+      <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Il génère trop d'alertes dans l'IDS</button>
+      <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Il consomme trop de CPU sur le routeur</button>
     </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Contexte de menaces réaliste et priorisé</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Politique d'accès réseau par rôle, cohérente et complète</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Politique Wi-Fi sécurisée</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Politique de gestion des comptes AD</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Plan de réponse aux incidents clair et actionnable</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
+    <div class="qexpl" id="qe-4-0"></div>
   </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-26 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quelle méthode de détection IDS identifie les attaques Zero-Day (non encore répertoriées) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Détection basée sur les signatures — base de données des attaques connues</button>
+      <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Détection basée sur les anomalies — déviation du comportement normal</button>
+      <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Détection basée sur les politiques ACL</button>
+      <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Détection basée sur les ports utilisés</button>
+    </div>
+    <div class="qexpl" id="qe-4-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Pourquoi un IDS est-il placé sur un port SPAN (miroir) du switch plutôt qu'inline ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Pour analyser une copie du trafic sans l'impacter ni créer de point de défaillance unique</button>
+      <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Parce que l'IDS ne peut pas analyser le trafic en temps réel</button>
+      <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Pour économiser des licences Cisco</button>
+      <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Parce que l'IDS ne supporte pas les interfaces gigabit</button>
+    </div>
+    <div class="qexpl" id="qe-4-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,0],['Un faux positif = l\'IPS identifie du trafic légitime comme malveillant et le bloque. En mode IPS inline, cela perturbe directement les opérations : ex. un transfert de fichier volumineux bloqué car il ressemble à une exfiltration de données. Les équipes sécurité doivent calibrer les règles pour minimiser les faux positifs.','La détection basée sur les anomalies (behavioral analysis) établit un profil de comportement normal (baseline) et alerte quand le trafic dévie significativement. Contrairement aux signatures qui ne détectent que les attaques connues, les anomalies peuvent identifier des comportements inhabituels comme première indication d\'une nouvelle attaque ou d\'une compromission interne.','L\'IDS en mode passif reçoit une copie du trafic via le port SPAN du switch — le trafic réel n\'est pas modifié. Avantages : aucun impact sur les performances, pas de point de défaillance unique (si l\'IDS tombe, le réseau continue). Inconvénient : ne peut que détecter, pas bloquer. L\'IPS doit être inline mais ajoute de la latence.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 5 — AAA ══ -->
+<div class="chapter" id="ch-5">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0505,#0a1a3e)">
+<div class="ch-num">05</div>
+<div class="ch-info"><h2>AAA — Authentification, Autorisation, Audit</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">🔐 RADIUS · TACACS+ · 802.1X · EAP · Cisco ISE · NAC</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — AAA : RADIUS, TACACS+ et 802.1X</div><div class="vsub">16 min · ENSA Module 2 · AAA · RADIUS · TACACS+ · 802.1X · ISE</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp5"><div class="vplay" onclick="openVideo(5)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf5" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>AAA — les 3 fonctions (5 min)</strong> — Authentification (qui es-tu ?), Autorisation (que peux-tu faire ?), Accounting/Audit (qu'as-tu fait ?). Centralisé vs local. Serveur AAA : Cisco ISE, FreeRADIUS.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>RADIUS vs TACACS+ (5 min)</strong> — RADIUS : standard ouvert, UDP 1812/1813, combine auth+authz, chiffre seulement le mot de passe. TACACS+ : Cisco propriétaire, TCP 49, sépare les 3 fonctions, chiffre tout le paquet. Meilleur pour les équipements réseau.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>802.1X (6 min)</strong> — Contrôle d'accès au port réseau. Supplicant (client), Authenticator (switch), Authentication Server (RADIUS/ISE). EAP (Extensible Authentication Protocol). Avant de connecter au réseau, s'authentifier.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi5" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(5)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>5.1 RADIUS vs TACACS+</h3>
+<table class="dtable">
+<thead><tr><th>Critère</th><th>RADIUS</th><th>TACACS+</th></tr></thead>
+<tbody>
+<tr><td><strong>Standard</strong></td><td>Ouvert (RFC 2865)</td><td>Cisco propriétaire</td></tr>
+<tr><td><strong>Transport</strong></td><td>UDP 1812 (auth) / 1813 (acct)</td><td>TCP 49 (fiable)</td></tr>
+<tr><td><strong>Chiffrement</strong></td><td>Mot de passe uniquement</td><td>Tout le paquet chiffré</td></tr>
+<tr><td><strong>Fonctions AAA</strong></td><td>Auth + Authz combinées</td><td>Auth, Authz, Acct séparées</td></tr>
+<tr><td><strong>Usage principal</strong></td><td>Accès utilisateurs (VPN, WiFi)</td><td>Administration équipements réseau</td></tr>
+<tr><td><strong>Granularité</strong></td><td>Limitée</td><td>Fine (commande par commande)</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>5.2 Configuration AAA avec TACACS+</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — AAA TACACS+ pour administration</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === AAA TACACS+ — Administration sécurisée des équipements ===</span>
+
+<span class="cmt">! Activer AAA</span>
+R(config)# <span class="cmd">aaa new-model</span>
+
+<span class="cmt">! Configurer le serveur TACACS+</span>
+R(config)# <span class="cmd">tacacs server</span> <span class="val">TACACS-PRINCIPAL</span>
+R(config-server-tacacs)# <span class="cmd">address ipv4</span> <span class="val">192.168.100.50</span>
+R(config-server-tacacs)# <span class="cmd">key</span> <span class="str">TacacsSecret2024!</span>
+R(config-server-tacacs)# <span class="cmd">exit</span>
+
+<span class="cmt">! Groupe de serveurs TACACS+</span>
+R(config)# <span class="cmd">aaa group server tacacs+</span> <span class="val">TACACS-GROUP</span>
+R(config-sg-tacacs+)# <span class="cmd">server name TACACS-PRINCIPAL</span>
+R(config-sg-tacacs+)# <span class="cmd">exit</span>
+
+<span class="cmt">! Politiques AAA</span>
+R(config)# <span class="cmd">aaa authentication login</span> <span class="val">ADMIN-AUTH</span> <span class="cmd">group</span> <span class="val">TACACS-GROUP</span> <span class="cmd">local</span>
+<span class="cmt">                                              ↑ TACACS+ d'abord, local si TACACS+ inaccessible</span>
+R(config)# <span class="cmd">aaa authorization exec</span> <span class="val">ADMIN-AUTHZ</span> <span class="cmd">group</span> <span class="val">TACACS-GROUP</span> <span class="cmd">local</span>
+R(config)# <span class="cmd">aaa authorization commands 15</span> <span class="val">ADMIN-CMD</span> <span class="cmd">group</span> <span class="val">TACACS-GROUP</span> <span class="cmd">local</span>
+R(config)# <span class="cmd">aaa accounting exec</span> <span class="val">ADMIN-ACCT</span> <span class="cmd">start-stop group</span> <span class="val">TACACS-GROUP</span>
+R(config)# <span class="cmd">aaa accounting commands 15</span> <span class="val">ADMIN-ACCT</span> <span class="cmd">start-stop group</span> <span class="val">TACACS-GROUP</span>
+
+<span class="cmt">! Appliquer sur les lignes VTY</span>
+R(config)# <span class="cmd">line vty 0 4</span>
+R(config-line)# <span class="cmd">login authentication ADMIN-AUTH</span>
+R(config-line)# <span class="cmd">authorization exec ADMIN-AUTHZ</span>
+R(config-line)# <span class="cmd">accounting exec ADMIN-ACCT</span>
+R(config-line)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show aaa servers</span>
+R# <span class="cmd">test aaa group TACACS-GROUP admin TestPass123 new-code</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="5">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Pourquoi TACACS+ est-il préféré à RADIUS pour l'administration des équipements réseau Cisco ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>TACACS+ est gratuit, RADIUS est payant</button>
+      <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>TACACS+ chiffre tout le paquet et sépare les fonctions AAA — granularité par commande possible</button>
+      <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>TACACS+ supporte IPv6, RADIUS non</button>
+      <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>TACACS+ est plus rapide car utilise UDP</button>
+    </div>
+    <div class="qexpl" id="qe-5-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Dans 802.1X, quel est le rôle de l'"Authenticator" ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>C'est le serveur RADIUS qui vérifie les identifiants</button>
+      <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>C'est le switch ou l'AP qui contrôle l'accès au port réseau et relaie les échanges EAP vers le serveur</button>
+      <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>C'est le client qui s'authentifie (PC, téléphone)</button>
+      <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>C'est le routeur qui distribue les adresses IP</button>
+    </div>
+    <div class="qexpl" id="qe-5-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Que se passe-t-il si le serveur TACACS+ est inaccessible avec la config "group TACACS-GROUP local" ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Tous les accès sont bloqués automatiquement</button>
+      <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>Le routeur bascule sur la base de données locale (comptes locaux configurés sur le routeur)</button>
+      <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Le routeur redémarre automatiquement</button>
+      <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>Tous les accès sont autorisés sans authentification</button>
+    </div>
+    <div class="qexpl" id="qe-5-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,1],['TACACS+ offre plusieurs avantages pour l\'administration réseau : chiffrement complet du paquet (RADIUS chiffre seulement le mot de passe), séparation des fonctions AAA permettant des politiques granulaires, et autorisation commande par commande (ex: autoriser show mais pas configure terminal). TACACS+ utilise TCP 49 (fiable) vs UDP RADIUS.','Dans 802.1X : le Supplicant = le client (PC, téléphone) qui demande l\'accès. L\'Authenticator = le switch ou AP qui agit comme intermédiaire et contrôle le port réseau — il relaie les messages EAP entre le supplicant et le serveur. Le Authentication Server = RADIUS/ISE qui vérifie réellement les identifiants.','La liste de méthodes «group TACACS-GROUP local» définit un fallback. Le routeur essaie d\'abord le serveur TACACS+. Si le serveur est inaccessible (timeout), il utilise la base locale. C\'est crucial pour la résilience — évite de se retrouver sans accès si le serveur AAA tombe. Toujours configurer au moins un compte local de secours.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-5"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 6 — Cryptographie et PKI ══ -->
+<div class="chapter" id="ch-6">
+<div class="ch-header"><div class="ch-num">06</div>
+<div class="ch-info"><h2>Cryptographie et PKI</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">AES · RSA · SHA · Diffie-Hellman · PKI · Certificats X.509 · CA</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 6 — Cryptographie moderne et infrastructure PKI</div><div class="vsub">16 min · ENSA Module 6 · AES · RSA · SHA · PKI · X.509</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp6"><div class="vplay" onclick="openVideo(6)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf6" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Cryptographie symétrique vs asymétrique (5 min)</strong> — Symétrique (AES) : même clé pour chiffrer/déchiffrer, rapide, problème de distribution des clés. Asymétrique (RSA) : paire clé publique/privée, lente mais résout le problème de distribution. En pratique : RSA échange la clé AES.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Fonctions de hachage et signatures (5 min)</strong> — SHA-256/512 : hash unidirectionnel pour l'intégrité. HMAC : hash avec clé secrète pour l'authentification. Signature numérique = hash chiffré avec clé privée. Non-répudiation.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>PKI et certificats X.509 (6 min)</strong> — CA (Certificate Authority) : tiers de confiance qui signe les certificats. CSR (Certificate Signing Request). Chaîne de confiance. Révocation (CRL, OCSP). Cisco IOS CA.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi6" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(6)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>6.1 Algorithmes cryptographiques — Référence</h3>
+<table class="dtable">
+<thead><tr><th>Algorithme</th><th>Type</th><th>Usage</th><th>Force recommandée</th></tr></thead>
+<tbody>
+<tr><td><strong>AES</strong></td><td>Symétrique</td><td>Chiffrement des données (ESP, TLS)</td><td>AES-256 (minimum AES-128)</td></tr>
+<tr><td><strong>RSA</strong></td><td>Asymétrique</td><td>Échange de clés, signatures</td><td>2048 bits minimum, 4096 recommandé</td></tr>
+<tr><td><strong>ECDSA</strong></td><td>Asymétrique</td><td>Signatures (plus efficace que RSA)</td><td>256 bits ≈ RSA 3072 bits</td></tr>
+<tr><td><strong>Diffie-Hellman</strong></td><td>Échange de clés</td><td>IKE Phase 1, TLS handshake</td><td>DH Group 14 (2048 bits) minimum</td></tr>
+<tr><td><strong>SHA-256</strong></td><td>Hachage</td><td>Intégrité, signatures numériques</td><td>SHA-256 ou SHA-512</td></tr>
+<tr><td><strong>SHA-1</strong></td><td>Hachage</td><td>⚠️ DÉPRÉCIÉ — vulnérable</td><td>Ne plus utiliser</td></tr>
+<tr><td><strong>MD5</strong></td><td>Hachage</td><td>⚠️ BRISÉ — vulnérable aux collisions</td><td>Ne plus utiliser</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>6.2 PKI — Cisco IOS Certificate Authority</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — PKI et gestion des certificats</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === Cisco IOS comme CA (Certificate Authority) ===</span>
+
+<span class="cmt">! Configurer le CA serveur</span>
+R(config)# <span class="cmd">ip http server</span>                          <span class="cmt">← requis pour l'enrollment</span>
+R(config)# <span class="cmd">crypto pki server</span> <span class="val">CANADO-CA</span>
+R(cs-server)# <span class="cmd">database level minimum</span>
+R(cs-server)# <span class="cmd">database archive pem password</span> <span class="str">CAarchive2024!</span>
+R(cs-server)# <span class="cmd">grant auto</span>                           <span class="cmt">← auto-approve les requêtes</span>
+R(cs-server)# <span class="cmd">lifetime certificate 365</span>             <span class="cmt">← certificats valides 1 an</span>
+R(cs-server)# <span class="cmd">lifetime ca-certificate 1825</span>         <span class="cmt">← CA valide 5 ans</span>
+R(cs-server)# <span class="cmd">no shutdown</span>                          <span class="cmt">← démarrer le CA</span>
+R(cs-server)# <span class="cmd">exit</span>
+
+<span class="cmt">! Générer un certificat pour ce routeur (enrollment local)</span>
+R(config)# <span class="cmd">crypto pki trustpoint</span> <span class="val">CANADO-CA-TP</span>
+R(ca-trustpoint)# <span class="cmd">enrollment url http://192.168.1.1:80</span>
+R(ca-trustpoint)# <span class="cmd">subject-name cn=R1,ou=IT,o=Canado,c=HT</span>
+R(ca-trustpoint)# <span class="cmd">revocation-check none</span>
+R(ca-trustpoint)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">crypto pki authenticate CANADO-CA-TP</span>     <span class="cmt">← télécharger cert CA</span>
+R(config)# <span class="cmd">crypto pki enroll CANADO-CA-TP</span>           <span class="cmt">← demander un certificat</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show crypto pki certificates</span>
+R# <span class="cmd">show crypto pki server</span>
+R# <span class="cmd">show crypto pki trustpoints</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="6">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Pourquoi utilise-t-on RSA pour échanger une clé AES plutôt que de chiffrer tout le flux avec RSA ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',0,0)"><span class="qletter">A</span>RSA ne peut pas chiffrer des données de plus de 256 octets</button>
+      <button class="qopt" onclick="selQ(this,'6',0,1)"><span class="qletter">B</span>RSA est 100 à 1000x plus lent qu'AES — on l'utilise juste pour échanger la clé symétrique, puis AES chiffre les données</button>
+      <button class="qopt" onclick="selQ(this,'6',0,2)"><span class="qletter">C</span>AES n'est pas sécurisé pour les échanges réseau</button>
+      <button class="qopt" onclick="selQ(this,'6',0,3)"><span class="qletter">D</span>RSA ne supporte pas les clés de 256 bits</button>
+    </div>
+    <div class="qexpl" id="qe-6-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quelle propriété offre une signature numérique que le chiffrement seul ne peut pas garantir ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',1,0)"><span class="qletter">A</span>Confidentialité — les données sont chiffrées</button>
+      <button class="qopt" onclick="selQ(this,'6',1,1)"><span class="qletter">B</span>Non-répudiation — l'expéditeur ne peut pas nier avoir envoyé le message</button>
+      <button class="qopt" onclick="selQ(this,'6',1,2)"><span class="qletter">C</span>Disponibilité — le message est toujours accessible</button>
+      <button class="qopt" onclick="selQ(this,'6',1,3)"><span class="qletter">D</span>Compression — le message est plus petit</button>
+    </div>
+    <div class="qexpl" id="qe-6-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Pourquoi ne doit-on plus utiliser MD5 pour vérifier l'intégrité des fichiers ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',2,0)"><span class="qletter">A</span>MD5 est trop lent pour les systèmes modernes</button>
+      <button class="qopt" onclick="selQ(this,'6',2,1)"><span class="qletter">B</span>Des collisions MD5 peuvent être générées intentionnellement — deux fichiers différents peuvent avoir le même hash</button>
+      <button class="qopt" onclick="selQ(this,'6',2,2)"><span class="qletter">C</span>MD5 n'est pas supporté par IOS Cisco</button>
+      <button class="qopt" onclick="selQ(this,'6',2,3)"><span class="qletter">D</span>MD5 produit des hash trop courts (32 bits)</button>
+    </div>
+    <div class="qexpl" id="qe-6-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('6',[1,1,1],['RSA (asymétrique) est mathématiquement coûteux — chiffrer un fichier de 1 GB avec RSA prendrait des minutes. AES (symétrique) est optimisé hardware et peut chiffrer des GB par seconde. La solution pratique : RSA chiffre une clé AES aléatoire (quelques dizaines d\'octets), puis AES chiffre les données réelles. C\'est ainsi que TLS, IPSec et HTTPS fonctionnent.','La signature numérique utilise la clé privée de l\'expéditeur pour signer. Seul le détenteur de cette clé privée peut créer cette signature. Si la vérification avec la clé publique réussit, on est certain que c\'est bien l\'expéditeur qui a signé — il ne peut pas nier (non-répudiation). Le chiffrement seul garantit la confidentialité mais pas l\'identité de l\'expéditeur.','MD5 est vulnérable aux attaques par collision : des chercheurs ont démontré qu\'il est possible de créer deux fichiers différents qui produisent le même hash MD5. Un attaquant peut remplacer un fichier légitime par un fichier malveillant avec le même MD5, bypassing la vérification d\'intégrité. SHA-256 ou SHA-512 doivent remplacer MD5 partout.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-6"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 7 — Sécurité sans-fil ══ -->
+<div class="chapter" id="ch-7">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0505,#1a1a05)">
+<div class="ch-num">07</div>
+<div class="ch-info"><h2>Sécurité sans-fil</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">📡 WPA3 · WPA2-Enterprise · 802.1X WiFi · Rogue AP · Evil Twin</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 7 — Sécurité WiFi : WPA3, WPA2-Enterprise et menaces</div><div class="vsub">14 min · ENSA Module 7 · WPA3 · WPA2-Enterprise · Rogue AP · 802.1X</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp7"><div class="vplay" onclick="openVideo(7)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf7" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Évolution de la sécurité WiFi (5 min)</strong> — WEP (brisé en minutes), WPA (TKIP — amélioré mais vulnérable), WPA2 (AES-CCMP — solide), WPA3 (SAE — résistant aux attaques par dictionnaire, Perfect Forward Secrecy). WPA2 reste standard minimum.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>WPA2-Enterprise vs Personal (5 min)</strong> — Personal : clé pré-partagée (PSK) partagée par tous — problème si divulguée. Enterprise : 802.1X avec RADIUS, chaque utilisateur a ses identifiants, révocation individuelle possible. Obligatoire en environnement professionnel.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Menaces WiFi (4 min)</strong> — Rogue AP (AP non autorisé sur le réseau), Evil Twin (AP malveillant imitant le SSID légitime), Deauthentication Attack, KRACK (WPA2), PMKID Attack. Contre-mesures : WIDS, Rogue AP detection, 802.1X.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi7" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(7)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>7.1 Comparaison des protocoles de sécurité WiFi</h3>
+<table class="dtable">
+<thead><tr><th>Protocole</th><th>Chiffrement</th><th>Authentification</th><th>Statut</th></tr></thead>
+<tbody>
+<tr><td><strong>WEP</strong></td><td>RC4 (40/104 bits)</td><td>Clé statique</td><td>❌ Brisé en < 5 minutes — INTERDIT</td></tr>
+<tr><td><strong>WPA</strong></td><td>TKIP (RC4 amélioré)</td><td>PSK ou 802.1X</td><td>⚠️ Vulnérable — déprécié</td></tr>
+<tr><td><strong>WPA2-Personal</strong></td><td>AES-CCMP 128 bits</td><td>PSK partagé</td><td>✅ Acceptable pour usage résidentiel</td></tr>
+<tr><td><strong>WPA2-Enterprise</strong></td><td>AES-CCMP 128 bits</td><td>802.1X / EAP</td><td>✅ Recommandé entreprise</td></tr>
+<tr><td><strong>WPA3-Personal</strong></td><td>AES-GCMP 192 bits</td><td>SAE (résistant dict.)</td><td>✅✅ Recommandé — moderne</td></tr>
+<tr><td><strong>WPA3-Enterprise</strong></td><td>AES-GCMP 256 bits</td><td>802.1X + SAE</td><td>✅✅ Maximum sécurité</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>7.2 Configuration WPA2-Enterprise sur Cisco WLC</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco WLC — WLAN WPA2-Enterprise + 802.1X</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Configuration via CLI Cisco WLC (Wireless LAN Controller)</span>
+
+<span class="cmt">! Ajouter le serveur RADIUS pour 802.1X</span>
+(Cisco Controller)> <span class="cmd">config radius auth add 1</span> <span class="val">192.168.100.50 1812</span> <span class="str">RadiusSecret2024</span>
+(Cisco Controller)> <span class="cmd">config radius auth enable 1</span>
+
+<span class="cmt">! Créer un WLAN sécurisé WPA2-Enterprise</span>
+(Cisco Controller)> <span class="cmd">config wlan create</span> <span class="val">1</span> <span class="str">Canado-Corp</span> <span class="str">Canado-Corp</span>
+(Cisco Controller)> <span class="cmd">config wlan security wpa akm 802.1x enable</span> <span class="val">1</span>
+(Cisco Controller)> <span class="cmd">config wlan security wpa wpa2 enable</span> <span class="val">1</span>
+(Cisco Controller)> <span class="cmd">config wlan security wpa wpa2 ciphers aes enable</span> <span class="val">1</span>
+(Cisco Controller)> <span class="cmd">config wlan radius_server auth add</span> <span class="val">1 1</span>
+
+<span class="cmt">! Activer Rogue AP Detection</span>
+(Cisco Controller)> <span class="cmd">config rogue ap rldp enable auto</span>
+(Cisco Controller)> <span class="cmd">config rogue ap notify enable</span>
+
+<span class="cmt">! Activer le WLAN</span>
+(Cisco Controller)> <span class="cmd">config wlan enable</span> <span class="val">1</span>
+
+<span class="cmt">! Vérification</span>
+(Cisco Controller)> <span class="cmd">show wlan summary</span>
+(Cisco Controller)> <span class="cmd">show rogue ap summary</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="7">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 7</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Qu'est-ce qu'une attaque "Evil Twin" dans le contexte WiFi ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',0,0)"><span class="qletter">A</span>Une attaque qui duplique les adresses MAC de deux clients WiFi</button>
+      <button class="qopt" onclick="selQ(this,'7',0,1)"><span class="qletter">B</span>Un AP malveillant qui imite le SSID et le signal d'un AP légitime pour intercepter les connexions</button>
+      <button class="qopt" onclick="selQ(this,'7',0,2)"><span class="qletter">C</span>Une attaque qui crée deux sessions WiFi simultanées</button>
+      <button class="qopt" onclick="selQ(this,'7',0,3)"><span class="qletter">D</span>Un virus qui infecte deux appareils simultanément via WiFi</button>
+    </div>
+    <div class="qexpl" id="qe-7-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi WPA3 avec SAE est-il plus résistant aux attaques par dictionnaire que WPA2-PSK ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',1,0)"><span class="qletter">A</span>WPA3 utilise des mots de passe plus longs</button>
+      <button class="qopt" onclick="selQ(this,'7',1,1)"><span class="qletter">B</span>SAE empêche les attaques offline — même si on capture le handshake, on ne peut pas tester des mots de passe sans être en ligne</button>
+      <button class="qopt" onclick="selQ(this,'7',1,2)"><span class="qletter">C</span>WPA3 chiffre le SSID pour qu'il soit invisible</button>
+      <button class="qopt" onclick="selQ(this,'7',1,3)"><span class="qletter">D</span>WPA3 bloque automatiquement les clients inconnus</button>
+    </div>
+    <div class="qexpl" id="qe-7-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Dans un réseau d'entreprise, pourquoi préfère-t-on WPA2-Enterprise à WPA2-Personal ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',2,0)"><span class="qletter">A</span>WPA2-Enterprise offre un meilleur débit WiFi</button>
+      <button class="qopt" onclick="selQ(this,'7',2,1)"><span class="qletter">B</span>Chaque utilisateur a ses propres identifiants — révocation individuelle possible sans changer la clé pour tout le monde</button>
+      <button class="qopt" onclick="selQ(this,'7',2,2)"><span class="qletter">C</span>WPA2-Enterprise est gratuit, WPA2-Personal coûte des licences</button>
+      <button class="qopt" onclick="selQ(this,'7',2,3)"><span class="qletter">D</span>WPA2-Enterprise supporte plus d'appareils simultanés</button>
+    </div>
+    <div class="qexpl" id="qe-7-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('7',[1,1,1],['L\'Evil Twin crée un AP malveillant avec le même SSID (nom réseau) et une puissance de signal plus forte que l\'AP légitime. Les clients se connectent automatiquement au signal le plus fort — pensant se connecter au réseau légitime. L\'attaquant peut alors intercepter tout le trafic non chiffré (MitM). Solution : WPA2-Enterprise avec 802.1X — le client vérifie le certificat du serveur RADIUS.','WPA2-PSK utilise un handshake en 4 étapes que l\'attaquant peut capturer offline et soumettre à une attaque par dictionnaire depuis chez lui. SAE (Simultaneous Authentication of Equals) utilise un protocole d\'échange de clés Diffie-Hellman — chaque session génère des clés uniques et les attaques offline sont impossibles car le serveur doit participer à chaque tentative.','Avec WPA2-Personal, tous les employés partagent la même PSK. Si un employé quitte, il faut changer la PSK et reconfigurer tous les appareils. Avec WPA2-Enterprise (802.1X), chaque utilisateur a son compte RADIUS — désactiver un seul compte sur le serveur révoque immédiatement l\'accès sans impacter les autres.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-7" style="display:none" onclick="retryQ('7',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-7"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(7)">✓ Chapitre 7 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 8 — Endpoint Security ══ -->
+<div class="chapter" id="ch-8">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0505,#0a1a0a)">
+<div class="ch-num">08</div>
+<div class="ch-info"><h2>Endpoint Security</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">EDR · Antivirus · Patch Management · Hardening · NAC · CIS Benchmarks</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 8 — Sécurité des endpoints : EDR, NAC et hardening</div><div class="vsub">14 min · ENSA Module 8 · EDR · Antivirus · NAC · CIS · Patch</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp8"><div class="vplay" onclick="openVideo(8)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf8" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Antivirus vs EDR (5 min)</strong> — Antivirus traditionnel : signatures de malwares connus. EDR (Endpoint Detection & Response) : surveillance comportementale en temps réel, détecte les attaques zero-day, forensics, réponse automatisée. Cisco AMP, CrowdStrike Falcon.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>NAC — Contrôle d'accès réseau (5 min)</strong> — Vérifier la posture de sécurité d'un endpoint avant de l'autoriser sur le réseau. Cisco ISE + NAC : vérifier OS patché, antivirus à jour, chiffrement disk activé. VLAN de quarantaine si non-conforme.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Hardening et CIS Benchmarks (4 min)</strong> — Réduire la surface d'attaque : désactiver services inutiles, fermer ports non utilisés, chiffrement disque (BitLocker), MFA. CIS Benchmarks = référentiels de durcissement par OS.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi8" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(8)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>8.1 Antivirus vs EDR</h3>
+<table class="dtable">
+<thead><tr><th>Critère</th><th>Antivirus traditionnel</th><th>EDR (Endpoint Detection & Response)</th></tr></thead>
+<tbody>
+<tr><td><strong>Méthode détection</strong></td><td>Signatures de malwares connus</td><td>Comportement, ML, threat hunting</td></tr>
+<tr><td><strong>Zero-Day</strong></td><td>❌ Inefficace</td><td>✅ Détecte les comportements anormaux</td></tr>
+<tr><td><strong>Réponse</strong></td><td>Quarantaine du fichier</td><td>Isolation réseau, kill process, forensics</td></tr>
+<tr><td><strong>Visibilité</strong></td><td>Limitée au fichier</td><td>Télémétrie complète (processus, réseau, registry)</td></tr>
+<tr><td><strong>Exemples</strong></td><td>Windows Defender (basique)</td><td>CrowdStrike, Cisco AMP, SentinelOne</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>8.2 NAC avec Cisco ISE — Politique de posture</h3>
+<div class="ibox red"><span class="ibox-label">🔒 Principe du NAC — Network Access Control</span>
+Avant qu'un endpoint accède au réseau, Cisco ISE vérifie sa <strong>posture de sécurité</strong> :<br>
+• ✅ OS à jour (Windows Update / patches) → accès réseau complet<br>
+• ✅ Antivirus/EDR installé et signatures à jour → accès complet<br>
+• ✅ Chiffrement disque activé (BitLocker/FileVault) → accès complet<br>
+• ❌ OS non patché → VLAN quarantaine (accès Windows Update uniquement)<br>
+• ❌ Antivirus absent → VLAN quarantaine avec notification utilisateur<br>
+• ❌ Machine inconnue → VLAN invités uniquement (Internet limité)</div>
+</div>
+
+<div class="qblock" data-qid="8">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 8</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Un employé connecte son PC personnel (non-géré) au réseau Cisco ISE de Canado Technique. Que fait ISE ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',0,0)"><span class="qletter">A</span>Autorise l'accès complet car l'employé est authentifié</button>
+      <button class="qopt" onclick="selQ(this,'8',0,1)"><span class="qletter">B</span>Place le PC dans un VLAN restreint (invités/quarantaine) car la posture n'est pas vérifiable</button>
+      <button class="qopt" onclick="selQ(this,'8',0,2)"><span class="qletter">C</span>Installe automatiquement l'agent ISE sur le PC</button>
+      <button class="qopt" onclick="selQ(this,'8',0,3)"><span class="qletter">D</span>Bloque totalement la connexion sans explication</button>
+    </div>
+    <div class="qexpl" id="qe-8-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Qu'est-ce que le "Patch Management" et pourquoi est-il critique ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',1,0)"><span class="qletter">A</span>La gestion des câbles réseau et des correctifs physiques</button>
+      <button class="qopt" onclick="selQ(this,'8',1,1)"><span class="qletter">B</span>Le processus d'application des mises à jour de sécurité — 60% des brèches exploitent des vulnérabilités pour lesquelles un patch existait déjà</button>
+      <button class="qopt" onclick="selQ(this,'8',1,2)"><span class="qletter">C</span>La sauvegarde des configurations réseau</button>
+      <button class="qopt" onclick="selQ(this,'8',1,3)"><span class="qletter">D</span>La mise à jour des signatures antivirus</button>
+    </div>
+    <div class="qexpl" id="qe-8-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle mesure de hardening d'endpoint est la plus efficace contre le vol physique d'un laptop ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',2,0)"><span class="qletter">A</span>Installation d'un antivirus</button>
+      <button class="qopt" onclick="selQ(this,'8',2,1)"><span class="qletter">B</span>Chiffrement complet du disque dur (BitLocker/FileVault)</button>
+      <button class="qopt" onclick="selQ(this,'8',2,2)"><span class="qletter">C</span>Configuration d'un pare-feu local</button>
+      <button class="qopt" onclick="selQ(this,'8',2,3)"><span class="qletter">D</span>Désactivation des ports USB</button>
+    </div>
+    <div class="qexpl" id="qe-8-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('8',[1,1,1],['Cisco ISE applique la politique de posture — un PC non-géré (sans agent Cisco ISE installé) ne peut pas être évalué. ISE l\'identifie comme non-conforme et l\'assigne au VLAN invités avec accès limité. L\'employé peut accéder à Internet mais pas aux ressources internes. Cette approche protège le réseau sans bloquer complètement l\'utilisateur.','Patch Management = processus systématique d\'identification, test et déploiement des mises à jour de sécurité. L\'attaque WannaCry (2017) a exploité une vulnérabilité Windows pour laquelle Microsoft avait publié un patch 2 mois avant — les organisations non patchées ont subi des pertes de milliards de dollars. Selon Gartner, 60% des brèches exploitent des vulnérabilités connues avec patch disponible.','Le chiffrement complet du disque (Full Disk Encryption) est la seule protection efficace contre le vol physique. Si quelqu\'un vole le laptop et retire le disque dur, sans la clé de chiffrement (BitLocker nécessite le PIN/TPM), les données sont illisibles. Un antivirus ou pare-feu ne protège pas contre l\'accès physique direct au disque.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-8" style="display:none" onclick="retryQ('8',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-8"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(8)">✓ Chapitre 8 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 9 — Sécurité Cloud et DevSecOps ══ -->
+<div class="chapter" id="ch-9">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0505,#0a0a3a)">
+<div class="ch-num">09</div>
+<div class="ch-info"><h2>Sécurité Cloud et DevSecOps</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">CASB · Zero Trust · SASE · IAM · DevSecOps · CSPM · Shared Responsibility</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 9 — Sécurité cloud : Zero Trust, SASE et DevSecOps</div><div class="vsub">14 min · ENSA · Zero Trust · CASB · SASE · Shared Responsibility</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp9"><div class="vplay" onclick="openVideo(9)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf9" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Shared Responsibility Model (4 min)</strong> — Dans le cloud, la sécurité est partagée. AWS/Azure/GCP sécurisent l'infrastructure. Le client sécurise ses données, ses configurations, ses accès. "Ne jamais faire confiance au cloud pour sécuriser vos données par défaut."</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Zero Trust Architecture (5 min)</strong> — "Never trust, always verify." Pas de périmètre réseau sécurisé. Chaque accès doit être authentifié, autorisé et chiffré — qu'il vienne de l'intérieur ou de l'extérieur. MFA, microsegmentation, least privilege.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>SASE et DevSecOps (5 min)</strong> — SASE = SD-WAN + sécurité cloud (CASB, ZTNA, FWaaS). DevSecOps = intégrer la sécurité dans le pipeline CI/CD : SAST, DAST, scan de dépendances, secrets management.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi9" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(9)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>9.1 Modèle Shared Responsibility Cloud</h3>
+<table class="dtable">
+<thead><tr><th>Responsabilité</th><th>IaaS (EC2, Azure VM)</th><th>PaaS (RDS, App Service)</th><th>SaaS (Office 365)</th></tr></thead>
+<tbody>
+<tr><td><strong>Données client</strong></td><td>Client</td><td>Client</td><td>Client</td></tr>
+<tr><td><strong>Identités / IAM</strong></td><td>Client</td><td>Client</td><td>Client</td></tr>
+<tr><td><strong>Applications</strong></td><td>Client</td><td>Client</td><td>Fournisseur</td></tr>
+<tr><td><strong>OS invité</strong></td><td>Client</td><td>Fournisseur</td><td>Fournisseur</td></tr>
+<tr><td><strong>Infrastructure physique</strong></td><td>Fournisseur</td><td>Fournisseur</td><td>Fournisseur</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>9.2 Principes Zero Trust</h3>
+<div class="ibox red"><span class="ibox-label">🔒 Zero Trust — "Never Trust, Always Verify"</span>
+Le modèle périmétrique traditionnel considère que tout ce qui est à l'intérieur du réseau est sûr. Zero Trust rejette ce principe fondamentalement :<br><br>
+<strong>1. Vérifier explicitement</strong> — Toujours authentifier et autoriser, basé sur tous les points de données disponibles (identité, localisation, état device, service/workload, comportement).<br><br>
+<strong>2. Moindre privilège</strong> — Limiter les accès au minimum nécessaire (JIT — Just-In-Time access, ABAC — Attribute-Based Access Control).<br><br>
+<strong>3. Assumer la violation</strong> — Considérer que le réseau est déjà compromis. Minimiser le rayon d'explosion, segmenter l'accès, chiffrer tout, monitorer tout.<br><br>
+<strong>Implémentation</strong> : MFA partout, microsegmentation, ZTNA (Zero Trust Network Access) remplace VPN, CASB pour les SaaS, surveillance continue.</div>
+</div>
+
+<div class="qblock" data-qid="9">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 9</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Une école utilise Microsoft 365 (SaaS). Qui est responsable de la sécurité des données des étudiants ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',0,0)"><span class="qletter">A</span>Microsoft est entièrement responsable — c'est leur cloud</button>
+      <button class="qopt" onclick="selQ(this,'9',0,1)"><span class="qletter">B</span>L'école reste responsable de ses données et de la gestion des identités (qui a accès à quoi)</button>
+      <button class="qopt" onclick="selQ(this,'9',0,2)"><span class="qletter">C</span>Le gouvernement haïtien est responsable des données éducatives</button>
+      <button class="qopt" onclick="selQ(this,'9',0,3)"><span class="qletter">D</span>Personne n'est responsable dans le cloud</button>
+    </div>
+    <div class="qexpl" id="qe-9-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quel principe Zero Trust s'applique quand on limite un développeur à accéder uniquement aux serveurs de développement, pas de production ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',1,0)"><span class="qletter">A</span>Vérifier explicitement</button>
+      <button class="qopt" onclick="selQ(this,'9',1,1)"><span class="qletter">B</span>Moindre privilège (Least Privilege / Need-to-Know)</button>
+      <button class="qopt" onclick="selQ(this,'9',1,2)"><span class="qletter">C</span>Assumer la violation</button>
+      <button class="qopt" onclick="selQ(this,'9',1,3)"><span class="qletter">D</span>Segmentation réseau</button>
+    </div>
+    <div class="qexpl" id="qe-9-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Qu'est-ce que SASE (Secure Access Service Edge) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',2,0)"><span class="qletter">A</span>Un protocole de routage sécurisé pour les réseaux WAN</button>
+      <button class="qopt" onclick="selQ(this,'9',2,1)"><span class="qletter">B</span>Une architecture cloud qui combine SD-WAN et services de sécurité (CASB, ZTNA, FWaaS) dans une plateforme unifiée</button>
+      <button class="qopt" onclick="selQ(this,'9',2,2)"><span class="qletter">C</span>Un standard de chiffrement pour les applications SaaS</button>
+      <button class="qopt" onclick="selQ(this,'9',2,3)"><span class="qletter">D</span>Un type de firewall pour les centres de données</button>
+    </div>
+    <div class="qexpl" id="qe-9-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('9',[1,1,1],['Le Shared Responsibility Model est clair : dans un SaaS, le fournisseur (Microsoft) gère l\'infrastructure, l\'OS, l\'application. Mais le client (l\'école) reste responsable de ses données (qui peut les voir ?), de la gestion des identités (comptes actifs, MFA), des configurations (partage de fichiers public ou privé ?). Une mauvaise configuration IAM de l\'école = fuite de données même si Microsoft est parfait.','Le Moindre Privilège (Least Privilege) signifie que chaque utilisateur, application ou service n\'a accès qu\'à ce dont il a strictement besoin pour sa fonction. Un développeur n\'a pas besoin d\'accéder aux serveurs de production — limiter cet accès réduit drastiquement le rayon d\'une compromission potentielle.','SASE (prononcé «sassy») est un cadre architectural qui déplace les fonctions de sécurité réseau vers le cloud. Il combine : SD-WAN (connectivité), CASB (sécurité SaaS), ZTNA (accès zero trust), FWaaS (firewall cloud), SWG (web gateway). Avantage : sécurité cohérente pour les utilisateurs distants, branches et cloud sans backhauling vers un datacenter central.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-9" style="display:none" onclick="retryQ('9',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-9"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(9)">✓ Chapitre 9 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 10 — Audit et réponse aux incidents ══ -->
+<div class="chapter" id="ch-10">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0505,#3a0a00)">
+<div class="ch-num">10</div>
+<div class="ch-info"><h2>Audit et réponse aux incidents</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">SIEM · Forensics · NIST CSF · SOAR · Playbooks · Pentest · Reporting</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 10 — Audit sécurité, SIEM et réponse aux incidents</div><div class="vsub">16 min · ENSA · SIEM · NIST CSF · Forensics · Pentest · SOAR</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp10"><div class="vplay" onclick="openVideo(10)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf10" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>SIEM — Security Information & Event Management (5 min)</strong> — Centralise les logs de tous les équipements. Corrèle les événements pour détecter les attaques multi-étapes. Alertes en temps réel. Exemples : Splunk, IBM QRadar, Microsoft Sentinel.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>NIST Cybersecurity Framework (5 min)</strong> — 5 fonctions : Identifier, Protéger, Détecter, Répondre, Récupérer. Standard de référence mondial pour la gestion du risque cyber. Applicable à toutes tailles d'organisations.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Réponse aux incidents + Forensics (6 min)</strong> — 6 phases NIST IR : Préparation, Détection, Confinement, Éradication, Récupération, Leçons apprises. Forensics : préserver les preuves, chaîne de custody. SOAR pour l'automatisation.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi10" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(10)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>10.1 NIST Cybersecurity Framework — 5 fonctions</h3>
+<table class="dtable">
+<thead><tr><th>Fonction</th><th>Objectif</th><th>Exemples d'activités</th></tr></thead>
+<tbody>
+<tr><td><strong>🔍 Identifier</strong></td><td>Comprendre les actifs et les risques</td><td>Inventaire actifs, évaluation risques, cartographie systèmes critiques</td></tr>
+<tr><td><strong>🛡️ Protéger</strong></td><td>Limiter l'impact d'un incident</td><td>Contrôle d'accès, chiffrement, formation, mises à jour</td></tr>
+<tr><td><strong>🔎 Détecter</strong></td><td>Identifier les événements en temps réel</td><td>SIEM, IDS/IPS, monitoring continu, alertes</td></tr>
+<tr><td><strong>⚡ Répondre</strong></td><td>Contenir et analyser l'incident</td><td>Plan de réponse, communication, forensics, confinement</td></tr>
+<tr><td><strong>♻️ Récupérer</strong></td><td>Restaurer les services normaux</td><td>Restauration backup, tests, leçons apprises, amélioration</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>10.2 Commandes d'audit réseau Cisco</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Audit et forensics réseau</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === Audit de la configuration de sécurité ===</span>
+
+<span class="cmt">! Vérifier les sessions actives (qui est connecté ?)</span>
+R# <span class="cmd">show users</span>                    <span class="cmt">← utilisateurs actuellement connectés</span>
+R# <span class="cmd">show tcp brief</span>               <span class="cmt">← connexions TCP actives</span>
+
+<span class="cmt">! Vérifier les accès SSH récents</span>
+R# <span class="cmd">show login failures</span>          <span class="cmt">← tentatives de connexion échouées</span>
+R# <span class="cmd">show login</span>                   <span class="cmt">← statistiques de connexion</span>
+
+<span class="cmt">! Audit des ACL (qui a été bloqué ?)</span>
+R# <span class="cmd">show ip access-lists</span>         <span class="cmt">← compteurs de hits par règle</span>
+R# <span class="cmd">show logging</span>                 <span class="cmt">← logs système (dont deny log)</span>
+
+<span class="cmt">! Vérifier l'intégrité de la configuration</span>
+R# <span class="cmd">show version</span>                 <span class="cmt">← version IOS, uptime, registre</span>
+R# <span class="cmd">verify flash:/running-config</span> <span class="cmt">← vérifier intégrité avec MD5</span>
+
+<span class="cmt">! Surveillance en temps réel</span>
+R# <span class="cmd">debug ip packet detail</span>       <span class="cmt">← ⚠️ impact CPU — utiliser avec précaution</span>
+R# <span class="cmd">terminal monitor</span>             <span class="cmt">← voir les logs en temps réel via SSH</span>
+
+<span class="cmt">! Exporter les logs vers SIEM (déjà configuré via Syslog)</span>
+R# <span class="cmd">show logging</span>
+R(config)# <span class="cmd">logging buffered 64000</span>       <span class="cmt">← buffer local de 64KB</span>
+R(config)# <span class="cmd">logging trap informational</span>   <span class="cmt">← niveau 6 et plus</span>
+R(config)# <span class="cmd">logging host 192.168.100.20</span>  <span class="cmt">← serveur SIEM</span>
+
+<span class="cmt">! Capturer du trafic pour forensics (Embedded Packet Capture)</span>
+R(config)# <span class="cmd">monitor capture CAP interface GigabitEthernet0/1 both</span>
+R(config)# <span class="cmd">monitor capture CAP start</span>
+<span class="cmt">! ... après incident ...</span>
+R# <span class="cmd">monitor capture CAP stop</span>
+R# <span class="cmd">monitor capture CAP export tftp://192.168.1.254/cap.pcap</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="10">
+<div class="qblock-header"><span>📝</span><h3>Quiz Final — Chapitre 10</h3><span class="qblock-count">4 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 4</div>
+    <div class="q-text">Un SIEM corrèle des événements de plusieurs sources. Pourquoi cette corrélation est-elle importante ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',0,0)"><span class="qletter">A</span>Pour compresser les logs et économiser de l'espace</button>
+      <button class="qopt" onclick="selQ(this,'10',0,1)"><span class="qletter">B</span>Pour détecter les attaques multi-étapes qui semblent inoffensives isolément mais révèlent une attaque en combinaison</button>
+      <button class="qopt" onclick="selQ(this,'10',0,2)"><span class="qletter">C</span>Pour remplacer les antivirus sur les endpoints</button>
+      <button class="qopt" onclick="selQ(this,'10',0,3)"><span class="qletter">D</span>Pour automatiser les mises à jour de sécurité</button>
+    </div>
+    <div class="qexpl" id="qe-10-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 4</div>
+    <div class="q-text">Dans la réponse aux incidents NIST, quelle est la première étape AVANT de supprimer un malware ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',1,0)"><span class="qletter">A</span>Supprimer immédiatement le malware pour limiter les dégâts</button>
+      <button class="qopt" onclick="selQ(this,'10',1,1)"><span class="qletter">B</span>Confinement : isoler le système compromis du réseau pour arrêter la propagation</button>
+      <button class="qopt" onclick="selQ(this,'10',1,2)"><span class="qletter">C</span>Redémarrer le système pour charger un état propre</button>
+      <button class="qopt" onclick="selQ(this,'10',1,3)"><span class="qletter">D</span>Alerter les médias pour la transparence</button>
+    </div>
+    <div class="qexpl" id="qe-10-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 4</div>
+    <div class="q-text">Quelle commande Cisco IOS capture le trafic réseau pour une analyse forensics sans équipement externe ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',2,0)"><span class="qletter">A</span>debug ip packet</button>
+      <button class="qopt" onclick="selQ(this,'10',2,1)"><span class="qletter">B</span>monitor capture (Embedded Packet Capture)</button>
+      <button class="qopt" onclick="selQ(this,'10',2,2)"><span class="qletter">C</span>show ip traffic</button>
+      <button class="qopt" onclick="selQ(this,'10',2,3)"><span class="qletter">D</span>ip flow export</button>
+    </div>
+    <div class="qexpl" id="qe-10-2"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 4 / 4</div>
+    <div class="q-text">Pourquoi les "Leçons apprises" (Lessons Learned) sont-elles une phase critique de la réponse aux incidents ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',3,0)"><span class="qletter">A</span>Pour punir les responsables de l'incident</button>
+      <button class="qopt" onclick="selQ(this,'10',3,1)"><span class="qletter">B</span>Pour améliorer les processus et éviter que le même incident se reproduise — transformer chaque incident en amélioration de la posture de sécurité</button>
+      <button class="qopt" onclick="selQ(this,'10',3,2)"><span class="qletter">C</span>Pour satisfaire les exigences légales de reporting</button>
+      <button class="qopt" onclick="selQ(this,'10',3,3)"><span class="qletter">D</span>Pour calculer le coût de l'incident</button>
+    </div>
+    <div class="qexpl" id="qe-10-3"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('10',[1,1,1,1],['Une attaque sophistiquée génère des événements qui semblent bénins individuellement : 1 scan de port sur le firewall, 1 tentative de connexion échouée sur un serveur, 1 téléchargement inhabituel... Séparément = non significatifs. Corrélés par le SIEM = pattern d\'une attaque APT (Advanced Persistent Threat). C\'est la valeur fondamentale du SIEM : voir la forêt, pas seulement les arbres.','Le confinement est TOUJOURS avant l\'éradication. Isoler le système compromis (déconnecter du réseau, bloquer les ports ACL) arrête la propagation et préserve les preuves forensics. Supprimer le malware immédiatement détruit des preuves précieuses et ne stoppe pas la propagation si d\'autres systèmes sont déjà compromis.','Cisco Embedded Packet Capture (EPC) est une fonctionnalité native IOS XE qui permet de capturer le trafic directement sur le routeur et d\'exporter un fichier .pcap analysable dans Wireshark. Contrairement à debug ip packet, EPC a un impact minimal sur les performances et peut capturer sélectivement selon une ACL.','Les Leçons Apprises transforment chaque incident en opportunité d\'amélioration. Questions clés : Comment l\'attaquant est entré ? Combien de temps avant détection ? Les playbooks ont-ils fonctionné ? Quels contrôles manquaient ? Le résultat = améliorations des outils, des processus, de la formation. Une organisation qui n\'apprend pas de ses incidents répète les mêmes erreurs.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-10" style="display:none" onclick="retryQ('10',4)">↺ Réessayer</button>
+  <span class="qscore" id="qs-10"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(10)" style="background:linear-gradient(135deg,var(--redD),var(--accent));font-size:.86rem;padding:.6rem 1.4rem">🔒 Module TRI-26 complété — Sécurité maîtrisée !</button></div>
+</div></div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🔒 Félicitations — Module TRI-26 complété !</h2>
+  <p>Tu maîtrises maintenant les menaces réseau, ACL avancées, pare-feu, IDS/IPS, AAA, cryptographie, sécurité WiFi, endpoint security, cloud et réponse aux incidents. Tu es prêt pour CCNA Security et au-delà !</p>
+</div>
+
+</div></div></div>
+<div id="mob-overlay" onclick="toggleToc()"></div>
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+var ST={done:{},qs:{},sel:{}};var K='TRI26v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){var el=document.getElementById('qs-'+qid);if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}});
+  initTimer();updateProg();
+});
+function updateProg(){
+  var total=10,done=Object.keys(ST.done).filter(function(k){return ST.done[k];}).length;
+  var pct=Math.round(done/total*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';if(t)t.textContent=done+' / '+total+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
-}
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
-}
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
-}
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
-  }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
-
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+function goTo(n){var el=document.getElementById('ch-'+n);if(!el){toast('ℹ️ Chapitre bientôt disponible.');return;}el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');if(window.innerWidth<=768)toggleToc();}
+function toggleToc(){var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';}
+function selQ(btn,qid,qi,val){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var items=block.querySelectorAll('.q-item');var idx=parseInt(qi);if(items[idx])items[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;}
+function submitQ(qid,answers,expls){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var sel=ST.sel[qid]||{},total=answers.length;for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions d\'abord.');return;}}var ok=0;var items=block.querySelectorAll('.q-item');for(var i=0;i<total;i++){var correct=answers[i],chosen=sel[i],item=items[i];if(!item)continue;item.querySelectorAll('.qopt').forEach(function(b,j){b.disabled=true;if(j===correct)b.classList.add('ok');else if(j===chosen&&chosen!==correct)b.classList.add('ko');});var ex=document.getElementById('qe-'+qid+'-'+i);if(ex){ex.textContent=expls[i];ex.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}if(chosen===correct)ok++;}ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';updateProg();toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');}
+function retryQ(qid){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});if(ST.sel[qid])ST.sel[qid]={};var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';}
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';}
+function copyCode(btn){var code=btn.closest('.codeblock').querySelector('code');if(!code)return;navigator.clipboard.writeText(code.innerText||code.textContent).then(function(){btn.textContent='✓ Copié!';setTimeout(function(){btn.textContent='Copier';},2000);});}
+var timerStart=Date.now();
+function initTimer(){var saved=ld('time',0);timerStart=Date.now()-saved*1000;setInterval(function(){var e=Math.floor((Date.now()-timerStart)/1000);sv('time',e);var el=document.getElementById('session-timer');if(el){var h=Math.floor(e/3600),m=Math.floor((e%3600)/60),s=e%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}},1000);}
+var _tt;
+function toast(msg){var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#1a0505;border:1px solid rgba(232,25,44,.3);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#FFB3B3;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);}
 </script>
-
-<div id="mod-code-data" data-code="TRI-26" style="display:none"></div>
-<div id="seuil-data" data-seuil="75" style="display:none"></div>
-</body>
-</html>
+</body></html>

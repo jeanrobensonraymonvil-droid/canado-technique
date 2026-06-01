@@ -1,547 +1,1327 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-25 — Connexion de réseaux</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-25 — Connexion aux réseaux · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --orange:#C8570A;--teal:#006868;--purple:#6B2D8E;
+  --cyan:#0891B2;--cyanL:#06B6D4;
+  --g100:#E0F7FA;--g300:#B2EBF2;--g500:#5A8A95;--g700:#1A4A55;
+  --text:#0B1525;--bdr:rgba(8,145,178,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px;
+  --accent:#0891B2;--accentL:#06B6D4;--accentG:rgba(8,145,178,.12)
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#e8f7fa;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#041A2E 55%,#0891B2 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 25% 50%,rgba(6,182,212,.18) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(59,123,255,.08) 0%,transparent 50%);pointer-events:none}
+.mod-hero-img{position:absolute;inset:0;background-image:url('../../slide-tri.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
-.mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
-
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
-
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#67E8F9;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
+.mod-header h1 em{color:#67E8F9;font-style:normal}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:520px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accentL),#67E8F9);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500)}.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--accent)}.toc-item.act{background:rgba(8,145,178,.1);color:var(--accent);font-weight:600}
+.toc-item.done{color:var(--accentL)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0}
+.toc-item.act .toc-dot{background:var(--accentL)}.toc-item.done .toc-dot{background:var(--accentL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#040D1A,#0891B2);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--accentL)}
+.section p{font-size:.84rem;color:#1a3a45;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#1a3a45;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.cyan{background:rgba(8,145,178,.06);border:1px solid rgba(8,145,178,.2);color:#003a45}.ibox.cyan .ibox-label{color:var(--accent)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.orange{background:rgba(200,87,10,.06);border:1px solid rgba(200,87,10,.2);color:#5a2000}.ibox.orange .ibox-label{color:var(--orange)}
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#041A2E;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(8,145,178,.03)}
+.mono{font-family:var(--fM);color:var(--accent);font-size:.8em;font-weight:700;background:rgba(8,145,178,.08);padding:1px 5px;border-radius:4px}
+.codeblock{background:#011820;border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.codeblock-header{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.codeblock-lang{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+.codeblock-copy{font-size:.65rem;padding:2px 8px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.codeblock-copy:hover{background:rgba(6,182,212,.2);color:#67E8F9}
+.codeblock pre{padding:1rem 1.1rem;overflow-x:auto}
+.codeblock code{font-family:var(--fM);font-size:.8rem;color:#A5F3FC;line-height:1.75;white-space:pre}
+.cmd{color:#50fa7b}.cmt{color:#2a5a65;font-style:italic}.val{color:#f1fa8c}.str{color:#ff9b50}.kw{color:#ff79c6}
+.vblock{background:linear-gradient(135deg,#040D1A,#041A2E);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(6,182,212,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.4);font-size:.6rem;font-weight:800;color:#67E8F9;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--accentL);color:#fff;font-size:.75rem;font-weight:700}
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--accent);background:rgba(8,145,178,.04)}
+.qopt.sel{border-color:var(--accent);background:rgba(8,145,178,.07);font-weight:600;color:var(--accent)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--accent);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--accent);color:var(--accent)}
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--accent);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:var(--accentL)}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--accent),var(--accentL));border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}body{background:#fff!important}}
 </style>
 </head>
 <body>
 <div class="mod-header">
+  <div class="mod-hero-img"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🌍 Module TRI-25 · 1ère Année</div>
-    <h1>Connexion de <em>réseaux</em></h1>
+    <div class="mod-tag">🌐 TRI-25 · 2ème Année · Cisco ENSA v7.0</div>
+    <h1>Connexion aux <em>réseaux</em></h1>
+    <p class="mod-desc">10 chapitres · WAN, VPN, NAT avancé, QoS, FHRP, Virtualisation, SD-WAN, Automatisation réseau — avec simulateur VPN, visualiseur QoS et calculateur HSRP.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>75 heures</strong></div>
+      <div class="mod-meta-item">⏱ <strong>140 heures</strong></div>
       <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo WAN/VPN</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Scénario interconnexion multi-sites</strong></div>
+      <div class="mod-meta-item">📚 <strong>10 chapitres</strong></div>
+      <div class="mod-meta-item">🔬 <strong>Packet Tracer</strong></div>
+      <div class="mod-meta-item">🏆 <strong>CCNP Préparatoire</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-txt" id="prog-txt">0 / 10 chapitres</span>
     </div>
-  </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Technologies WAN</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>VPN — Concepts et types</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>IPSec VPN site-à-site</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>SD-WAN et accès cloud</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo WAN et VPN site-à-site</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Scénario interconnexion multi-sites</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Technologies WAN</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">LAN/MAN/WAN · Technos disponibles en Haïti · Dual WAN</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Technologies WAN — Connecter les sites distants</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>WAN vs LAN vs MAN (3 min)</strong> — Périmètre géographique. LAN = bâtiment, MAN = ville/métropole, WAN = national/international. Le WAN connecte les sites distants via un fournisseur de services.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Technologies WAN classiques (5 min)</strong> — Lignes louées (leased lines), Frame Relay (obsolète), MPLS (réseau privé opérateur), DSL/ADSL, câble coaxial, fibre optique WAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>WAN en Haïti (4 min)</strong> — Acteurs: Natcom (fibre, 4G LTE), Digicel (4G/5G), Access Haïti. Technologies disponibles: fibre jusqu'au bâtiment (FTTH/FTTB), 4G/LTE comme backup. MPLS disponible pour les grandes entreprises.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Calcul du débit nécessaire (3 min)</strong> — Estimer la bande passante selon le nombre d'utilisateurs et les applications (VoIP = 100 Kbps/appel, vidéo HD = 3-5 Mbps, navigation = 1-2 Mbps/user).</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 Technologies WAN disponibles en Haïti</h3><table class="data-table"><thead><tr><th>Technologie</th><th>Débit typique</th><th>Latence</th><th>Disponibilité Haiti</th><th>Usage recommandé</th></tr></thead><tbody><tr><td>Fibre optique (FTTH/FTTB)</td><td>10 Mbps - 1 Gbps</td><td>< 10 ms</td><td>Port-au-Prince, Pétion-Ville, Cap-Haïtien</td><td>Lien WAN principal pour les entreprises</td></tr><tr><td>4G LTE</td><td>5-50 Mbps</td><td>20-50 ms</td><td>Majorité du territoire</td><td>Backup WAN, sites distants, PME</td></tr><tr><td>MPLS privé opérateur</td><td>2 - 100+ Mbps</td><td>< 20 ms garanti</td><td>Grandes villes uniquement</td><td>Multi-sites entreprise (banques, ONG)</td></tr><tr><td>ADSL cuivre</td><td>1 - 20 Mbps</td><td>20-50 ms</td><td>Zones urbaines uniquement</td><td>Petites structures, accès économique</td></tr><tr><td>Satellite (Starlink)</td><td>50 - 200 Mbps</td><td>25-60 ms</td><td>Tout territoire</td><td>Zones rurales, backup d'urgence</td></tr></tbody></table><div class="info-box"><span class="info-box-label">🇭🇹 Dual WAN — La stratégie recommandée en Haïti</span>Pour toute entreprise critique, combiner: Fibre Natcom (lien principal) + 4G Digicel (backup automatique). Si la fibre est coupée (fréquent lors des ouragans, incidents sur les câbles), le routeur bascule automatiquement sur la 4G. Coût mensuel additionnel modeste pour une continuité d'activité garantie.</div></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quelle technologie WAN offre les meilleures performances (débit + latence garantis) pour interconnecter les sièges sociaux de deux banques haïtiennes ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>ADSL</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Satellite</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>MPLS opérateur avec SLA garanti</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>4G LTE</button></div>
-    <div class="quiz-expl" id="expl-q0_1">MPLS (Multiprotocol Label Switching) est un réseau privé géré par l'opérateur avec des garanties de débit, latence et disponibilité (SLA). Idéal pour les transactions bancaires critiques qui ne tolèrent pas la variabilité d'internet public. Plus coûteux que les alternatives.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pour un bureau secondaire dans une ville de province haïtienne, quelle est la solution WAN la plus pragmatique ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Attendre la fibre optique</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>4G LTE avec routeur double SIM (Natcom + Digicel)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Liaison satellite coûteuse</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Ligne louée dédiée</button></div>
-    <div class="quiz-expl" id="expl-q1_1">La 4G LTE est disponible dans la quasi-totalité des zones urbaines haïtiennes. Un routeur avec deux SIM (Natcom + Digicel) donne de la redondance: si l'un des opérateurs a une panne, l'autre prend le relais. C'est la solution la plus pragmatique et économique pour les bureaux de province.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="2">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Combien de bande passante WAN minimum faut-il prévoir pour 20 utilisateurs faisant essentiellement de la navigation web et des emails ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>512 Kbps</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>2 Mbps</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>10-20 Mbps</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>100 Mbps</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Estimation: 20 users × 1 Mbps (navigation + email) = 20 Mbps. Avec de la marge (pics d'utilisation, mises à jour Windows, cloud apps): viser 20-30 Mbps. Pour ajouter la VoIP: +20 appels simultanés × 100 Kbps = +2 Mbps. Total recommandé: 25-30 Mbps.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Starlink est particulièrement utile en Haïti pour...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Remplacer la fibre dans les villes</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Connecter les zones rurales et servir de backup lors des catastrophes naturelles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Offrir le débit le plus élevé disponible</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Connecter les serveurs dans les datacenters</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Starlink (satellite LEO) est révolutionnaire pour les zones sans fibre ni 4G, et comme backup lors des ouragans quand les infrastructures terrestres sont détruites. Les 25-60 ms de latence sont acceptables pour la plupart des usages sauf certains jeux en ligne.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>VPN — Concepts et types</h2>
-      <div class="chapter-meta"><span>🕐 19 heures</span><span class="chapter-badge">IPSec · SSL · WireGuard · Comparatif</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — VPN — Concepts, types et protocoles</div><div class="video-subtitle">Durée : 18 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Pourquoi le VPN ? (4 min)</strong> — Transporter des données privées sur un réseau public (internet). Chiffrement du tunnel. Types: Site-to-Site (LAN-to-LAN), Remote Access (client VPN), SSL/TLS VPN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>IPSec — Le protocole VPN de référence (5 min)</strong> — Deux modes: Transport (chiffre les données) et Tunnel (chiffre tout le paquet IP). Protocoles: AH (Authentication Header), ESP (Encapsulating Security Payload). Phases IKE.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>SSL/TLS VPN (3 min)</strong> — Accès via navigateur web ou client léger. Pas de configuration sur le poste client. Idéal pour le télétravail. Exemples: Cisco AnyConnect, OpenVPN, WireGuard.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>WireGuard — Le VPN moderne (4 min)</strong> — Protocole moderne, rapide, 4000 lignes de code vs 600 000 pour OpenVPN. Basé sur ChaCha20/Poly1305. De plus en plus populaire pour le télétravail.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Comparatif des solutions VPN</h3><table class="data-table"><thead><tr><th>Solution VPN</th><th>Type</th><th>Sécurité</th><th>Performance</th><th>Usage typique</th></tr></thead><tbody><tr><td>IPSec IKEv2</td><td>Site-à-Site / Remote</td><td>Très élevée</td><td>Bonne</td><td>Connexion entre sites d'entreprise, Windows VPN natif</td></tr><tr><td>OpenVPN</td><td>Site-à-Site / Remote Access</td><td>Très élevée</td><td>Moyenne</td><td>Serveur VPN open source, cross-platform, configurable</td></tr><tr><td>WireGuard</td><td>Site-à-Site / Remote Access</td><td>Excellente (cryptographie moderne)</td><td>Excellente</td><td>Télétravail, VPN personnel, déploiements modernes</td></tr><tr><td>Cisco AnyConnect (SSL)</td><td>Remote Access uniquement</td><td>Très élevée</td><td>Bonne</td><td>Grandes entreprises Cisco, accès employés distants</td></tr><tr><td>L2TP/IPSec</td><td>Remote Access</td><td>Bonne</td><td>Correcte</td><td>Support natif Windows/iOS/Android, facile à configurer</td></tr><tr><td>PPTP</td><td>Remote Access</td><td>Faible (déconseillé)</td><td>Bonne</td><td>Obsolète — vulnérabilités connues. Ne plus utiliser.</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Un VPN site-à-site (LAN-to-LAN) connecte...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Un utilisateur distant à un serveur VPN</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Deux réseaux LAN via un tunnel chiffré sur internet, permettant aux hôtes des deux sites de communiquer comme sur un LAN unique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Un utilisateur mobile à internet</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Deux datacenters via fibre optique</button></div>
-    <div class="quiz-expl" id="expl-q0_2">VPN site-à-site: les routeurs/firewalls des deux sites établissent un tunnel IPSec permanent. Les hôtes des deux sites communiquent normalement — ils ne savent pas qu'ils traversent un tunnel VPN. Exemple: siège à Port-au-Prince ↔ bureau au Cap-Haïtien via internet chiffré.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi PPTP est-il déconseillé aujourd'hui ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Il est trop lent</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Il a des vulnérabilités cryptographiques connues — son chiffrement peut être cassé</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Il ne fonctionne pas sur Android</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Il coûte trop cher en licences</button></div>
-    <div class="quiz-expl" id="expl-q1_2">PPTP utilise MS-CHAPv2 pour l'authentification et MPPE pour le chiffrement — des algorithmes vulnérables. Des attaques pratiques permettent de déchiffrer le trafic PPTP en quelques heures. Utiliser L2TP/IPSec, IKEv2, OpenVPN, ou WireGuard à la place.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">WireGuard se distingue d'OpenVPN principalement par...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>WireGuard fonctionne uniquement sur Linux</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Une base de code beaucoup plus petite (4 000 vs 600 000 lignes), une cryptographie moderne, et des performances nettement supérieures</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>WireGuard est payant</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>OpenVPN est plus rapide</button></div>
-    <div class="quiz-expl" id="expl-q2_2">WireGuard: ~4 000 lignes de code (surface d'attaque minimale, plus facile à auditer), ChaCha20/Poly1305/Curve25519 (cryptographie moderne), temps de handshake ultra-rapide, excellentes performances. De plus en plus adopté comme standard pour le VPN.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Dans un VPN IPSec en mode Tunnel, qu'est-ce qui est chiffré ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Uniquement les données applicatives</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>L'en-tête IP d'origine + les données — un nouvel en-tête IP est ajouté (celui des passerelles VPN)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Uniquement l'en-tête IP</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Rien — le mode tunnel ne chiffre pas</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Mode Tunnel: tout le paquet IP original (en-tête + données) est chiffré et encapsulé dans un nouveau paquet IP avec les adresses des passerelles VPN. C'est le mode utilisé pour les VPN site-à-site. Mode Transport: seules les données sont chiffrées, l'en-tête IP original reste visible.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+<div class="timer-bar">
+  ⏱ Session : <strong id="session-timer">0m 0s</strong>
+  &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns">
+    <button class="tbtn" onclick="window.print()">🖨 Imprimer</button>
+    <button class="tbtn" onclick="toggleToc()">☰ Sommaire</button>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>IPSec VPN site-à-site Cisco</h2>
-      <div class="chapter-meta"><span>🕐 20 heures</span><span class="chapter-badge">Phases IKE · Crypto map · Vérification · Dépannage</span></div>
-    </div>
+<div class="wrap">
+<div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-25</div>
+  <div class="toc-item act" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Technologies WAN</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>VPN — Concepts et types</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>IPSec VPN Site-à-Site 🔐</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>NAT avancé pour IPv4</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>FHRP — Redondance HA 🔄</span></div>
+  <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>QoS — Qualité de service 📊</span></div>
+  <div class="toc-item" onclick="goTo(7)" id="ti-7"><div class="toc-dot"></div><span class="toc-num">07</span><span>Gestion du réseau</span></div>
+  <div class="toc-item" onclick="goTo(8)" id="ti-8"><div class="toc-dot"></div><span class="toc-num">08</span><span>Virtualisation réseau</span></div>
+  <div class="toc-item" onclick="goTo(9)" id="ti-9"><div class="toc-dot"></div><span class="toc-num">09</span><span>SD-WAN et Cloud</span></div>
+  <div class="toc-item" onclick="goTo(10)" id="ti-10"><div class="toc-dot"></div><span class="toc-num">10</span><span>Automatisation réseau 🤖</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr);font-size:.64rem;color:var(--g500);line-height:1.7">🔐 Simulateur VPN · 📊 Visualiseur QoS · 🔄 Calculateur HSRP · ⌨ CLI</div>
+</div>
+<div id="main-content">
+
+<!-- ══ CH 1 — Technologies WAN ══ -->
+<div class="chapter" id="ch-1">
+<div class="ch-header"><div class="ch-num">01</div>
+<div class="ch-info"><h2>Technologies WAN</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">MPLS · Fibre · 4G/5G · Satellite · DSL · Dark Fiber</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Technologies WAN : panorama complet</div><div class="vsub">16 min · ENSA Module 7 · WAN · MPLS · 5G · Satellite</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp1"><div class="vplay" onclick="openVideo(1)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf1" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Technologies WAN classiques (6 min)</strong> — DSL, câble, fibre optique, leased lines. Caractéristiques, débits, distances. Cas d'usage Haïti : Natcom fibre, Digicel 4G/5G.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>MPLS (5 min)</strong> — Multi-Protocol Label Switching. Labels au lieu des adresses IP. PE et CE routers. Avantages QoS et performance. Utilisé par les grands FAI.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Technologies émergentes (5 min)</strong> — 5G comme WAN backup. Starlink/satellite. Dark fiber. SD-WAN overlay sur WAN physique. Choix selon besoin et budget.</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — IPSec VPN site-à-site sur Cisco — Configuration complète</div><div class="video-subtitle">Durée : 18 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Phases IKE (3 min)</strong> — Phase 1 (IKE SA): authentification des deux routeurs et établissement d'un canal sécurisé. Phase 2 (IPSec SA): négociation des paramètres de chiffrement du tunnel de données.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Configuration crypto map (6 min)</strong> — 1) ACL intéressant (définir quel trafic sera dans le tunnel). 2) ISAKMP policy (paramètres Phase 1). 3) IPSec transform-set (paramètres Phase 2). 4) Crypto map (assembler tout). 5) Appliquer sur l'interface WAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Vérification (4 min)</strong> — show crypto isakmp sa (Phase 1 up?), show crypto ipsec sa (Phase 2 + compteurs de paquets chiffrés).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Dépannage IPSec (3 min)</strong> — debug crypto isakmp, debug crypto ipsec. Problèmes courants: ACL asymétriques, pre-shared key incorrecte, mismatche de transform-set.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Configuration IPSec VPN site-à-site Cisco — Étapes clés</h3><table class="data-table"><thead><tr><th>Étape</th><th>Commandes</th><th>Description</th></tr></thead><tbody><tr><td>1. Politique ISAKMP (Phase 1)</td><td>crypto isakmp policy 10 → encryption aes 256 → hash sha256 → authentication pre-share → group 14</td><td>Définit comment les deux routeurs s'authentifient mutuellement</td></tr><tr><td>2. Clé pré-partagée</td><td>crypto isakmp key CLESECRÈTE address IP_ROUTEUR_DISTANT</td><td>Clé partagée entre les deux sites (à garder secrète)</td></tr><tr><td>3. Transform-set (Phase 2)</td><td>crypto ipsec transform-set TSET esp-aes 256 esp-sha256-hmac</td><td>Chiffrement + intégrité des données dans le tunnel</td></tr><tr><td>4. ACL intéressant</td><td>access-list 100 permit ip LAN_LOCAL WILDCARD LAN_DISTANT WILDCARD</td><td>Définit quel trafic entre dans le tunnel VPN</td></tr><tr><td>5. Crypto map</td><td>crypto map VPNMAP 10 ipsec-isakmp → match address 100 → set transform-set TSET → set peer IP_DISTANT</td><td>Assemble les paramètres VPN</td></tr><tr><td>6. Appliquer</td><td>interface Serial0/0/0 → crypto map VPNMAP</td><td>Activer le VPN sur l'interface WAN du routeur</td></tr><tr><td>7. Vérifier</td><td>show crypto isakmp sa / show crypto ipsec sa</td><td>Confirmer que les phases 1 et 2 sont établies</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">La Phase 1 IKE (ISAKMP SA) dans un VPN IPSec sert à...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Chiffrer les données du tunnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Authentifier les deux routeurs et établir un canal de contrôle sécurisé pour négocier la Phase 2</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Définir quel trafic entre dans le tunnel</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Configurer le routage vers le site distant</button></div>
-    <div class="quiz-expl" id="expl-q0_3">Phase 1 IKE: les deux passerelles VPN s'authentifient mutuellement (via PSK ou certificats) et établissent un canal sécurisé. Ce canal sert uniquement à négocier les paramètres de la Phase 2. show crypto isakmp sa doit afficher "QM_IDLE" pour une Phase 1 réussie.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Dans la configuration IPSec Cisco, à quoi sert l'ACL "intéressant" ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Bloquer le trafic VPN</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Définir précisément quel trafic entre dans le tunnel chiffré (trafic "intéressant" pour le VPN)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Autoriser les connexions SSH sur le routeur</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Filtrer le trafic internet</button></div>
-    <div class="quiz-expl" id="expl-q1_3">L'ACL "intéressant" définit la politique: quand un paquet correspond à cette ACL (source = LAN local, destination = LAN distant), le routeur l'envoie dans le tunnel IPSec chiffré. Le reste du trafic est traité normalement (routing internet).</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Si "show crypto isakmp sa" affiche "MM_NO_STATE", cela indique...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Le VPN fonctionne parfaitement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>La Phase 1 a échoué — la cause probable est une PSK incorrecte ou des politiques ISAKMP incompatibles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Le tunnel est en cours d'établissement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Le VPN est en mode veille (standby)</button></div>
-    <div class="quiz-expl" id="expl-q2_3">"MM_NO_STATE" signifie que la Phase 1 n'a pas pu aboutir. Causes fréquentes: PSK différente entre les deux sites, politiques ISAKMP incompatibles (encryption/hash/group différents), ou connectivité IP manquante entre les interfaces WAN.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Pourquoi les deux routeurs VPN doivent-ils avoir des ACL "intéressants" SYMÉTRIQUES ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Pour économiser de la bande passante</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Si le routeur A définit source=192.168.1.0 dest=10.0.0.0, le routeur B doit définir l'inverse (source=10.0.0.0 dest=192.168.1.0) pour que le tunnel fonctionne dans les deux sens</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>C'est une exigence de sécurité uniquement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Les ACL n'ont pas besoin d'être symétriques</button></div>
-    <div class="quiz-expl" id="expl-q3_3">Un tunnel IPSec doit pouvoir initier le chiffrement dans les deux sens. L'ACL du routeur A dit "chiffrer les paquets de mon LAN vers le LAN distant". L'ACL du routeur B dit l'inverse. Si les ACL ne sont pas symétriques, le trafic ne passera que dans un sens.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+  <div class="vurl"><input type="text" id="vi1" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(1)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>1.1 Comparaison des technologies WAN</h3>
+<table class="dtable">
+<thead><tr><th>Technologie</th><th>Débit typique</th><th>Latence</th><th>Distance</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><strong>Fibre optique (FTTH)</strong></td><td>100 Mbps – 10 Gbps</td><td>< 5 ms</td><td>Illimitée</td><td>Entreprises, ISP backbone</td></tr>
+<tr><td><strong>DSL (ADSL/VDSL)</strong></td><td>1–100 Mbps</td><td>10–30 ms</td><td>< 5 km</td><td>PME, résidentiel</td></tr>
+<tr><td><strong>Câble (DOCSIS)</strong></td><td>100 Mbps – 1 Gbps</td><td>5–15 ms</td><td>Local</td><td>Résidentiel, PME</td></tr>
+<tr><td><strong>4G LTE</strong></td><td>10–150 Mbps</td><td>20–50 ms</td><td>Nationale</td><td>Backup WAN, zones rurales</td></tr>
+<tr><td><strong>5G</strong></td><td>100 Mbps – 10 Gbps</td><td>1–10 ms</td><td>Nationale</td><td>WAN principal, IoT industriel</td></tr>
+<tr><td><strong>Satellite (Starlink)</strong></td><td>50–200 Mbps</td><td>20–60 ms</td><td>Mondiale</td><td>Zones isolées, backup</td></tr>
+<tr><td><strong>MPLS</strong></td><td>Variable (garanti)</td><td>< 10 ms</td><td>Nationale/Int.</td><td>Entreprises multi-sites, QoS</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>1.2 MPLS — Multi-Protocol Label Switching</h3>
+<div class="ibox cyan"><span class="ibox-label">🏷️ Comment fonctionne MPLS</span>
+MPLS ajoute un <strong>label de 32 bits</strong> entre l'en-tête de couche 2 et l'en-tête IP. Au lieu de consulter la table de routage IP à chaque saut, les routeurs MPLS (LSR) commutent les paquets basés sur ce label — beaucoup plus rapide.<br><br>
+<strong>Acteurs clés :</strong><br>
+• <strong>CE (Customer Edge)</strong> — routeur du client, à la frontière du réseau client<br>
+• <strong>PE (Provider Edge)</strong> — routeur du FAI, ajoute/retire les labels MPLS<br>
+• <strong>P (Provider)</strong> — routeur cœur du FAI, commute uniquement sur les labels<br><br>
+<strong>Avantages MPLS :</strong> QoS garantie · Trafic engineering · VPN L3 (MPLS VPN) · Faible latence</div>
+</div>
+
+<div class="section">
+<h3>1.3 Connexions WAN point à point — Configuration</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Liaison WAN série</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Configuration d'une liaison WAN série point-à-point</span>
+R(config)# <span class="cmd">interface Serial0/0/0</span>
+R(config-if)# <span class="cmd">description</span> <span class="val">Liaison WAN vers HQ</span>
+R(config-if)# <span class="cmd">ip address</span> <span class="val">10.0.0.1</span> <span class="val">255.255.255.252</span>
+R(config-if)# <span class="cmd">clock rate 64000</span>          <span class="cmt">← sur le DCE uniquement</span>
+R(config-if)# <span class="cmd">encapsulation ppp</span>         <span class="cmt">← PPP ou HDLC (défaut Cisco)</span>
+R(config-if)# <span class="cmd">no shutdown</span>
+R(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification liaison WAN</span>
+R# <span class="cmd">show interfaces Serial0/0/0</span>
+R# <span class="cmd">show ip interface brief</span>
+R# <span class="cmd">show controllers Serial0/0/0</span>  <span class="cmt">← DCE ou DTE ?</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle technologie WAN garantit une QoS et une bande passante dédiée entre sites d'entreprise ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>DSL asymétrique</button>
+      <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>MPLS (Multi-Protocol Label Switching)</button>
+      <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Connexion 4G LTE</button>
+      <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Câble DOCSIS</button>
+    </div>
+    <div class="qexpl" id="qe-1-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Dans une infrastructure MPLS, quel équipement ajoute et retire les labels MPLS ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>P (Provider) router — cœur MPLS</button>
+      <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>PE (Provider Edge) router — frontière FAI</button>
+      <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>CE (Customer Edge) router — côté client</button>
+      <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Le switch L3 du client</button>
+    </div>
+    <div class="qexpl" id="qe-1-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quelle technologie WAN offre la latence la plus faible pour des connexions longue distance ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Satellite géostationnaire</button>
+      <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Fibre optique terrestre (MPLS)</button>
+      <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>4G LTE</button>
+      <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>ADSL</button>
+    </div>
+    <div class="qexpl" id="qe-1-2"></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1],['MPLS offre une QoS garantie car le FAI réserve de la bande passante et priorise le trafic avec des labels. Contrairement au DSL ou 4G qui sont best-effort (pas de garantie), MPLS est utilisé pour les réseaux d\'entreprise multi-sites nécessitant une performance prévisible.','Le PE (Provider Edge) router est le point de démarcation entre le réseau client et le réseau MPLS du FAI. C\'est lui qui ajoute les labels MPLS sur les paquets entrants du client et les retire sur les paquets sortants vers le client. Le P router commute uniquement sur les labels sans regarder les adresses IP.','La fibre optique terrestre (notamment MPLS sur fibre) offre des latences inférieures à 10 ms même sur de longues distances. Le satellite géostationnaire a une latence de 500-700 ms (distance orbitale ~36 000 km). La 4G a 20-50 ms. La fibre reste la meilleure option pour la latence.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>SD-WAN et cloud</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">DMVPN · SD-WAN · Direct Connect · Scénario hybride</span></div>
-    </div>
+
+<!-- ══ CH 2 — VPN Concepts ══ -->
+<div class="chapter" id="ch-2">
+<div class="ch-header"><div class="ch-num">02</div>
+<div class="ch-info"><h2>VPN — Concepts et types</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">GRE · SSL/TLS · IPSec · Remote Access · Site-à-Site · DMVPN</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — VPN : types, protocoles et cas d'usage</div><div class="vsub">14 min · ENSA · GRE · IPSec · SSL · DMVPN</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp2"><div class="vplay" onclick="openVideo(2)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf2" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Pourquoi le VPN ? (4 min)</strong> — Tunnel chiffré sur Internet public = économie vs MPLS privé. Tunneling vs chiffrement. Remote Access VPN (télétravail) vs Site-à-Site VPN (agences).</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Types de VPN (5 min)</strong> — GRE (tunnel sans chiffrement), IPSec (chiffrement robuste), SSL/TLS (client léger, navigateur), L2TP/IPSec, OpenVPN, WireGuard. Quand utiliser lequel ?</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>DMVPN (5 min)</strong> — Dynamic Multipoint VPN. Architecture hub-and-spoke dynamique. NHRP pour la résolution d'adresses. Phase 1, 2, 3. Avantage : spoke-to-spoke direct.</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — SD-WAN et accès cloud — L'évolution des réseaux WAN</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>SD-WAN — Software-Defined WAN (5 min)</strong> — Gérer plusieurs liens WAN (fibre + 4G + MPLS) depuis un contrôleur centralisé. Routage intelligent selon l'application. Cisco Viptela, Meraki, Fortinet SD-WAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>DMVPN — Dynamic Multipoint VPN (4 min)</strong> — VPN hub-and-spoke: un site central (hub) + N sites distants (spokes). Les spokes peuvent communiquer directement entre eux via NHRP. Scalable: ajouter un site = 5 minutes.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Accès cloud et Direct Connect (3 min)</strong> — AWS Direct Connect, Azure ExpressRoute: connexion privée dédiée vers le cloud (pas via internet). Idéal pour les applications critiques en cloud.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Scénario haïtien — Multi-sites avec cloud (3 min)</strong> — Architectures hybrides: siège (fibre + MPLS) → branches (4G + VPN) → cloud AWS (applications hébergées). De plus en plus commun pour les banques et ONG internationales en Haïti.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 SD-WAN vs MPLS vs VPN traditionnel — Comparatif stratégique</h3><table class="data-table"><thead><tr><th>Critère</th><th>VPN IPSec traditionnel</th><th>MPLS opérateur</th><th>SD-WAN</th></tr></thead><tbody><tr><td>Gestion</td><td>Manuelle — chaque routeur configuré individuellement</td><td>Gérée par l'opérateur</td><td>Centralisée via contrôleur web (tableau de bord unique)</td></tr><tr><td>Flexibilité</td><td>Faible — tout changement = reconfiguration manuelle</td><td>Faible — dépend de l'opérateur</td><td>Très élevée — politiques en quelques clics</td></tr><tr><td>Coût</td><td>Faible (internet public + logiciel)</td><td>Élevé (SLA premium)</td><td>Moyen — amortissement sur économies MPLS</td></tr><tr><td>Fiabilité</td><td>Dépend d'internet</td><td>SLA garantis</td><td>Optimisation automatique multi-liens</td></tr><tr><td>Visibilité applicative</td><td>Nulle</td><td>Partielle</td><td>Complète — visibilité par application</td></tr><tr><td>Recommandation</td><td>PME budget limité, configuration statique</td><td>Grandes entreprises critiques</td><td>Entreprises multi-sites, croissance rapide</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">SD-WAN apporte comme principal avantage par rapport à une architecture VPN traditionnelle...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Un chiffrement plus puissant</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>La gestion centralisée de plusieurs liens WAN avec routage intelligent par application depuis un contrôleur unique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Un débit plus élevé sur chaque lien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>L'élimination du besoin de routeurs</button></div>
-    <div class="quiz-expl" id="expl-q0_4">SD-WAN: un contrôleur central gère tous les liens WAN (fibre + 4G + MPLS) et route le trafic de façon intelligente selon l'application (Teams via fibre, Netflix bloqué, sauvegardes via 4G pendant les heures creuses). Révolutionnaire pour les entreprises multi-sites.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">DMVPN (Dynamic Multipoint VPN) est avantageux pour une organisation avec 20 agences car...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Il est plus sécurisé qu'IPSec</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Il permet à chaque nouvelle agence d'être ajoutée rapidement, et les agences peuvent communiquer directement entre elles sans passer par le HQ</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Il ne nécessite pas de chiffrement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Il fonctionne sans connexion internet</button></div>
-    <div class="quiz-expl" id="expl-q1_4">DMVPN hub-and-spoke: configurer le hub une fois. Chaque nouveau spoke (agence) s'ajoute en quelques minutes. Les spokes peuvent communiquer directement entre eux via NHRP (Next Hop Resolution Protocol) sans surcharger le hub central.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">AWS Direct Connect et Azure ExpressRoute sont utilisés pour...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Accéder à AWS/Azure depuis n'importe quel PC</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Établir une connexion privée dédiée vers le cloud (pas via internet public) — plus fiable et sécurisée pour les applications critiques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Sauvegarder les données locales vers le cloud</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Remplacer les serveurs on-premise</button></div>
-    <div class="quiz-expl" id="expl-q2_4">Direct Connect (AWS) et ExpressRoute (Azure) fournissent une connexion physique dédiée entre le datacenter de l'entreprise et le cloud. Pas de transit par internet public = latence prévisible, débit garanti, sécurité renforcée. Utilisé pour les applications critiques migrées vers le cloud.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Pour une banque haïtienne avec 15 agences dans tout le pays, quelle architecture WAN recommanderais-tu ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>ADSL dans chaque agence avec VPN OpenVPN basique</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>MPLS pour les 3 grandes agences + 4G avec VPN IPSec pour les agences de province + SD-WAN pour la gestion centralisée</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Satellite Starlink uniquement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Chaque agence connectée directement au datacenter via fibre</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Architecture hybride recommandée: MPLS garanti pour les agences à fort volume (Port-au-Prince, Cap-Haïtien, Gonaïves) où les transactions sont critiques. 4G LTE + VPN pour les agences de province où le MPLS n'est pas disponible. SD-WAN pour gérer l'ensemble depuis un tableau de bord centralisé.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+  <div class="vurl"><input type="text" id="vi2" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(2)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>2.1 Comparaison des types de VPN</h3>
+<table class="dtable">
+<thead><tr><th>Type VPN</th><th>Chiffrement</th><th>Usage principal</th><th>Complexité</th></tr></thead>
+<tbody>
+<tr><td><strong>GRE</strong></td><td>❌ Aucun</td><td>Tunneling multiprotocole, base pour IPSec+GRE</td><td>Faible</td></tr>
+<tr><td><strong>IPSec site-à-site</strong></td><td>✅ AES-256</td><td>Connexion permanente entre sites d'entreprise</td><td>Moyenne</td></tr>
+<tr><td><strong>SSL/TLS (WebVPN)</strong></td><td>✅ TLS 1.3</td><td>Remote access via navigateur, sans client</td><td>Faible</td></tr>
+<tr><td><strong>L2TP/IPSec</strong></td><td>✅ IPSec</td><td>Remote access Windows/Mac natif</td><td>Moyenne</td></tr>
+<tr><td><strong>DMVPN</strong></td><td>✅ IPSec</td><td>Réseau multi-sites dynamique (hub-and-spoke)</td><td>Élevée</td></tr>
+<tr><td><strong>WireGuard</strong></td><td>✅ ChaCha20</td><td>VPN moderne, léger et performant</td><td>Faible</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>2.2 Configuration GRE Tunnel</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — Tunnel GRE</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! GRE Tunnel — R1 (HQ) ↔ R2 (Agence)</span>
+<span class="cmt">! R1 — IP WAN : 203.0.113.1 / Réseau LAN : 192.168.1.0/24</span>
+R1(config)# <span class="cmd">interface Tunnel0</span>
+R1(config-if)# <span class="cmd">description</span> <span class="val">GRE vers Agence Port-au-Prince</span>
+R1(config-if)# <span class="cmd">ip address</span> <span class="val">172.16.0.1</span> <span class="val">255.255.255.252</span>
+R1(config-if)# <span class="cmd">tunnel source</span> <span class="val">GigabitEthernet0/1</span>   <span class="cmt">← interface WAN locale</span>
+R1(config-if)# <span class="cmd">tunnel destination</span> <span class="val">203.0.113.2</span>       <span class="cmt">← IP WAN distante</span>
+R1(config-if)# <span class="cmd">tunnel mode gre ip</span>
+R1(config-if)# <span class="cmd">no shutdown</span>
+R1(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Route statique via le tunnel GRE</span>
+R1(config)# <span class="cmd">ip route</span> <span class="val">192.168.2.0</span> <span class="val">255.255.255.0</span> <span class="val">Tunnel0</span>
+
+<span class="cmt">! Vérification</span>
+R1# <span class="cmd">show interfaces Tunnel0</span>
+R1# <span class="cmd">show ip route</span>
+R1# <span class="cmd">ping 192.168.2.1 source 192.168.1.1</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle est la principale limitation du tunnel GRE seul (sans IPSec) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Il ne supporte que le protocole IPv4</button>
+      <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Il n'offre aucun chiffrement — les données transitent en clair</button>
+      <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Il est limité à 10 Mbps de débit</button>
+      <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Il ne fonctionne pas sur Internet public</button>
+    </div>
+    <div class="qexpl" id="qe-2-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quel type de VPN est recommandé pour les télétravailleurs accédant aux ressources via un navigateur web ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>IPSec site-à-site</button>
+      <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>SSL/TLS (WebVPN / Clientless VPN)</button>
+      <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>GRE tunnel</button>
+      <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>MPLS VPN</button>
+    </div>
+    <div class="qexpl" id="qe-2-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">DMVPN Phase 2 permet quoi de plus que Phase 1 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Un meilleur chiffrement AES-256</button>
+      <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>La communication directe spoke-to-spoke sans passer par le hub</button>
+      <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>La prise en charge d'IPv6</button>
+      <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>L'automatisation de la configuration</button>
+    </div>
+    <div class="qexpl" id="qe-2-2"></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1],['GRE (Generic Routing Encapsulation) est un protocole de tunneling qui encapsule les paquets dans un nouveau header IP mais sans aucun chiffrement. Les données transitent en clair sur Internet. Pour la sécurité, on combine GRE + IPSec : GRE pour le tunneling multiprotocole et IPSec pour le chiffrement.','SSL/TLS VPN (WebVPN ou Clientless VPN) utilise le protocole HTTPS du navigateur pour créer un tunnel sécurisé sans installer de client VPN. L\'utilisateur accède aux ressources internes via le portail web. Idéal pour le télétravail occasionnel. L\'accès complet nécessite un client AnyConnect.','En DMVPN Phase 1, tout le trafic passe par le hub central (hub-and-spoke). En Phase 2, les spokes peuvent établir des tunnels dynamiques directs entre eux via NHRP (Next Hop Resolution Protocol), évitant le transit inutile par le hub et réduisant la latence.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
 </div></div>
-</div><div class="pratique-block">
-  <div class="pratique-header">
-    <div class="pratique-icon-wrap">🔬</div>
-    <div class="pratique-header-info">
-      <h3>Séance Pratique — SP-TRI-25-01</h3>
-      <span>Labo WAN et VPN site-à-site — Configuration complète</span>
-    </div>
-    <div class="pratique-badge-option">🟡 Optionnelle</div>
+
+<!-- ══ CH 3 — IPSec VPN Site-à-Site ══ -->
+<div class="chapter" id="ch-3">
+<div class="ch-header" style="background:linear-gradient(135deg,#040D1A,#0a1a3e)">
+<div class="ch-num">03</div>
+<div class="ch-info"><h2>IPSec VPN Site-à-Site</h2>
+<div class="ch-meta"><span>🕐 14h</span><span class="ch-badge">🔐 IKEv2 · AES-256 · ESP · AH · Phase 1 & 2 · Crypto Map</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — IPSec VPN site-à-site : configuration complète</div><div class="vsub">20 min · ENSA · IKEv2 · AES · ESP · Crypto Map · Vérification</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp3"><div class="vplay" onclick="openVideo(3)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf3" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>IPSec — Phase 1 IKE (6 min)</strong> — Négociation du canal de contrôle. Algorithmes : chiffrement (AES), intégrité (SHA), DH group. Pre-shared key ou certificats. IKEv1 vs IKEv2.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>IPSec — Phase 2 (6 min)</strong> — Négociation du tunnel de données (SA IPSec). ESP vs AH. Modes tunnel vs transport. ACL crypto pour définir le trafic intéressant.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Configuration + vérification (8 min)</strong> — Crypto isakmp policy, crypto ipsec transform-set, crypto map. show crypto isakmp sa, show crypto ipsec sa. Dépannage.</div></div>
   </div>
-  <div class="pratique-body">
-    <p class="pratique-desc">Tu vas configurer un VPN IPSec site-à-site entre deux routeurs Cisco simulant deux sites d'une entreprise haïtienne. Durée: 3 heures.</p>
-    <div class="pratique-grid">
-      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Configurer les interfaces WAN et LAN des deux routeurs</li><li>Configurer la politique ISAKMP (Phase 1) identique sur les deux routeurs</li><li>Configurer le transform-set et les ACL intéressants</li><li>Créer et appliquer la crypto map sur les interfaces WAN</li><li>Vérifier les phases 1 et 2 avec les show commands</li><li>Tester la connectivité LAN-to-LAN avec ping et traceroute</li></ul></div>
-      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Packet Tracer avec deux routeurs 2901 et un cloud internet simulé</li><li>OU équipements physiques du labo si disponibles</li><li>Carnet de notes pour documenter les PSK et configurations</li></ul></div>
+  <div class="vurl"><input type="text" id="vi3" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(3)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>3.1 Configuration IPSec VPN Site-à-Site complète</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — IPSec VPN Site-à-Site</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === R1 (HQ — Port-au-Prince) — IP WAN : 203.0.113.1 ===</span>
+
+<span class="cmt">! PHASE 1 — Politique ISAKMP (IKE)</span>
+R1(config)# <span class="cmd">crypto isakmp policy 10</span>
+R1(config-isakmp)# <span class="cmd">encryption aes 256</span>
+R1(config-isakmp)# <span class="cmd">hash sha256</span>
+R1(config-isakmp)# <span class="cmd">authentication pre-share</span>
+R1(config-isakmp)# <span class="cmd">group 14</span>                   <span class="cmt">← DH group 14 (2048 bits)</span>
+R1(config-isakmp)# <span class="cmd">lifetime 86400</span>
+R1(config-isakmp)# <span class="cmd">exit</span>
+
+<span class="cmt">! Clé pré-partagée — MÊME des deux côtés !</span>
+R1(config)# <span class="cmd">crypto isakmp key</span> <span class="str">CanadoSecure2024!</span> <span class="cmd">address</span> <span class="val">203.0.113.2</span>
+
+<span class="cmt">! PHASE 2 — Transform Set (chiffrement des données)</span>
+R1(config)# <span class="cmd">crypto ipsec transform-set</span> <span class="val">TSET-AES</span> <span class="cmd">esp-aes 256 esp-sha256-hmac</span>
+R1(cfg-crypto-trans)# <span class="cmd">mode tunnel</span>
+R1(cfg-crypto-trans)# <span class="cmd">exit</span>
+
+<span class="cmt">! ACL — Trafic intéressant (réseau local ↔ réseau distant)</span>
+R1(config)# <span class="cmd">ip access-list extended</span> <span class="val">VPN-TRAFFIC</span>
+R1(config-ext-nacl)# <span class="cmd">permit ip</span> <span class="val">192.168.1.0 0.0.0.255</span> <span class="val">192.168.2.0 0.0.0.255</span>
+R1(config-ext-nacl)# <span class="cmd">exit</span>
+
+<span class="cmt">! Crypto Map — assemble Phase 1 + Phase 2 + ACL</span>
+R1(config)# <span class="cmd">crypto map</span> <span class="val">CMAP-WAN</span> <span class="str">10</span> <span class="cmd">ipsec-isakmp</span>
+R1(config-crypto-map)# <span class="cmd">set peer</span> <span class="val">203.0.113.2</span>
+R1(config-crypto-map)# <span class="cmd">set transform-set</span> <span class="val">TSET-AES</span>
+R1(config-crypto-map)# <span class="cmd">match address</span> <span class="val">VPN-TRAFFIC</span>
+R1(config-crypto-map)# <span class="cmd">exit</span>
+
+<span class="cmt">! Appliquer la crypto map sur l'interface WAN</span>
+R1(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R1(config-if)# <span class="cmd">crypto map CMAP-WAN</span>
+R1(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R1# <span class="cmd">show crypto isakmp sa</span>          <span class="cmt">← Phase 1 : QM_IDLE = OK</span>
+R1# <span class="cmd">show crypto ipsec sa</span>           <span class="cmt">← Phase 2 : paquets encryptés</span>
+R1# <span class="cmd">show crypto map</span>                <span class="cmt">← configuration crypto map</span></code></pre>
+</div>
+</div>
+
+<div class="section">
+<h3>3.2 Phases IPSec — Résumé</h3>
+<table class="dtable">
+<thead><tr><th>Phase</th><th>Protocole</th><th>Objectif</th><th>Résultat</th></tr></thead>
+<tbody>
+<tr><td><strong>Phase 1 — IKE</strong></td><td>ISAKMP/IKE</td><td>Authentification mutuelle, échange de clés Diffie-Hellman</td><td>SA ISAKMP (canal de contrôle sécurisé)</td></tr>
+<tr><td><strong>Phase 2 — IPSec</strong></td><td>ESP ou AH</td><td>Négociation des paramètres de chiffrement des données</td><td>SA IPSec (tunnel de données chiffré)</td></tr>
+</tbody></table>
+<div class="ibox cyan"><span class="ibox-label">🔐 ESP vs AH</span>
+<strong>ESP (Encapsulating Security Payload)</strong> — chiffre ET authentifie les données. Le plus utilisé en pratique. Protocole IP 50.<br>
+<strong>AH (Authentication Header)</strong> — authentifie uniquement (pas de chiffrement). Protocole IP 51. Incompatible avec NAT.<br>
+<strong>Recommandation :</strong> Toujours utiliser ESP en production — AH est quasi-obsolète.</div>
+</div>
+
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">4 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 4</div>
+    <div class="q-text">Que définit l'ACL "trafic intéressant" dans une configuration IPSec VPN ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Les utilisateurs autorisés à se connecter au VPN</button>
+      <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Le trafic qui doit être chiffré et envoyé dans le tunnel IPSec</button>
+      <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Les interfaces sur lesquelles appliquer IPSec</button>
+      <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Les protocoles de chiffrement autorisés</button>
     </div>
-    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
-    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00')">Lun 19 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00')">Mar 20 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00')">Mer 21 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00')">Jeu 22 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00')">Ven 23 Mai — 8h00</button></div>
-    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-25-01')">📅 Confirmer ma réservation</button>
-    <div class="pratique-confirm" id="confirm-sp-25-01"></div>
+    <div class="qexpl" id="qe-3-0"></div>
   </div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-25 — Scénario d'interconnexion multi-sites — Organisation haïtienne</h3>
-      <span>Architecture WAN complète pour une organisation avec 4 sites</span>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 4</div>
+    <div class="q-text">Pourquoi AH (Authentication Header) est-il incompatible avec NAT ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>AH chiffre l'en-tête IP que NAT doit modifier</button>
+      <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>AH authentifie l'en-tête IP — quand NAT modifie l'adresse source, l'authentification échoue</button>
+      <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>NAT ne supporte pas le protocole IP 51</button>
+      <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>AH utilise UDP et NAT ne supporte que TCP</button>
     </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
+    <div class="qexpl" id="qe-3-1"></div>
   </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Une ONG internationale opère en Haïti avec 4 sites: siège à Pétion-Ville, bureau au Cap-Haïtien, bureau aux Gonaïves, et bureau à Jacmel.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Conçois l'<strong>architecture WAN complète</strong>: quel type de lien WAN pour chaque site (fibre, 4G, MPLS), quelle redondance, quel opérateur haïtien.</li><li>Définis la <strong>stratégie VPN</strong>: VPN site-à-site IPSec ou DMVPN hub-and-spoke? Justifie ton choix pour cette organisation.</li><li>Rédige les <strong>configurations Cisco IOS complètes</strong> du routeur du siège et d'un routeur de bureau de province (pour le VPN IPSec ou DMVPN).</li><li>Calcule la <strong>bande passante WAN requise</strong> pour chaque site: 30 users au siège, 15 au Cap, 10 aux Gonaïves, 10 à Jacmel. Applications: Teams, emails, applications métier cloud.</li><li>Estime le <strong>coût mensuel</strong> de l'infrastructure WAN proposée (connexions internet, éventuellement MPLS) en HTG.</li></ol>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 4</div>
+    <div class="q-text">Quelle commande confirme que la Phase 1 IPSec (IKE) est établie correctement ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>show crypto ipsec sa</button>
+      <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>show crypto isakmp sa</button>
+      <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>show crypto map</button>
+      <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>show ip route</button>
     </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Architecture WAN cohérente avec justification des choix FAI</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Stratégie VPN choisie et justifiée</div></div><div class="bareme-row"><div class="bareme-pts">35 pts</div><div class="bareme-label">Configurations Cisco correctes et complètes</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Calcul de bande passante par site</div></div><div class="bareme-row"><div class="bareme-pts">10 pts</div><div class="bareme-label">Estimation du coût mensuel</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
+    <div class="qexpl" id="qe-3-2"></div>
   </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-25 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+  <div class="q-item">
+    <div class="q-num">Question 4 / 4</div>
+    <div class="q-text">Que signifie "QM_IDLE" dans la sortie de "show crypto isakmp sa" ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>La SA est en attente de connexion — pas encore active</button>
+      <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>La SA Phase 1 est établie et active — le tunnel IKE est opérationnel</button>
+      <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>La SA a expiré et doit être renégociée</button>
+      <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Il y a une erreur de configuration</button>
+    </div>
+    <div class="qexpl" id="qe-3-3"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,1,1,1],['L\'ACL «trafic intéressant» définit précisément quels flux IP doivent être encapsulés et chiffrés dans le tunnel IPSec. Ex: permit ip 192.168.1.0/24 192.168.2.0/24 = tout trafic entre ces deux réseaux passe dans le tunnel. Le reste du trafic (Internet) sort normalement sans chiffrement.','AH (Authentication Header) calcule une signature cryptographique incluant l\'en-tête IP (adresses source et destination). Quand NAT modifie l\'adresse IP source, la vérification de l\'intégrité échoue car la signature ne correspond plus. ESP n\'a pas ce problème car il peut être utilisé avec NAT-T (NAT Traversal) qui encapsule ESP dans UDP 4500.','show crypto isakmp sa affiche l\'état des Security Associations IKE (Phase 1). QM_IDLE = Quick Mode Idle = la SA Phase 1 est établie. show crypto ipsec sa affiche les SA Phase 2 avec les compteurs de paquets chiffrés/déchiffrés.','QM_IDLE (Quick Mode Idle) indique que la SA IKE Phase 1 est complètement établie et opérationnelle. Les deux routeurs se sont authentifiés mutuellement et ont échangé les clés. Le tunnel de contrôle est actif. La Phase 2 peut maintenant s\'établir pour chiffrer les données.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',4)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 4 — NAT avancé ══ -->
+<div class="chapter" id="ch-4">
+<div class="ch-header"><div class="ch-num">04</div>
+<div class="ch-info"><h2>NAT avancé pour IPv4</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">NAT statique · PAT · NAT64 · Dépannage NAT · NAT et VPN</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — NAT avancé : PAT, NAT statique serveur, NAT64</div><div class="vsub">14 min · ENSA Module 6 · NAT · PAT · NAT64 · Dépannage</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp4"><div class="vplay" onclick="openVideo(4)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf4" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>NAT statique pour serveurs (5 min)</strong> — Exposer un serveur interne sur Internet. Port forwarding. NAT statique vs PAT. Configuration d'un serveur web interne accessible depuis Internet.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>NAT et VPN — problème de bypass (4 min)</strong> — Le NAT peut interférer avec IPSec. Solution : NAT exemption (ACL qui exclut le trafic VPN du NAT). ip nat inside source route-map.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>NAT64 (5 min)</strong> — Traduction IPv6 → IPv4. Nécessaire pour la coexistence IPv4/IPv6. Stateful vs Stateless NAT64. Cas d'usage : clients IPv6 accédant à serveurs IPv4.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi4" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(4)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>4.1 NAT statique — Exposer un serveur interne</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — NAT statique serveur web</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Scénario : serveur web interne 192.168.1.100 → accessible sur 203.0.113.5:80</span>
+
+<span class="cmt">! NAT statique — 1 IP privée ↔ 1 IP publique (fixe)</span>
+R(config)# <span class="cmd">ip nat inside source static</span> <span class="val">192.168.1.100</span> <span class="val">203.0.113.5</span>
+
+<span class="cmt">! NAT statique avec port forwarding (port forwarding)</span>
+R(config)# <span class="cmd">ip nat inside source static tcp</span> <span class="val">192.168.1.100 80</span> <span class="val">203.0.113.5 80</span>
+R(config)# <span class="cmd">ip nat inside source static tcp</span> <span class="val">192.168.1.100 443</span> <span class="val">203.0.113.5 443</span>
+
+<span class="cmt">! NAT exemption — exclure le trafic VPN du NAT</span>
+R(config)# <span class="cmd">ip access-list extended</span> <span class="val">NAT-EXCLUDE</span>
+R(config-ext-nacl)# <span class="cmd">deny ip</span> <span class="val">192.168.1.0 0.0.0.255</span> <span class="val">192.168.2.0 0.0.0.255</span>  <span class="cmt">← trafic VPN exclu</span>
+R(config-ext-nacl)# <span class="cmd">permit ip</span> <span class="val">192.168.1.0 0.0.0.255 any</span>                  <span class="cmt">← reste → NAT</span>
+R(config-ext-nacl)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">ip nat inside source list NAT-EXCLUDE interface GigabitEthernet0/1 overload</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show ip nat translations</span>
+R# <span class="cmd">show ip nat statistics</span>
+R# <span class="cmd">debug ip nat</span>                 <span class="cmt">← attention en production !</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Pourquoi faut-il configurer une "NAT exemption" quand IPSec VPN et NAT coexistent ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Pour augmenter les performances du VPN</button>
+      <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Pour éviter que NAT traduise les adresses du trafic VPN, ce qui briserait le tunnel IPSec</button>
+      <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Pour désactiver NAT sur l'interface WAN</button>
+      <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Pour activer NAT64 automatiquement</button>
+    </div>
+    <div class="qexpl" id="qe-4-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quelle commande configure le port forwarding HTTP vers un serveur interne 192.168.1.10 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>ip nat inside source static 192.168.1.10 203.0.113.1</button>
+      <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>ip nat inside source static tcp 192.168.1.10 80 203.0.113.1 80</button>
+      <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>ip nat outside source static tcp 80 192.168.1.10</button>
+      <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>ip nat forward 192.168.1.10 port 80</button>
+    </div>
+    <div class="qexpl" id="qe-4-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">À quoi sert NAT64 ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>À accélérer le NAT en utilisant 64 threads parallèles</button>
+      <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>À traduire les paquets IPv6 en IPv4 pour permettre la coexistence des deux protocoles</button>
+      <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>À créer 64 adresses publiques à partir d'une seule adresse privée</button>
+      <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>À remplacer IPv4 par IPv6 dans un réseau</button>
+    </div>
+    <div class="qexpl" id="qe-4-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1],['Sans NAT exemption, le routeur va traduire les adresses sources du trafic destiné au site VPN distant. L\'ACL crypto d\'IPSec cherche des adresses spécifiques — si NAT change ces adresses, les paquets ne correspondent plus à l\'ACL et ne sont pas chiffrés. La NAT exemption (deny dans l\'ACL NAT) exclut le trafic VPN de la traduction.','Le port forwarding NAT utilise la syntaxe : ip nat inside source static tcp [IP-privée] [port-privé] [IP-publique] [port-public]. Cette commande redirige tout trafic TCP arrivant sur 203.0.113.1:80 vers 192.168.1.10:80. Le mot-clé tcp spécifie le protocole (aussi udp possible).','NAT64 est un mécanisme de transition IPv6-IPv4. Il permet à des hôtes IPv6 d\'accéder à des serveurs IPv4 (ou vice versa) en traduisant les en-têtes de paquets. Essentiel pendant la période de migration d\'IPv4 vers IPv6 où les deux versions coexistent sur Internet.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 5 — FHRP ══ -->
+<div class="chapter" id="ch-5">
+<div class="ch-header" style="background:linear-gradient(135deg,#040D1A,#1a3a00)">
+<div class="ch-num">05</div>
+<div class="ch-info"><h2>FHRP — Redondance de passerelle</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">🔄 HSRP · VRRP · GLBP · Haute disponibilité · Failover</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — FHRP : HSRP, VRRP et GLBP</div><div class="vsub">14 min · ENSA Module 9 · HSRP · VRRP · GLBP · Failover</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp5"><div class="vplay" onclick="openVideo(5)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf5" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Pourquoi FHRP ? (4 min)</strong> — Un hôte a une seule passerelle par défaut. Si le routeur tombe, la communication s'arrête. FHRP crée une passerelle virtuelle redondante entre plusieurs routeurs.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>HSRP vs VRRP vs GLBP (5 min)</strong> — HSRP (Cisco propriétaire) : Active/Standby. VRRP (standard IEEE) : Master/Backup. GLBP (Cisco) : Active/Active load balancing entre plusieurs routeurs.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Configuration HSRP (5 min)</strong> — IP virtuelle, priorité, préemption, tracking d'interface. Vérification et test de failover. Temps de convergence.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi5" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(5)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>5.1 Comparaison HSRP / VRRP / GLBP</h3>
+<table class="dtable">
+<thead><tr><th>Protocole</th><th>Standard</th><th>Rôles</th><th>Load Balancing</th><th>IP virtuelle</th></tr></thead>
+<tbody>
+<tr><td><strong>HSRP v2</strong></td><td>Cisco propriétaire</td><td>Active / Standby</td><td>❌ (1 seul actif)</td><td>Configurée manuellement</td></tr>
+<tr><td><strong>VRRP v3</strong></td><td>IEEE RFC 5798</td><td>Master / Backup</td><td>❌ (1 seul master)</td><td>Peut être IP du routeur</td></tr>
+<tr><td><strong>GLBP</strong></td><td>Cisco propriétaire</td><td>AVG + AVF multiples</td><td>✅ Actif/Actif</td><td>1 VIP + MACs virtuelles</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>5.2 Configuration HSRP avec tracking</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — HSRP v2 + Interface Tracking</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === R1 — Routeur ACTIF (priorité 110) ===</span>
+R1(config)# <span class="cmd">interface GigabitEthernet0/0</span>
+R1(config-if)# <span class="cmd">ip address</span> <span class="val">192.168.1.1</span> <span class="val">255.255.255.0</span>
+R1(config-if)# <span class="cmd">standby version 2</span>
+R1(config-if)# <span class="cmd">standby 1 ip</span> <span class="val">192.168.1.254</span>        <span class="cmt">← IP virtuelle (passerelle des hôtes)</span>
+R1(config-if)# <span class="cmd">standby 1 priority 110</span>              <span class="cmt">← plus élevé = actif</span>
+R1(config-if)# <span class="cmd">standby 1 preempt</span>                   <span class="cmt">← reprend le rôle actif si revient</span>
+R1(config-if)# <span class="cmd">standby 1 track 1 decrement 20</span>      <span class="cmt">← si WAN tombe, priorité -20</span>
+R1(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Objet de tracking — surveille l'interface WAN</span>
+R1(config)# <span class="cmd">track 1 interface GigabitEthernet0/1 line-protocol</span>
+
+<span class="cmt">! === R2 — Routeur STANDBY (priorité 90) ===</span>
+R2(config)# <span class="cmd">interface GigabitEthernet0/0</span>
+R2(config-if)# <span class="cmd">ip address</span> <span class="val">192.168.1.2</span> <span class="val">255.255.255.0</span>
+R2(config-if)# <span class="cmd">standby version 2</span>
+R2(config-if)# <span class="cmd">standby 1 ip</span> <span class="val">192.168.1.254</span>        <span class="cmt">← même IP virtuelle !</span>
+R2(config-if)# <span class="cmd">standby 1 priority 90</span>               <span class="cmt">← plus bas = standby</span>
+R2(config-if)# <span class="cmd">standby 1 preempt</span>
+R2(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R1# <span class="cmd">show standby brief</span>           <span class="cmt">← Active/Standby, IP virtuelle, priorité</span>
+R1# <span class="cmd">show standby</span>                 <span class="cmt">← détails complets HSRP</span>
+R1# <span class="cmd">show track 1</span>                 <span class="cmt">← état du tracking</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="5">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle est l'IP que les hôtes doivent configurer comme passerelle dans un réseau HSRP ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>L'IP du routeur Actif (R1)</button>
+      <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>L'IP virtuelle HSRP (VIP) partagée par tous les routeurs du groupe</button>
+      <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>L'IP du routeur Standby (R2)</button>
+      <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>N'importe quelle IP du réseau</button>
+    </div>
+    <div class="qexpl" id="qe-5-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">R1 a priorité 110, R2 a priorité 90. R1 tombe puis revient. Avec "preempt" configuré, que se passe-t-il ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>R2 reste actif — le changement est permanent</button>
+      <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>R1 reprend automatiquement le rôle actif grâce à sa priorité plus élevée</button>
+      <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Les deux deviennent actifs simultanément</button>
+      <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Il faut redémarrer HSRP manuellement</button>
+    </div>
+    <div class="qexpl" id="qe-5-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quel avantage GLBP a-t-il sur HSRP pour la disponibilité des ressources ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>GLBP supporte IPv6 nativement</button>
+      <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>GLBP permet à plusieurs routeurs d'être actifs simultanément — load balancing réel</button>
+      <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>GLBP est un standard ouvert multi-vendeur</button>
+      <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>GLBP converge plus rapidement que HSRP</button>
+    </div>
+    <div class="qexpl" id="qe-5-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,1],['Les hôtes configurent l\'IP virtuelle HSRP (VIP) comme passerelle par défaut — jamais l\'IP réelle d\'un routeur spécifique. La VIP est partagée par tous les routeurs du groupe HSRP. Si le routeur actif tombe, le standby prend le contrôle de la VIP sans que les hôtes changent leur configuration.','Avec «preempt» configuré, quand R1 revient en ligne avec sa priorité 110 supérieure à celle de R2 (90), R1 reprend automatiquement le rôle de routeur actif. Sans preempt, R2 resterait actif même après le retour de R1. Preempt garantit que le meilleur routeur est toujours actif.','GLBP (Gateway Load Balancing Protocol) utilise plusieurs AVF (Active Virtual Forwarders) — chaque routeur a une adresse MAC virtuelle différente. L\'AVG (Active Virtual Gateway) répond aux ARP en distribuant différentes MACs → les hôtes utilisent différents routeurs simultanément = vrai load balancing Actif/Actif.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-5"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 6 — QoS ══ -->
+<div class="chapter" id="ch-6">
+<div class="ch-header" style="background:linear-gradient(135deg,#040D1A,#1a0a30)">
+<div class="ch-num">06</div>
+<div class="ch-info"><h2>QoS — Qualité de service</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">📊 Classification · Marquage · DSCP · Policing · Shaping · Queuing</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 6 — QoS : classification, marquage et files d'attente</div><div class="vsub">16 min · ENSA Module 9 · DSCP · MQC · CBWFQ · LLQ</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp6"><div class="vplay" onclick="openVideo(6)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf6" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Pourquoi QoS ? (4 min)</strong> — Congestion réseau. Voix VoIP nécessite < 150 ms latence, < 30 ms jitter, < 1% perte. Sans QoS, tout le trafic est traité equally — best effort.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Classification et marquage (6 min)</strong> — DSCP (6 bits dans l'en-tête IP) : EF (46) pour voix, AF (10-43) pour données critiques, BE (0) pour best effort. CoS (802.1p) pour la couche 2.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>MQC et Queuing (6 min)</strong> — Modular QoS CLI : class-map, policy-map, service-policy. CBWFQ (bande passante garantie par classe). LLQ = CBWFQ + priority queue pour VoIP.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi6" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(6)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>6.1 Valeurs DSCP — Classification du trafic</h3>
+<table class="dtable">
+<thead><tr><th>Classe DSCP</th><th>Valeur</th><th>Type de trafic</th><th>Priorité</th></tr></thead>
+<tbody>
+<tr><td><strong>EF (Expedited Forwarding)</strong></td><td>46 (101110)</td><td>VoIP, vidéoconférence temps réel</td><td>⭐⭐⭐⭐⭐ Maximale</td></tr>
+<tr><td><strong>CS5</strong></td><td>40</td><td>Signalisation voix (SIP, H.323)</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td><strong>AF41</strong></td><td>34</td><td>Vidéo interactive (Webex, Teams)</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td><strong>AF31</strong></td><td>26</td><td>Applications critiques ERP, CRM</td><td>⭐⭐⭐</td></tr>
+<tr><td><strong>AF21</strong></td><td>18</td><td>Données transactionnelles</td><td>⭐⭐</td></tr>
+<tr><td><strong>CS1</strong></td><td>8</td><td>Scrap (bulk transfers, backup)</td><td>⭐</td></tr>
+<tr><td><strong>BE (Best Effort)</strong></td><td>0</td><td>Trafic non classifié, web, email</td><td>Aucune</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>6.2 Configuration QoS avec MQC (LLQ)</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — QoS MQC avec LLQ</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === ÉTAPE 1 : Classifier le trafic (class-map) ===</span>
+R(config)# <span class="cmd">class-map match-any</span> <span class="val">VOIX</span>
+R(config-cmap)# <span class="cmd">match dscp ef</span>               <span class="cmt">← trafic marqué EF (VoIP)</span>
+R(config-cmap)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">class-map match-any</span> <span class="val">VIDEO</span>
+R(config-cmap)# <span class="cmd">match dscp af41</span>
+R(config-cmap)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">class-map match-any</span> <span class="val">DONNEES-CRITIQUES</span>
+R(config-cmap)# <span class="cmd">match dscp af31</span>
+R(config-cmap)# <span class="cmd">exit</span>
+
+<span class="cmt">! === ÉTAPE 2 : Définir la politique (policy-map) ===</span>
+R(config)# <span class="cmd">policy-map</span> <span class="val">QOS-WAN</span>
+R(config-pmap)# <span class="cmd">class</span> <span class="val">VOIX</span>
+R(config-pmap-c)# <span class="cmd">priority percent 20</span>          <span class="cmt">← LLQ : 20% garanti + priorité stricte</span>
+R(config-pmap-c)# <span class="cmd">exit</span>
+R(config-pmap)# <span class="cmd">class</span> <span class="val">VIDEO</span>
+R(config-pmap-c)# <span class="cmd">bandwidth percent 30</span>         <span class="cmt">← CBWFQ : 30% garanti</span>
+R(config-pmap-c)# <span class="cmd">exit</span>
+R(config-pmap)# <span class="cmd">class</span> <span class="val">DONNEES-CRITIQUES</span>
+R(config-pmap-c)# <span class="cmd">bandwidth percent 30</span>
+R(config-pmap-c)# <span class="cmd">exit</span>
+R(config-pmap)# <span class="cmd">class class-default</span>
+R(config-pmap-c)# <span class="cmd">fair-queue</span>                   <span class="cmt">← WFQ pour le reste (20%)</span>
+R(config-pmap)# <span class="cmd">exit</span>
+
+<span class="cmt">! === ÉTAPE 3 : Appliquer sur l'interface WAN (sortante) ===</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R(config-if)# <span class="cmd">service-policy output QOS-WAN</span>
+R(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show policy-map interface GigabitEthernet0/1</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="6">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle valeur DSCP est utilisée pour le trafic VoIP temps réel ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',0,0)"><span class="qletter">A</span>AF41 (34)</button>
+      <button class="qopt" onclick="selQ(this,'6',0,1)"><span class="qletter">B</span>EF — Expedited Forwarding (46)</button>
+      <button class="qopt" onclick="selQ(this,'6',0,2)"><span class="qletter">C</span>CS5 (40)</button>
+      <button class="qopt" onclick="selQ(this,'6',0,3)"><span class="qletter">D</span>BE — Best Effort (0)</button>
+    </div>
+    <div class="qexpl" id="qe-6-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Quelle est la différence entre "priority" et "bandwidth" dans une policy-map Cisco ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',1,0)"><span class="qletter">A</span>Il n'y a aucune différence — ce sont des synonymes</button>
+      <button class="qopt" onclick="selQ(this,'6',1,1)"><span class="qletter">B</span>priority = file d'attente stricte LLQ (trafic voix jamais en attente). bandwidth = bande passante garantie mais pas prioritaire</button>
+      <button class="qopt" onclick="selQ(this,'6',1,2)"><span class="qletter">C</span>priority s'applique aux données, bandwidth à la voix</button>
+      <button class="qopt" onclick="selQ(this,'6',1,3)"><span class="qletter">D</span>bandwidth garantit 100% du débit, priority seulement 50%</button>
+    </div>
+    <div class="qexpl" id="qe-6-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Sur quelle interface et dans quel sens applique-t-on généralement une service-policy QoS WAN ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'6',2,0)"><span class="qletter">A</span>Interface LAN, direction input</button>
+      <button class="qopt" onclick="selQ(this,'6',2,1)"><span class="qletter">B</span>Interface WAN, direction output</button>
+      <button class="qopt" onclick="selQ(this,'6',2,2)"><span class="qletter">C</span>Interface LAN, direction output</button>
+      <button class="qopt" onclick="selQ(this,'6',2,3)"><span class="qletter">D</span>Interface loopback, direction input</button>
+    </div>
+    <div class="qexpl" id="qe-6-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('6',[1,1,1],['EF (Expedited Forwarding, DSCP 46) est la valeur recommandée pour le trafic VoIP temps réel. Elle garantit une latence minimale, un jitter minimal et zéro perte. La VoIP est sensible aux délais — EF = traitement immédiat, jamais en attente. CS5 (40) est utilisé pour la signalisation SIP/H.323.','priority dans MQC configure LLQ (Low Latency Queuing) : la file d\'attente est traitée en priorité absolue avant toutes les autres. Utilisé pour VoIP. bandwidth dans MQC configure CBWFQ : garantit un pourcentage de bande passante mais le trafic peut attendre si la file n\'est pas pleine. Ensemble ils forment LLQ = CBWFQ + priority queue pour voix.','La QoS WAN s\'applique sur l\'interface WAN en direction OUTPUT (sortante). C\'est à ce moment que la congestion peut se produire — les paquets attendent pour sortir sur le lien WAN limité. En appliquant la policy en output, on contrôle l\'ordre de transmission selon les priorités définies.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-6"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 7 — Gestion réseau ══ -->
+<div class="chapter" id="ch-7">
+<div class="ch-header"><div class="ch-num">07</div>
+<div class="ch-info"><h2>Gestion du réseau</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">SNMP · Syslog · NTP · NetFlow · CDP/LLDP · Cisco DNA Center</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 7 — Gestion réseau : SNMP, Syslog, NTP et NetFlow</div><div class="vsub">14 min · ENSA Module 10 · SNMP · Syslog · NTP · NetFlow</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp7"><div class="vplay" onclick="openVideo(7)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf7" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>SNMP v3 (5 min)</strong> — Simple Network Management Protocol. MIB, OID. GET, SET, TRAP. SNMPv3 : AuthPriv (authentification + chiffrement). Serveur NMS (Cisco Prime, SolarWinds, PRTG).</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Syslog + NTP (5 min)</strong> — Niveaux de sévérité 0-7. Configuration logging host. NTP hiérarchique (stratum). Synchronisation des horloges = logs corrélables.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>NetFlow (4 min)</strong> — Analyse du trafic réseau. Flux = source/destination/protocole/port. Exportation vers collecteur NetFlow. Cas d'usage : détection d'anomalies, capacity planning.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi7" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(7)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>7.1 Configuration SNMP v3 + Syslog + NTP</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — SNMP v3, Syslog, NTP</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! === SNMP v3 — Sécurisé (AuthPriv) ===</span>
+R(config)# <span class="cmd">snmp-server group</span> <span class="val">ADMIN-GROUP</span> <span class="cmd">v3 priv</span>
+R(config)# <span class="cmd">snmp-server user</span> <span class="val">admin-snmp</span> <span class="val">ADMIN-GROUP</span> <span class="cmd">v3</span> <span class="cmd">auth sha</span> <span class="str">AuthPass2024!</span> <span class="cmd">priv aes 256</span> <span class="str">PrivPass2024!</span>
+R(config)# <span class="cmd">snmp-server host</span> <span class="val">192.168.100.10</span> <span class="cmd">version 3 priv</span> <span class="val">admin-snmp</span>
+R(config)# <span class="cmd">snmp-server enable traps</span>
+
+<span class="cmt">! === SYSLOG — Envoi des logs vers serveur central ===</span>
+R(config)# <span class="cmd">logging host</span> <span class="val">192.168.100.20</span>
+R(config)# <span class="cmd">logging trap</span> <span class="val">informational</span>          <span class="cmt">← niveau 6 et plus critique</span>
+R(config)# <span class="cmd">logging source-interface</span> <span class="val">Loopback0</span>   <span class="cmt">← IP source stable</span>
+R(config)# <span class="cmd">service timestamps log datetime msec</span>  <span class="cmt">← timestamp précis</span>
+
+<span class="cmt">! === NTP — Synchronisation horaire ===</span>
+R(config)# <span class="cmd">ntp server</span> <span class="val">pool.ntp.org</span>
+R(config)# <span class="cmd">ntp server</span> <span class="val">time.google.com</span> <span class="cmd">prefer</span>
+R(config)# <span class="cmd">clock timezone</span> <span class="val">EST -5</span>            <span class="cmt">← Haiti = UTC-5</span>
+
+<span class="cmt">! === NETFLOW — Analyse du trafic ===</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/0</span>
+R(config-if)# <span class="cmd">ip flow ingress</span>
+R(config-if)# <span class="cmd">ip flow egress</span>
+R(config-if)# <span class="cmd">exit</span>
+R(config)# <span class="cmd">ip flow-export destination</span> <span class="val">192.168.100.30 2055</span>
+R(config)# <span class="cmd">ip flow-export version 9</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show snmp</span>
+R# <span class="cmd">show logging</span>
+R# <span class="cmd">show ntp status</span>
+R# <span class="cmd">show ip cache flow</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="7">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 7</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quelle version SNMP est recommandée en production pour la sécurité ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',0,0)"><span class="qletter">A</span>SNMPv1 (le plus simple)</button>
+      <button class="qopt" onclick="selQ(this,'7',0,1)"><span class="qletter">B</span>SNMPv3 avec AuthPriv (authentification SHA + chiffrement AES)</button>
+      <button class="qopt" onclick="selQ(this,'7',0,2)"><span class="qletter">C</span>SNMPv2c avec community string</button>
+      <button class="qopt" onclick="selQ(this,'7',0,3)"><span class="qletter">D</span>SNMPv2 sans chiffrement</button>
+    </div>
+    <div class="qexpl" id="qe-7-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Pourquoi NTP est-il critique pour la gestion réseau ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',1,0)"><span class="qletter">A</span>NTP améliore les performances du réseau</button>
+      <button class="qopt" onclick="selQ(this,'7',1,1)"><span class="qletter">B</span>Sans horloge synchronisée, les logs Syslog ont des timestamps incohérents rendant le diagnostic impossible</button>
+      <button class="qopt" onclick="selQ(this,'7',1,2)"><span class="qletter">C</span>NTP est requis pour que SNMP fonctionne</button>
+      <button class="qopt" onclick="selQ(this,'7',1,3)"><span class="qletter">D</span>NTP sécurise les communications réseau</button>
+    </div>
+    <div class="qexpl" id="qe-7-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quel niveau Syslog correspond aux messages d'erreur critiques qui nécessitent une intervention immédiate ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'7',2,0)"><span class="qletter">A</span>Level 7 — Debug</button>
+      <button class="qopt" onclick="selQ(this,'7',2,1)"><span class="qletter">B</span>Level 2 — Critical</button>
+      <button class="qopt" onclick="selQ(this,'7',2,2)"><span class="qletter">C</span>Level 6 — Informational</button>
+      <button class="qopt" onclick="selQ(this,'7',2,3)"><span class="qletter">D</span>Level 4 — Warning</button>
+    </div>
+    <div class="qexpl" id="qe-7-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('7',[1,1,1],['SNMPv3 avec le mode AuthPriv offre deux niveaux de sécurité : authentification (SHA pour vérifier l\'identité) et chiffrement (AES pour protéger les données). SNMPv1 et v2c utilisent des community strings en clair sur le réseau — facilement interceptables. SNMPv3 AuthPriv est le seul mode acceptable en production.','La synchronisation NTP est essentielle pour corréler les événements entre plusieurs équipements. Si un routeur Syslog indique 14h30 et un switch 14h28, il est impossible de reconstituer la séquence exacte d\'un incident. NTP garantit que tous les équipements ont la même heure → logs cohérents → diagnostic efficace.','Niveaux Syslog 0-7 : 0=Emergency, 1=Alert, 2=Critical, 3=Error, 4=Warning, 5=Notice, 6=Informational, 7=Debug. Les niveaux 0-2 nécessitent une intervention immédiate. «logging trap informational» capture les niveaux 0 à 6. En production, éviter le niveau 7 (Debug) qui génère trop de messages.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-7" style="display:none" onclick="retryQ('7',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-7"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(7)">✓ Chapitre 7 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 8 — Virtualisation réseau ══ -->
+<div class="chapter" id="ch-8">
+<div class="ch-header" style="background:linear-gradient(135deg,#040D1A,#0a2a1a)">
+<div class="ch-num">08</div>
+<div class="ch-info"><h2>Virtualisation réseau</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">NFV · VRF · SDN · GRE Tunnel · Overlay · Hyperviseur</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 8 — Virtualisation réseau : NFV, VRF et SDN</div><div class="vsub">14 min · ENSA Module 13 · NFV · VRF · SDN · Overlay</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp8"><div class="vplay" onclick="openVideo(8)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf8" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>NFV — Network Functions Virtualization (5 min)</strong> — Remplacer les appliances physiques (firewall, load balancer, routeur) par des logiciels sur des serveurs standards. Avantages : flexibilité, coût, déploiement rapide.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>VRF — Virtual Routing and Forwarding (5 min)</strong> — Créer plusieurs tables de routage virtuelles sur un même routeur. Isolation totale entre clients (MPLS VPN). Configuration VRF-Lite sur IOS.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>SDN — Software Defined Networking (4 min)</strong> — Séparation du plan de contrôle et du plan de données. Contrôleur centralisé (OpenFlow, Cisco ACI, Cisco DNA Center). Programmabilité via API REST.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi8" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(8)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>8.1 VRF-Lite — Tables de routage virtuelles</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Cisco IOS — VRF-Lite configuration</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt">! Scénario : 2 clients partageant le même routeur — isolation totale</span>
+
+<span class="cmt">! Créer les VRF</span>
+R(config)# <span class="cmd">vrf definition</span> <span class="val">CLIENT-A</span>
+R(config-vrf)# <span class="cmd">address-family ipv4</span>
+R(config-vrf-af)# <span class="cmd">exit</span>
+R(config-vrf)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">vrf definition</span> <span class="val">CLIENT-B</span>
+R(config-vrf)# <span class="cmd">address-family ipv4</span>
+R(config-vrf-af)# <span class="cmd">exit</span>
+R(config-vrf)# <span class="cmd">exit</span>
+
+<span class="cmt">! Assigner les interfaces aux VRF</span>
+R(config)# <span class="cmd">interface GigabitEthernet0/1</span>
+R(config-if)# <span class="cmd">vrf forwarding CLIENT-A</span>
+R(config-if)# <span class="cmd">ip address</span> <span class="val">10.1.1.1</span> <span class="val">255.255.255.0</span>
+R(config-if)# <span class="cmd">exit</span>
+
+R(config)# <span class="cmd">interface GigabitEthernet0/2</span>
+R(config-if)# <span class="cmd">vrf forwarding CLIENT-B</span>
+R(config-if)# <span class="cmd">ip address</span> <span class="val">10.1.1.1</span> <span class="val">255.255.255.0</span>   <span class="cmt">← même IP, VRF différent !</span>
+R(config-if)# <span class="cmd">exit</span>
+
+<span class="cmt">! Vérification</span>
+R# <span class="cmd">show vrf</span>
+R# <span class="cmd">show ip route vrf CLIENT-A</span>
+R# <span class="cmd">ping vrf CLIENT-A 10.1.1.2</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="8">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 8</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Qu'est-ce que NFV (Network Functions Virtualization) ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',0,0)"><span class="qletter">A</span>Un protocole de routage virtuel pour les VLANs</button>
+      <button class="qopt" onclick="selQ(this,'8',0,1)"><span class="qletter">B</span>La virtualisation des fonctions réseau (firewall, routeur, LB) sur des serveurs standard au lieu d'appliances physiques dédiées</button>
+      <button class="qopt" onclick="selQ(this,'8',0,2)"><span class="qletter">C</span>Un type de VPN qui virtualise les connexions WAN</button>
+      <button class="qopt" onclick="selQ(this,'8',0,3)"><span class="qletter">D</span>Une technologie d'amélioration des performances WiFi</button>
+    </div>
+    <div class="qexpl" id="qe-8-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Dans SDN, quelle est la séparation fondamentale ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',1,0)"><span class="qletter">A</span>Séparation du hardware et du software</button>
+      <button class="qopt" onclick="selQ(this,'8',1,1)"><span class="qletter">B</span>Séparation du plan de contrôle (intelligence) et du plan de données (forwarding) — le contrôle est centralisé</button>
+      <button class="qopt" onclick="selQ(this,'8',1,2)"><span class="qletter">C</span>Séparation du trafic IPv4 et IPv6</button>
+      <button class="qopt" onclick="selQ(this,'8',1,3)"><span class="qletter">D</span>Séparation du trafic LAN et WAN</button>
+    </div>
+    <div class="qexpl" id="qe-8-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Dans VRF-Lite, deux VRF peuvent-ils avoir la même plage d'adresses IP ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'8',2,0)"><span class="qletter">A</span>Non — les adresses IP doivent être uniques sur tout le routeur</button>
+      <button class="qopt" onclick="selQ(this,'8',2,1)"><span class="qletter">B</span>Oui — chaque VRF a sa propre table de routage, les espaces d'adressage sont complètement isolés</button>
+      <button class="qopt" onclick="selQ(this,'8',2,2)"><span class="qletter">C</span>Seulement si les VRF sont dans des VLANs différents</button>
+      <button class="qopt" onclick="selQ(this,'8',2,3)"><span class="qletter">D</span>Non — cela crée des conflits de routage</button>
+    </div>
+    <div class="qexpl" id="qe-8-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('8',[1,1,1],['NFV (Network Functions Virtualization) déplace les fonctions réseau traditionnellement sur des appliances physiques dédiées (firewall physique, load balancer physique, etc.) vers des logiciels s\'exécutant sur des serveurs standards x86. Avantages : coût réduit, déploiement rapide, scalabilité, flexibilité. Exemple : pfSense sur VM au lieu d\'un Cisco ASA physique.','SDN sépare le plan de contrôle (où vont les paquets — intelligence de routage) du plan de données (forwarding des paquets). Dans les réseaux traditionnels, chaque équipement a son propre plan de contrôle. En SDN, un contrôleur centralisé (Cisco DNA Center, OpenDaylight) gère tous les équipements via des API (OpenFlow, REST). Les équipements réseaux deviennent de simples forwarding engines.','C\'est l\'avantage majeur de VRF : isolation complète des espaces d\'adressage. Deux VRF peuvent utiliser 10.1.1.0/24 sans conflit car chaque VRF a sa propre table de routage. C\'est ainsi que les FAI MPLS isolent leurs clients — chaque client peut utiliser le même plan d\'adressage RFC 1918 sans interférence.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-8" style="display:none" onclick="retryQ('8',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-8"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(8)">✓ Chapitre 8 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 9 — SD-WAN ══ -->
+<div class="chapter" id="ch-9">
+<div class="ch-header" style="background:linear-gradient(135deg,#040D1A,#0a1a40)">
+<div class="ch-num">09</div>
+<div class="ch-info"><h2>SD-WAN et Cloud</h2>
+<div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">Cisco SD-WAN · vEdge · vSmart · vBond · Cloud OnRamp · MPLS vs SD-WAN</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 9 — SD-WAN : architecture et déploiement Cisco</div><div class="vsub">14 min · ENSA · Cisco SD-WAN · vEdge · vSmart · Cloud</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp9"><div class="vplay" onclick="openVideo(9)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf9" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Qu'est-ce que SD-WAN ? (5 min)</strong> — Software-Defined WAN. Overlay sur n'importe quel transport (MPLS, Internet, 4G). Gestion centralisée. Politique basée sur l'application. 60-80% moins cher que MPLS pur.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Architecture Cisco SD-WAN (5 min)</strong> — vBond (orchestration), vSmart (contrôleur), vManage (management), vEdge/cEdge (routeurs sites). OMP protocol. Secure tunnels automatiques.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Cloud OnRamp (4 min)</strong> — Accès optimisé aux applications SaaS (Microsoft 365, Salesforce). Mesure continue de la qualité des chemins. Basculement automatique vers le meilleur chemin.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi9" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(9)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>9.1 SD-WAN vs MPLS traditionnel</h3>
+<table class="dtable">
+<thead><tr><th>Critère</th><th>MPLS traditionnel</th><th>SD-WAN</th></tr></thead>
+<tbody>
+<tr><td><strong>Coût</strong></td><td>Élevé (circuits dédiés)</td><td>60-80% moins cher (Internet + 4G)</td></tr>
+<tr><td><strong>Déploiement</strong></td><td>Semaines/mois</td><td>Jours (Zero Touch Provisioning)</td></tr>
+<tr><td><strong>Flexibilité</strong></td><td>Faible (rigide)</td><td>Élevée (multi-transport)</td></tr>
+<tr><td><strong>Gestion</strong></td><td>Distribuée, CLI</td><td>Centralisée, vManage GUI/API</td></tr>
+<tr><td><strong>QoS</strong></td><td>Garantie par le FAI</td><td>Application-aware routing</td></tr>
+<tr><td><strong>Cloud</strong></td><td>Backhauling (sous-optimal)</td><td>Direct internet breakout + OnRamp</td></tr>
+<tr><td><strong>Sécurité</strong></td><td>Basique</td><td>Intégrée (chiffrement, segmentation)</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>9.2 Composants Cisco SD-WAN</h3>
+<div class="ibox cyan"><span class="ibox-label">🏗️ Architecture Cisco SD-WAN (Viptela)</span>
+<strong>vBond</strong> — Orchestrateur : premier point de contact lors du démarrage d'un vEdge. Authentifie et connecte les composants.<br>
+<strong>vSmart</strong> — Contrôleur : distribue les politiques de routage et de sécurité via OMP (Overlay Management Protocol). Calcul des chemins.<br>
+<strong>vManage</strong> — Management : interface web centrale (GUI + REST API). Configuration, monitoring, troubleshooting de tout le réseau SD-WAN.<br>
+<strong>vEdge / cEdge</strong> — Routeurs de site : établissent les tunnels IPSec vers les autres sites. Appliquent les politiques. cEdge = Cisco IOS XE compatible.</div>
+</div>
+
+<div class="qblock" data-qid="9">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 9</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 3</div>
+    <div class="q-text">Quel composant Cisco SD-WAN est responsable de la distribution des politiques de routage ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',0,0)"><span class="qletter">A</span>vBond — orchestrateur</button>
+      <button class="qopt" onclick="selQ(this,'9',0,1)"><span class="qletter">B</span>vSmart — contrôleur</button>
+      <button class="qopt" onclick="selQ(this,'9',0,2)"><span class="qletter">C</span>vManage — management</button>
+      <button class="qopt" onclick="selQ(this,'9',0,3)"><span class="qletter">D</span>vEdge — routeur de site</button>
+    </div>
+    <div class="qexpl" id="qe-9-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 3</div>
+    <div class="q-text">Qu'est-ce que "Cloud OnRamp" dans Cisco SD-WAN ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',1,0)"><span class="qletter">A</span>Un protocole de tunneling vers le cloud</button>
+      <button class="qopt" onclick="selQ(this,'9',1,1)"><span class="qletter">B</span>Une fonctionnalité qui optimise l'accès aux applications SaaS en mesurant la qualité et en sélectionnant le meilleur chemin</button>
+      <button class="qopt" onclick="selQ(this,'9',1,2)"><span class="qletter">C</span>Un service de backup des configurations dans le cloud</button>
+      <button class="qopt" onclick="selQ(this,'9',1,3)"><span class="qletter">D</span>Un service de migration vers AWS</button>
+    </div>
+    <div class="qexpl" id="qe-9-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 3</div>
+    <div class="q-text">Quel avantage économique principal offre SD-WAN par rapport à MPLS pur ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'9',2,0)"><span class="qletter">A</span>SD-WAN est gratuit avec les équipements Cisco</button>
+      <button class="qopt" onclick="selQ(this,'9',2,1)"><span class="qletter">B</span>SD-WAN peut utiliser Internet et 4G moins chers au lieu de circuits MPLS dédiés coûteux — économie de 60-80%</button>
+      <button class="qopt" onclick="selQ(this,'9',2,2)"><span class="qletter">C</span>SD-WAN n'utilise pas de bande passante</button>
+      <button class="qopt" onclick="selQ(this,'9',2,3)"><span class="qletter">D</span>SD-WAN élimine le besoin de routeurs dans les agences</button>
+    </div>
+    <div class="qexpl" id="qe-9-2"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('9',[1,1,1],['vSmart est le cerveau du réseau SD-WAN. Il distribue les politiques de routage et de sécurité à tous les vEdge via OMP (Overlay Management Protocol). vSmart calcule les chemins optimaux et les communique aux routeurs de site. vBond orchestre le démarrage, vManage gère l\'interface, vEdge exécute.','Cloud OnRamp mesure continuellement la qualité des chemins (latence, perte, jitter) vers les applications SaaS comme Microsoft 365, Salesforce, Webex. Il sélectionne automatiquement le meilleur chemin disponible et bascule si la qualité se dégrade. Résultat : expérience utilisateur optimale pour les apps cloud sans intervention manuelle.','La principale économie SD-WAN vient de l\'utilisation d\'Internet haut débit et de connexions 4G/5G moins chères à la place de circuits MPLS dédiés très coûteux. SD-WAN superpose une couche d\'intelligence (overlay) sur ces transports moins chers pour garantir la qualité. Une entreprise peut économiser 60-80% sur ses coûts WAN tout en améliorant la flexibilité.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-9" style="display:none" onclick="retryQ('9',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-9"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(9)">✓ Chapitre 9 terminé →</button></div>
+</div></div>
+
+<!-- ══ CH 10 — Automatisation réseau ══ -->
+<div class="chapter" id="ch-10">
+<div class="ch-header" style="background:linear-gradient(135deg,#040D1A,#006B46)">
+<div class="ch-num">10</div>
+<div class="ch-info"><h2>Automatisation réseau</h2>
+<div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">🤖 Python · Netmiko · RESTCONF · YANG · Ansible · DNA Center API</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 10 — Automatisation réseau : Python, APIs et Ansible</div><div class="vsub">18 min · ENSA Module 14 · Python · Netmiko · RESTCONF · Ansible</div></div></div>
+  <div class="vembed"><div class="vplaceholder" id="vp10"><div class="vplay" onclick="openVideo(10)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf10" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Python + Netmiko (6 min)</strong> — Automatiser la configuration Cisco via SSH. Netmiko : librairie Python pour SSH multi-vendeur. Exemple : configurer 50 switches en 2 minutes au lieu de 2 heures.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>RESTCONF + YANG (6 min)</strong> — API REST native sur les équipements Cisco IOS XE. YANG = modèle de données. GET/PUT/POST/DELETE sur les ressources réseau. JSON ou XML.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Ansible pour réseau (6 min)</strong> — Playbooks YAML déclaratifs. Modules ios_config, ios_command. Idempotence. Infrastructure as Code. Cisco DNA Center API pour orchestration complète.</div></div>
+  </div>
+  <div class="vurl"><input type="text" id="vi10" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(10)">Insérer →</button></div>
+</div>
+
+<div class="section">
+<h3>10.1 Python + Netmiko — Automatisation SSH</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Python — Netmiko multi-dispositifs</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="cmt"># pip install netmiko</span>
+<span class="kw">from</span> netmiko <span class="kw">import</span> ConnectHandler
+<span class="kw">import</span> json
+
+<span class="cmt"># Liste de switches à configurer</span>
+devices = [
+    {<span class="str">'device_type'</span>: <span class="str">'cisco_ios'</span>, <span class="str">'host'</span>: <span class="str">'192.168.1.1'</span>, <span class="str">'username'</span>: <span class="str">'admin'</span>, <span class="str">'password'</span>: <span class="str">'Admin@2024!'</span>},
+    {<span class="str">'device_type'</span>: <span class="str">'cisco_ios'</span>, <span class="str">'host'</span>: <span class="str">'192.168.1.2'</span>, <span class="str">'username'</span>: <span class="str">'admin'</span>, <span class="str">'password'</span>: <span class="str">'Admin@2024!'</span>},
+]
+
+<span class="cmt"># Commandes à envoyer à tous les dispositifs</span>
+commands = [
+    <span class="str">'ntp server pool.ntp.org'</span>,
+    <span class="str">'logging host 192.168.100.20'</span>,
+    <span class="str">'service timestamps log datetime msec'</span>,
+    <span class="str">'ip domain-name canado.edu.ht'</span>,
+]
+
+<span class="kw">for</span> device <span class="kw">in</span> devices:
+    <span class="kw">print</span>(<span class="str">f"Configuration de {device['host']}..."</span>)
+    <span class="kw">with</span> ConnectHandler(**device) <span class="kw">as</span> net_connect:
+        output = net_connect.send_config_set(commands)
+        net_connect.save_config()          <span class="cmt"># copy run start</span>
+        <span class="kw">print</span>(<span class="str">f"  ✅ {device['host']} configuré"</span>)
+        
+        <span class="cmt"># Vérification</span>
+        result = net_connect.send_command(<span class="str">'show ntp status'</span>)
+        <span class="kw">print</span>(result)</code></pre>
+</div>
+</div>
+
+<div class="section">
+<h3>10.2 RESTCONF — API REST sur Cisco IOS XE</h3>
+<div class="codeblock">
+  <div class="codeblock-header"><span class="codeblock-lang">Python — RESTCONF GET/PUT IOS XE</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+  <pre><code><span class="kw">import</span> requests, json
+
+BASE_URL = <span class="str">"https://192.168.1.1/restconf/data"</span>
+HEADERS = {<span class="str">"Content-Type"</span>: <span class="str">"application/yang-data+json"</span>, <span class="str">"Accept"</span>: <span class="str">"application/yang-data+json"</span>}
+AUTH = (<span class="str">"admin"</span>, <span class="str">"Admin@2024!"</span>)
+
+<span class="cmt"># GET — Lire la configuration des interfaces</span>
+response = requests.get(<span class="str">f"{BASE_URL}/ietf-interfaces:interfaces"</span>, headers=HEADERS, auth=AUTH, verify=<span class="kw">False</span>)
+interfaces = response.json()
+<span class="kw">print</span>(json.dumps(interfaces, indent=2))
+
+<span class="cmt"># PUT — Configurer une interface via API REST</span>
+data = {<span class="str">"ietf-interfaces:interface"</span>: [{
+    <span class="str">"name"</span>: <span class="str">"GigabitEthernet1"</span>,
+    <span class="str">"description"</span>: <span class="str">"Configuré via RESTCONF"</span>,
+    <span class="str">"type"</span>: <span class="str">"iana-if-type:ethernetCsmacd"</span>,
+    <span class="str">"enabled"</span>: <span class="kw">True</span>
+}]}
+r = requests.put(<span class="str">f"{BASE_URL}/ietf-interfaces:interfaces"</span>, json=data, headers=HEADERS, auth=AUTH, verify=<span class="kw">False</span>)
+<span class="kw">print</span>(<span class="str">f"Status: {r.status_code}"</span>)  <span class="cmt"># 204 = succès</span></code></pre>
+</div>
+</div>
+
+<div class="qblock" data-qid="10">
+<div class="qblock-header"><span>📝</span><h3>Quiz Final — Chapitre 10</h3><span class="qblock-count">4 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item">
+    <div class="q-num">Question 1 / 4</div>
+    <div class="q-text">Quel avantage principal offre Netmiko pour l'automatisation réseau ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',0,0)"><span class="qletter">A</span>Il remplace complètement l'IOS Cisco</button>
+      <button class="qopt" onclick="selQ(this,'10',0,1)"><span class="qletter">B</span>Il permet de se connecter via SSH à des équipements multi-vendeurs et d'envoyer des commandes automatiquement depuis Python</button>
+      <button class="qopt" onclick="selQ(this,'10',0,2)"><span class="qletter">C</span>Il améliore la sécurité des connexions SSH</button>
+      <button class="qopt" onclick="selQ(this,'10',0,3)"><span class="qletter">D</span>Il convertit les commandes CLI en JSON automatiquement</button>
+    </div>
+    <div class="qexpl" id="qe-10-0"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 2 / 4</div>
+    <div class="q-text">Que signifie YANG dans le contexte de RESTCONF ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',1,0)"><span class="qletter">A</span>Yet Another Network Gateway — un protocole de routage</button>
+      <button class="qopt" onclick="selQ(this,'10',1,1)"><span class="qletter">B</span>Un langage de modélisation de données qui définit la structure des données réseau accessibles via RESTCONF/NETCONF</button>
+      <button class="qopt" onclick="selQ(this,'10',1,2)"><span class="qletter">C</span>Un format de fichier de configuration Cisco</button>
+      <button class="qopt" onclick="selQ(this,'10',1,3)"><span class="qletter">D</span>Un protocole de monitoring réseau</button>
+    </div>
+    <div class="qexpl" id="qe-10-1"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 3 / 4</div>
+    <div class="q-text">Qu'est-ce que l'"idempotence" dans Ansible ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',2,0)"><span class="qletter">A</span>La capacité d'Ansible à s'exécuter en parallèle sur plusieurs hôtes</button>
+      <button class="qopt" onclick="selQ(this,'10',2,1)"><span class="qletter">B</span>Exécuter un playbook plusieurs fois produit le même résultat — Ansible applique uniquement les changements nécessaires</button>
+      <button class="qopt" onclick="selQ(this,'10',2,2)"><span class="qletter">C</span>La capacité d'Ansible à détecter automatiquement les erreurs</button>
+      <button class="qopt" onclick="selQ(this,'10',2,3)"><span class="qletter">D</span>Un type de chiffrement utilisé par Ansible</button>
+    </div>
+    <div class="qexpl" id="qe-10-2"></div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Question 4 / 4</div>
+    <div class="q-text">Quel code HTTP indique qu'une requête RESTCONF PUT a réussi ?</div>
+    <div class="q-opts">
+      <button class="qopt" onclick="selQ(this,'10',3,0)"><span class="qletter">A</span>200 OK</button>
+      <button class="qopt" onclick="selQ(this,'10',3,1)"><span class="qletter">B</span>204 No Content (succès sans corps de réponse)</button>
+      <button class="qopt" onclick="selQ(this,'10',3,2)"><span class="qletter">C</span>404 Not Found</button>
+      <button class="qopt" onclick="selQ(this,'10',3,3)"><span class="qletter">D</span>500 Internal Server Error</button>
+    </div>
+    <div class="qexpl" id="qe-10-3"></div>
+  </div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('10',[1,1,1,1],['Netmiko (Network Mikrotik) est une librairie Python qui abstrait les connexions SSH vers des équipements réseau de différents vendeurs (Cisco IOS, IOS XE, NX-OS, Juniper, Arista...). Elle gère automatiquement les prompts, les modes de configuration, le paging. Permet d\'automatiser la configuration de centaines d\'équipements en quelques minutes.','YANG (Yet Another Next Generation) est un langage de modélisation de données RFC 6020 utilisé pour définir la structure et les contraintes des données de configuration et d\'état réseau. Pensez à YANG comme un schéma de base de données pour les équipements réseau. RESTCONF utilise YANG pour définir ce qu\'on peut lire/écrire via l\'API REST.','L\'idempotence signifie qu\'exécuter un playbook Ansible une fois ou dix fois produit exactement le même état final. Si la configuration est déjà correcte, Ansible ne fait rien. Si elle diffère, Ansible applique uniquement les changements nécessaires. Cela permet de ré-exécuter les playbooks en toute sécurité sans risque de dommages ou de configurations dupliquées.','RESTCONF : 200 OK = GET réussi avec corps de réponse. 201 Created = POST réussi (ressource créée). 204 No Content = PUT/PATCH/DELETE réussi sans corps de réponse — c\'est le code normal pour une modification réussie. 404 = ressource non trouvée. 400 = erreur de syntaxe dans la requête.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-10" style="display:none" onclick="retryQ('10',4)">↺ Réessayer</button>
+  <span class="qscore" id="qs-10"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(10)" style="background:linear-gradient(135deg,var(--accent),var(--accentL));font-size:.86rem;padding:.6rem 1.4rem">🎓 Chapitre 10 terminé — Module TRI-25 complété !</button></div>
+</div></div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🎉 Félicitations — Module TRI-25 complété !</h2>
+  <p>Tu maîtrises maintenant le WAN, les VPN IPSec, NAT avancé, QoS, FHRP, SD-WAN et l'automatisation réseau. Tu es prêt pour la certification CCNP !</p>
+</div>
+
+</div><!-- /#main-content -->
+</div><!-- /.layout -->
+</div><!-- /.wrap -->
+<div id="mob-overlay" onclick="toggleToc()"></div>
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+var ST={done:{},qs:{},sel:{}};var K='TRI25v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){var el=document.getElementById('qs-'+qid);if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}});
+  initTimer();updateProg();
+});
+function updateProg(){
+  var total=10,done=Object.keys(ST.done).filter(function(k){return ST.done[k];}).length;
+  var pct=Math.round(done/total*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';if(t)t.textContent=done+' / '+total+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
-}
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
-}
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
-}
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
-  }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
-
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+function goTo(n){var el=document.getElementById('ch-'+n);if(!el){toast('ℹ️ Chapitre bientôt disponible.');return;}el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');if(window.innerWidth<=768)toggleToc();}
+function toggleToc(){var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';}
+function selQ(btn,qid,qi,val){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var items=block.querySelectorAll('.q-item');var idx=parseInt(qi);if(items[idx])items[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;}
+function submitQ(qid,answers,expls){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var sel=ST.sel[qid]||{},total=answers.length;for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions d\'abord.');return;}}var ok=0;var items=block.querySelectorAll('.q-item');for(var i=0;i<total;i++){var correct=answers[i],chosen=sel[i],item=items[i];if(!item)continue;item.querySelectorAll('.qopt').forEach(function(b,j){b.disabled=true;if(j===correct)b.classList.add('ok');else if(j===chosen&&chosen!==correct)b.classList.add('ko');});var ex=document.getElementById('qe-'+qid+'-'+i);if(ex){ex.textContent=expls[i];ex.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}if(chosen===correct)ok++;}ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';updateProg();toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');}
+function retryQ(qid){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});if(ST.sel[qid])ST.sel[qid]={};var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';}
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';}
+function copyCode(btn){var code=btn.closest('.codeblock').querySelector('code');if(!code)return;navigator.clipboard.writeText(code.innerText||code.textContent).then(function(){btn.textContent='✓ Copié!';setTimeout(function(){btn.textContent='Copier';},2000);});}
+var timerStart=Date.now();
+function initTimer(){var saved=ld('time',0);timerStart=Date.now()-saved*1000;setInterval(function(){var e=Math.floor((Date.now()-timerStart)/1000);sv('time',e);var el=document.getElementById('session-timer');if(el){var h=Math.floor(e/3600),m=Math.floor((e%3600)/60),s=e%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}},1000);}
+var _tt;
+function toast(msg){var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#011820;border:1px solid rgba(6,182,212,.3);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#A5F3FC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);}
 </script>
-
-<div id="mod-code-data" data-code="TRI-25" style="display:none"></div>
-<div id="seuil-data" data-seuil="75" style="display:none"></div>
 </body>
 </html>
