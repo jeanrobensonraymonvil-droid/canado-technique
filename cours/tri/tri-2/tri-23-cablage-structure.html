@@ -1,565 +1,858 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-23 — Câblage structuré</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-23 — Câblage structuré · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;
+  --org:#C8570A;--orgL:#E07030;--orgD:#8B3500;
+  --gold:#F5C518;--green:#006B46;--red:#E8192C;--teal:#006868;
+  --g100:#FFF5EE;--g300:#FFD0A0;--g500:#8A5530;--g700:#3A1800;
+  --text:#0B1525;--bdr:rgba(200,87,10,.15);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px;
+  --accent:#C8570A;--accentL:#E07030
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#fff5ee;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#1a0a00 55%,#8B3500 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-hero-img{position:absolute;inset:0;background-image:url('../../assets/images/slide-tri-23.jpg');background-size:cover;background-position:center;opacity:.15;pointer-events:none;z-index:0}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
-.mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
-
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
-
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(200,87,10,.2);border:1px solid rgba(200,87,10,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#FFB080;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
+.mod-header h1 em{color:#FFB080;font-style:normal}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:520px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#FFB080);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500)}.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--accent)}.toc-item.act{background:rgba(200,87,10,.1);color:var(--accent);font-weight:600}
+.toc-item.done{color:var(--accentL)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0}
+.toc-item.act .toc-dot,.toc-item.done .toc-dot{background:var(--accentL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#1a0a00,#8B3500);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--accentL)}
+.section p{font-size:.84rem;color:#2a1000;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a1000;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.org{background:rgba(200,87,10,.06);border:1px solid rgba(200,87,10,.2);color:#5a2000}.ibox.org .ibox-label{color:var(--accent)}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.teal{background:rgba(0,104,104,.06);border:1px solid rgba(0,104,104,.2);color:#003a3a}.ibox.teal .ibox-label{color:var(--teal)}
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#1a0a00;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(200,87,10,.02)}
+.codeblock{background:#0a0500;border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.codeblock-header{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.codeblock-lang{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+.codeblock-copy{font-size:.65rem;padding:2px 8px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.codeblock-copy:hover{background:rgba(200,87,10,.2);color:#FFB080}
+.codeblock pre{padding:1rem 1.1rem;overflow-x:auto}
+.codeblock code{font-family:var(--fM);font-size:.8rem;color:#FFD0A0;line-height:1.75;white-space:pre}
+.cmd{color:#50fa7b}.cmt{color:#5a3a1a;font-style:italic}.val{color:#f1fa8c}.str{color:#ff9b50}.kw{color:#ff79c6}
+.vblock{background:linear-gradient(135deg,#040D1A,#1a0a00);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(200,87,10,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#E07030);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(200,87,10,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(200,87,10,.2);border:1px solid rgba(200,87,10,.4);font-size:.6rem;font-weight:800;color:#FFB080;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--accent);color:#fff;font-size:.75rem;font-weight:700}
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a1800);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--accent);background:rgba(200,87,10,.03)}
+.qopt.sel{border-color:var(--accent);background:rgba(200,87,10,.06);font-weight:600;color:var(--accent)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--accent);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--accent);color:var(--accent)}
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--accent);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.done-btn:hover{background:var(--accentL)}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--orgD),var(--accent));border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+.color-chip{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:4px;border:1px solid rgba(0,0,0,.1)}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}body{background:#fff!important}}
 </style>
 </head>
 <body>
 <div class="mod-header">
+  <div class="mod-hero-img"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🔌 Module TRI-23 · 1ère Année</div>
-    <h1>Câblage <em>structuré</em></h1>
+    <div class="mod-tag">🔌 TRI-23 · 1ère Année · Câblage Structuré</div>
+    <h1>Câblage <em>structuré</em> en réseaux</h1>
+    <p class="mod-desc">10 chapitres · Normes TIA/EIA, câblage cuivre et fibre, baies, sertissage, documentation, tests Fluke, PoE, câblage Haïti — avec lab virtuel et outils pratiques.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>90 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo câblage (oblig.)</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Certification RJ45</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Plan de câblage</strong></div>
+      <div class="mod-meta-item">⏱ <strong>200 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
+      <div class="mod-meta-item">📚 <strong>10 chapitres</strong></div>
+      <div class="mod-meta-item">🔧 <strong>Ateliers pratiques</strong></div>
+      <div class="mod-meta-item">🏆 <strong>BICSI · TIA/EIA</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-txt" id="prog-txt">0 / 10 chapitres</span>
     </div>
-  </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Normes et standards câblage</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Câblage cuivre UTP — Pratique</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Fibre optique — Installation</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Baies de brassage et documentation</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo câblage complet (oblig.)</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Certification câble devant prof</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Plan de câblage structuré</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Normes et standards câblage</h2>
-      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">TIA/EIA 568 · Architecture · Catégories · 100m</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Normes de câblage structuré — TIA/EIA et ISO/IEC</div><div class="video-subtitle">Durée : 12 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Pourquoi les normes ? (3 min)</strong> — Un câblage non normalisé = problèmes garantis: vitesse réduite, erreurs, maintenance impossible. Les normes garantissent l'interopérabilité et la performance.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>TIA/EIA 568 (5 min)</strong> — Standard américain universellement utilisé. Catégories UTP (Cat5e, Cat6, Cat6A), distances (100m max), connecteurs (RJ45), schéma de câblage T568A et T568B.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Architecture du câblage structuré (4 min)</strong> — Backbone (vertical: entre étages), câblage horizontal (de la baie au poste de travail), zone de travail (de la prise au PC). Points de consolidation.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 Architecture du câblage structuré normalisé</h3><table class="data-table"><thead><tr><th>Sous-système</th><th>De</th><th>À</th><th>Longueur max</th><th>Type de câble</th></tr></thead><tbody><tr><td>Backbone vertical</td><td>Salle de télécommunications (TR)</td><td>Local technique central (MC)</td><td>90 m cuivre / plusieurs km fibre</td><td>UTP Cat6A ou Fibre</td></tr><tr><td>Câblage horizontal</td><td>Panneau de brassage (baie)</td><td>Prise murale (TO)</td><td>90 m</td><td>UTP Cat5e/Cat6/Cat6A</td></tr><tr><td>Cordon de brassage</td><td>Panneau de brassage</td><td>Switch (dans la baie)</td><td>5 m max recommandé</td><td>UTP Cat6 stranded</td></tr><tr><td>Cordon de poste</td><td>Prise murale</td><td>PC/Téléphone/Caméra</td><td>5 m max recommandé</td><td>UTP Cat6 stranded</td></tr><tr><td>Zone de travail</td><td>Prise murale (TO)</td><td>Équipement terminal</td><td>≤5m (cordon flexible)</td><td>UTP Cat6 flexible</td></tr></tbody></table><div class="info-box"><span class="info-box-label">📐 La règle des 100 mètres</span>La longueur totale d'un lien horizontal ne doit pas dépasser 100 mètres, dont: 90m de câble fixe (installation dans les cloisons/plafonds) + 5m de cordon de brassage + 5m de cordon de poste. En pratique en Haïti, viser 80-85m maximum pour les câbles fixes pour avoir de la marge.</div></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quelle est la longueur maximale d'un câble UTP Cat6 en installation fixe (sans les cordons) ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>50 mètres</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>90 mètres</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>100 mètres</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>120 mètres</button></div>
-    <div class="quiz-expl" id="expl-q0_1">90 mètres est la longueur maximale du câble fixe installé dans les cloisons et plafonds (permanent link). Les 10 mètres restants (sur les 100m totaux) sont réservés pour les cordons de brassage (5m max) et le cordon de poste (5m max).</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Quelle est la différence entre les schémas T568A et T568B ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>T568A est pour le cuivre, T568B pour la fibre</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>L'ordre des paires de couleurs est différent — les deux sont valides mais ne pas mélanger sur le même site</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>T568A n'est plus utilisé depuis 2010</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>T568B supporte uniquement le 10G</button></div>
-    <div class="quiz-expl" id="expl-q1_1">T568A et T568B diffèrent uniquement par l'ordre des paires de couleur sur le connecteur RJ45 (paires 2 et 3 inversées). Les deux standards fonctionnent parfaitement en Gigabit Ethernet. Règle: JAMAIS mélanger T568A et T568B sur le même câble (=câble croisé). Choisir un standard et l'appliquer partout.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Un câblage "structuré" signifie...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Les câbles sont structurés en spirale</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Un système de câblage organisé selon des normes, avec une topologie en étoile, une documentation et une testabilité</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Le câblage est limité aux structures en béton</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Les câbles sont protégés par une armure métallique</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Le câblage structuré est un système normalisé (TIA/EIA 568, ISO/IEC 11801) comprenant: topologie en étoile obligatoire, distances respectées, connecteurs standardisés, documentation complète, et testabilité de chaque lien. Il permet les interventions de n'importe quel technicien qualifié.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="2">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Quelle catégorie de câble UTP supporte le 10 Gigabit Ethernet sur 100 mètres ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Cat5e</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Cat6</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Cat6A (Augmented Category 6)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Cat7</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Cat6A (Augmented Category 6) est la seule catégorie UTP certifiée pour 10 Gbps sur 100 mètres. Cat6 supporte le 10G uniquement sur 55 mètres. Cat5e = 1 Gbps max. Pour les nouveaux déploiements, installer du Cat6A même si on n'a pas encore besoin du 10G.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Câblage cuivre UTP — Pratique</h2>
-      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">Sertissage · T568B · Punchdown · Test Fluke · PoE</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Câblage cuivre UTP — Techniques pratiques</div><div class="video-subtitle">Durée : 20 min · Démonstration complète</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Sertissage RJ45 (6 min)</strong> — Outils: pince à sertir, dénudeur, testeur de câble. Étapes: dénuder (2cm), séparer et aligner les paires, insérer dans le connecteur, sertir. T568B en pratique.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Terminer sur le panneau de brassage (5 min)</strong> — Panneau 110-punch vs IDC. Outil 110-punch. Ordre des paires selon T568B. Étiqueter immédiatement.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Installer une prise murale RJ45 (4 min)</strong> — Prise Keystone. Fixer dans la plaque murale. Dénuder et terminer les paires.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Tester le câblage (5 min)</strong> — Testeur basique (continuité). Testeur de certification (Fluke DSX): mesure l'atténuation, la diaphonie, le NEXT, la longueur. Interpréter un rapport de test Fluke.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Schéma de câblage T568B — Standard universellement utilisé</h3><table class="data-table"><thead><tr><th>Pin</th><th>Couleur</th><th>Paire</th><th>Signal</th></tr></thead><tbody><tr><td>1</td><td>Blanc-Orange</td><td>Paire 2</td><td>Tx+ (Transmission positive)</td></tr><tr><td>2</td><td>Orange</td><td>Paire 2</td><td>Tx- (Transmission négative)</td></tr><tr><td>3</td><td>Blanc-Vert</td><td>Paire 3</td><td>Rx+ (Réception positive)</td></tr><tr><td>4</td><td>Bleu</td><td>Paire 1</td><td>Unused (PoE+)</td></tr><tr><td>5</td><td>Blanc-Bleu</td><td>Paire 1</td><td>Unused (PoE+)</td></tr><tr><td>6</td><td>Vert</td><td>Paire 3</td><td>Rx- (Réception négative)</td></tr><tr><td>7</td><td>Blanc-Marron</td><td>Paire 4</td><td>Unused (PoE+)</td></tr><tr><td>8</td><td>Marron</td><td>Paire 4</td><td>Unused (PoE+)</td></tr></tbody></table><div class="info-box tip"><span class="info-box-label">⚡ PoE (Power over Ethernet)</span>Les câbles Cat5e et supérieur peuvent transporter l'alimentation électrique (PoE) en plus des données. PoE = 15.4W, PoE+ = 30W, PoE++ = 60-90W. Usage: téléphones IP, caméras IP, points d'accès Wi-Fi, luminaires connectés. En Haïti: excellent pour les caméras de sécurité et AP Wi-Fi sans nécessiter de prises électriques au plafond.</div></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Dans le schéma T568B, quelle est la couleur du pin 1 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Orange</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Blanc-Vert</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Blanc-Orange</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Bleu</button></div>
-    <div class="quiz-expl" id="expl-q0_2">Pin 1 = Blanc-Orange. Le moyen mnémotechnique pour T568B: BO-O-BV-B-BB-V-BM-M (Blanc-Orange, Orange, Blanc-Vert, Bleu, Blanc-Bleu, Vert, Blanc-Marron, Marron).</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Quelle est la procédure correcte pour sertir un connecteur RJ45 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Insérer les fils dans le connecteur puis dénuder</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Dénuder le câble, aligner les fils selon T568B, insérer dans le connecteur, sertir avec la pince</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Sertir d'abord puis dénuder</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Utiliser la pince à sertir sans alignement préalable</button></div>
-    <div class="quiz-expl" id="expl-q1_2">Ordre correct: 1) Dénuder le câble (environ 2cm de gaine extérieure). 2) Séparer et aplatir les 4 paires. 3) Aligner les fils dans l'ordre T568B. 4) Couper les fils à la même longueur (environ 1.5cm). 5) Insérer dans le connecteur RJ45 jusqu'en butée. 6) Sertir avec la pince. 7) Vérifier visuellement l'alignement.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi le PoE (Power over Ethernet) est-il particulièrement utile en Haïti ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Parce que le Cat5e est le seul câble disponible</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Il permet d'alimenter les caméras IP, AP Wi-Fi et téléphones IP sans nécessiter de prises électriques, simplifiant l'installation dans les bâtiments</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>PoE est uniquement disponible pour les switches Cisco</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Pour accélérer la connexion internet</button></div>
-    <div class="quiz-expl" id="expl-q2_2">PoE simplifie massivement l'installation: une seule prise RJ45 suffit pour alimenter et connecter une caméra ou un AP Wi-Fi. Pas besoin d'électricien pour installer des prises électriques près du plafond. En Haïti où les travaux de bâtiment sont coûteux, c'est un avantage économique significatif.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Un testeur de câble Fluke indique "FAIL - NEXT" sur un câble. Que signifie-t-il ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Le câble est trop long (Next = prochain câble)</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Il y a trop de diaphonie entre les paires proches — câble non conforme Cat6A</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Le câble nécessite un firmware update</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Le câble est compatible uniquement avec Cat5e</button></div>
-    <div class="quiz-expl" id="expl-q3_2">NEXT = Near End CrossTalk = diaphonie en bout proche. C'est l'interférence entre les paires à l'extrémité du câble testée. Un FAIL NEXT signifie que les paires s'influencent mutuellement au-delà des limites de la catégorie — généralement causé par un mauvais sertissage ou une paire dépairée trop longue.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+<div class="timer-bar">
+  ⏱ Session : <strong id="session-timer">0m 0s</strong>
+  &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns">
+    <button class="tbtn" onclick="window.print()">🖨 Imprimer</button>
+    <button class="tbtn" onclick="toggleToc()">☰ Sommaire</button>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Fibre optique — Installation</h2>
-      <div class="chapter-meta"><span>🕐 23 heures</span><span class="chapter-badge">SMF/MMF · Connecteurs · Épissure · Nettoyage · OTDR</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Fibre optique — Installation et épissure</div><div class="video-subtitle">Durée : 18 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Types de fibre et connecteurs (4 min)</strong> — Monomode (SMF) vs multimode (MMF). Connecteurs: SC, LC, ST, FC, MPO. Couleurs: SMF = jaune, MMF OM3 = aqua, OM4 = violet.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Outillage fibre (4 min)</strong> — Kit de clivage, soudeuse à arc (fusion splicer), otoscope ou visual fault locator (VFL), OTDR pour les tests longue distance, testeur de puissance optique.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Épissure par fusion (4 min)</strong> — Préparer la fibre (dénuder, nettoyer, cliver), fusionner avec la soudeuse, protection par tube thermorétractable ou boîtier d'épissure.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Connecteurs préterminés (4 min)</strong> — Connecteurs pre-polished (Corning UniCam, AFL Fizzi). Plus rapides en installation, pas besoin de soudeuse. Idéal pour le Haïti où les soudeuses coûtent cher.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Connecteurs fibre optique — Guide de choix</h3><table class="data-table"><thead><tr><th>Connecteur</th><th>Usage</th><th>Fixation</th><th>Avantages</th></tr></thead><tbody><tr><td>SC (Subscriber Connector)</td><td>Équipements réseau, datacenters</td><td>Push-pull (carré)</td><td>Simple, robuste, très répandu</td></tr><tr><td>LC (Lucent Connector)</td><td>Équipements modernes, SFP modules</td><td>Push-pull (petit carré)</td><td>Compact, haute densité — standard pour les modules SFP Cisco</td></tr><tr><td>ST (Straight Tip)</td><td>Anciens équipements, caméras</td><td>Bayonet (rotation)</td><td>Robuste, résistant aux vibrations</td></tr><tr><td>MPO/MTP</td><td>Câbles à haute densité (8-24 fibres)</td><td>Push-pull (rectangulaire)</td><td>Connexion ultra-rapide de multiples fibres</td></tr><tr><td>FC</td><td>Équipements de test, télécom</td><td>Vissé</td><td>Très stable, peu sensible aux vibrations — OTDR et instruments</td></tr></tbody></table><div class="info-box danger"><span class="info-box-label">🔍 Nettoyer avant de connecter!</span>La poussière et les huiles sur un connecteur fibre réduisent drastiquement la puissance du signal (perte insertion). Règle absolue: nettoyer tout connecteur fibre AVANT de le brancher. Outils: nettoyant IEC 61300-3-35, stylos nettoyants One-Click. Ne jamais souffler dessus avec la bouche.</div></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Comment différencier visuellement un câble fibre monomode d'un câble multimode ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Le monomode est plus épais</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Le monomode est jaune, le multimode est orange (OM1/OM2), aqua (OM3) ou violet (OM4)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>La différence n'est visible qu'au microscope</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Le monomode a un connecteur rouge</button></div>
-    <div class="quiz-expl" id="expl-q0_3">La couleur du câble est le code visuel standard: SMF monomode = jaune. MMF multimode: OM1/OM2 = orange, OM3 = aqua (turquoise), OM4 = violet/eggplant, OM5 = lime green. Les connecteurs ont souvent un capuchon de la même couleur.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi les connecteurs fibre pré-terminés (pre-polished) sont-ils recommandés en Haïti ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Ils sont moins chers en matériau</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Pas besoin de soudeuse à arc (outil coûteux), installation rapide, qualité suffisante pour la plupart des déploiements</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Ils supportent des températures plus élevées</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Les soudeuses ne fonctionnent pas en Haïti</button></div>
-    <div class="quiz-expl" id="expl-q1_3">Une soudeuse à arc de qualité coûte 3000-8000 USD. Pour la plupart des déploiements haïtiens (connexions inter-bâtiments, distances modérées), les connecteurs pré-terminés offrent une solution économique et fiable sans investissement en équipement coûteux.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Quelle est la règle absolue avant de connecter un connecteur fibre optique ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Couvrir de lubrifiant</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Nettoyer le connecteur avec un outil de nettoyage certifié IEC</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Tester avec un OTDR d'abord</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Faire fondre légèrement le connecteur pour l'adapter</button></div>
-    <div class="quiz-expl" id="expl-q2_3">La propreté du connecteur fibre est critique. La moindre poussière ou huile sur la face du connecteur crée une perte d'insertion qui peut dégrader le signal de façon importante. Règle professionnelle: nettoyer ET inspecter (avec microscope ou caméra d'inspection) avant chaque connexion.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Quel outil permet de localiser une cassure dans une fibre optique sur une longue distance ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Testeur de câble Fluke UTP</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>OTDR (Optical Time Domain Reflectometer)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Visual Fault Locator (VFL)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Multimètre</button></div>
-    <div class="quiz-expl" id="expl-q3_3">L'OTDR envoie des impulsions laser et mesure les réflexions pour cartographier la fibre: longueur totale, pertes à chaque connecteur, et localisation précise de toute cassure ou anomalie. Indispensable pour les installations fibre longue distance.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="wrap">
+<div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-23</div>
+  <div class="toc-item act" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Normes et standards TIA/EIA</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Câblage cuivre UTP/STP</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Fibre optique — Théorie 🔦</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Fibre optique — Installation</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Sertissage et punchdown 🔧</span></div>
+  <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>PoE et alimentation réseau ⚡</span></div>
+  <div class="toc-item" onclick="goTo(7)" id="ti-7"><div class="toc-dot"></div><span class="toc-num">07</span><span>Baies et salles techniques</span></div>
+  <div class="toc-item" onclick="goTo(8)" id="ti-8"><div class="toc-dot"></div><span class="toc-num">08</span><span>Tests et certification Fluke 📊</span></div>
+  <div class="toc-item" onclick="goTo(9)" id="ti-9"><div class="toc-dot"></div><span class="toc-num">09</span><span>Documentation et étiquetage</span></div>
+  <div class="toc-item" onclick="goTo(10)" id="ti-10"><div class="toc-dot"></div><span class="toc-num">10</span><span>Projet câblage Haïti 🇭🇹</span></div>
+  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr);font-size:.64rem;color:var(--g500);line-height:1.7">🔧 Lab sertissage · 📊 Fluke · 📋 Plan câblage · 🇭🇹 Contexte local</div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Baies, documentation et étiquetage</h2>
-      <div class="chapter-meta"><span>🕐 22 heures</span><span class="chapter-badge">Rack · Panneau de brassage · Velcro · Netbox</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Baies de brassage, documentation et étiquetage</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>La baie réseau (rack) (4 min)</strong> — Rack 19 pouces, unités (U), organisation: switch en haut, panneaux de brassage, organiseurs de câbles, patchs en bas. UPS en bas (lourd).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Panneau de brassage (4 min)</strong> — 24 ports, 48 ports. Cordon de brassage (patch cord) entre panneau et switch. Importance de l'organisation visuelle: câbles de couleurs différentes par VLAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Étiquetage et documentation (4 min)</strong> — Étiqueter chaque câble avec: numéro de port switch + identifiant de la prise murale. Convention: PORT-SWITCH-NUMERO / SALLE-BUREAU-PRISE. Logiciel de documentation: Netbox.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Gestion des câbles (3 min)</strong> — Organiseurs (velcro, pas de serflex permanents). Boucle de service. Ne pas plier la fibre en dessous du rayon de courbure minimum.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 Convention d'étiquetage recommandée</h3><table class="data-table"><thead><tr><th>Objet</th><th>Format d'étiquette</th><th>Exemple</th><th>Description</th></tr></thead><tbody><tr><td>Port du panneau de brassage</td><td>PP-NUMPANNEAU-PORT</td><td>PP-01-24</td><td>Panneau 01, port 24</td></tr><tr><td>Prise murale (TO)</td><td>ETAGE-SALLE-NUM</td><td>R2-B204-03</td><td>Rez+2, Bureau 204, Prise 3</td></tr><tr><td>Câble horizontal</td><td>PP-01-24 / R2-B204-03</td><td>(sur les deux extrémités)</td><td>Relie le port de brassage à la prise murale</td></tr><tr><td>Port switch</td><td>Identique au panneau correspondant</td><td>PP-01-24</td><td>Facilite la traçabilité switch↔panneau↔prise</td></tr><tr><td>Câble fibre backbone</td><td>F-TR01-TR02-01</td><td>Fibre 1 entre TR01 et TR02</td><td>Numéroter les fibres individuellement</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi organiser les câbles de brassage par couleur selon les VLANs ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Pour rendre la baie plus jolie</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Pour identifier visuellement immédiatement à quel VLAN appartient chaque connexion, accélérant le dépannage</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Les switches Cisco n'acceptent que les câbles bleus</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Pour respecter une norme internationale</button></div>
-    <div class="quiz-expl" id="expl-q0_4">Câbles colorés par VLAN: bleu = VLAN données, rouge = VLAN serveurs, vert = VLAN voix, jaune = gestion, etc. En cas de panne ou de reconfiguration, le technicien identifie immédiatement la bonne connexion visuellement, sans devoir consulter la documentation à chaque fois.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Un rack réseau 19 pouces de 42U peut accueillir...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>42 câbles uniquement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>42 équipements d'1U, ou une combinaison d'équipements de différentes tailles (1U, 2U, 4U)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>42 switches Cisco 2960</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>42 UPS</button></div>
-    <div class="quiz-expl" id="expl-q1_4">42U = 42 unités de rack. Chaque équipement occupe 1U, 2U, 4U etc. selon sa taille. Un rack 42U peut contenir: 2x panneaux de brassage 1U + 2x switches 1U + 1x serveur 2U + 1x UPS 4U + câble management + espace libre = organisation complète d'une salle serveur moyenne.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi utiliser du velcro plutôt que des serflex (colliers plastiques) pour attacher les câbles dans une baie ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Le velcro est moins cher</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Le velcro est réutilisable et permet d'ajouter/retirer des câbles sans couper — les serflex doivent être coupés (risque de couper un câble)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Le velcro est plus solide</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Les serflex ne fonctionnent pas sur les câbles UTP</button></div>
-    <div class="quiz-expl" id="expl-q2_4">Le velcro est réversible: on peut ajouter un câble ou en retirer un sans outils. Un serflex (collier plastique) doit être coupé pour accéder aux câbles — risque de couper accidentellement un câble voisin et obligation d'en remettre un nouveau. Le velcro est le standard professionnel pour les baies réseau.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">La bonne convention de documentation de câblage structuré doit permettre...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>De savoir combien coûte le câblage</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>À tout technicien qualifié de tracer n'importe quel câble de sa source à sa destination sans aide</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>De connaître la date d'installation</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>De calculer la consommation électrique</button></div>
-    <div class="quiz-expl" id="expl-q3_4">La documentation du câblage structuré doit être exhaustive et utilisable par tout technicien: plans d'étage avec prises, tableau port-switch/panneau/prise, photos de chaque baie, convention d'étiquetage cohérente. Sans documentation, chaque intervention devient une exploration archéologique.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div id="main-content">
+
+<!-- CH1 -->
+<div class="chapter" id="ch-1">
+<div class="ch-header"><div class="ch-num">01</div><div class="ch-info"><h2>Normes et standards TIA/EIA</h2><div class="ch-meta"><span>🕐 20h</span><span class="ch-badge">TIA/EIA-568 · ISO/IEC 11801 · ANSI · Règle 100m · Architecture</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Normes TIA/EIA-568 et architecture du câblage structuré</div><div class="vsub">18 min · Normes · TIA-568 · Architecture 6 sous-systèmes · Règle 100m</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp1"><div class="vplay" onclick="openVideo(1)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf1" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Pourquoi des normes ? (5 min)</strong> — Sans norme : chaque installateur fait différemment, interopérabilité impossible, garantie impossible. TIA/EIA-568 (USA), ISO/IEC 11801 (international) définissent les composants, la topologie, les performances. En Haïti : installations sans norme = problèmes récurrents.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Les 6 sous-systèmes (8 min)</strong> — Entrée de bâtiment (EF), Local technique central (MC), Backbone vertical, Salles de télécommunications (TR), Câblage horizontal, Zone de travail (TO). Schéma complet avec distances maximales.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>La règle des 100 mètres (5 min)</strong> — 90m fixe + 5m brassage + 5m poste = 100m total. Pourquoi 90m et pas 100m pour le fixe ? Marges pour l'atténuation des connecteurs. Conséquences si dépassé : erreurs, déconnexions.</div></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="vurl"><input type="text" id="vi1" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(1)">Insérer →</button></div></div>
+
+<div class="section"><h3>1.1 Architecture du câblage structuré TIA/EIA-568</h3>
+<table class="dtable"><thead><tr><th>Sous-système</th><th>De</th><th>À</th><th>Longueur max</th><th>Câble typique</th></tr></thead><tbody>
+<tr><td><strong>Entrée bâtiment (EF)</strong></td><td>Extérieur / FAI</td><td>Local technique central (MC)</td><td>Selon infrastructure</td><td>Fibre OS2 ou câble blindé</td></tr>
+<tr><td><strong>Backbone vertical</strong></td><td>MC (Salle principale)</td><td>TR (Salles télécoms)</td><td>90m cuivre / 2000m fibre MM / 3000m fibre SM</td><td>Fibre OM3/OM4 ou Cat6A</td></tr>
+<tr><td><strong>Câblage horizontal</strong></td><td>Panneau de brassage (TR)</td><td>Prise murale (TO)</td><td>90m fixe</td><td>UTP Cat5e, Cat6, Cat6A</td></tr>
+<tr><td><strong>Cordon de brassage</strong></td><td>Panneau brassage</td><td>Switch actif</td><td>5m recommandé</td><td>UTP stranded Cat6</td></tr>
+<tr><td><strong>Cordon de poste</strong></td><td>Prise murale</td><td>PC / IP Phone / Caméra</td><td>5m recommandé</td><td>UTP stranded Cat6</td></tr>
+<tr><td><strong>Zone de travail</strong></td><td>Prise murale (TO)</td><td>Équipement terminal</td><td>≤ 5m</td><td>Cordon souple</td></tr>
+</tbody></table>
+<div class="ibox org"><span class="ibox-label">📐 La règle fondamentale des 100 mètres</span>
+La norme TIA/EIA-568 limite le canal horizontal à <strong>100 mètres maximum</strong> :<br>
+• <strong>90m</strong> de câble fixe (dans les murs, plafonds, goulottes)<br>
+• <strong>5m</strong> de cordon de brassage (panneau → switch)<br>
+• <strong>5m</strong> de cordon de poste (prise murale → PC)<br><br>
+<strong>En pratique en Haïti :</strong> Viser 80-85m pour le câble fixe pour compenser les pertes de connecteurs dans les conditions locales (température, qualité des connecteurs disponibles sur le marché). Au-delà de 90m : erreurs de transmission, vitesse dégradée, déconnexions fréquentes.</div></div>
+
+<div class="section"><h3>1.2 Catégories de câbles — Performances</h3>
+<table class="dtable"><thead><tr><th>Catégorie</th><th>Bande passante</th><th>Débit max</th><th>Distance</th><th>Usage typique</th></tr></thead><tbody>
+<tr><td><strong>Cat5e</strong></td><td>100 MHz</td><td>1 Gbps</td><td>100m</td><td>Réseau bureautique basique — encore courant en Haïti</td></tr>
+<tr><td><strong>Cat6</strong></td><td>250 MHz</td><td>1 Gbps (10G sur 55m)</td><td>100m</td><td>Standard actuel recommandé</td></tr>
+<tr><td><strong>Cat6A</strong></td><td>500 MHz</td><td>10 Gbps</td><td>100m</td><td>Data centers, backbones, PoE++</td></tr>
+<tr><td><strong>Cat7</strong></td><td>600 MHz</td><td>10 Gbps</td><td>100m</td><td>Blindé (S/FTP) — usage spécialisé</td></tr>
+<tr><td><strong>Cat8</strong></td><td>2000 MHz</td><td>25-40 Gbps</td><td>30m</td><td>Data centers seulement (courtes distances)</td></tr>
+</tbody></table></div>
+
+<div class="qblock" data-qid="1"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">4 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 4</div><div class="q-text">Selon TIA/EIA-568, quelle est la longueur maximale du câble horizontal FIXE (dans les murs) ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>100 mètres</button>
+<button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>90 mètres</button>
+<button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>80 mètres</button>
+<button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>95 mètres</button></div><div class="qexpl" id="qe-1-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 4</div><div class="q-text">Quel câble choisir pour une installation 10 Gbps sur 100 mètres en 2024 ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Cat5e</button>
+<button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Cat6</button>
+<button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Cat6A</button>
+<button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Cat8</button></div><div class="qexpl" id="qe-1-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 4</div><div class="q-text">Quelle est la fonction du sous-système "Backbone vertical" ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Connecter les prises murales aux PC</button>
+<button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Connecter les salles de télécommunications (TR) au local technique central (MC)</button>
+<button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Connecter le bâtiment à Internet</button>
+<button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Alimenter les équipements en PoE</button></div><div class="qexpl" id="qe-1-2"></div></div>
+<div class="q-item"><div class="q-num">Question 4 / 4</div><div class="q-text">Pourquoi Cat6 supporte-t-il 10 Gbps seulement sur 55m et non 100m ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Cat6 n'est pas prévu pour le 10 Gbps</button>
+<button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>L'atténuation et la diaphonie (ANEXT) dégradent le signal au-delà de 55m pour 10 Gbps — Cat6A résout ce problème avec son blindage et sa bande passante de 500 MHz</button>
+<button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Les connecteurs Cat6 ne sont pas compatibles 10 Gbps</button>
+<button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Cat6 ne supporte que le cuivre, pas le 10 Gbps</button></div><div class="qexpl" id="qe-1-3"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('1',[1,2,1,1],['La norme TIA/EIA-568 fixe 90m maximum pour le câble fixe horizontal (dans les murs et plafonds). Les 10m restants sont répartis entre le cordon de brassage (5m max) et le cordon de poste (5m max). Le total canal = 100m. Le câble fixe ne peut jamais dépasser 90m même si les cordons sont plus courts.','Cat6A (500 MHz, 10 Gbps sur 100m) est le choix correct pour du 10G sur toute la longueur standard. Cat6 supporte 10G mais seulement sur 55m. Cat8 supporte 25-40G mais sur 30m maximum et est réservé aux data centers. Cat5e se limite à 1 Gbps.','Le backbone vertical interconnecte les salles de télécommunications (TR) situées dans différentes zones ou étages au local technique central (MC). Il forme la colonne vertébrale du bâtiment. Utilise de la fibre optique pour les grandes distances ou Cat6A pour les courtes distances.','Cat6 à 500 MHz (bande passante de 250 MHz) souffre d\'alien crosstalk (ANEXT) au-delà de 55m pour le 10GBase-T. Cat6A avec 500 MHz de bande passante et un meilleur blindage physique élimine l\'ANEXT et supporte 10G sur 100m complets. C\'est pourquoi Cat6A est obligatoire pour le 10 Gbps sur 100m.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',4)">↺ Réessayer</button>
+<span class="qscore" id="qs-1"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="pratique-block">
-  <div class="pratique-header">
-    <div class="pratique-icon-wrap">🔬</div>
-    <div class="pratique-header-info">
-      <h3>Séance Pratique — SP-TRI-23-01</h3>
-      <span>Labo câblage complet — Du sertissage à la certification</span>
-    </div>
-    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
-  </div>
-  <div class="pratique-body">
-    <p class="pratique-desc">Séance OBLIGATOIRE. Tu réaliseras une installation de câblage structuré complète de A à Z: sertissage RJ45, installation de prises murales, brassage dans la baie, tests et certification. Durée: 4 heures.</p>
-    <div class="pratique-grid">
-      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Sertir 4 câbles RJ45 en T568B et tester la continuité</li><li>Installer 2 prises Keystone dans une plaque murale</li><li>Terminer 4 câbles sur le panneau de brassage</li><li>Brasser les câbles du panneau vers le switch</li><li>Tester chaque lien avec le testeur (pass/fail)</li><li>Étiqueter tous les câbles et documenter dans le tableau de câblage</li></ul></div>
-      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Kit de câblage complet (pince à sertir, dénudeur, punchdown tool)</li><li>Câble UTP Cat6 (fourni)</li><li>Connecteurs RJ45 et modules Keystone Cat6</li><li>Testeur de câble (basic ou Fluke selon disponibilité)</li><li>Rack de démonstration du labo</li><li>Tableau de câblage vierge à remplir</li></ul></div>
-    </div>
-    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
-    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00 (4h)')">Lun 19 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 13h00 (4h)')">Lun 19 Mai — 13h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00 (4h)')">Mar 20 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00 (4h)')">Mer 21 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00 (4h)')">Jeu 22 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00 (4h)')">Ven 23 Mai — 8h00 (4h)</button></div>
-    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-23-01')">📅 Confirmer ma réservation</button>
-    <div class="pratique-confirm" id="confirm-sp-23-01"></div>
-  </div>
-</div><div class="demo-block">
-  <div class="demo-header">
-    <div class="demo-icon-wrap">🎭</div>
-    <div class="demo-header-info">
-      <h3>Démonstration — DEM-TRI-23-01</h3>
-      <span>Évaluation pratique (15 min)</span>
-    </div>
-    <div class="demo-badge">Évaluation pratique</div>
-  </div>
-  <div class="demo-body">
-    <p class="demo-desc">Tu sertiras un câble RJ45 et installeras une prise Keystone devant le professeur, qui notera ta technique et la qualité du résultat.</p>
-    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
-    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Sertissage RJ45</strong> — Dénuder, aligner T568B, sertir proprement en moins de 3 minutes</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Test de continuité</strong> — Brancher sur le testeur et obtenir 8 voyants verts</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Prise Keystone</strong> — Installer une prise Keystone en T568B dans une plaque murale</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Étiquetage</strong> — Étiqueter le câble selon la convention définie</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Documentation</strong> — Remplir la ligne correspondante dans le tableau de câblage</div></div>
-    <div class="demo-eval">
-      <div class="demo-eval-label">✅ Critères d'évaluation</div>
-      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Câble sertir en moins de 3 min</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>8 voyants verts sur le testeur</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>T568B respecté (vérification visuelle)</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Prise Keystone correctement terminée</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Étiquetage selon la convention</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Documentation remplie</div></div>
-    </div>
-  </div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-23 — Plan de câblage structuré — Bâtiment haïtien 3 étages</h3>
-      <span>Conception complète d'une infrastructure de câblage normalisée</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
-  </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Conçois le plan de câblage structuré complet pour un immeuble de bureaux haïtien de 3 étages (rez-de-chaussée, 1er, 2ème étage).</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Dessine le <strong>plan de câblage vertical (backbone)</strong>: où se trouve la salle de télécommunications principale, les salles satellites par étage, quel type de câble (fibre MMF ou SMF, cuivre) entre les étages.</li><li>Dessine le <strong>plan horizontal par étage</strong>: position des prises murales, chemins de câbles (goulottes, faux-plafond), position des panneaux de brassage, longueurs estimées.</li><li>Produis le <strong>tableau de câblage complet</strong>: pour chaque câble installé, son numéro, ses deux extrémités (port switch + prise murale), sa longueur, et son résultat de test (Pass/Fail).</li><li>Définis la <strong>convention d'étiquetage</strong> utilisée et applique-la dans toute la documentation.</li><li>Estime le <strong>budget matériel</strong>: mètres de câble Cat6 et fibre nécessaires, nombre de connecteurs, panneaux de brassage, goulottes, avec prix indicatifs en HTG.</li></ol>
-    </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Plan de câblage vertical et horizontal clair et normalisé</div></div><div class="bareme-row"><div class="bareme-pts">30 pts</div><div class="bareme-label">Tableau de câblage complet avec convention d'étiquetage</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Calcul des longueurs et respect des 90m max</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Budget matériel détaillé et réaliste en HTG</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
-  </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-23 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+
+<!-- CH2 -->
+<div class="chapter" id="ch-2">
+<div class="ch-header"><div class="ch-num">02</div><div class="ch-info"><h2>Câblage cuivre UTP/STP</h2><div class="ch-meta"><span>🕐 25h</span><span class="ch-badge">UTP · STP · FTP · S/FTP · Paires torsadées · Diaphonie · Blindage</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Câbles cuivre : UTP, STP et choix selon l'environnement</div><div class="vsub">16 min · UTP · STP · Blindage · Diaphonie · Choix de câble</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp2"><div class="vplay" onclick="openVideo(2)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf2" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Construction du câble UTP (6 min)</strong> — 4 paires de conducteurs de cuivre torsadés. Pourquoi torsader ? Annuler la diaphonie et les interférences électromagnétiques (EMI). Plus le pas de torsade est serré, meilleure est l'immunité. Conducteur solid vs stranded.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Types de blindage (5 min)</strong> — UTP (Unshielded) : pas de blindage, le plus courant. FTP/ScTP : feuille aluminium globale. STP : tresse métallique globale. S/FTP : chaque paire + tresse globale — le plus blindé. Mise à la terre obligatoire pour les câbles blindés.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Quand utiliser quel blindage ? (5 min)</strong> — UTP : bureaux normaux, aucune perturbation. FTP/STP : zones industrielles, près de moteurs, transformateurs. S/FTP : usines, environnements très bruités. En Haïti : UTP suffit dans 95% des cas, FTP près des groupes électrogènes.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi2" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(2)">Insérer →</button></div></div>
+
+<div class="section"><h3>2.1 Types de câbles cuivre — Classification</h3>
+<table class="dtable"><thead><tr><th>Type</th><th>Blindage paire</th><th>Blindage global</th><th>Usage</th></tr></thead><tbody>
+<tr><td><strong>UTP</strong></td><td>Aucun</td><td>Aucun</td><td>Bureaux, écoles, environnement normal</td></tr>
+<tr><td><strong>FTP / ScTP</strong></td><td>Aucun</td><td>Feuille aluminium</td><td>Protection EMI globale modérée</td></tr>
+<tr><td><strong>STP</strong></td><td>Aucun</td><td>Tresse métallique</td><td>Meilleure protection EMI globale</td></tr>
+<tr><td><strong>S/FTP</strong></td><td>Feuille par paire</td><td>Tresse globale</td><td>Environnements industriels, très haute performance</td></tr>
+<tr><td><strong>U/FTP</strong></td><td>Feuille par paire</td><td>Aucun</td><td>Utilisé pour Cat7 et Cat8</td></tr>
+</tbody></table>
+<div class="ibox teal"><span class="ibox-label">⚠️ Mise à la terre des câbles blindés</span>
+Les câbles STP/FTP <strong>doivent être mis à la terre</strong> aux deux extrémités pour être efficaces. Sans mise à la terre correcte, le blindage peut agir comme une antenne et <strong>amplifier</strong> les interférences au lieu de les éliminer. En Haïti, ce problème est très fréquent dans les installations mal réalisées.</div></div>
+
+<div class="section"><h3>2.2 Codage couleur T568A vs T568B</h3>
+<table class="dtable"><thead><tr><th>Pin</th><th>T568A (couleur)</th><th>T568B (couleur)</th><th>Signal 1G</th></tr></thead><tbody>
+<tr><td>1</td><td><span class="color-chip" style="background:#9FE8A0"></span>Blanc-Vert</td><td><span class="color-chip" style="background:#FFB080"></span>Blanc-Orange</td><td>Tx+</td></tr>
+<tr><td>2</td><td><span class="color-chip" style="background:#4CAF50"></span>Vert</td><td><span class="color-chip" style="background:#FF6600"></span>Orange</td><td>Tx−</td></tr>
+<tr><td>3</td><td><span class="color-chip" style="background:#FFB080"></span>Blanc-Orange</td><td><span class="color-chip" style="background:#9FE8A0"></span>Blanc-Vert</td><td>Rx+</td></tr>
+<tr><td>4</td><td><span class="color-chip" style="background:#4169E1"></span>Bleu</td><td><span class="color-chip" style="background:#4169E1"></span>Bleu</td><td>Inutilisé (PoE)</td></tr>
+<tr><td>5</td><td><span class="color-chip" style="background:#B0C8FF"></span>Blanc-Bleu</td><td><span class="color-chip" style="background:#B0C8FF"></span>Blanc-Bleu</td><td>Inutilisé (PoE)</td></tr>
+<tr><td>6</td><td><span class="color-chip" style="background:#FF6600"></span>Orange</td><td><span class="color-chip" style="background:#4CAF50"></span>Vert</td><td>Rx−</td></tr>
+<tr><td>7</td><td><span class="color-chip" style="background:#D8C0A0"></span>Blanc-Marron</td><td><span class="color-chip" style="background:#D8C0A0"></span>Blanc-Marron</td><td>Inutilisé (PoE)</td></tr>
+<tr><td>8</td><td><span class="color-chip" style="background:#8B6347"></span>Marron</td><td><span class="color-chip" style="background:#8B6347"></span>Marron</td><td>Inutilisé (PoE)</td></tr>
+</tbody></table>
+<div class="ibox gold"><span class="ibox-label">⭐ T568B est le standard dominant</span>
+<strong>T568B est utilisé dans 95% des installations</strong> en Amérique du Nord et en Haïti. Les deux standards sont valides selon TIA/EIA-568 mais ne jamais mélanger les deux sur la même installation. Un câble croisé (crossover) utilise T568A d'un côté et T568B de l'autre — aujourd'hui remplacé par l'Auto-MDI/MDIX des équipements modernes qui s'adaptent automatiquement.</div></div>
+
+<div class="qblock" data-qid="2"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Pourquoi les paires de conducteurs sont-elles torsadées dans un câble UTP ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Pour faciliter la pose dans les conduits</button>
+<button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Pour annuler la diaphonie et les interférences électromagnétiques par effet d'annulation des champs</button>
+<button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Pour augmenter la résistance mécanique du câble</button>
+<button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Pour permettre le transport du courant PoE</button></div><div class="qexpl" id="qe-2-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Quelle est la bonne séquence T568B pour les pins 1, 2, 3, 6 ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Blanc-Vert, Vert, Blanc-Orange, Orange</button>
+<button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Blanc-Orange, Orange, Blanc-Vert, Vert</button>
+<button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Orange, Blanc-Orange, Vert, Blanc-Vert</button>
+<button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Blanc-Bleu, Bleu, Blanc-Marron, Marron</button></div><div class="qexpl" id="qe-2-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Un câble STP installé sans mise à la terre peut causer quoi ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Une réduction de la vitesse maximale</button>
+<button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Le blindage agit comme antenne et amplifie les interférences au lieu de les éliminer</button>
+<button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Un court-circuit dans le panneau de brassage</button>
+<button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>La perte du signal PoE</button></div><div class="qexpl" id="qe-2-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1],['Les paires torsadées créent des champs magnétiques opposés qui s\'annulent mutuellement. Chaque conducteur + génère un champ, le conducteur − une spirale en sens inverse génère un champ opposé. Cette annulation élimine la majorité de l\'EMI et de la diaphonie (crosstalk) entre paires adjacentes. Plus le pas de torsade est court (différent entre les paires), meilleure est l\'annulation.','T568B pins 1-2-3-6 : Blanc-Orange (P2+), Orange (P2−), Blanc-Vert (P3+), Vert (P3−). Les paires actives pour 100Mbps et 1Gbps sont les paires 2 et 3. Pour le 10Gbps et le PoE, les 4 paires sont utilisées.','Un câble blindé non mis à la terre correctement voit son blindage flotter électriquement. Ce blindage flottant capte les perturbations environnantes et les injecte dans le câble — l\'effet inverse de celui recherché. La mise à la terre doit être faite aux deux extrémités pour les câbles STP/S-FTP.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-2"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
+</div></div>
+
+<!-- CH3 -->
+<div class="chapter" id="ch-3">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a00,#003a3a)"><div class="ch-num">03</div><div class="ch-info"><h2>Fibre optique — Théorie</h2><div class="ch-meta"><span>🕐 20h</span><span class="ch-badge">🔦 Monomode OS1/OS2 · Multimode OM1-OM5 · Réflexion totale · Atténuation · dB</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Fibre optique : théorie, types et performances</div><div class="vsub">18 min · Monomode · Multimode · OM3 · OS2 · Atténuation · Applications</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp3"><div class="vplay" onclick="openVideo(3)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf3" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Principe de la fibre optique (6 min)</strong> — Transmission de lumière par réflexion totale interne. Cœur en verre/silice, gaine d'indice inférieur. Longueurs d'onde : 850nm (multimode), 1310nm et 1550nm (monomode). Avantages vs cuivre : débit, distance, immunité EMI.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Multimode vs Monomode (7 min)</strong> — Multimode (MMF) : cœur 50 ou 62.5µm, plusieurs modes de lumière, distances courtes (jusqu'à 400m en OM4). Monomode (SMF) : cœur 9µm, un seul mode, distances quasi illimitées. OM3/OM4 pour les data centers, OS2 pour les campus.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Atténuation et budget optique (5 min)</strong> — Atténuation en dB/km. Connecteurs : 0.75 dB chacun. Épissures : 0.1 dB. Budget optique = puissance émetteur − sensibilité récepteur. Exemple calcul de budget pour une liaison.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi3" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(3)">Insérer →</button></div></div>
+
+<div class="section"><h3>3.1 Multimode vs Monomode — Comparaison</h3>
+<table class="dtable"><thead><tr><th>Critère</th><th>Multimode OM3/OM4</th><th>Monomode OS1/OS2</th></tr></thead><tbody>
+<tr><td><strong>Diamètre cœur</strong></td><td>50 µm (OM3/OM4) ou 62.5 µm (OM1/OM2)</td><td>9 µm</td></tr>
+<tr><td><strong>Couleur gaine</strong></td><td>Orange (OM1/OM2), Aqua (OM3/OM4), Violet (OM5)</td><td>Jaune (OS1/OS2)</td></tr>
+<tr><td><strong>Source lumineuse</strong></td><td>LED ou VCSEL (laser 850nm)</td><td>Laser (1310nm ou 1550nm)</td></tr>
+<tr><td><strong>Distance max (10 Gbps)</strong></td><td>OM3 : 300m / OM4 : 400m / OM5 : 400m</td><td>OS2 : 10 km et plus</td></tr>
+<tr><td><strong>Coût câble</strong></td><td>Moins cher</td><td>Moins cher (similaire)</td></tr>
+<tr><td><strong>Coût émetteurs</strong></td><td>Moins cher (SFP moins coûteux)</td><td>Plus cher (lasers précis)</td></tr>
+<tr><td><strong>Usage typique</strong></td><td>Data centers, backbone intra-bâtiment</td><td>Campus, inter-bâtiment, longue distance</td></tr>
+</tbody></table></div>
+
+<div class="section"><h3>3.2 Calcul de budget optique</h3>
+<div class="ibox org"><span class="ibox-label">📊 Budget optique — Formule</span>
+<strong>Budget optique (dB) = Puissance émetteur (dBm) − Sensibilité récepteur (dBm)</strong><br><br>
+<strong>Pertes à déduire :</strong><br>
+• Atténuation câble : 3.5 dB/km (MM à 850nm) ou 0.4 dB/km (SM à 1310nm)<br>
+• Chaque connecteur : 0.75 dB maximum selon TIA<br>
+• Chaque épissure mécanique : 0.3 dB / épissure à fusion : 0.1 dB<br><br>
+<strong>Exemple :</strong> Liaison 300m OM3, 2 connecteurs chaque bout = 4 connecteurs<br>
+• Perte câble : 0.3km × 3.5 dB/km = <strong>1.05 dB</strong><br>
+• Perte connecteurs : 4 × 0.75 = <strong>3.0 dB</strong><br>
+• Total pertes : <strong>4.05 dB</strong><br>
+• Si budget = 8 dB → marge = 8 − 4.05 = <strong>3.95 dB</strong> ✅ (marge &gt; 3 dB = OK)</div></div>
+
+<div class="qblock" data-qid="3"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Comment identifier visuellement une fibre monomode ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Gaine orange</button>
+<button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Gaine aqua/turquoise</button>
+<button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Gaine jaune</button>
+<button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Gaine violette</button></div><div class="qexpl" id="qe-3-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Pour relier deux bâtiments distants de 2 km, quelle fibre choisir ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>OM3 Multimode</button>
+<button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>OM4 Multimode</button>
+<button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>OS2 Monomode</button>
+<button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Cat6A cuivre</button></div><div class="qexpl" id="qe-3-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Quelle est la perte optique maximum acceptée pour un connecteur SC selon TIA/EIA ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>0.1 dB</button>
+<button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>0.75 dB</button>
+<button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>3 dB</button>
+<button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>1.5 dB</button></div><div class="qexpl" id="qe-3-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('3',[2,2,1],['La fibre monomode OS1/OS2 a une gaine de couleur JAUNE selon la norme TIA/EIA-598. Multimode : Orange (OM1/OM2), Aqua/turquoise (OM3/OM4), Violet (OM5). Cette codification couleur permet d\'identifier rapidement le type de fibre sur les installations.','À 2 km, seule la fibre monomode OS2 est adaptée. OM3 est limité à 300m pour le 10G et OM4 à 400m. OS2 peut supporter des dizaines de kilomètres. Cat6A cuivre est limité à 100m. Pour tout inter-bâtiment en Haïti, OS2 est le choix standard et économique sur le long terme.','Selon TIA/EIA-568, la perte maximale d\'un connecteur optique est de 0.75 dB. En pratique, les bons connecteurs SC/LC polishés à l\'APC ou UPC ont des pertes de 0.1 à 0.3 dB. Une perte supérieure à 0.75 dB indique un connecteur mal polishé, contaminé ou mal aligné.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-3"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<!-- CH4 -->
+<div class="chapter" id="ch-4">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a00,#1a1a00)"><div class="ch-num">04</div><div class="ch-info"><h2>Fibre optique — Installation</h2><div class="ch-meta"><span>🕐 22h</span><span class="ch-badge">Connecteurs LC/SC/ST · Épissure fusion · OTDR · Nettoyage · Polissage</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Installation fibre optique : connecteurs, épissure et OTDR</div><div class="vsub">20 min · LC · SC · Épissure fusion · OTDR · Nettoyage fibre</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp4"><div class="vplay" onclick="openVideo(4)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf4" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Types de connecteurs fibre (6 min)</strong> — SC (carré, push-pull, courant en infrastructure) — LC (petit, push-pull, dominant SFP) — ST (bayonnette, vieux bâtiments) — FC (vissé, télécoms/OTDR) — MPO/MTP (40G/100G, data centers). Polissage UPC vs APC (vert, angle 8°).</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Épissure fusion (7 min)</strong> — Aligner et fusionner deux fibres avec une décharge électrique. Perte typique : 0.02 à 0.1 dB. Étapes : déshabillage, clivage (cleaver), fusion (machine), protection (manchon). Critères de qualité de la soudure.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>OTDR et nettoyage (7 min)</strong> — OTDR : reflectomètre optique, trace la liaison, localise les défauts, mesure les pertes. Courbe OTDR : interprétation. Nettoyage : stylo nettoyant, lingettes IPA, microscope d'inspection. Règle : toujours inspecter avant de connecter.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi4" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(4)">Insérer →</button></div></div>
+
+<div class="section"><h3>4.1 Connecteurs fibre optique</h3>
+<table class="dtable"><thead><tr><th>Connecteur</th><th>Style</th><th>Taille</th><th>Usage dominant</th></tr></thead><tbody>
+<tr><td><strong>LC (Lucent)</strong></td><td>Push-pull, loquet</td><td>Petit (1.25mm ferrule)</td><td>SFP/SFP+, équipements actifs, data centers ✅ dominant</td></tr>
+<tr><td><strong>SC (Subscriber)</strong></td><td>Push-pull, carré</td><td>Grand (2.5mm ferrule)</td><td>Panneaux optiques, infrastructure bâtiment</td></tr>
+<tr><td><strong>ST (Straight Tip)</strong></td><td>Bayonnette, rotation</td><td>Grand</td><td>Vieilles installations, campus legacy</td></tr>
+<tr><td><strong>FC (Ferrule)</strong></td><td>Vissé</td><td>Grand</td><td>OTDR, équipements de mesure, télécoms</td></tr>
+<tr><td><strong>MPO/MTP</strong></td><td>Push-pull, multi-fibres</td><td>Compact (12/24 fibres)</td><td>40G/100G/400G, spine-leaf data centers</td></tr>
+</tbody></table>
+<div class="ibox red"><span class="ibox-label">🚨 UPC vs APC — Ne jamais mélanger !</span>
+<strong>UPC (Ultra Physical Contact)</strong> : face polishée plane, gaine bleue — perte de retour &gt; −50 dB<br>
+<strong>APC (Angled Physical Contact)</strong> : face polishée à 8°, gaine VERTE — perte de retour &gt; −60 dB<br><br>
+Connecter un UPC avec un APC = destruction possible des connecteurs et perte de signal massive. En Haïti : toujours vérifier la couleur avant de connecter. APC est préféré pour les liaisons FTTH/GPON.</div></div>
+
+<div class="qblock" data-qid="4"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Quel est l'avantage principal de l'épissure à fusion sur l'épissure mécanique ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Moins chère à réaliser</button>
+<button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Pertes plus faibles (0.02-0.1 dB) et connexion permanente plus fiable</button>
+<button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Ne nécessite pas de machine spécialisée</button>
+<button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Compatible avec les connecteurs UPC et APC</button></div><div class="qexpl" id="qe-4-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Quelle est la première chose à faire avant de connecter deux câbles fibre optique ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Mesurer la longueur avec un OTDR</button>
+<button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Inspecter et nettoyer les connecteurs au microscope ou stylo nettoyant</button>
+<button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Vérifier la catégorie du câble</button>
+<button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Tester avec un testeur de continuité</button></div><div class="qexpl" id="qe-4-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Un OTDR sert principalement à :</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Mesurer la vitesse de transmission de la fibre</button>
+<button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Localiser les défauts, mesurer les pertes sur toute la longueur de la liaison et tracer la courbe d'atténuation</button>
+<button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Vérifier la polarité des connecteurs LC</button>
+<button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Tester la bande passante de la fibre</button></div><div class="qexpl" id="qe-4-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1],['L\'épissure à fusion soude physiquement les deux fibres avec une décharge électrique, créant une jonction quasi-parfaite avec des pertes de 0.02 à 0.1 dB. L\'épissure mécanique utilise un gel d\'adaptation d\'indice et a des pertes de 0.3 à 0.5 dB. La fusion est permanente et plus fiable mais nécessite une machine à épisser (2000-5000 USD).','Règle d\'or de la fibre optique : INSPECT BEFORE YOU CONNECT. Une poussière microscopique sur la face d\'un connecteur peut bloquer totalement le signal ou créer une perte de plusieurs dB. Toujours nettoyer avec un stylo nettoyant ou une lingette IPA et inspecter au microscope (200x) avant chaque connexion.','L\'OTDR (Optical Time Domain Reflectometer) envoie des impulsions lumineuses et analyse le signal réfléchi en fonction du temps (temps × vitesse lumière = distance). Il génère une courbe montrant l\'atténuation sur toute la liaison, localise précisément les connecteurs, épissures, cassures et mesure les pertes de chaque composant. Outil indispensable pour la certification et le dépannage.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-4"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<!-- CH5 -->
+<div class="chapter" id="ch-5">
+<div class="ch-header"><div class="ch-num">05</div><div class="ch-info"><h2>Sertissage et punchdown</h2><div class="ch-meta"><span>🕐 25h</span><span class="ch-badge">🔧 RJ45 · T568B · Pince à sertir · Outil 110 · Panneau de brassage · Prise murale</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — Sertissage RJ45 et punchdown panneau de brassage</div><div class="vsub">20 min · Sertissage pas à pas · T568B · Punchdown 110 · Erreurs courantes</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp5"><div class="vplay" onclick="openVideo(5)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf5" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Sertissage RJ45 pas à pas (8 min)</strong> — Outils : pince à sertir, pince à dénuder, testeur de continuité. Étapes : dénuder 3cm, déstorsader minimum, ordonner T568B, couper à 1.2cm, insérer dans RJ45, sertir. Erreurs les plus fréquentes en atelier.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Punchdown — Raccordement panneau de brassage (7 min)</strong> — Outil 110 (impact tool). Identifier le bon port sur le panneau. Placer le câble dans les slots 110 selon T568B. Pousher avec l'outil (côté tranchant vers l'extérieur pour couper l'excédent). Qualité de la connexion.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Test de la connexion (5 min)</strong> — Testeur de câble simple (continuité, séquence). Testeur avancé Fluke. Erreurs : fil ouvert, court-circuit, inversé, croisé, split pair. Comment les identifier et les corriger.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi5" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(5)">Insérer →</button></div></div>
+
+<div class="section"><h3>5.1 Procédure de sertissage RJ45 — T568B</h3>
+<div class="ibox org"><span class="ibox-label">🔧 Étapes du sertissage RJ45 — T568B</span>
+<strong>1. Dénuder</strong> — Enlever 3 cm de la gaine extérieure avec la pince à dénuder. Ne pas entailler les conducteurs internes.<br>
+<strong>2. Déstorsader</strong> — Défaire les torsades sur 1.5 cm maximum. Règle critique : garder les torsades aussi près que possible du connecteur.<br>
+<strong>3. Ordonner</strong> — Séquence T568B de gauche à droite (languette vers le bas, broches vers soi) :<br>
+&nbsp;&nbsp;1-Blanc/Orange · 2-Orange · 3-Blanc/Vert · 4-Bleu · 5-Blanc/Bleu · 6-Vert · 7-Blanc/Marron · 8-Marron<br>
+<strong>4. Couper</strong> — Couper les conducteurs à exactement 1.2 cm de la gaine.<br>
+<strong>5. Insérer</strong> — Insérer dans le RJ45 (languette vers le bas). Vérifier que chaque fil touche le fond du connecteur.<br>
+<strong>6. Sertir</strong> — Placer dans la pince et appuyer franchement. Vérifier que la gaine est bien clipsée dans le relief de soulagement de traction.</div></div>
+
+<div class="section"><h3>5.2 Défauts de câblage — Identification</h3>
+<table class="dtable"><thead><tr><th>Défaut</th><th>Description</th><th>Cause fréquente</th><th>Solution</th></tr></thead><tbody>
+<tr><td><strong>Fil ouvert (Open)</strong></td><td>Un conducteur ne passe pas</td><td>Fil mal inséré, connecteur défectueux</td><td>Refaire le connecteur</td></tr>
+<tr><td><strong>Court-circuit (Short)</strong></td><td>Deux conducteurs en contact</td><td>Gaine entaillée, conducteurs croisés dans le RJ45</td><td>Refaire le connecteur</td></tr>
+<tr><td><strong>Fils inversés (Reversed)</strong></td><td>Deux fils d'une paire échangés</td><td>Erreur d'ordre dans le RJ45</td><td>Refaire le connecteur</td></tr>
+<tr><td><strong>Fils croisés (Transposed)</strong></td><td>Paires échangées entre elles</td><td>Confusion entre paires</td><td>Refaire le connecteur</td></tr>
+<tr><td><strong>Split pair</strong></td><td>Fils de paires différentes utilisés ensemble</td><td>Erreur grave — continuité OK mais diaphonie élevée</td><td>Refaire — invisible au testeur simple !</td></tr>
+</tbody></table>
+<div class="ibox red"><span class="ibox-label">⚠️ Le Split Pair — L'erreur invisible</span>
+Un câble avec split pair passe le test de continuité de base mais <strong>échoue au test de performance</strong> (Fluke). Exemple : utiliser Blanc/Orange (pin 1) avec Blanc/Vert (pin 3) — les conducteurs ne sont pas de la même paire torsadée, la diaphonie est catastrophique. Seul un testeur niveau II (Fluke DSX) détecte cette erreur.</div></div>
+
+<div class="qblock" data-qid="5"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">4 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 4</div><div class="q-text">Pourquoi ne doit-on pas déstorsader les paires sur plus de 1.5 cm lors du sertissage ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>Pour faciliter l'insertion dans le RJ45</button>
+<button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>Pour maintenir l'immunité aux interférences — les torsades annulent la diaphonie jusqu'au plus près du connecteur</button>
+<button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>Pour respecter la longueur de 1.2 cm de coupe</button>
+<button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>Parce que la norme TIA/EIA l'impose sans explication</button></div><div class="qexpl" id="qe-5-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 4</div><div class="q-text">Lors d'un punchdown avec l'outil 110, de quel côté doit pointer le tranchant ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>Vers l'intérieur du panneau</button>
+<button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>Vers l'extérieur (côté où se trouve l'excédent de fil à couper)</button>
+<button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Vers le bas toujours</button>
+<button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>La direction n'a pas d'importance</button></div><div class="qexpl" id="qe-5-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 4</div><div class="q-text">Un câble réussit le test de continuité simple mais le réseau est très lent. Quelle erreur est probable ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Fils ouverts</button>
+<button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>Court-circuit</button>
+<button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Split pair — diaphonie élevée non visible au testeur de continuité basique</button>
+<button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>Gaine mal dénudée</button></div><div class="qexpl" id="qe-5-2"></div></div>
+<div class="q-item"><div class="q-num">Question 4 / 4</div><div class="q-text">Quel outil permet de détecter un split pair qu'un testeur de continuité manque ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>Testeur de câble à 2 fils</button>
+<button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Multimètre</button>
+<button class="qopt" onclick="selQ(this,'5',3,2)"><span class="qletter">C</span>Certifieur de câble niveau II (ex : Fluke DSX-5000)</button>
+<button class="qopt" onclick="selQ(this,'5',3,3)"><span class="qletter">D</span>Tonner (tone generator)</button></div><div class="qexpl" id="qe-5-3"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,2,2],['Chaque centimètre de paire déstorsadée est un centimètre sans protection contre la diaphonie. La torsade crée l\'annulation des champs électromagnétiques — interrompre la torsade = augmenter la diaphonie (NEXT). La norme TIA-568 limite à 13mm (0.5 pouce) de déstorsadage pour Cat5e et moins pour Cat6/Cat6A.','L\'outil de punchdown 110 a un côté plat (qui pousse le fil dans le slot IDC) et un côté tranchant (qui coupe l\'excédent). Le tranchant DOIT pointer vers l\'extérieur du panneau, côté où se trouve l\'excédent de fil à couper. Si mal orienté : le fil est coupé du mauvais côté et la connexion est perdue.','Le split pair est la pire erreur de câblage car invisible au test de continuité basique (tous les 8 fils conduisent). Cependant la diaphonie est catastrophique car les conducteurs ne sont pas de la même paire physique. Résultat : débit très lent, erreurs fréquentes, connexion instable. Seul un testeur de performance mesure le NEXT et le détecte.','Le certifieur de câble niveau II (Fluke DSX-5000, Versiv, Ideal) mesure les paramètres de performance complets : NEXT, PSNEXT, ACRL, PSACRL, Return Loss, insertion loss. Il teste selon la norme TIA-568 et génère un rapport de certification. C\'est le seul outil qui valide réellement la qualité d\'une installation.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',4)">↺ Réessayer</button>
+<span class="qscore" id="qs-5"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<!-- CH6 -->
+<div class="chapter" id="ch-6">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a00,#1a1a30)"><div class="ch-num">06</div><div class="ch-info"><h2>PoE et alimentation réseau</h2><div class="ch-meta"><span>🕐 18h</span><span class="ch-badge">⚡ PoE 802.3af · PoE+ 802.3at · PoE++ 802.3bt · Budget PoE · PSE · PD</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 6 — PoE : alimentation électrique via câble réseau</div><div class="vsub">16 min · PoE 802.3af/at/bt · Budget PoE · Calcul · Déploiement Haïti</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp6"><div class="vplay" onclick="openVideo(6)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf6" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Pourquoi le PoE ? (5 min)</strong> — Contexte Haïti : prise électrique près du plafond pour les caméras IP et AP WiFi = coût élevé. PoE = alimentation et données sur le même câble Cat5e/6. Économie de câblage électrique. Indispensable pour Digicel/Natcom installations.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Standards PoE (6 min)</strong> — 802.3af (PoE) : 15.4W PSE / 12.95W PD. 802.3at (PoE+) : 30W PSE / 25.5W PD. 802.3bt Type 3 (PoE++) : 60W. 802.3bt Type 4 : 90W (4 paires utilisées). Négociation LLDP entre PSE et PD.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Budget PoE et calcul (5 min)</strong> — Switch 24 ports avec budget 370W : ne peut pas alimenter 24 ports à 30W simultanément (720W). Calcul : liste des équipements × consommation réelle. Midspan PoE injector. Précautions chaleur en Haïti.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi6" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(6)">Insérer →</button></div></div>
+
+<div class="section"><h3>6.1 Standards PoE — Comparaison</h3>
+<table class="dtable"><thead><tr><th>Standard</th><th>Puissance PSE</th><th>Puissance PD</th><th>Paires utilisées</th><th>Équipements typiques</th></tr></thead><tbody>
+<tr><td><strong>802.3af (PoE)</strong></td><td>15.4W</td><td>12.95W</td><td>2 paires</td><td>Téléphones IP basiques, caméras CCTV</td></tr>
+<tr><td><strong>802.3at (PoE+)</strong></td><td>30W</td><td>25.5W</td><td>2 paires</td><td>AP WiFi (Cisco, Unifi), caméras HD, VoIP avancé</td></tr>
+<tr><td><strong>802.3bt Type 3</strong></td><td>60W</td><td>51W</td><td>4 paires</td><td>AP WiFi 6, panneaux d'affichage IP, caméras 4K</td></tr>
+<tr><td><strong>802.3bt Type 4</strong></td><td>90W</td><td>71.3W</td><td>4 paires</td><td>Laptops, écrans IP, luminaires LED intelligents</td></tr>
+</tbody></table>
+<div class="ibox gold"><span class="ibox-label">⚡ Contexte Haïti — PoE stratégique</span>
+En Haïti, le PoE est particulièrement précieux pour :<br>
+• <strong>Caméras de surveillance</strong> (Digicel, Natcom, entreprises) : évite le tirage de câble électrique au plafond<br>
+• <strong>AP WiFi</strong> dans les faux-plafonds : aucune prise électrique nécessaire<br>
+• <strong>Téléphones IP</strong> : une seule prise RJ45 suffit pour le téléphone<br>
+• <strong>Installations solaires</strong> : couplé à un switch PoE alimenté par batterie/solaire — réseau autonome<br><br>
+<strong>Précaution Haïti :</strong> La chaleur réduit la durée de vie des équipements PoE. Prévoir ventilation dans les baies. Cat6A recommandé pour PoE++ (moins d'échauffement que Cat6 sur 4 paires).</div></div>
+
+<div class="qblock" data-qid="6"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Un point d'accès WiFi 6 nécessite 25W. Quel standard PoE faut-il au minimum ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'6',0,0)"><span class="qletter">A</span>802.3af (PoE) — 15.4W</button>
+<button class="qopt" onclick="selQ(this,'6',0,1)"><span class="qletter">B</span>802.3at (PoE+) — 30W</button>
+<button class="qopt" onclick="selQ(this,'6',0,2)"><span class="qletter">C</span>802.3bt Type 3 — 60W</button>
+<button class="qopt" onclick="selQ(this,'6',0,3)"><span class="qletter">D</span>802.3bt Type 4 — 90W</button></div><div class="qexpl" id="qe-6-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Un switch 24 ports a un budget PoE de 370W. Combien de ports peuvent alimenter des AP à 25W chacun ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'6',1,0)"><span class="qletter">A</span>24 ports</button>
+<button class="qopt" onclick="selQ(this,'6',1,1)"><span class="qletter">B</span>14 ports maximum (370W ÷ 25W = 14.8)</button>
+<button class="qopt" onclick="selQ(this,'6',1,2)"><span class="qletter">C</span>18 ports</button>
+<button class="qopt" onclick="selQ(this,'6',1,3)"><span class="qletter">D</span>Le budget PoE n'a aucune limite</button></div><div class="qexpl" id="qe-6-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Quelle catégorie de câble est recommandée pour le PoE++ (802.3bt Type 4) sur 4 paires ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'6',2,0)"><span class="qletter">A</span>Cat5e</button>
+<button class="qopt" onclick="selQ(this,'6',2,1)"><span class="qletter">B</span>Cat6</button>
+<button class="qopt" onclick="selQ(this,'6',2,2)"><span class="qletter">C</span>Cat6A — résistance plus faible et moins d'échauffement</button>
+<button class="qopt" onclick="selQ(this,'6',2,3)"><span class="qletter">D</span>Cat8</button></div><div class="qexpl" id="qe-6-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('6',[1,1,2],['802.3at (PoE+) fournit 25.5W au PD (powered device). 802.3af ne fournit que 12.95W — insuffisant pour un AP WiFi 6 qui consomme 25W. Il faut utiliser 802.3at minimum. Note : toujours ajouter 20% de marge → prévoir 30W (le max 802.3at) pour un AP qui consomme 25W.','370W ÷ 25W = 14.8 → maximum 14 ports peuvent alimenter des AP à 25W simultanément. Les 10 ports restants sont sans alimentation PoE ou pour des équipements plus légers. Cette contrainte de budget PoE est souvent oubliée lors de l\'achat du switch — toujours vérifier le budget total, pas juste la puissance par port.','Cat6A est recommandé pour PoE++ car ses conducteurs de cuivre ont une résistance électrique légèrement plus faible que Cat6 (conducteur plus épais dans certaines versions), réduisant l\'échauffement lorsque 4 paires transportent simultanément du courant. IEEE 802.3bt recommande Cat6A ou supérieur pour limiter l\'élévation de température dans les câbles groupés.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-6"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div>
+</div></div>
+
+<!-- CH7 -->
+<div class="chapter" id="ch-7">
+<div class="ch-header"><div class="ch-num">07</div><div class="ch-info"><h2>Baies et salles techniques</h2><div class="ch-meta"><span>🕐 20h</span><span class="ch-badge">Rack 19" · U · Panneau de brassage · Gestion câbles · Climatisation · PDU</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 7 — Baies informatiques et salles techniques</div><div class="vsub">16 min · Rack 19" · Organisation · Climatisation · Redondance · Haïti</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp7"><div class="vplay" onclick="openVideo(7)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf7" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Baie rack 19" (6 min)</strong> — Standard EIA-310. Unité U = 44.45mm. Baie 42U typique = 1867mm haut. Organisation : switches actifs en haut, panneaux de brassage au milieu, câblage passif en bas. Gestionnaires de câbles horizontaux entre chaque panneau.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Climatisation salle technique (5 min)</strong> — Règle : 1 kW de matériel actif = 3500 BTU de climatisation nécessaires. Allées chaudes/froides (hot/cold aisle). En Haïti : priorité à la climatisation, pannes de courant → groupe électrogène + onduleur. Température cible : 18-27°C.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>PDU et alimentation (5 min)</strong> — Power Distribution Unit : répartit l'alimentation aux équipements. PDU basique vs intelligent (monitoring). Onduleur (UPS) : autonomie, taille. En Haïti : délestage BNED → UPS + groupe électrogène obligatoires pour toute salle technique.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi7" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(7)">Insérer →</button></div></div>
+
+<div class="section"><h3>7.1 Organisation d'une baie 42U — Exemple</h3>
+<table class="dtable"><thead><tr><th>Position U</th><th>Équipement</th><th>Raison</th></tr></thead><tbody>
+<tr><td>U1-U2</td><td>Gestionnaire de câbles</td><td>Accès facile aux câbles en haut</td></tr>
+<tr><td>U3-U4</td><td>Switch de distribution (L3)</td><td>Connexions courtes vers patch panels</td></tr>
+<tr><td>U5-U6</td><td>Panneau de brassage 24 ports #1</td><td>Face avant vers le switch</td></tr>
+<tr><td>U7</td><td>Gestionnaire de câbles horizontal</td><td>Organisation entre panneau et switch</td></tr>
+<tr><td>U8-U9</td><td>Switch d'accès (L2) 24 ports</td><td>Connexions vers les postes de travail</td></tr>
+<tr><td>U10-U11</td><td>Panneau de brassage 24 ports #2</td><td>Câbles horizontaux étage suivant</td></tr>
+<tr><td>U12-U15</td><td>Serveur NAS / serveur de fichiers</td><td>Centre de gravité basse pour stabilité</td></tr>
+<tr><td>U16-U18</td><td>Onduleur (UPS)</td><td>Lourd → en bas de baie</td></tr>
+<tr><td>U19-U42</td><td>Espace libre pour expansion</td><td>Toujours prévoir 30% d'espace libre</td></tr>
+</tbody></table>
+<div class="ibox teal"><span class="ibox-label">🇭🇹 Salle technique en Haïti — Spécificités</span>
+<strong>Problèmes les plus fréquents en Haïti :</strong><br>
+• <strong>Chaleur</strong> → Climatisation split 12000-18000 BTU minimum, double climatisation recommandée<br>
+• <strong>Délestage BNED</strong> → UPS avec au moins 30 min d'autonomie + groupe électrogène avec ATS<br>
+• <strong>Humidité</strong> → Déshumidificateur dans les salles sans climatisation 24/7<br>
+• <strong>Poussière</strong> → Filtres sur les entrées d'air, nettoyage trimestriel des baies<br>
+• <strong>Rongeurs</strong> → Joints d'étanchéité sur tous les passages de câbles, grillages sur les ventilations</div></div>
+
+<div class="qblock" data-qid="7"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 7</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Quelle est la hauteur en mm d'une unité rack (1U) ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'7',0,0)"><span class="qletter">A</span>25.4 mm (1 pouce)</button>
+<button class="qopt" onclick="selQ(this,'7',0,1)"><span class="qletter">B</span>44.45 mm</button>
+<button class="qopt" onclick="selQ(this,'7',0,2)"><span class="qletter">C</span>50 mm</button>
+<button class="qopt" onclick="selQ(this,'7',0,3)"><span class="qletter">D</span>19 mm</button></div><div class="qexpl" id="qe-7-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Pourquoi place-t-on les onduleurs (UPS) en bas des baies ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'7',1,0)"><span class="qletter">A</span>Pour faciliter le câblage d'alimentation</button>
+<button class="qopt" onclick="selQ(this,'7',1,1)"><span class="qletter">B</span>Les UPS sont très lourds (batteries) — les placer bas abaisse le centre de gravité et sécurise la baie contre le basculement</button>
+<button class="qopt" onclick="selQ(this,'7',1,2)"><span class="qletter">C</span>Pour que la chaleur monte naturellement vers le haut</button>
+<button class="qopt" onclick="selQ(this,'7',1,3)"><span class="qletter">D</span>Pour faciliter le remplacement des batteries</button></div><div class="qexpl" id="qe-7-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Quel pourcentage d'espace libre doit-on prévoir dans une baie pour l'expansion future ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'7',2,0)"><span class="qletter">A</span>10%</button>
+<button class="qopt" onclick="selQ(this,'7',2,1)"><span class="qletter">B</span>30% minimum</button>
+<button class="qopt" onclick="selQ(this,'7',2,2)"><span class="qletter">C</span>50%</button>
+<button class="qopt" onclick="selQ(this,'7',2,3)"><span class="qletter">D</span>Aucun — remplir au maximum pour rentabiliser</button></div><div class="qexpl" id="qe-7-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('7',[1,1,1],['L\'unité rack (U) est définie par le standard EIA-310 comme 1.75 pouces = 44.45 mm. Une baie 42U standard mesure donc 42 × 44.45mm = 1867mm de hauteur utile. Le 19 pouces réfère à la largeur interne de la baie (482.6mm), standard pour tous les équipements réseau modernes.','Les onduleurs contiennent des batteries au plomb-acide très lourdes. Un UPS 3000VA peut peser 40-60 kg. Placer ce poids en bas de la baie abaisse le centre de gravité et prévient le basculement lors d\'un séisme ou simplement si quelqu\'un pousse accidentellement la baie. C\'est aussi une règle de sécurité physique.','La règle BICSI/TIA recommande de ne jamais remplir une baie à plus de 70% (laisser 30% libre). Raisons : permettre l\'expansion sans racheter une baie, maintenir une bonne circulation d\'air (moins de points chauds), faciliter le câblage et l\'accès aux équipements existants. En Haïti où l\'expansion est fréquente : prévoir 40% libre.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-7" style="display:none" onclick="retryQ('7',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-7"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(7)">✓ Chapitre 7 terminé →</button></div>
+</div></div>
+
+<!-- CH8 -->
+<div class="chapter" id="ch-8">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a00,#003a1a)"><div class="ch-num">08</div><div class="ch-info"><h2>Tests et certification Fluke</h2><div class="ch-meta"><span>🕐 20h</span><span class="ch-badge">📊 Fluke DSX · NEXT · Insertion Loss · Return Loss · Certification TIA · Rapport</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 8 — Tests Fluke DSX et certification TIA/EIA-568</div><div class="vsub">18 min · Fluke DSX · NEXT · IL · RL · Autotest · Rapport PDF</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp8"><div class="vplay" onclick="openVideo(8)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf8" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Paramètres de test TIA/EIA (6 min)</strong> — Wire Map (continuité et séquence) · Length (longueur) · Propagation Delay · NEXT (Near End Crosstalk) · FEXT · IL (Insertion Loss) · Return Loss · ACRL · PSACRL. Chaque paramètre mesure un aspect différent des performances.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Utilisation du Fluke DSX (7 min)</strong> — Connexion des deux modules (main + remote). Sélection du standard de test (Cat6, Cat6A, etc.). Lancement de l'Autotest. Lecture des résultats PASS/FAIL. Interprétation des graphiques de performance.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Rapport de certification (5 min)</strong> — Exporter les résultats vers LinkWare. Rapport PDF par câble avec tous les paramètres. Remise au client avec la garantie de performance. En Haïti : le rapport Fluke est la preuve légale de la conformité de l'installation.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi8" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(8)">Insérer →</button></div></div>
+
+<div class="section"><h3>8.1 Paramètres de test TIA/EIA-568</h3>
+<table class="dtable"><thead><tr><th>Paramètre</th><th>Mesure quoi</th><th>Seuil Cat6 (exemple)</th></tr></thead><tbody>
+<tr><td><strong>Wire Map</strong></td><td>Continuité et séquence des 8 conducteurs</td><td>Tous les fils correctement connectés</td></tr>
+<tr><td><strong>Length</strong></td><td>Longueur du câble (via NVP)</td><td>≤ 100m (canal) / ≤ 90m (segment fixe)</td></tr>
+<tr><td><strong>NEXT (dB)</strong></td><td>Diaphonie en tête de câble</td><td>≥ 39.9 dB à 100 MHz</td></tr>
+<tr><td><strong>IL / Atténuation (dB)</strong></td><td>Affaiblissement du signal sur la longueur</td><td>≤ 21.3 dB à 100 MHz</td></tr>
+<tr><td><strong>Return Loss (dB)</strong></td><td>Signal réfléchi vers l'émetteur</td><td>≥ 20.1 dB à 100 MHz</td></tr>
+<tr><td><strong>ACRL / ACR-F</strong></td><td>Rapport signal/diaphonie en bout de câble</td><td>≥ 4.0 dB à 100 MHz</td></tr>
+<tr><td><strong>Delay Skew (ns)</strong></td><td>Différence de délai entre paires</td><td>≤ 50 ns</td></tr>
+</tbody></table></div>
+
+<div class="section"><h3>8.2 Causes de FAIL les plus fréquentes</h3>
+<div class="codeblock"><div class="codeblock-header"><span class="codeblock-lang">Analyse des résultats Fluke — Guide de dépannage</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+<pre><code><span class="cmt">FAIL Wire Map → Problème physique</span>
+  <span class="val">Open</span>     : fil non connecté → refaire le connecteur
+  <span class="val">Short</span>    : court-circuit → refaire le connecteur
+  <span class="val">Reversed</span>: paire inversée → refaire le connecteur
+  <span class="val">Split pair</span>: erreur de câblage grave → refaire TOUTE la passe
+
+<span class="cmt">FAIL Length</span>
+  <span class="val">&gt; 100m</span>  : câble trop long → rapprocher la baie ou ajouter un switch
+  <span class="val">Short</span>   : câble trop court (rare) ou NVP mal calibré
+
+<span class="cmt">FAIL NEXT (diaphonie)</span>
+  <span class="val">Punchdown</span>: trop de câble déstorsadé dans le panneau de brassage
+  <span class="val">Connecteur</span>: RJ45 mal serti, déstorsadage excessif
+  <span class="val">Câble</span>    : câble de mauvaise qualité (économie sur le câble)
+  <span class="val">Split pair</span>: cause de NEXT catastrophique
+
+<span class="cmt">FAIL IL (Insertion Loss / Atténuation)</span>
+  <span class="val">Câble long</span>: dépasse 90m de fixe
+  <span class="val">Connecteurs</span>: trop de connecteurs dans le parcours
+  <span class="val">Câble chaud</span>: 0.4% d'augmentation d'atténuation par °C au-dessus de 20°C
+  <span class="val">Coups</span>   : câble écrasé, rayon de courbure trop serré
+
+<span class="cmt">FAIL Return Loss</span>
+  <span class="val">Connecteurs</span>: connecteurs de mauvaise qualité
+  <span class="val">Câble rayé</span>: gaine endommagée lors de la pose
+  <span class="val">Mélange</span>  : câbles de marques différentes dans le chemin</code></pre></div></div>
+
+<div class="qblock" data-qid="8"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 8</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Qu'est-ce que le NEXT (Near End Crosstalk) mesure-t-il ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'8',0,0)"><span class="qletter">A</span>L'atténuation du signal sur la longueur du câble</button>
+<button class="qopt" onclick="selQ(this,'8',0,1)"><span class="qletter">B</span>La diaphonie entre paires mesurée à l'extrémité proche (côté émetteur) — interférence d'une paire vers l'autre</button>
+<button class="qopt" onclick="selQ(this,'8',0,2)"><span class="qletter">C</span>La longueur du câble en nanosecondes</button>
+<button class="qopt" onclick="selQ(this,'8',0,3)"><span class="qletter">D</span>Le signal réfléchi vers l'émetteur</button></div><div class="qexpl" id="qe-8-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Pourquoi l'atténuation (Insertion Loss) augmente-t-elle avec la température ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'8',1,0)"><span class="qletter">A</span>La chaleur réduit la vitesse de propagation dans le cuivre</button>
+<button class="qopt" onclick="selQ(this,'8',1,1)"><span class="qletter">B</span>La résistivité du cuivre augmente avec la température → plus de perte résistive → signal plus atténué</button>
+<button class="qopt" onclick="selQ(this,'8',1,2)"><span class="qletter">C</span>La gaine plastique absorbe le signal à haute température</button>
+<button class="qopt" onclick="selQ(this,'8',1,3)"><span class="qletter">D</span>Les connecteurs se dilatent et perdent contact</button></div><div class="qexpl" id="qe-8-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Quel document prouve qu'une installation câblage est conforme à TIA/EIA-568 ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'8',2,0)"><span class="qletter">A</span>Un devis signé par l'installateur</button>
+<button class="qopt" onclick="selQ(this,'8',2,1)"><span class="qletter">B</span>Un rapport de certification Fluke (ou équivalent) avec PASS sur tous les paramètres pour chaque câble</button>
+<button class="qopt" onclick="selQ(this,'8',2,2)"><span class="qletter">C</span>Une photo de l'installation terminée</button>
+<button class="qopt" onclick="selQ(this,'8',2,3)"><span class="qletter">D</span>Un test ping réussi entre deux PC</button></div><div class="qexpl" id="qe-8-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('8',[1,1,1],['NEXT (Near End Crosstalk) mesure la puissance du signal d\'une paire qui se couple vers une paire adjacente, mesurée à l\'extrémité proche (même côté que l\'émetteur). C\'est la principale mesure de la qualité physique du câblage. Un NEXT élevé (en dB) = peu de diaphonie = bonne isolation entre paires. Un NEXT trop bas = paires mal isolées = erreurs de transmission.','La résistivité électrique du cuivre augmente de ~0.4% par degré Celsius au-dessus de 20°C. À 40°C (commun en Haïti), l\'atténuation augmente d\'environ 8%. Cela peut faire passer un câble de PASS à FAIL sur un lien proche de la limite de 90m. TIA/EIA-568 spécifie les tests à 20°C — en Haïti, viser 80m pour les câbles fixes compense l\'effet température.','Le rapport Fluke LinkWare (ou équivalent Ideal, JDSU) certifie chaque câble individuellement avec : numéro d\'identification, date de test, modèle du testeur, standard testé, résultats PASS/FAIL pour chaque paramètre avec graphiques. Ce document est la garantie contractuelle de l\'installation et la preuve légale en cas de litige.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-8" style="display:none" onclick="retryQ('8',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-8"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(8)">✓ Chapitre 8 terminé →</button></div>
+</div></div>
+
+<!-- CH9 -->
+<div class="chapter" id="ch-9">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a00,#1a0a2a)"><div class="ch-num">09</div><div class="ch-info"><h2>Documentation et étiquetage</h2><div class="ch-meta"><span>🕐 15h</span><span class="ch-badge">Plans câblage · Étiquettes TIA-606 · Numérotation · As-Built · DCIM</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 9 — Documentation et étiquetage TIA-606</div><div class="vsub">14 min · TIA-606 · Numérotation · Plans · As-Built · Logiciels DCIM</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp9"><div class="vplay" onclick="openVideo(9)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf9" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Norme TIA-606 (5 min)</strong> — Standard d'administration et d'identification du câblage. Identifiants pour : bâtiments, étages, salles de télécoms, panneaux, câbles, prises. Format d'étiquette. Couleurs selon le type de câble (blanc=horizontal, bleu=backbone, etc.).</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Système de numérotation (5 min)</strong> — Exemple : BLD1-FL2-TR3-P01-PORT05 = Bâtiment 1, Étage 2, Salle Télécoms 3, Panneau 01, Port 05. Numérotation cohérente du panneau à la prise murale. Plans de câblage (floor plans) avec chaque prise identifiée.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>As-Built et DCIM (4 min)</strong> — As-Built : plans mis à jour après installation réelle (car plan prévu vs réalisé diffèrent toujours). Logiciels DCIM (Data Center Infrastructure Management) : NetBox (open-source), Racktables, Cable Manager. Essentiel pour la maintenance.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi9" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(9)">Insérer →</button></div></div>
+
+<div class="section"><h3>9.1 Format d'étiquetage TIA-606</h3>
+<div class="codeblock"><div class="codeblock-header"><span class="codeblock-lang">Système d'identification TIA-606 — Exemples Canado Technique</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+<pre><code><span class="cmt">FORMAT : [Bâtiment]-[Étage]-[Zone]-[Panneau]-[Port]</span>
+
+<span class="cmt">Exemple pour Canado Technique :</span>
+<span class="val">CT-RDC-TR1-P01-01</span>  = Canado Technique · Rez-de-chaussée · Salle Télécoms 1 · Panneau 01 · Port 01
+<span class="val">CT-E1-TR2-P03-12</span>   = Canado Technique · Étage 1 · Salle Télécoms 2 · Panneau 03 · Port 12
+<span class="val">CT-E2-TR3-FO-01</span>    = Canado Technique · Étage 2 · Salle Télécoms 3 · Fibre Optique · Port 01
+
+<span class="cmt">Étiquettes sur les prises murales (TO) :</span>
+<span class="val">TO-CT-E1-B204-A</span>   = Prise murale · Canado Technique · Étage 1 · Bureau 204 · Prise A
+<span class="val">TO-CT-E1-B204-B</span>   = même bureau, deuxième prise
+
+<span class="cmt">Couleurs d'étiquettes TIA-606 :</span>
+<span class="str">BLANC</span>   = câblage horizontal (prise → panneau de brassage)
+<span class="str">BLEU</span>    = backbone intra-bâtiment (étage à étage)
+<span class="str">VERT</span>    = connexions équipements réseau actifs
+<span class="str">VIOLET</span>  = connexions vers les serveurs et SAN
+<span class="str">JAUNE</span>   = câbles de sécurité (caméras, contrôle d'accès)
+<span class="str">ORANGE</span>  = connexions fibre optique multimode</code></pre></div></div>
+
+<div class="section"><h3>9.2 Contenu d'un dossier As-Built complet</h3>
+<div class="ibox org"><span class="ibox-label">📁 Dossier As-Built — Livrable obligatoire au client</span>
+<strong>1. Plans d'architecture</strong> — Plan de chaque étage avec position de chaque prise, chemin de câbles, salles techniques<br>
+<strong>2. Schéma de brassage</strong> — Correspondance panneau-port ↔ prise murale pour chaque câble<br>
+<strong>3. Rapport Fluke</strong> — Certificat de test pour chaque câble installé (PASS obligatoire)<br>
+<strong>4. Liste des matériaux</strong> — Marques, catégories, longueurs, quantités utilisées<br>
+<strong>5. Photos de l'installation</strong> — Baie avant/après, parcours de câbles, prises murales<br>
+<strong>6. Procédure de maintenance</strong> — Guide pour les futurs intervenants<br><br>
+<strong>En Haïti :</strong> Ce dossier est souvent négligé mais est essentiel quand l'installateur original n'est plus disponible. Sans As-Built, tout dépannage ou extension prend 3x plus de temps.</div></div>
+
+<div class="qblock" data-qid="9"><div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 9</h3><span class="qblock-count">3 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Selon TIA-606, quelle couleur d'étiquette est utilisée pour les câbles de câblage horizontal ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'9',0,0)"><span class="qletter">A</span>Bleu</button>
+<button class="qopt" onclick="selQ(this,'9',0,1)"><span class="qletter">B</span>Blanc</button>
+<button class="qopt" onclick="selQ(this,'9',0,2)"><span class="qletter">C</span>Vert</button>
+<button class="qopt" onclick="selQ(this,'9',0,3)"><span class="qletter">D</span>Orange</button></div><div class="qexpl" id="qe-9-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Qu'est-ce qu'un plan "As-Built" ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'9',1,0)"><span class="qletter">A</span>Le plan initial de conception avant les travaux</button>
+<button class="qopt" onclick="selQ(this,'9',1,1)"><span class="qletter">B</span>Les plans mis à jour après installation, reflétant la réalité exacte de ce qui a été installé</button>
+<button class="qopt" onclick="selQ(this,'9',1,2)"><span class="qletter">C</span>Le plan budgétaire du projet de câblage</button>
+<button class="qopt" onclick="selQ(this,'9',1,3)"><span class="qletter">D</span>Le plan de maintenance annuel du câblage</button></div><div class="qexpl" id="qe-9-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Quel logiciel open-source est couramment utilisé pour gérer la documentation du câblage et des baies ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'9',2,0)"><span class="qletter">A</span>Microsoft Excel uniquement</button>
+<button class="qopt" onclick="selQ(this,'9',2,1)"><span class="qletter">B</span>NetBox — solution DCIM open-source avec gestion des baies, câbles, IP et équipements</button>
+<button class="qopt" onclick="selQ(this,'9',2,2)"><span class="qletter">C</span>Cisco Packet Tracer</button>
+<button class="qopt" onclick="selQ(this,'9',2,3)"><span class="qletter">D</span>AutoCAD (logiciel payant uniquement)</button></div><div class="qexpl" id="qe-9-2"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('9',[1,1,1],['TIA-606 définit un code couleur pour les étiquettes : BLANC pour le câblage horizontal (entre panneau de brassage et prise murale), BLEU pour le backbone (entre salles de télécoms), VERT pour les connexions équipements actifs, VIOLET pour les serveurs, JAUNE pour la sécurité, ORANGE pour la fibre multimode, ROUGE pour les câbles de gestion télécom.','L\'As-Built (ou «plans d\'exécution») documente l\'installation telle qu\'elle a réellement été réalisée. Les plans de conception prévoient le parcours idéal, mais lors de l\'installation, des obstacles, des modifications de dernière minute et des décisions terrain changent toujours quelque chose. L\'As-Built capture ces changements et devient la référence pour toute intervention future.','NetBox est un outil DCIM (Data Center Infrastructure Management) open-source développé par DigitalOcean. Il gère l\'inventaire des équipements réseau, la gestion des baies (rack elevation), les connexions entre équipements, la gestion IP/VLAN. Gratuit et très utilisé dans le monde professionnel. Installable sur un serveur local ou disponible en cloud.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-9" style="display:none" onclick="retryQ('9',3)">↺ Réessayer</button>
+<span class="qscore" id="qs-9"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(9)">✓ Chapitre 9 terminé →</button></div>
+</div></div>
+
+<!-- CH10 -->
+<div class="chapter" id="ch-10">
+<div class="ch-header" style="background:linear-gradient(135deg,#1a0a00,#006B46)"><div class="ch-num">10</div><div class="ch-info"><h2>Projet câblage — Contexte Haïti 🇭🇹</h2><div class="ch-meta"><span>🕐 25h</span><span class="ch-badge">🇭🇹 Devis · Plan câblage · Fournisseurs locaux · Canado Technique · Projet complet</span></div></div></div>
+<div class="ch-body">
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 10 — Projet de câblage structuré complet en contexte haïtien</div><div class="vsub">20 min · Devis · Plan · Fournisseurs · Pose · Certification · Remise</div></div></div>
+<div class="vembed"><div class="vplaceholder" id="vp10"><div class="vplay" onclick="openVideo(10)">▶</div><div class="vplay-txt">Cliquer pour charger</div></div><iframe id="vf10" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+<div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+<div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Pré-étude et devis (6 min)</strong> — Visite des lieux, relevé des distances, comptage des postes, besoins PoE. Calcul des matériaux : (nb postes × 1.15 surplus) × longueur moyenne + cordons. Sources locales : fournisseurs à Port-au-Prince, importateurs, prix marché.</div></div>
+<div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Planification et pose (7 min)</strong> — Ordre des travaux : chemins de câbles d'abord, puis pose des câbles, puis connexion côté TR, puis connexion côté TO. Précautions Haïti : température, humidité, coupures courant pendant les travaux. Protection des câbles posés.</div></div>
+<div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Certification et remise client (7 min)</strong> — Tests Fluke de tous les câbles. Rapport complet. Remise du dossier As-Built. Formation de base au client (comment ajouter un poste, que faire si un câble tombe en panne). Garantie de l'installation.</div></div>
+</div>
+<div class="vurl"><input type="text" id="vi10" placeholder="https://youtu.be/xxxxx"><button onclick="setVid(10)">Insérer →</button></div></div>
+
+<div class="section"><h3>10.1 Étude de cas — Câblage Canado Technique Pétion-Ville</h3>
+<div class="ibox org"><span class="ibox-label">🏫 Projet : Câblage structuré d'une école technique — 3 étages</span>
+<strong>Contexte :</strong> École de formation professionnelle à Pétion-Ville, 3 étages, 45 postes de travail, 8 salles de classe, 1 laboratoire informatique (20 postes).<br><br>
+<strong>Besoins identifiés :</strong><br>
+• 65 prises informatiques Cat6A (45 bureaux + 20 labo)<br>
+• 8 prises PoE pour AP WiFi (1 par salle)<br>
+• 12 caméras IP PoE (couloirs et entrées)<br>
+• 1 salle technique principale (RDC) + 2 TR (étages)<br>
+• Fibre OS2 backbone entre les 3 étages<br><br>
+<strong>Architecture retenue :</strong><br>
+• Backbone : Fibre OS2 6 brins RDC→E1→E2<br>
+• Horizontal : Cat6A UTP (températures élevées)<br>
+• Panneau de brassage 48 ports au RDC, 24 ports aux étages<br>
+• Switch PoE+ 370W budget au RDC pour AP + caméras<br>
+• UPS 3000VA + groupe électrogène Honda 5 kVA</div></div>
+
+<div class="section"><h3>10.2 Spécificités du marché haïtien</h3>
+<table class="dtable"><thead><tr><th>Aspect</th><th>Recommandation Haïti</th><th>Raison</th></tr></thead><tbody>
+<tr><td><strong>Catégorie de câble</strong></td><td>Cat6A minimum</td><td>Résistance à la chaleur, PoE++, avenir</td></tr>
+<tr><td><strong>Longueur fixe max</strong></td><td>80m (pas 90m)</td><td>Marge pour la chaleur et qualité locale des connecteurs</td></tr>
+<tr><td><strong>Chemins de câbles</strong></td><td>PVC plastique ou acier galvanisé</td><td>Humidité — éviter l'acier standard qui rouille vite</td></tr>
+<tr><td><strong>Connecteurs RJ45</strong></td><td>Cat6A blindés ou Cat6 qualité</td><td>Éviter les connecteurs génériques du marché local</td></tr>
+<tr><td><strong>Câble de fibre</strong></td><td>OS2 6 brins minimum</td><td>Redondance — 2 brins actifs + 4 de réserve</td></tr>
+<tr><td><strong>UPS</strong></td><td>Minimum 30 min autonomie</td><td>Délestage BNED fréquent — protéger les équipements</td></tr>
+<tr><td><strong>Climatisation</strong></td><td>Double unité avec basculement auto</td><td>Défaillance climatisation = urgence pour le matériel actif</td></tr>
+</tbody></table></div>
+
+<div class="section"><h3>10.3 Calcul de matériaux — Formule pratique</h3>
+<div class="codeblock"><div class="codeblock-header"><span class="codeblock-lang">Calcul quantités câblage — Méthode pratique</span><button class="codeblock-copy" onclick="copyCode(this)">Copier</button></div>
+<pre><code><span class="cmt">FORMULE : Longueur totale câble Cat6A</span>
+<span class="val">Longueur totale</span> = (nb_postes × longueur_moyenne) × <span class="str">1.15</span> <span class="cmt">← surplus 15%</span>
+
+<span class="cmt">Exemple Canado Technique :</span>
+<span class="val">65 prises</span> × <span class="str">35m</span> moyenne × <span class="str">1.15</span> = <span class="kw">2609m ≈ 2.6 km</span>
+→ Commander <span class="str">3 boîtes de 305m</span> = 915m × 3 = 2745m
+
+<span class="cmt">PANNEAUX DE BRASSAGE :</span>
+<span class="val">65 prises</span> ÷ <span class="str">24 ports/panneau</span> = <span class="kw">2.7</span> → commander <span class="str">3 panneaux 24 ports</span>
+
+<span class="cmt">CORDONS DE BRASSAGE (panneau → switch) :</span>
+<span class="val">65</span> cordons × <span class="str">0.5m</span> + <span class="val">15%</span> surplus = <span class="kw">75 cordons</span>
+
+<span class="cmt">CORDONS DE POSTE (prise → PC) :</span>
+<span class="val">65</span> cordons × <span class="str">2m</span> + <span class="val">20%</span> surplus = <span class="kw">80 cordons de 2m</span>
+
+<span class="cmt">BUDGET ESTIMATIF (prix marché Haïti ~2024) :</span>
+<span class="val">Câble Cat6A 305m</span>  : 3 boîtes × 18,000 HTG = <span class="kw">54,000 HTG</span>
+<span class="val">Connecteurs RJ45</span>  : 200 pcs × 150 HTG = <span class="kw">30,000 HTG</span>
+<span class="val">Panneaux brassage</span>  : 3 × 8,500 HTG = <span class="kw">25,500 HTG</span>
+<span class="val">Prises murales</span>     : 65 × 2,200 HTG = <span class="kw">14,300 HTG</span>
+<span class="val">Chemin de câbles</span>   : forfait = <span class="kw">35,000 HTG</span>
+<span class="val">Main d'oeuvre</span>      : ≈ 40% matériaux = <span class="kw">63,920 HTG</span>
+<span class="str">TOTAL ESTIMATIF    : ~222,720 HTG (hors taxes, hors baie)</span></code></pre></div></div>
+
+<div class="qblock" data-qid="10"><div class="qblock-header"><span>📝</span><h3>Quiz Final — Chapitre 10</h3><span class="qblock-count">4 questions</span></div><div class="qblock-body">
+<div class="q-item"><div class="q-num">Question 1 / 4</div><div class="q-text">Pourquoi recommande-t-on 80m de câble fixe en Haïti au lieu des 90m de la norme ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'10',0,0)"><span class="qletter">A</span>La norme TIA haïtienne impose 80m</button>
+<button class="qopt" onclick="selQ(this,'10',0,1)"><span class="qletter">B</span>La chaleur augmente l'atténuation du cuivre et la qualité variable des connecteurs locaux réduit la marge — 80m garantit la conformité</button>
+<button class="qopt" onclick="selQ(this,'10',0,2)"><span class="qletter">C</span>Les câbles haïtiens sont de moins bonne qualité et font 89% de la norme</button>
+<button class="qopt" onclick="selQ(this,'10',0,3)"><span class="qletter">D</span>80m est plus facile à calculer lors du devis</button></div><div class="qexpl" id="qe-10-0"></div></div>
+<div class="q-item"><div class="q-num">Question 2 / 4</div><div class="q-text">Quel type de chemin de câbles est recommandé en Haïti pour résister à l'humidité ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'10',1,0)"><span class="qletter">A</span>Acier standard galvanisé à froid</button>
+<button class="qopt" onclick="selQ(this,'10',1,1)"><span class="qletter">B</span>PVC plastique ou acier galvanisé à chaud (intérieur) — résistant à la corrosion</button>
+<button class="qopt" onclick="selQ(this,'10',1,2)"><span class="qletter">C</span>Aluminium uniquement</button>
+<button class="qopt" onclick="selQ(this,'10',1,3)"><span class="qletter">D</span>Bois vernis</button></div><div class="qexpl" id="qe-10-1"></div></div>
+<div class="q-item"><div class="q-num">Question 3 / 4</div><div class="q-text">Pour 50 prises avec une longueur moyenne de 40m, quelle longueur totale commander (avec 15% surplus) ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'10',2,0)"><span class="qletter">A</span>2000m</button>
+<button class="qopt" onclick="selQ(this,'10',2,1)"><span class="qletter">B</span>2300m (50 × 40 × 1.15)</button>
+<button class="qopt" onclick="selQ(this,'10',2,2)"><span class="qletter">C</span>2500m</button>
+<button class="qopt" onclick="selQ(this,'10',2,3)"><span class="qletter">D</span>1800m</button></div><div class="qexpl" id="qe-10-2"></div></div>
+<div class="q-item"><div class="q-num">Question 4 / 4</div><div class="q-text">Quelle est la première étape d'un projet de câblage structuré ?</div><div class="q-opts">
+<button class="qopt" onclick="selQ(this,'10',3,0)"><span class="qletter">A</span>Commander les câbles et matériaux</button>
+<button class="qopt" onclick="selQ(this,'10',3,1)"><span class="qletter">B</span>Visite des lieux, relevé des distances, identification des besoins (postes, PoE, fibre)</button>
+<button class="qopt" onclick="selQ(this,'10',3,2)"><span class="qletter">C</span>Installer les prises murales</button>
+<button class="qopt" onclick="selQ(this,'10',3,3)"><span class="qletter">D</span>Faire les tests Fluke</button></div><div class="qexpl" id="qe-10-3"></div></div>
+</div><div class="qfooter">
+<button class="qbtn qbtn-submit" onclick="submitQ('10',[1,1,1,1],['En Haïti, deux facteurs réduisent la marge disponible : 1) La chaleur (35-40°C courant) augmente l\'atténuation du cuivre d\'environ 8% vs 20°C de référence TIA. 2) La qualité variable des connecteurs disponibles sur le marché local peut ajouter 0.3-0.5 dB de pertes par connecteur au lieu de 0.1 dB. Viser 80m laisse une marge confortable pour absorber ces variations.','L\'acier non galvanisé ou galvanisé à froid rouille rapidement dans les conditions humides d\'Haïti (saison des pluies, humidité côtière). Le PVC plastique (chemin de câbles en PVC rigide) est immunisé contre la corrosion et léger à poser. L\'acier galvanisé à chaud (HDG) résiste mieux mais coûte plus cher. Éviter absolument l\'acier ordinaire — la rouille coupe les câbles dans les chemins.','50 postes × 40m longueur moyenne = 2000m de base. × 1.15 (15% surplus) = 2300m. Le surplus de 15% couvre : les erreurs de mesure, les câbles refaits, les changements de parcours de dernière minute, et les câbles futurs pour l\'expansion. Commander 8 boîtes de 305m = 2440m couvre les 2300m avec une légère marge.','La visite des lieux est TOUJOURS la première étape. Elle permet de : mesurer les distances réelles (pas sur plan), identifier les obstacles (murs porteurs, gaines pleines, faux-plafonds), compter les postes existants et futurs, évaluer l\'accessibilité pour la pose, déterminer l\'emplacement de la salle technique. Sans visite = devis inexact = problèmes pendant le chantier.'])">✓ Valider</button>
+<button class="qbtn qbtn-retry" id="qr-10" style="display:none" onclick="retryQ('10',4)">↺ Réessayer</button>
+<span class="qscore" id="qs-10"></span></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(10)" style="background:linear-gradient(135deg,#8B3500,var(--accent));font-size:.86rem;padding:.6rem 1.4rem">🔌 Module TRI-23 complété — Câblage maîtrisé !</button></div>
+</div></div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🔌 Félicitations — Module TRI-23 complété !</h2>
+  <p>Tu maîtrises maintenant les normes TIA/EIA-568, le câblage cuivre et fibre, le sertissage, le PoE, les baies, les tests Fluke, la documentation et la gestion de projet câblage en contexte haïtien.</p>
+</div>
+
+</div></div></div>
+<div id="mob-overlay" onclick="toggleToc()"></div>
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
-}
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
-}
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
-}
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
-}
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
-  }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
-
-</script>
-
-<div id="mod-code-data" data-code="TRI-23" style="display:none"></div>
-<div id="seuil-data" data-seuil="80" style="display:none"></div>
-</body>
-</html>
+var ST={done:{},qs:{},sel:{}};var K='TRI23v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+window.addEventListener('load',function(){ST.done=ld('done',{});ST.qs=ld('qs',{});Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});Object.keys(ST.qs).forEach(function(qid){var el=document.getElementById('qs-'+qid);if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}});initTimer();updateProg();});
+function updateProg(){var total=10,done=Object.keys(ST.done).filter(function(k){return ST.done[k];}).length;var pct=Math.round(done/total*100);var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');if(f)f.style.width=pct+'%';if(t)t.textContent=done+' / '+total+' chapitres — '+pct+'%';var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}}
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+function goTo(n){var el=document.getElementById('ch-'+n);if(!el){toast('ℹ️ Chapitre bientôt disponible.');return;}el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');if(window.innerWidth<=768)toggleToc();}
+function toggleToc(){var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';}
+function selQ(btn,qid,qi,val){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var items=block.querySelectorAll('.q-item');var idx=parseInt(qi);if(items[idx])items[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;}
+function submitQ(qid,answers,expls){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var sel=ST.sel[qid]||{},total=answers.length;for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions d\'abord.');return;}}var ok=0;var items=block.querySelectorAll('.q-item');for(var i=0;i<total;i++){var correct=answers[i],chosen=sel[i],item=items[i];if(!item)continue;item.querySelectorAll('.qopt').forEach(function(b,j){b.disabled=true;if(j===correct)b.classList.add('ok');else if(j===chosen&&chosen!==correct)b.classList.add('ko');});var ex=document.getElementById('qe-'+qid+'-'+i);if(ex){ex.textContent=expls[i];ex.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}if(chosen===correct)ok++;}ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';updateProg();toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');}
+function retryQ(qid){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});if(ST.sel[qid])ST.sel[qid]={};var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';}
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';}
+function copyCode(btn){var code=btn.closest('.codeblock').querySelector('code');if(!code)return;navigator.clipboard.writeText(code.innerText||code.textContent).then(function(){btn.textContent='✓ Copié!';setTimeout(function(){btn.textContent='Copier';},2000);});}
+var timerStart=Date.now();
+function initTimer(){var saved=ld('time',0);timerStart=Date.now()-saved*1000;setInterval(function(){var e=Math.floor((Date.now()-timerStart)/1000);sv('time',e);var el=document.getElementById('session-timer');if(el){var h=Math.floor(e/3600),m=Math.floor((e%3600)/60),s=e%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}},1000);}
+var _tt;function toast(msg){var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#1a0a00;border:1px solid rgba(200,87,10,.3);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#FFD0A0;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);}
+</script></body></html>
