@@ -205,6 +205,46 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 @media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
 /* HERO */
 .mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
+
+/* ===== LECTEUR DE COURS v3 ===== */
+.wrap{max-width:1280px}
+.mod-header-in{max-width:1280px}
+.layout{grid-template-columns:300px 1fr;gap:2rem}
+body.player .step{display:none}
+body.player .step.active{display:block;animation:stepIn .4s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pl-bar{display:flex;align-items:center;gap:1rem}
+.pl-bar-top{position:sticky;top:.6rem;z-index:60;background:rgba(255,255,255,.93);backdrop-filter:blur(10px) saturate(1.3);border:1px solid var(--bdr);border-radius:var(--rL);padding:.7rem 1rem;margin-bottom:1.3rem;box-shadow:0 6px 24px rgba(12,31,61,.07);flex-wrap:wrap}
+.pl-mid{flex:1;min-width:0}
+.pl-count{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--g500);font-family:var(--fD)}
+.pl-title{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-prog{height:5px;background:var(--g100);border-radius:3px;overflow:hidden;margin-top:.5rem}
+.pl-prog i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--blueG),var(--greenL));transition:width .55s ease}
+.pl-ic{width:38px;height:38px;border-radius:11px;background:var(--g100);color:var(--blue);font-size:1.15rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.pl-ic:hover:not(:disabled){background:var(--blue);color:#fff}
+.pl-ic:disabled{opacity:.3;cursor:default}
+.pl-bar-bottom{justify-content:space-between;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--bdr);flex-wrap:wrap;gap:.7rem}
+.pl-btn{padding:.6rem 1.2rem;border-radius:11px;font-family:var(--fD);font-weight:700;font-size:.83rem;background:var(--g100);color:var(--g700);transition:.15s}
+.pl-btn:hover:not(:disabled){background:var(--g300)}
+.pl-btn:disabled{opacity:.5;cursor:default}
+.pl-cta{background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;box-shadow:0 5px 16px rgba(43,86,192,.32)}
+.pl-cta:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.pl-cta:disabled{background:var(--g300);color:var(--g500);box-shadow:none}
+.toc-item.lock{opacity:.5;cursor:not-allowed}
+.toc-item.lock:hover{background:transparent;color:var(--g700)}
+.toc-item.viewed .toc-dot{background:var(--blueG)}
+.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-item.done .toc-num::after{content:' ✓';color:var(--greenL);font-weight:800}
+.toc-right{margin-left:auto;font-size:.62rem;color:var(--g500);font-family:var(--fM);flex-shrink:0}
+.resume-banner{display:flex;align-items:center;gap:.9rem;background:linear-gradient(135deg,rgba(43,86,192,.09),rgba(59,123,255,.04));border:1px solid rgba(43,86,192,.22);border-radius:var(--rL);padding:.85rem 1.1rem;margin-bottom:1.2rem}
+.resume-banner .rb-i{font-size:1.25rem}
+.resume-banner .rb-t{flex:1;font-size:.82rem;color:#1a2f52;line-height:1.45}
+.resume-banner .rb-t strong{color:var(--blue);font-family:var(--fD)}
+.resume-banner button{padding:.45rem 1rem;border-radius:9px;font-family:var(--fD);font-weight:700;font-size:.78rem}
+.rb-go{background:var(--blue);color:#fff}.rb-go:hover{background:var(--blueL)}
+.rb-x{background:transparent;color:var(--g500);font-size:1.05rem;padding:.2rem .55rem}
+@media(max-width:768px){.pl-title{font-size:.92rem}.pl-bar-top{top:0;border-radius:0;margin:0 -1.2rem 1.1rem;padding:.7rem 1.2rem}.pl-bar-bottom .pl-btn{flex:1;text-align:center}}
+
 </style>
 </head>
 <body>
@@ -261,7 +301,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      PLAN DE COURS
 ══════════════════════════════════════════════════════ -->
-<div class="pc" id="plan">
+<div class="pc step" id="plan">
 <div class="pc-head">
   <div class="pc-ic">🗂</div>
   <div>
@@ -349,7 +389,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      PLANS DE LEÇON
 ══════════════════════════════════════════════════════ -->
-<div id="lecons">
+<div class="step" id="lecons">
 <div class="lp-intro">
   <h2>📐 Plans de leçon</h2>
   <p>Six leçons couvrant les 30 heures du module. Chaque leçon suit les cinq phases d'acquisition d'une compétence : exploration, apprentissage de base, intégration-entraînement, transfert et enrichissement. Cliquez sur une leçon pour la déplier.</p>
@@ -529,7 +569,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      CH 1 — Le métier de technicien
 ══════════════════════════════════════════════════════ -->
-<div class="chapter" id="ch-1">
+<div class="chapter step" id="ch-1">
 <div class="ch-header">
   <div class="ch-num">01</div>
   <div class="ch-info"><h2>Le métier de technicien en réseaux informatiques</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Réalité du métier · Tâches · Employeurs</span></div></div>
@@ -605,7 +645,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      CH 2 — Marché du travail & exigences
 ══════════════════════════════════════════════════════ -->
-<div class="chapter" id="ch-2">
+<div class="chapter step" id="ch-2">
 <div class="ch-header">
   <div class="ch-num">02</div>
   <div class="ch-info"><h2>Marché du travail et exigences du métier</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Emploi · Salaires · Certifications · Évolution</span></div></div>
@@ -681,7 +721,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      CH 3 — Méthodes de travail
 ══════════════════════════════════════════════════════ -->
-<div class="chapter" id="ch-3">
+<div class="chapter step" id="ch-3">
 <div class="ch-header">
   <div class="ch-num">03</div>
   <div class="ch-info"><h2>Méthodes de travail</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Repérer l'info · Prendre des notes · Discuter en groupe</span></div></div>
@@ -755,7 +795,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      CH 4 — Le programme TRI
 ══════════════════════════════════════════════════════ -->
-<div class="chapter" id="ch-4">
+<div class="chapter step" id="ch-4">
 <div class="ch-header">
   <div class="ch-num">04</div>
   <div class="ch-info"><h2>Le programme de formation TRI</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Approche par compétences · 28 modules</span></div></div>
@@ -834,7 +874,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      CH 5 — Évaluation & réussite
 ══════════════════════════════════════════════════════ -->
-<div class="chapter" id="ch-5">
+<div class="chapter step" id="ch-5">
 <div class="ch-header">
   <div class="ch-num">05</div>
   <div class="ch-info"><h2>Évaluation et conditions de réussite</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Formative · Sanction · Règlement</span></div></div>
@@ -900,7 +940,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <!-- ══════════════════════════════════════════════════
      CH 6 — Bilan d'orientation
 ══════════════════════════════════════════════════════ -->
-<div class="chapter" id="ch-6">
+<div class="chapter step" id="ch-6">
 <div class="ch-header">
   <div class="ch-num">06</div>
   <div class="ch-info"><h2>Auto-évaluation et bilan d'orientation</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Synthèse · Décision éclairée</span></div></div>
@@ -1138,5 +1178,154 @@ function toast(msg){
   clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);
 }
 </script>
+
+<script>
+/* ===== LECTEUR DE COURS v3 ===== */
+(function(){
+  var STEPS=['plan','lecons','ch-1','ch-2','ch-3','ch-4','ch-5','ch-6'];
+  var LABELS={plan:'Plan de cours',lecons:'Plans de leçon','ch-1':'Le métier de technicien','ch-2':'Marché du travail & exigences','ch-3':'Méthodes de travail','ch-4':'Le programme TRI','ch-5':'Évaluation & réussite','ch-6':"Bilan d'orientation"};
+  var QUIZ={1:1,2:1,3:1,4:1,5:1,6:1};   // chapitres ayant un quiz
+  var PASS=0.6;                          // seuil de réussite
+  var PK='TRI01v1_step', VK='TRI01v1_viewed';
+  var cur=0, DUR={};
+
+  function tiId(id){return id==='plan'?'ti-plan':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
+  function hasQuiz(n){return !!QUIZ[n];}
+  function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  function isPassed(n){return !!readJSON('TRI01v1_done')[n];}
+  function countDone(){var d=readJSON('TRI01v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
+  function refreshDur(){for(var N=1;N<=6;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
+
+  function updateGate(){
+    refreshDur();
+    for(var N=1;N<=6;N++){
+      var ti=document.getElementById('ti-'+N);if(!ti)continue;
+      var locked=N>1&&!isPassed(N-1);
+      ti.classList.toggle('lock',locked);
+      if(isPassed(N))ti.classList.add('done');
+      var tr=document.getElementById('tr-'+N);
+      if(tr)tr.textContent=locked?'🔒':(DUR[N]||'');
+    }
+    var pf=document.getElementById('pl-prog-fill');if(pf)pf.style.width=Math.round(countDone()/6*100)+'%';
+    var id=STEPS[cur],n=chNum(id),blocked=false,label;
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){blocked=true;label='🔒 Réussis le quiz pour continuer';}
+    else if(cur===STEPS.length-1){label='Terminer le module ✓';}
+    else{label=(n!==null?'Terminer & continuer →':'Continuer →');}
+    var nBot=document.getElementById('pl-next-btn'),nTop=document.getElementById('pl-next-top');
+    if(nBot){nBot.textContent=label;nBot.disabled=blocked;}
+    if(nTop)nTop.disabled=blocked;
+    var pTop=document.getElementById('pl-prev-top'),pBot=document.getElementById('pl-prev-btn');
+    if(pTop)pTop.disabled=cur===0;if(pBot)pBot.disabled=cur===0;
+    var cb=document.getElementById('complete-banner');if(cb)cb.style.display=(cur===STEPS.length-1&&countDone()>=6)?'block':'none';
+  }
+  function render(){
+    var id=STEPS[cur];
+    document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+    var el=document.getElementById(id);if(el)el.classList.add('active');
+    document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+    var ti=document.getElementById(tiId(id));if(ti)ti.classList.add('act');
+    var T=document.getElementById('pl-title');if(T)T.textContent=LABELS[id]||'';
+    var C=document.getElementById('pl-count');if(C)C.textContent='Étape '+(cur+1)+' / '+STEPS.length;
+    try{var prev=parseInt(localStorage.getItem(PK)||'0')||0;if(cur>prev)localStorage.setItem(PK,String(cur));}catch(e){}
+    updateGate();
+    var mc=document.getElementById('main-content');
+    if(mc){var y=mc.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y<0?0:y,behavior:'smooth'});}
+    if(window.innerWidth<=768){var t=document.getElementById('toc-sidebar');if(t)t.classList.remove('open');var o=document.getElementById('mob-overlay');if(o)o.style.display='none';}
+  }
+
+  window.goTo=function(n){
+    var id=(n==='plan'||n==='lecons')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
+    var cn=chNum(id);
+    if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
+    cur=i;render();
+  };
+  window.plPrev=function(){if(cur>0){cur--;render();}};
+  window.plNext=function(){
+    var id=STEPS[cur],n=chNum(id);
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){if(window.toast)toast('🔒 Termine le quiz de ce chapitre pour continuer.');return;}
+    if(n!==null&&!hasQuiz(n)&&window.doneChapter)doneChapter(n);
+    if(cur<STEPS.length-1){cur++;render();}
+    else{var cb=document.getElementById('complete-banner');if(cb){cb.style.display='block';cb.scrollIntoView({behavior:'smooth'});}if(window.toast)toast('🎓 Module terminé, bravo !');}
+  };
+
+  // quiz reussi -> marque le chapitre fait + debloque le suivant
+  var _submit=window.submitQ;
+  window.submitQ=function(qid,answers,expls){
+    _submit(qid,answers,expls);
+    try{var qs=readJSON('TRI01v1_qs')[qid];
+      if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
+        if(window.ST){window.ST.done[qid]=true;}
+        try{var d=readJSON('TRI01v1_done');d[qid]=true;localStorage.setItem('TRI01v1_done',JSON.stringify(d));}catch(e){}
+        if(window.applyDone)applyDone(qid);
+        if(window.updateProg)updateProg();
+        if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
+      }
+    }catch(e){}
+    updateGate();
+  };
+  var _retry=window.retryQ;
+  window.retryQ=function(qid,count){_retry(qid,count);updateGate();};
+
+  function markViewed(N){
+    var ti=document.getElementById('ti-'+N);
+    if(ti&&!isPassed(N))ti.classList.add('viewed');
+    try{var v=readJSON(VK);v[N]=true;localStorage.setItem(VK,JSON.stringify(v));}catch(e){}
+    if(window.toast)toast('▶️ Vidéo terminée — fais le quiz pour valider le chapitre.');
+  }
+  function attachVideos(){
+    for(var N=1;N<=6;N++){
+      var v=document.getElementById('vf'+N);if(!v)continue;
+      v.addEventListener('loadedmetadata',function(){var n=this.id.replace('vf','');DUR[n]=fmt(this.duration);updateGate();});
+      v.addEventListener('ended',function(){markViewed(this.id.replace('vf',''));});
+    }
+    // restaure les "vus"
+    var vv=readJSON(VK);Object.keys(vv).forEach(function(N){if(vv[N]){var ti=document.getElementById('ti-'+N);if(ti&&!isPassed(N))ti.classList.add('viewed');}});
+  }
+
+  function build(){
+    var main=document.getElementById('main-content');if(!main)return;
+    // barre sticky haute
+    var top=document.createElement('div');top.className='pl-bar pl-bar-top';
+    top.innerHTML='<button id="pl-prev-top" class="pl-ic" onclick="plPrev()" aria-label="Précédent">←</button>'
+      +'<div class="pl-mid"><div class="pl-count" id="pl-count"></div><div class="pl-title" id="pl-title"></div><div class="pl-prog"><i id="pl-prog-fill"></i></div></div>'
+      +'<button id="pl-next-top" class="pl-ic" onclick="plNext()" aria-label="Suivant">→</button>';
+    main.insertBefore(top,main.firstChild);
+    // banniere reprendre
+    var lastReached=0;try{lastReached=parseInt(localStorage.getItem(PK)||'0')||0;}catch(e){}
+    if(lastReached>0){
+      var rb=document.createElement('div');rb.className='resume-banner';rb.id='resume-banner';
+      rb.innerHTML='<span class="rb-i">↩️</span><div class="rb-t">Tu avais avancé jusqu\'à <strong>'+(LABELS[STEPS[lastReached]]||'')+'</strong>.</div>'
+        +'<button class="rb-go" onclick="(function(){document.getElementById(\'resume-banner\').remove();window.__resume('+lastReached+');})()">Reprendre</button>'
+        +'<button class="rb-x" onclick="document.getElementById(\'resume-banner\').remove()" aria-label="Fermer">✕</button>';
+      main.insertBefore(rb,top.nextSibling);
+    }
+    // barre basse
+    var bot=document.createElement('div');bot.className='pl-bar pl-bar-bottom';
+    bot.innerHTML='<button id="pl-prev-btn" class="pl-btn" onclick="plPrev()">← Précédent</button>'
+      +'<button id="pl-next-btn" class="pl-btn pl-cta" onclick="plNext()">Continuer →</button>';
+    main.appendChild(bot);
+    // numero + duree dans le sommaire
+    for(var N=1;N<=6;N++){var ti=document.getElementById('ti-'+N);if(ti){var sp=document.createElement('span');sp.className='toc-right';sp.id='tr-'+N;ti.appendChild(sp);}}
+  }
+  window.__resume=function(i){if(i>=0&&i<STEPS.length){cur=i;render();}};
+
+  // navigation clavier
+  document.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'){var b=document.getElementById('pl-next-btn');if(b&&!b.disabled)plNext();}
+    else if(e.key==='ArrowLeft'){var p=document.getElementById('pl-prev-btn');if(p&&!p.disabled)plPrev();}
+  });
+
+  window.addEventListener('load',function(){
+    document.body.classList.add('player');
+    build();attachVideos();
+    cur=0;render();
+  });
+})();
+</script>
+
 </body>
 </html>
