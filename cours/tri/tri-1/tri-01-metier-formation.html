@@ -2,882 +2,1171 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TRI-01 — Métier et formation en réseaux informatiques</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-01 — Métier et formation · Canado Technique</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
-
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
-
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('../../../assets/images/slide-tri-01.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🌐 Module TRI-01 · 1ère Année</div>
-    <h1>Métier et formation en <em>réseaux informatiques</em></h1>
+    <div class="mod-tag">🧭 TRI-01 · 1ère Année · Compétence générale</div>
+    <h1>Métier et <em>formation</em></h1>
+    <p class="mod-desc">Objectif de situation · 30 heures — Se situer au regard du métier de technicien en réseaux informatiques et de la démarche de formation. Plan de cours, plans de leçon, contenu contextualisé, auto-évaluation et quiz de validation.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>30 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>6 à produire</strong></div>
-      <div class="mod-meta-item">✅ Quiz : <strong>4 évaluations</strong></div>
+      <div class="mod-meta-item">⏱ <strong>30 heures</strong></div>
+      <div class="mod-meta-item">🎯 Objectif de <strong>situation</strong></div>
+      <div class="mod-meta-item">📚 <strong>6 chapitres</strong></div>
+      <div class="mod-meta-item">🏁 <strong>Premier module du programme</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <span class="progress-label">Progression du module</span>
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-txt" id="prog-txt">0 / 6 chapitres</span>
     </div>
+  </div>
+</div>
+
+<!-- TIMER BAR -->
+<div class="timer-bar">
+  ⏱ Session : <strong id="session-timer">0m 0s</strong>
+  &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns">
+    <button class="tbtn" onclick="window.print()">🖨 Imprimer</button>
+    <button class="tbtn" onclick="toggleToc()">☰ Sommaire</button>
   </div>
 </div>
 
 <div class="wrap">
-  <div class="layout">
+<div class="layout">
 
-    <div class="toc">
-      <h3>Sommaire</h3>
-      <div class="toc-item act" onclick="scrollToChapter(1)" id="toc-1">
-        <div class="toc-dot"></div><span class="toc-num">01</span><span>Le technicien en réseaux</span>
-      </div>
-      <div class="toc-item" onclick="scrollToChapter(2)" id="toc-2">
-        <div class="toc-dot"></div><span class="toc-num">02</span><span>Le programme TRI</span>
-      </div>
-      <div class="toc-item" onclick="scrollToChapter(3)" id="toc-3">
-        <div class="toc-dot"></div><span class="toc-num">03</span><span>Marché de l'emploi TI en Haïti</span>
-      </div>
-      <div class="toc-item" onclick="scrollToChapter(4)" id="toc-4">
-        <div class="toc-dot"></div><span class="toc-num">04</span><span>Éthique et posture professionnelle</span>
-      </div>
+<!-- TOC SIDEBAR -->
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-01</div>
+  <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+  <div class="toc-item" onclick="goTo('lecons')" id="ti-lecons"><div class="toc-dot"></div><span class="toc-num">PL</span><span>Plans de leçon</span></div>
+  <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Le métier de technicien</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Marché du travail & exigences</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Méthodes de travail</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Le programme TRI</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Évaluation & réussite</span></div>
+  <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>Bilan d'orientation</span></div>
+</div>
+
+<div id="main-content">
+
+<!-- ══════════════════════════════════════════════════
+     PLAN DE COURS
+══════════════════════════════════════════════════════ -->
+<div class="pc" id="plan">
+<div class="pc-head">
+  <div class="pc-ic">🗂</div>
+  <div>
+    <h2>Plan de cours</h2>
+    <div class="pc-sub">TRI-01 · Métier et formation · Programme Techniques de réseaux informatiques (TRI)</div>
+  </div>
+</div>
+<div class="pc-body">
+
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">TRI-01</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">30 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Situation</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">Aucun</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Année</div><div class="pc-id-val">1ère</div></div>
+  </div>
+
+  <div class="pc-sec">
+    <h4>Énoncé de la compétence</h4>
+    <p><strong>Se situer au regard du métier et de la démarche de formation.</strong></p>
+  </div>
+
+  <div class="pc-sec">
+    <h4>Présentation du module</h4>
+    <p>Ce module est le tout premier par lequel l'étudiant amorce sa formation en Techniques de réseaux informatiques. Il vise à l'informer sur les différents aspects du métier et sur la démarche de formation. Ces informations lui permettent de s'auto-évaluer au regard de sa personnalité, de ses goûts et de ses aptitudes, en vue de confirmer son inscription au programme.</p>
+    <p>Par des exposés, de la documentation, des conférences, des visites de terrain et des recherches personnelles, l'étudiant découvre les types d'entreprises où évoluent les techniciens en réseaux informatiques, les conditions d'exercice, les exigences du marché du travail et les possibilités d'évolution. Il est également informé de la pertinence du programme, des conditions de réussite et du mode d'évaluation. En résumé : un module d'<strong>information, de motivation, d'intégration et de mobilisation</strong> en vue de la réussite de la formation.</p>
+  </div>
+
+  <div class="pc-sec">
+    <h4>Éléments de la compétence</h4>
+    <ol>
+      <li><strong>Connaître la réalité du métier</strong> de technicien en réseaux informatiques.</li>
+      <li><strong>Comprendre les particularités</strong> du programme de formation.</li>
+      <li><strong>Évaluer le choix</strong> de son orientation professionnelle.</li>
+    </ol>
+  </div>
+
+  <div class="pc-sec">
+    <h4>Contexte de réalisation</h4>
+    <div class="pc-cols">
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Travail individuel et en groupe · brochures et dépliants · rapport d'analyse de la situation de travail (AST) · programme de formation · présentations du métier par des professionnels.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Méthodes de prise de notes · règles de discussion de groupe · ordinateur et accès Internet · sites spécialisés sur l'emploi en TIC.</div>
     </div>
+  </div>
 
-    <div>
+  <div class="pc-sec">
+    <h4>Découpage en leçons (30 h)</h4>
+    <table class="dtable">
+      <thead><tr><th>N°</th><th>Leçon</th><th>Durée</th><th>Phase dominante</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Le métier de technicien en réseaux informatiques</td><td>6 h</td><td>Exploration · Information</td></tr>
+        <tr><td>2</td><td>Marché du travail, conditions et exigences</td><td>4 h</td><td>Information</td></tr>
+        <tr><td>3</td><td>Méthodes de travail : repérer l'information, prendre des notes, discuter en groupe</td><td>4 h</td><td>Apprentissage de base</td></tr>
+        <tr><td>4</td><td>Le programme de formation TRI et l'approche par compétences</td><td>6 h</td><td>Information · Réalisation</td></tr>
+        <tr><td>5</td><td>Évaluation, règlement intérieur et conditions de réussite</td><td>4 h</td><td>Réalisation</td></tr>
+        <tr><td>6</td><td>Auto-évaluation et bilan d'orientation professionnelle</td><td>6 h</td><td>Synthèse · Transfert</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-      <!-- CHAPITRE 1 -->
-      <div class="chapter" id="chapter-1">
-        <div class="chapter-header">
-          <div class="chapter-num">01</div>
-          <div class="chapter-info">
-            <h2>Le technicien en réseaux informatiques</h2>
-            <div class="chapter-meta">
-              <span>🕐 8 heures</span>
-              <span class="chapter-badge">Rôles · Responsabilités · Environnements</span>
-            </div>
-          </div>
-        </div>
-        <div class="chapter-body">
+  <div class="pc-sec">
+    <h4>Modalités d'évaluation</h4>
+    <p>Module à objectif de <strong>situation</strong> : l'évaluation porte sur la <strong>participation</strong> de l'étudiant aux trois phases de la mise en situation, et non sur un produit fini noté.</p>
+    <ul>
+      <li><strong>Évaluation formative</strong> — quiz de fin de chapitre (suivi de progression), participation aux échanges et activités de groupe, qualité des notes de recherche.</li>
+      <li><strong>Évaluation de sanction</strong> — fondée sur les critères de participation : phase d'information (recueil de données), phase de réalisation (opinion argumentée sur les exigences du métier et le programme), phase de synthèse (bilan personnel et justification du choix de poursuivre la formation).</li>
+      <li><strong>Seuil de réussite</strong> — 75 % (conforme au référentiel) aux quiz pour valider le suivi en ligne du module.</li>
+    </ul>
+  </div>
 
-          <div class="video-block" id="vid-1">
-            <div class="video-header">
-              <div class="video-icon">▶</div>
-              <div>
-                <div class="video-title">Vidéo 1 — Qui est le technicien en réseaux ?</div>
-                <div class="video-subtitle">Durée recommandée : 10–12 min · Introduction au métier</div>
-              </div>
-            </div>
-            <div class="video-embed">
-              <div class="video-placeholder" id="vp-1">
-                <div class="video-placeholder-icon">▶</div>
-                <div class="video-placeholder-text">Lien YouTube à insérer<br><span class="video-placeholder-url" id="vurl-display-1">Aucun lien configuré</span></div>
-              </div>
-              <iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <div class="video-guide">
-              <div class="video-guide-label">🎬 Guide de production</div>
-              <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Intro (2 min)</strong> — Toi devant la caméra : "Bienvenue en TRI-01, le premier module de ta formation de technicien en réseaux. Aujourd'hui, on découvre ton futur métier."</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Le technicien au quotidien (4 min)</strong> — Montre des photos ou des vidéos d'une salle serveur, d'un technicien câblant une baie, d'un helpdesk. Décris ce que fait un TRI dans une journée type.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Les 3 environnements de travail (3 min)</strong> — Entreprise privée, institution publique, opérateur télécom. Donne des exemples haïtiens concrets : Digicel, banques, MENFP, hôpitaux.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Outro (1 min)</strong> — Annonce la suite : "Dans la prochaine vidéo, on explore la structure de ta formation sur 2 ans."</div></div>
-            </div>
-            <div class="video-url-input">
-              <input type="text" id="vinput-1" placeholder="Colle ton lien YouTube ici : https://youtu.be/xxxxx">
-              <button onclick="setVideo(1)">Insérer →</button>
-            </div>
-          </div>
+  <div class="pc-sec">
+    <h4>Références</h4>
+    <ul>
+      <li>Rapport d'analyse de la situation de travail (AST) — technicien en réseaux informatiques.</li>
+      <li>Programme de formation <em>Techniques de réseaux informatiques</em> (INFP / CFPH – Canado Technique).</li>
+      <li>Sites Internet spécialisés sur l'emploi et les métiers des TIC.</li>
+      <li>Brochures et dépliants des entreprises et organisations du secteur.</li>
+    </ul>
+  </div>
 
-          <div class="content-section">
-            <h3>1.1 Définition du métier</h3>
-            <p>Le <strong>Technicien en Réseaux Informatiques (TRI)</strong> est un professionnel chargé d'installer, configurer, maintenir et dépanner les infrastructures réseau d'une organisation. Il est le garant de la connectivité et de la sécurité des systèmes d'information.</p>
-            <p>Ses responsabilités couvrent un large spectre technique :</p>
-            <ul>
-              <li><strong>Installation physique</strong> — câblage, baies, switches, routeurs, points d'accès Wi-Fi.</li>
-              <li><strong>Configuration logicielle</strong> — adressage IP, VLANs, protocoles de routage, pare-feu.</li>
-              <li><strong>Maintenance et surveillance</strong> — monitoring du réseau, détection de pannes, mise à jour firmware.</li>
-              <li><strong>Support utilisateur</strong> — assistance technique, résolution de problèmes de connectivité.</li>
-              <li><strong>Sécurité</strong> — protection contre les intrusions, gestion des accès, VPN.</li>
-            </ul>
-            <div class="info-box tip">
-              <span class="info-box-label">💡 Le TRI en Haïti</span>
-              Dans le contexte haïtien, le technicien en réseaux joue un rôle crucial dans la modernisation des entreprises et institutions. Les besoins sont immenses : banques, télécoms, ONG, administration publique, secteur éducatif — tous ont besoin d'infrastructures réseau fiables.
-            </div>
-          </div>
+</div>
+</div>
 
-          <div class="content-section">
-            <h3>1.2 Les environnements de travail</h3>
-            <p>Un technicien TRI peut exercer dans des environnements très variés, chacun avec ses spécificités :</p>
-            <table class="data-table">
-              <thead><tr><th>Secteur</th><th>Exemples en Haïti</th><th>Type de réseau</th></tr></thead>
-              <tbody>
-                <tr><td>Télécommunications</td><td>Digicel, Natcom, Access Haiti</td><td>Infrastructure nationale, fibre optique</td></tr>
-                <tr><td>Secteur bancaire</td><td>BNC, BRH, Unibank, BH</td><td>LAN sécurisé, réseau interbancaire</td></tr>
-                <tr><td>ONG / International</td><td>UNICEF, Croix-Rouge, MSF</td><td>VPN, communications sécurisées</td></tr>
-                <tr><td>Administration publique</td><td>MENFP, MEF, MSPP</td><td>Réseau gouvernemental</td></tr>
-                <tr><td>Éducation</td><td>Universités, centres de formation</td><td>Campus network, Wi-Fi académique</td></tr>
-                <tr><td>Entreprises privées</td><td>Commerce, industrie, hôtellerie</td><td>LAN/WAN d'entreprise</td></tr>
-              </tbody>
-            </table>
-          </div>
+<!-- ══════════════════════════════════════════════════
+     PLANS DE LEÇON
+══════════════════════════════════════════════════════ -->
+<div id="lecons">
+<div class="lp-intro">
+  <h2>📐 Plans de leçon</h2>
+  <p>Six leçons couvrant les 30 heures du module. Chaque leçon suit les cinq phases d'acquisition d'une compétence : exploration, apprentissage de base, intégration-entraînement, transfert et enrichissement. Cliquez sur une leçon pour la déplier.</p>
+</div>
 
-          <div class="quiz-block" id="quiz-1">
-            <div class="quiz-header">
-              <span class="quiz-icon">📝</span>
-              <h3>Quiz — Chapitre 1 : Le technicien en réseaux</h3>
-              <span>4 questions</span>
-            </div>
-            <div class="quiz-body" id="qbody-1">
-              <div class="quiz-q" data-q="0" data-ans="1">
-                <div class="quiz-q-num">Question 1 / 4</div>
-                <div class="quiz-q-text">Quelle est la principale mission d'un technicien en réseaux informatiques ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q0')"><span class="quiz-letter">A</span>Développer des applications mobiles</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q0')"><span class="quiz-letter">B</span>Installer, configurer et maintenir les infrastructures réseau</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q0')"><span class="quiz-letter">C</span>Gérer la comptabilité de l'entreprise</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q0')"><span class="quiz-letter">D</span>Concevoir des sites web uniquement</button>
-                </div>
-                <div class="quiz-expl" id="expl-1-q0">Le TRI est responsable de l'installation, la configuration, la maintenance et le dépannage de toute l'infrastructure réseau d'une organisation.</div>
-              </div>
-              <div class="quiz-q" data-q="1" data-ans="2">
-                <div class="quiz-q-num">Question 2 / 4</div>
-                <div class="quiz-q-text">Lequel de ces employeurs est un opérateur de télécommunications en Haïti ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q1')"><span class="quiz-letter">A</span>MENFP</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q1')"><span class="quiz-letter">B</span>BNC</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q1')"><span class="quiz-letter">C</span>Digicel</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q1')"><span class="quiz-letter">D</span>UNICEF</button>
-                </div>
-                <div class="quiz-expl" id="expl-1-q1">Digicel est un opérateur de télécommunications actif en Haïti. Natcom et Access Haiti aussi. Le MENFP est un ministère, la BNC est une banque, et l'UNICEF est une ONG internationale.</div>
-              </div>
-              <div class="quiz-q" data-q="2" data-ans="0">
-                <div class="quiz-q-num">Question 3 / 4</div>
-                <div class="quiz-q-text">Parmi ces tâches, laquelle fait partie des responsabilités d'un TRI ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q2')"><span class="quiz-letter">A</span>Configurer des VLANs et des pare-feu</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q2')"><span class="quiz-letter">B</span>Réparer des moteurs électriques</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q2')"><span class="quiz-letter">C</span>Rédiger des contrats commerciaux</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q2')"><span class="quiz-letter">D</span>Installer des systèmes de climatisation</button>
-                </div>
-                <div class="quiz-expl" id="expl-1-q2">La configuration de VLANs (réseaux locaux virtuels) et de pare-feu est une tâche centrale pour un TRI, relevant directement de la gestion et de la sécurisation du réseau.</div>
-              </div>
-              <div class="quiz-q" data-q="3" data-ans="3">
-                <div class="quiz-q-num">Question 4 / 4</div>
-                <div class="quiz-q-text">Quel acronyme désigne la formation que vous suivez à Canado Technique ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q3')"><span class="quiz-letter">A</span>MEI</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q3')"><span class="quiz-letter">B</span>ELM</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q3')"><span class="quiz-letter">C</span>TEL</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,1,'q3')"><span class="quiz-letter">D</span>TRI</button>
-                </div>
-                <div class="quiz-expl" id="expl-1-q3">TRI signifie Technicien en Réseaux Informatiques. C'est le programme de formation que vous suivez à Canado Technique, sur 2 ans avec 28 modules.</div>
-              </div>
-            </div>
-            <div class="quiz-footer">
-              <div class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</div>
-              <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1,4)">Valider le quiz ✓</button>
-              <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" style="display:none" id="qretry-1">↺ Recommencer</button>
-            </div>
-          </div>
+<!-- LEÇON 1 -->
+<div class="lp" id="lp-1">
+<div class="lp-head" onclick="toggleLp(1)">
+  <div class="lp-no">1</div>
+  <div class="lp-htxt"><h3>Le métier de technicien en réseaux informatiques</h3><div class="lp-meta">Élément de compétence 1 · Connaître la réalité du métier</div></div>
+  <span class="lp-dur">6 h</span>
+  <span class="lp-toggle">▾</span>
+</div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Décrire la nature du métier, ses tâches et activités, et les types d'entreprises où l'exerce un technicien en réseaux informatiques en Haïti.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Aucun. Mobiliser les représentations initiales des étudiants sur l'informatique et les réseaux.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
+    <ul>
+      <li>Distinguer une <strong>tâche</strong> (activité ayant un début et une fin, visant une production précise) d'une <strong>activité</strong> (partie d'une tâche).</li>
+      <li>Délimitation du métier et catégories d'employeurs (entreprises, banques, hôtels, ONG, administration publique).</li>
+      <li>Conditions de réceptivité au repérage d'information : attention, concentration, climat favorable.</li>
+    </ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Présenter l'objectif du module ; tour de table sur ce que les étudiants imaginent du métier.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Exposé sur le métier, ses tâches et les milieux de travail haïtiens. Vidéo d'introduction (voir plus bas).</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Les étudiants classent une liste d'opérations en « tâches » et « activités ».</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p5">Enrichissement</span><span class="lp-phase-txt">Recherche : identifier trois employeurs locaux susceptibles d'embaucher un technicien réseaux.</span></div>
+    </div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Projecteur, fiche d'analyse tâche/activité, accès Internet, chapitre 1 du module en ligne.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 1 · qualité du classement tâches/activités · participation au tour de table.</p></div>
+</div>
+</div>
 
-          <div class="chapter-nav">
-            <span></span>
-            <button class="btn-nav primary" onclick="completeChapter(1);scrollToChapter(2)">Chapitre suivant →</button>
-          </div>
-        </div>
-      </div>
+<!-- LEÇON 2 -->
+<div class="lp" id="lp-2">
+<div class="lp-head" onclick="toggleLp(2)">
+  <div class="lp-no">2</div>
+  <div class="lp-htxt"><h3>Marché du travail, conditions et exigences</h3><div class="lp-meta">Élément de compétence 1 · Connaître la réalité du métier</div></div>
+  <span class="lp-dur">4 h</span>
+  <span class="lp-toggle">▾</span>
+</div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Expliquer les exigences du métier (conditions de travail, salaires, avancement) et la signification des qualifications requises au seuil d'entrée sur le marché du travail.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 1 (réalité du métier, catégories d'employeurs).</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
+    <ul>
+      <li>Particularités du marché du travail : perspectives d'emploi, rémunération, possibilités d'avancement et de mutation.</li>
+      <li>Qualifications requises au seuil d'entrée : diplôme, certifications (ex. CCNA), expérience.</li>
+      <li>Exigences du métier : conditions de travail, possibilités d'avancement, égalité des sexes, salaires.</li>
+    </ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Rappel des employeurs identifiés à la leçon 1.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Exposé sur les conditions d'exercice et les certifications valorisées sur le marché.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Mini-entrevue avec un professionnel (en présentiel ou vidéo) ; prise de notes guidée.</span></div>
+    </div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Fiches métier, offres d'emploi réelles, grille de prise de notes, chapitre 2 en ligne.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 2 · synthèse écrite des exigences du métier.</p></div>
+</div>
+</div>
 
-      <!-- CHAPITRE 2 -->
-      <div class="chapter" id="chapter-2">
-        <div class="chapter-header">
-          <div class="chapter-num">02</div>
-          <div class="chapter-info">
-            <h2>Le programme de formation TRI</h2>
-            <div class="chapter-meta">
-              <span>🕐 8 heures</span>
-              <span class="chapter-badge">Structure · Modules · Certification CCNA</span>
-            </div>
-          </div>
-        </div>
-        <div class="chapter-body">
+<!-- LEÇON 3 -->
+<div class="lp" id="lp-3">
+<div class="lp-head" onclick="toggleLp(3)">
+  <div class="lp-no">3</div>
+  <div class="lp-htxt"><h3>Méthodes de travail : repérer l'information, prendre des notes, discuter en groupe</h3><div class="lp-meta">Outils transversaux · soutien aux trois éléments</div></div>
+  <span class="lp-dur">4 h</span>
+  <span class="lp-toggle">▾</span>
+</div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Appliquer une méthode de repérage de l'information, une méthode de prise de notes et les règles d'une discussion de groupe efficace.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Aucun spécifique ; utile pour toutes les leçons suivantes.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
+    <ul>
+      <li>Méthodes de repérage d'information ; préparation pour discerner les points importants.</li>
+      <li>Méthodes de prise de notes ; présentation et structuration des données.</li>
+      <li>Règles de discussion de groupe : participation, respect des tours de parole, rester sur le sujet, écoute, acceptation des points de vue différents.</li>
+    </ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Présentation de deux méthodes de prise de notes (linéaire, carte mentale).</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Atelier : prendre des notes à partir d'une courte vidéo, puis les restructurer.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Débat de groupe encadré par les règles ; observation entre pairs.</span></div>
+    </div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Modèles de prise de notes, courte vidéo support, grille d'observation de la discussion, chapitre 3 en ligne.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 3 · qualité des notes restructurées · grille d'observation du débat.</p></div>
+</div>
+</div>
 
-          <div class="video-block" id="vid-2">
-            <div class="video-header">
-              <div class="video-icon">▶</div>
-              <div>
-                <div class="video-title">Vidéo 2 — Structure de ta formation sur 2 ans</div>
-                <div class="video-subtitle">Durée recommandée : 10 min · Plan de formation complet</div>
-              </div>
-            </div>
-            <div class="video-embed">
-              <div class="video-placeholder" id="vp-2">
-                <div class="video-placeholder-icon">▶</div>
-                <div class="video-placeholder-text">Lien YouTube à insérer<br><span class="video-placeholder-url" id="vurl-display-2">Aucun lien configuré</span></div>
-              </div>
-              <iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <div class="video-guide">
-              <div class="video-guide-label">🎬 Guide de production</div>
-              <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Vue d'ensemble (3 min)</strong> — Montre un tableau des 16 modules de 1ère année. Explique la logique : on part des fondamentaux (math, OS) vers le pratique (réseaux, installation).</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>L'approche APC (3 min)</strong> — Explique l'Approche Par Compétences : pas de cours théoriques seuls, chaque module développe une compétence utilisable immédiatement en entreprise.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>La certification CCNA (2 min)</strong> — Explique que la 2ème année prépare au CCNA Cisco, une certification reconnue mondialement. Montre le logo Cisco. Valorise cet atout sur le marché.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Le seuil de réussite (2 min)</strong> — Explique que chaque module a un seuil (ex. 75% pour TRI-01). Si non atteint, révision et rattrapage avant de passer au suivant.</div></div>
-            </div>
-            <div class="video-url-input">
-              <input type="text" id="vinput-2" placeholder="Colle ton lien YouTube ici : https://youtu.be/xxxxx">
-              <button onclick="setVideo(2)">Insérer →</button>
-            </div>
-          </div>
+<!-- LEÇON 4 -->
+<div class="lp" id="lp-4">
+<div class="lp-head" onclick="toggleLp(4)">
+  <div class="lp-no">4</div>
+  <div class="lp-htxt"><h3>Le programme de formation TRI et l'approche par compétences</h3><div class="lp-meta">Élément de compétence 2 · Comprendre le programme</div></div>
+  <span class="lp-dur">6 h</span>
+  <span class="lp-toggle">▾</span>
+</div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Énoncer les principes de l'approche par compétences et lister les composantes du programme TRI (modules, compétences générales et particulières).</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 3 (méthodes de travail).</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
+    <ul>
+      <li>Principes de l'approche par compétences : pédagogie de la réussite ; approche active centrée sur l'étudiant ; approche curriculaire, intégrée, multidimensionnelle et critériée.</li>
+      <li>Composantes du programme : 28 modules ; compétences particulières (liées aux tâches) et générales (préalables).</li>
+      <li>Distinction habiletés / aptitudes / attitudes / connaissances.</li>
+    </ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Question ouverte : « Qu'est-ce qu'une compétence ? »</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Présentation du logigramme et de la séquence des 28 modules.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Les étudiants situent quelques modules (TRI-05, TRI-17…) dans la progression.</span></div>
+    </div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Programme de formation, logigramme imprimé, chapitre 4 en ligne.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 4 · exercice de positionnement des modules.</p></div>
+</div>
+</div>
 
-          <div class="content-section">
-            <h3>2.1 Structure du programme TRI</h3>
-            <p>Le programme TRI de Canado Technique s'étend sur <strong>2 ans</strong> et comprend un total de <strong>28 modules</strong>, organisés selon l'Approche Par Compétences (APC) validée par le MENFP.</p>
-            <p>La <strong>1ère année</strong> (16 modules) couvre les fondamentaux :</p>
-            <ul>
-              <li>Bases générales : mathématiques informatiques, gestion du temps, bureautique</li>
-              <li>Systèmes : OS, installation de postes, dépannage</li>
-              <li>Réseaux : protocoles, technologies Internet, bases de données</li>
-              <li>Développement professionnel : entrepreneuriat, communication, assistance technique</li>
-            </ul>
-            <p>La <strong>2ème année</strong> (12 modules) approfondit les réseaux avancés et prépare à la certification Cisco CCNA.</p>
-            <div class="info-box">
-              <span class="info-box-label">ℹ️ Approche Par Compétences (APC)</span>
-              L'APC signifie que chaque module vous rend capable de réaliser une tâche réelle en entreprise. Vous n'apprenez pas pour "savoir", vous apprenez pour "savoir faire". À la fin de TRI-01, vous pouvez expliquer votre futur métier et les opportunités de carrière.
-            </div>
-          </div>
+<!-- LEÇON 5 -->
+<div class="lp" id="lp-5">
+<div class="lp-head" onclick="toggleLp(5)">
+  <div class="lp-no">5</div>
+  <div class="lp-htxt"><h3>Évaluation, règlement intérieur et conditions de réussite</h3><div class="lp-meta">Élément de compétence 2 · Comprendre le programme</div></div>
+  <span class="lp-dur">4 h</span>
+  <span class="lp-toggle">▾</span>
+</div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Décrire le mode d'évaluation (formative et de sanction) et les obligations du règlement intérieur de l'établissement.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 4 (approche par compétences).</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
+    <ul>
+      <li>Évaluation formative ; évaluation aux fins de sanction ; droit à la reprise.</li>
+      <li>Règlement interne de l'établissement et vie scolaire.</li>
+      <li>Conditions de réussite et de progression d'un module à l'autre.</li>
+    </ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Exposé sur la différence formative / sanction et le droit à la reprise.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Lecture commentée d'extraits du règlement intérieur de Canado Technique.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Étude de cas : réussite et reprise dans un parcours type.</span></div>
+    </div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Règlement intérieur, grille d'évaluation type, chapitre 5 en ligne.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 5 · questions-réponses sur le règlement.</p></div>
+</div>
+</div>
 
-          <div class="content-section">
-            <h3>2.2 La certification Cisco CCNA</h3>
-            <p>La certification <strong>CCNA (Cisco Certified Network Associate)</strong> est une référence internationale en réseaux informatiques. Intégrée dans votre 2ème année de formation, elle atteste d'une maîtrise solide des fondamentaux réseau.</p>
-            <table class="data-table">
-              <thead><tr><th>Domaine CCNA</th><th>Contenu</th><th>Poids à l'examen</th></tr></thead>
-              <tbody>
-                <tr><td>Fondamentaux réseau</td><td>Modèle OSI, TCP/IP, protocoles</td><td>~20%</td></tr>
-                <tr><td>Accès réseau</td><td>Ethernet, Wi-Fi, switching</td><td>~20%</td></tr>
-                <tr><td>Connectivité IP</td><td>Routage statique et dynamique</td><td>~25%</td></tr>
-                <tr><td>Services IP</td><td>NAT, DHCP, DNS, NTP</td><td>~10%</td></tr>
-                <tr><td>Fondamentaux sécurité</td><td>ACL, VPN, menaces</td><td>~15%</td></tr>
-                <tr><td>Automatisation et programmabilité</td><td>APIs, SD-WAN, NetConf</td><td>~10%</td></tr>
-              </tbody>
-            </table>
-          </div>
+<!-- LEÇON 6 -->
+<div class="lp" id="lp-6">
+<div class="lp-head" onclick="toggleLp(6)">
+  <div class="lp-no">6</div>
+  <div class="lp-htxt"><h3>Auto-évaluation et bilan d'orientation professionnelle</h3><div class="lp-meta">Élément de compétence 3 · Évaluer son orientation</div></div>
+  <span class="lp-dur">6 h</span>
+  <span class="lp-toggle">▾</span>
+</div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Rédiger un bilan personnel comparant ses goûts, aptitudes et champs d'intérêt aux exigences du métier, et justifier son choix de poursuivre la formation.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçons 1 à 5.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
+    <ul>
+      <li>Distinction aptitudes / champs d'intérêt (ce que l'on aime vs ce que l'on peut réaliser).</li>
+      <li>Autoévaluation et raisons motivant la décision de poursuivre.</li>
+      <li>Éléments d'un rapport d'orientation : résumé des goûts/aptitudes/intérêts, résumé des exigences du métier, parallèle entre les deux, conclusion sur son choix.</li>
+    </ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Auto-questionnaire de départ sur goûts et aptitudes.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Rédaction du bilan personnel à l'aide de la trame fournie.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p5">Synthèse</span><span class="lp-phase-txt">Présentation du bilan ; conclusion argumentée sur le choix d'orientation.</span></div>
+    </div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Trame de rapport d'orientation, grille d'auto-évaluation, chapitre 6 en ligne.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 6 · qualité et cohérence du bilan d'orientation (critère de participation, phase de synthèse).</p></div>
+</div>
+</div>
 
-          <div class="quiz-block" id="quiz-2">
-            <div class="quiz-header">
-              <span class="quiz-icon">📝</span>
-              <h3>Quiz — Chapitre 2 : Le programme TRI</h3>
-              <span>4 questions</span>
-            </div>
-            <div class="quiz-body" id="qbody-2">
-              <div class="quiz-q" data-q="0" data-ans="2">
-                <div class="quiz-q-num">Question 1 / 4</div>
-                <div class="quiz-q-text">Combien d'années dure la formation TRI à Canado Technique ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q0')"><span class="quiz-letter">A</span>1 an</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q0')"><span class="quiz-letter">B</span>3 ans</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q0')"><span class="quiz-letter">C</span>2 ans</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q0')"><span class="quiz-letter">D</span>4 ans</button>
-                </div>
-                <div class="quiz-expl" id="expl-2-q0">La formation TRI s'étend sur 2 ans avec 28 modules au total : 16 en 1ère année et 12 en 2ème année, incluant la préparation à la certification Cisco CCNA.</div>
-              </div>
-              <div class="quiz-q" data-q="1" data-ans="0">
-                <div class="quiz-q-num">Question 2 / 4</div>
-                <div class="quiz-q-text">Que signifie CCNA ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q1')"><span class="quiz-letter">A</span>Cisco Certified Network Associate</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q1')"><span class="quiz-letter">B</span>Centre de Certification en Nouvelles Applications</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q1')"><span class="quiz-letter">C</span>Cisco Certified Network Administrator</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q1')"><span class="quiz-letter">D</span>Computer and Communication Network Association</button>
-                </div>
-                <div class="quiz-expl" id="expl-2-q1">CCNA signifie Cisco Certified Network Associate. C'est la certification de base de Cisco, reconnue mondialement et très demandée par les employeurs du secteur IT.</div>
-              </div>
-              <div class="quiz-q" data-q="2" data-ans="3">
-                <div class="quiz-q-num">Question 3 / 4</div>
-                <div class="quiz-q-text">Qu'est-ce que l'Approche Par Compétences (APC) signifie concrètement ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q2')"><span class="quiz-letter">A</span>Apprendre uniquement la théorie dans les livres</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q2')"><span class="quiz-letter">B</span>Passer des examens écrits uniquement</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q2')"><span class="quiz-letter">C</span>Mémoriser des définitions techniques</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q2')"><span class="quiz-letter">D</span>Développer des aptitudes utilisables immédiatement en entreprise</button>
-                </div>
-                <div class="quiz-expl" id="expl-2-q2">L'APC forme pour "savoir faire", pas seulement "savoir". Chaque module développe une compétence professionnelle concrète, applicable dès l'entrée sur le marché du travail.</div>
-              </div>
-              <div class="quiz-q" data-q="3" data-ans="1">
-                <div class="quiz-q-num">Question 4 / 4</div>
-                <div class="quiz-q-text">Quel est le seuil de réussite du module TRI-01 ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q3')"><span class="quiz-letter">A</span>60%</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q3')"><span class="quiz-letter">B</span>75%</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q3')"><span class="quiz-letter">C</span>80%</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,2,'q3')"><span class="quiz-letter">D</span>90%</button>
-                </div>
-                <div class="quiz-expl" id="expl-2-q3">Le seuil de réussite de TRI-01 est de 75%. Chaque module a son propre seuil. Atteindre ce seuil est obligatoire pour progresser vers le module suivant dans la formation.</div>
-              </div>
-            </div>
-            <div class="quiz-footer">
-              <div class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</div>
-              <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2,4)">Valider le quiz ✓</button>
-              <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" style="display:none" id="qretry-2">↺ Recommencer</button>
-            </div>
-          </div>
+</div>
 
-          <div class="chapter-nav">
-            <button class="btn-nav" onclick="scrollToChapter(1)">← Chapitre 1</button>
-            <button class="btn-nav primary" onclick="completeChapter(2);scrollToChapter(3)">Chapitre suivant →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- CHAPITRE 3 -->
-      <div class="chapter" id="chapter-3">
-        <div class="chapter-header">
-          <div class="chapter-num">03</div>
-          <div class="chapter-info">
-            <h2>Marché de l'emploi TI en Haïti</h2>
-            <div class="chapter-meta">
-              <span>🕐 7 heures</span>
-              <span class="chapter-badge">Opportunités · Salaires · Évolution de carrière</span>
-            </div>
-          </div>
-        </div>
-        <div class="chapter-body">
-
-          <div class="video-block" id="vid-3">
-            <div class="video-header">
-              <div class="video-icon">▶</div>
-              <div>
-                <div class="video-title">Vidéo 3 — Où travaille un TRI en Haïti ?</div>
-                <div class="video-subtitle">Durée recommandée : 10 min · Témoignages et opportunités</div>
-              </div>
-            </div>
-            <div class="video-embed">
-              <div class="video-placeholder" id="vp-3">
-                <div class="video-placeholder-icon">▶</div>
-                <div class="video-placeholder-text">Lien YouTube à insérer<br><span class="video-placeholder-url" id="vurl-display-3">Aucun lien configuré</span></div>
-              </div>
-              <iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <div class="video-guide">
-              <div class="video-guide-label">🎬 Guide de production</div>
-              <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Les secteurs porteurs (4 min)</strong> — Télécoms, banques, ONG, hôpitaux, secteur privé. Montre des logos d'entreprises haïtiennes connues. Donne des exemples de postes disponibles.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Parcours de carrière (3 min)</strong> — Dessine un chemin : Technicien jr → Technicien sr → Admin réseau → Chef de projet IT → Consultant. Montre comment la certification CCNA accélère l'ascension.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>L'entrepreneuriat en TI (2 min)</strong> — Parle de la possibilité de créer sa propre entreprise de services IT. En Haïti, beaucoup de PME n'ont pas de technicien réseau interne : c'est un marché.</div></div>
-            </div>
-            <div class="video-url-input">
-              <input type="text" id="vinput-3" placeholder="Colle ton lien YouTube ici : https://youtu.be/xxxxx">
-              <button onclick="setVideo(3)">Insérer →</button>
-            </div>
-          </div>
-
-          <div class="content-section">
-            <h3>3.1 Opportunités et évolution de carrière</h3>
-            <p>Le secteur des technologies de l'information connaît une croissance continue en Haïti. La numérisation des entreprises et institutions crée une demande croissante pour les professionnels des réseaux.</p>
-            <ul>
-              <li><strong>Technicien réseau junior</strong> — Poste d'entrée après la formation, installation et support.</li>
-              <li><strong>Technicien réseau senior</strong> — Après 2-3 ans d'expérience, gestion de projets complexes.</li>
-              <li><strong>Administrateur réseau</strong> — Gestion complète de l'infrastructure IT d'une organisation.</li>
-              <li><strong>Ingénieur réseau</strong> — Conception d'architectures réseau, souvent avec des certifications avancées.</li>
-              <li><strong>Consultant IT indépendant</strong> — Services aux PME, une voie entrepreneuriale accessible.</li>
-            </ul>
-            <div class="info-box warn">
-              <span class="info-box-label">⚠️ Avantage compétitif</span>
-              Un technicien TRI certifié CCNA de Canado Technique dispose d'un avantage concurrentiel réel sur le marché haïtien. La certification Cisco est reconnue par tous les grands employeurs du secteur télécom et bancaire.
-            </div>
-          </div>
-
-          <div class="quiz-block" id="quiz-3">
-            <div class="quiz-header">
-              <span class="quiz-icon">📝</span>
-              <h3>Quiz — Chapitre 3 : Marché de l'emploi</h3>
-              <span>4 questions</span>
-            </div>
-            <div class="quiz-body" id="qbody-3">
-              <div class="quiz-q" data-q="0" data-ans="0">
-                <div class="quiz-q-num">Question 1 / 4</div>
-                <div class="quiz-q-text">Quel est le premier niveau de poste typiquement accessible après la formation TRI ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q0')"><span class="quiz-letter">A</span>Technicien réseau junior</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q0')"><span class="quiz-letter">B</span>Directeur informatique</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q0')"><span class="quiz-letter">C</span>Ingénieur en chef</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q0')"><span class="quiz-letter">D</span>Consultant senior</button>
-                </div>
-                <div class="quiz-expl" id="expl-3-q0">Le poste d'entrée après la formation est technicien réseau junior. L'évolution vers des postes senior, admin réseau ou ingénieur se fait avec l'expérience et des certifications supplémentaires.</div>
-              </div>
-              <div class="quiz-q" data-q="1" data-ans="3">
-                <div class="quiz-q-num">Question 2 / 4</div>
-                <div class="quiz-q-text">Quel secteur en Haïti emploie beaucoup de techniciens en réseaux pour sécuriser les transactions ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q1')"><span class="quiz-letter">A</span>Agriculture</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q1')"><span class="quiz-letter">B</span>Tourisme</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q1')"><span class="quiz-letter">C</span>Artisanat</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q1')"><span class="quiz-letter">D</span>Secteur bancaire</button>
-                </div>
-                <div class="quiz-expl" id="expl-3-q1">Le secteur bancaire (BNC, BRH, Unibank, BH…) est l'un des plus grands employeurs de techniciens en réseaux en Haïti. La sécurisation des transactions financières exige des infrastructures réseau robustes.</div>
-              </div>
-              <div class="quiz-q" data-q="2" data-ans="1">
-                <div class="quiz-q-num">Question 3 / 4</div>
-                <div class="quiz-q-text">Qu'est-ce qu'un consultant IT indépendant ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q2')"><span class="quiz-letter">A</span>Un fonctionnaire du gouvernement</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q2')"><span class="quiz-letter">B</span>Un professionnel qui vend ses services à plusieurs entreprises sans être salarié d'une seule</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q2')"><span class="quiz-letter">C</span>Un stagiaire non payé</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q2')"><span class="quiz-letter">D</span>Un vendeur de matériel informatique</button>
-                </div>
-                <div class="quiz-expl" id="expl-3-q2">Le consultant IT indépendant est un entrepreneur qui propose ses services techniques à plusieurs clients (PME, institutions) sans être l'employé d'une seule organisation. C'est une voie entrepreneuriale rentable en Haïti.</div>
-              </div>
-              <div class="quiz-q" data-q="3" data-ans="2">
-                <div class="quiz-q-num">Question 4 / 4</div>
-                <div class="quiz-q-text">Pourquoi la certification CCNA est-elle un avantage sur le marché haïtien ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q3')"><span class="quiz-letter">A</span>Elle permet de travailler uniquement aux États-Unis</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q3')"><span class="quiz-letter">B</span>Elle est obligatoire pour tous les emplois en Haïti</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q3')"><span class="quiz-letter">C</span>Elle est reconnue internationalement et valorisée par les grands employeurs du secteur</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,3,'q3')"><span class="quiz-letter">D</span>Elle remplace un diplôme universitaire</button>
-                </div>
-                <div class="quiz-expl" id="expl-3-q3">La certification CCNA est reconnue dans le monde entier par Cisco, leader mondial des équipements réseau. En Haïti, les opérateurs télécom et les banques la valorisent particulièrement lors des recrutements.</div>
-              </div>
-            </div>
-            <div class="quiz-footer">
-              <div class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</div>
-              <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3,4)">Valider le quiz ✓</button>
-              <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" style="display:none" id="qretry-3">↺ Recommencer</button>
-            </div>
-          </div>
-
-          <div class="chapter-nav">
-            <button class="btn-nav" onclick="scrollToChapter(2)">← Chapitre 2</button>
-            <button class="btn-nav primary" onclick="completeChapter(3);scrollToChapter(4)">Chapitre suivant →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- CHAPITRE 4 -->
-      <div class="chapter" id="chapter-4">
-        <div class="chapter-header">
-          <div class="chapter-num">04</div>
-          <div class="chapter-info">
-            <h2>Éthique et posture professionnelle</h2>
-            <div class="chapter-meta">
-              <span>🕐 7 heures</span>
-              <span class="chapter-badge">Déontologie · Confidentialité · Responsabilité</span>
-            </div>
-          </div>
-        </div>
-        <div class="chapter-body">
-
-          <div class="video-block" id="vid-4">
-            <div class="video-header">
-              <div class="video-icon">▶</div>
-              <div>
-                <div class="video-title">Vidéo 4 — L'éthique du technicien en réseaux</div>
-                <div class="video-subtitle">Durée recommandée : 10 min · Valeurs professionnelles essentielles</div>
-              </div>
-            </div>
-            <div class="video-embed">
-              <div class="video-placeholder" id="vp-4">
-                <div class="video-placeholder-icon">▶</div>
-                <div class="video-placeholder-text">Lien YouTube à insérer<br><span class="video-placeholder-url" id="vurl-display-4">Aucun lien configuré</span></div>
-              </div>
-              <iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <div class="video-guide">
-              <div class="video-guide-label">🎬 Guide de production</div>
-              <div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>La confidentialité (4 min)</strong> — Le technicien accède à tout le réseau de l'entreprise. Illustre avec un cas concret : tu peux voir tous les emails, tous les fichiers. Pourquoi tu ne dois jamais en abuser.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Responsabilité technique (3 min)</strong> — Une mauvaise configuration peut paralyser toute une organisation. Montre l'importance du test avant déploiement, de la documentation, des sauvegardes.</div></div>
-              <div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Présentation professionnelle (2 min)</strong> — Ponctualité, tenue, communication claire avec les non-techniciens, respect de la hiérarchie. Ces soft skills font la différence dans une carrière.</div></div>
-            </div>
-            <div class="video-url-input">
-              <input type="text" id="vinput-4" placeholder="Colle ton lien YouTube ici : https://youtu.be/xxxxx">
-              <button onclick="setVideo(4)">Insérer →</button>
-            </div>
-          </div>
-
-          <div class="content-section">
-            <h3>4.1 Les valeurs du technicien réseau</h3>
-            <p>Un technicien en réseaux dispose d'un accès privilégié à l'infrastructure critique d'une organisation. Cet accès implique des responsabilités éthiques non négociables.</p>
-            <ul>
-              <li><strong>Confidentialité</strong> — Ne jamais divulguer ni utiliser les données auxquelles vous avez accès dans le cadre de votre travail.</li>
-              <li><strong>Intégrité</strong> — Rapporter honnêtement les problèmes et les erreurs, même celles que vous avez commises.</li>
-              <li><strong>Responsabilité</strong> — Assumer pleinement les conséquences de vos interventions techniques.</li>
-              <li><strong>Discrétion</strong> — Ne pas partager d'informations internes sur l'infrastructure de vos clients ou employeurs.</li>
-              <li><strong>Formation continue</strong> — Le domaine réseau évolue rapidement. Rester à jour est une obligation professionnelle.</li>
-            </ul>
-            <div class="info-box tip">
-              <span class="info-box-label">💡 Soft skills essentielles</span>
-              Les compétences techniques sont nécessaires, mais les soft skills font la différence : communication claire avec les utilisateurs non-techniciens, gestion du stress lors des pannes critiques, travail en équipe, documentation rigoureuse de chaque intervention.
-            </div>
-          </div>
-
-          <div class="quiz-block" id="quiz-4">
-            <div class="quiz-header">
-              <span class="quiz-icon">📝</span>
-              <h3>Quiz Final — Chapitre 4 : Éthique professionnelle</h3>
-              <span>4 questions</span>
-            </div>
-            <div class="quiz-body" id="qbody-4">
-              <div class="quiz-q" data-q="0" data-ans="2">
-                <div class="quiz-q-num">Question 1 / 4</div>
-                <div class="quiz-q-text">Un technicien remarque les emails privés d'un employé en configurant le serveur. Que doit-il faire ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q0')"><span class="quiz-letter">A</span>Les lire pour vérifier s'il n'y a pas de problème</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q0')"><span class="quiz-letter">B</span>En parler à ses collègues</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q0')"><span class="quiz-letter">C</span>Ignorer le contenu et se concentrer sur sa tâche technique uniquement</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q0')"><span class="quiz-letter">D</span>Faire des captures d'écran pour les conserver</button>
-                </div>
-                <div class="quiz-expl" id="expl-4-q0">La confidentialité est absolue. Le technicien ne doit jamais lire, copier, ni divulguer des informations privées auxquelles il accède dans le cadre de son travail. C'est une obligation déontologique et souvent légale.</div>
-              </div>
-              <div class="quiz-q" data-q="1" data-ans="0">
-                <div class="quiz-q-num">Question 2 / 4</div>
-                <div class="quiz-q-text">Avant d'appliquer une modification importante sur un réseau en production, que doit faire le technicien ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q1')"><span class="quiz-letter">A</span>Tester en environnement de simulation et créer une sauvegarde de la configuration</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q1')"><span class="quiz-letter">B</span>Appliquer directement pour gagner du temps</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q1')"><span class="quiz-letter">C</span>Attendre que le réseau tombe en panne d'abord</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q1')"><span class="quiz-letter">D</span>Demander à un collègue non-technicien de valider</button>
-                </div>
-                <div class="quiz-expl" id="expl-4-q1">Toute intervention sur un réseau en production doit être précédée d'un test en environnement sécurisé et d'une sauvegarde de la configuration actuelle. Une mauvaise manipulation peut paralyser toute une organisation.</div>
-              </div>
-              <div class="quiz-q" data-q="2" data-ans="1">
-                <div class="quiz-q-num">Question 3 / 4</div>
-                <div class="quiz-q-text">Qu'est-ce qu'une "soft skill" dans le contexte professionnel ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q2')"><span class="quiz-letter">A</span>Une compétence en programmation Python</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q2')"><span class="quiz-letter">B</span>Une compétence comportementale comme la communication ou la gestion du stress</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q2')"><span class="quiz-letter">C</span>Un logiciel de gestion réseau</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q2')"><span class="quiz-letter">D</span>Un câble réseau de type souple</button>
-                </div>
-                <div class="quiz-expl" id="expl-4-q2">Les soft skills sont des compétences comportementales et relationnelles : communication, empathie, gestion du stress, travail en équipe, ponctualité. Elles complètent les hard skills techniques et font souvent la différence lors des recrutements.</div>
-              </div>
-              <div class="quiz-q" data-q="3" data-ans="3">
-                <div class="quiz-q-num">Question 4 / 4</div>
-                <div class="quiz-q-text">Pourquoi la formation continue est-elle importante pour un technicien réseau ?</div>
-                <div class="quiz-opts">
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q3')"><span class="quiz-letter">A</span>Pour augmenter son salaire immédiatement</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q3')"><span class="quiz-letter">B</span>Parce que c'est obligatoire par la loi</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q3')"><span class="quiz-letter">C</span>Pour impressionner ses collègues</button>
-                  <button class="quiz-opt" onclick="selectOpt(this,4,'q3')"><span class="quiz-letter">D</span>Parce que la technologie réseau évolue rapidement et les compétences doivent rester à jour</button>
-                </div>
-                <div class="quiz-expl" id="expl-4-q3">Le domaine des réseaux évolue constamment : nouvelles technologies (Wi-Fi 6, IPv6, SD-WAN), nouvelles menaces de sécurité, nouvelles certifications. Un technicien qui arrête de se former devient rapidement obsolète.</div>
-              </div>
-            </div>
-            <div class="quiz-footer">
-              <div class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</div>
-              <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4,4)">Valider le quiz ✓</button>
-              <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" style="display:none" id="qretry-4">↺ Recommencer</button>
-            </div>
-          </div>
-
-          <div class="chapter-nav">
-            <button class="btn-nav" onclick="scrollToChapter(3)">← Chapitre 3</button>
-            <button class="btn-nav primary" onclick="completeChapter(4);checkCompletion()">Terminer le module ✓</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="completion" id="completion-msg">
-        <div style="font-size:2.5rem;margin-bottom:.8rem">🎓</div>
-        <h2>Module TRI-01 complété !</h2>
-        <p>Félicitations ! Vous avez terminé les 4 chapitres de Métier et formation.<br>Vous êtes maintenant prêt pour le module TRI-02 — Gestion du temps.</p>
-      </div>
-
-    </div>
+<!-- ══════════════════════════════════════════════════
+     CH 1 — Le métier de technicien
+══════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch-1">
+<div class="ch-header">
+  <div class="ch-num">01</div>
+  <div class="ch-info"><h2>Le métier de technicien en réseaux informatiques</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Réalité du métier · Tâches · Employeurs</span></div></div>
+</div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — C'est quoi, un technicien réseaux ?</div><div class="vsub">8 min · Introduction au métier</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Le quotidien (3 min)</strong> — Une journée type : installer un poste, dépanner un utilisateur, surveiller un réseau. Tournage dans la salle réseau de Canado.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Où travaille-t-on ? (3 min)</strong> — Banques, hôtels, ONG, administration, fournisseurs Internet. Montrer la diversité des milieux haïtiens.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Tâche vs activité (2 min)</strong> — Expliquer la différence avec un exemple concret.</div></div>
   </div>
 </div>
 
+<div class="section">
+<h3>1.1 Qui est le technicien en réseaux informatiques ?</h3>
+<p>Le technicien en réseaux informatiques est le professionnel qui <strong>installe, configure, surveille et dépanne</strong> les équipements et les liaisons qui permettent aux ordinateurs d'une organisation de communiquer entre eux et avec Internet. Il assure aussi le soutien aux utilisateurs. C'est un métier à la fois technique et relationnel : on résout des problèmes, mais on accompagne aussi des personnes.</p>
+</div>
+
+<div class="section">
+<h3>1.2 Tâche ou activité ? Une distinction importante</h3>
+<p>Tout au long de la formation, on parlera de « tâches » et d'« activités ». Il faut bien les distinguer :</p>
+<table class="dtable">
+<thead><tr><th>Notion</th><th>Définition</th><th>Exemple</th></tr></thead>
+<tbody>
+<tr><td><strong>Tâche</strong></td><td>Activité ayant un début et une fin, visant une production ou une réalisation précise</td><td>Installer et configurer un poste de travail complet</td></tr>
+<tr><td><strong>Activité</strong></td><td>Partie d'une tâche</td><td>Brancher l'écran, installer le système, créer le compte utilisateur</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>1.3 Où exerce-t-on le métier en Haïti ?</h3>
+<table class="dtable">
+<thead><tr><th>Catégorie d'employeur</th><th>Exemples concrets</th></tr></thead>
+<tbody>
+<tr><td><strong>Banques & finance</strong></td><td>Sogebank, Unibank, BRH — réseaux internes sécurisés</td></tr>
+<tr><td><strong>Hôtellerie & tourisme</strong></td><td>Réseaux Wi-Fi clients, systèmes de réservation</td></tr>
+<tr><td><strong>ONG & organisations internationales</strong></td><td>Infrastructure bureautique et connectivité terrain</td></tr>
+<tr><td><strong>Administration publique</strong></td><td>Ministères, mairies — postes et serveurs</td></tr>
+<tr><td><strong>Fournisseurs Internet & télécoms</strong></td><td>Natcom, Digicel — déploiement et maintenance réseau</td></tr>
+<tr><td><strong>À son compte</strong></td><td>Prestataire de services informatiques pour PME et particuliers</td></tr>
+</tbody></table>
+<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>Le métier ne se limite pas à « réparer des ordinateurs ». Le technicien réseaux conçoit et maintient l'<strong>infrastructure invisible</strong> sur laquelle repose toute l'activité numérique d'une organisation.</div>
+</div>
+
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Quelle est la différence entre une tâche et une activité ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Une activité dure plus longtemps qu'une tâche</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Une tâche a un début et une fin et vise une réalisation précise ; une activité en est une partie</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Il n'y a aucune différence</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Une tâche concerne le matériel, une activité concerne les logiciels</button>
+  </div><div class="qexpl" id="qe-1-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Parmi ces employeurs, lequel n'est PAS un milieu de travail typique du technicien réseaux ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Une banque comme la Sogebank</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Un fournisseur Internet comme Natcom</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Une ONG internationale</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Aucune de ces réponses — tous sont des employeurs possibles</button>
+  </div><div class="qexpl" id="qe-1-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">« Installer et configurer un poste de travail complet » est plutôt :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Une activité isolée</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Une tâche, composée de plusieurs activités</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Ni l'un ni l'autre</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Un métier à part entière</button>
+  </div><div class="qexpl" id="qe-1-2"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,3,1],['Une tâche est une activité complète, avec un début et une fin, qui vise une production précise. Une activité est une partie d\u0027une tâche.','Tous ces milieux — banques, fournisseurs Internet, ONG — emploient des techniciens en réseaux informatiques. La bonne réponse est donc D.','Installer un poste complet est une tâche : elle regroupe plusieurs activités (brancher, installer le système, créer les comptes, etc.).'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════
+     CH 2 — Marché du travail & exigences
+══════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch-2">
+<div class="ch-header">
+  <div class="ch-num">02</div>
+  <div class="ch-info"><h2>Marché du travail et exigences du métier</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Emploi · Salaires · Certifications · Évolution</span></div></div>
+</div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Marché du travail et exigences du métier</div><div class="vsub">Avatar HeyGen · Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production (à compléter)</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Accroche</strong> — introduire « Marché du travail et exigences du métier » avec un exemple concret du quotidien d'un technicien.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Développement</strong> — dérouler les points clés du chapitre.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Synthèse</strong> — récapituler et faire le lien avec le quiz.</div></div>
+  </div>
+</div>
+
+<div class="section">
+<h3>2.1 Les exigences du métier</h3>
+<p>Pour entrer sur le marché du travail et y évoluer, le technicien doit satisfaire un certain nombre d'exigences. En prendre conscience dès le départ aide à orienter ses efforts pendant la formation.</p>
+<table class="dtable">
+<thead><tr><th>Dimension</th><th>Ce que cela implique</th></tr></thead>
+<tbody>
+<tr><td><strong>Qualification au seuil d'entrée</strong></td><td>Diplôme de technicien, idéalement complété par une certification reconnue (ex. CCNA)</td></tr>
+<tr><td><strong>Conditions de travail</strong></td><td>Disponibilité, interventions parfois hors horaires, travail debout et en équipe</td></tr>
+<tr><td><strong>Possibilités d'avancement</strong></td><td>Administrateur réseau, ingénieur, responsable infrastructure, consultant</td></tr>
+<tr><td><strong>Rémunération</strong></td><td>Variable selon l'employeur, l'expérience et les certifications détenues</td></tr>
+<tr><td><strong>Égalité des sexes</strong></td><td>Métier ouvert à toutes et tous ; la mixité est encouragée dans le secteur</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>2.2 La certification, un accélérateur de carrière</h3>
+<div class="ibox gold"><span class="ibox-label">🏆 Pourquoi se certifier ?</span>Une certification comme le <strong>CCNA (Cisco Certified Network Associate)</strong> atteste de compétences reconnues mondialement. Sur le marché haïtien comme à l'étranger, elle distingue une candidature, ouvre l'accès à des postes mieux rémunérés et facilite la mobilité professionnelle. Le programme TRI prépare progressivement à ce type de certification.</div>
+</div>
+
+<div class="section">
+<h3>2.3 S'informer sur l'emploi — clique pour explorer</h3>
+<div class="dora-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="dora-card active" onclick="showInfo('emp',0,this)"><div class="dora-letter">🔎</div><div class="dora-word">Perspectives</div><div class="dora-hint">Où sont les besoins ?</div></div>
+  <div class="dora-card" onclick="showInfo('emp',1,this)"><div class="dora-letter">💰</div><div class="dora-word">Rémunération</div><div class="dora-hint">Ce qui la fait varier</div></div>
+  <div class="dora-card" onclick="showInfo('emp',2,this)"><div class="dora-letter">📈</div><div class="dora-word">Évolution</div><div class="dora-hint">Vers quels postes ?</div></div>
+</div>
+<div class="dora-detail show" id="emp-detail" style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.18);color:#1a2f52">
+  <strong>Perspectives :</strong> La numérisation des entreprises et des services publics, l'essor d'Internet et du mobile en Haïti créent une demande continue de techniciens capables d'installer et de maintenir des réseaux fiables.
+</div>
+</div>
+
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Que signifie « qualification requise au seuil d'entrée » sur le marché du travail ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Le salaire maximal qu'on peut atteindre</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Le niveau minimal de diplôme et de compétences pour accéder au métier</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Le nombre d'années avant la retraite</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>L'âge minimum pour travailler</button>
+  </div><div class="qexpl" id="qe-2-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Quel est un avantage concret d'une certification comme le CCNA ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Elle remplace totalement l'expérience professionnelle</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Elle atteste de compétences reconnues et facilite la mobilité professionnelle</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Elle garantit automatiquement un emploi à vie</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Elle n'a aucune valeur en dehors d'Haïti</button>
+  </div><div class="qexpl" id="qe-2-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Vers quel poste un technicien réseaux peut-il évoluer avec l'expérience ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Administrateur réseau ou responsable infrastructure</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Aucune évolution n'est possible</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Uniquement vendeur de matériel</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Chauffeur de l'entreprise</button>
+  </div><div class="qexpl" id="qe-2-2"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,0],['La qualification au seuil d\u0027entrée désigne le niveau minimal (diplôme + compétences) exigé pour accéder au métier.','Une certification reconnue atteste de compétences vérifiées et facilite la mobilité, en Haïti comme à l\u0027étranger. Elle complète l\u0027expérience sans la remplacer.','Avec l\u0027expérience et la formation continue, le technicien peut devenir administrateur réseau, ingénieur ou responsable infrastructure.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════
+     CH 3 — Méthodes de travail
+══════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch-3">
+<div class="ch-header">
+  <div class="ch-num">03</div>
+  <div class="ch-info"><h2>Méthodes de travail</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Repérer l'info · Prendre des notes · Discuter en groupe</span></div></div>
+</div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Méthodes de travail</div><div class="vsub">Avatar HeyGen · Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production (à compléter)</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Accroche</strong> — introduire « Méthodes de travail » avec un exemple concret du quotidien d'un technicien.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Développement</strong> — dérouler les points clés du chapitre.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Synthèse</strong> — récapituler et faire le lien avec le quiz.</div></div>
+  </div>
+</div>
+
+<div class="section">
+<h3>3.1 Repérer l'information efficacement</h3>
+<p>Bien chercher commence par de bonnes conditions et une intention claire. Avant de chercher, on précise <strong>ce que l'on cherche</strong> et on se prépare à discerner les points importants.</p>
+<div class="ibox blue"><span class="ibox-label">🧠 Conditions de réceptivité</span>Attention visuelle et auditive · climat favorable · intérêt · concentration · bien-être physique et psychologique. Sans ces conditions, même une bonne source devient inutile.</div>
+</div>
+
+<div class="section">
+<h3>3.2 Deux méthodes de prise de notes</h3>
+<table class="dtable">
+<thead><tr><th>Méthode</th><th>Principe</th><th>Quand l'utiliser</th></tr></thead>
+<tbody>
+<tr><td><strong>Notes linéaires</strong></td><td>Titres, sous-titres, puces hiérarchisées</td><td>Exposés structurés, lectures</td></tr>
+<tr><td><strong>Carte mentale</strong></td><td>Idée centrale, branches et mots-clés</td><td>Brainstorming, révision, vue d'ensemble</td></tr>
+</tbody></table>
+<p>Quelle que soit la méthode, l'essentiel est de <strong>structurer</strong> ses notes pour pouvoir les réutiliser : titres clairs, abréviations cohérentes, mise en page aérée.</p>
+</div>
+
+<div class="section">
+<h3>3.3 Les règles d'une bonne discussion de groupe</h3>
+<ul>
+  <li><strong>Participation</strong> — chacun contribue.</li>
+  <li><strong>Respect des tours de parole</strong> — on ne coupe pas la parole.</li>
+  <li><strong>Rester sur le sujet</strong> — on évite les digressions.</li>
+  <li><strong>Écoute des autres</strong> — on reformule avant de répondre.</li>
+  <li><strong>Acceptation des points de vue différents</strong> — le désaccord est normal et productif.</li>
+</ul>
+<div class="ibox green"><span class="ibox-label">✅ Bonne pratique</span>Ces règles ne servent pas que pendant la formation : en entreprise, les réunions d'équipe et les échanges avec les utilisateurs reposent exactement sur ces mêmes principes.</div>
+</div>
+
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Que faut-il faire AVANT de commencer une recherche d'information ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Préciser ce que l'on cherche et se préparer à repérer les points importants</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Lire toutes les sources possibles sans tri</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Recopier la première page trouvée</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Demander à quelqu'un de chercher à sa place</button>
+  </div><div class="qexpl" id="qe-3-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">La carte mentale est particulièrement utile pour :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Recopier un texte mot à mot</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Avoir une vue d'ensemble et organiser les idées autour d'un concept central</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Calculer des nombres</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Remplacer complètement le cours</button>
+  </div><div class="qexpl" id="qe-3-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Laquelle de ces attitudes RESPECTE les règles d'une discussion de groupe ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Couper la parole dès qu'on a une idée</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Écouter les autres et accepter les points de vue différents</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Changer de sujet en permanence</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Refuser toute opinion contraire à la sienne</button>
+  </div><div class="qexpl" id="qe-3-2"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,1,1],['On définit d\u0027abord clairement l\u0027objet de la recherche et on se prépare à discerner les points importants : la recherche devient alors ciblée et efficace.','La carte mentale organise les idées autour d\u0027un concept central : idéale pour une vue d\u0027ensemble, le brainstorming et la révision.','Écouter et accepter des points de vue différents fait partie des règles fondamentales d\u0027une discussion de groupe productive.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════
+     CH 4 — Le programme TRI
+══════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch-4">
+<div class="ch-header">
+  <div class="ch-num">04</div>
+  <div class="ch-info"><h2>Le programme de formation TRI</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Approche par compétences · 28 modules</span></div></div>
+</div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Le programme de formation TRI</div><div class="vsub">Avatar HeyGen · Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production (à compléter)</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Accroche</strong> — introduire « Le programme de formation TRI » avec un exemple concret du quotidien d'un technicien.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Développement</strong> — dérouler les points clés du chapitre.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Synthèse</strong> — récapituler et faire le lien avec le quiz.</div></div>
+  </div>
+</div>
+
+<div class="section">
+<h3>4.1 L'approche par compétences</h3>
+<p>Le programme TRI est conçu selon l'<strong>approche par compétences</strong>. On n'apprend pas seulement des notions : on développe la capacité à <strong>réaliser des tâches réelles</strong> du métier, en mobilisant connaissances, habiletés et attitudes.</p>
+<table class="dtable">
+<thead><tr><th>Principe</th><th>Ce que cela signifie</th></tr></thead>
+<tbody>
+<tr><td><strong>Pédagogie de la réussite</strong></td><td>Tout étudiant peut réussir avec un accompagnement adapté</td></tr>
+<tr><td><strong>Approche active centrée sur l'étudiant</strong></td><td>On apprend en faisant, pas seulement en écoutant</td></tr>
+<tr><td><strong>Approche critériée</strong></td><td>On est évalué selon des critères clairs, pas en comparaison avec les autres</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>4.2 Habiletés, aptitudes, attitudes, connaissances</h3>
+<table class="dtable">
+<thead><tr><th>Terme</th><th>Définition simple</th><th>Exemple</th></tr></thead>
+<tbody>
+<tr><td><strong>Habileté</strong></td><td>Capacité à reproduire un comportement</td><td>Sertir un câble réseau</td></tr>
+<tr><td><strong>Aptitude</strong></td><td>Disposition naturelle</td><td>Dextérité manuelle, logique</td></tr>
+<tr><td><strong>Attitude</strong></td><td>Façon d'agir face à une situation</td><td>Souci de la qualité du travail</td></tr>
+<tr><td><strong>Connaissance</strong></td><td>Notion, compréhension</td><td>Savoir ce qu'est une adresse IP</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>4.3 La structure du programme</h3>
+<p>Le programme comporte <strong>28 modules</strong> répartis en deux types de compétences :</p>
+<ul>
+  <li><strong>Compétences générales</strong> — préalables et transversales (ex. TRI-01 Métier et formation, TRI-03 Mathématiques, TRI-08 Bureautique).</li>
+  <li><strong>Compétences particulières</strong> — directement liées aux tâches du métier (ex. TRI-17 Initiation à la réseautique, TRI-19 Configuration d'aiguilleurs).</li>
+</ul>
+<div class="ibox blue"><span class="ibox-label">🗺️ Le logigramme</span>Le programme suit un <strong>logigramme</strong> : certains modules doivent être réussis avant d'autres. Par exemple, il faut avoir réussi TRI-05 (Systèmes d'exploitation) avant de suivre TRI-10 (Installation d'un poste). Ce module TRI-01 est le tout premier de votre parcours.</div>
+</div>
+
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Dans l'approche par compétences, qu'est-ce qui est central ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Mémoriser un maximum de définitions</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Développer la capacité à réaliser des tâches réelles du métier</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Être meilleur que les autres étudiants</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Écouter le professeur sans participer</button>
+  </div><div class="qexpl" id="qe-4-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">« Sertir un câble réseau » relève surtout d'une :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Connaissance</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Habileté</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Attitude</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Aptitude naturelle uniquement</button>
+  </div><div class="qexpl" id="qe-4-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Combien de modules compose le programme TRI ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>17</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>28</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>10</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>50</button>
+  </div><div class="qexpl" id="qe-4-2"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1],['L\u0027approche par compétences vise la capacité à réaliser des tâches réelles du métier, en mobilisant connaissances, habiletés et attitudes.','Sertir un câble est une habileté : la capacité à reproduire correctement un geste technique.','Le programme TRI comporte 28 modules, répartis en compétences générales et particulières.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════
+     CH 5 — Évaluation & réussite
+══════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch-5">
+<div class="ch-header">
+  <div class="ch-num">05</div>
+  <div class="ch-info"><h2>Évaluation et conditions de réussite</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Formative · Sanction · Règlement</span></div></div>
+</div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — Évaluation et conditions de réussite</div><div class="vsub">Avatar HeyGen · Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf5" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH05.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production (à compléter)</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Accroche</strong> — introduire « Évaluation et conditions de réussite » avec un exemple concret du quotidien d'un technicien.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Développement</strong> — dérouler les points clés du chapitre.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Synthèse</strong> — récapituler et faire le lien avec le quiz.</div></div>
+  </div>
+</div>
+
+<div class="section">
+<h3>5.1 Deux types d'évaluation</h3>
+<table class="dtable">
+<thead><tr><th>Type</th><th>But</th><th>Conséquence</th></tr></thead>
+<tbody>
+<tr><td><strong>Évaluation formative</strong></td><td>Guider l'apprentissage, repérer les difficultés</td><td>Ne compte pas pour la note finale ; sert à progresser</td></tr>
+<tr><td><strong>Évaluation de sanction</strong></td><td>Certifier que la compétence est atteinte</td><td>Détermine la réussite du module</td></tr>
+</tbody></table>
+<div class="ibox green"><span class="ibox-label">♻️ Droit à la reprise</span>En cas d'échec à l'évaluation de sanction, l'étudiant a généralement <strong>droit à une reprise</strong> après une période d'enseignement correctif. L'échec n'est pas définitif : c'est une étape du parcours.</div>
+</div>
+
+<div class="section">
+<h3>5.2 Le règlement intérieur et la vie scolaire</h3>
+<p>Au-delà des évaluations, la réussite dépend aussi du respect du <strong>règlement intérieur</strong> de l'établissement : ponctualité, assiduité, comportement en classe et en atelier, usage du matériel. Ces règles préparent aussi au monde professionnel, où la fiabilité est essentielle.</p>
+</div>
+
+<div class="section">
+<h3>5.3 Réussir TRI-01 : ce module précisément</h3>
+<div class="ibox gold"><span class="ibox-label">🎯 Comment ce module est évalué</span>TRI-01 est un module à objectif de <strong>situation</strong>. On n'y évalue pas un produit fini, mais votre <strong>participation</strong> aux trois phases : s'informer (phase 1), donner son opinion sur le métier et le programme (phase 2), et présenter un bilan personnel justifiant votre choix de poursuivre (phase 3). Les quiz en ligne servent au suivi formatif.</div>
+</div>
+
+<div class="qblock" data-qid="5">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">À quoi sert principalement l'évaluation formative ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>À certifier définitivement la réussite</button>
+    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>À guider l'apprentissage et repérer les difficultés</button>
+    <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>À comparer les étudiants entre eux</button>
+    <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>À sanctionner les absences</button>
+  </div><div class="qexpl" id="qe-5-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Que se passe-t-il généralement en cas d'échec à l'évaluation de sanction ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>L'étudiant est définitivement exclu</button>
+    <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>L'étudiant a droit à une reprise après enseignement correctif</button>
+    <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Le module est annulé pour tout le groupe</button>
+    <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Rien, la note reste cachée</button>
+  </div><div class="qexpl" id="qe-5-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Sur quoi porte l'évaluation de TRI-01, module à objectif de situation ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Sur la participation aux trois phases de la mise en situation</button>
+    <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>Sur la configuration d'un routeur</button>
+    <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Sur un examen de mathématiques</button>
+    <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>Sur la vitesse de frappe au clavier</button>
+  </div><div class="qexpl" id="qe-5-2"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,0],['L\u0027évaluation formative guide l\u0027apprentissage et aide à repérer les difficultés ; elle ne sert pas à sanctionner.','En cas d\u0027échec, l\u0027étudiant bénéficie en général d\u0027un droit à la reprise après une période d\u0027enseignement correctif.','TRI-01 étant un objectif de situation, l\u0027évaluation porte sur la participation aux phases d\u0027information, de réalisation et de synthèse.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-5"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════════
+     CH 6 — Bilan d'orientation
+══════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch-6">
+<div class="ch-header">
+  <div class="ch-num">06</div>
+  <div class="ch-info"><h2>Auto-évaluation et bilan d'orientation</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Synthèse · Décision éclairée</span></div></div>
+</div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 6 — Auto-évaluation et bilan d'orientation</div><div class="vsub">Avatar HeyGen · Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf6" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH06.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vguide"><div class="vguide-lbl">🎬 Guide de production (à compléter)</div>
+    <div class="vguide-item"><div class="vbullet">1</div><div class="vguide-txt"><strong>Accroche</strong> — introduire « Auto-évaluation et bilan d'orientation » avec un exemple concret du quotidien d'un technicien.</div></div>
+    <div class="vguide-item"><div class="vbullet">2</div><div class="vguide-txt"><strong>Développement</strong> — dérouler les points clés du chapitre.</div></div>
+    <div class="vguide-item"><div class="vbullet">3</div><div class="vguide-txt"><strong>Synthèse</strong> — récapituler et faire le lien avec le quiz.</div></div>
+  </div>
+</div>
+
+<div class="section">
+<h3>6.1 Aptitudes ou champs d'intérêt ?</h3>
+<p>Pour bien s'orienter, il faut distinguer ce que l'on <strong>aime</strong> (champs d'intérêt) de ce que l'on est <strong>capable</strong> de réaliser (aptitudes). Le métier idéal se situe à l'intersection des deux — et les aptitudes, elles, se développent par la formation.</p>
+<div class="ibox blue"><span class="ibox-label">🔍 Exemple</span>Aimer les ordinateurs (intérêt) ne suffit pas ; il faut aussi développer la rigueur, la patience et la logique (aptitudes et attitudes) qu'exige le métier. C'est précisément ce que la formation vous aide à construire.</div>
+</div>
+
+<div class="section">
+<h3>6.2 Construire son bilan d'orientation</h3>
+<p>Le bilan d'orientation est le produit de synthèse du module. Un bon rapport comporte quatre parties :</p>
+<table class="dtable">
+<thead><tr><th>Partie</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td><strong>1. Mon profil</strong></td><td>Résumé de mes goûts, aptitudes et champs d'intérêt</td></tr>
+<tr><td><strong>2. Les exigences</strong></td><td>Résumé des exigences liées à l'exercice du métier</td></tr>
+<tr><td><strong>3. Le parallèle</strong></td><td>Comparaison entre mon profil et ces exigences (forces / points à développer)</td></tr>
+<tr><td><strong>4. Ma conclusion</strong></td><td>Décision argumentée : poursuivre ou non la formation, et pourquoi</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>6.3 Réfléchir à sa décision — clique sur chaque axe</h3>
+<div class="dora-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="dora-card active" onclick="showInfo('bilan',0,this)"><div class="dora-letter">💪</div><div class="dora-word">Mes forces</div><div class="dora-hint">Ce qui m'aidera</div></div>
+  <div class="dora-card" onclick="showInfo('bilan',1,this)"><div class="dora-letter">🔧</div><div class="dora-word">À développer</div><div class="dora-hint">Mes points faibles</div></div>
+  <div class="dora-card" onclick="showInfo('bilan',2,this)"><div class="dora-letter">🧭</div><div class="dora-word">Ma décision</div><div class="dora-hint">Poursuivre ?</div></div>
+</div>
+<div class="dora-detail show" id="bilan-detail" style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.18);color:#1a2f52">
+  <strong>Mes forces :</strong> Reconnaître les qualités personnelles et les aptitudes qui faciliteront l'apprentissage et l'exercice du métier (logique, curiosité, persévérance, sens du service…).
+</div>
+</div>
+
+<div class="qblock" data-qid="6">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Quelle est la différence entre un champ d'intérêt et une aptitude ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'6',0,0)"><span class="qletter">A</span>Aucune, ce sont des synonymes</button>
+    <button class="qopt" onclick="selQ(this,'6',0,1)"><span class="qletter">B</span>Le champ d'intérêt est ce qu'on aime ; l'aptitude est ce qu'on est capable de réaliser</button>
+    <button class="qopt" onclick="selQ(this,'6',0,2)"><span class="qletter">C</span>L'aptitude concerne uniquement le sport</button>
+    <button class="qopt" onclick="selQ(this,'6',0,3)"><span class="qletter">D</span>Le champ d'intérêt ne change jamais</button>
+  </div><div class="qexpl" id="qe-6-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Que doit contenir la conclusion d'un bilan d'orientation ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'6',1,0)"><span class="qletter">A</span>Une décision argumentée sur la poursuite ou non de la formation</button>
+    <button class="qopt" onclick="selQ(this,'6',1,1)"><span class="qletter">B</span>La liste de tous les modules par cœur</button>
+    <button class="qopt" onclick="selQ(this,'6',1,2)"><span class="qletter">C</span>Le salaire exact espéré</button>
+    <button class="qopt" onclick="selQ(this,'6',1,3)"><span class="qletter">D</span>Rien de particulier</button>
+  </div><div class="qexpl" id="qe-6-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Pourquoi comparer son profil aux exigences du métier ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'6',2,0)"><span class="qletter">A</span>Pour faire un choix d'orientation éclairé et repérer ses forces et points à développer</button>
+    <button class="qopt" onclick="selQ(this,'6',2,1)"><span class="qletter">B</span>Pour se décourager</button>
+    <button class="qopt" onclick="selQ(this,'6',2,2)"><span class="qletter">C</span>Parce que c'est obligatoire sans raison</button>
+    <button class="qopt" onclick="selQ(this,'6',2,3)"><span class="qletter">D</span>Pour copier sur les autres</button>
+  </div><div class="qexpl" id="qe-6-2"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('6',[1,0,0],['Le champ d\u0027intérêt est ce que l\u0027on aime ; l\u0027aptitude est la capacité à réaliser. Le bon choix professionnel relie les deux.','La conclusion présente une décision argumentée : poursuivre ou non la formation, et pour quelles raisons.','Comparer son profil aux exigences permet un choix éclairé et met en évidence les forces à valoriser et les points à développer.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',3)">↺ Réessayer</button>
+  <span class="qscore" id="qs-6"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div>
+</div></div>
+
+<!-- COMPLETE BANNER -->
+<div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
+  <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
+  <p style="color:#dbe6ff;margin:0 0 .7rem;line-height:1.65">Tu as acquis les bases de ce module. Pour ancrer et faire évoluer ces acquis :</p>
+  <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Mini-projet</strong> — applique les notions de ce module à un cas concret de ton choix et documente ta démarche en une page.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Veille</strong> — repère une entreprise TIC haïtienne (Natcom, Digicel, une PME, une ONG) et note les compétences liées à ce module qu'elle recherche.</li>
+    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape du parcours TRI : <strong style="color:#fff">TRI-02 — Gestion du temps</strong>.</li>
+  </ul>
+</div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🎓 Module TRI-01 validé !</h2>
+  <p>Vous avez parcouru le métier, le programme et construit votre bilan d'orientation. Prochaine étape du parcours : TRI-02 — Gestion du temps.</p>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /layout -->
+</div><!-- /wrap -->
+
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
+
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+// ═══ STATE & PERSISTENCE ═══
+var ST={done:{},qs:{},sel:{}};
+var K='TRI01v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+// ═══ INIT ═══
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){
+    var el=document.getElementById('qs-'+qid);
+    if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}
+  });
+  initTimer();updateProg();
+});
+
+// ═══ PROGRESS ═══
+var TOTAL=6;
+function updateProg(){
+  var done=Object.keys(ST.done).filter(function(k){return ST.done[k];}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';
+  if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');
+  if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+
+// ═══ CHAPTER DONE ═══
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+
+// ═══ TOC / NAV ═══
+function goTo(n){
+  var el=document.getElementById(typeof n==='string'?n:'ch-'+n);
+  if(!el){toast('ℹ️ Section bientôt disponible.');return;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');
+  if(window.innerWidth<=768)toggleToc();
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function toggleToc(){
+  var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');
+  t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+
+// ═══ PLANS DE LEÇON (accordéon) ═══
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+
+// ═══ QUIZ ENGINE ═══
+function selQ(btn,qid,qi,val){
+  var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');
+  var idx=parseInt(qi);
+  if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+function submitQ(qid,answers,expls){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var sel=ST.sel[qid]||{};var total=answers.length;
+  for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}
+  var ok=0;var qItems=block.querySelectorAll('.q-item');
+  for(var i=0;i<total;i++){
+    var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;
+    qItem.querySelectorAll('.qopt').forEach(function(b,j){
+      b.disabled=true;
+      if(j===correct)b.classList.add('ok');
+      else if(j===chosen&&chosen!==correct)b.classList.add('ko');
+    });
+    var expl=document.getElementById('qe-'+qid+'-'+i);
+    if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}
+    if(chosen===correct)ok++;
   }
+  ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';
+  updateProg();
+  toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');
 }
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+function retryQ(qid,count){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});
+  block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});
+  if(ST.sel[qid])ST.sel[qid]={};
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';
 }
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+
+// ═══ CARTES INTERACTIVES (réflexion) ═══
+var INFO={
+  emp:[
+    '<strong>Perspectives :</strong> La numérisation des entreprises et services publics, l\'essor d\'Internet et du mobile en Haïti entretiennent une demande continue de techniciens capables d\'installer et de maintenir des réseaux fiables.',
+    '<strong>Rémunération :</strong> Elle varie selon l\'employeur, l\'expérience et les certifications. Les profils certifiés (CCNA, etc.) et polyvalents accèdent aux postes les mieux rémunérés.',
+    '<strong>Évolution :</strong> Du poste de technicien, on peut évoluer vers administrateur réseau, ingénieur, responsable infrastructure, ou consultant indépendant.'
+  ],
+  bilan:[
+    '<strong>Mes forces :</strong> Reconnaître les qualités personnelles et aptitudes qui faciliteront l\'apprentissage et l\'exercice du métier — logique, curiosité, persévérance, sens du service.',
+    '<strong>À développer :</strong> Identifier honnêtement les points faibles (rigueur, organisation, anglais technique…) que la formation aidera à renforcer. Les nommer, c\'est déjà commencer à les améliorer.',
+    '<strong>Ma décision :</strong> À partir du parallèle profil / exigences, formuler une décision argumentée : poursuivre la formation en expliquant ce qui motive ce choix.'
+  ]
+};
+function showInfo(group,idx,btn){
+  var grid=btn.closest('.dora-grid');
+  grid.querySelectorAll('.dora-card').forEach(function(s){s.classList.remove('active');});
+  btn.classList.add('active');
+  var d=document.getElementById(group+'-detail');
+  if(d){d.innerHTML=INFO[group][idx];d.className='dora-detail show';d.style.cssText='background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.2);color:#1a2f52;border-radius:var(--r);padding:.9rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:block';}
 }
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+
+// ═══ VIDEO ═══
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){
+  var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;
+  var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+  var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);
+  if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';
 }
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+
+// ═══ TIMER ═══
+var timerStart=Date.now();
+function initTimer(){
+  var saved=ld('time',0);timerStart=Date.now()-saved*1000;
+  setInterval(function(){
+    var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);
+    var el=document.getElementById('session-timer');
+    if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
   },1000);
 }
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
 
+// ═══ TOAST ═══
+var _tt;
+function toast(msg){
+  var t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);
+}
 </script>
-
-<div id="mod-code-data" data-code="TRI-01" style="display:none"></div>
-<div id="seuil-data" data-seuil="60" style="display:none"></div>
-<div id="toc-overlay" onclick="toggleToc()" style="display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)"></div>
-<button id="toc-mob-btn" onclick="toggleToc()" aria-label="Menu" style="display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center">☰</button>
 </body>
 </html>
