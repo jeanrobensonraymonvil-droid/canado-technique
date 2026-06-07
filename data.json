@@ -380,14 +380,14 @@
             {
               "code": "TRI-17",
               "titre": "Initiation à la réseautique",
-              "heures": 75,
+              "heures": 90,
               "seuil": 75,
               "fichier": "cours/tri/tri-2/tri-17-initiation-reseautique.html"
             },
             {
               "code": "TRI-18",
               "titre": "Installation de serveur",
-              "heures": 75,
+              "heures": 105,
               "seuil": 75,
               "fichier": "cours/tri/tri-2/tri-18-installation-serveur.html"
             },
@@ -408,28 +408,28 @@
             {
               "code": "TRI-21",
               "titre": "Évolutivité des réseaux",
-              "heures": 90,
+              "heures": 75,
               "seuil": 80,
               "fichier": "cours/tri/tri-2/tri-21-evolutivite-reseaux.html"
             },
             {
               "code": "TRI-22",
               "titre": "Maintenance des serveurs",
-              "heures": 75,
+              "heures": 45,
               "seuil": 75,
               "fichier": "cours/tri/tri-2/tri-22-maintenance-serveurs.html"
             },
             {
               "code": "TRI-23",
               "titre": "Câblage structuré",
-              "heures": 90,
+              "heures": 45,
               "seuil": 80,
               "fichier": "cours/tri/tri-2/tri-23-cablage-structure.html"
             },
             {
               "code": "TRI-24",
               "titre": "Supervision et dépannage réseau",
-              "heures": 75,
+              "heures": 90,
               "seuil": 75,
               "fichier": "cours/tri/tri-2/tri-24-supervision-depannage.html"
             },
@@ -443,7 +443,7 @@
             {
               "code": "TRI-26",
               "titre": "Sécurité de réseau",
-              "heures": 75,
+              "heures": 60,
               "seuil": 75,
               "fichier": "cours/tri/tri-2/tri-26-securite-reseau.html"
             },
@@ -457,7 +457,7 @@
             {
               "code": "TRI-28",
               "titre": "Recherche d'emploi",
-              "heures": 45,
+              "heures": 30,
               "seuil": 75,
               "fichier": "cours/tri/tri-2/tri-28-recherche-emploi.html"
             }
