@@ -245,6 +245,36 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 .rb-x{background:transparent;color:var(--g500);font-size:1.05rem;padding:.2rem .55rem}
 @media(max-width:768px){.pl-title{font-size:.92rem}.pl-bar-top{top:0;border-radius:0;margin:0 -1.2rem 1.1rem;padding:.7rem 1.2rem}.pl-bar-bottom .pl-btn{flex:1;text-align:center}}
 
+
+/* ===== v4 : plan de leçon intégré + étapes de leçon ===== */
+.lesson-plan{background:linear-gradient(135deg,#f6f9ff,#eef3ff);border:1px solid var(--bdr);border-left:4px solid var(--blueG);border-radius:var(--rL);padding:1rem 1.1rem;margin-bottom:1.4rem}
+.lpl-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.85rem}
+.lpl-ic{width:34px;height:34px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.lpl-h{flex:1}
+.lpl-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);font-family:var(--fD)}
+.lpl-title{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);line-height:1.2}
+.lpl-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem}
+.lpl-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.7rem .8rem}
+.lpl-k{font-size:.66rem;font-weight:800;color:var(--blue);margin-bottom:.35rem;font-family:var(--fD)}
+.lpl-card p,.lpl-card li{font-size:.78rem;color:#2a3d6b;line-height:1.6}
+.lpl-card ul{padding-left:1.05rem;margin:0}
+.lpl-card li{margin-bottom:.2rem}
+.lesson-step-label{font-family:var(--fD);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin:1.6rem 0 .7rem;padding-bottom:.4rem;border-bottom:1px dashed var(--bdr)}
+
+
+/* ===== Bon à savoir (récap de leçon + récap final) ===== */
+.recap{margin-top:1.4rem;background:linear-gradient(135deg,#fffaf0,#fff3d4);border:1px solid #f0d98a;border-left:4px solid var(--gold);border-radius:var(--rL);padding:1rem 1.15rem}
+.recap-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#7a5b00;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.recap-ic{font-size:1rem}
+.recap-list{margin:0;padding-left:1.15rem}
+.recap-list li{font-size:.83rem;color:#5c4a1a;line-height:1.65;margin-bottom:.4rem}
+.recap-list li strong{color:#3d3000}
+.recap-final{background:linear-gradient(135deg,#0B1525,#13243f);border:1px solid rgba(255,197,24,.3);border-left:4px solid var(--gold)}
+.recap-final .recap-h{color:var(--gold)}
+.recap-final .recap-list li{color:#e8eeff}
+.recap-final .recap-list li strong{color:#fff}
+
 </style>
 </head>
 <body>
@@ -255,9 +285,9 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <div class="mod-header-in">
     <div class="mod-tag">🧭 TRI-01 · 1ère Année · Compétence générale</div>
     <h1>Métier et <em>formation</em></h1>
-    <p class="mod-desc">Objectif de situation · 30 heures — Se situer au regard du métier de technicien en réseaux informatiques et de la démarche de formation. Plan de cours, plans de leçon, contenu contextualisé, auto-évaluation et quiz de validation.</p>
+    <p class="mod-desc">Objectif de situation — Se situer au regard du métier de technicien en réseaux informatiques et de la démarche de formation. Plan de cours, plans de leçon, contenu contextualisé, auto-évaluation et quiz de validation.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ <strong>30 heures</strong></div>
+      
       <div class="mod-meta-item">🎯 Objectif de <strong>situation</strong></div>
       <div class="mod-meta-item">📚 <strong>6 chapitres</strong></div>
       <div class="mod-meta-item">🏁 <strong>Premier module du programme</strong></div>
@@ -286,14 +316,15 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="toc" id="toc-sidebar">
   <div class="toc-title">📋 Sommaire TRI-01</div>
   <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
-  <div class="toc-item" onclick="goTo('lecons')" id="ti-lecons"><div class="toc-dot"></div><span class="toc-num">PL</span><span>Plans de leçon</span></div>
   <div class="toc-sep">Contenu du module</div>
   <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Le métier de technicien</span></div>
-  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Marché du travail & exigences</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Marché du travail &amp; exigences</span></div>
   <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Méthodes de travail</span></div>
   <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Le programme TRI</span></div>
-  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Évaluation & réussite</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Évaluation &amp; réussite</span></div>
   <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>Bilan d'orientation</span></div>
+  <div class="toc-sep">Synthèse</div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
 </div>
 
 <div id="main-content">
@@ -310,10 +341,16 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div>
 </div>
 <div class="pc-body">
+<div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
+<div class="vblock" style="margin-bottom:1.6rem">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module TRI-01</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
 
   <div class="pc-id">
     <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">TRI-01</div></div>
-    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">30 heures</div></div>
+    
     <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Situation</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">Aucun</div></div>
@@ -349,16 +386,16 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div>
 
   <div class="pc-sec">
-    <h4>Découpage en leçons (30 h)</h4>
+    <h4>Découpage en leçons</h4>
     <table class="dtable">
-      <thead><tr><th>N°</th><th>Leçon</th><th>Durée</th><th>Phase dominante</th></tr></thead>
+      <thead><tr><th>N°</th><th>Leçon</th><th>Phase dominante</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>Le métier de technicien en réseaux informatiques</td><td>6 h</td><td>Exploration · Information</td></tr>
-        <tr><td>2</td><td>Marché du travail, conditions et exigences</td><td>4 h</td><td>Information</td></tr>
-        <tr><td>3</td><td>Méthodes de travail : repérer l'information, prendre des notes, discuter en groupe</td><td>4 h</td><td>Apprentissage de base</td></tr>
-        <tr><td>4</td><td>Le programme de formation TRI et l'approche par compétences</td><td>6 h</td><td>Information · Réalisation</td></tr>
-        <tr><td>5</td><td>Évaluation, règlement intérieur et conditions de réussite</td><td>4 h</td><td>Réalisation</td></tr>
-        <tr><td>6</td><td>Auto-évaluation et bilan d'orientation professionnelle</td><td>6 h</td><td>Synthèse · Transfert</td></tr>
+        <tr><td>1</td><td>Le métier de technicien en réseaux informatiques</td><td>Exploration · Information</td></tr>
+        <tr><td>2</td><td>Marché du travail, conditions et exigences</td><td>Information</td></tr>
+        <tr><td>3</td><td>Méthodes de travail : repérer l'information, prendre des notes, discuter en groupe</td><td>Apprentissage de base</td></tr>
+        <tr><td>4</td><td>Le programme de formation TRI et l'approche par compétences</td><td>Information · Réalisation</td></tr>
+        <tr><td>5</td><td>Évaluation, règlement intérieur et conditions de réussite</td><td>Réalisation</td></tr>
+        <tr><td>6</td><td>Auto-évaluation et bilan d'orientation professionnelle</td><td>Synthèse · Transfert</td></tr>
       </tbody>
     </table>
   </div>
@@ -389,197 +426,32 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <!-- ══════════════════════════════════════════════════
      PLANS DE LEÇON
 ══════════════════════════════════════════════════════ -->
-<div class="step" id="lecons">
-<div class="lp-intro">
-  <h2>📐 Plans de leçon</h2>
-  <p>Six leçons couvrant les 30 heures du module. Chaque leçon suit les cinq phases d'acquisition d'une compétence : exploration, apprentissage de base, intégration-entraînement, transfert et enrichissement. Cliquez sur une leçon pour la déplier.</p>
-</div>
-
-<!-- LEÇON 1 -->
-<div class="lp" id="lp-1">
-<div class="lp-head" onclick="toggleLp(1)">
-  <div class="lp-no">1</div>
-  <div class="lp-htxt"><h3>Le métier de technicien en réseaux informatiques</h3><div class="lp-meta">Élément de compétence 1 · Connaître la réalité du métier</div></div>
-  <span class="lp-dur">6 h</span>
-  <span class="lp-toggle">▾</span>
-</div>
-<div class="lp-body">
-  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Décrire la nature du métier, ses tâches et activités, et les types d'entreprises où l'exerce un technicien en réseaux informatiques en Haïti.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Aucun. Mobiliser les représentations initiales des étudiants sur l'informatique et les réseaux.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
-    <ul>
-      <li>Distinguer une <strong>tâche</strong> (activité ayant un début et une fin, visant une production précise) d'une <strong>activité</strong> (partie d'une tâche).</li>
-      <li>Délimitation du métier et catégories d'employeurs (entreprises, banques, hôtels, ONG, administration publique).</li>
-      <li>Conditions de réceptivité au repérage d'information : attention, concentration, climat favorable.</li>
-    </ul></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
-    <div class="lp-phases">
-      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Présenter l'objectif du module ; tour de table sur ce que les étudiants imaginent du métier.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Exposé sur le métier, ses tâches et les milieux de travail haïtiens. Vidéo d'introduction (voir plus bas).</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Les étudiants classent une liste d'opérations en « tâches » et « activités ».</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p5">Enrichissement</span><span class="lp-phase-txt">Recherche : identifier trois employeurs locaux susceptibles d'embaucher un technicien réseaux.</span></div>
-    </div></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Projecteur, fiche d'analyse tâche/activité, accès Internet, chapitre 1 du module en ligne.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 1 · qualité du classement tâches/activités · participation au tour de table.</p></div>
-</div>
-</div>
-
-<!-- LEÇON 2 -->
-<div class="lp" id="lp-2">
-<div class="lp-head" onclick="toggleLp(2)">
-  <div class="lp-no">2</div>
-  <div class="lp-htxt"><h3>Marché du travail, conditions et exigences</h3><div class="lp-meta">Élément de compétence 1 · Connaître la réalité du métier</div></div>
-  <span class="lp-dur">4 h</span>
-  <span class="lp-toggle">▾</span>
-</div>
-<div class="lp-body">
-  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Expliquer les exigences du métier (conditions de travail, salaires, avancement) et la signification des qualifications requises au seuil d'entrée sur le marché du travail.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 1 (réalité du métier, catégories d'employeurs).</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
-    <ul>
-      <li>Particularités du marché du travail : perspectives d'emploi, rémunération, possibilités d'avancement et de mutation.</li>
-      <li>Qualifications requises au seuil d'entrée : diplôme, certifications (ex. CCNA), expérience.</li>
-      <li>Exigences du métier : conditions de travail, possibilités d'avancement, égalité des sexes, salaires.</li>
-    </ul></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
-    <div class="lp-phases">
-      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Rappel des employeurs identifiés à la leçon 1.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Exposé sur les conditions d'exercice et les certifications valorisées sur le marché.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Mini-entrevue avec un professionnel (en présentiel ou vidéo) ; prise de notes guidée.</span></div>
-    </div></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Fiches métier, offres d'emploi réelles, grille de prise de notes, chapitre 2 en ligne.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 2 · synthèse écrite des exigences du métier.</p></div>
-</div>
-</div>
-
-<!-- LEÇON 3 -->
-<div class="lp" id="lp-3">
-<div class="lp-head" onclick="toggleLp(3)">
-  <div class="lp-no">3</div>
-  <div class="lp-htxt"><h3>Méthodes de travail : repérer l'information, prendre des notes, discuter en groupe</h3><div class="lp-meta">Outils transversaux · soutien aux trois éléments</div></div>
-  <span class="lp-dur">4 h</span>
-  <span class="lp-toggle">▾</span>
-</div>
-<div class="lp-body">
-  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Appliquer une méthode de repérage de l'information, une méthode de prise de notes et les règles d'une discussion de groupe efficace.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Aucun spécifique ; utile pour toutes les leçons suivantes.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
-    <ul>
-      <li>Méthodes de repérage d'information ; préparation pour discerner les points importants.</li>
-      <li>Méthodes de prise de notes ; présentation et structuration des données.</li>
-      <li>Règles de discussion de groupe : participation, respect des tours de parole, rester sur le sujet, écoute, acceptation des points de vue différents.</li>
-    </ul></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
-    <div class="lp-phases">
-      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Présentation de deux méthodes de prise de notes (linéaire, carte mentale).</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Atelier : prendre des notes à partir d'une courte vidéo, puis les restructurer.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Débat de groupe encadré par les règles ; observation entre pairs.</span></div>
-    </div></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Modèles de prise de notes, courte vidéo support, grille d'observation de la discussion, chapitre 3 en ligne.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 3 · qualité des notes restructurées · grille d'observation du débat.</p></div>
-</div>
-</div>
-
-<!-- LEÇON 4 -->
-<div class="lp" id="lp-4">
-<div class="lp-head" onclick="toggleLp(4)">
-  <div class="lp-no">4</div>
-  <div class="lp-htxt"><h3>Le programme de formation TRI et l'approche par compétences</h3><div class="lp-meta">Élément de compétence 2 · Comprendre le programme</div></div>
-  <span class="lp-dur">6 h</span>
-  <span class="lp-toggle">▾</span>
-</div>
-<div class="lp-body">
-  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Énoncer les principes de l'approche par compétences et lister les composantes du programme TRI (modules, compétences générales et particulières).</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 3 (méthodes de travail).</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
-    <ul>
-      <li>Principes de l'approche par compétences : pédagogie de la réussite ; approche active centrée sur l'étudiant ; approche curriculaire, intégrée, multidimensionnelle et critériée.</li>
-      <li>Composantes du programme : 28 modules ; compétences particulières (liées aux tâches) et générales (préalables).</li>
-      <li>Distinction habiletés / aptitudes / attitudes / connaissances.</li>
-    </ul></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
-    <div class="lp-phases">
-      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Question ouverte : « Qu'est-ce qu'une compétence ? »</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Présentation du logigramme et de la séquence des 28 modules.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Les étudiants situent quelques modules (TRI-05, TRI-17…) dans la progression.</span></div>
-    </div></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Programme de formation, logigramme imprimé, chapitre 4 en ligne.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 4 · exercice de positionnement des modules.</p></div>
-</div>
-</div>
-
-<!-- LEÇON 5 -->
-<div class="lp" id="lp-5">
-<div class="lp-head" onclick="toggleLp(5)">
-  <div class="lp-no">5</div>
-  <div class="lp-htxt"><h3>Évaluation, règlement intérieur et conditions de réussite</h3><div class="lp-meta">Élément de compétence 2 · Comprendre le programme</div></div>
-  <span class="lp-dur">4 h</span>
-  <span class="lp-toggle">▾</span>
-</div>
-<div class="lp-body">
-  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Décrire le mode d'évaluation (formative et de sanction) et les obligations du règlement intérieur de l'établissement.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 4 (approche par compétences).</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
-    <ul>
-      <li>Évaluation formative ; évaluation aux fins de sanction ; droit à la reprise.</li>
-      <li>Règlement interne de l'établissement et vie scolaire.</li>
-      <li>Conditions de réussite et de progression d'un module à l'autre.</li>
-    </ul></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
-    <div class="lp-phases">
-      <div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Exposé sur la différence formative / sanction et le droit à la reprise.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Lecture commentée d'extraits du règlement intérieur de Canado Technique.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Étude de cas : réussite et reprise dans un parcours type.</span></div>
-    </div></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Règlement intérieur, grille d'évaluation type, chapitre 5 en ligne.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 5 · questions-réponses sur le règlement.</p></div>
-</div>
-</div>
-
-<!-- LEÇON 6 -->
-<div class="lp" id="lp-6">
-<div class="lp-head" onclick="toggleLp(6)">
-  <div class="lp-no">6</div>
-  <div class="lp-htxt"><h3>Auto-évaluation et bilan d'orientation professionnelle</h3><div class="lp-meta">Élément de compétence 3 · Évaluer son orientation</div></div>
-  <span class="lp-dur">6 h</span>
-  <span class="lp-toggle">▾</span>
-</div>
-<div class="lp-body">
-  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif de la leçon</div><p>Rédiger un bilan personnel comparant ses goûts, aptitudes et champs d'intérêt aux exigences du métier, et justifier son choix de poursuivre la formation.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçons 1 à 5.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div>
-    <ul>
-      <li>Distinction aptitudes / champs d'intérêt (ce que l'on aime vs ce que l'on peut réaliser).</li>
-      <li>Autoévaluation et raisons motivant la décision de poursuivre.</li>
-      <li>Éléments d'un rapport d'orientation : résumé des goûts/aptitudes/intérêts, résumé des exigences du métier, parallèle entre les deux, conclusion sur son choix.</li>
-    </ul></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement pédagogique</div>
-    <div class="lp-phases">
-      <div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Auto-questionnaire de départ sur goûts et aptitudes.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Rédaction du bilan personnel à l'aide de la trame fournie.</span></div>
-      <div class="lp-phase"><span class="lp-phase-tag p5">Synthèse</span><span class="lp-phase-txt">Présentation du bilan ; conclusion argumentée sur le choix d'orientation.</span></div>
-    </div></div>
-  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports & matériel</div><p>Trame de rapport d'orientation, grille d'auto-évaluation, chapitre 6 en ligne.</p></div>
-  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 6 · qualité et cohérence du bilan d'orientation (critère de participation, phase de synthèse).</p></div>
-</div>
-</div>
-
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     CH 1 — Le métier de technicien
-══════════════════════════════════════════════════════ -->
 <div class="chapter step" id="ch-1">
 <div class="ch-header">
   <div class="ch-num">01</div>
-  <div class="ch-info"><h2>Le métier de technicien en réseaux informatiques</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Réalité du métier · Tâches · Employeurs</span></div></div>
+  <div class="ch-info"><h2>Le métier de technicien en réseaux informatiques</h2><div class="ch-meta"><span class="ch-badge">Réalité du métier · Tâches · Employeurs</span></div></div>
 </div>
 <div class="ch-body">
+
+<!-- PLAN DE LEÇON -->
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Le métier de technicien en réseaux informatiques</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, vous allez…</div><ul><li>découvrir ce qu'est un technicien réseaux et ce qu'il fait au quotidien ;</li><li>distinguer une <strong>tâche</strong> d'une <strong>activité</strong> ;</li><li>repérer les milieux où s'exerce le métier en Haïti.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>C'est la <strong>toute première leçon</strong> du module : le point de départ de votre formation. Aucun prérequis n'est demandé.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regardez la vidéo, lisez la section, puis réussissez le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<!-- VIDÉO -->
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — C'est quoi, un technicien réseaux ?</div><div class="vsub">Introduction au métier</div></div></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — C'est quoi, un technicien réseaux ?</div><div class="vsub">Prof. Aly Loubert</div></div></div>
   <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
+<!-- LECTURE -->
+<div class="lesson-step-label">② Lecture</div>
 <div class="section">
 <h3>1.1 Qui est le technicien en réseaux informatiques ?</h3>
 <p>Le technicien en réseaux informatiques est le professionnel qui <strong>installe, configure, surveille et dépanne</strong> les équipements et les liaisons qui permettent aux ordinateurs d'une organisation de communiquer entre eux et avec Internet. Il assure aussi le soutien aux utilisateurs. C'est un métier à la fois technique et relationnel : on résout des problèmes, mais on accompagne aussi des personnes.</p>
@@ -611,31 +483,72 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="ibox blue"><span class="ibox-label">💡 À retenir</span>Le métier ne se limite pas à « réparer des ordinateurs ». Le technicien réseaux conçoit et maintient l'<strong>infrastructure invisible</strong> sur laquelle repose toute l'activité numérique d'une organisation.</div>
 </div>
 
+<div class="section">
+<h3>1.4 Les principales tâches au quotidien</h3>
+<p>Au-delà de la définition, voici ce qu'un technicien réseaux réalise concrètement, semaine après semaine :</p>
+<ul>
+<li><strong>Installer et configurer</strong> les postes, serveurs et équipements réseau (switch, routeur, point d'accès Wi-Fi).</li>
+<li><strong>Surveiller</strong> le réseau et <strong>diagnostiquer</strong> les pannes lorsqu'une connexion ou un service tombe.</li>
+<li><strong>Assurer la sécurité de base</strong> : mots de passe, sauvegardes, mises à jour, protection contre les logiciels malveillants.</li>
+<li><strong>Soutenir et former</strong> les utilisateurs qui rencontrent des difficultés.</li>
+<li><strong>Documenter</strong> les interventions pour garder une trace fiable de l'infrastructure.</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>1.5 Compétences et qualités attendues</h3>
+<p>Le métier demande un équilibre entre savoir-faire technique et savoir-être :</p>
+<div class="ibox green"><span class="ibox-label">Profil recherché</span><strong>Rigueur et méthode</strong> pour intervenir sans rien casser · <strong>logique de résolution de problèmes</strong> · <strong>curiosité technique</strong> pour suivre l'évolution des outils · <strong>sens du service et bonne communication</strong> avec les utilisateurs · <strong>bases d'anglais technique</strong> (la documentation est souvent en anglais).</div>
+</div>
+
+<!-- QUIZ -->
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list">
+    <li><strong>Le technicien réseaux</strong> installe, configure, surveille et dépanne les réseaux ; un métier à la fois technique et relationnel.</li>
+    <li>Une <strong>tâche</strong> a un début, une fin et un résultat précis ; une <strong>activité</strong> n'en est qu'une partie.</li>
+    <li>En Haïti, on l'exerce dans les banques, hôtels, ONG, l'administration, chez les opérateurs (Natcom, Digicel) ou à son compte.</li>
+    <li>Le métier consiste à bâtir et entretenir l'« infrastructure invisible » de toute l'activité numérique.</li>
+  </ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="1">
-<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Quelle est la différence entre une tâche et une activité ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle est la différence entre une tâche et une activité ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Une activité dure plus longtemps qu'une tâche</button>
     <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Une tâche a un début et une fin et vise une réalisation précise ; une activité en est une partie</button>
     <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Il n'y a aucune différence</button>
     <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Une tâche concerne le matériel, une activité concerne les logiciels</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Parmi ces employeurs, lequel n'est PAS un milieu de travail typique du technicien réseaux ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Parmi ces employeurs, lequel n'est PAS un milieu de travail typique du technicien réseaux ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Une banque comme la Sogebank</button>
     <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Un fournisseur Internet comme Natcom</button>
     <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Une ONG internationale</button>
     <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Aucune de ces réponses — tous sont des employeurs possibles</button>
   </div><div class="qexpl" id="qe-1-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">« Installer et configurer un poste de travail complet » est plutôt :</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">« Installer et configurer un poste de travail complet » est plutôt :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Une activité isolée</button>
     <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Une tâche, composée de plusieurs activités</button>
     <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Ni l'un ni l'autre</button>
     <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Un métier à part entière</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le métier de technicien réseaux est avant tout :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Purement technique, sans contact humain</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>À la fois technique et relationnel</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Uniquement du dépannage d'urgence</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Réservé aux grandes entreprises</button>
+  </div><div class="qexpl" id="qe-1-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que désigne « l'infrastructure invisible » évoquée dans le chapitre ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Uniquement les câbles cachés dans les murs</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>L'ensemble des équipements et liaisons réseau sur lesquels repose l'activité numérique</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Un logiciel antivirus</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Le site web public de l'entreprise</button>
+  </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,3,1],['Une tâche est une activité complète, avec un début et une fin, qui vise une production précise. Une activité est une partie d\u0027une tâche.','Tous ces milieux — banques, fournisseurs Internet, ONG — emploient des techniciens en réseaux informatiques. La bonne réponse est donc D.','Installer un poste complet est une tâche : elle regroupe plusieurs activités (brancher, installer le système, créer les comptes, etc.).'])">✓ Valider</button>
-  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',3)">↺ Réessayer</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,3,1,1,1],['Une tâche est une activité complète, avec un début et une fin, qui vise une production précise. Une activité représente une partie de cette tâche.','Tous ces milieux — banques, fournisseurs Internet, ONG — emploient des techniciens en réseaux informatiques. La bonne réponse est donc D.','Installer un poste complet est une tâche : elle regroupe plusieurs activités comme brancher, installer le système et créer les comptes.','Le métier combine compétences techniques et relation humaine : on résout des problèmes et on accompagne aussi des personnes.','Cette infrastructure regroupe les équipements et les liaisons réseau : peu visibles, mais essentiels au fonctionnement numérique de toute organisation.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
 </div>
@@ -648,14 +561,27 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-2">
 <div class="ch-header">
   <div class="ch-num">02</div>
-  <div class="ch-info"><h2>Marché du travail et exigences du métier</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Emploi · Salaires · Certifications · Évolution</span></div></div>
+  <div class="ch-info"><h2>Marché du travail et exigences du métier</h2><div class="ch-meta"><span class="ch-badge">Emploi · Salaires · Certifications · Évolution</span></div></div>
 </div>
 <div class="ch-body">
+
+<!-- PLAN DE LEÇON -->
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Marché du travail et exigences du métier</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, vous allez…</div><ul><li>comprendre les <strong>conditions d'exercice</strong> du métier (travail, salaires, avancement) ;</li><li>saisir la <strong>qualification requise au seuil d'entrée</strong> ;</li><li>mesurer le rôle des <strong>certifications</strong> (ex. CCNA).</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Leçon 1 — la <strong>réalité du métier</strong> et les types d'employeurs en Haïti.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regardez la vidéo, lisez la section, puis réussissez le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
   <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Marché du travail et exigences du métier</div><div class="vsub">Prof. Aly Loubert</div></div></div>
   <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
+<div class="lesson-step-label">② Lecture</div>
 <div class="section">
 <h3>2.1 Les exigences du métier</h3>
 <p>Pour entrer sur le marché du travail et y évoluer, le technicien doit satisfaire un certain nombre d'exigences. En prendre conscience dès le départ aide à orienter ses efforts pendant la formation.</p>
@@ -687,31 +613,53 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 </div>
 </div>
 
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list">
+    <li>La <strong>qualification au seuil d'entrée</strong> est le niveau minimal (diplôme + compétences) pour accéder au métier.</li>
+    <li>La <strong>certification CCNA</strong> atteste des compétences et facilite la mobilité ; elle complète l'expérience.</li>
+    <li>La rémunération varie selon l'employeur, l'expérience et les certifications ; on évolue vers administrateur, ingénieur, responsable infrastructure.</li>
+    <li>Le métier est ouvert à toutes et à tous.</li>
+  </ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="2">
-<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Que signifie « qualification requise au seuil d'entrée » sur le marché du travail ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Que signifie « qualification requise au seuil d'entrée » sur le marché du travail ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Le salaire maximal qu'on peut atteindre</button>
     <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Le niveau minimal de diplôme et de compétences pour accéder au métier</button>
     <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Le nombre d'années avant la retraite</button>
     <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>L'âge minimum pour travailler</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Quel est un avantage concret d'une certification comme le CCNA ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel est un avantage concret d'une certification comme le CCNA ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Elle remplace totalement l'expérience professionnelle</button>
     <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Elle atteste de compétences reconnues et facilite la mobilité professionnelle</button>
     <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Elle garantit automatiquement un emploi à vie</button>
     <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Elle n'a aucune valeur en dehors d'Haïti</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Vers quel poste un technicien réseaux peut-il évoluer avec l'expérience ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Vers quel poste un technicien réseaux peut-il évoluer avec l'expérience ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Administrateur réseau ou responsable infrastructure</button>
     <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Aucune évolution n'est possible</button>
     <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Uniquement vendeur de matériel</button>
     <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Chauffeur de l'entreprise</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Selon le chapitre, qu'est-ce qui fait varier la rémunération d'un technicien ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>Uniquement son âge</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>L'employeur, l'expérience et les certifications détenues</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>La marque de son ordinateur</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>Rien : elle est identique pour tous</button>
+  </div><div class="qexpl" id="qe-2-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Le métier de technicien réseaux est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>Réservé aux hommes</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>Ouvert à toutes et à tous, la mixité étant encouragée</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>Réservé aux femmes</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>Interdit aux débutants</button>
+  </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,0],['La qualification au seuil d\u0027entrée désigne le niveau minimal (diplôme + compétences) exigé pour accéder au métier.','Une certification reconnue atteste de compétences vérifiées et facilite la mobilité, en Haïti comme à l\u0027étranger. Elle complète l\u0027expérience sans la remplacer.','Avec l\u0027expérience et la formation continue, le technicien peut devenir administrateur réseau, ingénieur ou responsable infrastructure.'])">✓ Valider</button>
-  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',3)">↺ Réessayer</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,0,1,1],['La qualification au seuil d\u0027entrée désigne le niveau minimal (diplôme + compétences) exigé pour accéder au métier.','Une certification reconnue atteste de compétences vérifiées et facilite la mobilité, en Haïti comme à l\u0027étranger. Elle complète l\u0027expérience sans la remplacer.','Avec l\u0027expérience et la formation continue, le technicien peut devenir administrateur réseau, ingénieur ou responsable infrastructure.','La rémunération varie selon l\u0027employeur, l\u0027expérience et les certifications détenues.','Le métier est ouvert à toutes et à tous : la mixité est encouragée dans le secteur.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
 </div>
@@ -724,14 +672,27 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-3">
 <div class="ch-header">
   <div class="ch-num">03</div>
-  <div class="ch-info"><h2>Méthodes de travail</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Repérer l'info · Prendre des notes · Discuter en groupe</span></div></div>
+  <div class="ch-info"><h2>Méthodes de travail</h2><div class="ch-meta"><span class="ch-badge">Repérer l'info · Prendre des notes · Discuter en groupe</span></div></div>
 </div>
 <div class="ch-body">
+
+<!-- PLAN DE LEÇON -->
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Méthodes de travail</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, vous allez…</div><ul><li>appliquer une méthode pour <strong>repérer l'information</strong> utile ;</li><li>maîtriser une méthode de <strong>prise de notes</strong> ;</li><li>connaître les <strong>règles d'une discussion de groupe</strong> efficace.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Leçon 2 — le <strong>marché du travail</strong> et les exigences du métier.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regardez la vidéo, lisez la section, puis réussissez le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
   <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Méthodes de travail</div><div class="vsub">Prof. Aly Loubert</div></div></div>
   <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
+<div class="lesson-step-label">② Lecture</div>
 <div class="section">
 <h3>3.1 Repérer l'information efficacement</h3>
 <p>Bien chercher commence par de bonnes conditions et une intention claire. Avant de chercher, on précise <strong>ce que l'on cherche</strong> et on se prépare à discerner les points importants.</p>
@@ -761,31 +722,52 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="ibox green"><span class="ibox-label">✅ Bonne pratique</span>Ces règles ne servent pas que pendant la formation : en entreprise, les réunions d'équipe et les échanges avec les utilisateurs reposent exactement sur ces mêmes principes.</div>
 </div>
 
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list">
+    <li>Avant de chercher : préciser ce qu'on cherche et réunir de bonnes conditions de réceptivité (attention, concentration).</li>
+    <li>Deux méthodes de prise de notes : <strong>linéaire</strong> (exposés, lectures) et <strong>carte mentale</strong> (vue d'ensemble) — toujours restructurer ses notes.</li>
+    <li>Discussion de groupe : participer, respecter les tours de parole, rester sur le sujet, écouter et accepter les points de vue différents.</li>
+  </ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="3">
-<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Que faut-il faire AVANT de commencer une recherche d'information ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Que faut-il faire AVANT de commencer une recherche d'information ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Préciser ce que l'on cherche et se préparer à repérer les points importants</button>
     <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Lire toutes les sources possibles sans tri</button>
     <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Recopier la première page trouvée</button>
     <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Demander à quelqu'un de chercher à sa place</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">La carte mentale est particulièrement utile pour :</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La carte mentale est particulièrement utile pour :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Recopier un texte mot à mot</button>
     <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Avoir une vue d'ensemble et organiser les idées autour d'un concept central</button>
     <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Calculer des nombres</button>
     <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Remplacer complètement le cours</button>
   </div><div class="qexpl" id="qe-3-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Laquelle de ces attitudes RESPECTE les règles d'une discussion de groupe ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Laquelle de ces attitudes RESPECTE les règles d'une discussion de groupe ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Couper la parole dès qu'on a une idée</button>
     <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Écouter les autres et accepter les points de vue différents</button>
     <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Changer de sujet en permanence</button>
     <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Refuser toute opinion contraire à la sienne</button>
   </div><div class="qexpl" id="qe-3-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour quel usage les notes linéaires sont-elles les mieux adaptées ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Un exposé structuré ou une lecture</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Un brainstorming sans structure</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Un calcul de budget</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Un dessin technique</button>
+  </div><div class="qexpl" id="qe-3-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Pourquoi de bonnes conditions de réceptivité (attention, concentration) sont-elles nécessaires ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Elles n'ont aucun effet</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Sans elles, même une bonne source d'information devient inutile</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Elles remplacent la prise de notes</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Elles ne servent que le jour de l'examen</button>
+  </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,1,1],['On définit d\u0027abord clairement l\u0027objet de la recherche et on se prépare à discerner les points importants : la recherche devient alors ciblée et efficace.','La carte mentale organise les idées autour d\u0027un concept central : idéale pour une vue d\u0027ensemble, le brainstorming et la révision.','Écouter et accepter des points de vue différents fait partie des règles fondamentales d\u0027une discussion de groupe productive.'])">✓ Valider</button>
-  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',3)">↺ Réessayer</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,1,1,0,1],['On définit d\u0027abord clairement l\u0027objet de la recherche et on se prépare à discerner les points importants : la recherche devient alors ciblée et efficace.','La carte mentale organise les idées autour d\u0027un concept central : idéale pour une vue d\u0027ensemble, le brainstorming et la révision.','Écouter et accepter des points de vue différents fait partie des règles fondamentales d\u0027une discussion de groupe productive.','Les notes linéaires (titres et puces hiérarchisées) conviennent aux exposés structurés et aux lectures.','Sans attention ni concentration, même une bonne source devient inutile : la réceptivité conditionne le repérage de l\u0027information.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
 </div>
@@ -798,14 +780,27 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-4">
 <div class="ch-header">
   <div class="ch-num">04</div>
-  <div class="ch-info"><h2>Le programme de formation TRI</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Approche par compétences · 28 modules</span></div></div>
+  <div class="ch-info"><h2>Le programme de formation TRI</h2><div class="ch-meta"><span class="ch-badge">Approche par compétences · 28 modules</span></div></div>
 </div>
 <div class="ch-body">
+
+<!-- PLAN DE LEÇON -->
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Le programme de formation TRI</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, vous allez…</div><ul><li>comprendre les principes de l'<strong>approche par compétences</strong> ;</li><li>situer les <strong>composantes du programme TRI</strong> (28 modules) ;</li><li>distinguer compétences <strong>générales</strong> et <strong>particulières</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Leçon 3 — les <strong>méthodes de travail</strong> transversales.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regardez la vidéo, lisez la section, puis réussissez le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
   <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Le programme de formation TRI</div><div class="vsub">Prof. Aly Loubert</div></div></div>
   <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
+<div class="lesson-step-label">② Lecture</div>
 <div class="section">
 <h3>4.1 L'approche par compétences</h3>
 <p>Le programme TRI est conçu selon l'<strong>approche par compétences</strong>. On n'apprend pas seulement des notions : on développe la capacité à <strong>réaliser des tâches réelles</strong> du métier, en mobilisant connaissances, habiletés et attitudes.</p>
@@ -840,31 +835,52 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="ibox blue"><span class="ibox-label">🗺️ Le logigramme</span>Le programme suit un <strong>logigramme</strong> : certains modules doivent être réussis avant d'autres. Par exemple, il faut avoir réussi TRI-05 (Systèmes d'exploitation) avant de suivre TRI-10 (Installation d'un poste). Ce module TRI-01 est le tout premier de votre parcours.</div>
 </div>
 
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list">
+    <li>L'<strong>approche par compétences</strong> : on apprend en faisant, dans une pédagogie de la réussite et une évaluation critériée.</li>
+    <li>Une compétence mobilise <strong>connaissances, habiletés, aptitudes et attitudes</strong>.</li>
+    <li>Le programme TRI compte <strong>28 modules</strong> (compétences générales et particulières), organisés selon un logigramme de prérequis.</li>
+  </ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="4">
-<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Dans l'approche par compétences, qu'est-ce qui est central ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Dans l'approche par compétences, qu'est-ce qui est central ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Mémoriser un maximum de définitions</button>
     <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Développer la capacité à réaliser des tâches réelles du métier</button>
     <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Être meilleur que les autres étudiants</button>
     <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Écouter le professeur sans participer</button>
   </div><div class="qexpl" id="qe-4-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">« Sertir un câble réseau » relève surtout d'une :</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">« Sertir un câble réseau » relève surtout d'une :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Connaissance</button>
     <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Habileté</button>
     <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Attitude</button>
     <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Aptitude naturelle uniquement</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Combien de modules compose le programme TRI ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Combien de modules compose le programme TRI ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>17</button>
     <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>28</button>
     <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>10</button>
     <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>50</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que signifie une « approche critériée » ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>On classe les étudiants les uns par rapport aux autres</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>On évalue selon des critères clairs, pas en comparaison avec les autres</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Il n'y a aucune évaluation</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Seuls les meilleurs réussissent</button>
+  </div><div class="qexpl" id="qe-4-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">« Savoir ce qu'est une adresse IP » relève surtout d'une :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Habileté</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Attitude</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Connaissance</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Aptitude naturelle</button>
+  </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1],['L\u0027approche par compétences vise la capacité à réaliser des tâches réelles du métier, en mobilisant connaissances, habiletés et attitudes.','Sertir un câble est une habileté : la capacité à reproduire correctement un geste technique.','Le programme TRI comporte 28 modules, répartis en compétences générales et particulières.'])">✓ Valider</button>
-  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',3)">↺ Réessayer</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,2],['L\u0027approche par compétences vise la capacité à réaliser des tâches réelles du métier, en mobilisant connaissances, habiletés et attitudes.','Sertir un câble est une habileté : la capacité à reproduire correctement un geste technique.','Le programme TRI comporte 28 modules, répartis en compétences générales et particulières.','L\u0027approche critériée évalue chacun selon des critères clairs, et non par comparaison avec les autres étudiants.','Savoir ce qu\u0027est une adresse IP est une connaissance : une notion comprise, à distinguer d\u0027une habileté ou d\u0027une attitude.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
 </div>
@@ -877,14 +893,27 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-5">
 <div class="ch-header">
   <div class="ch-num">05</div>
-  <div class="ch-info"><h2>Évaluation et conditions de réussite</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Formative · Sanction · Règlement</span></div></div>
+  <div class="ch-info"><h2>Évaluation et conditions de réussite</h2><div class="ch-meta"><span class="ch-badge">Formative · Sanction · Règlement</span></div></div>
 </div>
 <div class="ch-body">
+
+<!-- PLAN DE LEÇON -->
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 5</div><div class="lpl-title">Évaluation et conditions de réussite</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, vous allez…</div><ul><li>différencier évaluation <strong>formative</strong> et <strong>de sanction</strong> ;</li><li>connaître le <strong>droit à la reprise</strong> ;</li><li>repérer les obligations du <strong>règlement intérieur</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Leçon 4 — le <strong>programme TRI</strong> et l'approche par compétences.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regardez la vidéo, lisez la section, puis réussissez le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
   <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — Évaluation et conditions de réussite</div><div class="vsub">Prof. Aly Loubert</div></div></div>
   <div class="vembed"><video id="vf5" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH05.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
+<div class="lesson-step-label">② Lecture</div>
 <div class="section">
 <h3>5.1 Deux types d'évaluation</h3>
 <table class="dtable">
@@ -906,31 +935,53 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="ibox gold"><span class="ibox-label">🎯 Comment ce module est évalué</span>TRI-01 est un module à objectif de <strong>situation</strong>. On n'y évalue pas un produit fini, mais votre <strong>participation</strong> aux trois phases : s'informer (phase 1), donner son opinion sur le métier et le programme (phase 2), et présenter un bilan personnel justifiant votre choix de poursuivre (phase 3). Les quiz en ligne servent au suivi formatif.</div>
 </div>
 
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list">
+    <li>L'<strong>évaluation formative</strong> aide à progresser (sans sanction) ; l'<strong>évaluation de sanction</strong> certifie la réussite du module.</li>
+    <li>En cas d'échec, il existe un <strong>droit à la reprise</strong> après enseignement correctif.</li>
+    <li>Le <strong>règlement intérieur</strong> (ponctualité, assiduité) prépare aussi au monde professionnel.</li>
+    <li>TRI-01, module à objectif de situation, est évalué sur la participation aux trois phases.</li>
+  </ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="5">
-<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">À quoi sert principalement l'évaluation formative ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">À quoi sert principalement l'évaluation formative ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>À certifier définitivement la réussite</button>
     <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>À guider l'apprentissage et repérer les difficultés</button>
     <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>À comparer les étudiants entre eux</button>
     <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>À sanctionner les absences</button>
   </div><div class="qexpl" id="qe-5-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Que se passe-t-il généralement en cas d'échec à l'évaluation de sanction ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que se passe-t-il généralement en cas d'échec à l'évaluation de sanction ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>L'étudiant est définitivement exclu</button>
     <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>L'étudiant a droit à une reprise après enseignement correctif</button>
     <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Le module est annulé pour tout le groupe</button>
     <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Rien, la note reste cachée</button>
   </div><div class="qexpl" id="qe-5-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Sur quoi porte l'évaluation de TRI-01, module à objectif de situation ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Sur quoi porte l'évaluation de TRI-01, module à objectif de situation ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Sur la participation aux trois phases de la mise en situation</button>
     <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>Sur la configuration d'un routeur</button>
     <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Sur un examen de mathématiques</button>
     <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>Sur la vitesse de frappe au clavier</button>
   </div><div class="qexpl" id="qe-5-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le respect du règlement intérieur (ponctualité, assiduité) prépare aussi :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>À rien de particulier</button>
+    <button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Au monde professionnel, où la fiabilité est essentielle</button>
+    <button class="qopt" onclick="selQ(this,'5',3,2)"><span class="qletter">C</span>Uniquement aux examens</button>
+    <button class="qopt" onclick="selQ(this,'5',3,3)"><span class="qletter">D</span>À éviter les ateliers</button>
+  </div><div class="qexpl" id="qe-5-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quelle est la conséquence d'une évaluation de sanction ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',4,0)"><span class="qletter">A</span>Elle ne compte jamais</button>
+    <button class="qopt" onclick="selQ(this,'5',4,1)"><span class="qletter">B</span>Elle certifie la compétence et détermine la réussite du module</button>
+    <button class="qopt" onclick="selQ(this,'5',4,2)"><span class="qletter">C</span>Elle sert seulement à comparer les étudiants</button>
+    <button class="qopt" onclick="selQ(this,'5',4,3)"><span class="qletter">D</span>Elle reste cachée</button>
+  </div><div class="qexpl" id="qe-5-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,0],['L\u0027évaluation formative guide l\u0027apprentissage et aide à repérer les difficultés ; elle ne sert pas à sanctionner.','En cas d\u0027échec, l\u0027étudiant bénéficie en général d\u0027un droit à la reprise après une période d\u0027enseignement correctif.','TRI-01 étant un objectif de situation, l\u0027évaluation porte sur la participation aux phases d\u0027information, de réalisation et de synthèse.'])">✓ Valider</button>
-  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',3)">↺ Réessayer</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,0,1,1],['L\u0027évaluation formative guide l\u0027apprentissage et aide à repérer les difficultés ; elle ne sert pas à sanctionner.','En cas d\u0027échec, l\u0027étudiant bénéficie en général d\u0027un droit à la reprise après une période d\u0027enseignement correctif.','TRI-01 étant un objectif de situation, l\u0027évaluation porte sur la participation aux phases d\u0027information, de réalisation et de synthèse.','Ponctualité et assiduité préparent au monde professionnel, où la fiabilité est essentielle.','L\u0027évaluation de sanction certifie la compétence et détermine la réussite du module.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-5"></span>
 </div>
 </div>
@@ -943,14 +994,27 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-6">
 <div class="ch-header">
   <div class="ch-num">06</div>
-  <div class="ch-info"><h2>Auto-évaluation et bilan d'orientation</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Synthèse · Décision éclairée</span></div></div>
+  <div class="ch-info"><h2>Auto-évaluation et bilan d'orientation</h2><div class="ch-meta"><span class="ch-badge">Synthèse · Décision éclairée</span></div></div>
 </div>
 <div class="ch-body">
+
+<!-- PLAN DE LEÇON -->
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 6</div><div class="lpl-title">Auto-évaluation et bilan d'orientation</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, vous allez…</div><ul><li>comparer vos <strong>goûts et aptitudes</strong> aux exigences du métier ;</li><li>rédiger un <strong>bilan personnel</strong> structuré ;</li><li>justifier votre <strong>choix de poursuivre</strong> la formation.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Leçons 1 à 5 — l'<strong>ensemble du module</strong> : métier, marché, méthodes, programme, évaluation.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regardez la vidéo, lisez la section, puis réussissez le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
   <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 6 — Auto-évaluation et bilan d'orientation</div><div class="vsub">Prof. Aly Loubert</div></div></div>
   <div class="vembed"><video id="vf6" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI01/final/TRI01-CH06.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
+<div class="lesson-step-label">② Lecture</div>
 <div class="section">
 <h3>6.1 Aptitudes ou champs d'intérêt ?</h3>
 <p>Pour bien s'orienter, il faut distinguer ce que l'on <strong>aime</strong> (champs d'intérêt) de ce que l'on est <strong>capable</strong> de réaliser (aptitudes). Le métier idéal se situe à l'intersection des deux — et les aptitudes, elles, se développent par la formation.</p>
@@ -982,36 +1046,78 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 </div>
 </div>
 
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list">
+    <li>Distinguer <strong>champ d'intérêt</strong> (ce qu'on aime) et <strong>aptitude</strong> (ce qu'on peut réaliser) ; les aptitudes se développent par la formation.</li>
+    <li>Le <strong>bilan d'orientation</strong> suit quatre parties : profil → exigences du métier → parallèle → conclusion argumentée.</li>
+    <li>Comparer son profil aux exigences permet un choix éclairé, en révélant forces et points à développer.</li>
+  </ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="6">
-<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">3 questions</span></div>
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 6</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 3</div><div class="q-text">Quelle est la différence entre un champ d'intérêt et une aptitude ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle est la différence entre un champ d'intérêt et une aptitude ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'6',0,0)"><span class="qletter">A</span>Aucune, ce sont des synonymes</button>
     <button class="qopt" onclick="selQ(this,'6',0,1)"><span class="qletter">B</span>Le champ d'intérêt est ce qu'on aime ; l'aptitude est ce qu'on est capable de réaliser</button>
     <button class="qopt" onclick="selQ(this,'6',0,2)"><span class="qletter">C</span>L'aptitude concerne uniquement le sport</button>
     <button class="qopt" onclick="selQ(this,'6',0,3)"><span class="qletter">D</span>Le champ d'intérêt ne change jamais</button>
   </div><div class="qexpl" id="qe-6-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 3</div><div class="q-text">Que doit contenir la conclusion d'un bilan d'orientation ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que doit contenir la conclusion d'un bilan d'orientation ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'6',1,0)"><span class="qletter">A</span>Une décision argumentée sur la poursuite ou non de la formation</button>
     <button class="qopt" onclick="selQ(this,'6',1,1)"><span class="qletter">B</span>La liste de tous les modules par cœur</button>
     <button class="qopt" onclick="selQ(this,'6',1,2)"><span class="qletter">C</span>Le salaire exact espéré</button>
     <button class="qopt" onclick="selQ(this,'6',1,3)"><span class="qletter">D</span>Rien de particulier</button>
   </div><div class="qexpl" id="qe-6-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 3</div><div class="q-text">Pourquoi comparer son profil aux exigences du métier ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pourquoi comparer son profil aux exigences du métier ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'6',2,0)"><span class="qletter">A</span>Pour faire un choix d'orientation éclairé et repérer ses forces et points à développer</button>
     <button class="qopt" onclick="selQ(this,'6',2,1)"><span class="qletter">B</span>Pour se décourager</button>
     <button class="qopt" onclick="selQ(this,'6',2,2)"><span class="qletter">C</span>Parce que c'est obligatoire sans raison</button>
     <button class="qopt" onclick="selQ(this,'6',2,3)"><span class="qletter">D</span>Pour copier sur les autres</button>
   </div><div class="qexpl" id="qe-6-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Dans le bilan d'orientation, que contient la partie « le parallèle » ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'6',3,0)"><span class="qletter">A</span>La liste de tous les modules</button>
+    <button class="qopt" onclick="selQ(this,'6',3,1)"><span class="qletter">B</span>La comparaison entre son profil et les exigences du métier</button>
+    <button class="qopt" onclick="selQ(this,'6',3,2)"><span class="qletter">C</span>Le salaire espéré</button>
+    <button class="qopt" onclick="selQ(this,'6',3,3)"><span class="qletter">D</span>La signature du professeur</button>
+  </div><div class="qexpl" id="qe-6-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">D'après le chapitre, les aptitudes :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'6',4,0)"><span class="qletter">A</span>Sont fixes et ne changent jamais</button>
+    <button class="qopt" onclick="selQ(this,'6',4,1)"><span class="qletter">B</span>Se développent par la formation</button>
+    <button class="qopt" onclick="selQ(this,'6',4,2)"><span class="qletter">C</span>Remplacent les champs d'intérêt</button>
+    <button class="qopt" onclick="selQ(this,'6',4,3)"><span class="qletter">D</span>N'ont aucune importance</button>
+  </div><div class="qexpl" id="qe-6-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('6',[1,0,0],['Le champ d\u0027intérêt est ce que l\u0027on aime ; l\u0027aptitude est la capacité à réaliser. Le bon choix professionnel relie les deux.','La conclusion présente une décision argumentée : poursuivre ou non la formation, et pour quelles raisons.','Comparer son profil aux exigences permet un choix éclairé et met en évidence les forces à valoriser et les points à développer.'])">✓ Valider</button>
-  <button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',3)">↺ Réessayer</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('6',[1,0,0,1,1],['Le champ d\u0027intérêt est ce que l\u0027on aime ; l\u0027aptitude est la capacité à réaliser. Le bon choix professionnel relie les deux.','La conclusion présente une décision argumentée : poursuivre ou non la formation, et pour quelles raisons.','Comparer son profil aux exigences permet un choix éclairé et met en évidence les forces à valoriser et les points à développer.','La partie « parallèle » compare le profil personnel aux exigences du métier, pour dégager forces et points à développer.','Les aptitudes ne sont pas figées : la formation aide justement à les développer.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-6" style="display:none" onclick="retryQ('6',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-6"></span>
 </div>
 </div>
 <div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div>
 </div></div>
+
+<!-- ÉTAPE FINALE : L'ESSENTIEL À RETENIR -->
+<div class="step" id="essentiel">
+<div class="ch-header">
+  <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module TRI-01</span></div></div>
+</div>
+<div class="ch-body">
+<div class="recap recap-final">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module TRI-01</div>
+  <ul class="recap-list">
+    <li><strong>Le métier —</strong> le technicien réseaux installe, configure, surveille et dépanne les réseaux ; un métier technique et relationnel. Une <strong>tâche</strong> est complète (début, fin, résultat), une <strong>activité</strong> en est une partie.</li>
+    <li><strong>Le marché —</strong> on entre avec une qualification minimale (diplôme + compétences) ; la <strong>certification CCNA</strong> valorise le profil. Métier ouvert à tous, avec de réelles évolutions de carrière.</li>
+    <li><strong>Les méthodes —</strong> repérer l'information utile, prendre des notes (linéaire ou carte mentale) et respecter les règles de la discussion de groupe.</li>
+    <li><strong>La formation —</strong> l'<strong>approche par compétences</strong> (apprendre en faisant), 28 modules en logigramme, et la combinaison connaissances / habiletés / aptitudes / attitudes.</li>
+    <li><strong>L'évaluation —</strong> la formative aide à progresser, la sanction certifie la réussite ; il existe un <strong>droit à la reprise</strong>, et le règlement intérieur prépare au monde pro.</li>
+    <li><strong>L'orientation —</strong> distinguer ses goûts de ses aptitudes (qui se développent), puis bâtir un bilan : profil → exigences → parallèle → décision argumentée.</li>
+  </ul>
+</div>
+</div>
+</div>
 
 <!-- COMPLETE BANNER -->
 <div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
@@ -1182,14 +1288,14 @@ function toast(msg){
 <script>
 /* ===== LECTEUR DE COURS v3 ===== */
 (function(){
-  var STEPS=['plan','lecons','ch-1','ch-2','ch-3','ch-4','ch-5','ch-6'];
-  var LABELS={plan:'Plan de cours',lecons:'Plans de leçon','ch-1':'Le métier de technicien','ch-2':'Marché du travail & exigences','ch-3':'Méthodes de travail','ch-4':'Le programme TRI','ch-5':'Évaluation & réussite','ch-6':"Bilan d'orientation"};
+  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','ch-6','essentiel'];
+  var LABELS={plan:'Plan de cours','ch-1':'Le métier de technicien','ch-2':'Marché du travail & exigences','ch-3':'Méthodes de travail','ch-4':'Le programme TRI','ch-5':'Évaluation & réussite','ch-6':"Bilan d'orientation",'essentiel':"L'essentiel à retenir"};
   var QUIZ={1:1,2:1,3:1,4:1,5:1,6:1};   // chapitres ayant un quiz
   var PASS=0.6;                          // seuil de réussite
   var PK='TRI01v1_step', VK='TRI01v1_viewed';
   var cur=0, DUR={};
 
-  function tiId(id){return id==='plan'?'ti-plan':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
   function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
   function hasQuiz(n){return !!QUIZ[n];}
   function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
@@ -1236,7 +1342,7 @@ function toast(msg){
   }
 
   window.goTo=function(n){
-    var id=(n==='plan'||n==='lecons')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    var id=(n==='plan'||n==='lecons'||n==='essentiel')?n:'ch-'+n;var i=STEPS.indexOf(id);
     if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
     var cn=chNum(id);
     if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
