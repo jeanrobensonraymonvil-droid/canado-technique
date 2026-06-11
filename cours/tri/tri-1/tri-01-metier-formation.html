@@ -275,6 +275,60 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 .recap-final .recap-list li{color:#e8eeff}
 .recap-final .recap-list li strong{color:#fff}
 
+
+/* ===== Termes clés ===== */
+.terms{margin-top:1.4rem;background:linear-gradient(135deg,#f2fbf6,#e7f7ee);border:1px solid #bfe5cf;border-left:4px solid #1d9e5f;border-radius:var(--rL);padding:1rem 1.15rem}
+.terms-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#0f5c36;display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.terms dl{margin:0}
+.terms dt{font-weight:800;font-size:.8rem;color:#0f5c36;margin-top:.55rem}
+.terms dt:first-child{margin-top:0}
+.terms dd{margin:0 0 .15rem 0;font-size:.8rem;color:#27513c;line-height:1.6}
+/* ===== Examen blanc ===== */
+.exam-head{background:linear-gradient(135deg,#0B1525,#1a2c4d);border-radius:var(--rL);padding:1.1rem 1.2rem;margin-bottom:1.3rem;border:1px solid rgba(255,197,24,.25)}
+.exam-head h3{font-family:var(--fD);color:#fff;font-size:1rem;margin:0 0 .4rem}
+.exam-head p{color:#c9d6f2;font-size:.8rem;line-height:1.65;margin:0}
+.exam-head .exam-rules{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.exam-head .exam-rule{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:700;color:#ffd95e}
+.exam-result{display:none;margin-top:1.2rem;border-radius:var(--rL);padding:1rem 1.2rem;font-size:.85rem;font-weight:700}
+.exam-result.pass{display:block;background:#e9f9f0;border:1px solid #1d9e5f;color:#0f5c36}
+.exam-result.fail{display:block;background:#fdeeee;border:1px solid #d24a43;color:#8c2722}
+
+
+/* ===== Activité de réflexion ===== */
+.activity{margin-top:1.4rem;background:linear-gradient(135deg,#f7f3ff,#efe9fc);border:1px solid #d8c9f2;border-left:4px solid #6c3fc5;border-radius:var(--rL);padding:1rem 1.15rem}
+.activity-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#46287e;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.activity ol{margin:0;padding-left:1.2rem}
+.activity li{font-size:.81rem;color:#3d2a66;line-height:1.65;margin-bottom:.45rem}
+.activity .act-note{margin-top:.6rem;font-size:.74rem;color:#6b5694;font-style:italic}
+/* ===== Examen blanc 4 parties ===== */
+.exam-part{font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin:1.8rem 0 .8rem;padding:.55rem .9rem;background:linear-gradient(135deg,#f6f9ff,#eef3ff);border-left:4px solid var(--blue);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.exam-part .ex-chip{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.18);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.exid{display:grid;grid-template-columns:1fr auto auto;gap:.7rem;margin-bottom:.4rem}
+.exid label{font-size:.68rem;font-weight:800;color:var(--g500);display:block;margin-bottom:.25rem;font-family:var(--fD)}
+.exid input{width:100%;border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .7rem;font-size:.85rem;font-family:inherit}
+.exid .exid-fixed{border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .9rem;font-size:.85rem;background:#f7f9fe;color:var(--text);font-weight:700}
+.exq{margin-bottom:1.1rem}
+.exq-t{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.extxt{width:100%;min-height:92px;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem;font-size:.83rem;font-family:inherit;line-height:1.6;resize:vertical}
+.extxt:focus{outline:2px solid rgba(27,58,140,.25)}
+.ex-cnt{font-size:.66rem;color:var(--g500);margin-top:.2rem;text-align:right}
+.ex-cnt.ok{color:#1d9e5f;font-weight:700}
+.reveal-btn{margin-top:.35rem;background:none;border:none;color:var(--blue);font-size:.72rem;font-weight:800;cursor:pointer;padding:0;font-family:var(--fD)}
+.reveal{display:none;margin-top:.5rem;background:#f2fbf6;border:1px dashed #1d9e5f;border-radius:var(--r);padding:.65rem .85rem;font-size:.76rem;color:#27513c;line-height:1.6}
+.reveal.show{display:block}
+.reveal ul{margin:.2rem 0 0;padding-left:1.1rem}
+.engage{list-style:none;margin:0;padding:0}
+.engage li{margin-bottom:.5rem}
+.engage label{display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;color:var(--text);cursor:pointer;line-height:1.5}
+.engage input{width:17px;height:17px;margin-top:2px;accent-color:#1d9e5f;cursor:pointer}
+.exam-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;align-items:center}
+.exam-score-line{font-size:.74rem;color:var(--g500);font-weight:700}
+.btn-print{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem 1.1rem;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--fD);color:var(--text)}
+.btn-print:hover{border-color:var(--blue);color:var(--blue)}
+.ex-bar{height:8px;background:#e8edf8;border-radius:6px;overflow:hidden;margin-top:.5rem}
+.ex-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#1d9e5f);border-radius:6px;transition:width .5s ease}
+@media(max-width:700px){.exid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -325,6 +379,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <div class="toc-item" onclick="goTo(6)" id="ti-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>Bilan d'orientation</span></div>
   <div class="toc-sep">Synthèse</div>
   <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
 </div>
 
 <div id="main-content">
@@ -502,6 +557,17 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 </div>
 
 <!-- QUIZ -->
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl>
+    <dt>Technicien en réseaux informatiques</dt><dd>Professionnel qui installe, configure, surveille et dépanne les équipements et liaisons qui relient les ordinateurs entre eux et à Internet, tout en soutenant les utilisateurs.</dd>
+    <dt>Tâche</dt><dd>Action complète, avec un début et une fin, qui vise une production ou une réalisation précise (ex. : installer et configurer un poste de travail).</dd>
+    <dt>Activité</dt><dd>Partie d'une tâche (ex. : brancher l'écran, installer le système, créer le compte utilisateur).</dd>
+    <dt>Infrastructure réseau</dt><dd>Ensemble des équipements (câbles, switchs, routeurs, serveurs, points d'accès) et des liaisons qui supportent la communication numérique d'une organisation.</dd>
+    <dt>Soutien aux utilisateurs</dt><dd>Volet relationnel du métier : aider, dépanner et former les personnes qui utilisent le réseau au quotidien.</dd>
+  </dl>
+</div>
+
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
   <ul class="recap-list">
@@ -613,6 +679,17 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 </div>
 </div>
 
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl>
+    <dt>Qualification au seuil d'entrée</dt><dd>Niveau minimal exigé pour accéder au métier : diplôme, compétences vérifiées et, souvent, une certification reconnue.</dd>
+    <dt>Certification CCNA</dt><dd>Certification de Cisco qui atteste de compétences réseau vérifiées ; elle facilite l'embauche et la mobilité, en Haïti comme à l'étranger.</dd>
+    <dt>Marché du travail</dt><dd>Ensemble des offres et demandes d'emploi du secteur : employeurs, postes disponibles, conditions et rémunérations.</dd>
+    <dt>Avancement / mutation</dt><dd>Évolution de carrière : vers des postes plus spécialisés (administrateur, ingénieur réseau) ou vers d'autres services de l'organisation.</dd>
+    <dt>Formation continue</dt><dd>Mise à jour permanente de ses compétences, indispensable car les technologies évoluent vite.</dd>
+  </dl>
+</div>
+
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
   <ul class="recap-list">
@@ -720,6 +797,17 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <li><strong>Acceptation des points de vue différents</strong> — le désaccord est normal et productif.</li>
 </ul>
 <div class="ibox green"><span class="ibox-label">✅ Bonne pratique</span>Ces règles ne servent pas que pendant la formation : en entreprise, les réunions d'équipe et les échanges avec les utilisateurs reposent exactement sur ces mêmes principes.</div>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl>
+    <dt>Réceptivité</dt><dd>Conditions personnelles (attention, concentration, disponibilité) qui permettent de capter réellement une information.</dd>
+    <dt>Prise de notes linéaire</dt><dd>Méthode structurée par titres, tirets et mots-clés, adaptée aux exposés organisés et aux lectures.</dd>
+    <dt>Carte mentale</dt><dd>Schéma rayonnant autour d'une idée centrale, adapté pour explorer un sujet et garder une vue d'ensemble.</dd>
+    <dt>Discussion de groupe</dt><dd>Échange organisé où chacun participe, respecte les tours de parole, reste sur le sujet et écoute les autres points de vue.</dd>
+    <dt>Source d'information</dt><dd>Origine de l'information (document, personne, site) dont il faut évaluer la fiabilité avant de l'utiliser.</dd>
+  </dl>
 </div>
 
 <div class="recap">
@@ -835,12 +923,81 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="ibox blue"><span class="ibox-label">🗺️ Le logigramme</span>Le programme suit un <strong>logigramme</strong> : certains modules doivent être réussis avant d'autres. Par exemple, il faut avoir réussi TRI-05 (Systèmes d'exploitation) avant de suivre TRI-10 (Installation d'un poste). Ce module TRI-01 est le tout premier de votre parcours.</div>
 </div>
 
+<div class="section">
+<h3>4.4 Deux familles de compétences, deux exigences</h3>
+<p>Regardons de plus près les deux familles de compétences du programme TRI :</p>
+<table class="dtable">
+<thead><tr><th></th><th>Compétences générales (transversales)</th><th>Compétences particulières (spécifiques)</th></tr></thead>
+<tbody>
+<tr><td><strong>Ce qu'elles développent</strong></td><td>La capacité d'<strong>appliquer des principes et des méthodes</strong> dans l'exécution des tâches liées au métier</td><td>La capacité d'<strong>exécuter les tâches propres aux réseaux</strong></td></tr>
+<tr><td><strong>Rôle</strong></td><td><strong>Préalables</strong> à l'exécution des tâches du métier</td><td>Cœur technique du métier</td></tr>
+<tr><td><strong>Type</strong></td><td>De type <strong>comportement</strong> ou de type <strong>situation</strong></td><td>Toujours de type <strong>comportement</strong></td></tr>
+<tr><td><strong>Leur maîtrise apporte…</strong></td><td>La <strong>polyvalence</strong></td><td>La <strong>maîtrise de la fonction technique</strong></td></tr>
+</tbody></table>
+<div class="ibox gold"><span class="ibox-label">⚖️ Les deux exigences de l'APC</span>La formation professionnelle et technique fait <strong>deux exigences</strong> aux apprenants : la <strong>polyvalence</strong> (apportée par la maîtrise des compétences générales) et la <strong>maîtrise de la fonction technique</strong> (apportée par les compétences particulières). Les deux ensemble font de vous un technicien complet.</div>
+</div>
+
+<div class="section">
+<h3>4.5 Compétence de type comportement ou de type situation ?</h3>
+<p>Chaque compétence du programme appartient à l'un de ces deux types — et cela change la façon dont elle est évaluée :</p>
+<table class="dtable">
+<thead><tr><th>Type</th><th>Résultat produit</th><th>Comment on l'évalue</th></tr></thead>
+<tbody>
+<tr><td><strong>Comportement</strong></td><td><strong>Observable et mesurable</strong> (ex. : le câble est serti et fonctionne, ou non)</td><td>Sur le résultat, selon des critères précis</td></tr>
+<tr><td><strong>Situation</strong></td><td><strong>Non mesurable</strong> directement</td><td>Sur l'<strong>observation</strong> et la <strong>participation</strong> de l'apprenant aux séances du module</td></tr>
+</tbody></table>
+<div class="ibox blue"><span class="ibox-label">💡 Et TRI-01 ?</span>Ce module « Métier et formation » est justement une compétence <strong>de type situation</strong> : on n'y mesure pas un câble ou une configuration, on évalue votre <strong>participation</strong> aux trois phases — d'où l'importance de votre engagement, comme on le verra à la leçon 5.</div>
+</div>
+
+<div class="section">
+<h3>4.6 D'où vient le programme ? AMT, AST et document prescriptif</h3>
+<p>Le programme TRI n'a pas été inventé dans un bureau : il est construit à partir du <strong>terrain</strong>, en trois étapes.</p>
+<ul>
+<li>L'<strong>Analyse du marché du travail (AMT)</strong> identifie les <strong>besoins du marché</strong> et les <strong>métiers recherchés</strong> — c'est elle qui justifie l'existence d'une formation de technicien réseaux en Haïti.</li>
+<li>L'<strong>Analyse de la situation de travail (AST)</strong> <strong>observe les tâches et les opérations</strong> réellement réalisées dans le métier — c'est d'elle que viennent les compétences du programme.</li>
+<li>Le <strong>projet de formation</strong> est ensuite <strong>validé avec les entreprises du secteur</strong>, pour s'assurer qu'il répond à leurs besoins réels.</li>
+</ul>
+<p>Le résultat est votre <strong>programme de formation</strong> : un <strong>document prescriptif</strong> — il guide et encadre obligatoirement la formation — où <strong>chaque module correspond à une compétence à développer</strong>. Voilà pourquoi vos 28 modules ne sont pas des « matières scolaires », mais 28 capacités professionnelles à acquérir.</p>
+</div>
+
+<div class="activity">
+  <div class="activity-h"><span>✍️</span> Activité de réflexion — à préparer dans votre cahier</div>
+  <ol>
+    <li>Citez <strong>5 modules</strong> du programme TRI qui développeront chez vous la capacité d'<strong>appliquer des principes et méthodes</strong> dans la réalisation d'une tâche propre au métier (compétences <em>générales</em>).</li>
+    <li>Citez les <strong>2 exigences</strong> de la formation professionnelle et technique selon l'APC.</li>
+    <li>Citez <strong>5 compétences</strong> du programme TRI qui développeront chez vous la capacité d'<strong>exécuter des tâches propres aux réseaux</strong> (compétences <em>particulières</em>).</li>
+    <li>Quelle est la différence entre une compétence de type <strong>comportement</strong> et une compétence de type <strong>situation</strong> ?</li>
+    <li>Qu'est-ce qui différencie une compétence <strong>particulière</strong> d'une compétence <strong>générale</strong> ?</li>
+  </ol>
+  <div class="act-note">Ces questions seront reprises en discussion de groupe avec votre professeur — appliquez les règles vues à la leçon 3 !</div>
+</div>
+
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl>
+    <dt>Approche par compétences (APC)</dt><dd>Pédagogie où l'on apprend en réalisant des tâches concrètes du métier ; centrée sur l'étudiant et la réussite.</dd>
+    <dt>Compétence</dt><dd>Capacité à réaliser une tâche du métier en mobilisant connaissances, habiletés, aptitudes et attitudes.</dd>
+    <dt>Compétence générale</dt><dd>Compétence transversale qui sert de préalable à plusieurs situations de travail (ex. : méthodes de travail).</dd>
+    <dt>Compétence particulière</dt><dd>Compétence directement liée aux tâches du métier (ex. : installer un réseau local).</dd>
+    <dt>Logigramme</dt><dd>Schéma qui ordonne les modules selon leurs prérequis et trace le parcours de formation.</dd>
+    <dt>Évaluation critériée</dt><dd>Évaluation selon des critères clairs et publics, et non par comparaison entre étudiants.</dd>
+    <dt>Polyvalence</dt><dd>Capacité d'appliquer des principes et méthodes dans des situations variées ; elle résulte de la maîtrise des compétences générales.</dd>
+    <dt>Fonction technique</dt><dd>Cœur du métier (exécuter les tâches propres aux réseaux) ; sa maîtrise résulte des compétences particulières.</dd>
+    <dt>Compétence de type comportement</dt><dd>Compétence dont le résultat est observable et mesurable ; évaluée sur le résultat selon des critères précis.</dd>
+    <dt>Compétence de type situation</dt><dd>Compétence dont le résultat n'est pas mesurable ; évaluée sur l'observation et la participation de l'apprenant.</dd>
+    <dt>AMT (Analyse du marché du travail)</dt><dd>Étude qui identifie les besoins du marché et les métiers recherchés.</dd>
+    <dt>AST (Analyse de la situation de travail)</dt><dd>Observation des tâches et opérations réellement réalisées dans un métier ; source des compétences du programme.</dd>
+  </dl>
+</div>
+
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
   <ul class="recap-list">
     <li>L'<strong>approche par compétences</strong> : on apprend en faisant, dans une pédagogie de la réussite et une évaluation critériée.</li>
     <li>Une compétence mobilise <strong>connaissances, habiletés, aptitudes et attitudes</strong>.</li>
     <li>Le programme TRI compte <strong>28 modules</strong> (compétences générales et particulières), organisés selon un logigramme de prérequis.</li>
+    <li>Deux exigences de l'APC : la <strong>polyvalence</strong> (compétences générales) et la <strong>maîtrise de la fonction technique</strong> (compétences particulières). TRI-01 est une compétence de type <strong>situation</strong>, évaluée sur la participation.</li>
   </ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
@@ -933,6 +1090,17 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="section">
 <h3>5.3 Réussir TRI-01 : ce module précisément</h3>
 <div class="ibox gold"><span class="ibox-label">🎯 Comment ce module est évalué</span>TRI-01 est un module à objectif de <strong>situation</strong>. On n'y évalue pas un produit fini, mais votre <strong>participation</strong> aux trois phases : s'informer (phase 1), donner son opinion sur le métier et le programme (phase 2), et présenter un bilan personnel justifiant votre choix de poursuivre (phase 3). Les quiz en ligne servent au suivi formatif.</div>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl>
+    <dt>Évaluation formative</dt><dd>Évaluation qui accompagne l'apprentissage : elle sert à progresser, sans conséquence sur la réussite (ex. : les quiz des leçons).</dd>
+    <dt>Évaluation de sanction</dt><dd>Évaluation officielle en fin de module : elle certifie que la compétence est acquise et détermine la réussite.</dd>
+    <dt>Droit à la reprise</dt><dd>Possibilité de repasser l'évaluation d'un module échoué, après un enseignement correctif.</dd>
+    <dt>Règlement intérieur</dt><dd>Règles de vie de l'établissement (assiduité, ponctualité, respect des personnes et du matériel) dont le respect conditionne la progression.</dd>
+    <dt>Seuil de réussite</dt><dd>Niveau minimal à atteindre pour valider une évaluation.</dd>
+  </dl>
 </div>
 
 <div class="recap">
@@ -1046,6 +1214,17 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 </div>
 </div>
 
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl>
+    <dt>Champ d'intérêt</dt><dd>Ce que l'on aime faire ; ce qui motive et donne de l'énergie.</dd>
+    <dt>Aptitude</dt><dd>Ce que l'on peut réaliser ; capacité qui se développe par la formation et la pratique.</dd>
+    <dt>Auto-évaluation</dt><dd>Démarche honnête d'examen de ses propres goûts, forces et points à développer.</dd>
+    <dt>Bilan d'orientation</dt><dd>Document personnel en quatre parties : profil → exigences du métier → parallèle → conclusion argumentée.</dd>
+    <dt>Parallèle</dt><dd>Comparaison structurée entre son profil personnel et les exigences du métier, qui fonde la décision.</dd>
+  </dl>
+</div>
+
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
   <ul class="recap-list">
@@ -1116,6 +1295,119 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <li><strong>L'orientation —</strong> distinguer ses goûts de ses aptitudes (qui se développent), puis bâtir un bilan : profil → exigences → parallèle → décision argumentée.</li>
   </ul>
 </div>
+</div>
+</div>
+
+<!-- ÉTAPE FINALE : EXAMEN BLANC -->
+<div class="step" id="examen">
+<div class="ch-header">
+  <div class="ch-num" style="background:#c0392b;color:#fff">🎓</div>
+  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Module : Métier et formation · validation du cours</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="exam-head">
+  <h3>🎓 Avant de commencer</h3>
+  <p>Cette activité globale couvre l'ensemble du module TRI-01 et te place dans les conditions d'une évaluation réelle. Elle comporte <strong>quatre parties</strong>. Le QCM est corrigé automatiquement ; tes réponses écrites seront <strong>évaluées par ton professeur</strong> — utilise le bouton « Imprimer / remettre » à la fin.</p>
+  <div class="exam-rules"><span class="exam-rule">A · QCM — 20%</span><span class="exam-rule">B · Connaissance du métier — 30%</span><span class="exam-rule">C · Projet professionnel — 40%</span><span class="exam-rule">D · Engagement — 10%</span><span class="exam-rule">Validation en ligne : ≥ 70%</span></div>
+</div>
+
+<div class="exid">
+  <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
+  <div><label>Programme</label><div class="exid-fixed">TRI — Réseaux informatiques</div></div>
+  <div><label>Date</label><div class="exid-fixed" id="ex-date">—</div></div>
+</div>
+
+<div class="exam-part"><span>Partie A — Questionnaire à choix multiples</span><span class="ex-chip" id="exA-score">20% · non soumis</span></div>
+<div class="qblock" data-qid="ex">
+<div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">corrigé automatiquement</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">L'Approche par compétences (APC) vise principalement à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',0,0)"><span class="qletter">A</span>Transmettre uniquement des connaissances théoriques</button>
+    <button class="qopt" onclick="selQ(this,'ex',0,1)"><span class="qletter">B</span>Développer chez l'apprenant les compétences nécessaires à l'exercice d'un métier</button>
+    <button class="qopt" onclick="selQ(this,'ex',0,2)"><span class="qletter">C</span>Réduire la durée de la formation</button>
+    <button class="qopt" onclick="selQ(this,'ex',0,3)"><span class="qletter">D</span>Préparer uniquement aux examens</button>
+  </div><div class="qexpl" id="qe-ex-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">L'Analyse du marché du travail (AMT) permet de :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',1,0)"><span class="qletter">A</span>Évaluer les élèves</button>
+    <button class="qopt" onclick="selQ(this,'ex',1,1)"><span class="qletter">B</span>Identifier les besoins du marché du travail et les métiers recherchés</button>
+    <button class="qopt" onclick="selQ(this,'ex',1,2)"><span class="qletter">C</span>Organiser les vacances scolaires</button>
+    <button class="qopt" onclick="selQ(this,'ex',1,3)"><span class="qletter">D</span>Préparer les examens finaux</button>
+  </div><div class="qexpl" id="qe-ex-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">L'Analyse de la situation de travail (AST) consiste à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',2,0)"><span class="qletter">A</span>Observer les tâches et les opérations réalisées dans un métier</button>
+    <button class="qopt" onclick="selQ(this,'ex',2,1)"><span class="qletter">B</span>Évaluer les enseignants</button>
+    <button class="qopt" onclick="selQ(this,'ex',2,2)"><span class="qletter">C</span>Vérifier les équipements d'un centre de formation</button>
+    <button class="qopt" onclick="selQ(this,'ex',2,3)"><span class="qletter">D</span>Contrôler les présences</button>
+  </div><div class="qexpl" id="qe-ex-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Dans un programme élaboré selon l'APC, un module représente généralement :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',3,0)"><span class="qletter">A</span>Une matière scolaire</button>
+    <button class="qopt" onclick="selQ(this,'ex',3,1)"><span class="qletter">B</span>Une compétence à développer</button>
+    <button class="qopt" onclick="selQ(this,'ex',3,2)"><span class="qletter">C</span>Une année d'études</button>
+    <button class="qopt" onclick="selQ(this,'ex',3,3)"><span class="qletter">D</span>Un stage</button>
+  </div><div class="qexpl" id="qe-ex-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Le programme de formation est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',4,0)"><span class="qletter">A</span>Un document facultatif</button>
+    <button class="qopt" onclick="selQ(this,'ex',4,1)"><span class="qletter">B</span>Un document prescriptif qui guide la formation</button>
+    <button class="qopt" onclick="selQ(this,'ex',4,2)"><span class="qletter">C</span>Un simple guide de référence</button>
+    <button class="qopt" onclick="selQ(this,'ex',4,3)"><span class="qletter">D</span>Un document réservé à la direction</button>
+  </div><div class="qexpl" id="qe-ex-4"></div></div>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Le technicien doit démontrer :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',5,0)"><span class="qletter">A</span>De la ponctualité</button>
+    <button class="qopt" onclick="selQ(this,'ex',5,1)"><span class="qletter">B</span>De la responsabilité</button>
+    <button class="qopt" onclick="selQ(this,'ex',5,2)"><span class="qletter">C</span>De l'éthique professionnelle</button>
+    <button class="qopt" onclick="selQ(this,'ex',5,3)"><span class="qletter">D</span>Toutes ces réponses</button>
+  </div><div class="qexpl" id="qe-ex-5"></div></div>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La validation du projet de formation est réalisée avec :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',6,0)"><span class="qletter">A</span>Les entreprises du secteur concerné</button>
+    <button class="qopt" onclick="selQ(this,'ex',6,1)"><span class="qletter">B</span>Les élèves seulement</button>
+    <button class="qopt" onclick="selQ(this,'ex',6,2)"><span class="qletter">C</span>Les parents</button>
+    <button class="qopt" onclick="selQ(this,'ex',6,3)"><span class="qletter">D</span>Les fournisseurs d'équipements</button>
+  </div><div class="qexpl" id="qe-ex-6"></div></div>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">La réussite dans une formation professionnelle dépend principalement :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'ex',7,0)"><span class="qletter">A</span>De l'assiduité et de l'engagement personnel</button>
+    <button class="qopt" onclick="selQ(this,'ex',7,1)"><span class="qletter">B</span>De la chance</button>
+    <button class="qopt" onclick="selQ(this,'ex',7,2)"><span class="qletter">C</span>Du hasard</button>
+    <button class="qopt" onclick="selQ(this,'ex',7,3)"><span class="qletter">D</span>De la durée du programme uniquement</button>
+  </div><div class="qexpl" id="qe-ex-7"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('ex',[1, 1, 0, 1, 1, 3, 0, 0],['L\u0027APC vise à développer les compétences nécessaires à l\u0027exercice d\u0027un métier.','L\u0027AMT identifie les besoins du marché du travail et les métiers recherchés.','L\u0027AST observe les tâches et les opérations réellement réalisées dans un métier.','Dans un programme APC, chaque module correspond à une compétence à développer.','Le programme de formation est un document prescriptif : il guide et encadre la formation.','Ponctualité, responsabilité et éthique professionnelle : toutes ces réponses.','Le projet de formation est validé avec les entreprises du secteur concerné.','La réussite dépend principalement de l\u0027assiduité et de l\u0027engagement personnel.'])">✓ Soumettre le QCM</button>
+  <button class="qbtn qbtn-retry" id="qr-ex" style="display:none" onclick="retryQ('ex',8);exUpdateA();">↺ Recommencer le QCM</button>
+  <span class="qscore" id="qs-ex"></span>
+</div>
+</div>
+
+<div class="exam-part"><span>Partie B — Connaissance du métier</span><span class="ex-chip" id="exB-score">30% · 0/4 réponses</span></div>
+<div class="exq"><div class="exq-t">1. Pourquoi avez-vous choisi ce métier ?</div><textarea class="extxt" id="exb-0" oninput="exSave('b',0,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-b-0">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-b-0')">💡 Éléments de réponse attendus</button><div class="reveal" id="rv-b-0"><strong>Éléments de réponse attendus :</strong><ul><li>Intérêt personnel pour le domaine</li><li>Possibilités d'emploi</li><li>Désir de développer des compétences techniques</li><li>Contribution au développement du pays ou de la communauté</li><li>Perspectives d'évolution professionnelle</li></ul></div></div>
+<div class="exq"><div class="exq-t">2. Quelles sont, selon vous, les principales tâches du technicien dans ce domaine ?</div><textarea class="extxt" id="exb-1" oninput="exSave('b',1,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-b-1">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-b-1')">💡 Éléments de réponse attendus</button><div class="reveal" id="rv-b-1"><strong>Éléments de réponse attendus :</strong><ul><li>Réaliser les travaux techniques propres au métier</li><li>Installer, entretenir et réparer les équipements</li><li>Respecter les normes de sécurité</li><li>Produire des rapports techniques</li><li>Collaborer avec les collègues et les clients</li></ul></div></div>
+<div class="exq"><div class="exq-t">3. Quelles qualités professionnelles sont indispensables pour exercer ce métier ?</div><textarea class="extxt" id="exb-2" oninput="exSave('b',2,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-b-2">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-b-2')">💡 Éléments de réponse attendus</button><div class="reveal" id="rv-b-2"><strong>Éléments de réponse attendus :</strong><ul><li>Ponctualité et discipline</li><li>Sens des responsabilités</li><li>Esprit d'équipe et honnêteté</li><li>Rigueur professionnelle</li><li>Capacité d'apprentissage continu</li></ul></div></div>
+<div class="exq"><div class="exq-t">4. Dans quels secteurs ou entreprises pourriez-vous travailler après votre formation ?</div><textarea class="extxt" id="exb-3" oninput="exSave('b',3,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-b-3">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-b-3')">💡 Éléments de réponse attendus</button><div class="reveal" id="rv-b-3"><strong>Éléments de réponse attendus :</strong><ul><li>Entreprises privées (banques, hôtels…)</li><li>Institutions publiques</li><li>Entreprises spécialisées du secteur (Natcom, Digicel…)</li><li>Organisations non gouvernementales</li><li>Travail autonome ou entrepreneuriat</li></ul></div></div>
+
+<div class="exam-part"><span>Partie C — Mon projet professionnel</span><span class="ex-chip" id="exC-score">40% · 0/4 réponses</span></div>
+<div class="exq"><div class="exq-t">1. Quel poste aimeriez-vous occuper à la fin de votre formation ?</div><textarea class="extxt" id="exc-0" oninput="exSave('c',0,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-c-0">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-c-0')">💡 Comment le professeur évaluera cette partie</button><div class="reveal" id="rv-c-0"><strong>Comment le professeur évaluera cette partie :</strong><ul><li>La cohérence de ton projet professionnel</li><li>Ta compréhension du métier</li><li>La pertinence des compétences identifiées</li><li>Le réalisme des défis mentionnés</li><li>La qualité des stratégies proposées pour réussir</li></ul></div></div>
+<div class="exq"><div class="exq-t">2. Quelles compétences souhaitez-vous particulièrement développer ?</div><textarea class="extxt" id="exc-1" oninput="exSave('c',1,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-c-1">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-c-1')">💡 Comment le professeur évaluera cette partie</button><div class="reveal" id="rv-c-1"><strong>Comment le professeur évaluera cette partie :</strong><ul><li>La cohérence de ton projet professionnel</li><li>Ta compréhension du métier</li><li>La pertinence des compétences identifiées</li><li>Le réalisme des défis mentionnés</li><li>La qualité des stratégies proposées pour réussir</li></ul></div></div>
+<div class="exq"><div class="exq-t">3. Quels défis pensez-vous rencontrer durant votre formation ?</div><textarea class="extxt" id="exc-2" oninput="exSave('c',2,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-c-2">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-c-2')">💡 Comment le professeur évaluera cette partie</button><div class="reveal" id="rv-c-2"><strong>Comment le professeur évaluera cette partie :</strong><ul><li>La cohérence de ton projet professionnel</li><li>Ta compréhension du métier</li><li>La pertinence des compétences identifiées</li><li>Le réalisme des défis mentionnés</li><li>La qualité des stratégies proposées pour réussir</li></ul></div></div>
+<div class="exq"><div class="exq-t">4. Comment comptez-vous surmonter ces défis ?</div><textarea class="extxt" id="exc-3" oninput="exSave('c',3,this)" placeholder="Rédige ta réponse ici…"></textarea><div class="ex-cnt" id="excnt-c-3">0 caractère</div><button class="reveal-btn" onclick="exReveal('rv-c-3')">💡 Comment le professeur évaluera cette partie</button><div class="reveal" id="rv-c-3"><strong>Comment le professeur évaluera cette partie :</strong><ul><li>La cohérence de ton projet professionnel</li><li>Ta compréhension du métier</li><li>La pertinence des compétences identifiées</li><li>Le réalisme des défis mentionnés</li><li>La qualité des stratégies proposées pour réussir</li></ul></div></div>
+
+<div class="exam-part"><span>Partie D — Mon engagement personnel</span><span class="ex-chip" id="exD-score">10% · incomplet</span></div>
+<p style="font-size:.83rem;color:var(--text);margin:0 0 .6rem">Je m'engage à :</p>
+<ul class="engage">
+    <li><label><input type="checkbox" id="exd-0" onchange="exDSave()"> Être ponctuel(le)</label></li>
+    <li><label><input type="checkbox" id="exd-1" onchange="exDSave()"> Respecter les règlements du centre</label></li>
+    <li><label><input type="checkbox" id="exd-2" onchange="exDSave()"> Participer activement aux activités de formation</label></li>
+    <li><label><input type="checkbox" id="exd-3" onchange="exDSave()"> Développer des habitudes de travail professionnelles</label></li>
+    <li><label><input type="checkbox" id="exd-4" onchange="exDSave()"> Respecter mes collègues et mes formateurs</label></li>
+</ul>
+
+<div class="exam-actions">
+  <button class="qbtn qbtn-submit" onclick="exValidate()">✓ Valider mon activité globale</button>
+  <button class="btn-print" onclick="exPrint()">🖨️ Imprimer / remettre au professeur</button>
+  <span class="exam-score-line" id="ex-total">Total : —</span>
+</div>
+<div class="ex-bar"><i id="ex-bar-fill"></i></div>
+<div class="exam-result" id="exam-result"></div>
+
 </div>
 </div>
 
@@ -1288,14 +1580,14 @@ function toast(msg){
 <script>
 /* ===== LECTEUR DE COURS v3 ===== */
 (function(){
-  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','ch-6','essentiel'];
-  var LABELS={plan:'Plan de cours','ch-1':'Le métier de technicien','ch-2':'Marché du travail & exigences','ch-3':'Méthodes de travail','ch-4':'Le programme TRI','ch-5':'Évaluation & réussite','ch-6':"Bilan d'orientation",'essentiel':"L'essentiel à retenir"};
+  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','ch-6','essentiel','examen'];
+  var LABELS={plan:'Plan de cours','ch-1':'Le métier de technicien','ch-2':'Marché du travail & exigences','ch-3':'Méthodes de travail','ch-4':'Le programme TRI','ch-5':'Évaluation & réussite','ch-6':"Bilan d'orientation",'essentiel':"L'essentiel à retenir",'examen':"Examen blanc"};
   var QUIZ={1:1,2:1,3:1,4:1,5:1,6:1};   // chapitres ayant un quiz
   var PASS=0.6;                          // seuil de réussite
   var PK='TRI01v1_step', VK='TRI01v1_viewed';
   var cur=0, DUR={};
 
-  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
   function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
   function hasQuiz(n){return !!QUIZ[n];}
   function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
@@ -1314,6 +1606,8 @@ function toast(msg){
       var tr=document.getElementById('tr-'+N);
       if(tr)tr.textContent=locked?'🔒':(DUR[N]||'');
     }
+    var ad=allDone();
+    ['ti-essentiel','ti-examen'].forEach(function(tid){var t=document.getElementById(tid);if(t){t.classList.toggle('lock',!ad);}});
     var pf=document.getElementById('pl-prog-fill');if(pf)pf.style.width=Math.round(countDone()/6*100)+'%';
     var id=STEPS[cur],n=chNum(id),blocked=false,label;
     if(n!==null&&hasQuiz(n)&&!isPassed(n)){blocked=true;label='🔒 Réussis le quiz pour continuer';}
@@ -1341,11 +1635,14 @@ function toast(msg){
     if(window.innerWidth<=768){var t=document.getElementById('toc-sidebar');if(t)t.classList.remove('open');var o=document.getElementById('mob-overlay');if(o)o.style.display='none';}
   }
 
+  function allDone(){for(var N=1;N<=6;N++){if(!isPassed(N))return false;}return true;}
+  function firstUnfinished(){for(var N=1;N<=6;N++){if(!isPassed(N))return STEPS.indexOf('ch-'+N);}return STEPS.indexOf('essentiel');}
   window.goTo=function(n){
-    var id=(n==='plan'||n==='lecons'||n==='essentiel')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    var id=(n==='plan'||n==='lecons'||n==='essentiel'||n==='examen')?n:'ch-'+n;var i=STEPS.indexOf(id);
     if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
     var cn=chNum(id);
     if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
+    if((id==='essentiel'||id==='examen')&&!allDone()){if(window.toast)toast('🔒 Termine et valide les 6 leçons pour accéder à la synthèse et à l\u2019examen blanc.');return;}
     cur=i;render();
   };
   window.plPrev=function(){if(cur>0){cur--;render();}};
@@ -1359,8 +1656,13 @@ function toast(msg){
 
   // quiz reussi -> marque le chapitre fait + debloque le suivant
   var _submit=window.submitQ;
+  var PASS_EX=0.7;
   window.submitQ=function(qid,answers,expls){
     _submit(qid,answers,expls);
+    if(qid==='ex'){
+      if(window.exUpdateA)window.exUpdateA();
+      updateGate();return;
+    }
     try{var qs=readJSON('TRI01v1_qs')[qid];
       if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
         if(window.ST){window.ST.done[qid]=true;}
@@ -1416,7 +1718,7 @@ function toast(msg){
     // numero + duree dans le sommaire
     for(var N=1;N<=6;N++){var ti=document.getElementById('ti-'+N);if(ti){var sp=document.createElement('span');sp.className='toc-right';sp.id='tr-'+N;ti.appendChild(sp);}}
   }
-  window.__resume=function(i){if(i>=0&&i<STEPS.length){cur=i;render();}};
+  window.__resume=function(i){if(i>=0&&i<STEPS.length){var id=STEPS[i];if((id==='essentiel'||id==='examen')&&!allDone()){i=firstUnfinished();}cur=i;render();}};
 
   // navigation clavier
   document.addEventListener('keydown',function(e){
@@ -1430,6 +1732,104 @@ function toast(msg){
     build();attachVideos();
     cur=0;render();
   });
+})();
+</script>
+
+
+<script>
+/* ===== Activité globale (examen blanc) ===== */
+(function(){
+  function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  function sx(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  var MIN=60;
+
+  window.exNm=function(el){try{localStorage.setItem('TRI01v1_exNm',el.value);}catch(e){} };
+  window.exSave=function(part,i,el){
+    var k='TRI01v1_ex'+part.toUpperCase();var d=gx(k);d[i]=el.value;sx(k,d);
+    var c=document.getElementById('excnt-'+part+'-'+i);
+    if(c){var n=el.value.length;c.textContent=n+(n>1?' caractères':' caractère')+(n>=MIN?' ✓':'');c.className='ex-cnt'+(n>=MIN?' ok':'');}
+    exChips();
+  };
+  window.exDSave=function(){var d={};for(var i=0;i<5;i++){var cb=document.getElementById('exd-'+i);d[i]=!!(cb&&cb.checked);}sx('TRI01v1_exD',d);exChips();};
+  window.exReveal=function(id){var el=document.getElementById(id);if(el)el.classList.toggle('show');};
+
+  function partA(){var q=gx('TRI01v1_qs')['ex'];if(!q||!q.total)return null;return {ok:q.ok,total:q.total,pts:Math.round(q.ok/q.total*20*10)/10};}
+  function countTxt(part){var d=gx('TRI01v1_ex'+part);var n=0;for(var i=0;i<4;i++){if(d[i]&&String(d[i]).length>=MIN)n++;}return n;}
+  function partD(){var d=gx('TRI01v1_exD');var all=true;for(var i=0;i<5;i++){if(!d[i])all=false;}
+    var nm='';try{nm=localStorage.getItem('TRI01v1_exNm')||'';}catch(e){}
+    return {checked:all,named:nm.trim().length>=3,pts:(all&&nm.trim().length>=3)?10:0};}
+
+  window.exUpdateA=function(){var a=partA();var el=document.getElementById('exA-score');
+    if(el)el.textContent=a?('20% · '+a.ok+'/'+a.total+' — '+a.pts+' pts'):'20% · non soumis';exChips();};
+
+  function exChips(){
+    var b=countTxt('B'),c=countTxt('C'),d=partD();
+    var eb=document.getElementById('exB-score');if(eb)eb.textContent='30% · '+b+'/4 réponses';
+    var ec=document.getElementById('exC-score');if(ec)ec.textContent='40% · '+c+'/4 réponses';
+    var ed=document.getElementById('exD-score');if(ed)ed.textContent=d.pts?'10% · complet ✓':'10% · incomplet';
+    var a=partA();var total=(a?a.pts:0)+b*7.5+c*10+d.pts;
+    var t=document.getElementById('ex-total');if(t)t.textContent='Total : '+Math.round(total)+'%';
+    var f=document.getElementById('ex-bar-fill');if(f)f.style.width=Math.min(100,Math.round(total))+'%';
+    return {a:a,b:b,c:c,d:d,total:total};
+  }
+
+  window.exValidate=function(){
+    var a=partA();var res=document.getElementById('exam-result');
+    if(!a){if(window.toast)toast('📝 Soumets d\u0027abord le QCM (Partie A).');if(res){res.className='exam-result fail';res.innerHTML='📝 Commence par soumettre le QCM de la Partie A.';}return;}
+    var s=exChips();var pct=Math.round(s.total);
+    var detail='Partie A : '+a.pts+'/20 · Partie B : '+(s.b*7.5)+'/30 · Partie C : '+(s.c*10)+'/40 · Partie D : '+s.d.pts+'/10';
+    if(pct>=70){
+      try{localStorage.setItem('TRI01v1_exam','passed');}catch(e){}
+      if(res){res.className='exam-result pass';res.innerHTML='🎉 <strong>'+pct+'% — activité globale validée !</strong><br>'+detail+'<br>Tu as validé le module TRI-01 en ligne. Imprime ton activité et remets-la à ton professeur : tes réponses écrites (parties B et C) seront évaluées en classe.';}
+      var tx=document.getElementById('ti-examen');if(tx)tx.classList.add('done');
+      var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';
+      if(window.toast)toast('🎓 Module validé, félicitations !');
+    }else{
+      var manque=[];
+      if(a.pts<14)manque.push('revois le QCM (relis « L\u2019essentiel à retenir »)');
+      if(s.b<4)manque.push('complète la partie B ('+(4-s.b)+' réponse(s) trop courte(s))');
+      if(s.c<4)manque.push('complète la partie C ('+(4-s.c)+' réponse(s) trop courte(s))');
+      if(!s.d.pts)manque.push('coche tes engagements et écris ton nom');
+      if(res){res.className='exam-result fail';res.innerHTML='📚 <strong>'+pct+'% — il faut 70% pour valider.</strong><br>'+detail+'<br>Pour progresser : '+manque.join(' · ')+'.';}
+      if(window.toast)toast('Encore un effort — complète puis revalide.');
+    }
+  };
+
+  window.exPrint=function(){
+    var nm='';try{nm=localStorage.getItem('TRI01v1_exNm')||'';}catch(e){}
+    var a=partA();var B=gx('TRI01v1_exB'),C=gx('TRI01v1_exC'),D=gx('TRI01v1_exD');
+    var QB=["Pourquoi avez-vous choisi ce métier ?","Quelles sont les principales tâches du technicien dans ce domaine ?","Quelles qualités professionnelles sont indispensables ?","Dans quels secteurs ou entreprises pourriez-vous travailler ?"];
+    var QC=["Quel poste aimeriez-vous occuper à la fin de votre formation ?","Quelles compétences souhaitez-vous particulièrement développer ?","Quels défis pensez-vous rencontrer durant votre formation ?","Comment comptez-vous surmonter ces défis ?"];
+    var ENG=["Être ponctuel(le)","Respecter les règlements du centre","Participer activement aux activités de formation","Développer des habitudes de travail professionnelles","Respecter mes collègues et mes formateurs"];
+    function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');}
+    var h=[];
+    h.push('<html><head><meta charset="utf-8"><title>Activité globale TRI-01 — '+esc(nm)+'</title>');
+    h.push('<style>body{font-family:Georgia,serif;max-width:760px;margin:2rem auto;color:#1a1a1a;line-height:1.55}h1{font-size:1.25rem;border-bottom:3px solid #1B3A8C;padding-bottom:.4rem}h2{font-size:1rem;color:#1B3A8C;margin-top:1.6rem}.meta{display:flex;gap:2rem;font-size:.9rem;margin:.8rem 0}.q{font-weight:bold;margin-top:.9rem}.r{border:1px solid #bbb;border-radius:6px;padding:.6rem .8rem;min-height:3rem;margin-top:.3rem;font-size:.92rem}.sig{margin-top:2.5rem;display:flex;justify-content:space-between;font-size:.9rem}ul{margin:.3rem 0}@media print{body{margin:0.5cm}}</style></head><body>');
+    h.push('<h1>Activité globale — Module TRI-01 : Métier et formation (APC)</h1>');
+    h.push('<div class="meta"><span><strong>Apprenant :</strong> '+esc(nm)+'</span><span><strong>Programme :</strong> TRI</span><span><strong>Date :</strong> '+new Date().toLocaleDateString('fr-FR')+'</span></div>');
+    h.push('<h2>Partie A — QCM (20%)</h2><p>'+(a?('Score obtenu en ligne : <strong>'+a.ok+'/'+a.total+'</strong> ('+a.pts+'/20 pts)'):'QCM non soumis en ligne.')+'</p>');
+    h.push('<h2>Partie B — Connaissance du métier (30%)</h2>');
+    for(var i=0;i<4;i++){h.push('<div class="q">'+(i+1)+'. '+QB[i]+'</div><div class="r">'+esc(B[i])+'</div>');}
+    h.push('<h2>Partie C — Mon projet professionnel (40%)</h2>');
+    for(var i=0;i<4;i++){h.push('<div class="q">'+(i+1)+'. '+QC[i]+'</div><div class="r">'+esc(C[i])+'</div>');}
+    h.push('<h2>Partie D — Mon engagement personnel (10%)</h2><ul>');
+    for(var i=0;i<5;i++){h.push('<li>'+(D[i]?'☑':'☐')+' '+ENG[i]+'</li>');}
+    h.push('</ul><div class="sig"><span>Nom : '+esc(nm)+'</span><span>Signature : ______________________</span><span>Date : '+new Date().toLocaleDateString('fr-FR')+'</span></div>');
+    h.push('<p style="margin-top:1.5rem;font-size:.8rem;color:#555">Parties B et C évaluées par le professeur (pondération : A 20% · B 30% · C 40% · D 10%).</p>');
+    h.push('</body></html>');
+    var w=window.open('','_blank');if(!w){if(window.toast)toast('Autorise les fenêtres pop-up pour imprimer.');return;}
+    w.document.write(h.join(''));w.document.close();setTimeout(function(){w.print();},400);
+  };
+
+  function init(){
+    var dt=document.getElementById('ex-date');if(dt)dt.textContent=new Date().toLocaleDateString('fr-FR');
+    var nm='';try{nm=localStorage.getItem('TRI01v1_exNm')||'';}catch(e){}
+    var ni=document.getElementById('ex-nm');if(ni&&nm)ni.value=nm;
+    ['b','c'].forEach(function(p){var d=gx('TRI01v1_ex'+p.toUpperCase());for(var i=0;i<4;i++){var el=document.getElementById('ex'+p+'-'+i);if(el&&d[i]){el.value=d[i];exSave(p,i,el);}}});
+    var D=gx('TRI01v1_exD');for(var i=0;i<5;i++){var cb=document.getElementById('exd-'+i);if(cb)cb.checked=!!D[i];}
+    exUpdateA();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 
