@@ -1,527 +1,498 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-07 — Recherche d'information</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-07 — Recherche d'information · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+
+:root{--navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;--r:10px;--rL:18px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-head{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-head h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.good{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.bad{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.good .qletter{background:var(--green);color:#fff}.qopt.bad .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none;background:rgba(27,58,140,.05);border-left:3px solid var(--blue);color:#1a2f52}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
+/* ===== Standard v10 ===== */
+.step-lbl{display:inline-block;font-family:var(--fD);font-weight:800;font-size:.72rem;letter-spacing:.04em;color:var(--red);background:rgba(232,25,44,.08);border:1px solid rgba(232,25,44,.25);border-radius:99px;padding:.3rem .85rem;margin:1.1rem 0 .7rem}
+.lpl{background:linear-gradient(135deg,#0B1525,#13233c);border-radius:16px;padding:1rem 1.1rem;margin:.9rem 0 1.2rem;color:#dfe8fb;border:1px solid rgba(255,255,255,.08)}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
+.lpl-h{font-family:var(--fD);font-weight:800;font-size:.72rem;color:#F5C518;margin-bottom:.35rem}
+.lpl ul{margin:0;padding-left:1.05rem;font-size:.76rem;line-height:1.55}
+.lpl p{margin:0;font-size:.76rem;line-height:1.55}
+.pnav{position:sticky;top:8px;z-index:50;display:flex;align-items:center;gap:.7rem;background:#0B1525;color:#fff;border-radius:14px;padding:.55rem .7rem;margin:.4rem 0 1rem;box-shadow:0 8px 24px rgba(4,13,26,.35)}
+.pnav-btn{font-family:var(--fD);font-weight:800;font-size:.72rem;background:var(--blue);color:#fff;border:0;border-radius:9px;padding:.5rem .8rem;cursor:pointer;white-space:nowrap}
+.pnav-btn[disabled]{opacity:.35;cursor:not-allowed}
+.pnav-mid{flex:1;min-width:0;text-align:center}
+.pnav-lbl{font-size:.66rem;color:#c9d6f2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnav-bar{height:5px;background:rgba(255,255,255,.12);border-radius:99px;margin-top:.3rem;overflow:hidden}
+.pnav-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:99px;transition:width .3s}
+body.player .chapter{display:none}
+body.player .chapter.active{display:block}
+body.player #plan{display:none}
+body.player #plan.active{display:block}
+.toc-item.locked{opacity:.38;pointer-events:none}
+.toc-item.done .toc-dot{background:#19c37d}
+.toc-reset{margin-top:.9rem;padding-top:.7rem;border-top:1px solid rgba(0,0,0,.08);font-size:.68rem;color:#8a93a6;cursor:pointer}
+.toc-reset:hover{color:var(--red)}
+.vsoon{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#0B1525,#16263f);color:#c9d6f2;text-align:center;padding:1rem}
+.vsoon b{font-family:var(--fD);font-size:.9rem;color:#F5C518}
+.vsoon span{font-size:.76rem;line-height:1.5;max-width:420px}
+.kterm{background:#fff;border:1px solid rgba(0,0,0,.08);border-left:4px solid #1B3A8C;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.kterm-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#1B3A8C;margin-bottom:.5rem}
+.kterm .kt-row{margin-bottom:.3rem;font-size:.78rem;line-height:1.6}
+.kterm .kt-row b{color:#0B1525}
+.bonas{background:linear-gradient(135deg,#FFF8E6,#FFF3D1);border:1px solid rgba(245,197,24,.45);border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.bonas-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#8a6400;margin-bottom:.45rem}
+.bonas ul{margin:0;padding-left:1.1rem;font-size:.78rem;line-height:1.6}
+.q-result{display:none;margin-top:1rem;padding:.85rem 1rem;border-radius:11px;font-size:.82rem}
+.q-result.win{background:#E9F9F1;border:1px solid #19c37d;color:#0a6b45}
+.q-result.lose{background:#FDEEEF;border:1px solid #E8192C;color:#8d1420}
+.q-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem}
+.q-btn{font-family:var(--fD);font-weight:800;font-size:.74rem;border:0;border-radius:9px;padding:.55rem 1rem;cursor:pointer;background:var(--blue);color:#fff}
+.q-btn.alt{background:#e8ecf4;color:#0B1525}
+@media(max-width:600px){.pnav{gap:.45rem;padding:.45rem .55rem;border-radius:12px}.pnav-btn{font-size:.64rem;padding:.45rem .55rem}.pnav-lbl{font-size:.6rem}.exbtn{width:100%;text-align:center}.exam-part{padding:.85rem .8rem}}
+.exid{display:flex;gap:1rem;flex-wrap:wrap;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.8rem 1rem;margin:1rem 0;font-size:.78rem}
+.exid label{display:flex;align-items:center;gap:.4rem}
+.exid input{border:1px solid #c8d0de;border-radius:8px;padding:.35rem .55rem;font-size:.78rem}
+.exam-part{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:1.1rem 1.2rem;margin:1.1rem 0}
+.exam-part h3{margin:.2rem 0 .8rem;font-family:var(--fD);font-size:1rem}
+.exam-part h4{margin:1.2rem 0 .6rem;font-family:var(--fD);font-size:.82rem;color:#1B3A8C}
+.expts{font-size:.66rem;background:#1B3A8C;color:#fff;border-radius:99px;padding:.15rem .55rem;margin-left:.4rem;font-weight:700}
+.exrow{display:flex;align-items:center;gap:.55rem;margin:.4rem 0}
+.exno{width:22px;height:22px;border-radius:50%;background:#0B1525;color:#fff;font-size:.66rem;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.exsel,.exin{border:1px solid #c8d0de;border-radius:8px;padding:.42rem .6rem;font-size:.78rem;max-width:100%}
+.exin{width:min(440px,100%);font-family:ui-monospace,Menlo,monospace}
+.exq{margin:.75rem 0}
+.exq-t{font-size:.79rem;margin-bottom:.3rem;line-height:1.5}
+.exmark{margin-left:.5rem;font-weight:800}
+.exmark.ok{color:#0a9d5c}.exmark.ko{color:#E8192C}
+.exans{display:none;font-size:.72rem;color:#0a6b45;background:#E9F9F1;border-radius:8px;padding:.3rem .6rem;margin-top:.3rem;width:fit-content;max-width:100%}
+.exans.show{display:block}
+.exgauges{display:grid;gap:.55rem;background:#0B1525;border-radius:14px;padding:1rem 1.1rem;margin:1.2rem 0;color:#fff}
+.exg{display:grid;grid-template-columns:70px 1fr 70px;align-items:center;gap:.7rem;font-size:.74rem}
+.exg-bar{height:8px;background:rgba(255,255,255,.14);border-radius:99px;overflow:hidden}
+.exg-fill{height:100%;width:0;background:linear-gradient(90deg,#19c37d,#7ee2b0);border-radius:99px;transition:width .4s}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns,.pnav{display:none!important}.layout{display:block!important}body{background:#fff!important}body.player .chapter,body.player #plan{display:block!important}}
 
 </style>
 </head>
 <body>
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('../../../assets/images/slide-tri-07.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🔍 Module TRI-07 · 1ère Année</div>
-    <h1>Recherche d' <em>information</em></h1>
+    <div class="mod-tag">🔎 TRI-07 · 1ère Année · Compétence générale</div>
+    <h1>Recherche d'<em>information</em></h1>
+    <p class="mod-desc">Objectif de comportement · 15 heures — Préciser l'objet, choisir et consulter les sources, extraire l'information utile et consigner clairement les résultats.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>15 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">📝 Devoir : <strong>Fiche documentaire</strong></div>
+      <div class="mod-meta-item">⏱ <strong>15 heures</strong></div>
+      <div class="mod-meta-item">🎯 Seuil : <strong>80 %</strong></div>
+      <div class="mod-meta-item">📚 <strong>4 chapitres</strong></div>
+      <div class="mod-meta-item">🧠 <strong>Esprit critique &amp; sources</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
-  </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Sources d'information</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Stratégies de recherche</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Évaluation des sources</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Organisation et notes</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluation</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Devoir — Fiche documentaire</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Sources d'information fiables</h2>
-      <div class="chapter-meta"><span>🕐 4 heures</span><span class="chapter-badge">Documentation officielle · Pyramide des sources</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Sources fiables pour un technicien TRI</div><div class="video-subtitle">Durée : 8 min · Tour des ressources</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Sources officielles (3 min)</strong> — cisco.com, docs.microsoft.com, kernel.org, ubuntu.com/documentation. Documentation primaire.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Sources communautaires (3 min)</strong> — Stack Overflow, Cisco Community Forums, Reddit networking. Fiables mais à vérifier.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Sources à éviter (2 min)</strong> — Blogs anonymes, vidéos YouTube sans vérification, wikis non maintenus.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 La pyramide des sources IT</h3><table class="data-table"><thead><tr><th>Niveau</th><th>Type</th><th>Exemples</th><th>Fiabilité</th></tr></thead><tbody><tr><td>L1 — Officielle</td><td>Documentation des éditeurs</td><td>cisco.com, docs.microsoft.com</td><td>★★★★★ Très haute</td></tr><tr><td>L2 — Certifiée</td><td>Livres certification, RFC</td><td>CCNA Official Cert Guide, RFC 791</td><td>★★★★ Haute</td></tr><tr><td>L3 — Communauté</td><td>Forums experts</td><td>Cisco Community, Server Fault</td><td>★★★ Bonne — vérifier</td></tr><tr><td>L4 — Tutoriels</td><td>Blogs avec auteur identifiable</td><td>Red Hat Blog, Cloudflare Blog</td><td>★★ Correcte — vérifier</td></tr><tr><td>L5 — Non vérifiée</td><td>Vidéos et blogs anonymes</td><td>Variable</td><td>★ Faible — toujours vérifier</td></tr></tbody></table></div><div class="info-box"><span class="info-box-label">🎯 Ressources indispensables étudiant TRI</span><strong>Cisco Support :</strong> cisco.com/c/en/us/support<br><strong>Microsoft Learn :</strong> learn.microsoft.com<br><strong>Ubuntu Docs :</strong> help.ubuntu.com<br><strong>Linux Man Pages :</strong> man.cx<br><strong>Cisco NetAcad :</strong> netacad.com</div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Source la plus fiable pour configurer un routeur Cisco ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Tutoriel YouTube</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>cisco.com/support officiel</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Reddit networking</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Blog IT local</button></div>
-    <div class="quiz-expl" id="expl-q0_1">La documentation officielle Cisco est la source primaire. Rédigée par les ingénieurs Cisco, maintenue à jour avec chaque version IOS.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Quelle source consulter en premier pour une commande Linux ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Forum en ligne</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Man page (manuel officiel)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Tutoriel blog</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Documentation Ubuntu</button></div>
-    <div class="quiz-expl" id="expl-q1_1">Les pages man sont la documentation officielle de chaque commande Linux, disponible directement dans le terminal: man nomcommande.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Un tutoriel "Niveau 4" est-il toujours correct ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Oui si auteur connu</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Non — vérifier avec source officielle</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Oui si récent</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Non, jamais fiable</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Même une bonne source doit être vérifiée pour les infos critiques. Recroiser avec la documentation officielle, surtout pour des configurations système.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">RFC signifie ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Réseau Français de Communication</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Request For Comments — standard technique internet</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Réseau Fiable Certifié</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Remote Function Call</button></div>
-    <div class="quiz-expl" id="expl-q3_1">RFC = Request For Comments. Documents fondateurs internet publiés par IETF. RFC 791 = IPv4, RFC 793 = TCP, RFC 2616 = HTTP/1.1.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 4 chapitres</span></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Stratégies de recherche efficace</h2>
-      <div class="chapter-meta"><span>🕐 4 heures</span><span class="chapter-badge">Google avancé · Anglais · IA</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Trouver la réponse exacte en 2 minutes</div><div class="video-subtitle">Durée : 10 min · Techniques avancées</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Opérateurs Google (4 min)</strong> — site:cisco.com "interface vlan", filetype:pdf, -youtube. Demo live avec des recherches réseau.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Chercher en anglais (3 min)</strong> — "réseau lent" = 500 résultats FR. "slow network troubleshooting" = 2 millions EN. Pourquoi cela change tout.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>IA comme point de départ (3 min)</strong> — Claude, ChatGPT, Copilot comme points de départ. Mais toujours vérifier avec documentation officielle.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Opérateurs de recherche avancée</h3><table class="data-table"><thead><tr><th>Opérateur</th><th>Signification</th><th>Exemple IT</th></tr></thead><tbody><tr><td>""</td><td>Phrase exacte</td><td>"default gateway unreachable" site:cisco.com</td></tr><tr><td>site:</td><td>Limite à un site</td><td>site:cisco.com "show ip route"</td></tr><tr><td>-mot</td><td>Exclut un terme</td><td>Cisco configuration -video -youtube</td></tr><tr><td>filetype:</td><td>Type de fichier</td><td>CCNA guide filetype:pdf</td></tr><tr><td>intitle:</td><td>Dans le titre</td><td>intitle:"VLAN config" Cisco</td></tr><tr><td>after:</td><td>Après une date</td><td>Ubuntu server setup after:2023</td></tr></tbody></table></div><div class="info-box tip"><span class="info-box-label">🔤 Chercher en anglais — essentiel</span>Pour "configuration VLAN Cisco" : 50 000 résultats FR. Pour "Cisco VLAN configuration" : 5+ millions EN dont la documentation officielle. Apprendre à chercher en anglais est une compétence technique à part entière.</div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Opérateur Google qui limite la recherche à un site ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>filetype:</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>intitle:</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>site:</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>-</button></div>
-    <div class="quiz-expl" id="expl-q0_2">site: suivi du domaine limite la recherche à ce site uniquement. Exemple: site:cisco.com "port channel".</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi chercher en anglais pour les problèmes réseau ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Easder to type</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>10 à 100x plus de résultats pertinents</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Google préfère l'anglais</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Les erreurs sont en anglais</button></div>
-    <div class="quiz-expl" id="expl-q1_2">L'anglais est la lingua franca IT mondiale. Documentation officielle, forums experts, RFC — tout est en anglais.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="2">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pour trouver des guides CCNA en PDF ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>site:ccna.com</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>intitle:ccna</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>filetype:pdf CCNA guide</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>after:2024</button></div>
-    <div class="quiz-expl" id="expl-q2_2">filetype:pdf limite aux fichiers PDF. Très utile pour trouver des cours, guides, et documentation téléchargeable.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="2">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Comment exclure les vidéos YouTube des résultats ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>site:-youtube.com</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>after:2000</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>chercher -youtube -video</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>uniquement +pdf</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Le signe "-" exclut un terme. "-youtube -video" filtre les résultats textuels uniquement, utile pour recherches documentation.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong> &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Évaluer et valider les sources</h2>
-      <div class="chapter-meta"><span>🕐 4 heures</span><span class="chapter-badge">Fiabilité · Date · Recoupement</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Ne pas se faire piéger par les fausses infos</div><div class="video-subtitle">Durée : 8 min · Esprit critique</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Méthode SIFT (3 min)</strong> — Stop, Investigate, Find better coverage, Trace claims. La méthode académique de vérification.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Cas concret (3 min)</strong> — Deux tutoriels contradictoires sur la même config. Comment déterminer lequel est correct ?</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Pièges fréquents (2 min)</strong> — Tutoriels obsolètes, scripts malveillants, forums avec mauvaises réponses.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Critères d'évaluation d'une source</h3><table class="data-table"><thead><tr><th>Critère</th><th>Bon signe</th><th>Signal alarme</th></tr></thead><tbody><tr><td>Auteur</td><td>Ingénieur certifié, éditeur officiel</td><td>Anonyme, pseudonyme</td></tr><tr><td>Date</td><td>Moins de 2 ans, version OS mentionnée</td><td>Plus de 5 ans, aucune date</td></tr><tr><td>Sources citées</td><td>Liens vers documentation officielle</td><td>Aucune référence</td></tr><tr><td>Recoupement</td><td>2+ sources indépendantes confirment</td><td>Information sur une seule source</td></tr><tr><td>Domaine</td><td>cisco.com, microsoft.com, kernel.org</td><td>Sites inconnus, .info, .tk</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Un tutoriel Cisco de 2017 est-il fiable en 2025 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Oui, réseaux immuables</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Non — IOS et bonnes pratiques ont évolué</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Oui si auteur certifié CCNA</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Non, rien ne fonctionnait en 2017</button></div>
-    <div class="quiz-expl" id="expl-q0_3">Les configs réseau évoluent. Un tuto 2017 peut référencer des commandes dépréciées ou pratiques de sécurité obsolètes. Toujours vérifier la date et la version IOS.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Avant d'exécuter un script bash trouvé en ligne ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Exécuter directement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Vérifier auteur, date, analyser chaque commande</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Exécuter en root pour voir</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Ignorer et chercher ailleurs</button></div>
-    <div class="quiz-expl" id="expl-q1_3">Un script malveillant peut formater un disque ou créer une backdoor. Analyser chaque commande, vérifier l'auteur. Si doute: tester en machine virtuelle.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="0">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Meilleure façon de confirmer une info technique ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>2+ sources indépendantes</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Beaucoup de j'aime</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Copier-coller et voir</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Demander à un ami</button></div>
-    <div class="quiz-expl" id="expl-q2_3">Recouper 2+ sources indépendantes dont au moins une documentation officielle. Une seule source peut contenir des erreurs.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="2">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">SIFT commence par quelle étape ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Find better coverage</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Investigate</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Stop — s'arrêter avant d'agir</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Trace claims</button></div>
-    <div class="quiz-expl" id="expl-q3_3">SIFT commence par Stop: s'arrêter avant d'appliquer ou partager. Cette pause évite les décisions précipitées sur une seule source non vérifiée.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="wrap"><div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-07</div>
+  <div class="toc-item" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+  <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo('ch-1')" id="ti-ch-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Préciser l&#x27;objet de la recherche</span></div>
+  <div class="toc-item" onclick="goTo('ch-2')" id="ti-ch-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Sélectionner et consulter les sources</span></div>
+  <div class="toc-item" onclick="goTo('ch-3')" id="ti-ch-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Extraire l&#x27;information</span></div>
+  <div class="toc-item" onclick="goTo('ch-4')" id="ti-ch-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Rédiger et consigner les résultats</span></div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+  <div class="toc-reset" onclick="triReset()" title="Effacer quiz, examen et position">↺ Réinitialiser ma progression</div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+<div id="main-content">
+<div class="pnav" id="pnav"><button class="pnav-btn" id="pnav-prev" onclick="stepMove(-1)">← Précédent</button><div class="pnav-mid"><div class="pnav-lbl" id="pnav-lbl">—</div><div class="pnav-bar"><div class="pnav-fill" id="pnav-fill"></div></div></div><button class="pnav-btn" id="pnav-next" onclick="stepMove(1)">Suivant →</button></div>
+<div class="pc" id="plan"><div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2>
+<div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module TRI-07</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+<div class="vembed"><video id="vf-TRI07-PLAN" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI07/final/TRI07-PLAN.mp4" type="video/mp4"></video></div></div>
+<div class="pc-sub">TRI-07 · Recherche d'information · Programme TRI</div></div></div>
+<div class="pc-body">
+<div class="pc-id">
+<div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">TRI-07</div></div>
+<div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">15 heures</div></div>
+<div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+<div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
+<div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">Aucun</div></div>
+<div class="pc-id-cell"><div class="pc-id-lbl">Seuil</div><div class="pc-id-val">80 %</div></div></div>
+<div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Effectuer de la recherche d'information.</strong></p></div>
+<div class="pc-sec"><h4>Présentation du module</h4><p>Un technicien réseau doit sans cesse trouver une information fiable : un message d'erreur, une procédure, une fiche technique, un pilote. Ce module court mais essentiel donne une <strong>méthode de recherche rigoureuse</strong> — préciser le besoin, choisir les bonnes sources, extraire l'information utile et la consigner — réutilisable dans tous les modules suivants.</p></div>
+<div class="pc-sec"><h4>Éléments de la compétence</h4><ol>
+<li><strong>Préciser l'objet</strong> de la recherche.</li>
+<li><strong>Sélectionner et consulter</strong> les sources de références.</li>
+<li><strong>Extraire l'information.</strong></li>
+<li><strong>Rédiger et consigner</strong> les résultats de la recherche.</li></ol></div>
+<div class="pc-sec"><h4>Critères généraux de performance</h4><ul>
+<li>Utilisation efficace des sources d'information.</li>
+<li>Interprétation juste de la terminologie.</li>
+<li>Autonomie et initiative.</li>
+<li>Respect des règles ergonomiques.</li></ul></div>
+<div class="pc-sec"><h4>Contexte de réalisation</h4><div class="pc-cols">
+<div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Besoins courants dans un service informatique · sources variées : Internet, manuels, bases de données.</div>
+<div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Un ordinateur et les logiciels appropriés.</div></div></div>
+<div class="pc-sec"><h4>Découpage en leçons (15 h)</h4><table class="dtable"><thead><tr><th>N°</th><th>Leçon</th><th>Durée</th><th>Élément</th></tr></thead><tbody>
+<tr><td>1</td><td>Préciser l'objet de la recherche</td><td>4 h</td><td>1</td></tr>
+<tr><td>2</td><td>Sélectionner et consulter les sources</td><td>4 h</td><td>2</td></tr>
+<tr><td>3</td><td>Extraire l'information (esprit critique)</td><td>4 h</td><td>3</td></tr>
+<tr><td>4</td><td>Rédiger et consigner les résultats</td><td>3 h</td><td>4</td></tr></tbody></table></div>
+<div class="pc-sec"><h4>Modalités d'évaluation</h4><p>Objectif de <strong>comportement</strong> : épreuve pratique de recherche documentée.</p><ul>
+<li><strong>Évaluation formative</strong> — quiz, formulation de requêtes, évaluation de fiabilité de sources.</li>
+<li><strong>Évaluation de sanction</strong> — recherche complète sur un besoin technique : préciser l'objet, sélectionner des sources variées, extraire l'information pertinente, rédiger une fiche claire.</li>
+<li><strong>Seuil de réussite</strong> — 80 % (conforme au référentiel).</li></ul></div>
+<div class="pc-sec"><h4>Références</h4><ul>
+<li>Programme de formation TRI — Canado Technique / CFPH.</li>
+<li>Documentation technique en ligne, bases de connaissances des fabricants, moteurs de recherche.</li></ul></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Organiser ses recherches</h2>
-      <div class="chapter-meta"><span>🕐 3 heures</span><span class="chapter-badge">Notes · Base de connaissance · Partage</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Construire sa base de connaissances personnelle</div><div class="video-subtitle">Durée : 8 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Outils de prise de notes (3 min)</strong> — Notion, Obsidian, Joplin (open source), OneNote. Structure d'une bonne note technique.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Organisation recommandée (3 min)</strong> — Dossiers par module TRI, par technologie, par type (commandes, configs, pannes résolues).</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Partager avec l'équipe (2 min)</strong> — Wiki interne, contribution collective. L'intelligence collective du département IT.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 Structure de base de connaissances personnelle</h3><table class="data-table"><thead><tr><th>Dossier</th><th>Contenu</th><th>Exemple de note</th></tr></thead><tbody><tr><td>Commandes utiles</td><td>Commandes fréquentes + explication</td><td>ipconfig /all — config IP complète</td></tr><tr><td>Pannes résolues</td><td>Symptôme → Cause → Solution</td><td>Imprimante perdue → IP changée → IP fixe</td></tr><tr><td>Configs type</td><td>Templates de configurations</td><td>Template config VLAN Cisco IOS</td></tr><tr><td>Ressources</td><td>Liens vers documentation bookmarkée</td><td>cisco.com/support, man.cx</td></tr><tr><td>Vocabulaire</td><td>Termes techniques + définitions</td><td>ACK = Acknowledgment, flag TCP</td></tr></tbody></table></div><div class="info-box tip"><span class="info-box-label">📚 Conseil du professeur</span>Les meilleurs techniciens ont tous un "carnet de bord" numérique ou papier. Chaque commande nouvelle, panne résolue, astuce découverte: noter. Après 2 ans de formation + stage, ce carnet vaut de l'or.</div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi avoir une base de connaissances personnelle ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Impressionner son patron</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Retrouver rapidement des solutions déjà rencontrées</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Pour revendre ses notes</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Eviter de travailler</button></div>
-    <div class="quiz-expl" id="expl-q0_4">Base de connaissances = mémoire externe professionnelle. Retrouver en 30 secondes la solution d'une panne résolue 6 mois plus tôt.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="2">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Meilleure organisation pour les notes techniques ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Tout dans un Word</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Par date</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Par technologie/sujet (Cisco, Linux, Pannes)</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Par ordre alphabétique</button></div>
-    <div class="quiz-expl" id="expl-q1_4">Organiser par technologie permet de retrouver rapidement. Problème Cisco → dossier Cisco. Organisation par date oblige à se souvenir quand on a pris la note.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Outil open source gratuit recommandé pour la prise de notes ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Microsoft OneNote</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Joplin ou Obsidian</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Google Keep</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Notepad Windows</button></div>
-    <div class="quiz-expl" id="expl-q2_4">Joplin et Obsidian sont open source, supportent le Markdown (idéal pour le code), disponibles sur Windows/macOS/Linux, et fonctionnent sans internet.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Une note "Panne résolue" doit contenir au minimum ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>La date</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Symptôme + Cause + Solution</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Le nom de l'utilisateur</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Le code d'erreur</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Symptôme (ce que voyait l'utilisateur) + Cause (cause réelle) + Solution (actions exactes). Ces 3 éléments permettent de reproduire la solution face au même problème.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
-  </div>
-</div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="chapter" id="ch-1"><div class="ch-header"><div class="ch-num">01</div><div class="ch-info"><h2>Préciser l&#x27;objet de la recherche</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Besoin → question → mots-clés</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd'hui</div><ul><li>Transformer un besoin flou en question précise</li><li>Identifier les bons mots-clés</li><li>Comprendre la puissance du code d'erreur exact</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Premier chapitre : tout part d'une bonne question. On apprend à cibler avant de chercher.</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Préciser l&#x27;objet de la recherche</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI07-CH01" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI07/final/TRI07-CH01.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Objet de la recherche</b> — le but précis, formulé clairement avant de chercher</div><div class="kt-row"><b>Besoin flou</b> — demande vague qu&#x27;il faut transformer en question nette</div><div class="kt-row"><b>Mot-clé</b> — terme précis qui cible l&#x27;information recherchée</div><div class="kt-row"><b>Code d&#x27;erreur</b> — message exact affiché — le mot-clé le plus puissant</div><div class="kt-row"><b>Requête</b> — la question telle qu&#x27;on la saisit dans un moteur de recherche</div></div><div class="section"><h3>1.1 Une bonne recherche commence par une bonne question</h3>
+<p>Avant de taper quoi que ce soit, on transforme un <strong>besoin flou</strong> en <strong>question précise</strong>. « Mon imprimante ne marche pas » devient « Comment résoudre l'erreur 0x0000011b sur une imprimante HP LaserJet sous Windows 11 ? ». Plus la question est précise, plus la réponse est rapide.</p>
+<div class="ibox blue"><span class="ibox-label">💡 Le code d'erreur est ton meilleur ami</span>Un message ou un code d'erreur exact, copié tel quel, est le mot-clé le plus puissant : il mène souvent directement à la solution.</div></div>
+<div class="section"><h3>1.2 Identifier les bons mots-clés</h3>
+<table class="dtable"><thead><tr><th>Besoin vague</th><th>Mots-clés efficaces</th></tr></thead><tbody>
+<tr><td>« le wifi ne marche pas »</td><td>marque du routeur + « SSID non visible » + modèle</td></tr>
+<tr><td>« erreur à l'installation »</td><td>logiciel + code d'erreur exact + système + version</td></tr></tbody></table>
+<p>Un bon mot-clé est <strong>spécifique</strong> : il distingue ton problème de milliers d'autres. Ajoute la marque, le modèle, la version et le système d'exploitation pour cibler.</p></div>
+<div class="section"><h3>1.3 Du besoin à la requête</h3>
+<p>La démarche tient en trois temps : (1) reformuler le besoin en une question claire, (2) en extraire les mots-clés essentiels, (3) prévoir des synonymes si la première recherche ne donne rien. En Haïti comme ailleurs, savoir bien formuler sa requête en français comme en anglais technique double tes chances de trouver vite.</p></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>Une bonne recherche commence toujours par une bonne question.</li><li>Plus la question est précise, plus la réponse arrive vite.</li><li>Le code ou message d&#x27;erreur exact, copié tel quel, mène souvent droit à la solution.</li><li>Ajoute toujours le contexte : logiciel, version, système d&#x27;exploitation.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-1"><div class="qblock-head"><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="On précise d&#x27;abord clairement le but : une question nette oriente toute la recherche."><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle est la toute première étape d&#x27;une recherche efficace ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>préciser clairement le but / la question</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>ouvrir dix onglets au hasard</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>recopier la première réponse</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>demander à un collègue de chercher</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Le code d&#x27;erreur exact, avec le logiciel et le système, mène souvent droit à la solution."><div class="q-num">Question 2 / 5</div><div class="q-text">Quel mot-clé est le plus efficace face à un problème logiciel ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>« ça ne marche pas »</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>le code d&#x27;erreur exact + le logiciel + l&#x27;OS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>« problème »</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>« aide »</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Bien cibler l&#x27;objet fait gagner du temps et évite de se noyer dans l&#x27;information."><div class="q-num">Question 3 / 5</div><div class="q-text">Préciser l&#x27;objet de la recherche permet surtout de :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>remplir l&#x27;écran</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>gagner du temps et cibler l&#x27;information utile</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>éviter de réfléchir</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>ralentir le travail</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="C&#x27;est un besoin vague : il faut le transformer en question précise avant de chercher."><div class="q-num">Question 4 / 5</div><div class="q-text">« Mon imprimante ne marche pas » est :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>une question précise</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>un code d&#x27;erreur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>un besoin flou à reformuler</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>une source fiable</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Marque, modèle, version et symptôme exact distinguent ton problème des autres."><div class="q-num">Question 5 / 5</div><div class="q-text">Pour cibler un problème matériel, on ajoute aux mots-clés :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>la couleur de l&#x27;appareil</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>la marque, le modèle et le symptôme exact</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>le prix</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>rien</button></div><div class="qexpl" style="display:none"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(1)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(1)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div></div></div>
+<div class="chapter" id="ch-2"><div class="ch-header"><div class="ch-num">02</div><div class="ch-info"><h2>Sélectionner et consulter les sources</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Sources variées · Opérateurs</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd'hui</div><ul><li>Distinguer les types de sources et leur fiabilité</li><li>Varier les sources pour fiabiliser</li><li>Maîtriser les opérateurs de recherche</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Au chapitre 1, tu sais formuler ta requête. On choisit maintenant où chercher — et comment affiner.</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Sélectionner et consulter les sources</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI07-CH02" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI07/final/TRI07-CH02.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Source officielle</b> — documentation du fabricant — fiabilité très élevée</div><div class="kt-row"><b>Base de connaissances (KB)</b> — articles d&#x27;erreurs connues et de correctifs</div><div class="kt-row"><b>Forum spécialisé</b> — retours d&#x27;expérience concrets — à recouper</div><div class="kt-row"><b>Opérateur de recherche</b> — guillemets, site:, -, filetype: pour affiner</div><div class="kt-row"><b>Variété des sources</b> — croiser plusieurs types pour fiabiliser le résultat</div></div><div class="section"><h3>2.1 Varier les types de sources</h3>
+<table class="dtable"><thead><tr><th>Source</th><th>Quand l'utiliser</th><th>Fiabilité</th></tr></thead><tbody>
+<tr><td>Documentation officielle / fabricant</td><td>procédures, fiches techniques</td><td>très élevée</td></tr>
+<tr><td>Base de connaissances (KB)</td><td>erreurs connues, correctifs</td><td>élevée</td></tr>
+<tr><td>Forums spécialisés</td><td>cas concrets, retours d'expérience</td><td>variable — recouper</td></tr>
+<tr><td>Articles de blog</td><td>tutoriels</td><td>variable — vérifier la date</td></tr></tbody></table>
+<p>Aucune source n'est parfaite seule. La bonne pratique est de <strong>croiser</strong> une source officielle avec un retour de terrain.</p></div>
+<div class="section"><h3>2.2 Les opérateurs de recherche</h3>
+<div class="ibox gold"><span class="ibox-label">🔧 Affiner ses requêtes</span><span class="mono">"phrase exacte"</span> entre guillemets · <span class="mono">site:cisco.com</span> pour un site précis · <span class="mono">-mot</span> pour exclure un terme · <span class="mono">filetype:pdf</span> pour un type de fichier. Ces opérateurs font gagner un temps précieux.</div>
+<p>Exemple : <span class="mono">"erreur 619" site:forum.huawei.com</span> cherche l'expression exacte, uniquement sur le forum Huawei.</p></div>
+<div class="section"><h3>2.3 Repérer vite l'information pertinente</h3>
+<p>Sur une page de résultats, lis d'abord les <strong>titres</strong> et les <strong>extraits</strong>. Privilégie les domaines officiels, les dates récentes et les pages qui mentionnent exactement ton matériel ou ton code d'erreur. Ne t'arrête pas au premier résultat : compare-en deux ou trois.</p></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>La documentation du fabricant est la source la plus fiable pour une procédure.</li><li>Opérateurs clés : &quot;phrase exacte&quot;, site:domaine, -mot, filetype:pdf.</li><li>Un forum donne des pistes concrètes, mais on recoupe avant d&#x27;appliquer.</li><li>Vérifie toujours la date d&#x27;un tutoriel ou d&#x27;un article de blog.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-2"><div class="qblock-head"><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="La documentation du fabricant est la source la plus fiable pour une procédure officielle."><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle source est la plus fiable pour une procédure officielle ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>la documentation du fabricant</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>un commentaire anonyme</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>une publicité</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>une rumeur</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="« site: » limite la recherche au domaine indiqué (ex. site:cisco.com)."><div class="q-num">Question 2 / 5</div><div class="q-text">Que fait l&#x27;opérateur site:cisco.com ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>limite la recherche à un site précis</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>exclut un site</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>traduit la page</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>ne fait rien</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Une info de forum se recoupe toujours avec une source fiable avant d&#x27;être appliquée."><div class="q-num">Question 3 / 5</div><div class="q-text">Pour une info trouvée sur un forum, le bon réflexe est de :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>l&#x27;appliquer aveuglément</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>la recouper avec une autre source fiable</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>la copier sans lire</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>l&#x27;ignorer toujours</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Les guillemets encadrent une phrase exacte recherchée telle quelle."><div class="q-num">Question 4 / 5</div><div class="q-text">Quel opérateur cherche une expression mot pour mot ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>les guillemets &quot;…&quot;</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>le tiret -</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>filetype:</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>site:</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="filetype:pdf limite les résultats à ce type de fichier."><div class="q-num">Question 5 / 5</div><div class="q-text">Quel opérateur restreint les résultats à des fichiers PDF ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>site:</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>-pdf</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>filetype:pdf</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>&quot;pdf&quot;</button></div><div class="qexpl" style="display:none"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(2)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(2)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div></div></div>
+<div class="chapter" id="ch-3"><div class="ch-header"><div class="ch-num">03</div><div class="ch-info"><h2>Extraire l&#x27;information</h2><div class="ch-meta"><span>🕐 4h</span><span class="ch-badge">Fiabilité · Recoupement · Notes</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd'hui</div><ul><li>Évaluer la fiabilité d'une source</li><li>Recouper l'information</li><li>Prendre des notes utiles avec leur source</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Tu sais où chercher. On apprend maintenant à juger ce qu'on trouve et à le noter correctement.</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Extraire l&#x27;information</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI07-CH03" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI07/final/TRI07-CH03.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Fiabilité</b> — qualité d&#x27;une source : auteur, date, recoupement, objectif</div><div class="kt-row"><b>Auteur</b> — qui écrit ? est-ce une autorité reconnue (fabricant, expert) ?</div><div class="kt-row"><b>Recoupement</b> — confirmer une information avec au moins deux sources fiables</div><div class="kt-row"><b>Esprit critique</b> — juger la pertinence et la fiabilité avant d&#x27;agir</div><div class="kt-row"><b>Prise de notes</b> — consigner la solution, mais aussi la source et la date</div></div><div class="section"><h3>3.1 Évaluer la fiabilité d'une source</h3>
+<table class="dtable"><thead><tr><th>Critère</th><th>Question à se poser</th></tr></thead><tbody>
+<tr><td>Auteur</td><td>Qui écrit ? Est-ce une autorité (fabricant, expert) ?</td></tr>
+<tr><td>Date</td><td>L'information est-elle récente, encore valable ?</td></tr>
+<tr><td>Recoupement</td><td>D'autres sources fiables disent-elles la même chose ?</td></tr>
+<tr><td>Objectif</td><td>La source informe-t-elle, ou veut-elle surtout vendre ?</td></tr></tbody></table>
+<div class="ibox red"><span class="ibox-label">⚠️ Signal d'alerte</span>Un titre sensationnel, sans auteur ni date, qui promet une solution miracle : méfiance. C'est souvent l'inverse d'une source fiable.</div></div>
+<div class="section"><h3>3.2 Recouper avant d'agir</h3>
+<p><strong>Recouper</strong>, c'est confirmer une information en la retrouvant dans au moins deux sources fiables et indépendantes. Une seule source, même bien écrite, peut se tromper. Recouper évite d'appliquer une fausse manipulation sur un système en production.</p></div>
+<div class="section"><h3>3.3 Prendre des notes utiles</h3>
+<div class="ibox green"><span class="ibox-label">📝 Bonne pratique</span>Note la <strong>solution</strong>, mais aussi la <strong>source</strong> et la <strong>date</strong>. Une note sans sa source perd la moitié de sa valeur : impossible de la vérifier ou de la retrouver plus tard.</div>
+<p>Des notes méthodiques, en français et avec la terminologie exacte, sont la matière première de la fiche de synthèse du chapitre 4.</p></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>Quatre critères de fiabilité : auteur, date, recoupement, objectif.</li><li>Un titre sensationnel sans source est un signal d&#x27;alerte, pas de fiabilité.</li><li>Recouper, c&#x27;est vérifier qu&#x27;au moins deux sources fiables concordent.</li><li>Une note sans sa source perd la moitié de sa valeur.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-3"><div class="qblock-head"><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="2" data-e="Un titre sensationnel sans source est au contraire un signal d&#x27;alerte, pas de fiabilité."><div class="q-num">Question 1 / 5</div><div class="q-text">Quel critère N&#x27;EST PAS un signe de fiabilité ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>un auteur reconnu</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>une information récente</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>un titre sensationnel sans source</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>le recoupement avec d&#x27;autres sources</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Noter source et date permet de vérifier l&#x27;information et de la retrouver ensuite."><div class="q-num">Question 2 / 5</div><div class="q-text">Pourquoi noter la source et la date avec l&#x27;information ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>pour faire joli</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>pour pouvoir la vérifier et la retrouver plus tard</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>ce n&#x27;est pas utile</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>pour allonger les notes</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Recouper, c&#x27;est confirmer qu&#x27;au moins deux sources fiables disent la même chose."><div class="q-num">Question 3 / 5</div><div class="q-text">Recouper l&#x27;information signifie :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>couper le texte en deux</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>vérifier qu&#x27;au moins deux sources fiables concordent</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>ne lire qu&#x27;une source</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>supprimer les sources</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Une source qui cherche surtout à vendre est à considérer avec prudence."><div class="q-num">Question 4 / 5</div><div class="q-text">Le critère « Objectif » d&#x27;une source invite à se demander :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>sa couleur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>si elle informe ou si elle veut surtout vendre</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>sa longueur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>son auteur uniquement</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="Les procédures et versions évoluent : une info périmée peut induire en erreur."><div class="q-num">Question 5 / 5</div><div class="q-text">Pourquoi vérifier la date d&#x27;une information technique ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>par habitude</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>parce qu&#x27;une procédure ancienne peut ne plus être valable</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>ça ne sert à rien</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>pour la beauté</button></div><div class="qexpl" style="display:none"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(3)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(3)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div></div></div>
+<div class="chapter" id="ch-4"><div class="ch-header"><div class="ch-num">04</div><div class="ch-info"><h2>Rédiger et consigner les résultats</h2><div class="ch-meta"><span>🕐 3h</span><span class="ch-badge">Synthèse · Terminologie · Base de connaissances</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd'hui</div><ul><li>Rédiger une fiche de synthèse claire</li><li>Employer la terminologie technique exacte</li><li>Consigner pour réutiliser en équipe</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Dernier chapitre : transformer tes notes en une fiche claire, et la ranger pour que toute l'équipe en profite.</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Rédiger et consigner les résultats</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI07-CH04" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI07/final/TRI07-CH04.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Fiche de synthèse</b> — résultat clair et concis de la recherche</div><div class="kt-row"><b>Terminologie appropriée</b> — les termes techniques exacts du domaine</div><div class="kt-row"><b>Consignation</b> — ranger la fiche dans un endroit partagé et durable</div><div class="kt-row"><b>Base de connaissances</b> — mémoire d&#x27;équipe des solutions déjà trouvées</div><div class="kt-row"><b>Citation de la source</b> — lien et date, pour vérifier et retrouver l&#x27;info</div></div><div class="section"><h3>4.1 Rédiger une fiche de synthèse</h3>
+<p>Le résultat d'une recherche se rédige de façon <strong>claire et concise</strong>, dans la <strong>terminologie technique appropriée</strong>. Une bonne fiche répond à : quel était le problème, quelle est la solution, d'où vient l'information.</p>
+<div class="ibox blue"><span class="ibox-label">🗂️ Structure d'une fiche</span><strong>Objet</strong> (le besoin) · <strong>Solution</strong> (les étapes) · <strong>Source</strong> (lien + date) · <strong>Remarques</strong> (limites, cas particuliers).</div></div>
+<div class="section"><h3>4.2 Construire une base de connaissances</h3>
+<p>Consigner ses fiches dans un endroit partagé (une <strong>base de connaissances</strong>) fait gagner du temps à toute l'équipe : la prochaine fois que le problème survient, la réponse est déjà là. C'est l'esprit du module — chercher une fois, réutiliser souvent.</p>
+<div class="ibox green"><span class="ibox-label">🔗 Lien avec le métier</span>Cette compétence sert dans TRI-12 (Dépannage), TRI-15 (Assistance technique) et toute la 2ᵉ année : un technicien qui documente ses recherches devient vite la référence de son équipe.</div></div>
+<div class="section"><h3>4.3 Toujours citer la source</h3>
+<p>Une fiche sans source est une fiche fragile : on ne peut ni la vérifier, ni la mettre à jour. Indique systématiquement le lien et la date de consultation. C'est une question de rigueur professionnelle et d'honnêteté intellectuelle.</p></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>Structure d&#x27;une fiche : objet, solution, source, remarques.</li><li>Rédige clair, concis, avec la bonne terminologie technique.</li><li>La source doit toujours figurer dans la fiche.</li><li>Chercher une fois, réutiliser souvent : c&#x27;est l&#x27;esprit du module.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-4"><div class="qblock-head"><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="Une fiche utile est claire, concise et emploie la terminologie technique exacte."><div class="q-num">Question 1 / 5</div><div class="q-text">Une bonne fiche de synthèse doit être :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>claire, concise, avec la bonne terminologie</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>très longue et vague</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>sans aucune source</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>écrite n&#x27;importe comment</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="La source doit toujours figurer : c&#x27;est ce qui rend l&#x27;information vérifiable et réutilisable."><div class="q-num">Question 2 / 5</div><div class="q-text">Quel élément doit TOUJOURS figurer dans une fiche ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>la source de l&#x27;information</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>une blague</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>la météo</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>rien de précis</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Une base de connaissances partagée permet de réutiliser les solutions et fait gagner du temps à toute l&#x27;équipe."><div class="q-num">Question 3 / 5</div><div class="q-text">À quoi sert une base de connaissances partagée ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>réutiliser les solutions et faire gagner du temps à l&#x27;équipe</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>cacher l&#x27;information</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>ralentir le travail</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>rien</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Objet, solution, source et remarques forment une fiche complète et réutilisable."><div class="q-num">Question 4 / 5</div><div class="q-text">Que contient la structure recommandée d&#x27;une fiche ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>objet, solution, source, remarques</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>seulement la solution</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>seulement un titre</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>des images uniquement</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Consigner une fois permet à toute l&#x27;équipe de réutiliser la solution ensuite."><div class="q-num">Question 5 / 5</div><div class="q-text">« Chercher une fois, réutiliser souvent » résume :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>l&#x27;intérêt de consigner dans une base de connaissances</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>le fait de ne jamais documenter</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>la recherche sans méthode</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>l&#x27;oubli des sources</button></div><div class="qexpl" style="display:none"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(4)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(4)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)" style="background:linear-gradient(135deg,#1B3A8C,var(--green));font-size:.86rem;padding:.6rem 1.4rem">🔎 Module TRI-07 complété — méthode de recherche maîtrisée !</button></div></div></div>
+<div class="chapter" id="essentiel"><div class="ch-header"><div class="ch-num">★</div><div class="ch-info"><h2>L'essentiel à retenir</h2></div></div><div class="ch-body">
+<p style="font-size:.85rem;line-height:1.7;color:#2a3d6b">TRI-07 t'apprend à <strong>trouver vite une information fiable</strong> et à la réutiliser. La synthèse :</p>
+<div class="bonas"><div class="bonas-h">★ Synthèse du module</div><ul>
+<li><b>Ch.1 — Préciser l'objet :</b> besoin flou → question précise → mots-clés ; le code d'erreur exact est roi.</li>
+<li><b>Ch.2 — Choisir les sources :</b> varier les sources ; opérateurs "…", site:, -mot, filetype:.</li>
+<li><b>Ch.3 — Extraire :</b> juger la fiabilité (auteur, date, recoupement, objectif) ; recouper avant d'agir.</li>
+<li><b>Ch.4 — Rédiger &amp; consigner :</b> fiche claire (objet, solution, source, remarques) ; base de connaissances.</li></ul></div>
+<div class="bonas"><div class="bonas-h">🔑 Les réflexes à garder</div><ul>
+<li>Une bonne recherche commence par une bonne <b>question</b>.</li>
+<li>La <b>documentation du fabricant</b> est la source la plus fiable.</li>
+<li><b>Recouper</b> = au moins deux sources fiables qui concordent.</li>
+<li>Note toujours la <b>source</b> et la <b>date</b> ; chercher une fois, réutiliser souvent.</li></ul></div>
+<div class="ibox blue"><span class="ibox-label">🎯 Prochaine étape</span>L'examen blanc : ordre de la démarche de recherche, quiz général, niveau de fiabilité des sources, élément de la démarche, opérateurs à nommer et scénarios. Seuil 80 %.</div>
 </div></div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-07 — Fiche documentaire — Recherche sur un sujet technique</h3>
-      <span>Application des stratégies de recherche</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
-  </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Produis une fiche documentaire professionnelle sur un sujet technique. Applique toutes les stratégies de recherche du module.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Choisis un sujet: VLAN · Spanning Tree · DHCP · VPN IPSec · Routage OSPF · Sécurité WPA3.</li><li>Consulte au minimum 3 sources de niveaux différents (1 officielle + 1 certifiée + 1 communautaire).</li><li>Évalue chaque source selon les critères du chapitre 3 dans un tableau.</li><li>Rédige ta fiche (400–500 mots): définition, fonctionnement, cas d'usage en Haïti, commandes clés.</li><li>Inclus une bibliographie complète: titre, auteur, URL, date de consultation.</li></ol>
-    </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">3 sources identifiées et évaluées</div></div><div class="bareme-row"><div class="bareme-pts">40 pts</div><div class="bareme-label">Fiche documentaire complète et techniquement correcte</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Bibliographie complète et correcte</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Qualité de rédaction et clarté</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
-  </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-07 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<div class="chapter" id="examen"><div class="ch-header"><div class="ch-num">🎓</div><div class="ch-info"><h2>Examen blanc — TRI-07</h2></div></div><div class="ch-body"><div class="bonas"><div class="bonas-h">📋 Consignes</div><ul><li>Durée conseillée : <b>50 minutes</b> · Total : <b>100 points</b> · Réussite : <b>≥ 80 %</b> (référentiel).</li><li>Partie A — Théorie (30 pts) · Partie B — Pratique : fiabilité des sources, élément de la démarche, opérateurs, scénarios (70 pts).</li><li>Pour les champs à compléter, écris le mot exact (ex. guillemets, site, recoupement).</li></ul></div><div class="exid"><label>Nom : <input type="text" id="ex-nom"></label><label>Prénom : <input type="text" id="ex-prenom"></label><label>Date : <input type="date" id="ex-date"></label></div><div class="exam-part"><h3>Partie A — Théorie <span class="expts">30 pts</span></h3><h4>A1. Démarche de recherche — remets les 5 étapes dans l'ordre <span class="expts">5 pts</span></h4><div class="exrow"><span class="exno">1</span><select class="exsel" id="a1-0"><option value="-1">— Choisir —</option><option value="0">Extraire l&#x27;information pertinente et noter la source</option><option value="1">Préciser le besoin et formuler la question</option><option value="2">Rédiger une fiche de synthèse et la consigner</option><option value="3">Choisir des sources fiables et variées</option><option value="4">Évaluer la fiabilité et recouper l&#x27;information</option></select><span class="exmark" id="m-a1-0"></span></div><div class="exrow"><span class="exno">2</span><select class="exsel" id="a1-1"><option value="-1">— Choisir —</option><option value="0">Extraire l&#x27;information pertinente et noter la source</option><option value="1">Préciser le besoin et formuler la question</option><option value="2">Rédiger une fiche de synthèse et la consigner</option><option value="3">Choisir des sources fiables et variées</option><option value="4">Évaluer la fiabilité et recouper l&#x27;information</option></select><span class="exmark" id="m-a1-1"></span></div><div class="exrow"><span class="exno">3</span><select class="exsel" id="a1-2"><option value="-1">— Choisir —</option><option value="0">Extraire l&#x27;information pertinente et noter la source</option><option value="1">Préciser le besoin et formuler la question</option><option value="2">Rédiger une fiche de synthèse et la consigner</option><option value="3">Choisir des sources fiables et variées</option><option value="4">Évaluer la fiabilité et recouper l&#x27;information</option></select><span class="exmark" id="m-a1-2"></span></div><div class="exrow"><span class="exno">4</span><select class="exsel" id="a1-3"><option value="-1">— Choisir —</option><option value="0">Extraire l&#x27;information pertinente et noter la source</option><option value="1">Préciser le besoin et formuler la question</option><option value="2">Rédiger une fiche de synthèse et la consigner</option><option value="3">Choisir des sources fiables et variées</option><option value="4">Évaluer la fiabilité et recouper l&#x27;information</option></select><span class="exmark" id="m-a1-3"></span></div><div class="exrow"><span class="exno">5</span><select class="exsel" id="a1-4"><option value="-1">— Choisir —</option><option value="0">Extraire l&#x27;information pertinente et noter la source</option><option value="1">Préciser le besoin et formuler la question</option><option value="2">Rédiger une fiche de synthèse et la consigner</option><option value="3">Choisir des sources fiables et variées</option><option value="4">Évaluer la fiabilité et recouper l&#x27;information</option></select><span class="exmark" id="m-a1-4"></span></div><h4>A2. Quiz général — les quatre chapitres <span class="expts">25 pts</span></h4><div class="exq"><div class="exq-t">1. La toute première étape d&#x27;une recherche efficace est de :</div><select class="exsel" id="a2-0"><option value="-1">— Choisir —</option><option value="0">préciser clairement le but / la question</option><option value="1">ouvrir des onglets au hasard</option><option value="2">copier la première réponse</option><option value="3">deviner</option></select><span class="exmark" id="m-a2-0"></span></div><div class="exq"><div class="exq-t">2. « Mon imprimante ne marche pas » est :</div><select class="exsel" id="a2-1"><option value="-1">— Choisir —</option><option value="0">une question précise</option><option value="1">un besoin flou à reformuler</option><option value="2">un code d&#x27;erreur</option><option value="3">une source</option></select><span class="exmark" id="m-a2-1"></span></div><div class="exq"><div class="exq-t">3. Le mot-clé le plus puissant face à une erreur logicielle est :</div><select class="exsel" id="a2-2"><option value="-1">— Choisir —</option><option value="0">« problème »</option><option value="1">« aide »</option><option value="2">le code / message d&#x27;erreur exact</option><option value="3">« ça bug »</option></select><span class="exmark" id="m-a2-2"></span></div><div class="exq"><div class="exq-t">4. Préciser l&#x27;objet de la recherche permet surtout de :</div><select class="exsel" id="a2-3"><option value="-1">— Choisir —</option><option value="0">remplir l&#x27;écran</option><option value="1">éviter de réfléchir</option><option value="2">ralentir</option><option value="3">gagner du temps et cibler l&#x27;information utile</option></select><span class="exmark" id="m-a2-3"></span></div><div class="exq"><div class="exq-t">5. Pour une procédure officielle, la source la plus fiable est :</div><select class="exsel" id="a2-4"><option value="-1">— Choisir —</option><option value="0">la documentation du fabricant</option><option value="1">un commentaire anonyme</option><option value="2">une publicité</option><option value="3">une rumeur</option></select><span class="exmark" id="m-a2-4"></span></div><div class="exq"><div class="exq-t">6. Les forums spécialisés sont :</div><select class="exsel" id="a2-5"><option value="-1">— Choisir —</option><option value="0">toujours faux</option><option value="1">utiles, mais à recouper</option><option value="2">la meilleure source officielle</option><option value="3">interdits</option></select><span class="exmark" id="m-a2-5"></span></div><div class="exq"><div class="exq-t">7. L&#x27;opérateur « guillemets » (&quot;…&quot;) sert à :</div><select class="exsel" id="a2-6"><option value="-1">— Choisir —</option><option value="0">exclure un mot</option><option value="1">limiter à un site</option><option value="2">chercher une expression mot pour mot</option><option value="3">traduire</option></select><span class="exmark" id="m-a2-6"></span></div><div class="exq"><div class="exq-t">8. L&#x27;opérateur site: sert à :</div><select class="exsel" id="a2-7"><option value="-1">— Choisir —</option><option value="0">exclure un site</option><option value="1">traduire la page</option><option value="2">compter les résultats</option><option value="3">limiter la recherche à un site donné</option></select><span class="exmark" id="m-a2-7"></span></div><div class="exq"><div class="exq-t">9. L&#x27;opérateur filetype:pdf sert à :</div><select class="exsel" id="a2-8"><option value="-1">— Choisir —</option><option value="0">restreindre les résultats à un type de fichier</option><option value="1">exclure les PDF</option><option value="2">ouvrir un PDF</option><option value="3">imprimer</option></select><span class="exmark" id="m-a2-8"></span></div><div class="exq"><div class="exq-t">10. L&#x27;opérateur « -mot » (tiret) sert à :</div><select class="exsel" id="a2-9"><option value="-1">— Choisir —</option><option value="0">ajouter un mot obligatoire</option><option value="1">exclure un terme des résultats</option><option value="2">souligner</option><option value="3">rien</option></select><span class="exmark" id="m-a2-9"></span></div><div class="exq"><div class="exq-t">11. Un critère de fiabilité d&#x27;une source est :</div><select class="exsel" id="a2-10"><option value="-1">— Choisir —</option><option value="0">la couleur du site</option><option value="1">la longueur du texte</option><option value="2">un auteur reconnu / une autorité</option><option value="3">la police d&#x27;écriture</option></select><span class="exmark" id="m-a2-10"></span></div><div class="exq"><div class="exq-t">12. Lequel est un signal d&#x27;alerte (NON-fiabilité) ?</div><select class="exsel" id="a2-11"><option value="-1">— Choisir —</option><option value="0">un auteur expert</option><option value="1">une date récente</option><option value="2">un recoupement possible</option><option value="3">un titre sensationnel sans source ni date</option></select><span class="exmark" id="m-a2-11"></span></div><div class="exq"><div class="exq-t">13. Vérifier la date d&#x27;une information permet de juger :</div><select class="exsel" id="a2-12"><option value="-1">— Choisir —</option><option value="0">si elle est encore valable</option><option value="1">sa couleur</option><option value="2">son auteur</option><option value="3">sa longueur</option></select><span class="exmark" id="m-a2-12"></span></div><div class="exq"><div class="exq-t">14. Recouper l&#x27;information, c&#x27;est :</div><select class="exsel" id="a2-13"><option value="-1">— Choisir —</option><option value="0">la couper en deux</option><option value="1">confirmer avec au moins deux sources fiables</option><option value="2">ne lire qu&#x27;une source</option><option value="3">supprimer la source</option></select><span class="exmark" id="m-a2-13"></span></div><div class="exq"><div class="exq-t">15. Une note utile contient la solution ET :</div><select class="exsel" id="a2-14"><option value="-1">— Choisir —</option><option value="0">une image décorative</option><option value="1">la météo</option><option value="2">la source et la date</option><option value="3">ton avis personnel</option></select><span class="exmark" id="m-a2-14"></span></div><div class="exq"><div class="exq-t">16. Le critère « Objectif » d&#x27;une source invite à se demander :</div><select class="exsel" id="a2-15"><option value="-1">— Choisir —</option><option value="0">sa taille</option><option value="1">son ancienneté</option><option value="2">son nombre de pages</option><option value="3">si elle informe ou veut surtout vendre</option></select><span class="exmark" id="m-a2-15"></span></div><div class="exq"><div class="exq-t">17. Une bonne fiche de synthèse est :</div><select class="exsel" id="a2-16"><option value="-1">— Choisir —</option><option value="0">claire, concise, avec la bonne terminologie</option><option value="1">très longue et vague</option><option value="2">sans source</option><option value="3">écrite au hasard</option></select><span class="exmark" id="m-a2-16"></span></div><div class="exq"><div class="exq-t">18. La structure recommandée d&#x27;une fiche comprend :</div><select class="exsel" id="a2-17"><option value="-1">— Choisir —</option><option value="0">seulement un titre</option><option value="1">objet, solution, source, remarques</option><option value="2">des images uniquement</option><option value="3">la solution seule</option></select><span class="exmark" id="m-a2-17"></span></div><div class="exq"><div class="exq-t">19. L&#x27;élément qui doit toujours figurer dans une fiche est :</div><select class="exsel" id="a2-18"><option value="-1">— Choisir —</option><option value="0">une blague</option><option value="1">une couleur</option><option value="2">la source de l&#x27;information</option><option value="3">la météo</option></select><span class="exmark" id="m-a2-18"></span></div><div class="exq"><div class="exq-t">20. Une base de connaissances partagée permet :</div><select class="exsel" id="a2-19"><option value="-1">— Choisir —</option><option value="0">de cacher l&#x27;info</option><option value="1">de ralentir l&#x27;équipe</option><option value="2">de tout supprimer</option><option value="3">de réutiliser les solutions et gagner du temps</option></select><span class="exmark" id="m-a2-19"></span></div><div class="exq"><div class="exq-t">21. « Chercher une fois, réutiliser souvent » résume :</div><select class="exsel" id="a2-20"><option value="-1">— Choisir —</option><option value="0">l&#x27;intérêt de consigner dans une base de connaissances</option><option value="1">la recherche sans méthode</option><option value="2">l&#x27;oubli des sources</option><option value="3">le copier-coller aveugle</option></select><span class="exmark" id="m-a2-20"></span></div><div class="exq"><div class="exq-t">22. Interpréter justement la terminologie technique signifie :</div><select class="exsel" id="a2-21"><option value="-1">— Choisir —</option><option value="0">inventer des mots</option><option value="1">comprendre et employer les termes exacts</option><option value="2">traduire au hasard</option><option value="3">ignorer le vocabulaire</option></select><span class="exmark" id="m-a2-21"></span></div><div class="exq"><div class="exq-t">23. Face à un besoin flou, le bon réflexe est de :</div><select class="exsel" id="a2-22"><option value="-1">— Choisir —</option><option value="0">chercher tout de suite</option><option value="1">abandonner</option><option value="2">le transformer en question précise</option><option value="3">copier un collègue</option></select><span class="exmark" id="m-a2-22"></span></div><div class="exq"><div class="exq-t">24. Une information de blog non datée doit être :</div><select class="exsel" id="a2-23"><option value="-1">— Choisir —</option><option value="0">appliquée vite</option><option value="1">partagée</option><option value="2">imprimée</option><option value="3">vérifiée (date et recoupement)</option></select><span class="exmark" id="m-a2-23"></span></div><div class="exq"><div class="exq-t">25. Documenter ses recherches fait du technicien :</div><select class="exsel" id="a2-24"><option value="-1">— Choisir —</option><option value="0">une référence pour son équipe</option><option value="1">un employé plus lent</option><option value="2">quelqu&#x27;un de moins fiable</option><option value="3">un débutant</option></select><span class="exmark" id="m-a2-24"></span></div></div><div class="exam-part"><h3>Partie B — Pratique <span class="expts">70 pts</span></h3><h4>B1. Fiabilité de la source — classe chaque source <span class="expts">16 pts</span></h4><div class="exq"><div class="exq-t">1. Documentation officielle du fabricant</div><select class="exsel" id="b1-0"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-0"></span></div><div class="exq"><div class="exq-t">2. Fiche technique PDF du constructeur</div><select class="exsel" id="b1-1"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-1"></span></div><div class="exq"><div class="exq-t">3. Base de connaissances officielle (KB éditeur)</div><select class="exsel" id="b1-2"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-2"></span></div><div class="exq"><div class="exq-t">4. Article du centre d&#x27;aide officiel de l&#x27;éditeur</div><select class="exsel" id="b1-3"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-3"></span></div><div class="exq"><div class="exq-t">5. Réponse de forum non vérifiée</div><select class="exsel" id="b1-4"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-4"></span></div><div class="exq"><div class="exq-t">6. Article de blog tutoriel (date à vérifier)</div><select class="exsel" id="b1-5"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-5"></span></div><div class="exq"><div class="exq-t">7. Commentaire anonyme sans source</div><select class="exsel" id="b1-6"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-6"></span></div><div class="exq"><div class="exq-t">8. Page au titre sensationnel, sans auteur ni date</div><select class="exsel" id="b1-7"><option value="-1">— Choisir —</option><option value="0">Très élevée</option><option value="1">Élevée</option><option value="2">Variable — à recouper</option><option value="3">Faible / à éviter</option></select><span class="exmark" id="m-b1-7"></span></div><h4>B2. Élément de la démarche — à quelle étape appartient l'action ? <span class="expts">16 pts</span></h4><div class="exq"><div class="exq-t">1. Transformer un besoin flou en question précise</div><select class="exsel" id="b2-0"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-0"></span></div><div class="exq"><div class="exq-t">2. Lister les mots-clés et le code d&#x27;erreur exact</div><select class="exsel" id="b2-1"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-1"></span></div><div class="exq"><div class="exq-t">3. Comparer documentation officielle et forum</div><select class="exsel" id="b2-2"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-2"></span></div><div class="exq"><div class="exq-t">4. Utiliser l&#x27;opérateur site: pour cibler un domaine</div><select class="exsel" id="b2-3"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-3"></span></div><div class="exq"><div class="exq-t">5. Vérifier l&#x27;auteur, la date et recouper</div><select class="exsel" id="b2-4"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-4"></span></div><div class="exq"><div class="exq-t">6. Prendre des notes avec la source</div><select class="exsel" id="b2-5"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-5"></span></div><div class="exq"><div class="exq-t">7. Rédiger une fiche claire avec la terminologie exacte</div><select class="exsel" id="b2-6"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-6"></span></div><div class="exq"><div class="exq-t">8. Ajouter la fiche à la base de connaissances</div><select class="exsel" id="b2-7"><option value="-1">— Choisir —</option><option value="0">Préciser l&#x27;objet</option><option value="1">Choisir les sources</option><option value="2">Extraire l&#x27;information</option><option value="3">Rédiger &amp; consigner</option></select><span class="exmark" id="m-b2-7"></span></div><h4>B3. Opérateurs &amp; concepts — complète le mot <span class="expts">18 pts</span></h4><div class="exq"><div class="exq-t">1. Pour chercher une expression mot pour mot, on l&#x27;entoure de (des) :</div><input type="text" class="exin" id="b3-0" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-0"></span><div class="exans" id="a-b3-0">Réponse : guillemets</div></div><div class="exq"><div class="exq-t">2. L&#x27;opérateur qui limite la recherche à un seul site web est :</div><input type="text" class="exin" id="b3-1" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-1"></span><div class="exans" id="a-b3-1">Réponse : site</div></div><div class="exq"><div class="exq-t">3. L&#x27;opérateur qui restreint les résultats à un type de fichier (PDF…) est :</div><input type="text" class="exin" id="b3-2" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-2"></span><div class="exans" id="a-b3-2">Réponse : filetype</div></div><div class="exq"><div class="exq-t">4. Confirmer une information avec au moins deux sources fiables, c&#x27;est le :</div><input type="text" class="exin" id="b3-3" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-3"></span><div class="exans" id="a-b3-3">Réponse : recoupement</div></div><div class="exq"><div class="exq-t">5. Un ensemble partagé de fiches de solutions réutilisables est une base de :</div><input type="text" class="exin" id="b3-4" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-4"></span><div class="exans" id="a-b3-4">Réponse : connaissances</div></div><h4>B4. Scénarios d'application <span class="expts">20 pts</span></h4><div class="exq"><div class="exq-t">1. Scénario — « le wifi ne marche pas chez un client ». Première action ?</div><select class="exsel" id="b4-0"><option value="-1">— Choisir —</option><option value="0">taper « wifi marche pas » dans un moteur</option><option value="1">préciser : modèle du routeur, symptôme exact, depuis quand</option><option value="2">réinstaller le système</option><option value="3">appeler le fournisseur d&#x27;accès</option></select><span class="exmark" id="m-b4-0"></span></div><div class="exq"><div class="exq-t">2. Scénario — deux forums donnent des réponses opposées. Que fais-tu ?</div><select class="exsel" id="b4-1"><option value="-1">— Choisir —</option><option value="0">choisir au hasard</option><option value="1">prendre la première</option><option value="2">recouper avec la documentation officielle</option><option value="3">abandonner la recherche</option></select><span class="exmark" id="m-b4-1"></span></div><div class="exq"><div class="exq-t">3. Scénario — tu veux uniquement des résultats du site de Cisco. Opérateur ?</div><select class="exsel" id="b4-2"><option value="-1">— Choisir —</option><option value="0">filetype:pdf</option><option value="1">-cisco</option><option value="2">&quot;cisco&quot;</option><option value="3">site:cisco.com</option></select><span class="exmark" id="m-b4-2"></span></div><div class="exq"><div class="exq-t">4. Scénario — le même incident revient 3 mois plus tard. Qu&#x27;est-ce qui te fait gagner du temps ?</div><select class="exsel" id="b4-3"><option value="-1">— Choisir —</option><option value="0">la fiche déjà consignée dans la base de connaissances</option><option value="1">recommencer de zéro</option><option value="2">deviner la solution</option><option value="3">ignorer le problème</option></select><span class="exmark" id="m-b4-3"></span></div><div class="exq"><div class="exq-t">5. Scénario — une page sans auteur ni date, au titre sensationnel, propose une manip risquée. Réflexe ?</div><select class="exsel" id="b4-4"><option value="-1">— Choisir —</option><option value="0">l&#x27;appliquer vite</option><option value="1">la partager telle quelle</option><option value="2">s&#x27;en méfier et vérifier ailleurs</option><option value="3">la copier sans lire</option></select><span class="exmark" id="m-b4-4"></span></div></div><div class="exgauges"><div class="exg"><span>Partie A</span><div class="exg-bar"><div class="exg-fill" id="g-a"></div></div><b id="s-a">— / 30</b></div><div class="exg"><span>Partie B</span><div class="exg-bar"><div class="exg-fill" id="g-b"></div></div><b id="s-b">— / 70</b></div><div class="exg"><span>TOTAL</span><div class="exg-bar"><div class="exg-fill" id="g-t"></div></div><b id="s-t">— / 100</b></div></div><div class="q-result" id="ex-result"></div><div class="q-actions"><button class="q-btn exbtn" onclick="exValidate()">✓ Corriger l'examen</button><button class="q-btn alt exbtn" onclick="exPrint()">🖨 Copie corrigée</button><button class="q-btn alt exbtn" onclick="exPrintBlank()">📄 Sujet vierge</button><button class="q-btn alt exbtn" onclick="exReset()">↺ Recommencer</button></div></div></div>
+<div class="complete-banner" id="complete-banner"><h2>🎓 Module TRI-07 validé !</h2><p>Tu sais cibler un besoin, choisir des sources fiables, extraire l'essentiel et le consigner. Une compétence que tu réutiliseras dans tout le programme. Prochaine étape : TRI-08 — Logiciels de bureautique.</p></div>
+</div></div></div>
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+(function(){
+var KEY='TRI07v1_';
+var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','essentiel','examen'];
+var NCH=4;
+var TITLES={'plan':'Plan de cours','essentiel':"\u2605 L'essentiel \u00e0 retenir",'examen':'\uD83C\uDF93 Examen blanc'};
+function rd(k,d){try{var v=localStorage.getItem(KEY+k);return v===null?d:JSON.parse(v);}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(KEY+k,JSON.stringify(v));}catch(e){}}
+window.ST={done:rd('done',{}),qs:rd('qs',{}),pos:rd('pos','plan')};
+document.body.classList.add('player');
+function lbl(id){if(TITLES[id])return TITLES[id];var n=id.split('-')[1];var el=document.querySelector('#'+id+' h2');return 'Ch. '+n+' \u2014 '+(el?el.textContent.trim():'');}
+function canGo(id){var idx=STEPS.indexOf(id);if(idx<=1)return true;if(id==='essentiel'||id==='examen')return !!ST.done['ch-'+NCH];var n=parseInt(id.split('-')[1],10);return !!ST.done['ch-'+(n-1)];}
+window.goTo=function(id){
+  if(!canGo(id))return;
+  STEPS.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.remove('active');});
+  var el=document.getElementById(id);if(!el)return;
+  el.classList.add('active');ST.pos=id;wr('pos',id);
+  var idx=STEPS.indexOf(id);
+  document.getElementById('pnav-lbl').textContent='\u00c9tape '+(idx+1)+'/'+STEPS.length+' \u00b7 '+lbl(id);
+  document.getElementById('pnav-fill').style.width=Math.round((idx+1)/STEPS.length*100)+'%';
+  var prev=document.getElementById('pnav-prev'),next=document.getElementById('pnav-next');
+  prev.disabled=idx===0;var nid=STEPS[idx+1];next.disabled=!nid||!canGo(nid);next.textContent=nid?'Suivant \u2192':'Fin';
+  refreshToc();window.scrollTo({top:0,behavior:'smooth'});
+  var tc=document.getElementById('toc-sidebar');if(tc)tc.classList.remove('open');
+  var ov=document.getElementById('mob-overlay');if(ov)ov.style.display='none';
+};
+window.stepMove=function(d){var idx=STEPS.indexOf(ST.pos)+d;if(idx<0||idx>=STEPS.length)return;goTo(STEPS[idx]);};
+function refreshToc(){
+  STEPS.forEach(function(s){var ti=document.getElementById('ti-'+s);if(!ti)return;
+    ti.classList.toggle('locked',!canGo(s));ti.classList.toggle('done',!!ST.done[s]);ti.classList.toggle('act',ST.pos===s);});
+  updateProgUI();
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+function updateProgUI(){
+  var done=0;for(var i=1;i<=NCH;i++)if(ST.done['ch-'+i])done++;
+  var pct=Math.round(done/NCH*100);
+  var f=document.getElementById('prog-fill');if(f)f.style.width=pct+'%';
+  var t=document.getElementById('prog-txt');if(t)t.textContent=done+' / '+NCH+' chapitres \u2014 '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok||0;qTot+=ST.qs[k].total||0;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' r\u00e9ponses correctes':'\u2014';
+  if(done===NCH){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
-}
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
-}
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+window.selQ=function(btn){var item=btn.closest('.q-item');item.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');};
+window.submitQ=function(ch){
+  var blk=document.getElementById('quiz-'+ch);if(!blk)return;
+  var items=blk.querySelectorAll('.q-item'),ok=0,answered=true;
+  items.forEach(function(it){var picked=false;it.querySelectorAll('.qopt').forEach(function(b){if(b.classList.contains('sel'))picked=true;});if(!picked)answered=false;});
+  var res=blk.querySelector('.q-result');
+  if(!answered){if(res){res.style.display='block';res.className='q-result lose';res.innerHTML='\u26a0\ufe0f R\u00e9ponds \u00e0 toutes les questions avant de valider.';}return;}
+  items.forEach(function(it){
+    var c=parseInt(it.getAttribute('data-c'),10);var opts=it.querySelectorAll('.qopt');var pick=-1;
+    opts.forEach(function(b,i){if(b.classList.contains('sel'))pick=i;});
+    opts.forEach(function(b,i){b.classList.remove('good','bad');if(i===c)b.classList.add('good');else if(i===pick)b.classList.add('bad');b.disabled=true;});
+    if(pick===c)ok++;
+    var ex=it.querySelector('.qexpl');if(ex){ex.style.display='block';ex.textContent=(pick===c?'\u2705 Correct. ':'\u274c ')+(it.getAttribute('data-e')||'');}
+  });
+  var total=items.length,pct=ok/total;
+  ST.qs[ch]={ok:ok,total:total};wr('qs',ST.qs);
+  if(res){res.style.display='block';
+    res.innerHTML=pct>=0.6?'\uD83C\uDF89 <strong>'+ok+'/'+total+'</strong> \u2014 chapitre valid\u00e9 ! La le\u00e7on suivante est d\u00e9bloqu\u00e9e.':'\uD83D\uDCDA <strong>'+ok+'/'+total+'</strong> \u2014 il faut au moins 60 %. Relis la le\u00e7on puis clique \u00ab R\u00e9essayer \u00bb.';
+    res.className='q-result '+(pct>=0.6?'win':'lose');}
+  if(pct>=0.6){ST.done['ch-'+ch]=true;wr('done',ST.done);}
+  refreshToc();
+  var idx=STEPS.indexOf(ST.pos);var next=document.getElementById('pnav-next');var nid=STEPS[idx+1];if(next&&nid)next.disabled=!canGo(nid);
+};
+window.retryQ=function(ch){
+  var blk=document.getElementById('quiz-'+ch);if(!blk)return;
+  blk.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','good','bad');b.disabled=false;});
+  blk.querySelectorAll('.qexpl').forEach(function(e){e.style.display='none';});
+  var res=blk.querySelector('.q-result');if(res)res.style.display='none';
+};
+window.doneChapter=function(n){
+  if(!ST.done['ch-'+n]){
+    var blk=document.getElementById('quiz-'+n);
+    if(blk){var r=blk.querySelector('.q-result');if(r){r.style.display='block';r.className='q-result lose';r.innerHTML='\u2139\ufe0f Valide d\u2019abord le quiz (\u2265 60 %) pour d\u00e9bloquer le chapitre suivant.';}blk.scrollIntoView({behavior:'smooth',block:'center'});}
+    return;
   }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
-
+  var idx=STEPS.indexOf('ch-'+n);if(idx>=0&&idx+1<STEPS.length)goTo(STEPS[idx+1]);
+};
+window.toggleToc=function(){var tc=document.getElementById('toc-sidebar');if(!tc)return;tc.classList.toggle('open');var ov=document.getElementById('mob-overlay');if(ov)ov.style.display=tc.classList.contains('open')?'block':'none';};
+window.triReset=function(){
+  if(!confirm('R\u00e9initialiser toute ta progression TRI-07 (quiz, examen, position) ?'))return;
+  var del=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(KEY)===0)del.push(k);}
+  del.forEach(function(k){localStorage.removeItem(k);});location.reload();
+};
+document.querySelectorAll('.vembed video').forEach(function(v){
+  function soon(){var box=v.parentElement;if(!box||box.querySelector('.vsoon'))return;v.style.display='none';
+    var d=document.createElement('div');d.className='vsoon';
+    d.innerHTML='<b>\uD83C\uDFAC Vid\u00e9o en cours de production</b><span>Elle sera disponible tr\u00e8s bient\u00f4t. En attendant, passe directement \u00e0 la lecture \u2461 ci-dessous \u2014 tout le contenu de la le\u00e7on y est.</span>';
+    box.appendChild(d);}
+  v.addEventListener('error',soon);var s=v.querySelector('source');if(s)s.addEventListener('error',soon);
+});
+var t0=Date.now();
+setInterval(function(){var s=Math.floor((Date.now()-t0)/1000);var el=document.getElementById('session-timer');if(el)el.textContent=Math.floor(s/60)+'m '+(s%60)+'s';},1000);
+var start=canGo(ST.pos)?ST.pos:'plan';goTo(start);
+})();
 </script>
+<script>
+(function(){
+var KEY='TRI07v1_';
+var A1=[1, 3, 4, 0, 2],QC=[0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0],B1IDX=[0, 0, 1, 1, 2, 2, 3, 3],B2IDX=[0, 0, 1, 1, 2, 2, 3, 3],B3V=[["guillemets", "guillemet"], ["site", "site:"], ["filetype", "filetype:"], ["recoupement", "recouper"], ["connaissances", "connaissance"]],B4=[1, 2, 3, 0, 2];
+var PER_B1=2.0,PER_B2=2.0,PER_B3=3.6,PER_B4=4.0;
+var ET=["Extraire l'information pertinente et noter la source", "Préciser le besoin et formuler la question", "Rédiger une fiche de synthèse et la consigner", "Choisir des sources fiables et variées", "Évaluer la fiabilité et recouper l'information"];
+var QT=[{"q": "La toute première étape d'une recherche efficace est de :", "o": ["préciser clairement le but / la question", "ouvrir des onglets au hasard", "copier la première réponse", "deviner"]}, {"q": "« Mon imprimante ne marche pas » est :", "o": ["une question précise", "un besoin flou à reformuler", "un code d'erreur", "une source"]}, {"q": "Le mot-clé le plus puissant face à une erreur logicielle est :", "o": ["« problème »", "« aide »", "le code / message d'erreur exact", "« ça bug »"]}, {"q": "Préciser l'objet de la recherche permet surtout de :", "o": ["remplir l'écran", "éviter de réfléchir", "ralentir", "gagner du temps et cibler l'information utile"]}, {"q": "Pour une procédure officielle, la source la plus fiable est :", "o": ["la documentation du fabricant", "un commentaire anonyme", "une publicité", "une rumeur"]}, {"q": "Les forums spécialisés sont :", "o": ["toujours faux", "utiles, mais à recouper", "la meilleure source officielle", "interdits"]}, {"q": "L'opérateur « guillemets » (\"…\") sert à :", "o": ["exclure un mot", "limiter à un site", "chercher une expression mot pour mot", "traduire"]}, {"q": "L'opérateur site: sert à :", "o": ["exclure un site", "traduire la page", "compter les résultats", "limiter la recherche à un site donné"]}, {"q": "L'opérateur filetype:pdf sert à :", "o": ["restreindre les résultats à un type de fichier", "exclure les PDF", "ouvrir un PDF", "imprimer"]}, {"q": "L'opérateur « -mot » (tiret) sert à :", "o": ["ajouter un mot obligatoire", "exclure un terme des résultats", "souligner", "rien"]}, {"q": "Un critère de fiabilité d'une source est :", "o": ["la couleur du site", "la longueur du texte", "un auteur reconnu / une autorité", "la police d'écriture"]}, {"q": "Lequel est un signal d'alerte (NON-fiabilité) ?", "o": ["un auteur expert", "une date récente", "un recoupement possible", "un titre sensationnel sans source ni date"]}, {"q": "Vérifier la date d'une information permet de juger :", "o": ["si elle est encore valable", "sa couleur", "son auteur", "sa longueur"]}, {"q": "Recouper l'information, c'est :", "o": ["la couper en deux", "confirmer avec au moins deux sources fiables", "ne lire qu'une source", "supprimer la source"]}, {"q": "Une note utile contient la solution ET :", "o": ["une image décorative", "la météo", "la source et la date", "ton avis personnel"]}, {"q": "Le critère « Objectif » d'une source invite à se demander :", "o": ["sa taille", "son ancienneté", "son nombre de pages", "si elle informe ou veut surtout vendre"]}, {"q": "Une bonne fiche de synthèse est :", "o": ["claire, concise, avec la bonne terminologie", "très longue et vague", "sans source", "écrite au hasard"]}, {"q": "La structure recommandée d'une fiche comprend :", "o": ["seulement un titre", "objet, solution, source, remarques", "des images uniquement", "la solution seule"]}, {"q": "L'élément qui doit toujours figurer dans une fiche est :", "o": ["une blague", "une couleur", "la source de l'information", "la météo"]}, {"q": "Une base de connaissances partagée permet :", "o": ["de cacher l'info", "de ralentir l'équipe", "de tout supprimer", "de réutiliser les solutions et gagner du temps"]}, {"q": "« Chercher une fois, réutiliser souvent » résume :", "o": ["l'intérêt de consigner dans une base de connaissances", "la recherche sans méthode", "l'oubli des sources", "le copier-coller aveugle"]}, {"q": "Interpréter justement la terminologie technique signifie :", "o": ["inventer des mots", "comprendre et employer les termes exacts", "traduire au hasard", "ignorer le vocabulaire"]}, {"q": "Face à un besoin flou, le bon réflexe est de :", "o": ["chercher tout de suite", "abandonner", "le transformer en question précise", "copier un collègue"]}, {"q": "Une information de blog non datée doit être :", "o": ["appliquée vite", "partagée", "imprimée", "vérifiée (date et recoupement)"]}, {"q": "Documenter ses recherches fait du technicien :", "o": ["une référence pour son équipe", "un employé plus lent", "quelqu'un de moins fiable", "un débutant"]}];
+var B1OPTS=["Très élevée", "Élevée", "Variable — à recouper", "Faible / à éviter"],B1Q=["Documentation officielle du fabricant", "Fiche technique PDF du constructeur", "Base de connaissances officielle (KB éditeur)", "Article du centre d'aide officiel de l'éditeur", "Réponse de forum non vérifiée", "Article de blog tutoriel (date à vérifier)", "Commentaire anonyme sans source", "Page au titre sensationnel, sans auteur ni date"];
+var B2OPTS=["Préciser l'objet", "Choisir les sources", "Extraire l'information", "Rédiger & consigner"],B2Q=["Transformer un besoin flou en question précise", "Lister les mots-clés et le code d'erreur exact", "Comparer documentation officielle et forum", "Utiliser l'opérateur site: pour cibler un domaine", "Vérifier l'auteur, la date et recouper", "Prendre des notes avec la source", "Rédiger une fiche claire avec la terminologie exacte", "Ajouter la fiche à la base de connaissances"];
+var B3Q=["Pour chercher une expression mot pour mot, on l'entoure de (des) :", "L'opérateur qui limite la recherche à un seul site web est :", "L'opérateur qui restreint les résultats à un type de fichier (PDF…) est :", "Confirmer une information avec au moins deux sources fiables, c'est le :", "Un ensemble partagé de fiches de solutions réutilisables est une base de :"];
+var B4Q=[{"q": "Scénario — « le wifi ne marche pas chez un client ». Première action ?", "o": ["taper « wifi marche pas » dans un moteur", "préciser : modèle du routeur, symptôme exact, depuis quand", "réinstaller le système", "appeler le fournisseur d'accès"]}, {"q": "Scénario — deux forums donnent des réponses opposées. Que fais-tu ?", "o": ["choisir au hasard", "prendre la première", "recouper avec la documentation officielle", "abandonner la recherche"]}, {"q": "Scénario — tu veux uniquement des résultats du site de Cisco. Opérateur ?", "o": ["filetype:pdf", "-cisco", "\"cisco\"", "site:cisco.com"]}, {"q": "Scénario — le même incident revient 3 mois plus tard. Qu'est-ce qui te fait gagner du temps ?", "o": ["la fiche déjà consignée dans la base de connaissances", "recommencer de zéro", "deviner la solution", "ignorer le problème"]}, {"q": "Scénario — une page sans auteur ni date, au titre sensationnel, propose une manip risquée. Réflexe ?", "o": ["l'appliquer vite", "la partager telle quelle", "s'en méfier et vérifier ailleurs", "la copier sans lire"]}];
 
-<div id="mod-code-data" data-code="TRI-07" style="display:none"></div>
-<div id="seuil-data" data-seuil="60" style="display:none"></div>
+function nrm(s){return (s||'').toLowerCase().replace(/[\s\u00a0-]+/g,'');}
+function gv(id){var e=document.getElementById(id);return e?e.value:'';}
+function mark(id,ok){var m=document.getElementById('m-'+id);if(m){m.textContent=ok?'\u2713':'\u2717';m.className='exmark '+(ok?'ok':'ko');}}
+function chkTxt(i){var v=nrm(gv('b3-'+i));var ok=B3V[i].indexOf(v)>=0;mark('b3-'+i,ok);var an=document.getElementById('a-b3-'+i);if(an)an.classList.toggle('show',!ok);return ok?PER_B3:0;}
+window.exValidate=function(){
+  var a=0,b=0;
+  A1.forEach(function(c,i){var ok=parseInt(gv('a1-'+i),10)===c;mark('a1-'+i,ok);if(ok)a+=1;});
+  QC.forEach(function(c,i){var ok=parseInt(gv('a2-'+i),10)===c;mark('a2-'+i,ok);if(ok)a+=1;});
+  B1IDX.forEach(function(c,i){var ok=parseInt(gv('b1-'+i),10)===c;mark('b1-'+i,ok);if(ok)b+=PER_B1;});
+  B2IDX.forEach(function(c,i){var ok=parseInt(gv('b2-'+i),10)===c;mark('b2-'+i,ok);if(ok)b+=PER_B2;});
+  B3V.forEach(function(_,i){b+=chkTxt(i);});
+  B4.forEach(function(c,i){var ok=parseInt(gv('b4-'+i),10)===c;mark('b4-'+i,ok);if(ok)b+=PER_B4;});
+  b=Math.round(b);var t=a+b;
+  document.getElementById('s-a').textContent=a+' / 30';
+  document.getElementById('s-b').textContent=b+' / 70';
+  document.getElementById('s-t').textContent=t+' / 100';
+  document.getElementById('g-a').style.width=(a/30*100)+'%';
+  document.getElementById('g-b').style.width=(b/70*100)+'%';
+  document.getElementById('g-t').style.width=t+'%';
+  var res=document.getElementById('ex-result');res.style.display='block';var pass=t>=80;
+  res.className='q-result '+(pass?'win':'lose');
+  res.innerHTML=pass?'\uD83C\uDF93 <strong>'+t+'/100 \u2014 Examen blanc r\u00e9ussi !</strong> (seuil 80 %)':'\uD83D\uDCDA <strong>'+t+'/100</strong> \u2014 il faut au moins 80/100. Revois \u00ab \u2605 L\u2019essentiel \u00e0 retenir \u00bb, puis recommence.';
+  try{localStorage.setItem(KEY+'exam',JSON.stringify({score:t,passed:pass,date:new Date().toISOString()}));}catch(e){}
+  res.scrollIntoView({behavior:'smooth',block:'center'});
+};
+window.exReset=function(){
+  if(!confirm('Effacer toutes tes r\u00e9ponses de l\u2019examen ?'))return;
+  document.querySelectorAll('#examen .exin').forEach(function(e){e.value='';});
+  document.querySelectorAll('#examen .exsel').forEach(function(e){e.value='-1';});
+  document.querySelectorAll('#examen .exmark').forEach(function(e){e.textContent='';e.className='exmark';});
+  document.querySelectorAll('#examen .exans').forEach(function(e){e.classList.remove('show');});
+  ['s-a','s-b','s-t'].forEach(function(id,k){document.getElementById(id).textContent='\u2014 / '+[30,70,100][k];});
+  ['g-a','g-b','g-t'].forEach(function(id){document.getElementById(id).style.width='0';});
+  document.getElementById('ex-result').style.display='none';
+  try{localStorage.removeItem(KEY+'exam');}catch(e){}
+};
+function buildPrint(blank){
+  var w=window.open('','_blank');if(!w)return alert('Autorise les pop-ups pour imprimer.');
+  var nom=gv('ex-nom'),pre=gv('ex-prenom'),dat=gv('ex-date');
+  var d='<h1 style="font-size:18px">Canado Technique \u2014 TRI-07 \u00b7 Examen blanc \u2014 Recherche d\u2019information</h1>';
+  d+='<p>Nom : <b>'+(blank?'________________':(nom||'________'))+'</b> \u00b7 Pr\u00e9nom : <b>'+(blank?'________________':(pre||'________'))+'</b> \u00b7 Date : <b>'+(blank?'____ / ____ / ______':(dat||'________'))+'</b></p>';
+  d+='<p><i>Total 100 pts \u00b7 R\u00e9ussite \u2265 80 % \u00b7 Dur\u00e9e 50 min</i></p><hr>';
+  function line(q,ans,ok){d+='<div style="margin:7px 0"><div>'+q+'</div>';if(blank){d+='<div style="border-bottom:1px solid #999;height:16px;width:70%"></div>';}else{d+='<div>R\u00e9ponse \u00e9l\u00e8ve : <b>'+(ans||'\u2014')+'</b>'+(ok===null?'':(ok?' \u2713':' \u2717'))+'</div>';}d+='</div>';}
+  d+='<h2 style="font-size:14px">Partie A \u2014 Th\u00e9orie (30 pts)</h2>';
+  d+='<h3 style="font-size:12px">A1. D\u00e9marche de recherche \u2014 ordre (5 pts)</h3>';
+  d+='<p style="font-size:10px"><i>Options : '+ET.join(' \u00b7 ')+'</i></p>';
+  for(var i=0;i<5;i++){var v=gv('a1-'+i);line((i+1)+'. ___',blank?'':(v>=0&&ET[v]?ET[v]:'\u2014'),blank?null:(parseInt(v,10)===A1[i]));}
+  d+='<h3 style="font-size:12px">A2. Quiz g\u00e9n\u00e9ral (25 pts)</h3>';
+  QT.forEach(function(q,i){var v=gv('a2-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===QC[i]));});
+  d+='<h2 style="font-size:14px">Partie B \u2014 Pratique (70 pts)</h2>';
+  d+='<h3 style="font-size:12px">B1. Fiabilit\u00e9 de la source (16 pts)</h3>';
+  B1Q.forEach(function(q,i){var v=gv('b1-'+i);line((i+1)+'. '+q,blank?'':(v>=0&&B1OPTS[v]?B1OPTS[v]:'\u2014'),blank?null:(parseInt(v,10)===B1IDX[i]));});
+  d+='<h3 style="font-size:12px">B2. \u00c9l\u00e9ment de la d\u00e9marche (16 pts)</h3>';
+  B2Q.forEach(function(q,i){var v=gv('b2-'+i);line((i+1)+'. '+q,blank?'':(v>=0&&B2OPTS[v]?B2OPTS[v]:'\u2014'),blank?null:(parseInt(v,10)===B2IDX[i]));});
+  d+='<h3 style="font-size:12px">B3. Op\u00e9rateurs &amp; concepts (18 pts)</h3>';
+  B3Q.forEach(function(q,i){var v=gv('b3-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(B3V[i].indexOf(nrm(v))>=0));});
+  d+='<h3 style="font-size:12px">B4. Sc\u00e9narios (20 pts)</h3>';
+  B4Q.forEach(function(q,i){var v=gv('b4-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===B4[i]));});
+  if(!blank){d+='<hr><p><b>Score : '+document.getElementById('s-t').textContent+'</b></p>';}
+  var END='</bo'+'dy></ht'+'ml>';
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-07 \u2014 Examen blanc</title><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}</style></head><body>'+d+END);
+  w.document.close();setTimeout(function(){w.print();},300);
+}
+window.exPrint=function(){buildPrint(false);};
+window.exPrintBlank=function(){buildPrint(true);};
+})();
+</script>
 </body>
 </html>
