@@ -1,527 +1,912 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-16 — Entrepreneuriat</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-16 — Entrepreneuriat · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
+
+
+
+
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
+
+/* ===== Standard v10 ===== */
+.step-lbl{display:inline-block;font-family:var(--fD);font-weight:800;font-size:.72rem;letter-spacing:.04em;color:var(--red);background:rgba(232,25,44,.08);border:1px solid rgba(232,25,44,.25);border-radius:99px;padding:.3rem .85rem;margin:1.1rem 0 .7rem}
+.lpl{background:linear-gradient(135deg,#0B1525,#13233c);border-radius:16px;padding:1rem 1.1rem;margin:.9rem 0 1.2rem;color:#dfe8fb;border:1px solid rgba(255,255,255,.08)}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
+.lpl-h{font-family:var(--fD);font-weight:800;font-size:.72rem;color:#F5C518;margin-bottom:.35rem}
+.lpl ul{margin:0;padding-left:1.05rem;font-size:.76rem;line-height:1.55}
+.lpl p{margin:0;font-size:.76rem;line-height:1.55}
+.pnav{position:sticky;top:8px;z-index:50;display:flex;align-items:center;gap:.7rem;background:#0B1525;color:#fff;border-radius:14px;padding:.55rem .7rem;margin:.4rem 0 1rem;box-shadow:0 8px 24px rgba(4,13,26,.35)}
+.pnav-btn{font-family:var(--fD);font-weight:800;font-size:.72rem;background:var(--red);color:#fff;border:0;border-radius:9px;padding:.5rem .8rem;cursor:pointer;white-space:nowrap}
+.pnav-btn[disabled]{opacity:.35;cursor:not-allowed}
+.pnav-mid{flex:1;min-width:0;text-align:center}
+.pnav-lbl{font-size:.66rem;color:#c9d6f2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnav-bar{height:5px;background:rgba(255,255,255,.12);border-radius:99px;margin-top:.3rem;overflow:hidden}
+.pnav-fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),#ff7a3c);border-radius:99px;transition:width .3s}
+body.player .chapter{display:none}
+body.player .chapter.active{display:block}
+body.player #plan{display:none}
+body.player #plan.active{display:block}
+.toc-item.locked{opacity:.38;pointer-events:none}
+.toc-item.done .toc-dot{background:#19c37d;border-color:#19c37d}
+.toc-reset{margin-top:.9rem;padding-top:.7rem;border-top:1px solid rgba(0,0,0,.08);font-size:.68rem;color:#8a93a6;cursor:pointer}
+.toc-reset:hover{color:var(--red)}
+.vsoon{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#0B1525,#16263f);color:#c9d6f2;text-align:center;padding:1rem}
+.vsoon b{font-family:var(--fD);font-size:.9rem;color:#F5C518}
+.vsoon span{font-size:.76rem;line-height:1.5;max-width:420px}
+.kterm{background:#fff;border:1px solid rgba(0,0,0,.08);border-left:4px solid #1B3A8C;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.kterm-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#1B3A8C;margin-bottom:.5rem}
+.kterm .kt-row{margin-bottom:.3rem;font-size:.78rem;line-height:1.6}
+.kterm .kt-row b{color:#0B1525}
+.bonas{background:linear-gradient(135deg,#FFF8E6,#FFF3D1);border:1px solid rgba(245,197,24,.45);border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.bonas-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#8a6400;margin-bottom:.45rem}
+.bonas ul{margin:0;padding-left:1.1rem;font-size:.78rem;line-height:1.6}
+.labbox{background:#F0FAF5;border:1px solid rgba(0,160,102,.35);border-left:4px solid #00A066;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.labbox-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#00754a;margin-bottom:.4rem}
+.labbox p,.labbox ul{font-size:.77rem;line-height:1.6;margin:.2rem 0}
+.labbox ul{padding-left:1.1rem}
+.q-result{display:none;margin-top:1rem;padding:.85rem 1rem;border-radius:11px;font-size:.82rem}
+.q-result.win{background:#E9F9F1;border:1px solid #19c37d;color:#0a6b45}
+.q-result.lose{background:#FDEEEF;border:1px solid #E8192C;color:#8d1420}
+.qopt.sel{outline:2px solid #1B3A8C}
+.qopt.good{background:#E9F9F1;border-color:#19c37d}
+.qopt.bad{background:#FDEEEF;border-color:#E8192C}
+.q-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem}
+.q-btn{font-family:var(--fD);font-weight:800;font-size:.74rem;border:0;border-radius:9px;padding:.55rem 1rem;cursor:pointer;background:var(--red);color:#fff}
+.q-btn.alt{background:#e8ecf4;color:#0B1525}
+@media(max-width:600px){
+  .pnav{gap:.45rem;padding:.45rem .55rem;border-radius:12px}
+  .pnav-btn{font-size:.64rem;padding:.45rem .55rem}
+  .pnav-lbl{font-size:.6rem}
+  .exbtn{width:100%;text-align:center}
+  .exam-part{padding:.85rem .8rem}
 }
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
+
+
+
+.exid{display:flex;gap:1rem;flex-wrap:wrap;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.8rem 1rem;margin:1rem 0;font-size:.78rem}
+.exid label{display:flex;align-items:center;gap:.4rem}
+.exid input{border:1px solid #c8d0de;border-radius:8px;padding:.35rem .55rem;font-size:.78rem}
+.exam-part{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:1.1rem 1.2rem;margin:1.1rem 0}
+.exam-part h3{margin:.2rem 0 .8rem;font-family:var(--fD);font-size:1rem}
+.exam-part h4{margin:1.2rem 0 .6rem;font-family:var(--fD);font-size:.82rem;color:#1B3A8C}
+.expts{font-size:.66rem;background:#1B3A8C;color:#fff;border-radius:99px;padding:.15rem .55rem;margin-left:.4rem;font-weight:700}
+.exrow{display:flex;align-items:center;gap:.55rem;margin:.4rem 0}
+.exno{width:22px;height:22px;border-radius:50%;background:#0B1525;color:#fff;font-size:.66rem;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.exsel,.exin{border:1px solid #c8d0de;border-radius:8px;padding:.42rem .6rem;font-size:.78rem;max-width:100%}
+.exin{width:min(440px,100%);font-family:ui-monospace,Menlo,monospace}
+.exq{margin:.75rem 0}
+.exq-t{font-size:.79rem;margin-bottom:.3rem;line-height:1.5}
+.exmark{margin-left:.5rem;font-weight:800}
+.exmark.ok{color:#0a9d5c}.exmark.ko{color:#E8192C}
+.exans{display:none;font-size:.72rem;color:#0a6b45;background:#E9F9F1;border-radius:8px;padding:.3rem .6rem;margin-top:.3rem;width:fit-content;max-width:100%}
+.exans.show{display:block}
+.exgauges{display:grid;gap:.55rem;background:#0B1525;border-radius:14px;padding:1rem 1.1rem;margin:1.2rem 0;color:#fff}
+.exg{display:grid;grid-template-columns:70px 1fr 70px;align-items:center;gap:.7rem;font-size:.74rem}
+.exg-bar{height:8px;background:rgba(255,255,255,.14);border-radius:99px;overflow:hidden}
+.exg-fill{height:100%;width:0;background:linear-gradient(90deg,#19c37d,#7ee2b0);border-radius:99px;transition:width .4s}
+.exbtn{cursor:pointer}
+
+
+
+.kterm-lbl{font-family:var(--fD,inherit);font-weight:800;font-size:.78rem;color:#1B3A8C;margin-bottom:.55rem}
+.kterm-item{display:block;margin-bottom:.4rem;font-size:.78rem;line-height:1.55}
+.kterm-w{font-weight:700;color:#0B1525}
+.kterm-w::after{content:" \2014 ";color:#1B3A8C;font-weight:700}
+.kterm-d{color:#33415c}
+.bonas-lbl{font-family:var(--fD,inherit);font-weight:800;font-size:.78rem;color:#8a6400;margin-bottom:.45rem}
+.bonas ul{margin:.2rem 0 0;padding-left:1.1rem}
+.bonas li{font-size:.78rem;line-height:1.6;margin-bottom:.3rem}
 
 </style>
 </head>
 <body>
+
+<!-- HEADER -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('../../../assets/images/slide-tri-16.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🚀 Module TRI-16 · 1ère Année</div>
-    <h1>Entrepreneuriat en <em>informatique</em></h1>
+    <div class="mod-tag">🚀 TRI-16 · 1ère Année · Compétence générale</div>
+    <h1>Entrepre<em>neuriat</em></h1>
+    <p class="mod-desc">Objectif de situation · 30 heures — Se situer au regard d'un projet d'entreprise : définir son profil d'entrepreneur, connaître les exigences du statut, évaluer ses possibilités et bâtir son projet, dans le contexte du marché haïtien des réseaux informatiques.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>30 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">📝 Devoir : <strong>Mini business plan IT</strong></div>
+      <div class="mod-meta-item">⏱ <strong>30 heures</strong></div>
+      <div class="mod-meta-item">🎯 Objectif de <strong>situation</strong></div>
+      <div class="mod-meta-item">📚 <strong>5 chapitres</strong></div>
+      <div class="mod-meta-item">💡 <strong>Profil & plan d'affaires</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
-  </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Le marche IT haitien</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Modeles d'affaires IT</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Creer son activite</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Finances et legal IT</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Evaluation</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Mini business plan IT</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Le marche IT haitien</h2>
-      <div class="chapter-meta"><span>🕐 7 heures</span><span class="chapter-badge">Opportunites · Profils · Salaires</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Le marche IT en Haiti — Opportunites et realites</div><div class="video-subtitle">Durée : 10 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Panorama du marche (4 min)</strong> — Secteurs demandeurs: teleco (Natcom, Digicel), bancaire (BNC, BRH, Unibank), ONG (UNICEF, MSF), administration, PME. Salaires moyens par profil.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Opportunites non saturees (3 min)</strong> — Cybersecurite, cloud, support informatique pour PME, formation IT, e-commerce. Secteurs a fort potentiel en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Etre employe vs entrepreneur (3 min)</strong> — Avantages et inconvenients des deux voies. Les competences TRI ouvrent les deux chemins.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 Profils IT recherches en Haiti et salaires indicatifs 2025</h3><table class="data-table"><thead><tr><th>Profil</th><th>Secteur</th><th>Salaire mensuel indicatif (HTG)</th><th>Competences cles</th></tr></thead><tbody><tr><td>Technicien reseau junior (TRI)</td><td>PME, ONG</td><td>25 000 – 45 000 HTG</td><td>TRI-01 a TRI-16, CCNA</td></tr><tr><td>Administrateur systemes</td><td>Banques, Teleco</td><td>45 000 – 80 000 HTG</td><td>Windows Server, Linux, VMware</td></tr><tr><td>Ingenieur reseau</td><td>Grandes entreprises</td><td>80 000 – 150 000 HTG</td><td>CCNP, infrastructure avancee</td></tr><tr><td>Responsable IT / DSI</td><td>Multinationales, banques</td><td>150 000 – 300 000 HTG</td><td>Management + technique + strategique</td></tr><tr><td>Freelance IT (technicien)</td><td>PME et particuliers</td><td>Variable — 2 000 – 8 000 HTG/intervention</td><td>Polyvalence N1/N2/N3</td></tr><tr><td>Fondateur startup IT</td><td>Auto-emploi</td><td>Variable — potentiel illimite</td><td>Vision + technique + business</td></tr></tbody></table><div class="info-box"><span class="info-box-label">💡 Le technicien freelance haitien</span>En Haiti, beaucoup de PME ne peuvent pas se payer un technicien IT a temps plein. Un technicien TRI certifie qui propose des services de maintenance sous contrat mensuel peut facilement avoir 5-10 clients PME, chacun payant 5000-15000 HTG/mois pour un contrat de maintenance preventive. Calcul: 8 clients x 8000 HTG = 64 000 HTG/mois en activite independante.</div></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quel secteur haïtien offre les meilleures opportunités de carrière IT en 2025 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Uniquement le secteur public</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Telecom, bancaire, ONG et PME — tous sont demandeurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Uniquement les ONG internationales</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Il n'y a pas d'opportunites en Haiti</button></div>
-    <div class="quiz-expl" id="expl-q0_1">Tous les secteurs ont besoin de techniciens IT: teleco (Natcom, Digicel), banques (BNC, BRH, Unibank), ONG (UNICEF, MSF), et PME. La demande depasse largement l'offre de techniciens certifies.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="2">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Un technicien TRI freelance avec 8 clients PME a 8000 HTG/mois gagne approximativement...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>8 000 HTG/mois</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>32 000 HTG/mois</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>64 000 HTG/mois</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>160 000 HTG/mois</button></div>
-    <div class="quiz-expl" id="expl-q1_1">8 clients x 8 000 HTG = 64 000 HTG/mois. C'est plus que beaucoup de salaires de techniciens seniors en entreprise. L'entrepreneuriat IT peut etre tres rentable en Haiti avec la bonne approche commerciale.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Quel secteur IT est identifie comme non sature en Haiti ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Vente de PC de bureau</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Cybersecurite et formation IT</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Reparation de telephones</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Impression de documents</button></div>
-    <div class="quiz-expl" id="expl-q2_1">La cybersecurite, le cloud computing, la formation IT et le support PME sont des secteurs insuffisamment couverts en Haiti. Les entreprises haïtiennes ont un besoin urgent de ces services mais peu de prestataires qualifies.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Quelle est la principale difference entre etre employe et entrepreneur IT ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>L'employe gagne toujours plus</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>L'entrepreneur a plus de risques mais potentiellement plus de liberte et de revenus</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>L'entrepreneur ne paie pas d'impots</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Il n'y a aucune difference pratique</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Employe: stabilite, benefices sociaux, risque faible, potentiel limite. Entrepreneur: risque plus eleve, pas de securite, mais potentiel de revenus illimite, liberte de choix des projets et des clients.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 5 chapitres</span></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Modeles d'affaires IT</h2>
-      <div class="chapter-meta"><span>🕐 8 heures</span><span class="chapter-badge">Maintenance · Formation · Revendeur</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Modeles d'affaires IT pour le technicien haitien</div><div class="video-subtitle">Durée : 10 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Contrats de maintenance (4 min)</strong> — Modele le plus stable: facturer un forfait mensuel pour la maintenance preventive de X postes. Revenu previsible.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Interventions a la demande (2 min)</strong> — Facturation a la prestation. Moins previsible mais plus flexible.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Formation IT (2 min)</strong> — Donner des cours de bureautique, reseaux, cybersecurite aux entreprises et particuliers. Potentiel enorme en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Revendeur / integrateur (2 min)</strong> — Vendre et installer des equipements reseau (switch, routeur, cameras) avec marge. Modele additionnel.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Comparatif des modeles d'affaires IT en Haiti</h3><table class="data-table"><thead><tr><th>Modele</th><th>Avantages</th><th>Inconvenients</th><th>Revenu potentiel mensuel</th></tr></thead><tbody><tr><td>Contrats maintenance PME</td><td>Revenu previsible, relation durable</td><td>Necessite un portefeuille clients stable</td><td>5-10 clients x 8-15k HTG = 40-150k HTG</td></tr><tr><td>Interventions a la demande</td><td>Flexible, tarif eleve par heure</td><td>Revenu imprévisible, pas de recurrence</td><td>Variable: 5 000 - 80 000 HTG</td></tr><tr><td>Formation IT (cours)</td><td>Forte valeur ajoutee, scalable</td><td>Necessite pedagogie + marketing</td><td>1-3 groupes x 5-15 personnes x 5-15k HTG</td></tr><tr><td>Revente equipements</td><td>Marge sur materiel</td><td>Necessite tresorerie, concurrence prix</td><td>Marge 10-25% sur le materiel vendu</td></tr><tr><td>Developpement web/app</td><td>Projets bien remuneres</td><td>Competition internationale, competences +++</td><td>Par projet: 50 000 - 500 000 HTG</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quel modele d'affaires IT offre le revenu le plus previsible ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Interventions a la demande</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Revente d'equipements</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Contrats de maintenance mensuelle</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Formation occasionnelle</button></div>
-    <div class="quiz-expl" id="expl-q0_2">Les contrats de maintenance offrent un revenu mensuel fixe et previsible: X clients payent un forfait regulier pour que vous maintenez leurs systemes. C'est le modele de base le plus stable pour un technicien independant.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Un technicien TRI propose de la formation bureautique en entreprise. Son avantage concurrentiel est ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Le prix le plus bas</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Sa certification TRI et sa connaissance technique pratique</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Son materiel de formation</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Sa notoriete sur les reseaux sociaux</button></div>
-    <div class="quiz-expl" id="expl-q1_2">La certification technique et l'experience pratique donnent une credibilite que des formateurs non-techniciens n'ont pas. Un technicien TRI peut donner une formation Word+Excel+PowerPoint+securite informatique de base en entreprise.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi le modele "revente d'equipements" necessite-t-il une tresorerie ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Pour payer les impots</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Il faut acheter le stock avant de le revendre au client</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Pour payer les employes</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Ce modele ne necessite pas de tresorerie</button></div>
-    <div class="quiz-expl" id="expl-q2_2">La revente necessite d'acheter le materiel avant la vente (ou d'avancer sur devis). Sans tresorerie ou ligne de credit, impossible d'acheter un switch a 80 000 HTG pour le revendre 100 000 HTG. La tresorerie est le nerf de la guerre en commerce.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Quel est l'avantage d'une strategie combinees (maintenance + formation + interventions) ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Plus complique a gerer</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Diversifier les sources de revenus reduit le risque si un segment baisse</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Facturer 3 fois le meme client</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Avoir plus de reunions</button></div>
-    <div class="quiz-expl" id="expl-q3_2">La diversification des revenus est une strategie de resilience: si les contrats de maintenance diminuent une periode, la formation et les interventions compensent. Un seul modele d'affaires expose a plus de risque.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong> &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Creer son activite</h2>
-      <div class="chapter-meta"><span>🕐 8 heures</span><span class="chapter-badge">Etapes pratiques · Premiers clients · Tarifs</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Creer son activite IT en Haiti — Les etapes pratiques</div><div class="video-subtitle">Durée : 10 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Structure juridique (3 min)</strong> — Entreprise individuelle vs SARL. Comment s'enregistrer au MCI (Ministere du Commerce). Les demarches simplifiees.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Trouver ses premiers clients (4 min)</strong> — Reseau personnel (famille, amis, anciens profs, camarades). LinkedIn. Demarchage direct des PME. Bouche-a-oreille.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Fixer ses tarifs (3 min)</strong> — Etude de marche local. Cout + marge. Ne pas sous-facturer: ca devalue la profession. Exemple de grille tarifaire.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Etapes pour lancer une activite IT independante en Haiti</h3><table class="data-table"><thead><tr><th>Etape</th><th>Action</th><th>Cout estime</th><th>Duree</th></tr></thead><tbody><tr><td>1. Valider son offre</td><td>Definir ses services + clients cibles + tarifs</td><td>0 HTG</td><td>1-2 semaines</td></tr><tr><td>2. Premiers clients</td><td>3-5 clients pilotes (reseau personnel)</td><td>0 HTG</td><td>1-2 mois</td></tr><tr><td>3. Materialiser</td><td>Carte de visite, email pro, presence en ligne</td><td>2 000-5 000 HTG</td><td>1 semaine</td></tr><tr><td>4. S'enregistrer</td><td>Patente au MCI, NIF a la DGI</td><td>3 000-10 000 HTG</td><td>2-4 semaines</td></tr><tr><td>5. Ouvrir un compte pro</td><td>Compte professionnel BNC ou Unibank</td><td>Variable</td><td>1 semaine</td></tr><tr><td>6. Formaliser les contrats</td><td>Contrat de service type (modele disponible)</td><td>0 - 15 000 HTG avec avocat</td><td>2 semaines</td></tr><tr><td>7. Grandir</td><td>Racheter les 1ers mois pour evaluer et ajuster</td><td>0 HTG</td><td>En continu</td></tr></tbody></table><div class="info-box tip"><span class="info-box-label">💡 Commencer petit, grandir progressivement</span>Le conseil le plus important: ne pas attendre d'avoir tout parfait pour demarrer. 3 clients de maintenance et 1 formation par mois suffisent pour valider le modele. Apres 6 mois, si ca marche, formalisez davantage. Les entrepreneurs qui reussissent en Haiti commencent souvent de facon informelle puis structurent au fur et a mesure.</div></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quelle est la meilleure source de premiers clients pour un jeune technicien TRI ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Publicite TV</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Reseau personnel: famille, anciens professeurs, camarades de promotion</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Appels d'offres publics</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Reseaux sociaux exclusivement</button></div>
-    <div class="quiz-expl" id="expl-q0_3">Le reseau personnel est le point de depart le plus efficace et le moins couteux. Chaque personne de votre entourage connait des PME, des commerces, des ecoles qui ont besoin de services IT. Un camarade de promo qui travaille dans une banque peut etre votre premier contact commercial.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi ne pas sous-facturer ses services pour attirer des clients ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>La loi interdit les prix bas</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Sous-facturer devalue la profession et cree une relation commerciale desequilibree</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Les clients preferent toujours les tarifs eleves</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Ca nuit a la concurrence</button></div>
-    <div class="quiz-expl" id="expl-q1_3">Sous-facturer cree plusieurs problemes: revenus insuffisants pour vivre, clients qui ne valorisent pas le service, difficulte a augmenter les tarifs ensuite. Mieux vaut avoir 5 clients qui payent correctement que 20 qui payent trop peu et ne respectent pas le travail.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Quel est le premier document juridique necessaire pour exercer legalement en Haiti ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Inscription a l'OFATMA uniquement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Patente professionnelle aupres du MCI (Ministere du Commerce)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Contrat de travail signe</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Diplome universitaire</button></div>
-    <div class="quiz-expl" id="expl-q2_3">La patente professionnelle du MCI est le document de base pour exercer legalement une activite commerciale en Haiti. Le NIF (Numero d'Identification Fiscale) a la DGI est necessaire pour la fiscalite. Les deux ensemble permettent d'avoir une entreprise formelle.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Pourquoi est-il recommande de commencer "petit" avant de formaliser completement ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Pour eviter de payer des impots</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Pour valider que le modele d'affaires fonctionne avant d'investir du temps et de l'argent dans la formalisation</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Parce que les demarches sont trop compliquees</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Pour cacher son activite</button></div>
-    <div class="quiz-expl" id="expl-q3_3">Tester le modele avec 3-5 clients avant de tout formaliser permet de valider: est-ce que les clients paient? Est-ce que les services vendus correspondent a la demande? Si oui, formaliser. Si non, pivoter sans avoir depense beaucoup.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="wrap"><div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire TRI-16</div>
+  <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+    <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo('ch-1')" id="ti-ch-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Le profil de l'entrepreneur</span></div>
+  <div class="toc-item" onclick="goTo('ch-2')" id="ti-ch-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Le statut d'entrepreneur</span></div>
+  <div class="toc-item" onclick="goTo('ch-3')" id="ti-ch-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Opportunités en Haïti</span></div>
+  <div class="toc-item" onclick="goTo('ch-4')" id="ti-ch-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Le plan d'affaires</span></div>
+  <div class="toc-item" onclick="goTo('ch-5')" id="ti-ch-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Légal, financier & bilan</span></div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+  <div class="toc-reset" onclick="triReset()" title="Effacer quiz, examen et position">↺ Réinitialiser ma progression</div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Finances et aspects juridiques</h2>
-      <div class="chapter-meta"><span>🕐 7 heures</span><span class="chapter-badge">Cout+marge · Comptabilite · Contrat</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Finances et notions juridiques essentielles</div><div class="video-subtitle">Durée : 10 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Les bases de la comptabilite (4 min)</strong> — Recettes, depenses, marge. Separer ses finances personnelles et professionnelles des le debut. Un compte bancaire pro.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Fixer le prix juste (3 min)</strong> — Methode cout + marge: calculer le cout reel d'une intervention (temps, transport, materiel) puis ajouter la marge souhaitee.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Le contrat de service (3 min)</strong> — Pourquoi un contrat meme avec un ami. Ce qu'il doit contenir: scope des services, tarif, delais, responsabilites, conditions de resiliation.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 Modele de grille tarifaire pour technicien IT independant en Haiti</h3><table class="data-table"><thead><tr><th>Service</th><th>Tarif indicatif</th><th>Unite</th></tr></thead><tbody><tr><td>Installation d'un poste complet (OS + logiciels)</td><td>8 000 – 12 000 HTG</td><td>Par poste</td></tr><tr><td>Contrat maintenance preventive (1-5 postes)</td><td>5 000 – 10 000 HTG</td><td>Par mois</td></tr><tr><td>Contrat maintenance (6-20 postes)</td><td>10 000 – 25 000 HTG</td><td>Par mois</td></tr><tr><td>Intervention depannage ponctuel</td><td>2 500 – 5 000 HTG</td><td>Par intervention (1-2h)</td></tr><tr><td>Formation bureautique (groupe)</td><td>3 000 – 8 000 HTG</td><td>Par personne</td></tr><tr><td>Installation reseau LAN (switch + câblage)</td><td>15 000 – 50 000 HTG</td><td>Par projet</td></tr><tr><td>Audit securite IT</td><td>20 000 – 80 000 HTG</td><td>Par audit</td></tr></tbody></table><div class="info-box"><span class="info-box-label">💰 La regle d'or: separer finances perso et pro</span>Des le premier jour, ouvrez un compte bancaire dedie a votre activite. Ne melangez jamais: vos revenus IT et vos depenses personnelles. Cela vous permet de savoir exactement si votre activite est rentable, facilite la comptabilite, et montre la serieux a vos clients et a la banque.</div></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Methode "cout + marge" pour fixer le tarif d'une intervention ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Copier les tarifs des concurrents</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Calculer le cout reel (temps + transport + materiel) et ajouter la marge souhaitee</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Fixer le prix le plus bas possible</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Demander au client combien il veut payer</button></div>
-    <div class="quiz-expl" id="expl-q0_4">Cout + marge = methode professionnelle. Exemple: transport 500 HTG + 2h de travail a 1500 HTG/h + piece 2000 HTG = cout total 6000 HTG. Marge 40% = tarif client 8400 HTG. Ainsi on est sur de ne pas perdre d'argent sur chaque intervention.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi separer finances personnelles et professionnelles des le debut ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Obligation legale haitienne</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Pour savoir si l'activite est rentable et faciliter la comptabilite</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Pour payer moins d'impots</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Pour impressionner les clients</button></div>
-    <div class="quiz-expl" id="expl-q1_4">Melanger finances perso et pro rend impossible de savoir si l'activite est rentable. Compte dedie = vision claire des revenus et depenses IT, facilite la comptabilite fiscale, et professionnalise l'image.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi avoir un contrat de service meme avec un client de confiance (ami, famille) ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Par obligation legale</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Pour eviter les malentendus sur le scope, les tarifs et les responsabilites</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Pour pouvoir facturer plus cher</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Les amis ne paient jamais sans contrat</button></div>
-    <div class="quiz-expl" id="expl-q2_4">Un contrat protege les deux parties: le technicien sait exactement ce qu'il doit faire et combien il sera paye. Le client sait ce qu'il obtient. Les litiges entre amis et famille sans contrat sont les plus difficiles a resoudre.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Qu'est-ce que la "marge" dans la tarification d'un service ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Le pourboire du client</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>La difference entre le cout reel et le prix facture — le benefice du technicien</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Le montant des taxes</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>La remise accordee au client</button></div>
-    <div class="quiz-expl" id="expl-q3_4">La marge = prix facture - cout reel. C'est le benefice du technicien. Une marge saine en services IT est generalement de 30-50%. Sans marge, le technicien travaille pour rembourser ses couts mais ne gagne rien.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div id="main-content">
+
+<!-- PLAN DE COURS -->
+<div class="pnav" id="pnav">
+  <button class="pnav-btn" id="pnav-prev" onclick="stepMove(-1)">← Précédent</button>
+  <div class="pnav-mid"><div class="pnav-lbl" id="pnav-lbl">—</div><div class="pnav-bar"><div class="pnav-fill" id="pnav-fill"></div></div></div>
+  <button class="pnav-btn" id="pnav-next" onclick="stepMove(1)">Suivant →</button>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="pc" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">TRI-16 · Entrepreneuriat · Programme Techniques de réseaux informatiques (TRI)</div></div></div>
+<div class="pc-body">
+<div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module TRI-16</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-TRI16-PLAN" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI16/final/TRI16-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">TRI-16</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">30 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Situation</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">Aucun</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Seuil</div><div class="pc-id-val">75 %</div></div>
+  </div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Se situer au regard d'un projet d'entreprise.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Ce module de compétence générale vise à développer les capacités cognitives et pratiques nécessaires à tout entrepreneur : <strong>transformer une idée en activité économique</strong>. L'étudiant dispose de balises pour s'évaluer comme entrepreneur, analyser le fonctionnement des marchés et les types d'industrie de l'<strong>économie haïtienne en matière de réseaux informatiques</strong>, et identifier les opportunités des secteurs formel et informel. Un atout de formation important au regard de la capacité d'absorption du marché haïtien.</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4><ol>
+    <li><strong>Définir son profil d'entrepreneur.</strong></li>
+    <li><strong>Reconnaître les caractéristiques et les exigences</strong> du statut d'entrepreneur.</li>
+    <li><strong>Évaluer les possibilités de démarrer son entreprise</strong> au regard de ses attentes et de ses besoins.</li>
+    <li><strong>Définir son projet d'entreprise.</strong></li>
+  </ol></div>
+  <div class="pc-sec"><h4>Plan de mise en situation</h4>
+    <div class="lp-phases">
+      <div class="lp-phase"><span class="lp-phase-tag p1">Phase 1 · Information</span><span class="lp-phase-txt">S'informer sur le profil et les exigences de la carrière d'entrepreneur, les formes d'entrepreneuriat, les aspects légaux et financiers, et les normes de démarrage d'une entreprise.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p3">Phase 2 · Réalisation</span><span class="lp-phase-txt">Lister ses réalisations (professionnelles, personnelles, sociales, familiales), définir ses priorités et objectifs, reconnaître ses forces et les faiblesses à pallier.</span></div>
+      <div class="lp-phase"><span class="lp-phase-tag p5">Phase 3 · Synthèse</span><span class="lp-phase-txt">Comparer son bilan aux exigences du démarrage, évaluer son projet et son profil, et justifier son choix de poursuivre ou non sa démarche.</span></div>
+    </div>
+  </div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4><div class="pc-cols">
+    <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Travail individuel et en groupe · témoignages d'entrepreneurs · banques de données · recherches sur Internet · rencontres avec des représentants d'entreprises.</div>
+    <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Rapport des données recueillies · méthodes de prise de notes · règles de discussion en groupe.</div>
+  </div></div>
+  <div class="pc-sec"><h4>Découpage en leçons (30 h)</h4><table class="dtable"><thead><tr><th>N°</th><th>Leçon</th><th>Durée</th><th>Élément / Phase</th></tr></thead><tbody>
+    <tr><td>1</td><td>Le profil de l'entrepreneur</td><td>6 h</td><td>Élément 1 · Information</td></tr>
+    <tr><td>2</td><td>Le statut d'entrepreneur : caractéristiques & exigences</td><td>6 h</td><td>Élément 2 · Information</td></tr>
+    <tr><td>3</td><td>Champs d'activité & opportunités en Haïti</td><td>6 h</td><td>Élément 3 · Réalisation</td></tr>
+    <tr><td>4</td><td>Le plan d'affaires</td><td>7 h</td><td>Élément 4 · Réalisation</td></tr>
+    <tr><td>5</td><td>Aspects légaux, financiers & bilan personnel</td><td>5 h</td><td>Élément 4 · Synthèse</td></tr>
+  </tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4><p>Module à objectif de <strong>situation</strong> : l'évaluation porte sur la <strong>participation</strong> aux trois phases de la mise en situation.</p><ul>
+    <li><strong>Évaluation formative</strong> — quiz, échanges en groupe, autodiagnostic de profil, ébauche de plan d'affaires.</li>
+    <li><strong>Évaluation de sanction</strong> — critères de participation : information recueillie (phase 1), profil d'entrepreneur et liens avec les exigences (phase 2), mission/objectifs et caractéristiques des services envisagés (phase 3).</li>
+    <li><strong>Seuil de réussite</strong> — 75 % (conforme au référentiel).</li>
+  </ul></div>
+  <div class="pc-sec"><h4>Références</h4><ul>
+    <li>Guide CEMEQ — Création d'entreprises.</li>
+    <li>Bottin / annuaire des entreprises ; associations d'entrepreneurs.</li>
+    <li>Lois et règlements en vigueur (démarrage et exercice d'une entreprise en Haïti).</li>
+    <li>Rapport d'analyse de la situation de travail (AST) ; projet de formation.</li>
+  </ul></div>
+</div>
+</div>
+
+<!-- PLANS DE LEÇON -->
+<div class="chapter" id="ch-1">
+<div class="ch-header"><div class="ch-num">01</div><div class="ch-info"><h2>Le profil de l'entrepreneur</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Aptitudes · Forces · Autodiagnostic</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Le profil de l'entrepreneur</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-TRI16-CH01" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI16/final/TRI16-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="section"><h3>1.1 Entreprendre, c'est quoi ?</h3>
+<p>Entreprendre, c'est <strong>transformer une idée en activité économique</strong>. L'entrepreneur identifie un besoin, propose un service ou un produit, et prend le risque de le réaliser. En réseaux informatiques, cela peut être ouvrir un atelier de dépannage, offrir l'installation de réseaux aux PME, ou vendre du matériel.</p></div>
+<div class="section"><h3>1.2 Les aptitudes utiles</h3>
+<table class="dtable"><thead><tr><th>Aptitude</th><th>Pourquoi elle compte</th></tr></thead><tbody>
+<tr><td>Communication & écoute</td><td>comprendre le besoin du client</td></tr>
+<tr><td>Discipline & ponctualité</td><td>tenir ses engagements, inspirer confiance</td></tr>
+<tr><td>Sens des responsabilités</td><td>assumer ses décisions</td></tr>
+<tr><td>Travail en équipe</td><td>collaborer, déléguer</td></tr>
+<tr><td>Habiletés techniques</td><td>la base du métier (TRI)</td></tr>
+</tbody></table></div>
+<div class="section"><h3>1.3 Faire son autodiagnostic</h3>
+<div class="ibox blue"><span class="ibox-label">🪞 Se connaître d'abord</span>Avant de penser « entreprise », on dresse un bilan honnête : mes forces, mes réalisations (études, emplois, bénévolat, projets), mes points à améliorer. L'entrepreneuriat commence par une bonne connaissance de soi.</div></div>
+
+<div class="kterm"><div class="kterm-lbl">🔑 Termes clés</div><div class="kterm-item"><span class="kterm-w">Entreprendre</span><span class="kterm-d">Transformer une idée en activité économique : identifier un besoin, proposer un produit ou un service, et prendre le risque de le réaliser.</span></div><div class="kterm-item"><span class="kterm-w">Autodiagnostic</span><span class="kterm-d">Évaluation honnête de ses propres forces, faiblesses et aptitudes avant de se lancer.</span></div><div class="kterm-item"><span class="kterm-w">Aptitudes entrepreneuriales</span><span class="kterm-d">Qualités utiles : communication, discipline, sens des responsabilités, persévérance, capacité de décision.</span></div><div class="kterm-item"><span class="kterm-w">Prise de risque</span><span class="kterm-d">Acceptation d'une part d'incertitude (revenus, réussite) inhérente à toute création d'activité.</span></div><div class="kterm-item"><span class="kterm-w">Besoin du marché</span><span class="kterm-d">Manque ou problème réel chez des clients potentiels, qu'un produit ou service vient combler.</span></div><div class="kterm-item"><span class="kterm-w">Persévérance</span><span class="kterm-d">Capacité à continuer malgré les difficultés et les débuts difficiles : qualité clé de l'entrepreneur.</span></div></div><div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Entreprendre, c'est transformer une idée en activité : on part toujours d'un besoin réel, pas d'une simple envie.</li><li>En réseaux informatiques, entreprendre peut être un atelier de dépannage, l'installation de réseaux pour PME, ou la vente de matériel.</li><li>Avant de te lancer, fais un autodiagnostic honnête : connaître ses forces et ses limites évite bien des déconvenues.</li><li>La communication, la discipline et la persévérance comptent autant que les compétences techniques pour réussir.</li></ul></div><div class="qblock" id="quiz-1"><div class="qblock-head"><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="2" data-e="Entreprendre consiste à transformer une idée en activité, en partant d'un besoin réel et en acceptant le risque."><div class="q-num">Question 1 / 5</div><div class="q-text">Entreprendre, c'est avant tout :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Avoir un diplôme</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Éviter tout risque</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Transformer une idée en activité économique</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Travailler comme salarié</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="On part d'un besoin réel chez des clients potentiels, qu'on vient combler."><div class="q-num">Question 2 / 5</div><div class="q-text">Un projet d'entreprise part toujours :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>D'un hasard</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>D'une envie passagère</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>D'un besoin réel du marché</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>D'un héritage</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="L'autodiagnostic évalue ses propres aptitudes avant de se lancer."><div class="q-num">Question 3 / 5</div><div class="q-text">L'autodiagnostic sert à :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Fixer les prix</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Évaluer honnêtement ses forces et faiblesses</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Choisir un fournisseur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Recruter</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="La persévérance permet de continuer malgré les débuts difficiles."><div class="q-num">Question 4 / 5</div><div class="q-text">Parmi ces aptitudes, laquelle est clé pour un entrepreneur ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La persévérance</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>L'isolement</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>L'indifférence</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>La passivité</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="Atelier de dépannage, installation de réseaux pour PME, vente de matériel : autant de pistes concrètes."><div class="q-num">Question 5 / 5</div><div class="q-text">En réseaux informatiques, entreprendre peut être :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Éviter les PME</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Ne rien vendre</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Ouvrir un atelier de dépannage ou installer des réseaux</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Refuser les clients</button></div><div class="qexpl" style="display:none"></div></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(1)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(1)">↺ Réessayer</button></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-16 — Mini business plan IT — Mon projet entrepreneurial</h3>
-      <span>Projet de fin de module · Vision entrepreneuriale personnelle</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
-  </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Redige un mini business plan pour une activite IT que tu pourrais lancer dans les 6-12 mois suivant l'obtention de ton diplome TRI. Ce plan doit etre realiste, chiffre, et adapte au contexte haitien.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Definis ton <strong>offre de services</strong>: quels services tu proposes, a quels clients cibles, dans quelle zone geographique (Petion-Ville, Port-au-Prince, ta ville).</li><li>Fais une <strong>etude de marche simplifiee</strong>: identifie 10 clients potentiels dans ton entourage, estime leur budget IT mensuel, calcule le marche potentiel accessible.</li><li>Redige ta <strong>grille tarifaire</strong> complete avec justification des tarifs (methode cout + marge) pour au moins 5 services.</li><li>Fais une <strong>projection financiere annuelle</strong>: revenus estimes mois 1, mois 3, mois 6, mois 12 avec hypotheses realistes.</li><li>Identifie tes <strong>3 principaux risques</strong> et propose une strategie de mitigation pour chacun.</li></ol>
-    </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Offre de services claire et positionnement client defini</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Etude de marche simplifiee avec 10 clients potentiels identifies</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Grille tarifaire justifiee avec methode cout + marge</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Projection financiere annuelle avec hypotheses</div></div><div class="bareme-row"><div class="bareme-pts">10 pts</div><div class="bareme-label">3 risques identifies avec strategies de mitigation</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
-  </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-16 termine ! Felicitations — Programme 1ere Annee TRI complete !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+
+<!-- CH 2 -->
+<div class="chapter" id="ch-2">
+<div class="ch-header"><div class="ch-num">02</div><div class="ch-info"><h2>Le statut d'entrepreneur</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Salarié · Autonome · Entrepreneur</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Le statut d'entrepreneur</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-TRI16-CH02" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI16/final/TRI16-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="section"><h3>2.1 Trois statuts, trois réalités</h3>
+<table class="dtable"><thead><tr><th>Statut</th><th>Sécurité</th><th>Liberté</th><th>Risque</th></tr></thead><tbody>
+<tr><td>Salarié</td><td>élevée (salaire fixe)</td><td>limitée</td><td>faible</td></tr>
+<tr><td>Travailleur autonome</td><td>moyenne</td><td>élevée</td><td>moyen</td></tr>
+<tr><td>Entrepreneur (avec employés)</td><td>variable</td><td>élevée</td><td>élevé</td></tr>
+</tbody></table></div>
+<div class="section"><h3>2.2 Les exigences du statut</h3>
+<div class="ibox gold"><span class="ibox-label">⚖️ La contrepartie de la liberté</span>L'entrepreneur gagne en autonomie mais doit assumer : revenus irréguliers au début, responsabilité totale, gestion de l'incertitude, et de nombreuses casquettes (technique, vente, comptabilité). C'est un choix de vie autant qu'un choix de carrière.</div></div>
+<div class="section"><h3>2.3 S'informer aux bonnes sources</h3>
+<p>Pour bien décider, on s'informe : <strong>annuaire des entreprises</strong>, <strong>associations d'entrepreneurs</strong>, <strong>Internet</strong>, <strong>rencontres et séminaires</strong>, et surtout <strong>témoignages d'entrepreneurs</strong> déjà en activité dans le secteur TIC.</p></div>
+
+<div class="kterm"><div class="kterm-lbl">🔑 Termes clés</div><div class="kterm-item"><span class="kterm-w">Salarié</span><span class="kterm-d">Statut offrant un salaire fixe et une sécurité élevée, mais une liberté limitée.</span></div><div class="kterm-item"><span class="kterm-w">Travailleur autonome</span><span class="kterm-d">Statut indépendant : grande liberté, revenus variables, risque moyen ; on travaille pour soi sans employés.</span></div><div class="kterm-item"><span class="kterm-w">Entrepreneur</span><span class="kterm-d">Statut le plus engageant : on crée une activité, souvent avec des employés ; grande liberté mais risque élevé.</span></div><div class="kterm-item"><span class="kterm-w">Revenus irréguliers</span><span class="kterm-d">Réalité fréquente au démarrage d'une activité indépendante, à anticiper financièrement.</span></div><div class="kterm-item"><span class="kterm-w">Polyvalence</span><span class="kterm-d">Nécessité, pour l'entrepreneur, d'assumer plusieurs rôles : technique, vente, comptabilité, gestion.</span></div><div class="kterm-item"><span class="kterm-w">Personne-ressource</span><span class="kterm-d">Personne expérimentée (entrepreneur, conseiller) qu'on consulte pour s'informer avant de décider.</span></div></div><div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Trois statuts, trois équilibres : le salarié a la sécurité, l'autonome la liberté, l'entrepreneur le potentiel et le risque.</li><li>La contrepartie de la liberté, c'est la responsabilité : revenus irréguliers au début et incertitude à gérer.</li><li>L'entrepreneur porte plusieurs casquettes : technique, vente, comptabilité. La polyvalence fait partie du métier.</li><li>Avant de choisir ton statut, informe-toi aux bonnes sources : personnes-ressources et autorités compétentes.</li></ul></div><div class="qblock" id="quiz-2"><div class="qblock-head"><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="Le salarié bénéficie d'un salaire fixe, donc d'une sécurité élevée, mais d'une liberté limitée."><div class="q-num">Question 1 / 5</div><div class="q-text">Quel statut offre la sécurité la plus élevée ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Le salarié</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>L'entrepreneur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Aucun</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le travailleur autonome</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="L'autonome a une grande liberté, des revenus variables et un risque moyen."><div class="q-num">Question 2 / 5</div><div class="q-text">Le travailleur autonome se caractérise par :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Une grande liberté et des revenus variables</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Beaucoup d'employés</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Un salaire fixe</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Aucun risque</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Plus de liberté implique plus de responsabilité : revenus irréguliers et gestion de l'incertitude."><div class="q-num">Question 3 / 5</div><div class="q-text">La contrepartie de la liberté de l'entrepreneur est :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La responsabilité et l'incertitude</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>L'absence de travail</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>La sécurité totale</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Un salaire garanti</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="La polyvalence est essentielle : l'entrepreneur gère technique, vente et gestion."><div class="q-num">Question 4 / 5</div><div class="q-text">L'entrepreneur doit souvent :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Ignorer la comptabilité</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Éviter la vente</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Porter plusieurs casquettes (technique, vente, compta)</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Ne faire qu'une seule tâche</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="On consulte personnes-ressources et autorités compétentes pour bien décider."><div class="q-num">Question 5 / 5</div><div class="q-text">Avant de choisir son statut, on doit :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Ignorer les autorités</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>S'informer aux bonnes sources</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Décider seul sans réfléchir</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Copier un concurrent</button></div><div class="qexpl" style="display:none"></div></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(2)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(2)">↺ Réessayer</button></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
+</div></div>
+
+<!-- CH 3 -->
+<div class="chapter" id="ch-3">
+<div class="ch-header"><div class="ch-num">03</div><div class="ch-info"><h2>Opportunités en Haïti</h2><div class="ch-meta"><span>🕐 6h</span><span class="ch-badge">Marché · Secteur formel/informel · Services TIC</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Opportunités d'affaires en Haïti</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-TRI16-CH03" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI16/final/TRI16-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="section"><h3>3.1 Préciser ses attentes</h3>
+<p>Avant de choisir un champ d'activité, on clarifie ses attentes : <strong>revenus anticipés</strong>, <strong>statut social souhaité</strong>, <strong>rythme et horaire de travail</strong>, <strong>sécurité</strong>. Un projet doit correspondre à la vie qu'on veut mener.</p></div>
+<div class="section"><h3>3.2 Les champs d'activité en réseaux informatiques</h3>
+<table class="dtable"><thead><tr><th>Champ</th><th>Exemple de service</th></tr></thead><tbody>
+<tr><td>Vente</td><td>matériel, consommables, équipements réseau</td></tr>
+<tr><td>Dépannage</td><td>réparation de postes, intervention à domicile</td></tr>
+<tr><td>Sécurité</td><td>protection des données, sauvegardes, antivirus</td></tr>
+<tr><td>Implantation</td><td>installation de réseaux pour PME, ONG, écoles</td></tr>
+<tr><td>Administration</td><td>maintenance et supervision sous contrat</td></tr>
+</tbody></table></div>
+<div class="section"><h3>3.3 Le marché haïtien</h3>
+<div class="ibox green"><span class="ibox-label">🇭🇹 Lire son marché</span>En Haïti, le secteur des TIC mêle <strong>formel</strong> (entreprises, banques, ONG) et <strong>informel</strong> (cybercafés, petits ateliers). Les besoins sont réels : PME à connecter, particuliers à dépanner, données à sécuriser. L'enjeu de l'entrepreneur est d'identifier une niche concrète et accessible avec ses moyens.</div></div>
+
+<div class="kterm"><div class="kterm-lbl">🔑 Termes clés</div><div class="kterm-item"><span class="kterm-w">Champ d'activité</span><span class="kterm-d">Domaine dans lequel on choisit d'exercer : vente, dépannage, sécurité, implantation, administration réseau.</span></div><div class="kterm-item"><span class="kterm-w">Attentes personnelles</span><span class="kterm-d">Revenus visés, statut social, rythme de travail et sécurité souhaités, à clarifier avant de choisir un projet.</span></div><div class="kterm-item"><span class="kterm-w">Secteur formel</span><span class="kterm-d">Activité déclarée et enregistrée officiellement, soumise aux obligations légales et fiscales.</span></div><div class="kterm-item"><span class="kterm-w">Secteur informel</span><span class="kterm-d">Activité non déclarée, fréquente en Haïti ; le passage au formel apporte crédibilité et accès aux marchés.</span></div><div class="kterm-item"><span class="kterm-w">Étude de marché</span><span class="kterm-d">Observation des besoins, des clients et de la concurrence pour valider une opportunité avant de se lancer.</span></div><div class="kterm-item"><span class="kterm-w">Services TIC</span><span class="kterm-d">Opportunités liées aux technologies : dépannage, installation réseau, sécurité, administration, formation.</span></div></div><div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Avant de choisir un champ d'activité, clarifie tes attentes : un projet doit correspondre à la vie que tu veux mener.</li><li>En réseaux, les champs sont variés : vente, dépannage, sécurité, implantation, administration. Chacun a son marché.</li><li>Le passage du secteur informel au formel apporte crédibilité, contrats et accès à des clients plus exigeants.</li><li>Une étude de marché, même simple, valide ton idée : observe les besoins, les clients et la concurrence avant d'investir.</li></ul></div><div class="qblock" id="quiz-3"><div class="qblock-head"><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="2" data-e="On clarifie ses attentes personnelles : un projet doit correspondre à la vie qu'on veut mener."><div class="q-num">Question 1 / 5</div><div class="q-text">Avant de choisir un champ d'activité, on clarifie :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La couleur du logo</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Les concurrents seulement</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Ses attentes (revenus, rythme, sécurité)</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le nom de l'entreprise</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="L'implantation de réseaux pour PME, ONG ou écoles est un champ d'activité concret."><div class="q-num">Question 2 / 5</div><div class="q-text">Parmi ces champs d'activité en réseaux, lequel est valable ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Fermer boutique</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Ne rien offrir</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>L'implantation de réseaux pour PME</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Ignorer les clients</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Le secteur formel correspond à une activité déclarée, soumise aux obligations légales."><div class="q-num">Question 3 / 5</div><div class="q-text">Le secteur formel se distingue par :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Une activité déclarée et enregistrée</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>L'absence de déclaration</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Aucune obligation</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>L'illégalité</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Le formel donne crédibilité, contrats et accès à des clients plus exigeants."><div class="q-num">Question 4 / 5</div><div class="q-text">Passer au secteur formel apporte surtout :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>De la crédibilité et l'accès à plus de marchés</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Des ennuis inutiles</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Aucun avantage</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Moins de clients</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Elle valide l'opportunité en observant les besoins, les clients et la concurrence."><div class="q-num">Question 5 / 5</div><div class="q-text">Une étude de marché sert à :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Valider l'idée en observant besoins et concurrence</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Recruter du personnel</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Décorer le local</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Fixer les couleurs</button></div><div class="qexpl" style="display:none"></div></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(3)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(3)">↺ Réessayer</button></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<!-- CH 4 -->
+<div class="chapter" id="ch-4">
+<div class="ch-header"><div class="ch-num">04</div><div class="ch-info"><h2>Le plan d'affaires</h2><div class="ch-meta"><span>🕐 7h</span><span class="ch-badge">Projet · Financement · Marketing</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Le plan d'affaires</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-TRI16-CH04" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI16/final/TRI16-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="section"><h3>4.1 À quoi sert un plan d'affaires ?</h3>
+<p>Le <strong>plan d'affaires</strong> est le document qui décrit le projet : ce qu'on offre, à qui, comment, et avec quels moyens. Il sert à <strong>clarifier ses idées</strong>, à <strong>convaincre</strong> (banque, partenaire, famille) et à <strong>piloter</strong> le démarrage.</p></div>
+<div class="section"><h3>4.2 Les composantes essentielles</h3>
+<table class="dtable"><thead><tr><th>Section</th><th>Contenu</th></tr></thead><tbody>
+<tr><td>Le projet</td><td>service offert, clientèle visée, mission</td></tr>
+<tr><td>Aspects financiers</td><td>investissement de départ, coûts, revenus prévus</td></tr>
+<tr><td>Matériel & équipement</td><td>ce qu'il faut pour démarrer</td></tr>
+<tr><td>Marketing & communication</td><td>comment se faire connaître</td></tr>
+<tr><td>Aspects légaux</td><td>statut, enregistrement, garanties</td></tr>
+</tbody></table></div>
+<div class="section"><h3>4.3 Commencer simple</h3>
+<div class="ibox blue"><span class="ibox-label">💡 Un plan réaliste vaut mieux qu'un plan parfait</span>Un premier plan d'affaires tient sur quelques pages. L'important : des chiffres honnêtes, un besoin client réel, et un premier petit pas réalisable. On affine ensuite.</div></div>
+
+<div class="kterm"><div class="kterm-lbl">🔑 Termes clés</div><div class="kterm-item"><span class="kterm-w">Plan d'affaires</span><span class="kterm-d">Document qui décrit le projet : ce qu'on offre, à qui, comment, et avec quels moyens.</span></div><div class="kterm-item"><span class="kterm-w">Mission du projet</span><span class="kterm-d">Raison d'être de l'entreprise : le service offert et la clientèle visée.</span></div><div class="kterm-item"><span class="kterm-w">Investissement de départ</span><span class="kterm-d">Somme nécessaire pour démarrer : matériel, équipement, premiers frais.</span></div><div class="kterm-item"><span class="kterm-w">Plan marketing</span><span class="kterm-d">Manière de se faire connaître et d'attirer des clients (communication, prix, canaux).</span></div><div class="kterm-item"><span class="kterm-w">Prévisions financières</span><span class="kterm-d">Estimation des coûts, des revenus prévus et du point d'équilibre du projet.</span></div><div class="kterm-item"><span class="kterm-w">Clientèle cible</span><span class="kterm-d">Groupe précis de clients à qui s'adresse le produit ou le service.</span></div></div><div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Le plan d'affaires décrit ton projet : ce que tu offres, à qui, comment, et avec quels moyens. C'est ta feuille de route.</li><li>Il sert trois choses : clarifier tes idées, convaincre (banque, partenaire, famille) et piloter le démarrage.</li><li>Ses sections clés : le projet, les aspects financiers, le matériel, le marketing et les aspects légaux.</li><li>Définis clairement ta clientèle cible : un service « pour tout le monde » ne parle à personne.</li></ul></div><div class="qblock" id="quiz-4"><div class="qblock-head"><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="1" data-e="Le plan d'affaires décrit ce qu'on offre, à qui, comment et avec quels moyens."><div class="q-num">Question 1 / 5</div><div class="q-text">Le plan d'affaires est :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Un antivirus</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Le document décrivant le projet, ses moyens et sa clientèle</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Un contrat de travail</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Une facture</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="3" data-e="Il clarifie les idées, convainc les partenaires et guide le lancement."><div class="q-num">Question 2 / 5</div><div class="q-text">À quoi sert un plan d'affaires ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>À décorer</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>À payer les impôts</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>À recruter uniquement</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>À clarifier ses idées, convaincre et piloter le démarrage</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="Les aspects financiers (investissement de départ, coûts, revenus prévus) en font partie."><div class="q-num">Question 3 / 5</div><div class="q-text">Quelle section appartient au plan d'affaires ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La météo</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Le code source</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Les aspects financiers (investissement, coûts, revenus)</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le menu du jour</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="1" data-e="La clientèle cible est le groupe précis à qui s'adresse l'offre."><div class="q-num">Question 4 / 5</div><div class="q-text">La « clientèle cible » désigne :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Les concurrents</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Le groupe précis de clients visés</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Les fournisseurs</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Tous les habitants</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="Il sert à convaincre les financeurs et partenaires de soutenir le projet."><div class="q-num">Question 5 / 5</div><div class="q-text">Un bon plan d'affaires permet de convaincre :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Les concurrents</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Seulement soi-même</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Une banque, un partenaire ou la famille</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Personne</button></div><div class="qexpl" style="display:none"></div></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(4)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(4)">↺ Réessayer</button></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<!-- CH 5 -->
+<div class="chapter" id="ch-5">
+<div class="ch-header"><div class="ch-num">05</div><div class="ch-info"><h2>Légal, financier & bilan</h2><div class="ch-meta"><span>🕐 5h</span><span class="ch-badge">Enregistrement · Assurances · Décision</span></div></div></div>
+<div class="ch-body">
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Aspects légaux, financiers et bilan</div><div class="vsub">Prof. Aly Loubert</div></div></div>
+  <div class="vembed"><video id="vf-TRI16-CH05" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI16/final/TRI16-CH05.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="section"><h3>5.1 Les obligations légales de base</h3>
+<table class="dtable"><thead><tr><th>Obligation</th><th>De quoi s'agit-il</th></tr></thead><tbody>
+<tr><td>Enregistrement</td><td>déclarer officiellement son activité</td></tr>
+<tr><td>Cotisations</td><td>contributions annuelles selon le statut</td></tr>
+<tr><td>Assurances</td><td>se protéger contre les risques</td></tr>
+<tr><td>Garanties</td><td>engagements demandés (financement, contrats)</td></tr>
+</tbody></table>
+<p>Selon qu'on est entrepreneur, travailleur autonome ou sous-traitant, les exigences diffèrent. On se renseigne auprès des autorités compétentes et de personnes-ressources.</p></div>
+<div class="section"><h3>5.2 Le bilan personnel et la décision</h3>
+<div class="ibox gold"><span class="ibox-label">🎯 Le moment de vérité</span>La phase de synthèse consiste à <strong>comparer son bilan</strong> (forces, faiblesses, attentes) avec <strong>les exigences du démarrage</strong>, puis à décider, en connaissance de cause, de <strong>poursuivre ou non</strong> son projet. Les deux réponses sont valables : l'important est un choix lucide et argumenté.</div></div>
+<div class="section"><h3>5.3 Présenter son projet</h3>
+<p>Pour conclure, l'étudiant présente la <strong>mission</strong> et les <strong>objectifs</strong> de son entreprise, les <strong>services</strong> envisagés, et les <strong>raisons</strong> de sa décision. C'est l'aboutissement du module — se situer clairement au regard d'un projet d'entreprise.</p></div>
+
+<div class="kterm"><div class="kterm-lbl">🔑 Termes clés</div><div class="kterm-item"><span class="kterm-w">Enregistrement</span><span class="kterm-d">Déclaration officielle de son activité auprès des autorités compétentes.</span></div><div class="kterm-item"><span class="kterm-w">Cotisations</span><span class="kterm-d">Contributions annuelles dues selon le statut choisi.</span></div><div class="kterm-item"><span class="kterm-w">Assurances</span><span class="kterm-d">Protections souscrites contre les risques liés à l'activité.</span></div><div class="kterm-item"><span class="kterm-w">Garanties</span><span class="kterm-d">Engagements demandés lors d'un financement ou de contrats (sécurités pour le prêteur ou le client).</span></div><div class="kterm-item"><span class="kterm-w">Bilan personnel</span><span class="kterm-d">Synthèse de ses forces, faiblesses et de l'adéquation du projet avec ses attentes, avant la décision finale.</span></div><div class="kterm-item"><span class="kterm-w">Décision d'entreprendre</span><span class="kterm-d">Choix final, pris après avoir comparé son bilan personnel et les exigences du projet.</span></div></div><div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Les obligations de base : enregistrement, cotisations, assurances et garanties. Les exigences varient selon le statut.</li><li>On ne devine pas le cadre légal : on se renseigne auprès des autorités compétentes et de personnes-ressources.</li><li>Avant la décision finale, fais ton bilan personnel : tes forces et tes attentes collent-elles aux exigences du projet ?</li><li>Décider de ne pas se lancer maintenant est aussi une décision valable : mieux vaut un projet mûr qu'un échec précipité.</li></ul></div><div class="qblock" id="quiz-5"><div class="qblock-head"><h3>Quiz — Chapitre 5</h3><span class="qblock-count">5 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="2" data-e="L'enregistrement, c'est déclarer officiellement son activité auprès des autorités compétentes."><div class="q-num">Question 1 / 5</div><div class="q-text">L'enregistrement d'une activité consiste à :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>L'arrêter</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>La vendre</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>La déclarer officiellement aux autorités</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>La cacher</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="Enregistrement, cotisations, assurances et garanties forment les obligations de base."><div class="q-num">Question 2 / 5</div><div class="q-text">Les obligations légales de base incluent :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Enregistrement, cotisations, assurances, garanties</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>La météo</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Le choix du logo</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le menu</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="0" data-e="On se renseigne auprès des autorités compétentes et de personnes-ressources."><div class="q-num">Question 3 / 5</div><div class="q-text">Pour connaître le cadre légal, on doit :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Se renseigner auprès des autorités et personnes-ressources</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Deviner</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Ignorer la loi</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Copier un voisin</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="3" data-e="On compare son bilan (forces, attentes) aux exigences du projet avant de décider."><div class="q-num">Question 4 / 5</div><div class="q-text">Le bilan personnel, avant de décider, compare :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Les fournisseurs</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Les prix des concurrents</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Les couleurs</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Ses forces et attentes avec les exigences du projet</button></div><div class="qexpl" style="display:none"></div></div><div class="q-item" data-c="2" data-e="Reporter un projet non mûr est une décision responsable, pas un échec."><div class="q-num">Question 5 / 5</div><div class="q-text">Décider de ne pas se lancer tout de suite :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Est interdit</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Est un échec</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Est une décision valable si le projet n'est pas mûr</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>N'arrive jamais</button></div><div class="qexpl" style="display:none"></div></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(5)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(5)">↺ Réessayer</button></div></div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
+  <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
+  <p style="color:#dbe6ff;margin:0 0 .7rem;line-height:1.65">Tu as acquis les bases de ce module. Pour ancrer et faire évoluer ces acquis :</p>
+  <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Mini-projet</strong> — applique les notions de ce module à un cas concret de ton choix et documente ta démarche en une page.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Veille</strong> — repère une entreprise TIC haïtienne (Natcom, Digicel, une PME, une ONG) et note les compétences liées à ce module qu'elle recherche.</li>
+    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape du parcours TRI : <strong style="color:#fff">TRI-17 — Initiation à la réseautique</strong>.</li>
+  </ul>
+</div>
+
+
+<div class="chapter" id="essentiel"><div class="ch-header"><div class="ch-num">★</div><div class="ch-info"><h2>L'essentiel à retenir</h2></div></div><div id="essentiel-body">
+<p style="font-size:.85rem;line-height:1.7">TRI-16 t'a appris à <strong>mettre en place et utiliser les principaux services Internet</strong>, du courriel au contrôle à distance, en passant par la VoIP et le transfert de fichiers. Voici la synthèse des 5 chapitres :</p>
+<div class="bonas"><div class="bonas-lbl">★ Les 5 domaines des services Internet</div><ul>
+<li><b>1 — Choisir et installer :</b> partir du besoin, vérifier compatibilité et configuration requise, documenter l'installation.</li>
+<li><b>2 — Communication asynchrone :</b> courriel (SMTP envoie, IMAP/POP3 reçoivent), forums, chiffrement TLS/SSL.</li>
+<li><b>3 — Communication synchrone :</b> VoIP, SIP, WebRTC, visioconférence ; qualité = bande passante + latence.</li>
+<li><b>4 — Échange de fichiers :</b> FTP (non chiffré, à éviter), SFTP (sur SSH, recommandé), FTPS, P2P encadré.</li>
+<li><b>5 — Web et contrôle à distance :</b> CMS (WordPress), HTTP/HTTPS, SSH, RDP, VNC à sécuriser.</li>
+</ul></div>
+<div class="bonas"><div class="bonas-lbl">📌 Les réflexes du technicien services Internet</div><ul>
+<li>SMTP envoie, IMAP/POP3 reçoivent : la base de toute configuration de courriel.</li>
+<li>Toujours chiffrer : TLS/SSL pour le courriel, SFTP pour les fichiers, HTTPS pour le web.</li>
+<li>VoIP de mauvaise qualité ? Vérifie d'abord la bande passante et la latence du réseau.</li>
+<li>VNC n'est pas chiffré par défaut : sécurise-le par tunnel SSH ou VPN avant tout usage distant.</li>
+</ul></div>
+<p style="font-size:.83rem">🎯 <strong>Prochaine étape :</strong> l'examen blanc — quiz général sur les 5 services, puis une étude de cas : choix et courriel, services synchrones et transfert, web et accès distant.</p>
+</div></div>
+<div class="chapter" id="examen"><div class="ch-header"><div class="ch-num">🎓</div><div class="ch-info"><h2>Examen blanc — TRI-16</h2></div></div><div id="examen-body">
+<div class="bonas"><div class="bonas-lbl">📋 Consignes</div><ul>
+<li>Durée conseillée : <b>90 minutes</b> · Total : <b>100 points</b> · Réussite : <b>≥ 75 %</b> (référentiel).</li>
+<li>Partie A — Théorie, les 5 services (30 pts) · Partie B — Étude de cas : choix/courriel, synchrone/transfert, web/accès distant (70 pts).</li>
+</ul></div>
+<div class="exid"><label>Nom : <input type="text" id="ex-nom"></label><label>Prénom : <input type="text" id="ex-prenom"></label><label>Date : <input type="date" id="ex-date"></label></div>
+
+<div class="exam-part"><h3>Partie A — Théorie <span class="expts">30 pts</span></h3>
+<h4>A1. Remets dans l'ordre les 5 domaines du module <span class="expts">5 pts</span></h4>
+<div class="exrow"><span class="exno">1</span><select class="exsel" id="a1-0"><option value="-1">— Choisir —</option><option value="0">Identifier les opportunités</option><option value="1">Régler le légal, le financier et décider</option><option value="2">Cerner le profil de l'entrepreneur</option><option value="3">Bâtir le plan d'affaires</option><option value="4">Choisir son statut</option></select><span class="exmark" id="m-a1-0"></span></div><div class="exrow"><span class="exno">2</span><select class="exsel" id="a1-1"><option value="-1">— Choisir —</option><option value="0">Identifier les opportunités</option><option value="1">Régler le légal, le financier et décider</option><option value="2">Cerner le profil de l'entrepreneur</option><option value="3">Bâtir le plan d'affaires</option><option value="4">Choisir son statut</option></select><span class="exmark" id="m-a1-1"></span></div><div class="exrow"><span class="exno">3</span><select class="exsel" id="a1-2"><option value="-1">— Choisir —</option><option value="0">Identifier les opportunités</option><option value="1">Régler le légal, le financier et décider</option><option value="2">Cerner le profil de l'entrepreneur</option><option value="3">Bâtir le plan d'affaires</option><option value="4">Choisir son statut</option></select><span class="exmark" id="m-a1-2"></span></div><div class="exrow"><span class="exno">4</span><select class="exsel" id="a1-3"><option value="-1">— Choisir —</option><option value="0">Identifier les opportunités</option><option value="1">Régler le légal, le financier et décider</option><option value="2">Cerner le profil de l'entrepreneur</option><option value="3">Bâtir le plan d'affaires</option><option value="4">Choisir son statut</option></select><span class="exmark" id="m-a1-3"></span></div><div class="exrow"><span class="exno">5</span><select class="exsel" id="a1-4"><option value="-1">— Choisir —</option><option value="0">Identifier les opportunités</option><option value="1">Régler le légal, le financier et décider</option><option value="2">Cerner le profil de l'entrepreneur</option><option value="3">Bâtir le plan d'affaires</option><option value="4">Choisir son statut</option></select><span class="exmark" id="m-a1-4"></span></div>
+<h4>A2. Quiz général — les services Internet <span class="expts">25 pts</span></h4>
+<div class="exq"><div class="exq-t">1. Entreprendre, c'est avant tout :</div><select class="exsel" id="a2-0"><option value="-1">— Choisir —</option><option value="0">Éviter le risque</option><option value="1">Avoir un diplôme</option><option value="2">Être salarié</option><option value="3">Transformer une idée en activité économique</option></select><span class="exmark" id="m-a2-0"></span></div><div class="exq"><div class="exq-t">2. Un projet d'entreprise part de :</div><select class="exsel" id="a2-1"><option value="-1">— Choisir —</option><option value="0">Un héritage</option><option value="1">Une envie passagère</option><option value="2">Un besoin réel du marché</option><option value="3">Un hasard</option></select><span class="exmark" id="m-a2-1"></span></div><div class="exq"><div class="exq-t">3. L'autodiagnostic sert à :</div><select class="exsel" id="a2-2"><option value="-1">— Choisir —</option><option value="0">Évaluer honnêtement ses forces et faiblesses</option><option value="1">Fixer les prix</option><option value="2">Choisir un fournisseur</option><option value="3">Recruter</option></select><span class="exmark" id="m-a2-2"></span></div><div class="exq"><div class="exq-t">4. Aptitude clé de l'entrepreneur :</div><select class="exsel" id="a2-3"><option value="-1">— Choisir —</option><option value="0">L'indifférence</option><option value="1">L'isolement</option><option value="2">La persévérance</option><option value="3">La passivité</option></select><span class="exmark" id="m-a2-3"></span></div><div class="exq"><div class="exq-t">5. En réseaux, entreprendre peut être :</div><select class="exsel" id="a2-4"><option value="-1">— Choisir —</option><option value="0">Refuser les clients</option><option value="1">Ne rien vendre</option><option value="2">Fermer boutique</option><option value="3">Ouvrir un atelier de dépannage</option></select><span class="exmark" id="m-a2-4"></span></div><div class="exq"><div class="exq-t">6. Le statut le plus sécurisant est :</div><select class="exsel" id="a2-5"><option value="-1">— Choisir —</option><option value="0">Aucun</option><option value="1">L'entrepreneur</option><option value="2">Le salarié</option><option value="3">Le travailleur autonome</option></select><span class="exmark" id="m-a2-5"></span></div><div class="exq"><div class="exq-t">7. Le travailleur autonome a :</div><select class="exsel" id="a2-6"><option value="-1">— Choisir —</option><option value="0">Aucun risque</option><option value="1">Une grande liberté, des revenus variables</option><option value="2">Beaucoup d'employés</option><option value="3">Un salaire fixe</option></select><span class="exmark" id="m-a2-6"></span></div><div class="exq"><div class="exq-t">8. La contrepartie de la liberté de l'entrepreneur :</div><select class="exsel" id="a2-7"><option value="-1">— Choisir —</option><option value="0">La responsabilité et l'incertitude</option><option value="1">Aucun travail</option><option value="2">Un salaire garanti</option><option value="3">La sécurité totale</option></select><span class="exmark" id="m-a2-7"></span></div><div class="exq"><div class="exq-t">9. L'entrepreneur doit souvent :</div><select class="exsel" id="a2-8"><option value="-1">— Choisir —</option><option value="0">Ignorer la compta</option><option value="1">Éviter la vente</option><option value="2">Porter plusieurs casquettes</option><option value="3">Faire une seule tâche</option></select><span class="exmark" id="m-a2-8"></span></div><div class="exq"><div class="exq-t">10. Avant de choisir son statut, on doit :</div><select class="exsel" id="a2-9"><option value="-1">— Choisir —</option><option value="0">Décider seul</option><option value="1">S'informer aux bonnes sources</option><option value="2">Ignorer les autorités</option><option value="3">Copier un concurrent</option></select><span class="exmark" id="m-a2-9"></span></div><div class="exq"><div class="exq-t">11. Avant un champ d'activité, on clarifie :</div><select class="exsel" id="a2-10"><option value="-1">— Choisir —</option><option value="0">Le nom</option><option value="1">Ses attentes (revenus, rythme, sécurité)</option><option value="2">La couleur du logo</option><option value="3">Les concurrents seulement</option></select><span class="exmark" id="m-a2-10"></span></div><div class="exq"><div class="exq-t">12. Champ d'activité valable en réseaux :</div><select class="exsel" id="a2-11"><option value="-1">— Choisir —</option><option value="0">L'implantation de réseaux pour PME</option><option value="1">Fermer boutique</option><option value="2">Ignorer les clients</option><option value="3">Ne rien offrir</option></select><span class="exmark" id="m-a2-11"></span></div><div class="exq"><div class="exq-t">13. Le secteur formel se distingue par :</div><select class="exsel" id="a2-12"><option value="-1">— Choisir —</option><option value="0">L'absence de déclaration</option><option value="1">L'illégalité</option><option value="2">Une activité déclarée et enregistrée</option><option value="3">Aucune obligation</option></select><span class="exmark" id="m-a2-12"></span></div><div class="exq"><div class="exq-t">14. Passer au formel apporte :</div><select class="exsel" id="a2-13"><option value="-1">— Choisir —</option><option value="0">Des ennuis</option><option value="1">De la crédibilité et plus de marchés</option><option value="2">Aucun avantage</option><option value="3">Moins de clients</option></select><span class="exmark" id="m-a2-13"></span></div><div class="exq"><div class="exq-t">15. Une étude de marché sert à :</div><select class="exsel" id="a2-14"><option value="-1">— Choisir —</option><option value="0">Décorer</option><option value="1">Recruter</option><option value="2">Fixer les couleurs</option><option value="3">Valider l'idée (besoins, concurrence)</option></select><span class="exmark" id="m-a2-14"></span></div><div class="exq"><div class="exq-t">16. Le plan d'affaires est :</div><select class="exsel" id="a2-15"><option value="-1">— Choisir —</option><option value="0">Un contrat de travail</option><option value="1">Le document décrivant le projet et ses moyens</option><option value="2">Un antivirus</option><option value="3">Une facture</option></select><span class="exmark" id="m-a2-15"></span></div><div class="exq"><div class="exq-t">17. Le plan d'affaires sert à :</div><select class="exsel" id="a2-16"><option value="-1">— Choisir —</option><option value="0">Clarifier, convaincre et piloter le démarrage</option><option value="1">Recruter seulement</option><option value="2">Décorer</option><option value="3">Payer les impôts</option></select><span class="exmark" id="m-a2-16"></span></div><div class="exq"><div class="exq-t">18. Section du plan d'affaires :</div><select class="exsel" id="a2-17"><option value="-1">— Choisir —</option><option value="0">La météo</option><option value="1">Les aspects financiers</option><option value="2">Le menu du jour</option><option value="3">Le code source</option></select><span class="exmark" id="m-a2-17"></span></div><div class="exq"><div class="exq-t">19. La clientèle cible est :</div><select class="exsel" id="a2-18"><option value="-1">— Choisir —</option><option value="0">Le groupe précis de clients visés</option><option value="1">Les concurrents</option><option value="2">Les fournisseurs</option><option value="3">Tous les habitants</option></select><span class="exmark" id="m-a2-18"></span></div><div class="exq"><div class="exq-t">20. Un bon plan d'affaires convainc :</div><select class="exsel" id="a2-19"><option value="-1">— Choisir —</option><option value="0">Les concurrents</option><option value="1">Personne</option><option value="2">Une banque, un partenaire, la famille</option><option value="3">Soi-même seulement</option></select><span class="exmark" id="m-a2-19"></span></div><div class="exq"><div class="exq-t">21. L'enregistrement consiste à :</div><select class="exsel" id="a2-20"><option value="-1">— Choisir —</option><option value="0">Cacher l'activité</option><option value="1">L'arrêter</option><option value="2">La vendre</option><option value="3">La déclarer officiellement</option></select><span class="exmark" id="m-a2-20"></span></div><div class="exq"><div class="exq-t">22. Obligations légales de base :</div><select class="exsel" id="a2-21"><option value="-1">— Choisir —</option><option value="0">Enregistrement, cotisations, assurances, garanties</option><option value="1">Le logo</option><option value="2">La météo</option><option value="3">Le menu</option></select><span class="exmark" id="m-a2-21"></span></div><div class="exq"><div class="exq-t">23. Pour le cadre légal, on doit :</div><select class="exsel" id="a2-22"><option value="-1">— Choisir —</option><option value="0">Se renseigner auprès des autorités</option><option value="1">Deviner</option><option value="2">Copier un voisin</option><option value="3">Ignorer la loi</option></select><span class="exmark" id="m-a2-22"></span></div><div class="exq"><div class="exq-t">24. Le bilan personnel compare :</div><select class="exsel" id="a2-23"><option value="-1">— Choisir —</option><option value="0">Les fournisseurs</option><option value="1">Les prix concurrents</option><option value="2">Ses forces/attentes aux exigences du projet</option><option value="3">Les couleurs</option></select><span class="exmark" id="m-a2-23"></span></div><div class="exq"><div class="exq-t">25. Décider de ne pas se lancer tout de suite :</div><select class="exsel" id="a2-24"><option value="-1">— Choisir —</option><option value="0">Est un échec</option><option value="1">Est valable si le projet n'est pas mûr</option><option value="2">N'arrive jamais</option><option value="3">Est interdit</option></select><span class="exmark" id="m-a2-24"></span></div>
+</div>
+
+<div class="exam-part"><h3>Partie B — Étude de cas <span class="expts">70 pts</span></h3>
+<div class="kterm"><div class="kterm-lbl">🗺 Contexte</div>
+<div class="kterm-item"><span class="kterm-d">Tu envisages de lancer ta propre activite en reseaux informatiques apres ta formation : un atelier de depannage et d'installation pour les PME de ta region. Conduis ta reflexion, du profil jusqu'a la decision.</span></div></div>
+
+<h4>B1. Choix des outils et courriel <span class="expts">20 pts</span></h4>
+<div class="exq"><div class="exq-t">Action de transformer une idée en activité économique :</div><input type="text" class="exin" id="b1-0" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b1-0"></span><div class="exans" id="a-b1-0">Réponse : entreprendre</div></div><div class="exq"><div class="exq-t">Évaluation honnête de ses propres forces et faiblesses :</div><input type="text" class="exin" id="b1-1" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b1-1"></span><div class="exans" id="a-b1-1">Réponse : autodiagnostic</div></div><div class="exq"><div class="exq-t">Statut offrant la sécurité la plus élevée (un mot) :</div><input type="text" class="exin" id="b1-2" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b1-2"></span><div class="exans" id="a-b1-2">Réponse : salarie</div></div><div class="exq"><div class="exq-t">Statut indépendant sans employés, grande liberté (2 mots) :</div><input type="text" class="exin" id="b1-3" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b1-3"></span><div class="exans" id="a-b1-3">Réponse : travailleur autonome</div></div>
+<h4>B2. Services synchrones et transfert <span class="expts">26 pts</span></h4>
+<div class="exq"><div class="exq-t">Domaine dans lequel on choisit d'exercer (2 mots) :</div><input type="text" class="exin" id="b2-0" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b2-0"></span><div class="exans" id="a-b2-0">Réponse : champ activite</div></div><div class="exq"><div class="exq-t">Activité déclarée et enregistrée officiellement (2 mots) :</div><input type="text" class="exin" id="b2-1" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b2-1"></span><div class="exans" id="a-b2-1">Réponse : secteur formel</div></div><div class="exq"><div class="exq-t">Document qui décrit le projet, à qui, comment, avec quels moyens (2 mots) :</div><input type="text" class="exin" id="b2-2" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b2-2"></span><div class="exans" id="a-b2-2">Réponse : plan affaires</div></div><div class="exq"><div class="exq-t">Groupe précis de clients visés par l'offre (2 mots) :</div><input type="text" class="exin" id="b2-3" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b2-3"></span><div class="exans" id="a-b2-3">Réponse : clientele cible</div></div><div class="exq"><div class="exq-t">Tu veux vérifier qu'il existe un vrai besoin avant d'investir. Tu fais :</div><select class="exsel" id="b2s-0"><option value="-1">— Choisir —</option><option value="0">Un recrutement</option><option value="1">Un logo</option><option value="2">Une étude de marché</option><option value="3">Rien</option></select><span class="exmark" id="m-b2s-0"></span></div><div class="exq"><div class="exq-t">Pour donner crédibilité et accès aux marchés à ton activité, tu passes :</div><select class="exsel" id="b2s-1"><option value="-1">— Choisir —</option><option value="0">À l'informel</option><option value="1">Au secteur formel</option><option value="2">Au salariat</option><option value="3">À la fermeture</option></select><span class="exmark" id="m-b2s-1"></span></div>
+<h4>B3. Site web et accès distant <span class="expts">24 pts</span></h4>
+<div class="exq"><div class="exq-t">Déclaration officielle de son activité aux autorités :</div><input type="text" class="exin" id="b3-0" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-0"></span><div class="exans" id="a-b3-0">Réponse : enregistrement</div></div><div class="exq"><div class="exq-t">Contributions annuelles dues selon le statut :</div><input type="text" class="exin" id="b3-1" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-1"></span><div class="exans" id="a-b3-1">Réponse : cotisations</div></div><div class="exq"><div class="exq-t">Protections souscrites contre les risques de l'activité :</div><input type="text" class="exin" id="b3-2" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-2"></span><div class="exans" id="a-b3-2">Réponse : assurances</div></div><div class="exq"><div class="exq-t">Synthèse de ses forces et attentes avant la décision finale (2 mots) :</div><input type="text" class="exin" id="b3-3" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-3"></span><div class="exans" id="a-b3-3">Réponse : bilan personnel</div></div><div class="exq"><div class="exq-t">Après ton bilan, le projet ne correspond pas encore à tes attentes. Tu peux :</div><select class="exsel" id="b3s-0"><option value="-1">— Choisir —</option><option value="0">Te lancer quand même</option><option value="1">Abandonner les réseaux</option><option value="2">Reporter : c'est une décision valable</option></select><span class="exmark" id="m-b3s-0"></span></div><div class="exq"><div class="exq-t">Pour connaître tes obligations légales exactes, tu :</div><select class="exsel" id="b3s-1"><option value="-1">— Choisir —</option><option value="0">Devines</option><option value="1">Ignores la loi</option><option value="2">Te renseignes auprès des autorités compétentes</option></select><span class="exmark" id="m-b3s-1"></span></div>
+</div>
+
+<div class="exgauges">
+  <div class="exg"><span>Partie A</span><div class="exg-bar"><div class="exg-fill" id="g-a"></div></div><b id="s-a">— / 30</b></div>
+  <div class="exg"><span>Partie B</span><div class="exg-bar"><div class="exg-fill" id="g-b"></div></div><b id="s-b">— / 70</b></div>
+  <div class="exg"><span>TOTAL</span><div class="exg-bar"><div class="exg-fill" id="g-t"></div></div><b id="s-t">— / 100</b></div>
+</div>
+<div class="q-result" id="ex-result"></div>
+<div class="q-actions">
+  <button class="q-btn exbtn" onclick="exValidate()">✓ Corriger l'examen</button>
+  <button class="q-btn alt exbtn" onclick="exPrint()">🖨 Copie corrigée</button>
+  <button class="q-btn alt exbtn" onclick="exPrintBlank()">📄 Sujet vierge</button>
+  <button class="q-btn alt exbtn" onclick="exReset()">↺ Recommencer</button>
+</div>
+</div></div>
+<div class="complete-banner" id="complete-banner">
+  <h2>🎓 Module TRI-16 validé !</h2>
+  <p>Tu sais maintenant te situer face à un projet d'entreprise : profil, statut, opportunités du marché haïtien, plan d'affaires et décision argumentée. Une compétence précieuse pour ta carrière, salarié comme indépendant.</p>
+</div>
+
+</div></div></div>
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
+
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+var _OST={done:{},qs:{},sel:{}};
+var K='TRI16v1_';
+var TOTAL=5;
+var SEUIL=75;
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+window.addEventListener('load',function(){
+  _OST.done=ld('done',{});_OST.qs=ld('qs',{});
+  Object.keys(_OST.done).forEach(function(n){if(_OST.done[n])_old_applyDone(n);});
+  Object.keys(_OST.qs).forEach(function(qid){var el=document.getElementById('qs-'+qid);if(el){var s=_OST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}});
+  /* neutralisé */
+});
+function _old_updateProg(){
+  var done=Object.keys(_OST.done).filter(function(k){return _OST.done[k];}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(_OST.qs).forEach(function(k){qOk+=_OST.qs[k].ok;qTot+=_OST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=SEUIL){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+function doneChapter(n){_OST.done[n]=true;sv('done',_OST.done);_old_applyDone(n);_old_updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function _old_applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+function _old_goTo(n){var el=document.getElementById(typeof n==='string'?n:'ch-'+n);if(!el){toast('ℹ️ Section bientôt disponible.');return;}el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');if(window.innerWidth<=768)_old_toggleToc();}
+function _old_toggleToc(){var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';}
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+function _old_selQ(btn,qid,qi,val){var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');var idx=parseInt(qi);if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');if(!_OST.sel[qid])_OST.sel[qid]={};_OST.sel[qid][qi]=val;}
+function _old_submitQ(qid,answers,expls){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var sel=_OST.sel[qid]||{};var total=answers.length;for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}var ok=0;var qItems=block.querySelectorAll('.q-item');for(var i=0;i<total;i++){var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;qItem.querySelectorAll('.qopt').forEach(function(b,j){b.disabled=true;if(j===correct)b.classList.add('ok');else if(j===chosen&&chosen!==correct)b.classList.add('ko');});var expl=document.getElementById('qe-'+qid+'-'+i);if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}if(chosen===correct)ok++;}_OST.qs[qid]={ok:ok,total:total};sv('qs',_OST.qs);var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';_old_updateProg();toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');}
+function _old_retryQ(qid,count){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});if(_OST.sel[qid])_OST.sel[qid]={};var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';}
+var timerStart=Date.now();
+function _old_initTimer(){var saved=ld('time',0);timerStart=Date.now()-saved*1000;setInterval(function(){var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);var el=document.getElementById('session-timer');if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}},1000);}
+var _tt;
+function toast(msg){var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);}
+function _old_openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function _old_setVid(n){var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';}
+</script>
+
+<script>
+
+var _OST={done:{},qs:{},sel:{}};
+var K='TRI16v1_';
+var TOTAL=7;
+var SEUIL=85;
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+window.addEventListener('load',function(){
+  _OST.done=ld('done',{});_OST.qs=ld('qs',{});
+  Object.keys(_OST.done).forEach(function(n){if(_OST.done[n])_old_applyDone(n);});
+  Object.keys(_OST.qs).forEach(function(qid){var el=document.getElementById('qs-'+qid);if(el){var s=_OST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}});
+  /* _old_initTimer();_old_updateProg(); neutralisé */
+});
+function _old_updateProg(){
+  var done=Object.keys(_OST.done).filter(function(k){return _OST.done[k];}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(_OST.qs).forEach(function(k){qOk+=_OST.qs[k].ok;qTot+=_OST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=SEUIL){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function doneChapter(n){_OST.done[n]=true;sv('done',_OST.done);_old_applyDone(n);_old_updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function _old_applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+function _old_goTo(n){var el=document.getElementById(typeof n==='string'?n:'ch-'+n);if(!el){toast('ℹ️ Section bientôt disponible.');return;}el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');if(window.innerWidth<=768)_old_toggleToc();}
+function _old_toggleToc(){var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';}
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+function _old_openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function _old_setVid(n){var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';}
+function _old_selQ(btn,qid,qi,val){var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');var idx=parseInt(qi);if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');if(!_OST.sel[qid])_OST.sel[qid]={};_OST.sel[qid][qi]=val;}
+function _old_submitQ(qid,answers,expls){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;var sel=_OST.sel[qid]||{};var total=answers.length;for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}var ok=0;var qItems=block.querySelectorAll('.q-item');for(var i=0;i<total;i++){var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;qItem.querySelectorAll('.qopt').forEach(function(b,j){b.disabled=true;if(j===correct)b.classList.add('ok');else if(j===chosen&&chosen!==correct)b.classList.add('ko');});var expl=document.getElementById('qe-'+qid+'-'+i);if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}if(chosen===correct)ok++;}_OST.qs[qid]={ok:ok,total:total};sv('qs',_OST.qs);var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';_old_updateProg();toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');}
+function _old_retryQ(qid,count){var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});if(_OST.sel[qid])_OST.sel[qid]={};var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';}
+var timerStart=Date.now();
+function _old_initTimer(){var saved=ld('time',0);timerStart=Date.now()-saved*1000;setInterval(function(){var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);var el=document.getElementById('session-timer');if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/50),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}},1000);}
+var _tt;
+function toast(msg){var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);}
+
+
+/* ===== Moteur TRI-16 — standard v10 (7 chapitres) ===== */
+(function(){
+var KEY='TRI16v1_';
+var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','essentiel','examen'];
+var TITLES={'plan':'Plan de cours','essentiel':"\u2605 L'essentiel \u00e0 retenir",'examen':'\uD83C\uDF93 Examen blanc'};
+function rd(k,d){try{var v=localStorage.getItem(KEY+k);return v===null?d:JSON.parse(v);}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(KEY+k,JSON.stringify(v));}catch(e){}}
+window.ST={done:rd('done',{}),qs:rd('qs',{}),pos:rd('pos','plan')};
+document.body.classList.add('player');
+function lbl(id){
+  if(TITLES[id])return TITLES[id];
+  var n=id.split('-')[1];
+  var el=document.querySelector('#'+id+' h2');
+  return 'Ch. '+n+' \u2014 '+(el?el.textContent.trim():'');
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+function canGo(id){
+  var idx=STEPS.indexOf(id);
+  if(idx<=1)return true;
+  if(id==='essentiel'||id==='examen')return !!ST.done['ch-5'];
+  var n=parseInt(id.split('-')[1],10);
+  return !!ST.done['ch-'+(n-1)];
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
+window.goTo=function(id){
+  if(!canGo(id))return;
+  STEPS.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.remove('active');});
+  var el=document.getElementById(id);if(!el)return;
+  el.classList.add('active');
+  ST.pos=id;wr('pos',id);
+  var idx=STEPS.indexOf(id);
+  document.getElementById('pnav-lbl').textContent='\u00c9tape '+(idx+1)+'/'+STEPS.length+' \u00b7 '+lbl(id);
+  document.getElementById('pnav-fill').style.width=Math.round((idx+1)/STEPS.length*100)+'%';
+  var prev=document.getElementById('pnav-prev'),next=document.getElementById('pnav-next');
+  prev.disabled=idx===0;
+  var nid=STEPS[idx+1];
+  next.disabled=!nid||!canGo(nid);
+  next.textContent=nid?'Suivant \u2192':'Fin';
+  refreshToc();
+  window.scrollTo({top:0,behavior:'smooth'});
+  var tc=document.getElementById('toc-sidebar');if(tc)tc.classList.remove('open');
+  var ov=document.getElementById('mob-overlay');if(ov)ov.style.display='none';
+};
+window.stepMove=function(d){
+  var idx=STEPS.indexOf(ST.pos)+d;
+  if(idx<0||idx>=STEPS.length)return;
+  goTo(STEPS[idx]);
+};
+function refreshToc(){
+  STEPS.forEach(function(s){
+    var ti=document.getElementById('ti-'+s);if(!ti)return;
+    ti.classList.toggle('locked',!canGo(s));
+    ti.classList.toggle('done',!!ST.done[s]);
+    ti.classList.toggle('active',ST.pos===s);
+  });
+  updateProgUI();
 }
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
+function updateProgUI(){
+  var done=0;for(var i=1;i<=5;i++)if(ST.done['ch-'+i])done++;
+  var pct=Math.round(done/5*100);
+  var f=document.getElementById('prog-fill');if(f)f.style.width=pct+'%';
+  var t=document.getElementById('prog-txt');if(t)t.textContent=done+' / 7 chapitres \u2014 '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok||0;qTot+=ST.qs[k].total||0;});
+  var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' r\u00e9ponses correctes':'\u2014';
+  if(done===5){var cb=document.getElementById('complete-banner');if(cb){cb.classList.add('show');cb.style.display='block';}}
 }
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+window.selQ=function(btn){
+  var item=btn.closest('.q-item');
+  item.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+};
+window.submitQ=function(ch){
+  var blk=document.getElementById('quiz-'+ch);if(!blk)return;
+  var items=blk.querySelectorAll('.q-item'),ok=0;
+  items.forEach(function(it){
+    var c=parseInt(it.getAttribute('data-c'),10);
+    var opts=it.querySelectorAll('.qopt');var pick=-1;
+    opts.forEach(function(b,i){if(b.classList.contains('sel'))pick=i;});
+    opts.forEach(function(b,i){
+      b.classList.remove('good','bad');
+      if(i===c)b.classList.add('good');
+      else if(i===pick)b.classList.add('bad');
+      b.disabled=true;
+    });
+    if(pick===c)ok++;
+    var ex=it.querySelector('.qexpl');
+    if(ex){ex.style.display='block';ex.textContent=(pick===c?'\u2705 Correct. ':'\u274c ')+(it.getAttribute('data-e')||'');}
+  });
+  var total=items.length,pct=ok/total;
+  ST.qs[ch]={ok:ok,total:total};wr('qs',ST.qs);
+  var res=blk.querySelector('.q-result');
+  if(res){res.style.display='block';
+    res.innerHTML=pct>=0.6
+      ?'\uD83C\uDF89 <strong>'+ok+'/'+total+'</strong> \u2014 chapitre valid\u00e9 ! La le\u00e7on suivante est d\u00e9bloqu\u00e9e.'
+      :'\uD83D\uDCDA <strong>'+ok+'/'+total+'</strong> \u2014 il faut au moins 60 %. Relis la le\u00e7on puis clique \u00ab R\u00e9essayer \u00bb.';
+    res.className='q-result '+(pct>=0.6?'win':'lose');}
+  if(pct>=0.6){ST.done['ch-'+ch]=true;wr('done',ST.done);}
+  refreshToc();
+  var idx=STEPS.indexOf(ST.pos);
+  var next=document.getElementById('pnav-next');var nid=STEPS[idx+1];
+  if(next&&nid)next.disabled=!canGo(nid);
+};
+window.retryQ=function(ch){
+  var blk=document.getElementById('quiz-'+ch);if(!blk)return;
+  blk.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','good','bad');b.disabled=false;});
+  blk.querySelectorAll('.qexpl').forEach(function(e){e.style.display='none';});
+  var res=blk.querySelector('.q-result');if(res)res.style.display='none';
+};
+window.toggleToc=function(){
+  var tc=document.getElementById('toc-sidebar');if(!tc)return;
+  tc.classList.toggle('open');
+  var ov=document.getElementById('mob-overlay');if(ov)ov.style.display=tc.classList.contains('open')?'block':'none';
+};
+window.triReset=function(){
+  if(!confirm('R\u00e9initialiser toute ta progression TRI-16 (quiz, examen, position) ?'))return;
+  var del=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(KEY)===0)del.push(k);}
+  del.forEach(function(k){localStorage.removeItem(k);});
+  location.reload();
+};
+document.querySelectorAll('.vembed video').forEach(function(v){
+  function soon(){
+    var box=v.parentElement;if(!box||box.querySelector('.vsoon'))return;
+    v.style.display='none';
+    var d=document.createElement('div');d.className='vsoon';
+    d.innerHTML='<b>\uD83C\uDFAC Vid\u00e9o en cours de production</b><span>Elle sera disponible tr\u00e8s bient\u00f4t. En attendant, passe directement \u00e0 la lecture \u2461 ci-dessous \u2014 tout le contenu de la le\u00e7on y est.</span>';
+    box.appendChild(d);
   }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+  v.addEventListener('error',soon);
+  var s=v.querySelector('source');if(s)s.addEventListener('error',soon);
+});
+var t0=Date.now();
+setInterval(function(){
+  var s=Math.floor((Date.now()-t0)/1000);
+  var el=document.getElementById('session-timer');
+  if(el)el.textContent=Math.floor(s/50)+'m '+(s%60)+'s';
+},1000);
+var start=canGo(ST.pos)?ST.pos:'plan';
+goTo(start);
+})();
+
 
 </script>
 
-<div id="mod-code-data" data-code="TRI-16" style="display:none"></div>
-<div id="seuil-data" data-seuil="60" style="display:none"></div>
+<script>
+
+(function(){
+var KEY='TRI16v1_';
+var A1=[2, 4, 0, 3, 1], QC=[3, 2, 0, 2, 3, 2, 1, 0, 2, 1, 1, 0, 2, 1, 3, 1, 0, 1, 0, 2, 3, 0, 0, 2, 1], B1V=[["entreprendre", "entreprise", "entrepreneuriat"], ["autodiagnostic", "auto-diagnostic", "autodiagnostique", "bilanpersonnel"], ["salarie", "salari\u00e9", "employe", "employ\u00e9"], ["travailleurautonome", "autonome", "independant", "ind\u00e9pendant"]], B2V=[["champdactivite", "champactivite", "champ", "domaine", "secteur"], ["secteurformel", "formel", "leformel"], ["plandaffaires", "planaffaires", "businessplan"], ["clientelecible", "clientcible", "cible", "clientele"]], B2SC=[2, 1], B3V=[["enregistrement", "immatriculation", "declaration", "d\u00e9claration"], ["cotisations", "cotisation", "contributions"], ["assurances", "assurance"], ["bilanpersonnel", "bilan", "synthese", "synth\u00e8se"]], B3SC=[2, 2];
+function nrm(s){return (s||'').toLowerCase().replace(/[\s\u00a0-]+/g,'');}
+function gv(id){var e=document.getElementById(id);return e?e.value:'';}
+function mark(id,ok){var m=document.getElementById('m-'+id);if(m){m.textContent=ok?'\u2713':'\u2717';m.className='exmark '+(ok?'ok':'ko');}}
+function chkTxt(prefix,V,pts,i){
+  var v=nrm(gv(prefix+'-'+i));var ok=V[i].indexOf(v)>=0;
+  mark(prefix+'-'+i,ok);
+  var an=document.getElementById('a-'+prefix+'-'+i);if(an)an.classList.toggle('show',!ok);
+  return ok?pts:0;
+}
+window.exValidate=function(){
+  var a=0,b=0;
+  A1.forEach(function(c,i){var ok=parseInt(gv('a1-'+i),10)===c;mark('a1-'+i,ok);if(ok)a+=1;});
+  QC.forEach(function(c,i){var ok=parseInt(gv('a2-'+i),10)===c;mark('a2-'+i,ok);if(ok)a+=1;});
+  B1V.forEach(function(_,i){b+=chkTxt('b1',B1V,5,i);});
+  B2V.forEach(function(_,i){b+=chkTxt('b2',B2V,4,i);});
+  B2SC.forEach(function(c,i){var ok=parseInt(gv('b2s-'+i),10)===c;mark('b2s-'+i,ok);if(ok)b+=5;});
+  B3V.forEach(function(_,i){b+=chkTxt('b3',B3V,4,i);});
+  B3SC.forEach(function(c,i){var ok=parseInt(gv('b3s-'+i),10)===c;mark('b3s-'+i,ok);if(ok)b+=4;});
+  b=Math.round(b);
+  var t=a+b;
+  document.getElementById('s-a').textContent=a+' / 30';
+  document.getElementById('s-b').textContent=b+' / 70';
+  document.getElementById('s-t').textContent=t+' / 100';
+  document.getElementById('g-a').style.width=(a/30*100)+'%';
+  document.getElementById('g-b').style.width=(b/70*100)+'%';
+  document.getElementById('g-t').style.width=t+'%';
+  var res=document.getElementById('ex-result');res.style.display='block';
+  var pass=t>=75;
+  res.className='q-result '+(pass?'win':'lose');
+  res.innerHTML=pass
+    ?'\uD83C\uDF93 <strong>'+t+'/100 \u2014 Examen blanc r\u00e9ussi !</strong> (seuil 75 %) Tu es pr\u00eat \u00e0 monter ton projet d\u2019entreprise.'
+    :'\uD83D\uDCDA <strong>'+t+'/100</strong> \u2014 il faut au moins 75/100. Revois \u00ab \u2605 L\u2019essentiel \u00e0 retenir \u00bb, puis recommence.';
+  try{localStorage.setItem(KEY+'exam',JSON.stringify({score:t,passed:pass,date:new Date().toISOString()}));}catch(e){}
+  if(pass){var cb=document.querySelector('#complete-banner h2');if(cb)cb.textContent='\uD83C\uDF93 Module TRI-16 r\u00e9ussi \u2014 examen blanc valid\u00e9 !';}
+};
+window.exReset=function(){
+  if(!confirm('Effacer toutes tes r\u00e9ponses de l\u2019examen ?'))return;
+  document.querySelectorAll('#examen .exin').forEach(function(e){e.value='';});
+  document.querySelectorAll('#examen .exsel').forEach(function(e){e.value='-1';});
+  document.querySelectorAll('#examen .exmark').forEach(function(e){e.textContent='';e.className='exmark';});
+  document.querySelectorAll('#examen .exans').forEach(function(e){e.classList.remove('show');});
+  ['s-a','s-b','s-t'].forEach(function(i,k){document.getElementById(i).textContent='\u2014 / '+[30,70,100][k];});
+  ['g-a','g-b','g-t'].forEach(function(i){document.getElementById(i).style.width='0';});
+  var res=document.getElementById('ex-result');res.style.display='none';
+  try{localStorage.removeItem(KEY+'exam');}catch(e){}
+};
+function buildPrint(blank){
+  var w=window.open('','_blank');if(!w)return alert('Autorise les pop-ups pour imprimer.');
+  var nom=gv('ex-nom'),pre=gv('ex-prenom'),dat=gv('ex-date');
+  var d='<h1 style="font-size:18px">Canado Technique \u2014 TRI-16 \u00b7 Examen blanc \u2014 Services Internet</h1>';
+  d+='<p>Nom : <b>'+(blank?'________________':(nom||'________'))+'</b> \u00b7 Pr\u00e9nom : <b>'+(blank?'________________':(pre||'________'))+'</b> \u00b7 Date : <b>'+(blank?'____ / ____ / ______':(dat||'________'))+'</b></p>';
+  d+='<p><i>Total 100 pts \u00b7 R\u00e9ussite \u2265 75 % \u00b7 Dur\u00e9e 90 min \u00b7 \u00c9tude de cas : services Internet d\u2019une PME</i></p><hr>';
+  var ET=["Identifier les opportunités", "Régler le légal, le financier et décider", "Cerner le profil de l'entrepreneur", "Bâtir le plan d'affaires", "Choisir son statut"],QT=[{"q": "Entreprendre, c'est avant tout :", "o": ["Éviter le risque", "Avoir un diplôme", "Être salarié", "Transformer une idée en activité économique"]}, {"q": "Un projet d'entreprise part de :", "o": ["Un héritage", "Une envie passagère", "Un besoin réel du marché", "Un hasard"]}, {"q": "L'autodiagnostic sert à :", "o": ["Évaluer honnêtement ses forces et faiblesses", "Fixer les prix", "Choisir un fournisseur", "Recruter"]}, {"q": "Aptitude clé de l'entrepreneur :", "o": ["L'indifférence", "L'isolement", "La persévérance", "La passivité"]}, {"q": "En réseaux, entreprendre peut être :", "o": ["Refuser les clients", "Ne rien vendre", "Fermer boutique", "Ouvrir un atelier de dépannage"]}, {"q": "Le statut le plus sécurisant est :", "o": ["Aucun", "L'entrepreneur", "Le salarié", "Le travailleur autonome"]}, {"q": "Le travailleur autonome a :", "o": ["Aucun risque", "Une grande liberté, des revenus variables", "Beaucoup d'employés", "Un salaire fixe"]}, {"q": "La contrepartie de la liberté de l'entrepreneur :", "o": ["La responsabilité et l'incertitude", "Aucun travail", "Un salaire garanti", "La sécurité totale"]}, {"q": "L'entrepreneur doit souvent :", "o": ["Ignorer la compta", "Éviter la vente", "Porter plusieurs casquettes", "Faire une seule tâche"]}, {"q": "Avant de choisir son statut, on doit :", "o": ["Décider seul", "S'informer aux bonnes sources", "Ignorer les autorités", "Copier un concurrent"]}, {"q": "Avant un champ d'activité, on clarifie :", "o": ["Le nom", "Ses attentes (revenus, rythme, sécurité)", "La couleur du logo", "Les concurrents seulement"]}, {"q": "Champ d'activité valable en réseaux :", "o": ["L'implantation de réseaux pour PME", "Fermer boutique", "Ignorer les clients", "Ne rien offrir"]}, {"q": "Le secteur formel se distingue par :", "o": ["L'absence de déclaration", "L'illégalité", "Une activité déclarée et enregistrée", "Aucune obligation"]}, {"q": "Passer au formel apporte :", "o": ["Des ennuis", "De la crédibilité et plus de marchés", "Aucun avantage", "Moins de clients"]}, {"q": "Une étude de marché sert à :", "o": ["Décorer", "Recruter", "Fixer les couleurs", "Valider l'idée (besoins, concurrence)"]}, {"q": "Le plan d'affaires est :", "o": ["Un contrat de travail", "Le document décrivant le projet et ses moyens", "Un antivirus", "Une facture"]}, {"q": "Le plan d'affaires sert à :", "o": ["Clarifier, convaincre et piloter le démarrage", "Recruter seulement", "Décorer", "Payer les impôts"]}, {"q": "Section du plan d'affaires :", "o": ["La météo", "Les aspects financiers", "Le menu du jour", "Le code source"]}, {"q": "La clientèle cible est :", "o": ["Le groupe précis de clients visés", "Les concurrents", "Les fournisseurs", "Tous les habitants"]}, {"q": "Un bon plan d'affaires convainc :", "o": ["Les concurrents", "Personne", "Une banque, un partenaire, la famille", "Soi-même seulement"]}, {"q": "L'enregistrement consiste à :", "o": ["Cacher l'activité", "L'arrêter", "La vendre", "La déclarer officiellement"]}, {"q": "Obligations légales de base :", "o": ["Enregistrement, cotisations, assurances, garanties", "Le logo", "La météo", "Le menu"]}, {"q": "Pour le cadre légal, on doit :", "o": ["Se renseigner auprès des autorités", "Deviner", "Copier un voisin", "Ignorer la loi"]}, {"q": "Le bilan personnel compare :", "o": ["Les fournisseurs", "Les prix concurrents", "Ses forces/attentes aux exigences du projet", "Les couleurs"]}, {"q": "Décider de ne pas se lancer tout de suite :", "o": ["Est un échec", "Est valable si le projet n'est pas mûr", "N'arrive jamais", "Est interdit"]}],B1Q=["Action de transformer une idée en activité économique :", "Évaluation honnête de ses propres forces et faiblesses :", "Statut offrant la sécurité la plus élevée (un mot) :", "Statut indépendant sans employés, grande liberté (2 mots) :"],B2Q=["Domaine dans lequel on choisit d'exercer (2 mots) :", "Activité déclarée et enregistrée officiellement (2 mots) :", "Document qui décrit le projet, à qui, comment, avec quels moyens (2 mots) :", "Groupe précis de clients visés par l'offre (2 mots) :"],B2X=[{"q": "Tu veux vérifier qu'il existe un vrai besoin avant d'investir. Tu fais :", "o": ["Un recrutement", "Un logo", "Une étude de marché", "Rien"]}, {"q": "Pour donner crédibilité et accès aux marchés à ton activité, tu passes :", "o": ["À l'informel", "Au secteur formel", "Au salariat", "À la fermeture"]}],B3Q=["Déclaration officielle de son activité aux autorités :", "Contributions annuelles dues selon le statut :", "Protections souscrites contre les risques de l'activité :", "Synthèse de ses forces et attentes avant la décision finale (2 mots) :"],B3X=[{"q": "Après ton bilan, le projet ne correspond pas encore à tes attentes. Tu peux :", "o": ["Te lancer quand même", "Abandonner les réseaux", "Reporter : c'est une décision valable"]}, {"q": "Pour connaître tes obligations légales exactes, tu :", "o": ["Devines", "Ignores la loi", "Te renseignes auprès des autorités compétentes"]}];
+  function line(q,ans,ok){
+    d+='<div style="margin:7px 0"><div>'+q+'</div>';
+    if(blank){d+='<div style="border-bottom:1px solid #999;height:16px;width:70%"></div>';}
+    else{d+='<div>R\u00e9ponse \u00e9l\u00e8ve : <b>'+(ans||'\u2014')+'</b>'+(ok===null?'':(ok?' \u2713':' \u2717'))+'</div>';}
+    d+='</div>';
+  }
+  d+='<h2 style="font-size:14px">Partie A \u2014 Th\u00e9orie (30 pts)</h2>';
+  d+='<h3 style="font-size:12px">A1. Les 5 domaines \u2014 ordre (5 pts)</h3>';
+  d+='<p style="font-size:10px"><i>Options : '+ET.join(' \u00b7 ')+'</i></p>';
+  for(var i=0;i<5;i++){var v=gv('a1-'+i);line((i+1)+'. ___',blank?'':(v>=0&&ET[v]?ET[v]:'\u2014'),blank?null:(parseInt(v,10)===A1[i]));}
+  d+='<h3 style="font-size:12px">A2. Quiz g\u00e9n\u00e9ral (25 pts)</h3>';
+  QT.forEach(function(q,i){var v=gv('a2-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===QC[i]));});
+  d+='<h2 style="font-size:14px">Partie B \u2014 \u00c9tude de cas (70 pts)</h2>';
+  d+='<h3 style="font-size:12px">B1. Choix et courriel (20 pts)</h3>';
+  B1Q.forEach(function(q,i){var v=gv('b1-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(B1V[i].indexOf(nrm(v))>=0));});
+  d+='<h3 style="font-size:12px">B2. Synchrone et transfert (26 pts)</h3>';
+  B2Q.forEach(function(q,i){var v=gv('b2-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(B2V[i].indexOf(nrm(v))>=0));});
+  B2X.forEach(function(q,i){var v=gv('b2s-'+i);line((i+5)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===B2SC[i]));});
+  d+='<h3 style="font-size:12px">B3. Web et acc\u00e8s distant (24 pts)</h3>';
+  B3Q.forEach(function(q,i){var v=gv('b3-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(B3V[i].indexOf(nrm(v))>=0));});
+  B3X.forEach(function(q,i){var v=gv('b3s-'+i);line((i+5)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===B3SC[i]));});
+  if(!blank){d+='<hr><p><b>Score : '+document.getElementById('s-t').textContent+'</b></p>';}
+  var END='</bo'+'dy></ht'+'ml>';
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-16 \u2014 Examen blanc</title><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}</style></head><body>'+d+END);
+  w.document.close();setTimeout(function(){w.print();},300);
+}
+window.exPrint=function(){buildPrint(false);};
+window.exPrintBlank=function(){buildPrint(true);};
+})();
+
+</script>
 </body>
 </html>
