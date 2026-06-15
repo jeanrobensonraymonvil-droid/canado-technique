@@ -1,565 +1,494 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-24 — Supervision et dépannage réseau</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-24 — Supervision &amp; dépannage · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700;cursor:pointer;border:none}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
 
+/* ===== Standard v10 ===== */
+.step-lbl{display:inline-block;font-family:var(--fD);font-weight:800;font-size:.72rem;letter-spacing:.04em;color:var(--red);background:rgba(232,25,44,.08);border:1px solid rgba(232,25,44,.25);border-radius:99px;padding:.3rem .85rem;margin:1.1rem 0 .7rem}
+.lpl{background:linear-gradient(135deg,#0B1525,#13233c);border-radius:16px;padding:1rem 1.1rem;margin:.9rem 0 1.2rem;color:#dfe8fb;border:1px solid rgba(255,255,255,.08)}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
+.lpl-h{font-family:var(--fD);font-weight:800;font-size:.72rem;color:#F5C518;margin-bottom:.35rem}
+.lpl ul{margin:0;padding-left:1.05rem;font-size:.76rem;line-height:1.55}
+.lpl p{margin:0;font-size:.76rem;line-height:1.55}
+.pnav{position:sticky;top:8px;z-index:50;display:flex;align-items:center;gap:.7rem;background:#0B1525;color:#fff;border-radius:14px;padding:.55rem .7rem;margin:.4rem 0 1rem;box-shadow:0 8px 24px rgba(4,13,26,.35)}
+.pnav-btn{font-family:var(--fD);font-weight:800;font-size:.72rem;background:var(--red);color:#fff;border:0;border-radius:9px;padding:.5rem .8rem;cursor:pointer;white-space:nowrap}
+.pnav-btn[disabled]{opacity:.35;cursor:not-allowed}
+.pnav-mid{flex:1;min-width:0;text-align:center}
+.pnav-lbl{font-size:.66rem;color:#c9d6f2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnav-bar{height:5px;background:rgba(255,255,255,.12);border-radius:99px;margin-top:.3rem;overflow:hidden}
+.pnav-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:99px;transition:width .3s}
+body.player .chapter{display:none}
+body.player .chapter.active{display:block}
+body.player #plan{display:none}
+body.player #plan.active{display:block}
+.toc-item.locked{opacity:.38;pointer-events:none}
+.toc-item.done .toc-dot{background:#19c37d}
+.toc-reset{margin-top:.9rem;padding-top:.7rem;border-top:1px solid rgba(0,0,0,.08);font-size:.68rem;color:#8a93a6;cursor:pointer}
+.toc-reset:hover{color:var(--red)}
+.vsoon{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#0B1525,#16263f);color:#c9d6f2;text-align:center;padding:1rem}
+.vsoon b{font-family:var(--fD);font-size:.9rem;color:#F5C518}
+.vsoon span{font-size:.76rem;line-height:1.5;max-width:420px}
+.kterm{background:#fff;border:1px solid rgba(0,0,0,.08);border-left:4px solid #1B3A8C;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.kterm-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#1B3A8C;margin-bottom:.5rem}
+.kterm .kt-row{margin-bottom:.3rem;font-size:.78rem;line-height:1.6}
+.kterm .kt-row b{color:#0B1525}
+.bonas{background:linear-gradient(135deg,#FFF8E6,#FFF3D1);border:1px solid rgba(245,197,24,.45);border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.bonas-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#8a6400;margin-bottom:.45rem}
+.bonas ul{margin:0;padding-left:1.1rem;font-size:.78rem;line-height:1.6}
+.labbox{background:#F0FAF5;border:1px solid rgba(0,160,102,.35);border-left:4px solid #00A066;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.labbox-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#00754a;margin-bottom:.4rem}
+.labbox p,.labbox ul{font-size:.77rem;line-height:1.6;margin:.2rem 0}
+.labbox ul{padding-left:1.1rem}
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-head{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-head h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(245,197,24,.55);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.q-item:last-child{border-bottom:none}
+.q-num{font-size:.66rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.55}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%;transition:all .15s}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.03)}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel{outline:2px solid #1B3A8C}.qopt.sel .qletter{background:var(--blue);color:#fff}
+.qopt.good{background:#E9F9F1;border-color:#19c37d}.qopt.good .qletter{background:#19c37d;color:#fff}
+.qopt.bad{background:#FDEEEF;border-color:#E8192C}.qopt.bad .qletter{background:#E8192C;color:#fff}
+.qexpl{display:none;margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.6;background:#F2F6FF;border-left:3px solid #1B3A8C;color:#1a2f52}
+.q-result{display:none;margin-top:1rem;padding:.85rem 1rem;border-radius:11px;font-size:.82rem}
+.q-result.win{background:#E9F9F1;border:1px solid #19c37d;color:#0a6b45}
+.q-result.lose{background:#FDEEEF;border:1px solid #E8192C;color:#8d1420}
+.q-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem}
+.q-btn{font-family:var(--fD);font-weight:800;font-size:.74rem;border:0;border-radius:9px;padding:.55rem 1rem;cursor:pointer;background:var(--red);color:#fff}
+.q-btn.alt{background:#e8ecf4;color:#0B1525}
+.exid{display:flex;gap:1rem;flex-wrap:wrap;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.8rem 1rem;margin:1rem 0;font-size:.78rem}
+.exid label{display:flex;align-items:center;gap:.4rem}
+.exid input{border:1px solid #c8d0de;border-radius:8px;padding:.35rem .55rem;font-size:.78rem}
+.exam-part{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:1.1rem 1.2rem;margin:1.1rem 0}
+.exam-part h3{margin:.2rem 0 .8rem;font-family:var(--fD);font-size:1rem}
+.exam-part h4{margin:1.2rem 0 .6rem;font-family:var(--fD);font-size:.82rem;color:#1B3A8C}
+.expts{font-size:.66rem;background:#1B3A8C;color:#fff;border-radius:99px;padding:.15rem .55rem;margin-left:.4rem;font-weight:700}
+.exrow{display:flex;align-items:center;gap:.55rem;margin:.4rem 0}
+.exno{width:22px;height:22px;border-radius:50%;background:#0B1525;color:#fff;font-size:.66rem;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.exsel,.exin{border:1px solid #c8d0de;border-radius:8px;padding:.42rem .6rem;font-size:.78rem;max-width:100%}
+.exin{width:min(440px,100%);font-family:ui-monospace,Menlo,monospace}
+.exq{margin:.75rem 0}.exq-t{font-size:.79rem;margin-bottom:.3rem;line-height:1.5}
+.exmark{margin-left:.5rem;font-weight:800}.exmark.ok{color:#0a9d5c}.exmark.ko{color:#E8192C}
+.exans{display:none;font-size:.72rem;color:#0a6b45;background:#E9F9F1;border-radius:8px;padding:.3rem .6rem;margin-top:.3rem;width:fit-content;max-width:100%}
+.exans.show{display:block}
+.exgauges{display:grid;gap:.55rem;background:#0B1525;border-radius:14px;padding:1rem 1.1rem;margin:1.2rem 0;color:#fff}
+.exg{display:grid;grid-template-columns:70px 1fr 70px;align-items:center;gap:.7rem;font-size:.74rem}
+.exg-bar{height:8px;background:rgba(255,255,255,.14);border-radius:99px;overflow:hidden}
+.exg-fill{height:100%;width:0;background:linear-gradient(90deg,#19c37d,#7ee2b0);border-radius:99px;transition:width .4s}
+.complete-banner{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner.show{display:block}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.8);font-size:.83rem}
+@media(max-width:600px){.pnav{gap:.45rem;padding:.45rem .55rem}.pnav-btn{font-size:.64rem;padding:.45rem .55rem}.exbtn{width:100%;text-align:center}.exam-part{padding:.85rem .8rem}}
 </style>
 </head>
-<body>
-<div class="mod-header">
+<body><div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('../../../assets/images/slide-tri-24.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">📊 Module TRI-24 · 1ère Année</div>
-    <h1>Supervision et dépannage <em>réseau</em></h1>
+    <div class="mod-tag">📡 TRI-24 · 2ème Année · Compétence particulière</div>
+    <h1>Supervision & <em>dépannage</em></h1>
+    <p class="mod-desc">Objectif de comportement · 90 heures — Superviser et assurer le fonctionnement d'un réseau : choisir les outils d'analyse, lire les indicateurs, déterminer causes et solutions des problèmes, appliquer une procédure d'intervention et consigner.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>75 heures</strong></div>
+      <div class="mod-meta-item">⏱ <strong>90 heures</strong></div>
       <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo Wireshark/SNMP</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Diagnostic en direct</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport d'analyse réseau</strong></div>
+      <div class="mod-meta-item">📚 <strong>5 chapitres</strong></div>
+      <div class="mod-meta-item"><div class="mod-meta-item">📊 <strong>Monitoring · Diagnostic</strong></div></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 5 chapitres</span></div>
   </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>SNMP et monitoring réseau</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Wireshark — Analyse de trafic</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Dépannage méthodique réseau</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Outils avancés de diagnostic</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo Wireshark + SNMP</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Diagnostic réseau en direct</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Rapport d'analyse réseau</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>SNMP — Supervision réseau</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">Protocole · MIB · OIDs · Configuration Cisco</span></div>
-    </div>
+</div><div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong>&nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong><div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div></div><div class="wrap"><div class="layout"><div class="toc" id="toc-sidebar"><div class="toc-title">📋 Sommaire TRI-24</div><div class="toc-item" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div><div class="toc-sep">Contenu du module</div><div class="toc-item" onclick="goTo('ch-1')" id="ti-ch-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Choisir et utiliser les outils d&#x27;analyse</span></div><div class="toc-item" onclick="goTo('ch-2')" id="ti-ch-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Lire et interpréter les indicateurs</span></div><div class="toc-item" onclick="goTo('ch-3')" id="ti-ch-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Déterminer causes et solutions</span></div><div class="toc-item" onclick="goTo('ch-4')" id="ti-ch-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Appliquer une procédure d&#x27;intervention</span></div><div class="toc-item" onclick="goTo('ch-5')" id="ti-ch-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Consigner l&#x27;intervention</span></div><div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div><div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div><div class="toc-reset" onclick="triReset()" title="Effacer quiz, examen et position">↺ Réinitialiser ma progression</div></div><div id="main-content"><div class="pnav" id="pnav"><button class="pnav-btn" id="pnav-prev" onclick="stepMove(-1)">← Précédent</button><div class="pnav-mid"><div class="pnav-lbl" id="pnav-lbl">—</div><div class="pnav-bar"><div class="pnav-fill" id="pnav-fill"></div></div></div><button class="pnav-btn" id="pnav-next" onclick="stepMove(1)">Suivant →</button></div><div class="pc" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">TRI-24 · Supervision et dépannage réseau · Programme TRI</div></div></div>
+<div class="pc-body"><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module TRI-24</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI24-PLAN" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI24/final/TRI24-PLAN.mp4" type="video/mp4"></video></div></div>
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">TRI-24</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">90 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence particulière</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">TRI-22, TRI-15</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Seuil</div><div class="pc-id-val">75 %</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — SNMP — Superviser l'infrastructure réseau</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Protocole SNMP (4 min)</strong> — Simple Network Management Protocol. Version 2c (communauté) vs v3 (authentification + chiffrement). Agent SNMP sur chaque équipement, Manager SNMP centralisé.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>MIB et OIDs (3 min)</strong> — Management Information Base: la base de données des informations supervisables. OID (Object Identifier): chemin unique vers chaque information (CPU, trafic, erreurs).</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Modes SNMP (3 min)</strong> — Get (interroger un équipement), GetBulk (interroger plusieurs OIDs), Set (modifier une valeur), Trap (alerte envoyée par l'équipement vers le manager).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Configurer SNMP sur Cisco (3 min)</strong> — snmp-server community STRING ro/rw, snmp-server trap, snmp-server host X.X.X.X.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 SNMP sur Cisco — Configuration et commandes essentielles</h3><table class="data-table"><thead><tr><th>Commande</th><th>Description</th><th>Exemple</th></tr></thead><tbody><tr><td>snmp-server community STRING ro</td><td>Configurer une communauté en lecture seule</td><td>snmp-server community CanadoTech2025 ro</td></tr><tr><td>snmp-server community STRING rw</td><td>Communauté en lecture-écriture (dangereux — limiter l'accès)</td><td>snmp-server community Admin_RW rw</td></tr><tr><td>snmp-server location STRING</td><td>Localisation physique de l'équipement</td><td>snmp-server location "Salle serveur - Etage 2"</td></tr><tr><td>snmp-server contact STRING</td><td>Contact administrateur</td><td>snmp-server contact admin@canado-technique.ht</td></tr><tr><td>snmp-server host X.X.X.X COMMUNITY</td><td>Serveur qui recevra les traps</td><td>snmp-server host 192.168.1.100 CanadoTech2025</td></tr><tr><td>snmp-server enable traps</td><td>Activer l'envoi des traps (alertes)</td><td>snmp-server enable traps</td></tr><tr><td>show snmp</td><td>Vérifier la configuration SNMP</td><td>show snmp / show snmp community</td></tr></tbody></table></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quelle version de SNMP est recommandée pour la sécurité en production ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>SNMPv1</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>SNMPv2c</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>SNMPv3</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>SNMPv4</button></div>
-    <div class="quiz-expl" id="expl-q0_1">SNMPv3 ajoute l'authentification (MD5 ou SHA) et le chiffrement (DES ou AES) des données. SNMPv1 et v2c transmettent la communauté (le mot de passe) en clair — lisible par wireshark. En production, toujours utiliser SNMPv3.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="2">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Qu'est-ce qu'un "Trap SNMP" ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Une communauté SNMP en lecture seule</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Un piège de sécurité contre les scans réseau</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Une alerte envoyée automatiquement par un équipement vers le manager SNMP quand un événement survient</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Une commande pour lire la MIB</button></div>
-    <div class="quiz-expl" id="expl-q1_1">Un Trap est une notification envoyée par l'agent SNMP (sur l'équipement: routeur, switch, serveur) vers le manager SNMP (serveur de supervision) quand un événement survient: lien qui tombe, CPU > 90%, authentification SNMP incorrecte. C'est la base du monitoring proactif.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">La communauté SNMP "public" en lecture seule sur un équipement de production est...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Acceptable car c'est en lecture seule</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Un risque de sécurité — "public" est la valeur par défaut connue de tous, permettant de lire toute la configuration de l'équipement</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Obligatoire pour le monitoring</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Uniquement risquée si SNMPv1 est utilisé</button></div>
-    <div class="quiz-expl" id="expl-q2_1">"Public" est la communauté SNMP par défaut connue de tous. N'importe qui sur le réseau peut l'utiliser pour lire toutes les informations SNMP de l'équipement (interfaces, routes, voisins, configuration). Toujours changer la communauté par défaut avec un nom difficile à deviner.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Un OID SNMP (Object Identifier) permet de...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Identifier un équipement réseau par son IP</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Référencer de façon unique une information spécifique dans la MIB d'un équipement</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Configurer l'équipement à distance via SNMP</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Chiffrer les données SNMP</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Un OID est un chemin unique dans la MIB. Exemple: 1.3.6.1.2.1.1.3.0 = sysUpTime (durée de fonctionnement du système). Les logiciels de monitoring utilisent les OIDs pour collecter des métriques spécifiques des équipements.</div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Superviser et assurer le fonctionnement d'un réseau.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Une fois le réseau en place, il faut le <strong>surveiller</strong> et le <strong>dépanner</strong>. Ce module apprend à choisir et utiliser les <strong>outils d'analyse et de monitoring</strong>, à <strong>lire les indicateurs</strong> et détecter les irrégularités, à <strong>diagnostiquer</strong> méthodiquement à l'aide des modèles OSI/TCP-IP, à appliquer une <strong>procédure d'intervention</strong> et à consigner. Il prolonge le dépannage de poste (TRI-12) à l'échelle du réseau.</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4><ol><li>Choisir et utiliser les outils d'analyse et de surveillance.</li><li>Lire et interpréter les valeurs des indicateurs.</li><li>Déterminer les causes et les solutions d'un problème dans le réseau.</li><li>Appliquer une procédure d'intervention.</li><li>Consigner l'information relative à l'intervention effectuée.</li></ol></div>
+  <div class="pc-sec"><h4>Critères généraux de performance</h4><ul><li>Application correcte des procédures de supervision d'un réseau.</li><li>Utilisation appropriée des logiciels de supervision et de monitoring.</li><li>Interprétation juste des données recueillies.</li><li>Rapidité d'exécution et respect des procédures de dépannage.</li><li>Efficience du dépannage.</li></ul></div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4><div class="pc-cols">
+    <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Normes de l'entreprise · un serveur et une station de travail · mises en situation et études de cas variées · les logiciels appropriés.</div>
+    <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Outils d'analyse et de surveillance · cahiers de procédures · historique des indicateurs · inventaire des problèmes et solutions · documents techniques.</div>
   </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
-  </div>
+  <div class="pc-sec"><h4>Découpage en leçons (90 h)</h4><table class="dtable"><thead><tr><th>N°</th><th>Leçon</th><th>Durée</th><th>Élément(s)</th></tr></thead><tbody><tr><td>1</td><td>Choisir et utiliser les outils d'analyse et de surveillance</td><td>18 h</td><td>1</td></tr><tr><td>2</td><td>Lire et interpréter les indicateurs</td><td>18 h</td><td>2</td></tr><tr><td>3</td><td>Déterminer causes et solutions (méthode OSI/TCP-IP)</td><td>24 h</td><td>3</td></tr><tr><td>4</td><td>Appliquer une procédure d'intervention</td><td>18 h</td><td>4</td></tr><tr><td>5</td><td>Consigner l'intervention</td><td>12 h</td><td>5</td></tr></tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4><p>Module à objectif de <strong>comportement</strong> : épreuve pratique de supervision et de dépannage.</p><ul><li><strong>Évaluation formative</strong> — quiz, lecture d'indicateurs, études de cas de pannes.</li><li><strong>Évaluation de sanction</strong> — superviser un réseau, diagnostiquer une panne par la méthode OSI/TCP-IP, appliquer la solution et consigner l'intervention.</li><li><strong>Seuil de réussite</strong> — 75 % (conforme à data.json).</li></ul></div>
+  <div class="pc-sec"><h4>Références</h4><ul><li>Logiciels de supervision et de monitoring (analyseurs de protocole, sondes).</li><li>Cahiers de procédures ; documents techniques ; Éditions ENI, Pearson.</li></ul></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Wireshark — Analyse de trafic</h2>
-      <div class="chapter-meta"><span>🕐 20 heures</span><span class="chapter-badge">Capture · Filtres · Anomalies · SPAN port</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Wireshark — Capturer et analyser le trafic réseau</div><div class="video-subtitle">Durée : 18 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Introduction à Wireshark (3 min)</strong> — Analyseur de protocole (sniffer). Comment capturer sur la bonne interface. Mode promiscuité.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Filtres d'affichage (5 min)</strong> — ip.addr == 192.168.1.1 (filtrer par IP). tcp.port == 80 (filtrer par port). http (filtrer le protocole HTTP). arp (voir les requêtes ARP). !arp && !dns (exclure ARP et DNS).</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Analyser les échanges courants (5 min)</strong> — Voir un handshake TCP (SYN/SYN-ACK/ACK). Voir une requête DNS. Voir un échange DHCP (DORA). Voir une connexion HTTP.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Identifier des anomalies (5 min)</strong> — Beaucoup de retransmissions TCP (problème de réseau). ARP gratuit (changement d'IP ou attaque). Broadcast storm (loop réseau). Connexions vers des IPs suspectes.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Filtres Wireshark essentiels pour le dépannage</h3><table class="data-table"><thead><tr><th>Filtre</th><th>Signification</th><th>Usage</th></tr></thead><tbody><tr><td>ip.addr == 192.168.1.10</td><td>Trafic de ou vers cette IP</td><td>Isoler les communications d'un hôte suspect</td></tr><tr><td>tcp.port == 443</td><td>Trafic HTTPS (port 443)</td><td>Analyser le trafic web chiffré</td></tr><tr><td>http</td><td>Tout le trafic HTTP</td><td>Voir les requêtes web non chiffrées</td></tr><tr><td>dns</td><td>Toutes les requêtes DNS</td><td>Diagnostiquer les problèmes de résolution DNS</td></tr><tr><td>arp</td><td>Toutes les trames ARP</td><td>Détecter les conflits IP ou attaques ARP</td></tr><tr><td>icmp</td><td>Tout le trafic ICMP (ping)</td><td>Voir les résultats de ping en détail</td></tr><tr><td>tcp.flags.syn == 1</td><td>SYN uniquement — connexions initiées</td><td>Analyser les établissements de connexion</td></tr><tr><td>tcp.analysis.retransmission</td><td>Retransmissions TCP</td><td>Identifier les pertes de paquets</td></tr><tr><td>!arp && !dns</td><td>Tout sauf ARP et DNS</td><td>Réduire le bruit pour voir l'essentiel</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Wireshark capture le trafic sur une interface en mode "promiscuité". Que signifie ce mode ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>La carte réseau fonctionne à haute vitesse</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>La carte réseau capture TOUTES les trames qui passent, pas uniquement celles qui lui sont destinées</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>La capture est chiffrée</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Wireshark s'exécute en mode administrateur</button></div>
-    <div class="quiz-expl" id="expl-q0_2">En mode normal, une carte réseau ignore les trames qui ne lui sont pas destinées. En mode promiscuité, elle capture toutes les trames visibles sur le segment réseau. Cela permet à Wireshark d'analyser le trafic d'autres hôtes (si on est sur un hub ou si le switch a un SPAN port configuré).</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Que signifient beaucoup de "TCP Retransmission" dans une capture Wireshark ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Le réseau est très rapide</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Des paquets sont perdus quelque part dans le réseau — le récepteur ne reçoit pas les segments</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>La connexion TCP utilise le mode duplex intégral</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Le protocole TCP est en cours de mise à jour</button></div>
-    <div class="quiz-expl" id="expl-q1_2">Les retransmissions TCP indiquent des pertes de paquets: l'émetteur n'a pas reçu l'accusé de réception (ACK) et retransmet le segment. Causes possibles: lien saturé, câble défectueux, switch avec erreurs, pare-feu qui drop des paquets.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="2">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Comment filtrer dans Wireshark pour voir uniquement le trafic d'un hôte spécifique (192.168.1.50) ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>host == 192.168.1.50</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>filter ip 192.168.1.50</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>ip.addr == 192.168.1.50</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>show ip 192.168.1.50</button></div>
-    <div class="quiz-expl" id="expl-q2_2">ip.addr == 192.168.1.50 est le filtre d'affichage correct. Il montre tout le trafic où 192.168.1.50 est soit la source soit la destination. Pour uniquement la source: ip.src == 192.168.1.50. Pour uniquement la destination: ip.dst == 192.168.1.50.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Voir de nombreux "Gratuitous ARP" dans Wireshark peut indiquer...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Une mise à jour ARP normale</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Un changement d'IP sur un hôte (ARP gratuit légitime) ou une attaque ARP spoofing</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Une connexion DHCP réussie</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Une requête DNS normale</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Un ARP gratuit est un ARP request où la source et la destination IP sont identiques — l'hôte annonce son IP à tout le réseau. Légitime: quand un hôte change d'IP (DHCP). Suspect: si répété fréquemment ou depuis plusieurs sources pour la même IP = possible ARP spoofing (attaque man-in-the-middle).</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
-  </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+<div id="lecons">
+<div class="lp-intro"><h2>📐 Plans de leçon</h2><p>Cinq leçons couvrant les 90 heures et les cinq éléments de la compétence. Cliquez pour déplier.</p></div>
+<div class="lp" id="lp-1">
+<div class="lp-head" onclick="toggleLp(1)"><div class="lp-no">1</div><div class="lp-htxt"><h3>Choisir et utiliser les outils d'analyse et de surveillance</h3><div class="lp-meta">Élément 1</div></div><span class="lp-dur">18 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Sélectionner l'outil adapté au besoin d'analyse ou de surveillance et l'utiliser correctement (analyseurs de protocole et de réseau).</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>TRI-17, TRI-22.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Sélection de l'outil approprié au besoin d'analyse ou de surveillance.</li><li>Utilisation et configuration d'analyseurs de protocoles et de réseau ; nature de l'information fournie.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">Comment « voir » ce qui circule sur un réseau ?</span></div><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Familles d'outils : monitoring, analyseurs, sondes.</span></div><div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Capturer et lire du trafic avec un analyseur.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Analyseur de protocole, outils de monitoring, chapitre 1.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 1.</p></div>
 </div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Dépannage réseau méthodique</h2>
-      <div class="chapter-meta"><span>🕐 19 heures</span><span class="chapter-badge">Divide & Conquer · Show commands · Scénarios réels</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Dépannage réseau méthodique — Niveau expert</div><div class="video-subtitle">Durée : 15 min · Scénarios réels</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>La méthode divide and conquer (3 min)</strong> — Diviser le réseau en deux: le problème est-il dans la moitié A ou B? Puis diviser à nouveau. Localise la panne en log(N) étapes.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Scénario 1 — Panne partielle VLAN (5 min)</strong> — Certains PCs du VLAN 20 ne peuvent pas communiquer. Démarche: show vlan brief, vérifier les ports, vérifier le trunk, vérifier le routage inter-VLAN.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Scénario 2 — Lenteur réseau (5 min)</strong> — Tout le réseau est très lent. Démarche: interface errors (show interfaces), utilisation bande passante (SNMP), wireshark (broadcast storm?), logs switch.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Scénario 3 — DNS résolution intermittente (2 min)</strong> — Parfois les sites web s'ouvrent, parfois non. nslookup avec debug, vérifier les serveurs DNS secondaires.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Commandes de dépannage réseau Cisco — Référence rapide</h3><table class="data-table"><thead><tr><th>Symptôme</th><th>Premières commandes Cisco</th><th>Interprétation</th></tr></thead><tbody><tr><td>Hôte inaccessible</td><td>show ip route [dest], ping [dest]</td><td>Route absente = problème de routage. Ping drop = ACL ou câble</td></tr><tr><td>VLAN ne fonctionne pas</td><td>show vlan brief, show interfaces trunk</td><td>Port non dans le bon VLAN, trunk manquant, VLAN non créé</td></tr><tr><td>Interface DOWN</td><td>show interfaces, show log</td><td>Câble débranché, erreurs physiques, shutdown manuel</td></tr><tr><td>Réseau lent</td><td>show interfaces (input/output errors)</td><td>Erreurs = câble/duplex. Drops = saturation de bande passante</td></tr><tr><td>STP instable</td><td>show spanning-tree, debug spanning-tree events</td><td>BPDU storms, Root Bridge incorrect, liens redondants non optimisés</td></tr><tr><td>OSPF ne converge pas</td><td>show ip ospf neighbor, show ip ospf interface</td><td>Hello timer mismatch, réseau non annoncé, MTU mismatch</td></tr></tbody></table></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">La méthode "divide and conquer" pour le dépannage réseau consiste à...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Diviser le budget IT en deux</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Partager les tâches de dépannage entre deux techniciens</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Couper le réseau en deux parties pour identifier dans quelle moitié se trouve le problème</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Redémarrer tous les équipements un par un</button></div>
-    <div class="quiz-expl" id="expl-q0_3">Divide and conquer: si 20 switches, vérifier le switch central (switch 10). Si le problème est dans la première moitié, vérifier switch 5. Puis switch 2 ou 8. On localise la panne en 4-5 étapes au lieu de 20. Cette méthode est aussi appelée "binary search troubleshooting".</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">La commande "show interfaces" sur un switch Cisco affiche des "input errors". Cela indique...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Le switch n'a pas assez de RAM</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Des erreurs sur les trames reçues — souvent causées par un câble défectueux, un mauvais sertissage, ou un problème de duplex</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Le VLAN est mal configuré sur ce port</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Un problème de route dans la table de routage</button></div>
-    <div class="quiz-expl" id="expl-q1_3">Les input errors (CRC errors, runts, giants, frame check sequence errors) indiquent des problèmes au niveau physique: câble abîmé, connecteur mal sertir, interférence électromagnétique, problème de duplex/vitesse. Commencer toujours par vérifier le câble physiquement.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Un duplex mismatch entre un switch et un PC provoque...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Une coupure complète de la connexion</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Des performances très dégradées avec beaucoup de collisions et de retransmissions — connexion instable</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Un problème de VLAN uniquement</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Une sécurité réduite</button></div>
-    <div class="quiz-expl" id="expl-q2_3">Duplex mismatch: une extrémité en Full Duplex, l'autre en Half Duplex. La partie HD détecte des "collisions" quand la partie FD envoie pendant qu'elle émet aussi. Résultat: nombreuses retransmissions, connexion lente. Solution: configurer explicitement le duplex et la vitesse sur les deux extrémités, ou utiliser auto-negotiate cohérent.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="2">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Si "show ip ospf neighbor" n'affiche aucun voisin alors qu'un lien OSPF est configuré, la première cause à vérifier est...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>La table de routage</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>L'adresse IP de loopback</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Les sous-réseaux des interfaces (les deux routeurs doivent être dans le même sous-réseau) et les hello timers</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Le mot de passe enable</button></div>
-    <div class="quiz-expl" id="expl-q3_3">OSPF ne forme pas de voisinage si les interfaces ne sont pas dans le même sous-réseau, ou si les timers Hello/Dead ne correspondent pas (le réseau annoncé dans OSPF ne correspond pas à l'interface). Vérifier: show ip ospf interface (timer hello, sous-réseau, type réseau).</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="lp" id="lp-2">
+<div class="lp-head" onclick="toggleLp(2)"><div class="lp-no">2</div><div class="lp-htxt"><h3>Lire et interpréter les indicateurs</h3><div class="lp-meta">Élément 2</div></div><span class="lp-dur">18 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Lire les valeurs numériques et graphiques des indicateurs, les interpréter et détecter écarts et irrégularités.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 1.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Lecture exacte des valeurs numériques et graphiques.</li><li>Interprétation des indicateurs ; détection des écarts et irrégularités de fonctionnement.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Indicateurs clés : bande passante, latence, pertes, charge.</span></div><div class="lp-phase"><span class="lp-phase-tag p3">Entraînement</span><span class="lp-phase-txt">Repérer une anomalie sur un tableau de bord.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Tableaux de bord, historique des indicateurs, chapitre 2.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 2.</p></div>
+</div></div>
+<div class="lp" id="lp-3">
+<div class="lp-head" onclick="toggleLp(3)"><div class="lp-no">3</div><div class="lp-htxt"><h3>Déterminer causes et solutions</h3><div class="lp-meta">Élément 3</div></div><span class="lp-dur">24 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Identifier le problème par couche (OSI/TCP-IP), établir les causes possibles, choisir les outils de diagnostic et déterminer la solution.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 2 ; TRI-17.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Identification du problème selon la couche OSI/TCP-IP ; causes possibles.</li><li>Sélection et utilisation des outils de diagnostic ; détermination de la cause principale.</li><li>Solutions appropriées ; analyse critique ; consultation des personnes-ressources.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Diagnostiquer couche par couche (méthode descendante/ascendante).</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Trouver la cause racine d'une panne réseau d'étude de cas.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Outils de diagnostic, modèle OSI, chapitre 3.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 3.</p></div>
+</div></div>
+<div class="lp" id="lp-4">
+<div class="lp-head" onclick="toggleLp(4)"><div class="lp-no">4</div><div class="lp-htxt"><h3>Appliquer une procédure d'intervention</h3><div class="lp-meta">Élément 4</div></div><span class="lp-dur">18 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Établir la séquence des opérations, appliquer la solution et vérifier le rétablissement.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 3.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Séquence des opérations à effectuer.</li><li>Application de la solution ; méthodes de vérification.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Planifier l'intervention avant d'agir.</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Appliquer une solution et vérifier le rétablissement du service.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Cahiers de procédures, chapitre 4.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 4.</p></div>
+</div></div>
+<div class="lp" id="lp-5">
+<div class="lp-head" onclick="toggleLp(5)"><div class="lp-no">5</div><div class="lp-htxt"><h3>Consigner l'intervention</h3><div class="lp-meta">Élément 5</div></div><span class="lp-dur">12 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Consigner précisément les problèmes relevés et les solutions apportées, avec la terminologie appropriée.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçons 1 à 4.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Consignation précise des problèmes et des solutions.</li><li>Terminologie appropriée ; alimentation de l'inventaire des problèmes/solutions.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Rédiger la fiche d'intervention d'une panne résolue.</span></div><div class="lp-phase"><span class="lp-phase-tag p5">Synthèse</span><span class="lp-phase-txt">Enrichir la base de connaissances de l'équipe.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Inventaire des problèmes/solutions, chapitre 5.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 5.</p></div>
+</div></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Outils avancés de supervision</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">NetFlow · SPAN · Zabbix/PRTG · CDP/LLDP</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Outils avancés de supervision et diagnostic</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>NetFlow et sFlow (4 min)</strong> — Analyser les flux réseau: qui consomme de la bande passante? Vers quelles destinations? NetFlow sur Cisco, sFlow sur les autres marques. Outils: ntopng, Elastic Stack.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>SPAN Port (Port Mirroring) (4 min)</strong> — Copier le trafic d'un port ou d'un VLAN entier vers un port de capture Wireshark. Configuration: monitor session sur Cisco. Indispensable pour analyser le trafic sans être dans le chemin.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>SolarWinds NPM, PRTG, Zabbix (4 min)</strong> — Plateformes de supervision complètes. Graphiques de performance, alertes, carte réseau. PRTG gratuit jusqu'à 100 capteurs. Zabbix totalement gratuit.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>CDP/LLDP — Découverte automatique (3 min)</strong> — Cisco Discovery Protocol (CDP) et Link Layer Discovery Protocol (LLDP): découvrir automatiquement la topologie. show cdp neighbors detail.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 Configuration SPAN (Port Mirroring) sur Cisco</h3><table class="data-table"><thead><tr><th>Cas d'usage</th><th>Commandes Cisco</th><th>Description</th></tr></thead><tbody><tr><td>Capturer un port source</td><td>monitor session 1 source interface Fa0/1</td><td>Copier tout le trafic du port Fa0/1</td></tr><tr><td>Vers un port de destination</td><td>monitor session 1 destination interface Fa0/24</td><td>Envoyer la copie vers Fa0/24 (Wireshark branché ici)</td></tr><tr><td>Capturer tout un VLAN</td><td>monitor session 1 source vlan 10</td><td>Copier tout le trafic du VLAN 10</td></tr><tr><td>Vérifier la session SPAN</td><td>show monitor session 1</td><td>Voir la configuration de la session de mirroring</td></tr><tr><td>Supprimer la session</td><td>no monitor session 1</td><td>Désactiver le port mirroring (libérer les ressources)</td></tr></tbody></table><div class="info-box tip"><span class="info-box-label">💡 Pourquoi un SPAN port est indispensable</span>Sur un réseau switché moderne, Wireshark ne voit que son propre trafic (switches = unicast). Pour analyser le trafic d'un serveur, il faut configurer un SPAN port sur le switch: toutes les trames du port serveur sont copiées vers le port Wireshark. Sans SPAN, on est aveugle.</div></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi un SPAN port (Port Mirroring) est-il nécessaire pour analyser le trafic d'un serveur spécifique ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Pour accélérer la connexion du serveur</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Sur un réseau switché, chaque port ne voit que son propre trafic — le SPAN copie le trafic d'un port vers un port d'analyse (Wireshark)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Pour chiffrer le trafic du serveur</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Pour mettre le serveur dans un VLAN séparé</button></div>
-    <div class="quiz-expl" id="expl-q0_4">Sur un réseau switché, un hôte ne voit que les trames qui lui sont adressées (unicast) + les broadcasts. Pour voir le trafic d'un autre hôte, il faut un SPAN qui copie ses trames vers un port dédié à l'analyse. Sans SPAN, impossible d'analyser le trafic d'un serveur avec Wireshark depuis un autre PC.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">NetFlow sur un routeur Cisco permet de...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Accélérer le routage des paquets</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Analyser les flux réseau: quels hôtes échangent quelles données et en quelle quantité</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Chiffrer le trafic réseau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Configurer des routes dynamiques</button></div>
-    <div class="quiz-expl" id="expl-q1_4">NetFlow collecte des statistiques sur tous les flux réseau: IP source, IP destination, port source, port destination, protocole, volume de données. Très utile pour identifier qui consomme la bande passante, détecter des comportements anormaux, et planifier les upgrades.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">La commande CDP "show cdp neighbors detail" affiche...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>La table de routage de tous les voisins</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Les informations détaillées sur les équipements Cisco voisins: modèle, IOS version, adresses IP, interfaces connectées</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Les alertes de sécurité CDP</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>La configuration complète de tous les voisins</button></div>
-    <div class="quiz-expl" id="expl-q2_4">show cdp neighbors detail affiche pour chaque voisin Cisco: le nom du device, le modèle, la version IOS, les adresses IP sur toutes les interfaces, et les interfaces connectées. Très utile pour cartographier rapidement une topologie inconnue sans documentation.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Zabbix est un outil de supervision réseau qui...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Doit être acheté par abonnement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Est totalement gratuit et open source, avec interface web, alertes email/SMS, et gestion des graphiques de performance</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Ne supporte que les équipements Cisco</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Ne peut superviser que les serveurs Linux</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Zabbix est 100% open source et gratuit, sans limite du nombre d'équipements supervisés. Il supporte SNMP, ICMP, agents Zabbix (Windows/Linux), JMX, et dispose d'une interface web complète avec tableaux de bord, graphiques historiques, alertes configurables par email/SMS.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
-  </div>
-</div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="pratique-block">
-  <div class="pratique-header">
-    <div class="pratique-icon-wrap">🔬</div>
-    <div class="pratique-header-info">
-      <h3>Séance Pratique — SP-TRI-24-01</h3>
-      <span>Labo Wireshark et SNMP — Supervision et analyse de trafic</span>
-    </div>
-    <div class="pratique-badge-option">🟡 Optionnelle</div>
-  </div>
-  <div class="pratique-body">
-    <p class="pratique-desc">Tu vas configurer SNMP sur des équipements Cisco, analyser le trafic réseau avec Wireshark, et diagnostiquer des problèmes simulés par le professeur. Durée: 3 heures.</p>
-    <div class="pratique-grid">
-      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Configurer SNMP sur le routeur et le switch du labo</li><li>Interroger les OIDs SNMP avec un outil (snmpwalk ou PRTG/Zabbix)</li><li>Configurer un SPAN port sur le switch</li><li>Capturer et analyser le trafic avec Wireshark (handshake TCP, échange DHCP, requêtes DNS)</li><li>Identifier une anomalie simulée par le professeur (broadcast storm ou ARP gratuit)</li></ul></div>
-      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>Wireshark installé sur le PC d'analyse</li><li>Accès aux switches et routeurs Cisco du labo</li><li>Accès à PRTG ou Zabbix (VM fournie)</li><li>Câble console pour la configuration SNMP</li></ul></div>
-    </div>
-    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
-    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00')">Lun 19 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00')">Mar 20 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00')">Mer 21 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00')">Jeu 22 Mai — 8h00</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00')">Ven 23 Mai — 8h00</button></div>
-    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-24-01')">📅 Confirmer ma réservation</button>
-    <div class="pratique-confirm" id="confirm-sp-24-01"></div>
-  </div>
-</div><div class="demo-block">
-  <div class="demo-header">
-    <div class="demo-icon-wrap">🎭</div>
-    <div class="demo-header-info">
-      <h3>Démonstration — DEM-TRI-24-01</h3>
-      <span>Évaluation pratique (20 min)</span>
-    </div>
-    <div class="demo-badge">Évaluation pratique</div>
-  </div>
-  <div class="demo-body">
-    <p class="demo-desc">Le professeur a créé une panne réseau. Tu dois la diagnostiquer et la résoudre en 20 minutes en expliquant ta démarche à voix haute.</p>
-    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
-    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>Analyse initiale</strong> — Collecter les symptômes, définir le périmètre de la panne</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>Wireshark</strong> — Capturer le trafic et identifier l'anomalie avec les bons filtres</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Commandes Cisco</strong> — Exécuter les show commands appropriées et interpréter les résultats</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>Identifier la cause</strong> — Annoncer au professeur la cause root de la panne</div></div><div class="demo-step"><div class="demo-step-num">5</div><div class="demo-step-text"><strong>Résoudre</strong> — Appliquer la correction et vérifier avec un ping/show</div></div>
-    <div class="demo-eval">
-      <div class="demo-eval-label">✅ Critères d'évaluation</div>
-      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Symptômes correctement identifiés</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Outils appropriés utilisés (Wireshark + show commands)</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Démarche méthodique expliquée à voix haute</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Cause root correctement identifiée</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Solution appliquée et vérifiée</div></div>
-    </div>
-  </div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-24 — Rapport d'analyse réseau — Audit de performance et sécurité</h3>
-      <span>Analyse complète d'une capture Wireshark fournie</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
-  </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Le professeur te fournira une capture Wireshark (.pcap) d'un réseau d'entreprise haïtien avec plusieurs problèmes à identifier.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Analyse la capture et identifie les <strong>3 principaux protocoles</strong> présents (avec statistiques: pourcentage du trafic total, nombre de paquets).</li><li>Identifie et documente <strong>tous les problèmes réseau</strong> visibles dans la capture (anomalies, erreurs, comportements suspects).</li><li>Pour chaque problème identifié, rédige la <strong>cause probable</strong> et la <strong>solution recommandée</strong> avec les commandes Cisco appropriées.</li><li>Identifie les <strong>hôtes les plus actifs</strong> dans la capture et analyse si leur comportement est normal ou suspect.</li><li>Rédige un <strong>rapport de recommandations</strong>: les 5 améliorations prioritaires à apporter à cette infrastructure réseau.</li></ol>
-    </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Identification correcte des protocoles avec statistiques</div></div><div class="bareme-row"><div class="bareme-pts">35 pts</div><div class="bareme-label">Problèmes identifiés avec causes et solutions</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Analyse des hôtes actifs (normal vs suspect)</div></div><div class="bareme-row"><div class="bareme-pts">25 pts</div><div class="bareme-label">Rapport de recommandations prioritaires</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
-  </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-24 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<div class="chapter" id="ch-1"><div class="ch-header"><div class="ch-num">01</div><div class="ch-info"><h2>Choisir et utiliser les outils d&#x27;analyse</h2><div class="ch-meta"><span>🕐 18h</span><span class="ch-badge">Monitoring · Analyseurs</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Voir ce qui circule</li><li>Le bon outil pour le bon besoin</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Première leçon du module — bienvenue !</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Choisir et utiliser les outils d&#x27;analyse</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI24-CH01" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI24/final/TRI24-CH01.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Supervision</b> — observer le trafic, la charge et l&#x27;état des équipements.</div><div class="kt-row"><b>Monitoring</b> — suivi d&#x27;indicateurs dans le temps.</div><div class="kt-row"><b>Analyseur de protocole</b> — révèle le contenu des échanges réseau.</div><div class="kt-row"><b>Sonde</b> — capteur qui collecte des indicateurs.</div><div class="kt-row"><b>Choix de l&#x27;outil</b> — sélectionner l&#x27;outil selon le besoin d&#x27;analyse.</div></div><div class="section"><h3>1.1 Voir ce qui circule</h3><p>Superviser, c'est d'abord <strong>observer</strong>. Les outils de <strong>monitoring</strong> et les <strong>analyseurs de protocole</strong> montrent le trafic, la charge et l'état des équipements. On choisit l'outil selon le besoin.</p></div>
+<div class="section"><h3>1.2 Le bon outil pour le bon besoin</h3><div class="ibox blue"><span class="ibox-label">🔍 Reconnaître l'information</span>Un analyseur de protocole révèle le contenu des échanges ; une sonde de monitoring suit des indicateurs dans le temps. Savoir ce que chaque outil fournit évite les fausses pistes.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>Superviser, c&#x27;est d&#x27;abord observer.</li><li>L&#x27;analyseur de protocole montre le contenu des échanges.</li><li>Une sonde de monitoring suit des indicateurs dans le temps.</li><li>On choisit l&#x27;outil selon le besoin pour éviter les fausses pistes.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-1"><div class="qblock-head"><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="Superviser commence par observer."><div class="q-num">Question 1 / 3</div><div class="q-text">Superviser un réseau, c&#x27;est d&#x27;abord :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Observer le trafic et l&#x27;état des équipements</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Remplacer tous les câbles</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Redémarrer les serveurs</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Reconfigurer les adresses IP</button></div><div class="qexpl"></div></div><div class="q-item" data-c="1" data-e="Il révèle le contenu des échanges."><div class="q-num">Question 2 / 3</div><div class="q-text">Un analyseur de protocole sert à :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Suivre un indicateur sur la durée</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Voir le contenu des échanges réseau</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Sertir les câbles</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Attribuer les adresses IP</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="L&#x27;outil dépend du besoin."><div class="q-num">Question 3 / 3</div><div class="q-text">On choisit un outil de surveillance selon :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La marque du switch</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>La couleur des câbles</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Le besoin d&#x27;analyse</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le nombre de prises</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(1)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(1)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div></div></div><div class="chapter" id="ch-2"><div class="ch-header"><div class="ch-num">02</div><div class="ch-info"><h2>Lire et interpréter les indicateurs</h2><div class="ch-meta"><span>🕐 18h</span><span class="ch-badge">Valeurs · Écarts</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Des chiffres qui parlent</li><li>Détecter l&#x27;anomalie</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Choisir et utiliser les outils d&#x27;analyse</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Lire et interpréter les indicateurs</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI24-CH02" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI24/final/TRI24-CH02.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Indicateur</b> — valeur traduisant l&#x27;état du réseau (bande passante, latence…).</div><div class="kt-row"><b>Latence</b> — délai de transmission.</div><div class="kt-row"><b>Bande passante</b> — débit disponible/utilisé.</div><div class="kt-row"><b>Écart</b> — différence entre une valeur et l&#x27;historique.</div><div class="kt-row"><b>Anomalie</b> — irrégularité qui annonce souvent un problème.</div></div><div class="section"><h3>2.1 Des chiffres qui parlent</h3><p>Les <strong>indicateurs</strong> (bande passante, latence, pertes, charge CPU) traduisent l'état du réseau. On lit les valeurs numériques et graphiques avec exactitude.</p></div>
+<div class="section"><h3>2.2 Détecter l'anomalie</h3><div class="ibox gold"><span class="ibox-label">👀 Sens de l'observation</span>Comparer une valeur à l'historique révèle les <strong>écarts</strong> et les <strong>irrégularités</strong>. Une latence qui grimpe ou des pertes inhabituelles annoncent souvent un problème.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>Les indicateurs traduisent l&#x27;état du réseau.</li><li>On lit valeurs numériques et graphiques avec exactitude.</li><li>Comparer à l&#x27;historique révèle les écarts.</li><li>Une latence qui grimpe annonce souvent un problème.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-2"><div class="qblock-head"><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="1" data-e="Latence et bande passante sont des indicateurs."><div class="q-num">Question 1 / 3</div><div class="q-text">Un indicateur réseau peut être :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Le contenu d&#x27;un paquet</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>La latence ou la bande passante</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>La marque du routeur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le nombre de prises</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="La comparaison révèle les écarts."><div class="q-num">Question 2 / 3</div><div class="q-text">Comparer une valeur à l&#x27;historique permet de :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Augmenter le débit</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Réinitialiser la sonde</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Détecter les écarts et irrégularités</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Changer la couche réseau</button></div><div class="qexpl"></div></div><div class="q-item" data-c="3" data-e="Une hausse de latence signale souvent un souci."><div class="q-num">Question 3 / 3</div><div class="q-text">Une latence qui grimpe soudainement :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Améliore toujours le débit</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Est sans signification</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Réduit les pertes</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Peut annoncer un problème</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(2)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(2)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div></div></div><div class="chapter" id="ch-3"><div class="ch-header"><div class="ch-num">03</div><div class="ch-info"><h2>Déterminer causes et solutions</h2><div class="ch-meta"><span>🕐 24h</span><span class="ch-badge">OSI/TCP-IP · Diagnostic</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Diagnostiquer par couche</li><li>De la cause à la solution</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Lire et interpréter les indicateurs</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Déterminer causes et solutions</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI24-CH03" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI24/final/TRI24-CH03.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Modèle OSI/TCP-IP</b> — couches servant à localiser un problème.</div><div class="kt-row"><b>Couche physique</b> — câbles et connexions matérielles.</div><div class="kt-row"><b>Cause racine</b> — cause principale d&#x27;un problème.</div><div class="kt-row"><b>Isoler la cause</b> — séparer la vraie cause des symptômes.</div><div class="kt-row"><b>Évaluation des solutions</b> — comparer plusieurs solutions avant de choisir.</div></div><div class="section"><h3>3.1 Diagnostiquer par couche</h3><p>On identifie le problème selon la <strong>couche</strong> du modèle OSI ou TCP/IP : physique (câble), liaison, réseau (IP), … Cette méthode évite de chercher au hasard.</p></div>
+<div class="section"><h3>3.2 De la cause à la solution</h3><div class="ibox green"><span class="ibox-label">🎯 La cause racine</span>On établit les causes possibles, on choisit les bons outils de diagnostic, on isole la <strong>cause principale</strong>, puis on évalue plusieurs solutions avant de choisir la plus pertinente.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>On identifie le problème par couche (OSI/TCP-IP) pour ne pas chercher au hasard.</li><li>On établit les causes possibles puis on isole la cause racine.</li><li>On choisit les bons outils de diagnostic.</li><li>On évalue plusieurs solutions avant de choisir la plus pertinente.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-3"><div class="qblock-head"><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="2" data-e="Le diagnostic par couche évite l&#x27;aveugle."><div class="q-num">Question 1 / 3</div><div class="q-text">Pour diagnostiquer, on identifie le problème :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>En changeant tout le matériel</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Au hasard, par essai-erreur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Par couche du modèle OSI/TCP-IP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Par la marque des équipements</button></div><div class="qexpl"></div></div><div class="q-item" data-c="3" data-e="La cause racine est la cause principale."><div class="q-num">Question 2 / 3</div><div class="q-text">La « cause racine » est :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Un simple symptôme visible</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>La première panne de l&#x27;année</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Le câble le plus long</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>La cause principale du problème</button></div><div class="qexpl"></div></div><div class="q-item" data-c="0" data-e="On compare plusieurs options."><div class="q-num">Question 3 / 3</div><div class="q-text">Avant de choisir une solution, on :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Évalue plusieurs solutions possibles</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Applique la première idée</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Change tout le réseau</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Ignore les autres pistes</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(3)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(3)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div></div></div><div class="chapter" id="ch-4"><div class="ch-header"><div class="ch-num">04</div><div class="ch-info"><h2>Appliquer une procédure d&#x27;intervention</h2><div class="ch-meta"><span>🕐 18h</span><span class="ch-badge">Séquence · Vérification</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Planifier avant d&#x27;agir</li><li>Vérifier le rétablissement</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Déterminer causes et solutions</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Appliquer une procédure d&#x27;intervention</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI24-CH04" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI24/final/TRI24-CH04.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Procédure d&#x27;intervention</b> — séquence d&#x27;opérations à effectuer.</div><div class="kt-row"><b>Séquence</b> — ordre des actions de réparation.</div><div class="kt-row"><b>Application de la solution</b> — mise en œuvre dans l&#x27;ordre prévu.</div><div class="kt-row"><b>Vérification du rétablissement</b> — confirmer que le service fonctionne à nouveau.</div><div class="kt-row"><b>Non-réapparition</b> — s&#x27;assurer que le problème ne revient pas.</div></div><div class="section"><h3>4.1 Planifier avant d'agir</h3><p>On établit la <strong>séquence des opérations</strong> à effectuer, puis on applique la solution dans l'ordre prévu. Agir sans plan risque d'aggraver la situation.</p></div>
+<div class="section"><h3>4.2 Vérifier le rétablissement</h3><div class="ibox blue"><span class="ibox-label">✅ Confirmer la résolution</span>Après l'intervention, on <strong>vérifie</strong> que le service est rétabli et que le problème ne réapparaît pas. Une panne n'est résolue que lorsque c'est confirmé.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>On établit la séquence des opérations avant d&#x27;agir.</li><li>On applique la solution dans l&#x27;ordre prévu.</li><li>Agir sans plan risque d&#x27;aggraver la situation.</li><li>Une panne n&#x27;est résolue que lorsque le rétablissement est confirmé.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-4"><div class="qblock-head"><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="3" data-e="On planifie la séquence avant d&#x27;agir."><div class="q-num">Question 1 / 3</div><div class="q-text">Avant d&#x27;intervenir, on établit :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Un nouvel indicateur</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Un rapport final</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Une sonde de monitoring</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>La séquence des opérations</button></div><div class="qexpl"></div></div><div class="q-item" data-c="0" data-e="Sans plan, on risque d&#x27;aggraver."><div class="q-num">Question 2 / 3</div><div class="q-text">Agir sans plan d&#x27;intervention :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Risque d&#x27;aggraver la situation</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Accélère toujours la résolution</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>N&#x27;a aucun effet</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Améliore la latence</button></div><div class="qexpl"></div></div><div class="q-item" data-c="1" data-e="La résolution se confirme par vérification."><div class="q-num">Question 3 / 3</div><div class="q-text">Une panne est résolue quand :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>On l&#x27;a seulement notée</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Le rétablissement est vérifié</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>On a remplacé un câble</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Un indicateur a bougé</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(4)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(4)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div></div></div><div class="chapter" id="ch-5"><div class="ch-header"><div class="ch-num">05</div><div class="ch-info"><h2>Consigner l&#x27;intervention</h2><div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">Traçabilité · Base de connaissances</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Tracer problèmes et solutions</li><li>Enrichir la base de connaissances</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Appliquer une procédure d&#x27;intervention</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Consigner l&#x27;intervention</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI24-CH05" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI24/final/TRI24-CH05.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Consignation</b> — noter précisément problèmes et solutions.</div><div class="kt-row"><b>Terminologie appropriée</b> — vocabulaire technique juste.</div><div class="kt-row"><b>Base de connaissances</b> — inventaire des problèmes/solutions réutilisable.</div><div class="kt-row"><b>Traçabilité</b> — historique des interventions.</div><div class="kt-row"><b>Capitalisation</b> — réutiliser l&#x27;expérience pour aller plus vite.</div></div><div class="section"><h3>5.1 Tracer problèmes et solutions</h3><p>On consigne <strong>précisément</strong> les problèmes relevés et les solutions apportées, avec la terminologie appropriée. C'est le réflexe vu en TRI-07 et TRI-12, à l'échelle du réseau.</p></div>
+<div class="section"><h3>5.2 Enrichir la base de connaissances</h3><div class="ibox green"><span class="ibox-label">📚 Capitaliser</span>Chaque intervention consignée enrichit l'inventaire des problèmes/solutions : la prochaine panne similaire se résoudra bien plus vite.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>On consigne précisément problèmes et solutions, avec la bonne terminologie.</li><li>Chaque intervention consignée enrichit la base de connaissances.</li><li>Une panne similaire se résoudra bien plus vite ensuite.</li><li>C&#x27;est le réflexe vu en TRI-07 et TRI-12, à l&#x27;échelle du réseau.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-5"><div class="qblock-head"><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="On consigne précisément, avec la bonne terminologie."><div class="q-num">Question 1 / 3</div><div class="q-text">On consigne l&#x27;intervention :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Précisément, problèmes et solutions</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>De mémoire, plus tard</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Sans la terminologie technique</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Uniquement en cas de panne grave</button></div><div class="qexpl"></div></div><div class="q-item" data-c="1" data-e="La consignation accélère les résolutions futures."><div class="q-num">Question 2 / 3</div><div class="q-text">Consigner sert surtout à :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Augmenter la bande passante</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Résoudre plus vite les pannes similaires futures</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Remplacer le diagnostic</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Réduire la latence</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="On emploie le vocabulaire technique juste."><div class="q-num">Question 3 / 3</div><div class="q-text">La consignation utilise :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Des termes inventés</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Aucun vocabulaire technique</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>La terminologie appropriée</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Des codes couleur seulement</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(5)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(5)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div></div></div><div class="chapter" id="essentiel"><div class="ch-header"><div class="ch-num">★</div><div class="ch-info"><h2>L'essentiel à retenir</h2></div></div><div class="ch-body"><p style="font-size:.85rem;line-height:1.7">TRI-24 t'a appris à <strong>superviser un réseau et à dépanner avec méthode</strong> : observer, mesurer, diagnostiquer, intervenir et consigner.</p><div class="bonas"><div class="bonas-h">★ Synthèse du module</div><ul><li><b>Ch.1 — Outils :</b> monitoring et analyseurs de protocole ; choisir l'outil selon le besoin.</li><li><b>Ch.2 — Indicateurs :</b> latence, bande passante… ; comparer à l'historique pour détecter les écarts.</li><li><b>Ch.3 — Diagnostic :</b> par couche OSI/TCP-IP ; isoler la cause racine ; évaluer les solutions.</li><li><b>Ch.4 — Intervention :</b> établir la séquence, appliquer dans l'ordre, vérifier le rétablissement.</li><li><b>Ch.5 — Consigner :</b> tracer problèmes/solutions ; enrichir la base de connaissances.</li></ul></div><div class="bonas"><div class="bonas-h">🔑 À retenir</div><ul><li><b>Observer avant d'agir :</b> on diagnostique, on ne devine pas.</li><li><b>Cause racine :</b> traiter la cause, pas le symptôme.</li><li><b>Consigner :</b> chaque panne documentée accélère la suivante.</li></ul></div><div class="labbox"><div class="labbox-h">🛠 Important — épreuve pratique en atelier présentiel</div><p>L'usage réel des outils d'analyse et le dépannage sur un réseau se réalise et s'évalue <b>en atelier, sur machine, en présentiel</b>. Cet examen blanc valide la <b>théorie, la méthode et la logique</b> qui préparent ce geste.</p></div><p style="font-size:.83rem">🎯 <strong>Prochaine étape :</strong> l'examen blanc — quiz général, séquences, associations et diagnostic.</p></div></div><div class="chapter" id="examen"><div class="ch-header"><div class="ch-num">🎓</div><div class="ch-info"><h2>Examen blanc — TRI-24</h2></div></div><div class="ch-body"><div class="bonas"><div class="bonas-h">📋 Consignes</div><ul><li>Durée conseillée : <b>75 minutes</b> · Total : <b>100 points</b> · Réussite : <b>≥ 75 %</b>.</li><li>Partie A — Théorie (30 pts) · Partie B — Pratique (70 pts).</li><li>⚠️ Mr Aly valide les quiz et l'examen avant mise en ligne.</li></ul></div><div class="exid"><label>Nom : <input type="text" id="ex-nom"></label><label>Prénom : <input type="text" id="ex-prenom"></label><label>Date : <input type="date" id="ex-date"></label></div><div class="exam-part"><h3>Partie A — Théorie <span class="expts">30 pts</span></h3><h4>A1. Remets dans l'ordre la démarche de dépannage <span class="expts">5 pts</span></h4><div class="exrow"><span class="exno">1</span><select class="exsel" id="a1-0"><option value="-1">— Choisir —</option><option value="0">Appliquer la procédure d&#x27;intervention</option><option value="1">Lire et interpréter les indicateurs</option><option value="2">Consigner l&#x27;intervention</option><option value="3">Choisir et utiliser les outils d&#x27;analyse</option><option value="4">Déterminer cause et solution</option></select><span class="exmark" id="m-a1-0"></span></div><div class="exrow"><span class="exno">2</span><select class="exsel" id="a1-1"><option value="-1">— Choisir —</option><option value="0">Appliquer la procédure d&#x27;intervention</option><option value="1">Lire et interpréter les indicateurs</option><option value="2">Consigner l&#x27;intervention</option><option value="3">Choisir et utiliser les outils d&#x27;analyse</option><option value="4">Déterminer cause et solution</option></select><span class="exmark" id="m-a1-1"></span></div><div class="exrow"><span class="exno">3</span><select class="exsel" id="a1-2"><option value="-1">— Choisir —</option><option value="0">Appliquer la procédure d&#x27;intervention</option><option value="1">Lire et interpréter les indicateurs</option><option value="2">Consigner l&#x27;intervention</option><option value="3">Choisir et utiliser les outils d&#x27;analyse</option><option value="4">Déterminer cause et solution</option></select><span class="exmark" id="m-a1-2"></span></div><div class="exrow"><span class="exno">4</span><select class="exsel" id="a1-3"><option value="-1">— Choisir —</option><option value="0">Appliquer la procédure d&#x27;intervention</option><option value="1">Lire et interpréter les indicateurs</option><option value="2">Consigner l&#x27;intervention</option><option value="3">Choisir et utiliser les outils d&#x27;analyse</option><option value="4">Déterminer cause et solution</option></select><span class="exmark" id="m-a1-3"></span></div><div class="exrow"><span class="exno">5</span><select class="exsel" id="a1-4"><option value="-1">— Choisir —</option><option value="0">Appliquer la procédure d&#x27;intervention</option><option value="1">Lire et interpréter les indicateurs</option><option value="2">Consigner l&#x27;intervention</option><option value="3">Choisir et utiliser les outils d&#x27;analyse</option><option value="4">Déterminer cause et solution</option></select><span class="exmark" id="m-a1-4"></span></div><h4>A2. Quiz général — tous les chapitres <span class="expts">25 pts</span></h4><div class="exq"><div class="exq-t">1. Superviser, c&#x27;est d&#x27;abord :</div><select class="exsel" id="a2-0"><option value="-1">— Choisir —</option><option value="0">Observer le trafic et l&#x27;état des équipements</option><option value="1">Remplacer les câbles</option><option value="2">Redémarrer les serveurs</option><option value="3">Reconfigurer les IP</option></select><span class="exmark" id="m-a2-0"></span></div><div class="exq"><div class="exq-t">2. Un analyseur de protocole sert à :</div><select class="exsel" id="a2-1"><option value="-1">— Choisir —</option><option value="0">Suivre un indicateur sur la durée</option><option value="1">Voir le contenu des échanges</option><option value="2">Sertir les câbles</option><option value="3">Attribuer les IP</option></select><span class="exmark" id="m-a2-1"></span></div><div class="exq"><div class="exq-t">3. On choisit l&#x27;outil selon :</div><select class="exsel" id="a2-2"><option value="-1">— Choisir —</option><option value="0">La marque du switch</option><option value="1">La couleur des câbles</option><option value="2">Le besoin d&#x27;analyse</option><option value="3">Le nombre de prises</option></select><span class="exmark" id="m-a2-2"></span></div><div class="exq"><div class="exq-t">4. Le monitoring suit :</div><select class="exsel" id="a2-3"><option value="-1">— Choisir —</option><option value="0">Le contenu de chaque paquet</option><option value="1">La longueur des câbles</option><option value="2">Les ports libres</option><option value="3">Des indicateurs dans le temps</option></select><span class="exmark" id="m-a2-3"></span></div><div class="exq"><div class="exq-t">5. Un indicateur réseau est :</div><select class="exsel" id="a2-4"><option value="-1">— Choisir —</option><option value="0">La latence ou la bande passante</option><option value="1">Le contenu d&#x27;un paquet</option><option value="2">La marque du routeur</option><option value="3">Le nombre de prises</option></select><span class="exmark" id="m-a2-4"></span></div><div class="exq"><div class="exq-t">6. Comparer à l&#x27;historique permet de :</div><select class="exsel" id="a2-5"><option value="-1">— Choisir —</option><option value="0">Augmenter le débit</option><option value="1">Détecter les écarts</option><option value="2">Réinitialiser la sonde</option><option value="3">Changer de couche</option></select><span class="exmark" id="m-a2-5"></span></div><div class="exq"><div class="exq-t">7. Une latence qui grimpe :</div><select class="exsel" id="a2-6"><option value="-1">— Choisir —</option><option value="0">Améliore le débit</option><option value="1">Est sans signification</option><option value="2">Peut annoncer un problème</option><option value="3">Réduit les pertes</option></select><span class="exmark" id="m-a2-6"></span></div><div class="exq"><div class="exq-t">8. La bande passante mesure :</div><select class="exsel" id="a2-7"><option value="-1">— Choisir —</option><option value="0">Le délai de transmission</option><option value="1">Le nombre d&#x27;équipements</option><option value="2">La taille des câbles</option><option value="3">Le débit disponible/utilisé</option></select><span class="exmark" id="m-a2-7"></span></div><div class="exq"><div class="exq-t">9. On diagnostique par :</div><select class="exsel" id="a2-8"><option value="-1">— Choisir —</option><option value="0">Couche du modèle OSI/TCP-IP</option><option value="1">Changement total du matériel</option><option value="2">Essai-erreur au hasard</option><option value="3">Marque des équipements</option></select><span class="exmark" id="m-a2-8"></span></div><div class="exq"><div class="exq-t">10. La cause racine est :</div><select class="exsel" id="a2-9"><option value="-1">— Choisir —</option><option value="0">Un symptôme visible</option><option value="1">La cause principale</option><option value="2">La 1re panne de l&#x27;année</option><option value="3">Le câble le plus long</option></select><span class="exmark" id="m-a2-9"></span></div><div class="exq"><div class="exq-t">11. Avant de choisir une solution, on :</div><select class="exsel" id="a2-10"><option value="-1">— Choisir —</option><option value="0">Applique la 1re idée</option><option value="1">Change tout le réseau</option><option value="2">Évalue plusieurs options</option><option value="3">Ignore les autres pistes</option></select><span class="exmark" id="m-a2-10"></span></div><div class="exq"><div class="exq-t">12. La couche physique concerne :</div><select class="exsel" id="a2-11"><option value="-1">— Choisir —</option><option value="0">Les noms de domaine</option><option value="1">La latence</option><option value="2">Les rapports</option><option value="3">Les câbles et connexions</option></select><span class="exmark" id="m-a2-11"></span></div><div class="exq"><div class="exq-t">13. Avant d&#x27;intervenir, on établit :</div><select class="exsel" id="a2-12"><option value="-1">— Choisir —</option><option value="0">La séquence des opérations</option><option value="1">Un nouvel indicateur</option><option value="2">Un rapport final</option><option value="3">Une sonde</option></select><span class="exmark" id="m-a2-12"></span></div><div class="exq"><div class="exq-t">14. Agir sans plan :</div><select class="exsel" id="a2-13"><option value="-1">— Choisir —</option><option value="0">Accélère la résolution</option><option value="1">Risque d&#x27;aggraver la situation</option><option value="2">N&#x27;a aucun effet</option><option value="3">Améliore la latence</option></select><span class="exmark" id="m-a2-13"></span></div><div class="exq"><div class="exq-t">15. Une panne est résolue quand :</div><select class="exsel" id="a2-14"><option value="-1">— Choisir —</option><option value="0">On l&#x27;a notée</option><option value="1">On a changé un câble</option><option value="2">Le rétablissement est vérifié</option><option value="3">Un indicateur a bougé</option></select><span class="exmark" id="m-a2-14"></span></div><div class="exq"><div class="exq-t">16. On consigne l&#x27;intervention :</div><select class="exsel" id="a2-15"><option value="-1">— Choisir —</option><option value="0">De mémoire plus tard</option><option value="1">Sans terminologie</option><option value="2">En cas grave seulement</option><option value="3">Précisément, problèmes et solutions</option></select><span class="exmark" id="m-a2-15"></span></div><div class="exq"><div class="exq-t">17. Consigner sert à :</div><select class="exsel" id="a2-16"><option value="-1">— Choisir —</option><option value="0">Résoudre plus vite les pannes futures</option><option value="1">Augmenter la bande passante</option><option value="2">Remplacer le diagnostic</option><option value="3">Réduire la latence</option></select><span class="exmark" id="m-a2-16"></span></div><div class="exq"><div class="exq-t">18. La consignation utilise :</div><select class="exsel" id="a2-17"><option value="-1">— Choisir —</option><option value="0">Des termes inventés</option><option value="1">La terminologie appropriée</option><option value="2">Aucun vocabulaire</option><option value="3">Des couleurs seules</option></select><span class="exmark" id="m-a2-17"></span></div><div class="exq"><div class="exq-t">19. Isoler la cause, c&#x27;est :</div><select class="exsel" id="a2-18"><option value="-1">— Choisir —</option><option value="0">Réparer tous les symptômes d&#x27;un coup</option><option value="1">Changer la couche physique</option><option value="2">Séparer la vraie cause des symptômes</option><option value="3">Consigner</option></select><span class="exmark" id="m-a2-18"></span></div><div class="exq"><div class="exq-t">20. Appliquer la solution :</div><select class="exsel" id="a2-19"><option value="-1">— Choisir —</option><option value="0">En improvisant</option><option value="1">En sautant des étapes</option><option value="2">En changeant la cause</option><option value="3">Dans l&#x27;ordre prévu</option></select><span class="exmark" id="m-a2-19"></span></div><div class="exq"><div class="exq-t">21. La base de connaissances :</div><select class="exsel" id="a2-20"><option value="-1">— Choisir —</option><option value="0">Capitalise problèmes et solutions</option><option value="1">Est une sonde</option><option value="2">Est un analyseur</option><option value="3">Est un indicateur</option></select><span class="exmark" id="m-a2-20"></span></div><div class="exq"><div class="exq-t">22. On lit les indicateurs :</div><select class="exsel" id="a2-21"><option value="-1">— Choisir —</option><option value="0">De mémoire</option><option value="1">Avec exactitude</option><option value="2">Sans comparer</option><option value="3">Une fois par an</option></select><span class="exmark" id="m-a2-21"></span></div><div class="exq"><div class="exq-t">23. Connaître l&#x27;outil :</div><select class="exsel" id="a2-22"><option value="-1">— Choisir —</option><option value="0">Augmente la bande passante</option><option value="1">Remplace le diagnostic</option><option value="2">Évite les fausses pistes</option><option value="3">Réduit la latence</option></select><span class="exmark" id="m-a2-22"></span></div><div class="exq"><div class="exq-t">24. Après intervention, on vérifie :</div><select class="exsel" id="a2-23"><option value="-1">— Choisir —</option><option value="0">La marque du switch</option><option value="1">Le nombre de ports</option><option value="2">La couleur des câbles</option><option value="3">Le rétablissement et la stabilité</option></select><span class="exmark" id="m-a2-23"></span></div><div class="exq"><div class="exq-t">25. Capitaliser l&#x27;expérience :</div><select class="exsel" id="a2-24"><option value="-1">— Choisir —</option><option value="0">Accélère la prochaine résolution</option><option value="1">Efface l&#x27;historique</option><option value="2">Augmente le débit</option><option value="3">Change de couche OSI</option></select><span class="exmark" id="m-a2-24"></span></div></div><div class="exam-part"><h3>Partie B — Pratique <span class="expts">70 pts</span></h3><h4>B1. Démarche de diagnostic par couche <span class="expts">15 pts</span></h4><div class="exrow"><span class="exno">1</span><select class="exsel" id="b1-0"><option value="-1">— Choisir —</option><option value="0">Vérifier la couche réseau (IP)</option><option value="1">Vérifier la couche physique (câble, lien)</option><option value="2">Évaluer et choisir la solution</option><option value="3">Vérifier la liaison de données</option><option value="4">Isoler la cause racine</option></select><span class="exmark" id="m-b1-0"></span></div><div class="exrow"><span class="exno">2</span><select class="exsel" id="b1-1"><option value="-1">— Choisir —</option><option value="0">Vérifier la couche réseau (IP)</option><option value="1">Vérifier la couche physique (câble, lien)</option><option value="2">Évaluer et choisir la solution</option><option value="3">Vérifier la liaison de données</option><option value="4">Isoler la cause racine</option></select><span class="exmark" id="m-b1-1"></span></div><div class="exrow"><span class="exno">3</span><select class="exsel" id="b1-2"><option value="-1">— Choisir —</option><option value="0">Vérifier la couche réseau (IP)</option><option value="1">Vérifier la couche physique (câble, lien)</option><option value="2">Évaluer et choisir la solution</option><option value="3">Vérifier la liaison de données</option><option value="4">Isoler la cause racine</option></select><span class="exmark" id="m-b1-2"></span></div><div class="exrow"><span class="exno">4</span><select class="exsel" id="b1-3"><option value="-1">— Choisir —</option><option value="0">Vérifier la couche réseau (IP)</option><option value="1">Vérifier la couche physique (câble, lien)</option><option value="2">Évaluer et choisir la solution</option><option value="3">Vérifier la liaison de données</option><option value="4">Isoler la cause racine</option></select><span class="exmark" id="m-b1-3"></span></div><div class="exrow"><span class="exno">5</span><select class="exsel" id="b1-4"><option value="-1">— Choisir —</option><option value="0">Vérifier la couche réseau (IP)</option><option value="1">Vérifier la couche physique (câble, lien)</option><option value="2">Évaluer et choisir la solution</option><option value="3">Vérifier la liaison de données</option><option value="4">Isoler la cause racine</option></select><span class="exmark" id="m-b1-4"></span></div><h4>B2. Associe chaque notion à sa fonction <span class="expts">15 pts</span></h4><div class="exq"><div class="exq-t">1. <b>Analyseur de protocole</b> →</div><select class="exsel" id="b2-0"><option value="-1">— Choisir —</option><option value="0">Montrer le contenu des échanges réseau</option><option value="1">Suivre des indicateurs dans le temps</option><option value="2">Sertir un câble</option><option value="3">Attribuer des IP</option></select><span class="exmark" id="m-b2-0"></span></div><div class="exq"><div class="exq-t">2. <b>Monitoring</b> →</div><select class="exsel" id="b2-1"><option value="-1">— Choisir —</option><option value="0">Montrer le contenu des paquets</option><option value="1">Suivre des indicateurs dans le temps</option><option value="2">Migrer un serveur</option><option value="3">Résoudre les noms</option></select><span class="exmark" id="m-b2-1"></span></div><div class="exq"><div class="exq-t">3. <b>Latence</b> →</div><select class="exsel" id="b2-2"><option value="-1">— Choisir —</option><option value="0">Le débit du lien</option><option value="1">Le nombre d&#x27;équipements</option><option value="2">Le délai de transmission</option><option value="3">La marque du switch</option></select><span class="exmark" id="m-b2-2"></span></div><div class="exq"><div class="exq-t">4. <b>Cause racine</b> →</div><select class="exsel" id="b2-3"><option value="-1">— Choisir —</option><option value="0">Un simple symptôme</option><option value="1">Un type de câble</option><option value="2">Le débit du lien</option><option value="3">La cause principale d&#x27;un problème</option></select><span class="exmark" id="m-b2-3"></span></div><div class="exq"><div class="exq-t">5. <b>Modèle OSI</b> →</div><select class="exsel" id="b2-4"><option value="-1">— Choisir —</option><option value="0">Diagnostiquer par couche</option><option value="1">Attribuer des IP</option><option value="2">Chiffrer le trafic</option><option value="3">Suivre un indicateur</option></select><span class="exmark" id="m-b2-4"></span></div><h4>B3. Étude de cas — réponses courtes <span class="expts">20 pts</span></h4><p style="font-size:.78rem;color:#555">Réponds en un mot ou un sigle.</p><div class="exq"><div class="exq-t">1. Modèle en couches utilisé pour diagnostiquer (sigle) :</div><input type="text" class="exin" id="b3-0" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-0"></span><div class="exans" id="a-b3-0">Réponse : osi</div></div><div class="exq"><div class="exq-t">2. Cause principale d&#x27;un problème (2 mots) :</div><input type="text" class="exin" id="b3-1" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-1"></span><div class="exans" id="a-b3-1">Réponse : cause racine</div></div><div class="exq"><div class="exq-t">3. Indicateur = délai de transmission :</div><input type="text" class="exin" id="b3-2" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-2"></span><div class="exans" id="a-b3-2">Réponse : latence</div></div><div class="exq"><div class="exq-t">4. Action de noter précisément l&#x27;intervention :</div><input type="text" class="exin" id="b3-3" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-3"></span><div class="exans" id="a-b3-3">Réponse : consigner</div></div><div class="exq"><div class="exq-t">5. Ce qu&#x27;on vérifie après une intervention :</div><input type="text" class="exin" id="b3-4" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-4"></span><div class="exans" id="a-b3-4">Réponse : rétablissement</div></div><h4>B4. Diagnostic — situations terrain <span class="expts">20 pts</span></h4><div class="exq"><div class="exq-t">1. Tous les postes d&#x27;une salle perdent le réseau d&#x27;un coup. On vérifie d&#x27;abord :</div><select class="exsel" id="b4-0"><option value="-1">— Choisir —</option><option value="0">La couche physique (câble/lien de la salle)</option><option value="1">Le rapport d&#x27;intervention</option><option value="2">La base de connaissances</option><option value="3">Le débit moyen du mois</option></select><span class="exmark" id="m-b4-0"></span></div><div class="exq"><div class="exq-t">2. La latence du lien a doublé depuis ce matin. Bon réflexe :</div><select class="exsel" id="b4-1"><option value="-1">— Choisir —</option><option value="0">Remplacer tous les câbles</option><option value="1">Comparer à l&#x27;historique pour confirmer l&#x27;écart</option><option value="2">Changer de modèle OSI</option><option value="3">Consigner sans vérifier</option></select><span class="exmark" id="m-b4-1"></span></div><div class="exq"><div class="exq-t">3. Plusieurs symptômes, une seule origine. On cherche :</div><select class="exsel" id="b4-2"><option value="-1">— Choisir —</option><option value="0">Le câble le plus long</option><option value="1">Le débit maximal</option><option value="2">La cause racine</option><option value="3">Le nombre de ports</option></select><span class="exmark" id="m-b4-2"></span></div><div class="exq"><div class="exq-t">4. Avant de réparer une panne complexe, on :</div><select class="exsel" id="b4-3"><option value="-1">— Choisir —</option><option value="0">Remplace le serveur</option><option value="1">Change tous les indicateurs</option><option value="2">Consigne d&#x27;abord la solution</option><option value="3">Établit la séquence d&#x27;intervention</option></select><span class="exmark" id="m-b4-3"></span></div><div class="exq"><div class="exq-t">5. Après réparation, le service remarche puis retombe. La panne est :</div><select class="exsel" id="b4-4"><option value="-1">— Choisir —</option><option value="0">Non résolue (rétablissement non confirmé)</option><option value="1">Résolue définitivement</option><option value="2">Sans cause racine</option><option value="3">Déjà consignée donc close</option></select><span class="exmark" id="m-b4-4"></span></div></div><div class="exgauges"><div class="exg"><span>Partie A</span><div class="exg-bar"><div class="exg-fill" id="g-a"></div></div><b id="s-a">— / 30</b></div><div class="exg"><span>Partie B</span><div class="exg-bar"><div class="exg-fill" id="g-b"></div></div><b id="s-b">— / 70</b></div><div class="exg"><span>TOTAL</span><div class="exg-bar"><div class="exg-fill" id="g-t"></div></div><b id="s-t">— / 100</b></div></div><div class="q-result" id="ex-result"></div><div class="q-actions"><button class="q-btn exbtn" onclick="exValidate()">✓ Corriger l'examen</button><button class="q-btn alt exbtn" onclick="exPrint()">🖨 Copie corrigée</button><button class="q-btn alt exbtn" onclick="exPrintBlank()">📄 Sujet vierge</button><button class="q-btn alt exbtn" onclick="exReset()">↺ Recommencer</button></div></div></div><div class="complete-banner" id="complete-banner"><h2>🎓 Module TRI-24 validé !</h2><p>Supervision &amp; dépannage — tu maîtrises l'ensemble du module.</p></div></div></div></div><button id="mob-toc-btn" onclick="toggleToc()">☰</button><div id="mob-overlay" onclick="toggleToc()"></div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
-}
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
-}
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
-}
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
-}
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
-  }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
-
+(function(){
+var KEY='TRI24v1_', NCH=5;
+var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','essentiel','examen'];
+var TITLES={"plan":"Plan de cours","essentiel":"\u2605 L'essentiel \u00e0 retenir","examen":"\uD83C\uDF93 Examen blanc"};
+function rd(k,d){try{var v=localStorage.getItem(KEY+k);return v===null?d:JSON.parse(v);}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(KEY+k,JSON.stringify(v));}catch(e){}}
+window.ST={done:rd('done',{}),qs:rd('qs',{}),pos:rd('pos','plan')};
+document.body.classList.add('player');
+function lbl(id){if(TITLES[id])return TITLES[id];var n=id.split('-')[1];var el=document.querySelector('#'+id+' h2');return 'Ch. '+n+' \u2014 '+(el?el.textContent.trim():'');}
+function canGo(id){var idx=STEPS.indexOf(id);if(idx<=1)return true;if(id==='essentiel'||id==='examen')return !!ST.done['ch-'+NCH];var n=parseInt(id.split('-')[1],10);return !!ST.done['ch-'+(n-1)];}
+window.goTo=function(id){if(!canGo(id))return;STEPS.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.remove('active');});var el=document.getElementById(id);if(!el)return;el.classList.add('active');ST.pos=id;wr('pos',id);var idx=STEPS.indexOf(id);document.getElementById('pnav-lbl').textContent='\u00c9tape '+(idx+1)+'/'+STEPS.length+' \u00b7 '+lbl(id);document.getElementById('pnav-fill').style.width=Math.round((idx+1)/STEPS.length*100)+'%';var prev=document.getElementById('pnav-prev'),next=document.getElementById('pnav-next');prev.disabled=idx===0;var nid=STEPS[idx+1];next.disabled=!nid||!canGo(nid);next.textContent=nid?'Suivant \u2192':'Fin';refreshToc();window.scrollTo({top:0,behavior:'smooth'});var tc=document.getElementById('toc-sidebar');if(tc)tc.classList.remove('open');var ov=document.getElementById('mob-overlay');if(ov)ov.style.display='none';};
+window.stepMove=function(d){var idx=STEPS.indexOf(ST.pos)+d;if(idx<0||idx>=STEPS.length)return;goTo(STEPS[idx]);};
+function refreshToc(){STEPS.forEach(function(s){var ti=document.getElementById('ti-'+s);if(!ti)return;ti.classList.toggle('locked',!canGo(s));ti.classList.toggle('done',!!ST.done[s]);ti.classList.toggle('act',ST.pos===s);});updateProgUI();}
+function updateProgUI(){var done=0;for(var i=1;i<=NCH;i++)if(ST.done['ch-'+i])done++;var pct=Math.round(done/NCH*100);var f=document.getElementById('prog-fill');if(f)f.style.width=pct+'%';var t=document.getElementById('prog-txt');if(t)t.textContent=done+' / '+NCH+' chapitres \u2014 '+pct+'%';var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok||0;qTot+=ST.qs[k].total||0;});var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' r\u00e9ponses correctes':'\u2014';if(done===NCH){var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}}
+window.selQ=function(btn){var item=btn.closest('.q-item');item.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');};
+window.submitQ=function(ch){var blk=document.getElementById('quiz-'+ch);if(!blk)return;var items=blk.querySelectorAll('.q-item'),ok=0,un=false;items.forEach(function(it){var p=-1;it.querySelectorAll('.qopt').forEach(function(b,i){if(b.classList.contains('sel'))p=i;});if(p<0)un=true;});if(un){toast('\u26a0\ufe0f R\u00e9ponds \u00e0 toutes les questions d\'abord.');return;}items.forEach(function(it){var c=parseInt(it.getAttribute('data-c'),10);var opts=it.querySelectorAll('.qopt');var p=-1;opts.forEach(function(b,i){if(b.classList.contains('sel'))p=i;});opts.forEach(function(b,i){b.classList.remove('good','bad');if(i===c)b.classList.add('good');else if(i===p)b.classList.add('bad');b.disabled=true;});if(p===c)ok++;var ex=it.querySelector('.qexpl');if(ex){ex.style.display='block';ex.textContent=(p===c?'\u2705 Correct. ':'\u274c ')+(it.getAttribute('data-e')||'');}});var total=items.length,pct=ok/total;ST.qs[ch]={ok:ok,total:total};wr('qs',ST.qs);var res=blk.querySelector('.q-result');if(res){res.style.display='block';res.innerHTML=pct>=0.6?'\uD83C\uDF89 <strong>'+ok+'/'+total+'</strong> \u2014 chapitre valid\u00e9 ! La le\u00e7on suivante est d\u00e9bloqu\u00e9e.':'\uD83D\uDCDA <strong>'+ok+'/'+total+'</strong> \u2014 il faut au moins 60 %. Relis la le\u00e7on puis clique \u00ab R\u00e9essayer \u00bb.';res.className='q-result '+(pct>=0.6?'win':'lose');}if(pct>=0.6){ST.done['ch-'+ch]=true;wr('done',ST.done);}refreshToc();var idx=STEPS.indexOf(ST.pos);var next=document.getElementById('pnav-next');var nid=STEPS[idx+1];if(next&&nid)next.disabled=!canGo(nid);};
+window.retryQ=function(ch){var blk=document.getElementById('quiz-'+ch);if(!blk)return;blk.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','good','bad');b.disabled=false;});blk.querySelectorAll('.qexpl').forEach(function(e){e.style.display='none';});var res=blk.querySelector('.q-result');if(res)res.style.display='none';};
+window.toggleToc=function(){var tc=document.getElementById('toc-sidebar');if(!tc)return;tc.classList.toggle('open');var ov=document.getElementById('mob-overlay');if(ov)ov.style.display=tc.classList.contains('open')?'block':'none';};
+window.triReset=function(){if(!confirm('R\u00e9initialiser toute ta progression TRI-24 (quiz, examen, position) ?'))return;var del=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(KEY)===0)del.push(k);}del.forEach(function(k){localStorage.removeItem(k);});location.reload();};
+document.querySelectorAll('.vembed video').forEach(function(v){function soon(){var box=v.parentElement;if(!box||box.querySelector('.vsoon'))return;v.style.display='none';var d=document.createElement('div');d.className='vsoon';d.innerHTML='<b>\uD83C\uDFAC Vid\u00e9o en cours de production</b><span>Elle sera disponible tr\u00e8s bient\u00f4t. En attendant, passe directement \u00e0 la lecture \u2461 ci-dessous \u2014 tout le contenu de la le\u00e7on y est.</span>';box.appendChild(d);}v.addEventListener('error',soon);var s=v.querySelector('source');if(s)s.addEventListener('error',soon);});
+var t0=Date.now();setInterval(function(){var s=Math.floor((Date.now()-t0)/1000);var el=document.getElementById('session-timer');if(el)el.textContent=Math.floor(s/60)+'m '+(s%60)+'s';},1000);
+var start=canGo(ST.pos)?ST.pos:'plan';goTo(start);
+})();
 </script>
-
-<div id="mod-code-data" data-code="TRI-24" style="display:none"></div>
-<div id="seuil-data" data-seuil="75" style="display:none"></div>
-</body>
-</html>
+<script>
+(function(){
+var KEY='TRI24v1_';
+var D={"A1": [3, 1, 4, 0, 2], "A1OPTS": ["Appliquer la procédure d'intervention", "Lire et interpréter les indicateurs", "Consigner l'intervention", "Choisir et utiliser les outils d'analyse", "Déterminer cause et solution"], "A2": [{"q": "Superviser, c'est d'abord :", "o": ["Observer le trafic et l'état des équipements", "Remplacer les câbles", "Redémarrer les serveurs", "Reconfigurer les IP"]}, {"q": "Un analyseur de protocole sert à :", "o": ["Suivre un indicateur sur la durée", "Voir le contenu des échanges", "Sertir les câbles", "Attribuer les IP"]}, {"q": "On choisit l'outil selon :", "o": ["La marque du switch", "La couleur des câbles", "Le besoin d'analyse", "Le nombre de prises"]}, {"q": "Le monitoring suit :", "o": ["Le contenu de chaque paquet", "La longueur des câbles", "Les ports libres", "Des indicateurs dans le temps"]}, {"q": "Un indicateur réseau est :", "o": ["La latence ou la bande passante", "Le contenu d'un paquet", "La marque du routeur", "Le nombre de prises"]}, {"q": "Comparer à l'historique permet de :", "o": ["Augmenter le débit", "Détecter les écarts", "Réinitialiser la sonde", "Changer de couche"]}, {"q": "Une latence qui grimpe :", "o": ["Améliore le débit", "Est sans signification", "Peut annoncer un problème", "Réduit les pertes"]}, {"q": "La bande passante mesure :", "o": ["Le délai de transmission", "Le nombre d'équipements", "La taille des câbles", "Le débit disponible/utilisé"]}, {"q": "On diagnostique par :", "o": ["Couche du modèle OSI/TCP-IP", "Changement total du matériel", "Essai-erreur au hasard", "Marque des équipements"]}, {"q": "La cause racine est :", "o": ["Un symptôme visible", "La cause principale", "La 1re panne de l'année", "Le câble le plus long"]}, {"q": "Avant de choisir une solution, on :", "o": ["Applique la 1re idée", "Change tout le réseau", "Évalue plusieurs options", "Ignore les autres pistes"]}, {"q": "La couche physique concerne :", "o": ["Les noms de domaine", "La latence", "Les rapports", "Les câbles et connexions"]}, {"q": "Avant d'intervenir, on établit :", "o": ["La séquence des opérations", "Un nouvel indicateur", "Un rapport final", "Une sonde"]}, {"q": "Agir sans plan :", "o": ["Accélère la résolution", "Risque d'aggraver la situation", "N'a aucun effet", "Améliore la latence"]}, {"q": "Une panne est résolue quand :", "o": ["On l'a notée", "On a changé un câble", "Le rétablissement est vérifié", "Un indicateur a bougé"]}, {"q": "On consigne l'intervention :", "o": ["De mémoire plus tard", "Sans terminologie", "En cas grave seulement", "Précisément, problèmes et solutions"]}, {"q": "Consigner sert à :", "o": ["Résoudre plus vite les pannes futures", "Augmenter la bande passante", "Remplacer le diagnostic", "Réduire la latence"]}, {"q": "La consignation utilise :", "o": ["Des termes inventés", "La terminologie appropriée", "Aucun vocabulaire", "Des couleurs seules"]}, {"q": "Isoler la cause, c'est :", "o": ["Réparer tous les symptômes d'un coup", "Changer la couche physique", "Séparer la vraie cause des symptômes", "Consigner"]}, {"q": "Appliquer la solution :", "o": ["En improvisant", "En sautant des étapes", "En changeant la cause", "Dans l'ordre prévu"]}, {"q": "La base de connaissances :", "o": ["Capitalise problèmes et solutions", "Est une sonde", "Est un analyseur", "Est un indicateur"]}, {"q": "On lit les indicateurs :", "o": ["De mémoire", "Avec exactitude", "Sans comparer", "Une fois par an"]}, {"q": "Connaître l'outil :", "o": ["Augmente la bande passante", "Remplace le diagnostic", "Évite les fausses pistes", "Réduit la latence"]}, {"q": "Après intervention, on vérifie :", "o": ["La marque du switch", "Le nombre de ports", "La couleur des câbles", "Le rétablissement et la stabilité"]}, {"q": "Capitaliser l'expérience :", "o": ["Accélère la prochaine résolution", "Efface l'historique", "Augmente le débit", "Change de couche OSI"]}], "QC": [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0], "B1": [1, 3, 0, 4, 2], "B1OPTS": ["Vérifier la couche réseau (IP)", "Vérifier la couche physique (câble, lien)", "Évaluer et choisir la solution", "Vérifier la liaison de données", "Isoler la cause racine"], "B1T": "Démarche de diagnostic par couche", "B2": [{"q": "Analyseur de protocole", "o": ["Montrer le contenu des échanges réseau", "Suivre des indicateurs dans le temps", "Sertir un câble", "Attribuer des IP"]}, {"q": "Monitoring", "o": ["Montrer le contenu des paquets", "Suivre des indicateurs dans le temps", "Migrer un serveur", "Résoudre les noms"]}, {"q": "Latence", "o": ["Le débit du lien", "Le nombre d'équipements", "Le délai de transmission", "La marque du switch"]}, {"q": "Cause racine", "o": ["Un simple symptôme", "Un type de câble", "Le débit du lien", "La cause principale d'un problème"]}, {"q": "Modèle OSI", "o": ["Diagnostiquer par couche", "Attribuer des IP", "Chiffrer le trafic", "Suivre un indicateur"]}], "B2K": [0, 1, 2, 3, 0], "B2T": "Associe chaque notion à sa fonction", "B3Q": ["Modèle en couches utilisé pour diagnostiquer (sigle) :", "Cause principale d'un problème (2 mots) :", "Indicateur = délai de transmission :", "Action de noter précisément l'intervention :", "Ce qu'on vérifie après une intervention :"], "B3V": [["osi"], ["causeracine"], ["latence"], ["consigner", "consignation"], ["retablissement", "rétablissement"]], "B4": [{"q": "Tous les postes d'une salle perdent le réseau d'un coup. On vérifie d'abord :", "o": ["La couche physique (câble/lien de la salle)", "Le rapport d'intervention", "La base de connaissances", "Le débit moyen du mois"]}, {"q": "La latence du lien a doublé depuis ce matin. Bon réflexe :", "o": ["Remplacer tous les câbles", "Comparer à l'historique pour confirmer l'écart", "Changer de modèle OSI", "Consigner sans vérifier"]}, {"q": "Plusieurs symptômes, une seule origine. On cherche :", "o": ["Le câble le plus long", "Le débit maximal", "La cause racine", "Le nombre de ports"]}, {"q": "Avant de réparer une panne complexe, on :", "o": ["Remplace le serveur", "Change tous les indicateurs", "Consigne d'abord la solution", "Établit la séquence d'intervention"]}, {"q": "Après réparation, le service remarche puis retombe. La panne est :", "o": ["Non résolue (rétablissement non confirmé)", "Résolue définitivement", "Sans cause racine", "Déjà consignée donc close"]}], "B4K": [0, 1, 2, 3, 0]};
+function nrm(s){return (s||'').toLowerCase().replace(/[\s\u00a0-]+/g,'');}
+function gv(id){var e=document.getElementById(id);return e?e.value:'';}
+function mark(id,ok){var m=document.getElementById('m-'+id);if(m){m.textContent=ok?'\u2713':'\u2717';m.className='exmark '+(ok?'ok':'ko');}}
+function chkTxt(i){var v=nrm(gv('b3-'+i));var ok=D.B3V[i].indexOf(v)>=0;mark('b3-'+i,ok);var an=document.getElementById('a-b3-'+i);if(an)an.classList.toggle('show',!ok);return ok;}
+window.exValidate=function(){
+  var a=0,b=0;
+  D.A1.forEach(function(c,i){var ok=parseInt(gv('a1-'+i),10)===c;mark('a1-'+i,ok);if(ok)a+=1;});
+  D.QC.forEach(function(c,i){var ok=parseInt(gv('a2-'+i),10)===c;mark('a2-'+i,ok);if(ok)a+=1;});
+  D.B1.forEach(function(c,i){var ok=parseInt(gv('b1-'+i),10)===c;mark('b1-'+i,ok);if(ok)b+=3;});
+  D.B2K.forEach(function(c,i){var ok=parseInt(gv('b2-'+i),10)===c;mark('b2-'+i,ok);if(ok)b+=3;});
+  for(var i=0;i<D.B3V.length;i++){if(chkTxt(i))b+=4;}
+  D.B4K.forEach(function(c,i){var ok=parseInt(gv('b4-'+i),10)===c;mark('b4-'+i,ok);if(ok)b+=4;});
+  var t=a+b;
+  document.getElementById('s-a').textContent=a+' / 30';
+  document.getElementById('s-b').textContent=b+' / 70';
+  document.getElementById('s-t').textContent=t+' / 100';
+  document.getElementById('g-a').style.width=(a/30*100)+'%';
+  document.getElementById('g-b').style.width=(b/70*100)+'%';
+  document.getElementById('g-t').style.width=t+'%';
+  var res=document.getElementById('ex-result');res.style.display='block';var pass=t>=75;
+  res.className='q-result '+(pass?'win':'lose');
+  res.innerHTML=pass?'\uD83C\uDF93 <strong>'+t+'/100 \u2014 Examen blanc r\u00e9ussi !</strong> (seuil 75 %)':'\uD83D\uDCDA <strong>'+t+'/100</strong> \u2014 il faut au moins 75/100. Revois \u00ab \u2605 L\u2019essentiel \u00e0 retenir \u00bb puis recommence.';
+  try{localStorage.setItem(KEY+'exam',JSON.stringify({score:t,passed:pass,date:new Date().toISOString()}));}catch(e){}
+};
+window.exReset=function(){if(!confirm('Effacer toutes tes r\u00e9ponses de l\u2019examen ?'))return;document.querySelectorAll('#examen .exin').forEach(function(e){e.value='';});document.querySelectorAll('#examen .exsel').forEach(function(e){e.value='-1';});document.querySelectorAll('#examen .exmark').forEach(function(e){e.textContent='';e.className='exmark';});document.querySelectorAll('#examen .exans').forEach(function(e){e.classList.remove('show');});['s-a','s-b','s-t'].forEach(function(i,k){document.getElementById(i).textContent='\u2014 / '+[30,70,100][k];});['g-a','g-b','g-t'].forEach(function(i){document.getElementById(i).style.width='0';});var res=document.getElementById('ex-result');res.style.display='none';try{localStorage.removeItem(KEY+'exam');}catch(e){}};
+function buildPrint(blank){
+  var w=window.open('','_blank');if(!w)return alert('Autorise les pop-ups pour imprimer.');
+  var nom=gv('ex-nom'),pre=gv('ex-prenom'),dat=gv('ex-date');
+  var d='<h1 style="font-size:18px">Canado Technique \u2014 TRI-24 \u00b7 Examen blanc \u2014 Supervision & dépannage</h1>';
+  d+='<p>Nom : <b>'+(blank?'________________':(nom||'________'))+'</b> \u00b7 Pr\u00e9nom : <b>'+(blank?'________________':(pre||'________'))+'</b> \u00b7 Date : <b>'+(blank?'____ / ____ / ______':(dat||'________'))+'</b></p>';
+  d+='<p><i>Total 100 pts \u00b7 R\u00e9ussite \u2265 75 % \u00b7 Dur\u00e9e 75 min</i></p><hr>';
+  function line(q,ans,ok){d+='<div style="margin:7px 0"><div>'+q+'</div>';if(blank){d+='<div style="border-bottom:1px solid #999;height:16px;width:70%"></div>';}else{d+='<div>R\u00e9ponse \u00e9l\u00e8ve : <b>'+(ans||'\u2014')+'</b>'+(ok===null?'':(ok?' \u2713':' \u2717'))+'</div>';}d+='</div>';}
+  d+='<h2 style="font-size:14px">Partie A \u2014 Th\u00e9orie (30 pts)</h2>';
+  d+='<h3 style="font-size:12px">A1. Ordre (5 pts)</h3><p style="font-size:10px"><i>Options : '+D.A1OPTS.join(' \u00b7 ')+'</i></p>';
+  for(var i=0;i<D.A1.length;i++){var v=gv('a1-'+i);line((i+1)+'. ___',blank?'':(v>=0&&D.A1OPTS[v]?D.A1OPTS[v]:'\u2014'),blank?null:(parseInt(v,10)===D.A1[i]));}
+  d+='<h3 style="font-size:12px">A2. Quiz g\u00e9n\u00e9ral (25 pts)</h3>';
+  D.A2.forEach(function(q,i){var v=gv('a2-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===D.QC[i]));});
+  d+='<h2 style="font-size:14px">Partie B \u2014 Pratique (70 pts)</h2>';
+  d+='<h3 style="font-size:12px">B1. '+D.B1T+' (15 pts)</h3><p style="font-size:10px"><i>Options : '+D.B1OPTS.join(' \u00b7 ')+'</i></p>';
+  for(var i=0;i<D.B1.length;i++){var v=gv('b1-'+i);line((i+1)+'. ___',blank?'':(v>=0&&D.B1OPTS[v]?D.B1OPTS[v]:'\u2014'),blank?null:(parseInt(v,10)===D.B1[i]));}
+  d+='<h3 style="font-size:12px">B2. '+D.B2T+' (15 pts)</h3>';
+  D.B2.forEach(function(q,i){var v=gv('b2-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===D.B2K[i]));});
+  d+='<h3 style="font-size:12px">B3. \u00c9tude de cas (20 pts)</h3>';
+  D.B3Q.forEach(function(q,i){var v=gv('b3-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(D.B3V[i].indexOf(nrm(v))>=0));});
+  d+='<h3 style="font-size:12px">B4. Diagnostic (20 pts)</h3>';
+  D.B4.forEach(function(q,i){var v=gv('b4-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===D.B4K[i]));});
+  if(!blank){d+='<hr><p><b>Score : '+document.getElementById('s-t').textContent+'</b></p>';}
+  var END='</bo'+'dy></ht'+'ml>';
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-24 \u2014 Examen</title><style>body{font-family:Arial,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}</style></head><body>'+d+END);
+  w.document.close();setTimeout(function(){w.print();},300);
+}
+window.exPrint=function(){buildPrint(false);};window.exPrintBlank=function(){buildPrint(true);};
+})();
+</script></body></html>

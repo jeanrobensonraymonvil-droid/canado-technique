@@ -1,565 +1,505 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TRI-20 — Configuration des serveurs</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRI-20 — Configuration de serveurs · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700;cursor:pointer;border:none}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
 
+/* ===== Standard v10 ===== */
+.step-lbl{display:inline-block;font-family:var(--fD);font-weight:800;font-size:.72rem;letter-spacing:.04em;color:var(--red);background:rgba(232,25,44,.08);border:1px solid rgba(232,25,44,.25);border-radius:99px;padding:.3rem .85rem;margin:1.1rem 0 .7rem}
+.lpl{background:linear-gradient(135deg,#0B1525,#13233c);border-radius:16px;padding:1rem 1.1rem;margin:.9rem 0 1.2rem;color:#dfe8fb;border:1px solid rgba(255,255,255,.08)}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
+.lpl-h{font-family:var(--fD);font-weight:800;font-size:.72rem;color:#F5C518;margin-bottom:.35rem}
+.lpl ul{margin:0;padding-left:1.05rem;font-size:.76rem;line-height:1.55}
+.lpl p{margin:0;font-size:.76rem;line-height:1.55}
+.pnav{position:sticky;top:8px;z-index:50;display:flex;align-items:center;gap:.7rem;background:#0B1525;color:#fff;border-radius:14px;padding:.55rem .7rem;margin:.4rem 0 1rem;box-shadow:0 8px 24px rgba(4,13,26,.35)}
+.pnav-btn{font-family:var(--fD);font-weight:800;font-size:.72rem;background:var(--red);color:#fff;border:0;border-radius:9px;padding:.5rem .8rem;cursor:pointer;white-space:nowrap}
+.pnav-btn[disabled]{opacity:.35;cursor:not-allowed}
+.pnav-mid{flex:1;min-width:0;text-align:center}
+.pnav-lbl{font-size:.66rem;color:#c9d6f2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnav-bar{height:5px;background:rgba(255,255,255,.12);border-radius:99px;margin-top:.3rem;overflow:hidden}
+.pnav-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:99px;transition:width .3s}
+body.player .chapter{display:none}
+body.player .chapter.active{display:block}
+body.player #plan{display:none}
+body.player #plan.active{display:block}
+.toc-item.locked{opacity:.38;pointer-events:none}
+.toc-item.done .toc-dot{background:#19c37d}
+.toc-reset{margin-top:.9rem;padding-top:.7rem;border-top:1px solid rgba(0,0,0,.08);font-size:.68rem;color:#8a93a6;cursor:pointer}
+.toc-reset:hover{color:var(--red)}
+.vsoon{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#0B1525,#16263f);color:#c9d6f2;text-align:center;padding:1rem}
+.vsoon b{font-family:var(--fD);font-size:.9rem;color:#F5C518}
+.vsoon span{font-size:.76rem;line-height:1.5;max-width:420px}
+.kterm{background:#fff;border:1px solid rgba(0,0,0,.08);border-left:4px solid #1B3A8C;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.kterm-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#1B3A8C;margin-bottom:.5rem}
+.kterm .kt-row{margin-bottom:.3rem;font-size:.78rem;line-height:1.6}
+.kterm .kt-row b{color:#0B1525}
+.bonas{background:linear-gradient(135deg,#FFF8E6,#FFF3D1);border:1px solid rgba(245,197,24,.45);border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.bonas-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#8a6400;margin-bottom:.45rem}
+.bonas ul{margin:0;padding-left:1.1rem;font-size:.78rem;line-height:1.6}
+.labbox{background:#F0FAF5;border:1px solid rgba(0,160,102,.35);border-left:4px solid #00A066;border-radius:12px;padding:.9rem 1.1rem;margin:1rem 0}
+.labbox-h{font-family:var(--fD);font-weight:800;font-size:.78rem;color:#00754a;margin-bottom:.4rem}
+.labbox p,.labbox ul{font-size:.77rem;line-height:1.6;margin:.2rem 0}
+.labbox ul{padding-left:1.1rem}
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-head{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-head h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(245,197,24,.55);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid rgba(245,197,24,.1)}
+.q-item:last-child{border-bottom:none}
+.q-num{font-size:.66rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.55}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%;transition:all .15s}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.03)}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel{outline:2px solid #1B3A8C}.qopt.sel .qletter{background:var(--blue);color:#fff}
+.qopt.good{background:#E9F9F1;border-color:#19c37d}.qopt.good .qletter{background:#19c37d;color:#fff}
+.qopt.bad{background:#FDEEEF;border-color:#E8192C}.qopt.bad .qletter{background:#E8192C;color:#fff}
+.qexpl{display:none;margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.6;background:#F2F6FF;border-left:3px solid #1B3A8C;color:#1a2f52}
+.q-result{display:none;margin-top:1rem;padding:.85rem 1rem;border-radius:11px;font-size:.82rem}
+.q-result.win{background:#E9F9F1;border:1px solid #19c37d;color:#0a6b45}
+.q-result.lose{background:#FDEEEF;border:1px solid #E8192C;color:#8d1420}
+.q-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem}
+.q-btn{font-family:var(--fD);font-weight:800;font-size:.74rem;border:0;border-radius:9px;padding:.55rem 1rem;cursor:pointer;background:var(--red);color:#fff}
+.q-btn.alt{background:#e8ecf4;color:#0B1525}
+.exid{display:flex;gap:1rem;flex-wrap:wrap;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.8rem 1rem;margin:1rem 0;font-size:.78rem}
+.exid label{display:flex;align-items:center;gap:.4rem}
+.exid input{border:1px solid #c8d0de;border-radius:8px;padding:.35rem .55rem;font-size:.78rem}
+.exam-part{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:1.1rem 1.2rem;margin:1.1rem 0}
+.exam-part h3{margin:.2rem 0 .8rem;font-family:var(--fD);font-size:1rem}
+.exam-part h4{margin:1.2rem 0 .6rem;font-family:var(--fD);font-size:.82rem;color:#1B3A8C}
+.expts{font-size:.66rem;background:#1B3A8C;color:#fff;border-radius:99px;padding:.15rem .55rem;margin-left:.4rem;font-weight:700}
+.exrow{display:flex;align-items:center;gap:.55rem;margin:.4rem 0}
+.exno{width:22px;height:22px;border-radius:50%;background:#0B1525;color:#fff;font-size:.66rem;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.exsel,.exin{border:1px solid #c8d0de;border-radius:8px;padding:.42rem .6rem;font-size:.78rem;max-width:100%}
+.exin{width:min(440px,100%);font-family:ui-monospace,Menlo,monospace}
+.exq{margin:.75rem 0}.exq-t{font-size:.79rem;margin-bottom:.3rem;line-height:1.5}
+.exmark{margin-left:.5rem;font-weight:800}.exmark.ok{color:#0a9d5c}.exmark.ko{color:#E8192C}
+.exans{display:none;font-size:.72rem;color:#0a6b45;background:#E9F9F1;border-radius:8px;padding:.3rem .6rem;margin-top:.3rem;width:fit-content;max-width:100%}
+.exans.show{display:block}
+.exgauges{display:grid;gap:.55rem;background:#0B1525;border-radius:14px;padding:1rem 1.1rem;margin:1.2rem 0;color:#fff}
+.exg{display:grid;grid-template-columns:70px 1fr 70px;align-items:center;gap:.7rem;font-size:.74rem}
+.exg-bar{height:8px;background:rgba(255,255,255,.14);border-radius:99px;overflow:hidden}
+.exg-fill{height:100%;width:0;background:linear-gradient(90deg,#19c37d,#7ee2b0);border-radius:99px;transition:width .4s}
+.complete-banner{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner.show{display:block}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.8);font-size:.83rem}
+@media(max-width:600px){.pnav{gap:.45rem;padding:.45rem .55rem}.pnav-btn{font-size:.64rem;padding:.45rem .55rem}.exbtn{width:100%;text-align:center}.exam-part{padding:.85rem .8rem}}
 </style>
 </head>
-<body>
-<div class="mod-header">
+<body><div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('../../../assets/images/slide-tri-20.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">⚙️ Module TRI-20 · 1ère Année</div>
-    <h1>Configuration des <em>serveurs</em></h1>
+    <div class="mod-tag">🌐 TRI-20 · 2ème Année · Compétence particulière</div>
+    <h1>Configuration de <em>serveurs</em></h1>
+    <p class="mod-desc">Objectif de comportement · 75 heures — Exploiter les technologies et les services propres à Internet dans un réseau : résolution de noms (WINS/DNS), DHCP, IPv6, accès distant et VPN, NPS/RADIUS, protection d'accès réseau et système de fichiers distribué (DFS).</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>75 heures</strong></div>
+      <div class="mod-meta-item">⏱ <strong>75 heures</strong></div>
       <div class="mod-meta-item">🎯 Seuil : <strong>75%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo services (oblig.)</strong></div><div class="mod-meta-item">🎭 Démo : <strong>Services AD/DNS/DHCP</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport configuration</strong></div>
+      <div class="mod-meta-item">📚 <strong>6 chapitres</strong></div>
+      <div class="mod-meta-item"><div class="mod-meta-item">🌐 <strong>Services Internet</strong></div></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 6 chapitres</span></div>
   </div>
-</div><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>DHCP Server — Configuration avancée</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>DNS Server — Zone et enregistrements</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Serveur de fichiers et partages</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Services web et messagerie</span></div>
-  <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bdr)"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--g500);margin-bottom:.4rem">Évaluations</div><div style="font-size:.75rem;color:#FF9B50;padding:.3rem .5rem;background:rgba(200,87,10,.06);border-radius:8px;border:1px solid rgba(200,87,10,.15);margin-bottom:.3rem">🔬 Labo configuration services</div><div style="font-size:.75rem;color:#4DDADA;padding:.3rem .5rem;background:rgba(0,104,104,.05);border-radius:8px;border:1px solid rgba(0,104,104,.12);margin-bottom:.3rem">🎭 Démo services AD/DNS/DHCP</div><div style="font-size:.75rem;color:#C47BE8;padding:.3rem .5rem;background:rgba(107,45,142,.05);border-radius:8px;border:1px solid rgba(107,45,142,.1)">📝 Rapport de configuration</div></div>
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>DHCP Server — Configuration avancée</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">Étendue · Options · Réservations · Failover</span></div>
-    </div>
+</div><div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong>&nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong><div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div></div><div class="wrap"><div class="layout"><div class="toc" id="toc-sidebar"><div class="toc-title">📋 Sommaire TRI-20</div><div class="toc-item" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div><div class="toc-sep">Contenu du module</div><div class="toc-item" onclick="goTo('ch-1')" id="ti-ch-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Analyser la demande</span></div><div class="toc-item" onclick="goTo('ch-2')" id="ti-ch-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Résolution de noms : WINS &amp; DNS</span></div><div class="toc-item" onclick="goTo('ch-3')" id="ti-ch-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Protocole DHCP</span></div><div class="toc-item" onclick="goTo('ch-4')" id="ti-ch-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Protocole IPv6</span></div><div class="toc-item" onclick="goTo('ch-5')" id="ti-ch-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Accès distant, VPN, NPS &amp; protection d&#x27;accès</span></div><div class="toc-item" onclick="goTo('ch-6')" id="ti-ch-6"><div class="toc-dot"></div><span class="toc-num">06</span><span>Système de fichiers distribué (DFS)</span></div><div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div><div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div><div class="toc-reset" onclick="triReset()" title="Effacer quiz, examen et position">↺ Réinitialiser ma progression</div></div><div id="main-content"><div class="pnav" id="pnav"><button class="pnav-btn" id="pnav-prev" onclick="stepMove(-1)">← Précédent</button><div class="pnav-mid"><div class="pnav-lbl" id="pnav-lbl">—</div><div class="pnav-bar"><div class="pnav-fill" id="pnav-fill"></div></div></div><button class="pnav-btn" id="pnav-next" onclick="stepMove(1)">Suivant →</button></div><div class="pc" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">TRI-20 · Configuration de serveurs · Programme TRI</div></div></div>
+<div class="pc-body"><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module TRI-20</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-PLAN" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-PLAN.mp4" type="video/mp4"></video></div></div>
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">TRI-20</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">75 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence particulière</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">TRI-18</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Seuil</div><div class="pc-id-val">75 %</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — DHCP Server Windows — Configuration avancée</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Installation du rôle DHCP (3 min)</strong> — Add Role → DHCP Server → Authorize in AD (obligatoire si DC présent).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Créer une étendue (scope) (5 min)</strong> — Plage d'adresses, masque, exclusions (IPs réservées pour serveurs/imprimantes), durée du bail.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Options DHCP (4 min)</strong> — Option 003 (passerelle), Option 006 (DNS), Option 015 (suffixe DNS), Option 066 (serveur TFTP pour les IP phones).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Réservations et haute disponibilité (3 min)</strong> — Réservation par adresse MAC pour les imprimantes. DHCP Failover entre deux serveurs DHCP.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="content-section"><h3>1.1 Configuration DHCP Server Windows — Paramètres essentiels</h3><table class="data-table"><thead><tr><th>Paramètre</th><th>Valeur recommandée</th><th>Description</th></tr></thead><tbody><tr><td>Plage d'adresses</td><td>192.168.10.10 - 192.168.10.200</td><td>Laisser .1-.9 pour équipements fixes, .201-.254 pour autres réservations</td></tr><tr><td>Masque</td><td>255.255.255.0</td><td>Ou selon le plan d'adressage défini</td></tr><tr><td>Durée du bail</td><td>8 jours (bureaux), 2h (Wi-Fi invités)</td><td>Bail long = peu de renouvellements. Court = IPs récupérées vite</td></tr><tr><td>Option 003 — Passerelle</td><td>192.168.10.1</td><td>Adresse du routeur pour ce VLAN</td></tr><tr><td>Option 006 — DNS</td><td>192.168.10.2 (DC/DNS), puis 8.8.8.8</td><td>DNS interne en priorité, DNS public en secours</td></tr><tr><td>Option 015 — Suffixe DNS</td><td>canado-technique.local</td><td>Résolution des noms courts en noms FQDN</td></tr><tr><td>Exclusions</td><td>192.168.10.1 - 192.168.10.9</td><td>Serveurs et équipements à IP fixe</td></tr></tbody></table><div class="info-box tip"><span class="info-box-label">💡 Règle d'or DHCP</span>Toujours exclure au moins .1 à .20 de la plage DHCP pour les serveurs, switches, routeurs, imprimantes réseau. Ces équipements doivent avoir des IPs fixes pour être toujours accessibles à la même adresse. Les IPs fixes ne doivent JAMAIS être dans la plage DHCP.</div></div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">L'option DHCP 003 configure...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Le serveur DNS primaire</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>La durée du bail</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>La passerelle par défaut</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Le serveur WINS</button></div>
-    <div class="quiz-expl" id="expl-q0_1">Option DHCP 003 = Default Router (passerelle par défaut). Les clients l'utilisent pour accéder aux réseaux au-delà de leur sous-réseau local. Option 006 = DNS. Option 015 = Suffixe de domaine DNS.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Pourquoi autoriser (authorize) un serveur DHCP dans Active Directory ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Pour activer la licence du serveur</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Pour éviter qu'un serveur DHCP non autorisé distribue des IPs incorrectes dans un domaine AD</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Pour configurer les options DHCP avancées</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Pour activer la haute disponibilité DHCP</button></div>
-    <div class="quiz-expl" id="expl-q1_1">Dans un domaine AD, un serveur DHCP doit être autorisé pour fonctionner. Cela empêche des serveurs DHCP malveillants ou accidentels (rogue DHCP) de distribuer de mauvaises configurations IP aux clients.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Pourquoi définir une durée de bail courte (2h) pour le Wi-Fi invité ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Pour économiser les licences DHCP</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Pour récupérer rapidement les IPs des visiteurs qui partent, évitant l'épuisement de la plage</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Pour plus de sécurité</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Pour accélérer la connexion Wi-Fi</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Les visiteurs arrivent et repartent rapidement. Avec un bail de 8 jours, un visiteur qui part garde son IP réservée 8 jours = épuisement rapide de la plage. Un bail de 2h libère les IPs des visiteurs partis dans les 2 heures.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">La fonctionnalité DHCP Failover permet de...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Augmenter la vitesse de distribution des IPs</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Avoir deux serveurs DHCP qui se répliquent mutuellement pour la haute disponibilité</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Distribuer des IPs à distance via internet</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Configurer le DHCP depuis les routeurs Cisco</button></div>
-    <div class="quiz-expl" id="expl-q3_1">DHCP Failover (Windows Server 2012+) réplique la base de données DHCP entre deux serveurs. Si l'un tombe en panne, l'autre continue à distribuer les IPs. Il existe deux modes: Hot Standby (un actif, un passif) et Load Balance (les deux actifs, répartition 50/50).</div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Exploiter les technologies et les services propres à Internet dans un réseau.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Après l'installation d'un serveur (TRI-18), ce module déploie les <strong>services réseau et Internet</strong> qui font tourner une infrastructure d'entreprise : résolution de noms (<strong>WINS</strong> et DNS), <strong>DHCP</strong>, <strong>IPv6</strong>, <strong>accès distant et VPN</strong>, serveur de stratégies réseau (<strong>NPS/RADIUS</strong>), protection d'accès réseau et système de fichiers distribué (<strong>DFS</strong>).</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4><ol><li>Analyser la demande.</li><li>Implanter la résolution de noms NetBIOS à l'aide du service WINS.</li><li>Implanter le protocole DHCP.</li><li>Mettre en œuvre le protocole IPv6.</li><li>Configurer l'accès réseau distant et le routage.</li><li>Implanter le service de rôle Serveur NPS (Network Policy Server).</li><li>Mettre en œuvre la protection d'accès réseau.</li><li>Déployer un système de fichiers DFS (Distributed File System).</li></ol></div>
+  <div class="pc-sec"><h4>Critères généraux de performance</h4><ul><li>Mise en œuvre et paramétrage corrects des services.</li><li>Respect des normes de l'entreprise en matière de sécurité.</li><li>Interprétation juste de l'information technique.</li><li>Utilisation correcte des utilitaires de dépannage.</li><li>Utilisation appropriée de la terminologie française et anglaise.</li></ul></div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4><div class="pc-cols">
+    <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Mises en situation dans des environnements informatiques variés · normes de sécurité et procédures des entreprises · les logiciels et utilitaires à installer · un ordinateur jouant le rôle de serveur · une station de travail · un lien Internet.</div>
+    <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Plans de réseaux · documents techniques · équipement et matériel nécessaires.</div>
   </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
-  </div>
+  <div class="pc-sec"><h4>Découpage en leçons (75 h)</h4><table class="dtable"><thead><tr><th>N°</th><th>Leçon</th><th>Durée</th><th>Élément(s)</th></tr></thead><tbody><tr><td>1</td><td>Analyser la demande</td><td>8 h</td><td>1</td></tr><tr><td>2</td><td>Résolution de noms : WINS & intégration DNS</td><td>10 h</td><td>2</td></tr><tr><td>3</td><td>Protocole DHCP</td><td>12 h</td><td>3</td></tr><tr><td>4</td><td>Protocole IPv6</td><td>10 h</td><td>4</td></tr><tr><td>5</td><td>Accès distant, VPN, NPS/RADIUS & protection d'accès</td><td>20 h</td><td>5-7</td></tr><tr><td>6</td><td>Système de fichiers distribué (DFS)</td><td>15 h</td><td>8</td></tr></tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4><p>Module à objectif de <strong>comportement</strong> : épreuve pratique sur serveur.</p><ul><li><strong>Évaluation formative</strong> — quiz, configurations guidées (DHCP, VPN, DFS).</li><li><strong>Évaluation de sanction</strong> — déployer et vérifier un ensemble de services réseau (résolution de noms, DHCP, accès distant, DFS) conformes aux normes de sécurité.</li><li><strong>Seuil de réussite</strong> — 75 % (conforme au référentiel).</li></ul></div>
+  <div class="pc-sec"><h4>Références</h4><ul><li>Documentation Microsoft Windows Server (services réseau).</li><li>Manuels des fabricants ; Éditions ENI, Pearson Education.</li></ul></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>DNS Server — Zones et enregistrements</h2>
-      <div class="chapter-meta"><span>🕐 20 heures</span><span class="chapter-badge">Types de zones · Enregistrements · Forwarders</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — DNS Server — Zones et enregistrements</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Types de zones DNS (4 min)</strong> — Zone primaire (maître, modifiable), zone secondaire (copie en lecture seule), zone de stub. Forward lookup zone vs Reverse lookup zone.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Les enregistrements DNS essentiels (6 min)</strong> — A (IPv4), AAAA (IPv6), MX (mail), CNAME (alias), PTR (résolution inverse), SRV (service records utilisés par AD), SOA (Start of Authority).</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>DNS conditionnel et forwarders (3 min)</strong> — Forwarder vers 8.8.8.8 pour les noms internet. Conditional forwarder pour la résolution vers d'autres domaines internes.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Dépannage DNS (2 min)</strong> — nslookup, resolve-dnsname (PowerShell), dns debugging logs.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="content-section"><h3>2.1 Enregistrements DNS essentiels</h3><table class="data-table"><thead><tr><th>Type</th><th>Fonction</th><th>Exemple</th></tr></thead><tbody><tr><td>A</td><td>Associe un nom à une adresse IPv4</td><td>www.canado-technique.ht → 200.1.1.10</td></tr><tr><td>AAAA</td><td>Associe un nom à une adresse IPv6</td><td>www.canado-technique.ht → 2001:db8::1</td></tr><tr><td>MX</td><td>Définit le serveur de messagerie du domaine</td><td>canado-technique.ht MX → mail.canado-technique.ht (priorité 10)</td></tr><tr><td>CNAME</td><td>Alias — pointe vers un autre nom DNS</td><td>ftp.canado-technique.ht → www.canado-technique.ht</td></tr><tr><td>PTR</td><td>Résolution inverse — IP vers nom (rDNS)</td><td>200.1.1.10 → www.canado-technique.ht</td></tr><tr><td>SRV</td><td>Localisation de services (utilisé par AD)</td><td>_ldap._tcp.canado-technique.local → DC01</td></tr><tr><td>SOA</td><td>Informations d'autorité de la zone</td><td>Serveur primaire, email admin, numéros de série</td></tr><tr><td>NS</td><td>Serveurs de noms faisant autorité pour la zone</td><td>canado-technique.ht NS → ns1.fournisseurDNS.com</td></tr></tbody></table></div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="2">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Quel enregistrement DNS doit être créé pour permettre la réception d'emails vers @canado-technique.ht ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Enregistrement A</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Enregistrement CNAME</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Enregistrement MX</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Enregistrement PTR</button></div>
-    <div class="quiz-expl" id="expl-q0_2">L'enregistrement MX (Mail Exchanger) indique quel serveur accepte les emails pour un domaine. Sans MX, personne ne peut envoyer d'email à @canado-technique.ht. Le MX pointe vers le nom du serveur de messagerie (ex: mail.canado-technique.ht) qui a lui-même un enregistrement A.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Un enregistrement CNAME est utilisé pour...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Créer une adresse IP secondaire</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Créer un alias pointant vers un autre nom DNS (pas une IP directement)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Configurer la résolution inverse</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Définir le serveur de messagerie</button></div>
-    <div class="quiz-expl" id="expl-q1_2">CNAME (Canonical Name) crée un alias d'un nom vers un autre nom. Exemple: ftp.canado-technique.ht CNAME www.canado-technique.ht signifie que ftp.canado-technique.ht résout vers la même IP que www. Utile pour simplifier la maintenance: changer l'IP de www suffit pour mettre à jour ftp aussi.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="0">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Qu'est-ce qu'un "forwarder DNS" ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Un serveur DNS qui transfère les requêtes inconnues vers un serveur DNS public</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Un type d'enregistrement DNS</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Une réplication DNS entre zones</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Un service Windows uniquement</button></div>
-    <div class="quiz-expl" id="expl-q2_2">Un forwarder est un serveur DNS externe (8.8.8.8, 1.1.1.1) vers lequel votre serveur DNS interne transmet les requêtes pour les noms qu'il ne connaît pas (ex: google.com). Sans forwarder, votre serveur DNS interne ne résout que les noms du domaine local.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">La commande nslookup sert à...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Configurer les serveurs DNS</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Tester la résolution DNS — convertir un nom en IP ou diagnostiquer les enregistrements</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Scanner le réseau pour les serveurs DNS</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Sauvegarder la configuration DNS</button></div>
-    <div class="quiz-expl" id="expl-q3_2">nslookup est l'outil de diagnostic DNS universel. nslookup google.com vérifie si le DNS résout google.com. nslookup -type=MX canado-technique.ht affiche les enregistrements MX. En cas de problème de navigation web, nslookup est le premier outil à utiliser.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
-  </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+<div id="lecons">
+<div class="lp-intro"><h2>📐 Plans de leçon</h2><p>Six leçons couvrant les 75 heures et les huit éléments de la compétence. Cliquez pour déplier.</p></div>
+<div class="lp" id="lp-1">
+<div class="lp-head" onclick="toggleLp(1)"><div class="lp-no">1</div><div class="lp-htxt"><h3>Analyser la demande</h3><div class="lp-meta">Élément 1</div></div><span class="lp-dur">8 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Analyser l'objet et la complexité de la demande, déterminer les services à offrir et les actions à entreprendre.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>TRI-18.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Analyse de l'objet et de la complexité de la demande.</li><li>Nature des services à offrir ; actions à entreprendre.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p1">Exploration</span><span class="lp-phase-txt">De quels services réseau cette entreprise a-t-elle besoin ?</span></div><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Cartographier services et priorités.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Plans de réseaux, chapitre 1.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 1.</p></div>
 </div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Serveur de fichiers et partages</h2>
-      <div class="chapter-meta"><span>🕐 19 heures</span><span class="chapter-badge">DFS · NTFS · Quotas · VSS · Audit</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Serveur de fichiers — Partages et permissions NTFS</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>DFS (Distributed File System) (3 min)</strong> — Namespace DFS pour unifier les partages (\\canado-technique.ht\data → accès transparent même si les données changent de serveur).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Créer un partage (4 min)</strong> — New Share Wizard, permissions de partage vs permissions NTFS. Règle: permissions de partage = Contrôle total pour les groupes; utiliser NTFS pour le contrôle fin.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Quotas de disque (3 min)</strong> — Limiter l'espace utilisé par département. File Server Resource Manager (FSRM).</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>VSS — Volume Shadow Copy (3 min)</strong> — Snapshots automatiques des fichiers pour la récupération en libre-service. Configurer les snapshots horaires.</div></div><div class="video-guide-item"><div class="video-guide-bullet">5</div><div class="video-guide-text"><strong>Audit des accès (2 min)</strong> — Journaliser qui accède à quels fichiers. Audit policies.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="content-section"><h3>3.1 Permissions NTFS vs permissions de partage — La règle fondamentale</h3><table class="data-table"><thead><tr><th>Type</th><th>S'applique</th><th>Contrôle</th><th>Recommandation</th></tr></thead><tbody><tr><td>Permissions de partage</td><td>Accès réseau uniquement (via UNC \\serveur\partage)</td><td>Contrôle total / Modifier / Lire</td><td>Donner Contrôle total aux groupes concernés — laisser NTFS tout contrôler</td></tr><tr><td>Permissions NTFS</td><td>Accès local ET réseau</td><td>Toutes les permissions NTFS (lecture, écriture, suppression, etc.)</td><td>Configurer précisément par groupe ici</td></tr><tr><td>Permission effective</td><td>Intersection des deux</td><td>La plus restrictive des deux s'applique</td><td>Toujours vérifier les permissions effectives (onglet Avancé → Accès effectif)</td></tr></tbody></table><div class="info-box warn"><span class="info-box-label">⚠️ La règle des permissions</span>Les permissions effectives = la plus restrictive entre partage et NTFS. Si partage = Contrôle total et NTFS = Lecture seule → l'utilisateur ne peut que LIRE. Bonne pratique: partage = Contrôle total pour Tout le monde (ou les groupes concernés), puis contrôler finement avec NTFS.</div></div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="0">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi recommande-t-on de mettre les permissions de partage à "Contrôle total" pour le groupe, puis de contrôler via NTFS ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Pour simplifier la configuration côté partage et tout gérer précisément via NTFS</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Pour donner accès total à tout le monde</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>C'est une obligation légale</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Les permissions de partage ne fonctionnent pas sur Windows Server 2019</button></div>
-    <div class="quiz-expl" id="expl-q0_3">C'est la bonne pratique Microsoft: les permissions de partage ne s'appliquent qu'aux accès réseau, pas locaux. NTFS s'applique aux deux. En tout contrôler via NTFS, on a une politique cohérente accès local/réseau. Simplifier le partage évite les confusions.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">VSS (Volume Shadow Copy Service) permet aux utilisateurs de...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Voir les fichiers cachés</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Récupérer des versions précédentes de leurs fichiers sans intervention IT</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Partager des fichiers avec d'autres entreprises</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Compresser automatiquement les fichiers anciens</button></div>
-    <div class="quiz-expl" id="expl-q1_3">VSS crée des snapshots automatiques des fichiers (toutes les heures, tous les jours). Les utilisateurs peuvent cliquer droit → Restaurer les versions précédentes pour récupérer eux-mêmes un fichier supprimé ou écrasé par erreur. Réduit considérablement les appels au helpdesk.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">DFS (Distributed File System) Namespace sert à...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Accélérer les transferts de fichiers</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Créer un point d'accès unifié (\\domaine\data) indépendant de la localisation physique des données</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Chiffrer les données du serveur de fichiers</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Faire des sauvegardes automatiques</button></div>
-    <div class="quiz-expl" id="expl-q2_3">DFS Namespace crée un arbre de noms logique (\\canado-technique.ht\data) qui peut pointer vers des serveurs de fichiers physiques différents. Si on migre les données vers un nouveau serveur, on change juste la cible DFS — les utilisateurs continuent à utiliser le même chemin.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Que journalise l'audit d'accès aux fichiers sur un serveur Windows ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Uniquement les suppressions de fichiers</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Qui a accédé à quoi, quand, depuis quel poste, et quel type d'accès (lecture, écriture, suppression)</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Uniquement les accès refusés</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Les mises à jour du système</button></div>
-    <div class="quiz-expl" id="expl-q3_3">L'audit d'accès (configuré via GPO + propriétés du dossier → Sécurité → Audit) journalise chaque accès avec: utilisateur, heure, poste source, type d'opération. Essentiel pour la conformité et l'investigation d'incidents (qui a supprimé ce fichier ?)</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
-  </div>
+<div class="lp" id="lp-2">
+<div class="lp-head" onclick="toggleLp(2)"><div class="lp-no">2</div><div class="lp-htxt"><h3>Résolution de noms : WINS & DNS</h3><div class="lp-meta">Élément 2</div></div><span class="lp-dur">10 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Mettre en œuvre la résolution de noms NetBIOS avec WINS et l'intégrer au DNS.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 1 ; TRI-18.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Mise en œuvre et paramétrage de WINS ; enregistrements.</li><li>Intégration des services WINS et DNS.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">NetBIOS, WINS et DNS : qui résout quoi.</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Configurer WINS et tester la résolution.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Serveur WINS/DNS, chapitre 2.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 2.</p></div>
+</div></div>
+<div class="lp" id="lp-3">
+<div class="lp-head" onclick="toggleLp(3)"><div class="lp-no">3</div><div class="lp-htxt"><h3>Protocole DHCP</h3><div class="lp-meta">Élément 3</div></div><span class="lp-dur">12 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Configurer les étendues et options DHCP, gérer la base et sécuriser le service.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 1.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Étendues et options DHCP ; gestion de la base de données.</li><li>Résolution des problèmes ; sécurité du protocole DHCP.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Attribution automatique d'adresses : étendues et baux.</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Créer une étendue et distribuer des adresses.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Serveur DHCP, chapitre 3.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 3.</p></div>
+</div></div>
+<div class="lp" id="lp-4">
+<div class="lp-head" onclick="toggleLp(4)"><div class="lp-no">4</div><div class="lp-htxt"><h3>Protocole IPv6</h3><div class="lp-meta">Élément 4</div></div><span class="lp-dur">10 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Configurer l'adressage IPv6 des nœuds et dépanner la connectivité.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçon 1 ; TRI-17.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Configuration des adresses IPv6.</li><li>Dépannage de la connectivité IPv6.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">IPv6 : pourquoi et comment.</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Configurer IPv6 et tester la connectivité.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Serveur, chapitre 4.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 4.</p></div>
+</div></div>
+<div class="lp" id="lp-5">
+<div class="lp-head" onclick="toggleLp(5)"><div class="lp-no">5</div><div class="lp-htxt"><h3>Accès distant, VPN, NPS & protection d'accès</h3><div class="lp-meta">Éléments 5-7</div></div><span class="lp-dur">20 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Mettre en œuvre l'accès distant et le VPN, le serveur NPS/RADIUS et la protection d'accès réseau.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçons 1 à 3.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Accès réseau à distance ; connexion VPN ; routage et utilitaires de connexion.</li><li>Serveur NPS et clients/serveurs RADIUS ; dépannage.</li><li>Protection d'accès réseau (NAP) : scénarios, paramètres, analyse.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">VPN et stratégies d'accès réseau.</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Établir une connexion VPN et appliquer une stratégie NPS.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Serveur d'accès distant, chapitre 5.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 5.</p></div>
+</div></div>
+<div class="lp" id="lp-6">
+<div class="lp-head" onclick="toggleLp(6)"><div class="lp-no">6</div><div class="lp-htxt"><h3>Système de fichiers distribué (DFS)</h3><div class="lp-meta">Élément 8</div></div><span class="lp-dur">15 h</span><span class="lp-toggle">▾</span></div>
+<div class="lp-body">
+  <div class="lp-field"><div class="lp-field-lbl">🎯 Objectif</div><p>Déployer DFS : rôle de service, cibles de dossier et réplication.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">🔑 Préalables</div><p>Leçons 1 à 5.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">📖 Savoirs <span class="lp-chip">éléments de contenu</span></div><ul><li>Installation du rôle de service DFS.</li><li>Cibles de dossier ; réplication des dossiers.</li></ul></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧭 Déroulement</div><div class="lp-phases"><div class="lp-phase"><span class="lp-phase-tag p2">Apprentissage</span><span class="lp-phase-txt">Centraliser et répliquer des partages avec DFS.</span></div><div class="lp-phase"><span class="lp-phase-tag p4">Transfert</span><span class="lp-phase-txt">Créer un espace de noms DFS et configurer la réplication.</span></div><div class="lp-phase"><span class="lp-phase-tag p5">Synthèse</span><span class="lp-phase-txt">Vérifier la disponibilité des dossiers répliqués.</span></div></div></div>
+  <div class="lp-field"><div class="lp-field-lbl">🧰 Supports</div><p>Serveur DFS, chapitre 6.</p></div>
+  <div class="lp-field"><div class="lp-field-lbl">✓ Évaluation formative</div><p>Quiz du chapitre 6.</p></div>
+</div></div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Services web et messagerie</h2>
-      <div class="chapter-meta"><span>🕐 18 heures</span><span class="chapter-badge">IIS · SSL · Exchange · Postfix · Options cloud</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Services web IIS et messagerie Exchange/Postfix</div><div class="video-subtitle">Durée : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>IIS (Internet Information Services) (5 min)</strong> — Installer IIS, créer un site web, configurer les bindings (port, hostname). Héberger une application web interne (portail RH, intranet).</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Certificats SSL/TLS (3 min)</strong> — Créer un certificat auto-signé pour l'intranet. Installer un certificat Let's Encrypt pour un site public.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Messagerie — Options en Haïti (4 min)</strong> — Exchange Server (complexe, puissant), Microsoft 365 (cloud, recommandé), Postfix/Dovecot Linux (gratuit, pour PME budget limité). Recommandation 2025: Microsoft 365 pour la plupart des PME haïtiennes.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Postfix basique sur Linux (3 min)</strong> — Installation, configuration de base, test d'envoi avec telnet SMTP.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="content-section"><h3>4.1 Comparatif solutions de messagerie pour entreprises haïtiennes</h3><table class="data-table"><thead><tr><th>Solution</th><th>Coût</th><th>Complexité</th><th>Recommandation</th></tr></thead><tbody><tr><td>Microsoft 365 (Exchange Online)</td><td>~$6-12/user/mois (USD)</td><td>Faible — tout géré par Microsoft</td><td>⭐ Recommandé: fiable, mobile, collaboration Teams incluse</td></tr><tr><td>Google Workspace</td><td>~$6-12/user/mois (USD)</td><td>Faible — géré par Google</td><td>⭐ Alternative solide, Drive intégré</td></tr><tr><td>Exchange Server on-premise</td><td>Licence serveur + CAL (~$300+ par serveur)</td><td>Très élevée — nécessite dédié Windows Server</td><td>Pour les grandes organisations avec équipe IT</td></tr><tr><td>Postfix + Dovecot Linux</td><td>Gratuit (open source)</td><td>Moyenne — configuration manuelle</td><td>Pour PME avec budget très limité et compétences Linux</td></tr><tr><td>Gmail professionnel (compte perso)</td><td>Gratuit</td><td>Nulle</td><td>À éviter en entreprise — pas de gestion centralisée, pas de conformité</td></tr></tbody></table></div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Pourquoi Microsoft 365 est-il recommandé pour la plupart des PME haïtiennes en 2025 ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>C'est le moins cher absolument</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Pas de serveur à maintenir localement, disponible même lors des coupures EDH (cloud), Teams inclus pour la collaboration</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Microsoft est une entreprise haïtienne</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Il fonctionne sans connexion internet</button></div>
-    <div class="quiz-expl" id="expl-q0_4">Microsoft 365 = emails + Teams + SharePoint + OneDrive hébergés dans le cloud Azure. Pas de serveur on-premise à maintenir, accessible depuis n'importe où même lors des coupures EDH (depuis le téléphone), mises à jour automatiques, et collaboration Microsoft Teams incluse.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Un certificat SSL auto-signé est...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Aussi sécurisé qu'un certificat d'une CA reconnue</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Gratuit mais générera des avertissements de sécurité dans les navigateurs — acceptable pour l'intranet uniquement</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Interdit par les navigateurs modernes</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Le seul type de certificat disponible gratuitement</button></div>
-    <div class="quiz-expl" id="expl-q1_4">Un certificat auto-signé chiffre bien le trafic mais n'est pas signé par une Autorité de Certification (CA) reconnue. Les navigateurs affichent un avertissement "certificat non approuvé". Acceptable pour les sites internes (intranet) où on peut ajouter l'exception. Pour un site public: utiliser Let's Encrypt (gratuit et reconnu).</div>
-  </div><div class="quiz-q" data-q="2" data-ans="2">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Quelle commande Linux installe le serveur web Apache ?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>install apache2</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>apt-get web-server</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>sudo apt install apache2</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>yum install httpd (CentOS/RHEL)</button></div>
-    <div class="quiz-expl" id="expl-q2_4">sudo apt install apache2 installe Apache sur Ubuntu/Debian. Sur CentOS/RHEL: sudo yum install httpd. Après installation: sudo systemctl start apache2 → sudo systemctl enable apache2 → test: http://localhost dans un navigateur.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">Le port standard HTTPS est...</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>80</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>443</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>8080</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>22</button></div>
-    <div class="quiz-expl" id="expl-q3_4">HTTPS utilise le port TCP 443. HTTP utilise le port 80. Un serveur web en production doit être accessible sur le port 443 (HTTPS) et rediriger automatiquement les connexions port 80 (HTTP) vers HTTPS.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
-  </div>
-</div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="pratique-block">
-  <div class="pratique-header">
-    <div class="pratique-icon-wrap">🔬</div>
-    <div class="pratique-header-info">
-      <h3>Séance Pratique — SP-TRI-20-01</h3>
-      <span>Labo configuration services — DHCP, DNS, Fichiers, Web</span>
-    </div>
-    <div class="pratique-badge-oblig">🔴 OBLIGATOIRE</div>
-  </div>
-  <div class="pratique-body">
-    <p class="pratique-desc">Séance OBLIGATOIRE. Tu vas configurer les 4 services principaux d'un serveur Windows en conditions réelles. Durée: 4 heures.</p>
-    <div class="pratique-grid">
-      <div class="pratique-card"><div class="pratique-card-label">🎯 Objectifs</div><ul><li>Configurer un serveur DHCP avec une étendue complète et des réservations</li><li>Configurer un serveur DNS avec une zone forward et des enregistrements A, MX, CNAME</li><li>Créer un partage réseau avec permissions NTFS par groupes AD</li><li>Activer VSS sur le partage avec snapshots toutes les 4 heures</li><li>Installer IIS et déployer une page web simple sur le port 80</li></ul></div>
-      <div class="pratique-card"><div class="pratique-card-label">🧰 À apporter</div><ul><li>VM Windows Server 2019/2022 opérationnelle (depuis TRI-18)</li><li>VM cliente Windows 10/11 pour tester</li><li>Accès au Gestionnaire de serveur</li><li>Carnet de notes + fiche de configuration fournie par le professeur</li></ul></div>
-    </div>
-    <div class="pratique-slots-label">📅 Créneaux disponibles (choisir un)</div>
-    <div class="slot-grid"><button class="slot-btn" onclick="selectSlot(this,'Lun 19 Mai — 8h00 (4h)')">Lun 19 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mar 20 Mai — 8h00 (4h)')">Mar 20 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Mer 21 Mai — 8h00 (4h)')">Mer 21 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Jeu 22 Mai — 8h00 (4h)')">Jeu 22 Mai — 8h00 (4h)</button><button class="slot-btn" onclick="selectSlot(this,'Ven 23 Mai — 8h00 (4h)')">Ven 23 Mai — 8h00 (4h)</button></div>
-    <button class="btn-reserver" onclick="reserverSeance('confirm-sp-20-01')">📅 Confirmer ma réservation</button>
-    <div class="pratique-confirm" id="confirm-sp-20-01"></div>
-  </div>
-</div><div class="demo-block">
-  <div class="demo-header">
-    <div class="demo-icon-wrap">🎭</div>
-    <div class="demo-header-info">
-      <h3>Démonstration — DEM-TRI-20-01</h3>
-      <span>Évaluation pratique (20 min)</span>
-    </div>
-    <div class="demo-badge">Évaluation pratique</div>
-  </div>
-  <div class="demo-body">
-    <p class="demo-desc">Tu montreras le fonctionnement en temps réel des services configurés lors du labo.</p>
-    <div class="demo-steps-label">📋 ÉTAPES DE LA DÉMONSTRATION</div>
-    <div class="demo-step"><div class="demo-step-num">1</div><div class="demo-step-text"><strong>DHCP</strong> — Montrer les baux actifs, une réservation, et les options configurées</div></div><div class="demo-step"><div class="demo-step-num">2</div><div class="demo-step-text"><strong>DNS</strong> — Montrer les enregistrements créés, tester avec nslookup depuis un client</div></div><div class="demo-step"><div class="demo-step-num">3</div><div class="demo-step-text"><strong>Partage fichiers</strong> — Se connecter depuis un client, tester les permissions par groupe, restaurer une version VSS</div></div><div class="demo-step"><div class="demo-step-num">4</div><div class="demo-step-text"><strong>IIS</strong> — Ouvrir le site web depuis un client et montrer la console IIS</div></div>
-    <div class="demo-eval">
-      <div class="demo-eval-label">✅ Critères d'évaluation</div>
-      <div class="demo-eval-grid"><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>DHCP: baux distribués correctement</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>DNS: nslookup résoud les enregistrements</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>Partage: permissions NTFS fonctionnelles</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>VSS: version précédente restaurable</div><div class="demo-eval-item"><span style="color:var(--teal);font-weight:800;margin-right:4px">✓</span>IIS: site web accessible</div></div>
-    </div>
-  </div>
-</div><div class="devoir-block">
-  <div class="devoir-header">
-    <div class="devoir-icon-wrap">📝</div>
-    <div class="devoir-header-info">
-      <h3>Devoir TRI-20 — Rapport de configuration — Infrastructure de services</h3>
-      <span>Documentation complète de l'infrastructure configurée</span>
-    </div>
-    <div class="devoir-deadline">Délai : 1 semaine</div>
-  </div>
-  <div class="devoir-body">
-    <p class="devoir-desc">Rédige un rapport de configuration complet documentant tous les services que tu as configurés. Ce document sert de référence pour n'importe quel technicien qui reprendra cette infrastructure.</p>
-    <div class="devoir-instructions">
-      <div class="devoir-instructions-label">📋 Instructions</div>
-      <ol><li>Documente chaque service avec sa <strong>configuration complète</strong>: DHCP (étendue, options, réservations), DNS (zones, enregistrements), Partages (chemin, groupes, permissions NTFS), IIS (sites, ports, bindings).</li><li>Crée un <strong>tableau de correspondance service-IP</strong>: pour chaque service, l'IP du serveur, le port, le protocole, et le nom DNS.</li><li>Documente les <strong>tests de validation</strong> effectués pour confirmer que chaque service fonctionne (commandes, captures d'écran, résultats).</li><li>Rédige un <strong>plan de sauvegarde</strong> pour cette infrastructure: quoi sauvegarder, à quelle fréquence, où stocker les sauvegardes.</li><li>Liste les <strong>tâches de maintenance régulière</strong> que le technicien suivant devra effectuer (vérification des logs, rotation des mots de passe, audits).</li></ol>
-    </div>
-    <div class="devoir-bareme-label">📊 Barème (total : 100 points)</div>
-    <div class="bareme-row"><div class="bareme-pts">35 pts</div><div class="bareme-label">Configuration complète de chaque service documentée</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Tableau de correspondance service/IP/port</div></div><div class="bareme-row"><div class="bareme-pts">20 pts</div><div class="bareme-label">Tests de validation documentés</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Plan de sauvegarde réaliste</div></div><div class="bareme-row"><div class="bareme-pts">15 pts</div><div class="bareme-label">Tâches de maintenance régulière listées</div></div>
-    <div class="devoir-submit-area">
-      <div class="devoir-submit-icon">📤</div>
-      <p class="devoir-submit-text">Remets ton devoir sous format papier <strong>ou</strong> via la plateforme en ligne.<br>Délai de soumission : <strong>1 semaine</strong> à partir de l'activation du module.</p>
-      <button class="btn-submit-devoir" onclick="alert('✅ Redirection vers la plateforme de soumission...')">📤 Soumettre en ligne</button>
-    </div>
-  </div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module TRI-20 terminé !</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<div class="chapter" id="ch-1"><div class="ch-header"><div class="ch-num">01</div><div class="ch-info"><h2>Analyser la demande</h2><div class="ch-meta"><span>🕐 8h</span><span class="ch-badge">Besoins · Services</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Comprendre le besoin réel</li><li>Déterminer les actions à mener</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Première leçon du module — bienvenue !</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Analyser la demande</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-CH01" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-CH01.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Analyse de la demande</b> — comprendre quels services offrir, pour combien d&#x27;utilisateurs et avec quelles contraintes.</div><div class="kt-row"><b>Service réseau</b> — fonction offerte par le serveur : adressage, accès distant, partage…</div><div class="kt-row"><b>Contraintes de sécurité</b> — exigences à respecter qui orientent la configuration.</div><div class="kt-row"><b>Plan d&#x27;actions</b> — liste claire des services et étapes à mettre en place.</div><div class="kt-row"><b>Dimensionnement</b> — adapter les services au nombre d&#x27;utilisateurs et à la charge.</div></div><div class="section"><h3>1.1 Comprendre le besoin réel</h3><p>Avant de configurer des services, on analyse la <strong>demande</strong> : quels services offrir (adressage, accès distant, partage), pour combien d'utilisateurs, avec quelles contraintes de sécurité.</p></div>
+<div class="section"><h3>1.2 Déterminer les actions</h3><div class="ibox blue"><span class="ibox-label">🎯 Un plan avant l'action</span>On traduit la demande en une liste claire d'actions et de services à mettre en place. C'est ce qui évite de configurer au hasard.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>On analyse la demande AVANT de configurer : services, utilisateurs, sécurité.</li><li>On traduit la demande en une liste claire d&#x27;actions.</li><li>Le nombre d&#x27;utilisateurs influence le dimensionnement des services.</li><li>Un plan évite de configurer au hasard.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-1"><div class="qblock-head"><h3>Quiz — Chapitre 1</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="On analyse la demande avant toute configuration."><div class="q-num">Question 1 / 3</div><div class="q-text">Avant de configurer des services, on :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Analyse la demande et les besoins</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Active toutes les étendues DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Promeut le serveur en contrôleur de domaine</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Lance la réplication DFS</button></div><div class="qexpl"></div></div><div class="q-item" data-c="1" data-e="Elle fixe services et plan d&#x27;actions."><div class="q-num">Question 2 / 3</div><div class="q-text">L&#x27;analyse de la demande détermine :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La taille des baux DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Les services à offrir et les actions à entreprendre</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>La version d&#x27;IPv6 à installer</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le nombre de zones DNS</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="Le plan rend la configuration méthodique."><div class="q-num">Question 3 / 3</div><div class="q-text">Un bon plan permet de :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Supprimer le besoin de tests</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Se passer de la sécurité</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Configurer méthodiquement, sans hasard</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Ignorer le nombre d&#x27;utilisateurs</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(1)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(1)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div></div></div><div class="chapter" id="ch-2"><div class="ch-header"><div class="ch-num">02</div><div class="ch-info"><h2>Résolution de noms : WINS &amp; DNS</h2><div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">NetBIOS · Intégration</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Résoudre les noms (WINS/DNS)</li><li>Intégrer WINS et DNS</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Analyser la demande</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Résolution de noms : WINS &amp; DNS</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-CH02" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-CH02.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Résolution de noms</b> — traduire un nom en adresse IP.</div><div class="kt-row"><b>WINS</b> — résout les noms NetBIOS (héritage Windows).</div><div class="kt-row"><b>DNS</b> — résout les noms de domaine.</div><div class="kt-row"><b>NetBIOS</b> — ancienne nomenclature de noms Windows.</div><div class="kt-row"><b>Intégration WINS/DNS</b> — faire cohabiter les deux pour résoudre anciens et nouveaux noms.</div></div><div class="section"><h3>2.1 Résoudre les noms</h3><p>La <strong>résolution de noms</strong> traduit un nom en adresse IP. <strong>WINS</strong> gère les noms NetBIOS (héritage Windows), tandis que <strong>DNS</strong> gère les noms de domaine. On les intègre pour une résolution complète.</p></div>
+<div class="section"><h3>2.2 Intégrer WINS et DNS</h3><div class="ibox gold"><span class="ibox-label">🔗 Deux services complémentaires</span>Dans un réseau mixte, intégrer WINS et DNS garantit que tous les noms (anciens et nouveaux) se résolvent correctement.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>La résolution de noms traduit un nom en adresse IP.</li><li>WINS = noms NetBIOS ; DNS = noms de domaine.</li><li>Dans un réseau mixte, on intègre WINS et DNS.</li><li>L&#x27;intégration garantit que tous les noms se résolvent.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-2"><div class="qblock-head"><h3>Quiz — Chapitre 2</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="1" data-e="WINS gère les noms NetBIOS."><div class="q-num">Question 1 / 3</div><div class="q-text">WINS résout les noms :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>De domaine (DNS)</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>NetBIOS (héritage Windows)</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>De fichiers partagés</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>D&#x27;adresses IPv6</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="DNS résout les noms de domaine."><div class="q-num">Question 2 / 3</div><div class="q-text">DNS résout les noms :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>NetBIOS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>De baux DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>De domaine</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>De certificats</button></div><div class="qexpl"></div></div><div class="q-item" data-c="3" data-e="L&#x27;intégration couvre NetBIOS et domaine."><div class="q-num">Question 3 / 3</div><div class="q-text">Pourquoi intégrer WINS et DNS ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Doubler la bande passante</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Sécuriser le DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Activer IPv6</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Résoudre tous les noms (anciens et nouveaux)</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(2)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(2)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div></div></div><div class="chapter" id="ch-3"><div class="ch-header"><div class="ch-num">03</div><div class="ch-info"><h2>Protocole DHCP</h2><div class="ch-meta"><span>🕐 12h</span><span class="ch-badge">Étendues · Baux · Sécurité</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Attribuer les adresses automatiquement</li><li>Gérer et sécuriser DHCP</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Résolution de noms : WINS &amp; DNS</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Protocole DHCP</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-CH03" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-CH03.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>DHCP</b> — attribue automatiquement les adresses IP aux postes.</div><div class="kt-row"><b>Étendue</b> — plage d&#x27;adresses qu&#x27;un serveur DHCP distribue.</div><div class="kt-row"><b>Bail</b> — durée d&#x27;attribution d&#x27;une adresse à un poste.</div><div class="kt-row"><b>Options DHCP</b> — passerelle, DNS… transmis avec l&#x27;adresse.</div><div class="kt-row"><b>DHCP pirate</b> — serveur illégitime qui distribue de fausses adresses.</div></div><div class="section"><h3>3.1 Attribuer les adresses automatiquement</h3><p><strong>DHCP</strong> attribue automatiquement les adresses IP aux postes via des <strong>étendues</strong> (plages d'adresses) et des <strong>baux</strong> (durée d'attribution). Plus besoin de configurer chaque poste à la main.</p></div>
+<div class="section"><h3>3.2 Gérer et sécuriser</h3><div class="ibox green"><span class="ibox-label">⚙️ Étendues et options</span>On définit les options (passerelle, DNS), on gère la base de données DHCP et on sécurise le service selon les normes — un DHCP pirate peut distribuer de fausses adresses.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>DHCP attribue les IP automatiquement via étendues et baux.</li><li>On définit les options : passerelle, DNS.</li><li>On sécurise DHCP : un serveur pirate distribue de fausses adresses.</li><li>Plus besoin de configurer chaque poste à la main.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-3"><div class="qblock-head"><h3>Quiz — Chapitre 3</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="2" data-e="DHCP attribue les IP automatiquement."><div class="q-num">Question 1 / 3</div><div class="q-text">À quoi sert DHCP ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Résoudre les noms de domaine</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Router entre réseaux</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Attribuer automatiquement les adresses IP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Chiffrer l&#x27;accès distant</button></div><div class="qexpl"></div></div><div class="q-item" data-c="3" data-e="L&#x27;étendue est la plage distribuée."><div class="q-num">Question 2 / 3</div><div class="q-text">Une étendue DHCP est :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Un nom de domaine</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>La durée d&#x27;un bail</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Un tunnel chiffré</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Une plage d&#x27;adresses à distribuer</button></div><div class="qexpl"></div></div><div class="q-item" data-c="0" data-e="On empêche un DHCP pirate."><div class="q-num">Question 3 / 3</div><div class="q-text">Sécuriser DHCP évite :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Qu&#x27;un serveur pirate distribue de fausses adresses</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>L&#x27;épuisement des noms NetBIOS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>La perte des zones DNS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Le blocage du VPN</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(3)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(3)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div></div></div><div class="chapter" id="ch-4"><div class="ch-header"><div class="ch-num">04</div><div class="ch-info"><h2>Protocole IPv6</h2><div class="ch-meta"><span>🕐 10h</span><span class="ch-badge">Adressage · Connectivité</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Pourquoi IPv6 ?</li><li>Configurer et tester IPv6</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Protocole DHCP</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Protocole IPv6</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-CH04" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-CH04.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>IPv6</b> — nouveau protocole d&#x27;adressage au très grand espace d&#x27;adresses.</div><div class="kt-row"><b>IPv4</b> — ancien adressage, désormais épuisé.</div><div class="kt-row"><b>Nœud</b> — équipement adressé sur le réseau IPv6.</div><div class="kt-row"><b>Connectivité</b> — capacité des nœuds à communiquer.</div><div class="kt-row"><b>Test de connectivité</b> — vérification (équivalent du ping) après configuration.</div></div><div class="section"><h3>4.1 Pourquoi IPv6 ?</h3><p><strong>IPv6</strong> remplace progressivement IPv4 (épuisé) avec un espace d'adressage immense. On configure les adresses des nœuds et on dépanne la connectivité.</p></div>
+<div class="section"><h3>4.2 Configurer et tester</h3><div class="ibox blue"><span class="ibox-label">🧪 Vérifier la connectivité</span>Après configuration, on teste la connectivité IPv6 (équivalent du ping) et on dépanne les éventuels problèmes d'adressage.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>IPv6 remplace IPv4 (épuisé) avec un espace d&#x27;adressage immense.</li><li>On configure les adresses des nœuds.</li><li>Après config, on teste la connectivité IPv6.</li><li>On dépanne les problèmes d&#x27;adressage.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-4"><div class="qblock-head"><h3>Quiz — Chapitre 4</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="3" data-e="IPv6 répond à l&#x27;épuisement d&#x27;IPv4."><div class="q-num">Question 1 / 3</div><div class="q-text">Pourquoi IPv6 ?</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>IPv6 supprime le besoin de DNS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>IPv6 chiffre automatiquement</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>IPv6 remplace le DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>IPv4 est épuisé ; IPv6 offre un espace immense</button></div><div class="qexpl"></div></div><div class="q-item" data-c="0" data-e="On configure les adresses des nœuds."><div class="q-num">Question 2 / 3</div><div class="q-text">Sur IPv6, on configure :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Les adresses des nœuds</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Les étendues WINS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Les zones de certificats</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Les baux NetBIOS</button></div><div class="qexpl"></div></div><div class="q-item" data-c="1" data-e="On vérifie la connectivité puis on dépanne."><div class="q-num">Question 3 / 3</div><div class="q-text">Après configuration IPv6, on :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Désactive le DNS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Teste et dépanne la connectivité</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Supprime les baux DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Révoque les certificats</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(4)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(4)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div></div></div><div class="chapter" id="ch-5"><div class="ch-header"><div class="ch-num">05</div><div class="ch-info"><h2>Accès distant, VPN, NPS &amp; protection d&#x27;accès</h2><div class="ch-meta"><span>🕐 20h</span><span class="ch-badge">VPN · NPS/RADIUS · NAP</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Accès distant et VPN sécurisés</li><li>Contrôler qui entre (NAP)</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Protocole IPv6</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Accès distant, VPN, NPS &amp; protection d&#x27;accès</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-CH05" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-CH05.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>Accès distant</b> — connexion au réseau de l&#x27;entreprise depuis l&#x27;extérieur.</div><div class="kt-row"><b>VPN</b> — tunnel chiffré pour l&#x27;accès distant.</div><div class="kt-row"><b>NPS/RADIUS</b> — centralise les stratégies d&#x27;authentification.</div><div class="kt-row"><b>Protection d&#x27;accès réseau (NAP)</b> — vérifie qu&#x27;un poste respecte les règles avant l&#x27;accès.</div><div class="kt-row"><b>Stratégie d&#x27;authentification</b> — règles décidant qui peut se connecter et comment.</div></div><div class="section"><h3>5.1 Travailler à distance en sécurité</h3><p>L'<strong>accès distant</strong> et le <strong>VPN</strong> permettent de se connecter au réseau de l'entreprise depuis l'extérieur, de façon chiffrée. Le serveur <strong>NPS/RADIUS</strong> centralise les stratégies d'authentification.</p></div>
+<div class="section"><h3>5.2 Contrôler qui entre</h3><div class="ibox gold"><span class="ibox-label">🛡️ Protection d'accès réseau</span>La protection d'accès réseau (NAP) vérifie qu'un poste respecte les règles de sécurité (antivirus, mises à jour) avant de l'autoriser sur le réseau.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>Accès distant + VPN = connexion chiffrée depuis l&#x27;extérieur.</li><li>NPS/RADIUS centralise les stratégies d&#x27;authentification.</li><li>NAP vérifie antivirus et mises à jour avant d&#x27;autoriser un poste.</li><li>On contrôle qui entre et dans quelles conditions.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-5"><div class="qblock-head"><h3>Quiz — Chapitre 5</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="0" data-e="Le VPN offre un accès distant chiffré."><div class="q-num">Question 1 / 3</div><div class="q-text">Un VPN permet de :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Se connecter au réseau de l&#x27;entreprise à distance, chiffré</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Attribuer les adresses IP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Résoudre les noms de domaine</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Répliquer des dossiers</button></div><div class="qexpl"></div></div><div class="q-item" data-c="1" data-e="NPS/RADIUS centralise l&#x27;authentification."><div class="q-num">Question 2 / 3</div><div class="q-text">NPS/RADIUS sert à :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Distribuer les baux DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Centraliser les stratégies d&#x27;authentification</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Créer un espace de noms DFS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Configurer IPv6</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="NAP contrôle la conformité du poste."><div class="q-num">Question 3 / 3</div><div class="q-text">La protection d&#x27;accès réseau (NAP) vérifie :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>La plage d&#x27;adresses libre</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Le nombre de zones DNS</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Qu&#x27;un poste respecte les règles de sécurité avant l&#x27;accès</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>La taille des dossiers partagés</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(5)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(5)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div></div></div><div class="chapter" id="ch-6"><div class="ch-header"><div class="ch-num">06</div><div class="ch-info"><h2>Système de fichiers distribué (DFS)</h2><div class="ch-meta"><span>🕐 15h</span><span class="ch-badge">Espaces de noms · Réplication</span></div></div></div><div class="ch-body"><div class="lpl"><div class="lpl-grid"><div class="lpl-col"><div class="lpl-h">🎯 Aujourd’hui</div><ul><li>Centraliser les partages (DFS)</li><li>Réplication et disponibilité</li></ul></div><div class="lpl-col"><div class="lpl-h">⏮ Précédemment</div><p>Accès distant, VPN, NPS &amp; protection d&#x27;accès</p></div><div class="lpl-col"><div class="lpl-h">✅ Pour valider</div><p>Quiz de 5 questions — réussite ≥ 60 % pour débloquer la suite.</p></div></div></div><div class="step-lbl">① Regarde la vidéo</div><div class="vblock"><div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo — Système de fichiers distribué (DFS)</div><div class="vsub">Prof. Aly Loubert</div></div></div><div class="vembed"><video id="vf-TRI20-CH06" controls preload="metadata" style="position:absolute;inset:0;width:100%;height:100%"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/TRI20/final/TRI20-CH06.mp4" type="video/mp4"></video></div></div><div class="step-lbl">② Lis la leçon</div><div class="kterm"><div class="kterm-h">🔑 Termes clés</div><div class="kt-row"><b>DFS</b> — regroupe des partages sous un espace de noms unique.</div><div class="kt-row"><b>Espace de noms</b> — vue unifiée des dossiers partagés pour l&#x27;utilisateur.</div><div class="kt-row"><b>Réplication DFS</b> — copie des dossiers entre serveurs.</div><div class="kt-row"><b>Haute disponibilité</b> — les données restent accessibles même si un serveur tombe.</div><div class="kt-row"><b>Dossier partagé</b> — ressource mise à disposition sur le réseau.</div></div><div class="section"><h3>6.1 Centraliser les partages</h3><p><strong>DFS</strong> regroupe des dossiers partagés (sur plusieurs serveurs) sous un <strong>espace de noms</strong> unique, plus simple pour l'utilisateur, et permet la <strong>réplication</strong> entre serveurs.</p></div>
+<div class="section"><h3>6.2 Réplication et disponibilité</h3><div class="ibox green"><span class="ibox-label">🔁 Toujours disponible</span>La réplication DFS copie les dossiers entre serveurs : si l'un tombe, les données restent accessibles ailleurs. C'est la haute disponibilité des fichiers.</div></div><div class="bonas"><div class="bonas-h">📌 Bon à savoir</div><ul><li>DFS regroupe des partages sous un espace de noms unique.</li><li>La réplication DFS copie les dossiers entre serveurs.</li><li>Si un serveur tombe, les données restent accessibles ailleurs.</li><li>C&#x27;est la haute disponibilité des fichiers.</li></ul></div><div class="step-lbl">③ Valide le quiz</div><div class="qblock" id="quiz-6"><div class="qblock-head"><h3>Quiz — Chapitre 6</h3><span class="qblock-count">3 questions · réussite ≥ 60 %</span></div><div class="qblock-body"><div class="q-item" data-c="1" data-e="DFS unifie les partages sous un espace de noms."><div class="q-num">Question 1 / 3</div><div class="q-text">DFS regroupe les partages sous :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Une seule adresse IP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Un espace de noms unique</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Un bail DHCP</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Une zone DNS</button></div><div class="qexpl"></div></div><div class="q-item" data-c="2" data-e="Elle réplique les dossiers entre serveurs."><div class="q-num">Question 2 / 3</div><div class="q-text">La réplication DFS permet :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>D&#x27;attribuer des adresses</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>De résoudre des noms</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>De copier les dossiers entre serveurs</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>De chiffrer l&#x27;accès distant</button></div><div class="qexpl"></div></div><div class="q-item" data-c="3" data-e="La réplication assure la disponibilité."><div class="q-num">Question 3 / 3</div><div class="q-text">Si un serveur DFS tombe :</div><div class="q-opts"><button class="qopt" onclick="selQ(this)"><span class="qletter">A</span>Les adresses IP sont perdues</button><button class="qopt" onclick="selQ(this)"><span class="qletter">B</span>Le DNS s&#x27;arrête</button><button class="qopt" onclick="selQ(this)"><span class="qletter">C</span>Le VPN se coupe</button><button class="qopt" onclick="selQ(this)"><span class="qletter">D</span>Les données restent accessibles ailleurs</button></div><div class="qexpl"></div></div><div class="q-result"></div><div class="q-actions"><button class="q-btn" onclick="submitQ(6)">✓ Valider le quiz</button><button class="q-btn alt" onclick="retryQ(6)">↺ Réessayer</button></div></div></div><div class="done-wrap"><button class="done-btn" onclick="doneChapter(6)">✓ Chapitre 6 terminé →</button></div></div></div><div class="chapter" id="essentiel"><div class="ch-header"><div class="ch-num">★</div><div class="ch-info"><h2>L'essentiel à retenir</h2></div></div><div class="ch-body"><p style="font-size:.85rem;line-height:1.7">TRI-20 t'a appris à <strong>configurer les services réseau d'un serveur</strong> : de l'analyse de la demande jusqu'à la haute disponibilité des fichiers.</p><div class="bonas"><div class="bonas-h">★ Synthèse du module</div><ul><li><b>Ch.1 — Demande :</b> analyser besoins, utilisateurs, sécurité ; traduire en plan d'actions.</li><li><b>Ch.2 — Noms :</b> WINS (NetBIOS) + DNS (domaine), intégrés dans un réseau mixte.</li><li><b>Ch.3 — DHCP :</b> étendues, baux, options (passerelle/DNS) ; sécuriser contre les DHCP pirates.</li><li><b>Ch.4 — IPv6 :</b> remplace IPv4 épuisé ; configurer les nœuds, tester la connectivité.</li><li><b>Ch.5 — Accès distant :</b> VPN chiffré, NPS/RADIUS, NAP (conformité du poste).</li><li><b>Ch.6 — DFS :</b> espace de noms unique, réplication, haute disponibilité.</li></ul></div><div class="bonas"><div class="bonas-h">🔑 À retenir</div><ul><li><b>Demande → plan :</b> on configure méthodiquement, jamais au hasard.</li><li><b>DHCP + DNS :</b> le couple qui fait fonctionner l'adressage et la résolution.</li><li><b>VPN + NAP :</b> accéder à distance ET contrôler la conformité.</li></ul></div><div class="labbox"><div class="labbox-h">🛠 Important — épreuve pratique en atelier présentiel</div><p>La configuration réelle de DHCP, DNS, VPN et DFS sur serveur se réalise et s'évalue <b>en atelier, sur machine, en présentiel</b>. Cet examen blanc valide la <b>théorie, la méthode et la logique</b> qui préparent ce geste.</p></div><p style="font-size:.83rem">🎯 <strong>Prochaine étape :</strong> l'examen blanc — quiz général, séquences, associations et diagnostic.</p></div></div><div class="chapter" id="examen"><div class="ch-header"><div class="ch-num">🎓</div><div class="ch-info"><h2>Examen blanc — TRI-20</h2></div></div><div class="ch-body"><div class="bonas"><div class="bonas-h">📋 Consignes</div><ul><li>Durée conseillée : <b>75 minutes</b> · Total : <b>100 points</b> · Réussite : <b>≥ 75 %</b>.</li><li>Partie A — Théorie (30 pts) · Partie B — Pratique (70 pts).</li><li>⚠️ Mr Aly valide les quiz et l'examen avant mise en ligne.</li></ul></div><div class="exid"><label>Nom : <input type="text" id="ex-nom"></label><label>Prénom : <input type="text" id="ex-prenom"></label><label>Date : <input type="date" id="ex-date"></label></div><div class="exam-part"><h3>Partie A — Théorie <span class="expts">30 pts</span></h3><h4>A1. Remets dans l'ordre la mise en place des services <span class="expts">5 pts</span></h4><div class="exrow"><span class="exno">1</span><select class="exsel" id="a1-0"><option value="-1">— Choisir —</option><option value="0">Configurer DHCP</option><option value="1">Analyser la demande</option><option value="2">Tester la connectivité</option><option value="3">Déterminer les actions à mener</option><option value="4">Configurer la résolution de noms (DNS/WINS)</option></select><span class="exmark" id="m-a1-0"></span></div><div class="exrow"><span class="exno">2</span><select class="exsel" id="a1-1"><option value="-1">— Choisir —</option><option value="0">Configurer DHCP</option><option value="1">Analyser la demande</option><option value="2">Tester la connectivité</option><option value="3">Déterminer les actions à mener</option><option value="4">Configurer la résolution de noms (DNS/WINS)</option></select><span class="exmark" id="m-a1-1"></span></div><div class="exrow"><span class="exno">3</span><select class="exsel" id="a1-2"><option value="-1">— Choisir —</option><option value="0">Configurer DHCP</option><option value="1">Analyser la demande</option><option value="2">Tester la connectivité</option><option value="3">Déterminer les actions à mener</option><option value="4">Configurer la résolution de noms (DNS/WINS)</option></select><span class="exmark" id="m-a1-2"></span></div><div class="exrow"><span class="exno">4</span><select class="exsel" id="a1-3"><option value="-1">— Choisir —</option><option value="0">Configurer DHCP</option><option value="1">Analyser la demande</option><option value="2">Tester la connectivité</option><option value="3">Déterminer les actions à mener</option><option value="4">Configurer la résolution de noms (DNS/WINS)</option></select><span class="exmark" id="m-a1-3"></span></div><div class="exrow"><span class="exno">5</span><select class="exsel" id="a1-4"><option value="-1">— Choisir —</option><option value="0">Configurer DHCP</option><option value="1">Analyser la demande</option><option value="2">Tester la connectivité</option><option value="3">Déterminer les actions à mener</option><option value="4">Configurer la résolution de noms (DNS/WINS)</option></select><span class="exmark" id="m-a1-4"></span></div><h4>A2. Quiz général — tous les chapitres <span class="expts">25 pts</span></h4><div class="exq"><div class="exq-t">1. DHCP sert à :</div><select class="exsel" id="a2-0"><option value="-1">— Choisir —</option><option value="0">Attribuer les IP automatiquement</option><option value="1">Résoudre les noms</option><option value="2">Router</option><option value="3">Chiffrer l&#x27;accès distant</option></select><span class="exmark" id="m-a2-0"></span></div><div class="exq"><div class="exq-t">2. WINS résout les noms :</div><select class="exsel" id="a2-1"><option value="-1">— Choisir —</option><option value="0">De domaine</option><option value="1">NetBIOS</option><option value="2">De baux</option><option value="3">De certificats</option></select><span class="exmark" id="m-a2-1"></span></div><div class="exq"><div class="exq-t">3. DNS résout les noms :</div><select class="exsel" id="a2-2"><option value="-1">— Choisir —</option><option value="0">NetBIOS</option><option value="1">De fichiers</option><option value="2">De domaine</option><option value="3">De baux</option></select><span class="exmark" id="m-a2-2"></span></div><div class="exq"><div class="exq-t">4. Une étendue DHCP est :</div><select class="exsel" id="a2-3"><option value="-1">— Choisir —</option><option value="0">Un bail</option><option value="1">Un nom de domaine</option><option value="2">Un tunnel</option><option value="3">Une plage d&#x27;adresses</option></select><span class="exmark" id="m-a2-3"></span></div><div class="exq"><div class="exq-t">5. Un bail DHCP est :</div><select class="exsel" id="a2-4"><option value="-1">— Choisir —</option><option value="0">La durée d&#x27;attribution d&#x27;une adresse</option><option value="1">Une plage</option><option value="2">Une option</option><option value="3">Un espace de noms</option></select><span class="exmark" id="m-a2-4"></span></div><div class="exq"><div class="exq-t">6. Sécuriser DHCP évite :</div><select class="exsel" id="a2-5"><option value="-1">— Choisir —</option><option value="0">La perte des zones DNS</option><option value="1">Un serveur pirate qui distribue de fausses adresses</option><option value="2">Le blocage du VPN</option><option value="3">L&#x27;épuisement des noms</option></select><span class="exmark" id="m-a2-5"></span></div><div class="exq"><div class="exq-t">7. IPv6 répond à :</div><select class="exsel" id="a2-6"><option value="-1">— Choisir —</option><option value="0">Un manque de zones DNS</option><option value="1">Un excès de baux</option><option value="2">L&#x27;épuisement d&#x27;IPv4</option><option value="3">Une faille du VPN</option></select><span class="exmark" id="m-a2-6"></span></div><div class="exq"><div class="exq-t">8. Sur IPv6, on configure :</div><select class="exsel" id="a2-7"><option value="-1">— Choisir —</option><option value="0">Les étendues WINS</option><option value="1">Les baux NetBIOS</option><option value="2">Les zones de certificats</option><option value="3">Les adresses des nœuds</option></select><span class="exmark" id="m-a2-7"></span></div><div class="exq"><div class="exq-t">9. Après config IPv6, on :</div><select class="exsel" id="a2-8"><option value="-1">— Choisir —</option><option value="0">Teste la connectivité</option><option value="1">Désactive le DNS</option><option value="2">Supprime les baux</option><option value="3">Révoque les certificats</option></select><span class="exmark" id="m-a2-8"></span></div><div class="exq"><div class="exq-t">10. Un VPN offre :</div><select class="exsel" id="a2-9"><option value="-1">— Choisir —</option><option value="0">L&#x27;attribution d&#x27;IP</option><option value="1">Un accès distant chiffré</option><option value="2">La résolution de noms</option><option value="3">La réplication DFS</option></select><span class="exmark" id="m-a2-9"></span></div><div class="exq"><div class="exq-t">11. NPS/RADIUS sert à :</div><select class="exsel" id="a2-10"><option value="-1">— Choisir —</option><option value="0">Distribuer les baux</option><option value="1">Créer un espace de noms</option><option value="2">Centraliser l&#x27;authentification</option><option value="3">Configurer IPv6</option></select><span class="exmark" id="m-a2-10"></span></div><div class="exq"><div class="exq-t">12. NAP vérifie :</div><select class="exsel" id="a2-11"><option value="-1">— Choisir —</option><option value="0">La plage libre</option><option value="1">Le nombre de zones</option><option value="2">La taille des partages</option><option value="3">La conformité du poste avant l&#x27;accès</option></select><span class="exmark" id="m-a2-11"></span></div><div class="exq"><div class="exq-t">13. DFS regroupe les partages sous :</div><select class="exsel" id="a2-12"><option value="-1">— Choisir —</option><option value="0">Un espace de noms unique</option><option value="1">Une IP unique</option><option value="2">Un bail</option><option value="3">Une zone DNS</option></select><span class="exmark" id="m-a2-12"></span></div><div class="exq"><div class="exq-t">14. La réplication DFS :</div><select class="exsel" id="a2-13"><option value="-1">— Choisir —</option><option value="0">Attribue des adresses</option><option value="1">Copie les dossiers entre serveurs</option><option value="2">Résout des noms</option><option value="3">Chiffre l&#x27;accès distant</option></select><span class="exmark" id="m-a2-13"></span></div><div class="exq"><div class="exq-t">15. Si un serveur DFS tombe :</div><select class="exsel" id="a2-14"><option value="-1">— Choisir —</option><option value="0">Les IP sont perdues</option><option value="1">Le DNS s&#x27;arrête</option><option value="2">Les données restent accessibles ailleurs</option><option value="3">Le VPN se coupe</option></select><span class="exmark" id="m-a2-14"></span></div><div class="exq"><div class="exq-t">16. Avant de configurer, on :</div><select class="exsel" id="a2-15"><option value="-1">— Choisir —</option><option value="0">Active les étendues</option><option value="1">Promeut un contrôleur</option><option value="2">Lance la réplication</option><option value="3">Analyse la demande</option></select><span class="exmark" id="m-a2-15"></span></div><div class="exq"><div class="exq-t">17. L&#x27;analyse de la demande fixe :</div><select class="exsel" id="a2-16"><option value="-1">— Choisir —</option><option value="0">Les services et le plan d&#x27;actions</option><option value="1">La taille des baux</option><option value="2">La version d&#x27;IP</option><option value="3">Le nombre de zones</option></select><span class="exmark" id="m-a2-16"></span></div><div class="exq"><div class="exq-t">18. Le dimensionnement dépend :</div><select class="exsel" id="a2-17"><option value="-1">— Choisir —</option><option value="0">De la version d&#x27;IP</option><option value="1">Du nombre d&#x27;utilisateurs</option><option value="2">De la durée des baux</option><option value="3">Du nombre de zones</option></select><span class="exmark" id="m-a2-17"></span></div><div class="exq"><div class="exq-t">19. La résolution de noms :</div><select class="exsel" id="a2-18"><option value="-1">— Choisir —</option><option value="0">Attribue un bail</option><option value="1">Chiffre le trafic</option><option value="2">Traduit un nom en adresse IP</option><option value="3">Route les paquets</option></select><span class="exmark" id="m-a2-18"></span></div><div class="exq"><div class="exq-t">20. Dans un réseau mixte, on intègre :</div><select class="exsel" id="a2-19"><option value="-1">— Choisir —</option><option value="0">DHCP et IPv6</option><option value="1">VPN et DFS</option><option value="2">NAP et NPS</option><option value="3">WINS et DNS</option></select><span class="exmark" id="m-a2-19"></span></div><div class="exq"><div class="exq-t">21. Les options DHCP incluent :</div><select class="exsel" id="a2-20"><option value="-1">— Choisir —</option><option value="0">Passerelle et DNS</option><option value="1">Les certificats</option><option value="2">Les noms NetBIOS</option><option value="3">Les dossiers partagés</option></select><span class="exmark" id="m-a2-20"></span></div><div class="exq"><div class="exq-t">22. IPv4 est aujourd&#x27;hui :</div><select class="exsel" id="a2-21"><option value="-1">— Choisir —</option><option value="0">Plus rapide qu&#x27;IPv6</option><option value="1">Épuisé en adresses</option><option value="2">Incompatible DHCP</option><option value="3">Réservé au VPN</option></select><span class="exmark" id="m-a2-21"></span></div><div class="exq"><div class="exq-t">23. L&#x27;accès distant concerne :</div><select class="exsel" id="a2-22"><option value="-1">— Choisir —</option><option value="0">L&#x27;impression locale</option><option value="1">La réplication DFS</option><option value="2">La connexion depuis l&#x27;extérieur</option><option value="3">L&#x27;IP locale</option></select><span class="exmark" id="m-a2-22"></span></div><div class="exq"><div class="exq-t">24. La haute disponibilité, c&#x27;est :</div><select class="exsel" id="a2-23"><option value="-1">— Choisir —</option><option value="0">Un seul serveur</option><option value="1">Éteindre la nuit</option><option value="2">Supprimer les sauvegardes</option><option value="3">Garder les services accessibles malgré un incident</option></select><span class="exmark" id="m-a2-23"></span></div><div class="exq"><div class="exq-t">25. Un nœud IPv6 est :</div><select class="exsel" id="a2-24"><option value="-1">— Choisir —</option><option value="0">Un équipement adressé</option><option value="1">Une plage</option><option value="2">Un nom NetBIOS</option><option value="3">Une zone DNS</option></select><span class="exmark" id="m-a2-24"></span></div></div><div class="exam-part"><h3>Partie B — Pratique <span class="expts">70 pts</span></h3><h4>B1. Séquence de mise en place du service DHCP <span class="expts">15 pts</span></h4><div class="exrow"><span class="exno">1</span><select class="exsel" id="b1-0"><option value="-1">— Choisir —</option><option value="0">Définir les options (passerelle, DNS)</option><option value="1">Installer le rôle DHCP</option><option value="2">Tester l&#x27;attribution d&#x27;adresse</option><option value="3">Créer une étendue</option><option value="4">Activer l&#x27;étendue</option></select><span class="exmark" id="m-b1-0"></span></div><div class="exrow"><span class="exno">2</span><select class="exsel" id="b1-1"><option value="-1">— Choisir —</option><option value="0">Définir les options (passerelle, DNS)</option><option value="1">Installer le rôle DHCP</option><option value="2">Tester l&#x27;attribution d&#x27;adresse</option><option value="3">Créer une étendue</option><option value="4">Activer l&#x27;étendue</option></select><span class="exmark" id="m-b1-1"></span></div><div class="exrow"><span class="exno">3</span><select class="exsel" id="b1-2"><option value="-1">— Choisir —</option><option value="0">Définir les options (passerelle, DNS)</option><option value="1">Installer le rôle DHCP</option><option value="2">Tester l&#x27;attribution d&#x27;adresse</option><option value="3">Créer une étendue</option><option value="4">Activer l&#x27;étendue</option></select><span class="exmark" id="m-b1-2"></span></div><div class="exrow"><span class="exno">4</span><select class="exsel" id="b1-3"><option value="-1">— Choisir —</option><option value="0">Définir les options (passerelle, DNS)</option><option value="1">Installer le rôle DHCP</option><option value="2">Tester l&#x27;attribution d&#x27;adresse</option><option value="3">Créer une étendue</option><option value="4">Activer l&#x27;étendue</option></select><span class="exmark" id="m-b1-3"></span></div><div class="exrow"><span class="exno">5</span><select class="exsel" id="b1-4"><option value="-1">— Choisir —</option><option value="0">Définir les options (passerelle, DNS)</option><option value="1">Installer le rôle DHCP</option><option value="2">Tester l&#x27;attribution d&#x27;adresse</option><option value="3">Créer une étendue</option><option value="4">Activer l&#x27;étendue</option></select><span class="exmark" id="m-b1-4"></span></div><h4>B2. Associe chaque service à son rôle <span class="expts">15 pts</span></h4><div class="exq"><div class="exq-t">1. <b>DHCP</b> →</div><select class="exsel" id="b2-0"><option value="-1">— Choisir —</option><option value="0">Attribuer automatiquement les adresses IP</option><option value="1">Résoudre les noms de domaine</option><option value="2">Tunnel chiffré</option><option value="3">Espace de noms de partages</option></select><span class="exmark" id="m-b2-0"></span></div><div class="exq"><div class="exq-t">2. <b>DNS</b> →</div><select class="exsel" id="b2-1"><option value="-1">— Choisir —</option><option value="0">Attribuer les IP</option><option value="1">Résoudre les noms de domaine</option><option value="2">Fédérer les identités</option><option value="3">Copier les dossiers</option></select><span class="exmark" id="m-b2-1"></span></div><div class="exq"><div class="exq-t">3. <b>WINS</b> →</div><select class="exsel" id="b2-2"><option value="-1">— Choisir —</option><option value="0">Attribuer les IP</option><option value="1">Chiffrer le trafic</option><option value="2">Résoudre les noms NetBIOS</option><option value="3">Centraliser les MAJ</option></select><span class="exmark" id="m-b2-2"></span></div><div class="exq"><div class="exq-t">4. <b>VPN</b> →</div><select class="exsel" id="b2-3"><option value="-1">— Choisir —</option><option value="0">Attribuer les IP</option><option value="1">Résoudre les noms</option><option value="2">Regrouper les partages</option><option value="3">Accès distant chiffré</option></select><span class="exmark" id="m-b2-3"></span></div><div class="exq"><div class="exq-t">5. <b>DFS</b> →</div><select class="exsel" id="b2-4"><option value="-1">— Choisir —</option><option value="0">Espace de noms unique et réplication</option><option value="1">Attribuer les IP</option><option value="2">Chiffrer le trafic</option><option value="3">Résoudre les noms</option></select><span class="exmark" id="m-b2-4"></span></div><h4>B3. Étude de cas — réponses courtes <span class="expts">20 pts</span></h4><p style="font-size:.78rem;color:#555">Réponds en un mot ou un sigle.</p><div class="exq"><div class="exq-t">1. Protocole qui attribue les adresses IP automatiquement (sigle) :</div><input type="text" class="exin" id="b3-0" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-0"></span><div class="exans" id="a-b3-0">Réponse : dhcp</div></div><div class="exq"><div class="exq-t">2. Service de résolution des noms de domaine (sigle) :</div><input type="text" class="exin" id="b3-1" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-1"></span><div class="exans" id="a-b3-1">Réponse : dns</div></div><div class="exq"><div class="exq-t">3. Version d&#x27;IP au très grand espace d&#x27;adressage :</div><input type="text" class="exin" id="b3-2" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-2"></span><div class="exans" id="a-b3-2">Réponse : ipv6</div></div><div class="exq"><div class="exq-t">4. Technologie d&#x27;accès distant chiffré (sigle) :</div><input type="text" class="exin" id="b3-3" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-3"></span><div class="exans" id="a-b3-3">Réponse : vpn</div></div><div class="exq"><div class="exq-t">5. Plage d&#x27;adresses distribuée par un serveur DHCP :</div><input type="text" class="exin" id="b3-4" autocomplete="off" spellcheck="false"><span class="exmark" id="m-b3-4"></span><div class="exans" id="a-b3-4">Réponse : étendue</div></div><h4>B4. Diagnostic — situations terrain <span class="expts">20 pts</span></h4><div class="exq"><div class="exq-t">1. Les postes ne reçoivent plus d&#x27;adresse IP automatiquement. Service à vérifier :</div><select class="exsel" id="b4-0"><option value="-1">— Choisir —</option><option value="0">Le DHCP</option><option value="1">Le VPN</option><option value="2">Le DFS</option><option value="3">Le service WINS</option></select><span class="exmark" id="m-b4-0"></span></div><div class="exq"><div class="exq-t">2. Des postes reçoivent de fausses adresses IP. Cause probable :</div><select class="exsel" id="b4-1"><option value="-1">— Choisir —</option><option value="0">Une zone DNS supprimée</option><option value="1">Un serveur DHCP pirate</option><option value="2">Un certificat expiré</option><option value="3">Un espace de noms DFS</option></select><span class="exmark" id="m-b4-1"></span></div><div class="exq"><div class="exq-t">3. Un télétravailleur doit accéder au réseau de façon sécurisée. On déploie :</div><select class="exsel" id="b4-2"><option value="-1">— Choisir —</option><option value="0">Une étendue DHCP</option><option value="1">Un cliché instantané</option><option value="2">Un VPN</option><option value="3">Un analyseur de protocole</option></select><span class="exmark" id="m-b4-2"></span></div><div class="exq"><div class="exq-t">4. Un dossier partagé doit rester accessible si un serveur tombe. On utilise :</div><select class="exsel" id="b4-3"><option value="-1">— Choisir —</option><option value="0">Un bail plus long</option><option value="1">Un DHCP pirate</option><option value="2">Un seul serveur de fichiers</option><option value="3">La réplication DFS</option></select><span class="exmark" id="m-b4-3"></span></div><div class="exq"><div class="exq-t">5. On veut autoriser seulement les postes à jour et protégés. On met en place :</div><select class="exsel" id="b4-4"><option value="-1">— Choisir —</option><option value="0">La protection d&#x27;accès réseau (NAP)</option><option value="1">Une étendue plus large</option><option value="2">Une zone DNS de plus</option><option value="3">Un nouveau VPN sans règle</option></select><span class="exmark" id="m-b4-4"></span></div></div><div class="exgauges"><div class="exg"><span>Partie A</span><div class="exg-bar"><div class="exg-fill" id="g-a"></div></div><b id="s-a">— / 30</b></div><div class="exg"><span>Partie B</span><div class="exg-bar"><div class="exg-fill" id="g-b"></div></div><b id="s-b">— / 70</b></div><div class="exg"><span>TOTAL</span><div class="exg-bar"><div class="exg-fill" id="g-t"></div></div><b id="s-t">— / 100</b></div></div><div class="q-result" id="ex-result"></div><div class="q-actions"><button class="q-btn exbtn" onclick="exValidate()">✓ Corriger l'examen</button><button class="q-btn alt exbtn" onclick="exPrint()">🖨 Copie corrigée</button><button class="q-btn alt exbtn" onclick="exPrintBlank()">📄 Sujet vierge</button><button class="q-btn alt exbtn" onclick="exReset()">↺ Recommencer</button></div></div></div><div class="complete-banner" id="complete-banner"><h2>🎓 Module TRI-20 validé !</h2><p>Configuration de serveurs — tu maîtrises l'ensemble du module.</p></div></div></div></div><button id="mob-toc-btn" onclick="toggleToc()">☰</button><div id="mob-overlay" onclick="toggleToc()"></div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
-}
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
-}
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
-}
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
-}
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
-  }
-}
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
-}
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
-}
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
-}
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
-}
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
-
+(function(){
+var KEY='TRI20v1_', NCH=6;
+var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','ch-6','essentiel','examen'];
+var TITLES={"plan":"Plan de cours","essentiel":"\u2605 L'essentiel \u00e0 retenir","examen":"\uD83C\uDF93 Examen blanc"};
+function rd(k,d){try{var v=localStorage.getItem(KEY+k);return v===null?d:JSON.parse(v);}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(KEY+k,JSON.stringify(v));}catch(e){}}
+window.ST={done:rd('done',{}),qs:rd('qs',{}),pos:rd('pos','plan')};
+document.body.classList.add('player');
+function lbl(id){if(TITLES[id])return TITLES[id];var n=id.split('-')[1];var el=document.querySelector('#'+id+' h2');return 'Ch. '+n+' \u2014 '+(el?el.textContent.trim():'');}
+function canGo(id){var idx=STEPS.indexOf(id);if(idx<=1)return true;if(id==='essentiel'||id==='examen')return !!ST.done['ch-'+NCH];var n=parseInt(id.split('-')[1],10);return !!ST.done['ch-'+(n-1)];}
+window.goTo=function(id){if(!canGo(id))return;STEPS.forEach(function(s){var el=document.getElementById(s);if(el)el.classList.remove('active');});var el=document.getElementById(id);if(!el)return;el.classList.add('active');ST.pos=id;wr('pos',id);var idx=STEPS.indexOf(id);document.getElementById('pnav-lbl').textContent='\u00c9tape '+(idx+1)+'/'+STEPS.length+' \u00b7 '+lbl(id);document.getElementById('pnav-fill').style.width=Math.round((idx+1)/STEPS.length*100)+'%';var prev=document.getElementById('pnav-prev'),next=document.getElementById('pnav-next');prev.disabled=idx===0;var nid=STEPS[idx+1];next.disabled=!nid||!canGo(nid);next.textContent=nid?'Suivant \u2192':'Fin';refreshToc();window.scrollTo({top:0,behavior:'smooth'});var tc=document.getElementById('toc-sidebar');if(tc)tc.classList.remove('open');var ov=document.getElementById('mob-overlay');if(ov)ov.style.display='none';};
+window.stepMove=function(d){var idx=STEPS.indexOf(ST.pos)+d;if(idx<0||idx>=STEPS.length)return;goTo(STEPS[idx]);};
+function refreshToc(){STEPS.forEach(function(s){var ti=document.getElementById('ti-'+s);if(!ti)return;ti.classList.toggle('locked',!canGo(s));ti.classList.toggle('done',!!ST.done[s]);ti.classList.toggle('act',ST.pos===s);});updateProgUI();}
+function updateProgUI(){var done=0;for(var i=1;i<=NCH;i++)if(ST.done['ch-'+i])done++;var pct=Math.round(done/NCH*100);var f=document.getElementById('prog-fill');if(f)f.style.width=pct+'%';var t=document.getElementById('prog-txt');if(t)t.textContent=done+' / '+NCH+' chapitres \u2014 '+pct+'%';var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok||0;qTot+=ST.qs[k].total||0;});var qs=document.getElementById('quiz-stat');if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' r\u00e9ponses correctes':'\u2014';if(done===NCH){var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}}
+window.selQ=function(btn){var item=btn.closest('.q-item');item.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');};
+window.submitQ=function(ch){var blk=document.getElementById('quiz-'+ch);if(!blk)return;var items=blk.querySelectorAll('.q-item'),ok=0,un=false;items.forEach(function(it){var p=-1;it.querySelectorAll('.qopt').forEach(function(b,i){if(b.classList.contains('sel'))p=i;});if(p<0)un=true;});if(un){toast('\u26a0\ufe0f R\u00e9ponds \u00e0 toutes les questions d\'abord.');return;}items.forEach(function(it){var c=parseInt(it.getAttribute('data-c'),10);var opts=it.querySelectorAll('.qopt');var p=-1;opts.forEach(function(b,i){if(b.classList.contains('sel'))p=i;});opts.forEach(function(b,i){b.classList.remove('good','bad');if(i===c)b.classList.add('good');else if(i===p)b.classList.add('bad');b.disabled=true;});if(p===c)ok++;var ex=it.querySelector('.qexpl');if(ex){ex.style.display='block';ex.textContent=(p===c?'\u2705 Correct. ':'\u274c ')+(it.getAttribute('data-e')||'');}});var total=items.length,pct=ok/total;ST.qs[ch]={ok:ok,total:total};wr('qs',ST.qs);var res=blk.querySelector('.q-result');if(res){res.style.display='block';res.innerHTML=pct>=0.6?'\uD83C\uDF89 <strong>'+ok+'/'+total+'</strong> \u2014 chapitre valid\u00e9 ! La le\u00e7on suivante est d\u00e9bloqu\u00e9e.':'\uD83D\uDCDA <strong>'+ok+'/'+total+'</strong> \u2014 il faut au moins 60 %. Relis la le\u00e7on puis clique \u00ab R\u00e9essayer \u00bb.';res.className='q-result '+(pct>=0.6?'win':'lose');}if(pct>=0.6){ST.done['ch-'+ch]=true;wr('done',ST.done);}refreshToc();var idx=STEPS.indexOf(ST.pos);var next=document.getElementById('pnav-next');var nid=STEPS[idx+1];if(next&&nid)next.disabled=!canGo(nid);};
+window.retryQ=function(ch){var blk=document.getElementById('quiz-'+ch);if(!blk)return;blk.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','good','bad');b.disabled=false;});blk.querySelectorAll('.qexpl').forEach(function(e){e.style.display='none';});var res=blk.querySelector('.q-result');if(res)res.style.display='none';};
+window.toggleToc=function(){var tc=document.getElementById('toc-sidebar');if(!tc)return;tc.classList.toggle('open');var ov=document.getElementById('mob-overlay');if(ov)ov.style.display=tc.classList.contains('open')?'block':'none';};
+window.triReset=function(){if(!confirm('R\u00e9initialiser toute ta progression TRI-20 (quiz, examen, position) ?'))return;var del=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(KEY)===0)del.push(k);}del.forEach(function(k){localStorage.removeItem(k);});location.reload();};
+document.querySelectorAll('.vembed video').forEach(function(v){function soon(){var box=v.parentElement;if(!box||box.querySelector('.vsoon'))return;v.style.display='none';var d=document.createElement('div');d.className='vsoon';d.innerHTML='<b>\uD83C\uDFAC Vid\u00e9o en cours de production</b><span>Elle sera disponible tr\u00e8s bient\u00f4t. En attendant, passe directement \u00e0 la lecture \u2461 ci-dessous \u2014 tout le contenu de la le\u00e7on y est.</span>';box.appendChild(d);}v.addEventListener('error',soon);var s=v.querySelector('source');if(s)s.addEventListener('error',soon);});
+var t0=Date.now();setInterval(function(){var s=Math.floor((Date.now()-t0)/1000);var el=document.getElementById('session-timer');if(el)el.textContent=Math.floor(s/60)+'m '+(s%60)+'s';},1000);
+var start=canGo(ST.pos)?ST.pos:'plan';goTo(start);
+})();
 </script>
-
-<div id="mod-code-data" data-code="TRI-20" style="display:none"></div>
-<div id="seuil-data" data-seuil="75" style="display:none"></div>
-</body>
-</html>
+<script>
+(function(){
+var KEY='TRI20v1_';
+var D={"A1": [1, 3, 4, 0, 2], "A1OPTS": ["Configurer DHCP", "Analyser la demande", "Tester la connectivité", "Déterminer les actions à mener", "Configurer la résolution de noms (DNS/WINS)"], "A2": [{"q": "DHCP sert à :", "o": ["Attribuer les IP automatiquement", "Résoudre les noms", "Router", "Chiffrer l'accès distant"]}, {"q": "WINS résout les noms :", "o": ["De domaine", "NetBIOS", "De baux", "De certificats"]}, {"q": "DNS résout les noms :", "o": ["NetBIOS", "De fichiers", "De domaine", "De baux"]}, {"q": "Une étendue DHCP est :", "o": ["Un bail", "Un nom de domaine", "Un tunnel", "Une plage d'adresses"]}, {"q": "Un bail DHCP est :", "o": ["La durée d'attribution d'une adresse", "Une plage", "Une option", "Un espace de noms"]}, {"q": "Sécuriser DHCP évite :", "o": ["La perte des zones DNS", "Un serveur pirate qui distribue de fausses adresses", "Le blocage du VPN", "L'épuisement des noms"]}, {"q": "IPv6 répond à :", "o": ["Un manque de zones DNS", "Un excès de baux", "L'épuisement d'IPv4", "Une faille du VPN"]}, {"q": "Sur IPv6, on configure :", "o": ["Les étendues WINS", "Les baux NetBIOS", "Les zones de certificats", "Les adresses des nœuds"]}, {"q": "Après config IPv6, on :", "o": ["Teste la connectivité", "Désactive le DNS", "Supprime les baux", "Révoque les certificats"]}, {"q": "Un VPN offre :", "o": ["L'attribution d'IP", "Un accès distant chiffré", "La résolution de noms", "La réplication DFS"]}, {"q": "NPS/RADIUS sert à :", "o": ["Distribuer les baux", "Créer un espace de noms", "Centraliser l'authentification", "Configurer IPv6"]}, {"q": "NAP vérifie :", "o": ["La plage libre", "Le nombre de zones", "La taille des partages", "La conformité du poste avant l'accès"]}, {"q": "DFS regroupe les partages sous :", "o": ["Un espace de noms unique", "Une IP unique", "Un bail", "Une zone DNS"]}, {"q": "La réplication DFS :", "o": ["Attribue des adresses", "Copie les dossiers entre serveurs", "Résout des noms", "Chiffre l'accès distant"]}, {"q": "Si un serveur DFS tombe :", "o": ["Les IP sont perdues", "Le DNS s'arrête", "Les données restent accessibles ailleurs", "Le VPN se coupe"]}, {"q": "Avant de configurer, on :", "o": ["Active les étendues", "Promeut un contrôleur", "Lance la réplication", "Analyse la demande"]}, {"q": "L'analyse de la demande fixe :", "o": ["Les services et le plan d'actions", "La taille des baux", "La version d'IP", "Le nombre de zones"]}, {"q": "Le dimensionnement dépend :", "o": ["De la version d'IP", "Du nombre d'utilisateurs", "De la durée des baux", "Du nombre de zones"]}, {"q": "La résolution de noms :", "o": ["Attribue un bail", "Chiffre le trafic", "Traduit un nom en adresse IP", "Route les paquets"]}, {"q": "Dans un réseau mixte, on intègre :", "o": ["DHCP et IPv6", "VPN et DFS", "NAP et NPS", "WINS et DNS"]}, {"q": "Les options DHCP incluent :", "o": ["Passerelle et DNS", "Les certificats", "Les noms NetBIOS", "Les dossiers partagés"]}, {"q": "IPv4 est aujourd'hui :", "o": ["Plus rapide qu'IPv6", "Épuisé en adresses", "Incompatible DHCP", "Réservé au VPN"]}, {"q": "L'accès distant concerne :", "o": ["L'impression locale", "La réplication DFS", "La connexion depuis l'extérieur", "L'IP locale"]}, {"q": "La haute disponibilité, c'est :", "o": ["Un seul serveur", "Éteindre la nuit", "Supprimer les sauvegardes", "Garder les services accessibles malgré un incident"]}, {"q": "Un nœud IPv6 est :", "o": ["Un équipement adressé", "Une plage", "Un nom NetBIOS", "Une zone DNS"]}], "QC": [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0], "B1": [1, 3, 0, 4, 2], "B1OPTS": ["Définir les options (passerelle, DNS)", "Installer le rôle DHCP", "Tester l'attribution d'adresse", "Créer une étendue", "Activer l'étendue"], "B1T": "Séquence de mise en place du service DHCP", "B2": [{"q": "DHCP", "o": ["Attribuer automatiquement les adresses IP", "Résoudre les noms de domaine", "Tunnel chiffré", "Espace de noms de partages"]}, {"q": "DNS", "o": ["Attribuer les IP", "Résoudre les noms de domaine", "Fédérer les identités", "Copier les dossiers"]}, {"q": "WINS", "o": ["Attribuer les IP", "Chiffrer le trafic", "Résoudre les noms NetBIOS", "Centraliser les MAJ"]}, {"q": "VPN", "o": ["Attribuer les IP", "Résoudre les noms", "Regrouper les partages", "Accès distant chiffré"]}, {"q": "DFS", "o": ["Espace de noms unique et réplication", "Attribuer les IP", "Chiffrer le trafic", "Résoudre les noms"]}], "B2K": [0, 1, 2, 3, 0], "B2T": "Associe chaque service à son rôle", "B3Q": ["Protocole qui attribue les adresses IP automatiquement (sigle) :", "Service de résolution des noms de domaine (sigle) :", "Version d'IP au très grand espace d'adressage :", "Technologie d'accès distant chiffré (sigle) :", "Plage d'adresses distribuée par un serveur DHCP :"], "B3V": [["dhcp"], ["dns"], ["ipv6"], ["vpn"], ["etendue", "létendue", "plage"]], "B4": [{"q": "Les postes ne reçoivent plus d'adresse IP automatiquement. Service à vérifier :", "o": ["Le DHCP", "Le VPN", "Le DFS", "Le service WINS"]}, {"q": "Des postes reçoivent de fausses adresses IP. Cause probable :", "o": ["Une zone DNS supprimée", "Un serveur DHCP pirate", "Un certificat expiré", "Un espace de noms DFS"]}, {"q": "Un télétravailleur doit accéder au réseau de façon sécurisée. On déploie :", "o": ["Une étendue DHCP", "Un cliché instantané", "Un VPN", "Un analyseur de protocole"]}, {"q": "Un dossier partagé doit rester accessible si un serveur tombe. On utilise :", "o": ["Un bail plus long", "Un DHCP pirate", "Un seul serveur de fichiers", "La réplication DFS"]}, {"q": "On veut autoriser seulement les postes à jour et protégés. On met en place :", "o": ["La protection d'accès réseau (NAP)", "Une étendue plus large", "Une zone DNS de plus", "Un nouveau VPN sans règle"]}], "B4K": [0, 1, 2, 3, 0]};
+function nrm(s){return (s||'').toLowerCase().replace(/[\s\u00a0-]+/g,'');}
+function gv(id){var e=document.getElementById(id);return e?e.value:'';}
+function mark(id,ok){var m=document.getElementById('m-'+id);if(m){m.textContent=ok?'\u2713':'\u2717';m.className='exmark '+(ok?'ok':'ko');}}
+function chkTxt(i){var v=nrm(gv('b3-'+i));var ok=D.B3V[i].indexOf(v)>=0;mark('b3-'+i,ok);var an=document.getElementById('a-b3-'+i);if(an)an.classList.toggle('show',!ok);return ok;}
+window.exValidate=function(){
+  var a=0,b=0;
+  D.A1.forEach(function(c,i){var ok=parseInt(gv('a1-'+i),10)===c;mark('a1-'+i,ok);if(ok)a+=1;});
+  D.QC.forEach(function(c,i){var ok=parseInt(gv('a2-'+i),10)===c;mark('a2-'+i,ok);if(ok)a+=1;});
+  D.B1.forEach(function(c,i){var ok=parseInt(gv('b1-'+i),10)===c;mark('b1-'+i,ok);if(ok)b+=3;});
+  D.B2K.forEach(function(c,i){var ok=parseInt(gv('b2-'+i),10)===c;mark('b2-'+i,ok);if(ok)b+=3;});
+  for(var i=0;i<D.B3V.length;i++){if(chkTxt(i))b+=4;}
+  D.B4K.forEach(function(c,i){var ok=parseInt(gv('b4-'+i),10)===c;mark('b4-'+i,ok);if(ok)b+=4;});
+  var t=a+b;
+  document.getElementById('s-a').textContent=a+' / 30';
+  document.getElementById('s-b').textContent=b+' / 70';
+  document.getElementById('s-t').textContent=t+' / 100';
+  document.getElementById('g-a').style.width=(a/30*100)+'%';
+  document.getElementById('g-b').style.width=(b/70*100)+'%';
+  document.getElementById('g-t').style.width=t+'%';
+  var res=document.getElementById('ex-result');res.style.display='block';var pass=t>=75;
+  res.className='q-result '+(pass?'win':'lose');
+  res.innerHTML=pass?'\uD83C\uDF93 <strong>'+t+'/100 \u2014 Examen blanc r\u00e9ussi !</strong> (seuil 75 %)':'\uD83D\uDCDA <strong>'+t+'/100</strong> \u2014 il faut au moins 75/100. Revois \u00ab \u2605 L\u2019essentiel \u00e0 retenir \u00bb puis recommence.';
+  try{localStorage.setItem(KEY+'exam',JSON.stringify({score:t,passed:pass,date:new Date().toISOString()}));}catch(e){}
+};
+window.exReset=function(){if(!confirm('Effacer toutes tes r\u00e9ponses de l\u2019examen ?'))return;document.querySelectorAll('#examen .exin').forEach(function(e){e.value='';});document.querySelectorAll('#examen .exsel').forEach(function(e){e.value='-1';});document.querySelectorAll('#examen .exmark').forEach(function(e){e.textContent='';e.className='exmark';});document.querySelectorAll('#examen .exans').forEach(function(e){e.classList.remove('show');});['s-a','s-b','s-t'].forEach(function(i,k){document.getElementById(i).textContent='\u2014 / '+[30,70,100][k];});['g-a','g-b','g-t'].forEach(function(i){document.getElementById(i).style.width='0';});var res=document.getElementById('ex-result');res.style.display='none';try{localStorage.removeItem(KEY+'exam');}catch(e){}};
+function buildPrint(blank){
+  var w=window.open('','_blank');if(!w)return alert('Autorise les pop-ups pour imprimer.');
+  var nom=gv('ex-nom'),pre=gv('ex-prenom'),dat=gv('ex-date');
+  var d='<h1 style="font-size:18px">Canado Technique \u2014 TRI-20 \u00b7 Examen blanc \u2014 Configuration de serveurs</h1>';
+  d+='<p>Nom : <b>'+(blank?'________________':(nom||'________'))+'</b> \u00b7 Pr\u00e9nom : <b>'+(blank?'________________':(pre||'________'))+'</b> \u00b7 Date : <b>'+(blank?'____ / ____ / ______':(dat||'________'))+'</b></p>';
+  d+='<p><i>Total 100 pts \u00b7 R\u00e9ussite \u2265 75 % \u00b7 Dur\u00e9e 75 min</i></p><hr>';
+  function line(q,ans,ok){d+='<div style="margin:7px 0"><div>'+q+'</div>';if(blank){d+='<div style="border-bottom:1px solid #999;height:16px;width:70%"></div>';}else{d+='<div>R\u00e9ponse \u00e9l\u00e8ve : <b>'+(ans||'\u2014')+'</b>'+(ok===null?'':(ok?' \u2713':' \u2717'))+'</div>';}d+='</div>';}
+  d+='<h2 style="font-size:14px">Partie A \u2014 Th\u00e9orie (30 pts)</h2>';
+  d+='<h3 style="font-size:12px">A1. Ordre (5 pts)</h3><p style="font-size:10px"><i>Options : '+D.A1OPTS.join(' \u00b7 ')+'</i></p>';
+  for(var i=0;i<D.A1.length;i++){var v=gv('a1-'+i);line((i+1)+'. ___',blank?'':(v>=0&&D.A1OPTS[v]?D.A1OPTS[v]:'\u2014'),blank?null:(parseInt(v,10)===D.A1[i]));}
+  d+='<h3 style="font-size:12px">A2. Quiz g\u00e9n\u00e9ral (25 pts)</h3>';
+  D.A2.forEach(function(q,i){var v=gv('a2-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===D.QC[i]));});
+  d+='<h2 style="font-size:14px">Partie B \u2014 Pratique (70 pts)</h2>';
+  d+='<h3 style="font-size:12px">B1. '+D.B1T+' (15 pts)</h3><p style="font-size:10px"><i>Options : '+D.B1OPTS.join(' \u00b7 ')+'</i></p>';
+  for(var i=0;i<D.B1.length;i++){var v=gv('b1-'+i);line((i+1)+'. ___',blank?'':(v>=0&&D.B1OPTS[v]?D.B1OPTS[v]:'\u2014'),blank?null:(parseInt(v,10)===D.B1[i]));}
+  d+='<h3 style="font-size:12px">B2. '+D.B2T+' (15 pts)</h3>';
+  D.B2.forEach(function(q,i){var v=gv('b2-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===D.B2K[i]));});
+  d+='<h3 style="font-size:12px">B3. \u00c9tude de cas (20 pts)</h3>';
+  D.B3Q.forEach(function(q,i){var v=gv('b3-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(D.B3V[i].indexOf(nrm(v))>=0));});
+  d+='<h3 style="font-size:12px">B4. Diagnostic (20 pts)</h3>';
+  D.B4.forEach(function(q,i){var v=gv('b4-'+i);line((i+1)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===D.B4K[i]));});
+  if(!blank){d+='<hr><p><b>Score : '+document.getElementById('s-t').textContent+'</b></p>';}
+  var END='</bo'+'dy></ht'+'ml>';
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-20 \u2014 Examen</title><style>body{font-family:Arial,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}</style></head><body>'+d+END);
+  w.document.close();setTimeout(function(){w.print();},300);
+}
+window.exPrint=function(){buildPrint(false);};window.exPrintBlank=function(){buildPrint(true);};
+})();
+</script></body></html>
