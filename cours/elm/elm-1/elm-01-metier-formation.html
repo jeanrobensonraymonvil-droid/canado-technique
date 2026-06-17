@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ELM-01 - Metier et formation</title>
+<title>ELM-01 — Métier et formation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+<style>:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
 body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
+img.wm{position:fixed;top:14px;right:14px;width:8%;max-width:120px;opacity:.15;z-index:5;pointer-events:none}
 .wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
 .mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
 .mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
@@ -20,480 +20,449 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;b
 .mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
 .mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
 .mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
+.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
 .progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
 .progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
 .layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
 .toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
 .toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
 .toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
 .toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
 .toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px;text-align:center}
+.pnav{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:.7rem 1rem;margin-bottom:1.2rem}
+.pnav.bottom{margin-top:1.4rem;margin-bottom:0}
+.pnav-mid{flex:1;display:flex;flex-direction:column;gap:.35rem}
+.pnav-lbl{font-size:.72rem;font-weight:700;color:var(--g700);text-align:center}
+.pnav-bar{height:5px;background:var(--g100);border-radius:3px;overflow:hidden}
+.pnav-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blueG),#7BA7FF);transition:width .4s}
+.pnav-btn{background:var(--blue);color:#fff;font-weight:700;font-size:.78rem;padding:.5rem 1rem;border-radius:9px;transition:.15s;white-space:nowrap}
+.pnav-btn:hover{background:var(--blueL)}.pnav-btn:disabled{background:var(--g300);color:#fff;cursor:not-allowed}
+.pc{display:none}.pc.show{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
 .chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.18);min-width:40px}
+.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:2px}
+.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.5);display:flex;gap:.8rem;flex-wrap:wrap}
 .chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
+.lpl{background:rgba(27,58,140,.045);border:1px solid rgba(27,58,140,.13);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:1.4rem;display:grid;gap:.7rem}
+.lpl-col h4{font-family:var(--fD);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin-bottom:.35rem}
+.lpl-col ul{list-style:none;display:grid;gap:.25rem}
+.lpl-col li{font-size:.79rem;color:#2a3d6b;line-height:1.55;padding-left:1.1rem;position:relative}
+.lpl-col li::before{content:'›';position:absolute;left:0;color:var(--blueG);font-weight:800}
+.step-lbl{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin:1.6rem 0 .8rem;padding-left:.7rem;border-left:3px solid var(--blueG)}
+.step-lbl .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:.72rem;font-weight:800}
+.video-shell{position:relative;background:#040D1A;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;margin-bottom:.5rem}
+.video-shell video{width:100%;height:100%;display:block;object-fit:cover}
+.vhint{font-size:.72rem;color:var(--g500);margin-bottom:.4rem}
+.content-section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin:1rem 0 .5rem}
+.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.8rem}
 .content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
-
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
+.bonas{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.9rem 1.1rem;margin:1.2rem 0}
+.bonas-lbl{font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#004030;margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.bonas ul{list-style:none;display:grid;gap:.3rem}
+.bonas li{font-size:.81rem;color:#0c3a2a;line-height:1.55;padding-left:1.2rem;position:relative}
+.bonas li::before{content:'✓';position:absolute;left:0;color:var(--greenL);font-weight:800}
+.quiz{background:var(--g50);border:1px solid var(--bdr);border-radius:var(--r);padding:1.2rem;margin-top:.6rem}
+.quiz-q{margin-bottom:1.1rem}.quiz-q:last-child{margin-bottom:0}
+.quiz-q .qn{font-size:.7rem;font-weight:800;color:var(--g500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.quiz-q .qt{font-size:.86rem;font-weight:600;color:var(--text);margin-bottom:.6rem;line-height:1.5}
+.opt{display:flex;align-items:center;gap:.6rem;padding:.55rem .8rem;border:1px solid var(--bdr);border-radius:8px;background:#fff;font-size:.82rem;color:#2a3d6b;cursor:pointer;margin-bottom:.4rem;transition:.13s;line-height:1.4}
+.opt:hover{border-color:var(--blueG);background:var(--g100)}
+.opt .lt{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:var(--g100);font-weight:800;font-size:.72rem;color:var(--blue);flex-shrink:0}
+.opt.ok{border-color:var(--greenL);background:rgba(0,160,102,.1)}.opt.ok .lt{background:var(--greenL);color:#fff}
+.opt.no{border-color:var(--red);background:rgba(232,25,44,.08)}.opt.no .lt{background:var(--red);color:#fff}
+.opt.lock{pointer-events:none;opacity:.92}
+.expl{font-size:.79rem;color:#1a2f52;background:rgba(27,58,140,.05);border-left:3px solid var(--blueG);padding:.55rem .8rem;border-radius:0 6px 6px 0;margin-top:.4rem;line-height:1.55;display:none}
+.expl.show{display:block}
+.quiz-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--bdr)}
+.quiz-score{font-size:.82rem;font-weight:700;color:var(--g700)}
+.quiz-score b{color:var(--blue)}
+.btn{background:var(--blue);color:#fff;font-weight:700;font-size:.8rem;padding:.55rem 1.1rem;border-radius:9px;transition:.15s}
+.btn:hover{background:var(--blueL)}.btn.ghost{background:var(--g100);color:var(--blue)}
+.gate-msg{font-size:.78rem;color:var(--orange);font-weight:600;margin-top:.6rem;display:none}
+.gate-msg.show{display:block}
+.ess-grid{display:grid;gap:.8rem;margin:1rem 0}
+.ess-card{background:#fff;border:1px solid var(--bdr);border-left:4px solid var(--blueG);border-radius:var(--r);padding:.9rem 1.1rem}
+.ess-card h4{font-family:var(--fD);font-size:.85rem;color:var(--blue);margin-bottom:.35rem}
+.ess-card p{font-size:.8rem;color:#2a3d6b;line-height:1.6}
+.mini-projet{background:rgba(200,87,10,.06);border:1px solid rgba(200,87,10,.22);border-radius:var(--r);padding:1.1rem 1.2rem;margin-top:1rem}
+.mini-projet h4{font-family:var(--fD);color:var(--orange);font-size:.92rem;margin-bottom:.5rem}
+.mini-projet ol{padding-left:1.2rem;display:grid;gap:.35rem}
+.mini-projet li{font-size:.82rem;color:#5a3008;line-height:1.55}
+.exam-part{font-family:var(--fD);font-weight:800;font-size:.86rem;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin:1.4rem 0 .8rem;display:flex;align-items:center;gap:.5rem}
+.exam-result{display:none;border-radius:var(--r);padding:1.2rem;margin-top:1rem;text-align:center}
+.exam-result.show{display:block}
+.exam-result.pass{background:rgba(0,160,102,.1);border:1px solid var(--greenL)}
+.exam-result.fail{background:rgba(232,25,44,.08);border:1px solid var(--red)}
+.exam-result .big{font-family:var(--fD);font-weight:800;font-size:2rem;margin-bottom:.3rem}
+.exam-result.pass .big{color:var(--green)}.exam-result.fail .big{color:var(--red)}
+.complete-banner{display:none;background:linear-gradient(135deg,#006B46,#00A066);border-radius:var(--rL);padding:2rem 1.5rem;text-align:center;color:#fff;margin-top:1.5rem}
+.complete-banner.show{display:block;animation:fade .4s}
+.complete-banner h2{font-family:var(--fD);font-size:1.4rem;margin-bottom:.4rem}
+.complete-banner p{font-size:.86rem;opacity:.92}
+.toc-mob-btn{display:none}
+@media(max-width:860px){
+ .layout{grid-template-columns:1fr}
+ .toc{position:fixed;inset:0;z-index:50;border-radius:0;max-height:100vh;transform:translateX(-100%);transition:.25s;width:80%;max-width:300px}
+ .toc.open{transform:none}
+ .toc-mob-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--blue);color:#fff;font-weight:700;font-size:.78rem;padding:.5rem .9rem;border-radius:9px;margin-bottom:1rem}
+ .mod-header h1{font-size:1.55rem}
 }
 </style>
 </head>
 <body>
-<div class="mod-header">
-  <div class="mod-header-in">
-    <div class="mod-tag">⚡ Module ELM-01 · 1ère Année</div>
-    <h1>Metier et <em>formation</em></h1>
-    <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>30 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Travaux pratiques</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport de travaux</strong></div>
-    </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
+<img class="wm" src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/_assets/logo.png" alt="">
+<header class="mod-header">
+ <div class="mod-header-in">
+  <span class="mod-tag">⚙️ Électromécanique · ELM-01</span>
+  <h1>Métier et formation <em>— Métier &amp; formation</em></h1>
+  <div class="mod-meta">
+   <span class="mod-meta-item">👤 Formateur : <strong>Prof. Aneas Diabod</strong></span>
+   <span class="mod-meta-item">🎯 Seuil examen : <strong>70 %</strong></span>
+   <span class="mod-meta-item">📚 <strong>4 chapitres</strong> · 1<sup>re</sup> année</span>
   </div>
-</div><div id="mod-code-data" data-code="ELM-01" style="display:none"></div><div id="seuil-data" data-seuil="80" style="display:none"></div><div id="toc-overlay" onclick="toggleToc()"></div><button id="toc-mob-btn" onclick="toggleToc()" aria-label="Menu">☰</button><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Secteur electromecanique en Haiti</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Metiers ELM et debouches</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Formation ELM 13 modules 825h</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Mon projet professionnel ELM</span></div>
-  
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Secteur electromecanique en Haiti</h2>
-      <div class="chapter-meta"><span>🕐 7h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
+  <div class="progress-bar-wrap">
+   <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
+   <span class="progress-label" id="progress-text">0% complété</span>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Secteur electromecanique en Haiti - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Secteur electromecanique en Haiti (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Secteur electromecanique en Haiti (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Secteur electromecanique en Haiti en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_1">La maitrise de Secteur electromecanique en Haiti est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_1">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_1">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+ </div>
+</header>
+<div class="wrap">
+ <button class="toc-mob-btn" onclick="toggleTOC()">☰ Sommaire</button>
+ <div class="layout">
+  <aside class="toc" id="toc">
+   <h3>📋 Sommaire</h3>
+   <div class="toc-item act" id="ti-plan" onclick="goTo('plan')"><span class="toc-dot"></span><span class="toc-num">▶</span><span>Plan du module</span></div>
+<div class="toc-item" id="ti-ch-1" onclick="goTo('ch-1')"><span class="toc-dot"></span><span class="toc-num">1</span><span>La réalité du métier et le marché du travail</span></div>
+<div class="toc-item" id="ti-ch-2" onclick="goTo('ch-2')"><span class="toc-dot"></span><span class="toc-num">2</span><span>Tâches, exigences et qualités du métier</span></div>
+<div class="toc-item" id="ti-ch-3" onclick="goTo('ch-3')"><span class="toc-dot"></span><span class="toc-num">3</span><span>Le programme de formation ELM et son évaluation</span></div>
+<div class="toc-item" id="ti-ch-4" onclick="goTo('ch-4')"><span class="toc-dot"></span><span class="toc-num">4</span><span>Confirmer mon orientation professionnelle</span></div>
+<div class="toc-sep">Synthèse</div>
+<div class="toc-item" id="ti-essentiel" onclick="goTo('essentiel')"><span class="toc-dot"></span><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+<div class="toc-item" id="ti-examen" onclick="goTo('examen')"><span class="toc-dot"></span><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+  </aside>
+  <main id="main-content">
+   <div class="pnav" id="pnav-top">
+    <button class="pnav-btn" id="pl-prev" onclick="plPrev()">← Précédent</button>
+    <div class="pnav-mid"><div class="pnav-lbl" id="pl-lbl">Plan du module</div><div class="pnav-bar"><i id="pl-fill"></i></div></div>
+    <button class="pnav-btn" id="pl-next" onclick="plNext()">Suivant →</button>
+   </div>
+   <div class="pc show" id="pc-plan" data-step="plan">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">▶</div><div class="chapter-info"><h2>Plan du module — ELM-01</h2><div class="chapter-meta"><span>Présenté par Prof. Aneas Diabod</span><span>Électromécanique · 1<sup>re</sup> année</span></div></div></div>
+  <div class="chapter-body">
+   <div class="step-lbl"><span class="n">▶</span> Vidéo de présentation</div>
+   <div class="video-shell"><video controls preload="metadata" poster="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/_assets/logo.png"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas la vidéo.</video></div>
+   <p class="vhint">Vidéo : <strong>https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-PLAN.mp4</strong></p>
+   <div class="content-section">
+    <h3>Bienvenue dans le module « Métier et formation »</h3>
+    <p>Ce module est le tout premier de votre formation en électromécanique. Il ne s'agit pas encore de réparer des moteurs, mais de <strong>vous situer</strong> : comprendre le métier, ses exigences, la formation qui vous attend, puis <strong>confirmer votre orientation professionnelle</strong> en toute connaissance de cause.</p>
+    <p><strong>Compétence visée :</strong> se situer au regard du métier et de la démarche de formation.</p>
+   </div>
+   <div class="bonas"><div class="bonas-lbl">📋 Au programme de ce module</div><ul><li>La réalité du métier et le marché du travail</li><li>Tâches, exigences et qualités du métier</li><li>Le programme de formation ELM et son évaluation</li><li>Confirmer mon orientation professionnelle</li></ul></div>
+   <div class="bonas" style="background:rgba(27,58,140,.05);border-color:rgba(27,58,140,.18)"><div class="bonas-lbl" style="color:var(--blue)">🎓 Comment réussir</div><ul style="list-style:none"><li>Regardez chaque vidéo, lisez la leçon, puis validez le quiz du chapitre.</li><li>Chaque quiz doit atteindre 70 % pour débloquer le chapitre suivant.</li><li>À la fin : la synthèse « ★ Essentiel » puis l'« 🎓 Examen blanc » (seuil 70 %).</li></ul></div>
   </div>
+ </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Metiers ELM et debouches</h2>
-      <div class="chapter-meta"><span>🕐 7h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
+   <div class="pc" id="pc-ch-1" data-step="ch-1">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">01</div><div class="chapter-info"><h2>La réalité du métier et le marché du travail</h2><div class="chapter-meta"><span>Prof. Aneas Diabod</span><span>Chapitre 1 / 4</span></div></div></div>
+  <div class="chapter-body">
+   <div class="lpl">
+    <div class="lpl-col"><h4>🎯 Objectifs du chapitre</h4><ul><li>Décrire la nature du métier d'électromécanicien et son secteur d'activité</li><li>Distinguer une tâche d'une activité</li><li>Repérer les catégories d'employeurs et les perspectives d'emploi en Haïti</li></ul></div>
+    <div class="lpl-col"><h4>↩️ Précédemment</h4><ul><li>Premier chapitre du module — point de départ de toute la formation.</li></ul></div>
+    <div class="lpl-col"><h4>✓ À valider</h4><ul><li>Je sais ce que fait un électromécanicien au quotidien</li><li>Je connais les principaux types d'employeurs du secteur</li><li>Je distingue une tâche d'une activité</li></ul></div>
+   </div>
+   <div class="step-lbl"><span class="n">1</span> Vidéo du chapitre</div>
+   <div class="video-shell"><video controls preload="metadata" poster="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/_assets/logo.png"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas la vidéo.</video></div>
+   <p class="vhint">Vidéo : <strong>https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH01.mp4</strong></p>
+   <div class="step-lbl"><span class="n">2</span> Lecture</div>
+   <div class="content-section"><h3>Le métier d'électromécanicien</h3><p>L'électromécanicien installe, fait fonctionner, entretient et dépanne des équipements qui combinent des parties <strong>électriques</strong> et des parties <strong>mécaniques</strong> : moteurs, génératrices, transformateurs, systèmes de commande, de transmission et de production d'énergie. C'est un métier de terrain, exigeant à la fois de la rigueur, de la méthode et le souci constant de la sécurité.</p><h3>Tâche ou activité ?</h3><p>Une <strong>tâche</strong> est un travail ayant un début et une fin et visant une réalisation précise (par exemple : remplacer le roulement d'un moteur). Une <strong>activité</strong> est une partie de cette tâche (démonter le flasque, extraire l'ancien roulement, monter le neuf). Savoir découper son travail en tâches et activités est la base de l'organisation d'un électromécanicien.</p><h3>Le marché du travail en Haïti</h3><p>En Haïti, l'électromécanicien trouve sa place dans plusieurs milieux : l'<strong>industrie</strong> (agroalimentaire, boissons, textile, ciment), le secteur de l'<strong>énergie</strong> (groupes électrogènes, onduleurs, panneaux solaires, postes de distribution), le <strong>bâtiment</strong> (électrification, installations techniques) et les services de <strong>maintenance industrielle</strong>. La demande est soutenue par le besoin permanent de fiabiliser la production d'énergie et de maintenir les équipements en marche.</p></div>
+   <div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Électromécanique = électrique + mécanique sur un même équipement.</li><li>Tâche : début, fin et résultat précis ; activité : une étape de la tâche.</li><li>En Haïti, les débouchés se concentrent sur l'énergie (génératrices, solaire), l'industrie et la maintenance.</li></ul></div>
+   <div class="step-lbl"><span class="n">3</span> Quiz — Chapitre 1</div>
+   <div class="quiz" id="quiz-1">
+    <div class="quiz-q" id="q-1-0"><div class="qn">Question 1 / 4</div><div class="qt">Que combine, par définition, le métier d'électromécanicien ?</div><div class="opt" onclick="pick(this,1,0,0,1)"><span class="lt">A</span><span>Uniquement des circuits électroniques</span></div><div class="opt" onclick="pick(this,1,0,1,1)"><span class="lt">B</span><span>Des parties électriques et des parties mécaniques d'un même équipement</span></div><div class="opt" onclick="pick(this,1,0,2,1)"><span class="lt">C</span><span>De la programmation informatique seulement</span></div><div class="opt" onclick="pick(this,1,0,3,1)"><span class="lt">D</span><span>De la comptabilité industrielle</span></div><div class="expl" id="ex-1-0">L'électromécanique réunit l'électrique et le mécanique sur un même équipement (moteurs, génératrices, commandes…).</div></div><div class="quiz-q" id="q-1-1"><div class="qn">Question 2 / 4</div><div class="qt">Lequel de ces énoncés décrit une « activité » et non une « tâche » ?</div><div class="opt" onclick="pick(this,1,1,0,3)"><span class="lt">A</span><span>Remplacer le roulement défectueux d'un moteur</span></div><div class="opt" onclick="pick(this,1,1,1,3)"><span class="lt">B</span><span>Mettre en service un groupe électrogène</span></div><div class="opt" onclick="pick(this,1,1,2,3)"><span class="lt">C</span><span>Réaliser l'entretien complet d'une pompe</span></div><div class="opt" onclick="pick(this,1,1,3,3)"><span class="lt">D</span><span>Extraire l'ancien roulement de son logement</span></div><div class="expl" id="ex-1-1">L'extraction du roulement est une étape (activité) à l'intérieur d'une tâche plus large comme le remplacement du roulement.</div></div><div class="quiz-q" id="q-1-2"><div class="qn">Question 3 / 4</div><div class="qt">Quel secteur offre le plus de débouchés à l'électromécanicien en Haïti ?</div><div class="opt" onclick="pick(this,1,2,0,0)"><span class="lt">A</span><span>L'énergie : génératrices, onduleurs et solaire, et la maintenance industrielle</span></div><div class="opt" onclick="pick(this,1,2,1,0)"><span class="lt">B</span><span>L'agriculture vivrière exclusivement</span></div><div class="opt" onclick="pick(this,1,2,2,0)"><span class="lt">C</span><span>Le tourisme balnéaire</span></div><div class="opt" onclick="pick(this,1,2,3,0)"><span class="lt">D</span><span>L'enseignement primaire</span></div><div class="expl" id="ex-1-2">L'énergie (groupes électrogènes, solaire) et la maintenance industrielle constituent les principaux gisements d'emploi du secteur en Haïti.</div></div><div class="quiz-q" id="q-1-3"><div class="qn">Question 4 / 4</div><div class="qt">Pourquoi un électromécanicien découpe-t-il son travail en tâches et activités ?</div><div class="opt" onclick="pick(this,1,3,0,2)"><span class="lt">A</span><span>Pour facturer plus cher au client</span></div><div class="opt" onclick="pick(this,1,3,1,2)"><span class="lt">B</span><span>Cela n'a aucune utilité pratique</span></div><div class="opt" onclick="pick(this,1,3,2,2)"><span class="lt">C</span><span>Pour organiser son intervention, estimer le temps et travailler en sécurité</span></div><div class="opt" onclick="pick(this,1,3,3,2)"><span class="lt">D</span><span>Uniquement pour remplir des formulaires administratifs</span></div><div class="expl" id="ex-1-3">Découper en tâches/activités permet d'organiser l'intervention, d'estimer le temps et de sécuriser chaque étape.</div></div>
+    <div class="quiz-foot">
+     <div class="quiz-score">Score : <b id="sc-1">0</b> / 4 <span style="color:var(--g500);font-weight:600">(il faut 3/4)</span></div>
+     <button class="btn ghost" onclick="resetQuiz(1)">↻ Recommencer</button>
     </div>
+    <div class="gate-msg" id="gate-1">Atteignez 3/4 pour débloquer le chapitre suivant.</div>
+   </div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Metiers ELM et debouches - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Metiers ELM et debouches (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Metiers ELM et debouches (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Metiers ELM et debouches en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_2">La maitrise de Metiers ELM et debouches est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_2">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_2">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
-  </div>
+ </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Formation ELM 13 modules 825h</h2>
-      <div class="chapter-meta"><span>🕐 7h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
+<div class="pc" id="pc-ch-2" data-step="ch-2">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">02</div><div class="chapter-info"><h2>Tâches, exigences et qualités du métier</h2><div class="chapter-meta"><span>Prof. Aneas Diabod</span><span>Chapitre 2 / 4</span></div></div></div>
+  <div class="chapter-body">
+   <div class="lpl">
+    <div class="lpl-col"><h4>🎯 Objectifs du chapitre</h4><ul><li>Indiquer les principales tâches et les conditions de travail de l'électromécanicien</li><li>Expliquer les qualifications requises au seuil d'entrée sur le marché du travail</li><li>Distinguer habiletés, aptitudes, attitudes et connaissances</li></ul></div>
+    <div class="lpl-col"><h4>↩️ Précédemment</h4><ul><li>Au chapitre 1, nous avons cerné le métier et son marché. Voyons maintenant ce qu'il exige concrètement.</li></ul></div>
+    <div class="lpl-col"><h4>✓ À valider</h4><ul><li>Je connais les grandes familles de tâches du métier</li><li>Je sais ce qu'on attend d'un débutant à l'embauche</li><li>Je distingue habileté, aptitude, attitude et connaissance</li></ul></div>
+   </div>
+   <div class="step-lbl"><span class="n">1</span> Vidéo du chapitre</div>
+   <div class="video-shell"><video controls preload="metadata" poster="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/_assets/logo.png"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas la vidéo.</video></div>
+   <p class="vhint">Vidéo : <strong>https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH02.mp4</strong></p>
+   <div class="step-lbl"><span class="n">2</span> Lecture</div>
+   <div class="content-section"><h3>Les grandes tâches du métier</h3><p>L'électromécanicien <strong>installe</strong> des équipements, en assure la <strong>mise en service</strong>, réalise l'<strong>entretien préventif</strong>, effectue le <strong>dépannage</strong> en cas de panne et tient à jour la <strong>documentation technique</strong> de ses interventions. Il travaille seul ou en équipe, en atelier comme sur le terrain, souvent dans des conditions exigeantes (bruit, chaleur, hauteur, énergies dangereuses).</p><h3>Les qualifications au seuil d'entrée</h3><p>Pour accéder au métier, on attend du débutant un <strong>diplôme ou une attestation de formation</strong>, le respect des <strong>normes et règlements</strong> de sécurité, et la capacité à exécuter les tâches de base de façon autonome et fiable. La rémunération et les possibilités d'avancement progressent avec l'expérience et la maîtrise de nouvelles compétences (automatismes, énergies renouvelables…).</p><h3>Habiletés, aptitudes, attitudes, connaissances</h3><p>Quatre notions à ne pas confondre : l'<strong>habileté</strong> est la capacité de reproduire un geste (souder, aligner un accouplement) ; l'<strong>aptitude</strong> est une disposition naturelle (dextérité manuelle, sens de l'espace) ; l'<strong>attitude</strong> est une manière d'agir face aux situations (rigueur, souci de la qualité et de la sécurité) ; la <strong>connaissance</strong> est une notion comprise (loi d'Ohm, fonctionnement d'un moteur). Le métier mobilise les quatre à la fois.</p></div>
+   <div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Tâches clés : installer, mettre en service, entretenir, dépanner, documenter.</li><li>Au seuil d'entrée : diplôme/attestation, respect des normes, autonomie sur les tâches de base.</li><li>Habileté (geste) ≠ aptitude (disposition) ≠ attitude (comportement) ≠ connaissance (notion).</li></ul></div>
+   <div class="step-lbl"><span class="n">3</span> Quiz — Chapitre 2</div>
+   <div class="quiz" id="quiz-2">
+    <div class="quiz-q" id="q-2-0"><div class="qn">Question 1 / 4</div><div class="qt">Parmi ces éléments, lequel est une « attitude » professionnelle ?</div><div class="opt" onclick="pick(this,2,0,0,1)"><span class="lt">A</span><span>Connaître la loi d'Ohm</span></div><div class="opt" onclick="pick(this,2,0,1,1)"><span class="lt">B</span><span>Le souci constant de la qualité et de la sécurité du travail</span></div><div class="opt" onclick="pick(this,2,0,2,1)"><span class="lt">C</span><span>Avoir une bonne dextérité manuelle de naissance</span></div><div class="opt" onclick="pick(this,2,0,3,1)"><span class="lt">D</span><span>Savoir souder un raccord</span></div><div class="expl" id="ex-2-0">L'attitude est une manière d'agir face aux situations ; le souci de la qualité et de la sécurité en est un exemple.</div></div><div class="quiz-q" id="q-2-1"><div class="qn">Question 2 / 4</div><div class="qt">Qu'attend-on principalement d'un électromécanicien au seuil d'entrée sur le marché du travail ?</div><div class="opt" onclick="pick(this,2,1,0,2)"><span class="lt">A</span><span>Vingt ans d'expérience minimum</span></div><div class="opt" onclick="pick(this,2,1,1,2)"><span class="lt">B</span><span>Un doctorat en ingénierie</span></div><div class="opt" onclick="pick(this,2,1,2,2)"><span class="lt">C</span><span>Un diplôme/attestation, le respect des normes et l'autonomie sur les tâches de base</span></div><div class="opt" onclick="pick(this,2,1,3,2)"><span class="lt">D</span><span>Aucune qualification particulière</span></div><div class="expl" id="ex-2-1">Au seuil d'entrée, on attend une qualification reconnue, le respect des normes et l'autonomie sur les tâches de base.</div></div><div class="quiz-q" id="q-2-2"><div class="qn">Question 3 / 4</div><div class="qt">Laquelle de ces activités relève des tâches courantes du métier ?</div><div class="opt" onclick="pick(this,2,2,0,0)"><span class="lt">A</span><span>L'entretien préventif et le dépannage des équipements</span></div><div class="opt" onclick="pick(this,2,2,1,0)"><span class="lt">B</span><span>La rédaction de lois</span></div><div class="opt" onclick="pick(this,2,2,2,0)"><span class="lt">C</span><span>La gestion d'un cabinet d'avocats</span></div><div class="opt" onclick="pick(this,2,2,3,0)"><span class="lt">D</span><span>La conception architecturale de bâtiments</span></div><div class="expl" id="ex-2-2">Entretien préventif et dépannage figurent parmi les tâches de base de l'électromécanicien.</div></div><div class="quiz-q" id="q-2-3"><div class="qn">Question 4 / 4</div><div class="qt">« Avoir une bonne dextérité manuelle naturelle » correspond à :</div><div class="opt" onclick="pick(this,2,3,0,3)"><span class="lt">A</span><span>Une connaissance</span></div><div class="opt" onclick="pick(this,2,3,1,3)"><span class="lt">B</span><span>une attitude</span></div><div class="opt" onclick="pick(this,2,3,2,3)"><span class="lt">C</span><span>Une habileté acquise par l'entraînement</span></div><div class="opt" onclick="pick(this,2,3,3,3)"><span class="lt">D</span><span>une aptitude</span></div><div class="expl" id="ex-2-3">La dextérité manuelle naturelle est une aptitude — une disposition naturelle, distincte de l'habileté qui s'acquiert.</div></div>
+    <div class="quiz-foot">
+     <div class="quiz-score">Score : <b id="sc-2">0</b> / 4 <span style="color:var(--g500);font-weight:600">(il faut 3/4)</span></div>
+     <button class="btn ghost" onclick="resetQuiz(2)">↻ Recommencer</button>
     </div>
+    <div class="gate-msg" id="gate-2">Atteignez 3/4 pour débloquer le chapitre suivant.</div>
+   </div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Formation ELM 13 modules 825h - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Formation ELM 13 modules 825h (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Formation ELM 13 modules 825h (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Formation ELM 13 modules 825h en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_3">La maitrise de Formation ELM 13 modules 825h est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_3">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_3">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_3">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
-  </div>
+ </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Mon projet professionnel ELM</h2>
-      <div class="chapter-meta"><span>🕐 7h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
+<div class="pc" id="pc-ch-3" data-step="ch-3">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">03</div><div class="chapter-info"><h2>Le programme de formation ELM et son évaluation</h2><div class="chapter-meta"><span>Prof. Aneas Diabod</span><span>Chapitre 3 / 4</span></div></div></div>
+  <div class="chapter-body">
+   <div class="lpl">
+    <div class="lpl-col"><h4>🎯 Objectifs du chapitre</h4><ul><li>Énoncer les principes de l'approche par compétences</li><li>Lister les composantes du programme de formation en électromécanique</li><li>Décrire le mode d'évaluation et le droit à la reprise</li></ul></div>
+    <div class="lpl-col"><h4>↩️ Précédemment</h4><ul><li>Après avoir cerné le métier et ses exigences, découvrons la formation qui y mène.</li></ul></div>
+    <div class="lpl-col"><h4>✓ À valider</h4><ul><li>Je comprends ce qu'est l'approche par compétences</li><li>Je connais l'ampleur du programme (modules, heures)</li><li>Je distingue évaluation formative et évaluation de sanction</li></ul></div>
+   </div>
+   <div class="step-lbl"><span class="n">1</span> Vidéo du chapitre</div>
+   <div class="video-shell"><video controls preload="metadata" poster="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/_assets/logo.png"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas la vidéo.</video></div>
+   <p class="vhint">Vidéo : <strong>https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH03.mp4</strong></p>
+   <div class="step-lbl"><span class="n">2</span> Lecture</div>
+   <div class="content-section"><h3>L'approche par compétences</h3><p>La formation repose sur l'<strong>approche par compétences</strong> : une pédagogie de la réussite, centrée sur l'étudiant, qui mesure ce que l'on est capable de <strong>faire</strong> et non seulement ce que l'on sait. L'évaluation y est <strong>critériée</strong> : on compare la performance de l'étudiant à des critères précis, et non aux autres étudiants.</p><h3>Les composantes du programme</h3><p>Le programme d'électromécanique compte <strong>vingt-six modules</strong> pour une durée totale de <strong>mille huit cents heures</strong>. Six cent soixante heures sont consacrées aux compétences <strong>particulières</strong> (directement liées aux tâches du métier) et mille cent quarante heures aux compétences <strong>générales</strong> (transférables à plusieurs activités). Les modules vont de trente à cent vingt heures, et la formation peut être complétée par des stages en entreprise. Le tout premier module est « Métier et formation » — celui que vous suivez en ce moment.</p><h3>Le mode d'évaluation</h3><p>On distingue l'<strong>évaluation formative</strong>, qui accompagne l'apprentissage et aide à progresser, et l'<strong>évaluation aux fins de sanction</strong>, qui décide de la réussite d'un module. En cas d'échec, l'étudiant bénéficie d'un <strong>droit à la reprise</strong>. Le règlement intérieur de l'établissement encadre la vie scolaire, l'assiduité et les obligations de chacun.</p></div>
+   <div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Approche par compétences : centrée sur le « savoir-faire », évaluation critériée.</li><li>Programme ELM : 26 modules, 1800 heures (660 h particulières + 1140 h générales).</li><li>Deux évaluations : formative (pour progresser) et de sanction (pour réussir) ; droit à la reprise.</li></ul></div>
+   <div class="step-lbl"><span class="n">3</span> Quiz — Chapitre 3</div>
+   <div class="quiz" id="quiz-3">
+    <div class="quiz-q" id="q-3-0"><div class="qn">Question 1 / 4</div><div class="qt">Que signifie « évaluation critériée » dans l'approche par compétences ?</div><div class="opt" onclick="pick(this,3,0,0,2)"><span class="lt">A</span><span>On compare l'étudiant à la moyenne de sa classe</span></div><div class="opt" onclick="pick(this,3,0,1,2)"><span class="lt">B</span><span>On note au hasard</span></div><div class="opt" onclick="pick(this,3,0,2,2)"><span class="lt">C</span><span>On compare la performance de l'étudiant à des critères précis et définis</span></div><div class="opt" onclick="pick(this,3,0,3,2)"><span class="lt">D</span><span>On évalue seulement la présence en cours</span></div><div class="expl" id="ex-3-0">L'évaluation critériée mesure la performance par rapport à des critères précis, non par rapport aux autres étudiants.</div></div><div class="quiz-q" id="q-3-1"><div class="qn">Question 2 / 4</div><div class="qt">Quelle est la durée totale du programme de formation en électromécanique ?</div><div class="opt" onclick="pick(this,3,1,0,0)"><span class="lt">A</span><span>Mille huit cents heures réparties sur vingt-six modules</span></div><div class="opt" onclick="pick(this,3,1,1,0)"><span class="lt">B</span><span>Huit cent vingt-cinq heures sur treize modules</span></div><div class="opt" onclick="pick(this,3,1,2,0)"><span class="lt">C</span><span>Trois cents heures sur six modules</span></div><div class="opt" onclick="pick(this,3,1,3,0)"><span class="lt">D</span><span>Cinq mille heures sur cinquante modules</span></div><div class="expl" id="ex-3-1">Le programme officiel compte 26 modules pour 1800 heures au total.</div></div><div class="quiz-q" id="q-3-2"><div class="qn">Question 3 / 4</div><div class="qt">Quelle est la différence entre évaluation formative et évaluation de sanction ?</div><div class="opt" onclick="pick(this,3,2,0,3)"><span class="lt">A</span><span>Il n'y a aucune différence</span></div><div class="opt" onclick="pick(this,3,2,1,3)"><span class="lt">B</span><span>La formative décide de la réussite, la sanction aide à progresser</span></div><div class="opt" onclick="pick(this,3,2,2,3)"><span class="lt">C</span><span>Les deux servent uniquement à classer les étudiants</span></div><div class="opt" onclick="pick(this,3,2,3,3)"><span class="lt">D</span><span>La formative aide à progresser ; la sanction décide de la réussite du module</span></div><div class="expl" id="ex-3-2">La formative accompagne l'apprentissage ; la sanction décide de la réussite du module.</div></div><div class="quiz-q" id="q-3-3"><div class="qn">Question 4 / 4</div><div class="qt">Que se passe-t-il si un étudiant échoue à l'évaluation de sanction d'un module ?</div><div class="opt" onclick="pick(this,3,3,0,0)"><span class="lt">A</span><span>Il bénéficie d'un droit à la reprise prévu par le règlement</span></div><div class="opt" onclick="pick(this,3,3,1,0)"><span class="lt">B</span><span>Il est définitivement exclu</span></div><div class="opt" onclick="pick(this,3,3,2,0)"><span class="lt">C</span><span>Il change automatiquement de métier</span></div><div class="opt" onclick="pick(this,3,3,3,0)"><span class="lt">D</span><span>Rien n'est prévu</span></div><div class="expl" id="ex-3-3">Le droit à la reprise permet à l'étudiant de représenter l'évaluation après un échec.</div></div>
+    <div class="quiz-foot">
+     <div class="quiz-score">Score : <b id="sc-3">0</b> / 4 <span style="color:var(--g500);font-weight:600">(il faut 3/4)</span></div>
+     <button class="btn ghost" onclick="resetQuiz(3)">↻ Recommencer</button>
     </div>
+    <div class="gate-msg" id="gate-3">Atteignez 3/4 pour débloquer le chapitre suivant.</div>
+   </div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Mon projet professionnel ELM - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Mon projet professionnel ELM (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Mon projet professionnel ELM (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Mon projet professionnel ELM en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_4">La maitrise de Mon projet professionnel ELM est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_4">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_4">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
-  </div>
+ </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module ELM-01 termine - ELM 1ere annee!</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+<div class="pc" id="pc-ch-4" data-step="ch-4">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">04</div><div class="chapter-info"><h2>Confirmer mon orientation professionnelle</h2><div class="chapter-meta"><span>Prof. Aneas Diabod</span><span>Chapitre 4 / 4</span></div></div></div>
+  <div class="chapter-body">
+   <div class="lpl">
+    <div class="lpl-col"><h4>🎯 Objectifs du chapitre</h4><ul><li>Distinguer ses aptitudes de ses champs d'intérêt</li><li>Décrire les raisons d'un choix de poursuite de la formation</li><li>Préparer un rapport confirmant son orientation professionnelle</li></ul></div>
+    <div class="lpl-col"><h4>↩️ Précédemment</h4><ul><li>Vous connaissez désormais le métier, ses exigences et la formation. Il reste à vous situer, vous.</li></ul></div>
+    <div class="lpl-col"><h4>✓ À valider</h4><ul><li>Je distingue ce que j'aime de ce dont je suis capable</li><li>Je sais justifier ma décision de poursuivre ou non</li><li>Je connais la structure d'un rapport d'orientation</li></ul></div>
+   </div>
+   <div class="step-lbl"><span class="n">1</span> Vidéo du chapitre</div>
+   <div class="video-shell"><video controls preload="metadata" poster="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/_assets/logo.png"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas la vidéo.</video></div>
+   <p class="vhint">Vidéo : <strong>https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM01/final/ELM01-CH04.mp4</strong></p>
+   <div class="step-lbl"><span class="n">2</span> Lecture</div>
+   <div class="content-section"><h3>Aptitudes et champs d'intérêt</h3><p>Il faut distinguer ce que l'on <strong>aime</strong> (champs d'intérêt) de ce que l'on a la <strong>possibilité de réaliser</strong> (aptitudes). On peut aimer la mécanique sans avoir encore la dextérité voulue, ou l'inverse. Confirmer son orientation, c'est mettre ces deux dimensions en regard, honnêtement.</p><h3>S'auto-évaluer</h3><p>L'auto-évaluation consiste à comparer, sans complaisance, les <strong>exigences du métier</strong> (tâches, conditions de travail, risques, rigueur) avec ses propres <strong>goûts, aptitudes et champs d'intérêt</strong>. Cette comparaison fonde une décision motivée : poursuivre la formation, ou se réorienter en connaissance de cause.</p><h3>Le rapport d'orientation</h3><p>Le module se conclut par un <strong>rapport d'orientation professionnelle</strong> qui comporte : un résumé de ses goûts, aptitudes et champs d'intérêt ; un résumé des exigences du métier ; un <strong>parallèle</strong> entre les deux ; et une brève <strong>conclusion</strong> motivant la décision de poursuivre — ou non — le programme. C'est la production finale qui atteste la compétence du module.</p></div>
+   <div class="bonas"><div class="bonas-lbl">📌 Bon à savoir</div><ul><li>Champ d'intérêt (ce que j'aime) ≠ aptitude (ce que je peux réaliser).</li><li>S'auto-évaluer = comparer honnêtement exigences du métier et profil personnel.</li><li>Le rapport d'orientation : goûts/aptitudes + exigences + parallèle + conclusion motivée.</li></ul></div>
+   <div class="step-lbl"><span class="n">3</span> Quiz — Chapitre 4</div>
+   <div class="quiz" id="quiz-4">
+    <div class="quiz-q" id="q-4-0"><div class="qn">Question 1 / 4</div><div class="qt">Quelle est la différence entre une aptitude et un champ d'intérêt ?</div><div class="opt" onclick="pick(this,4,0,0,1)"><span class="lt">A</span><span>Aucune, ce sont des synonymes</span></div><div class="opt" onclick="pick(this,4,0,1,1)"><span class="lt">B</span><span>L'aptitude est ce que l'on peut réaliser ; le champ d'intérêt, ce que l'on aime</span></div><div class="opt" onclick="pick(this,4,0,2,1)"><span class="lt">C</span><span>Le champ d'intérêt est imposé par l'école</span></div><div class="opt" onclick="pick(this,4,0,3,1)"><span class="lt">D</span><span>L'aptitude concerne uniquement le salaire</span></div><div class="expl" id="ex-4-0">L'aptitude est la possibilité de réaliser quelque chose ; le champ d'intérêt est ce que l'on aime.</div></div><div class="quiz-q" id="q-4-1"><div class="qn">Question 2 / 4</div><div class="qt">En quoi consiste l'auto-évaluation à la fin de ce module ?</div><div class="opt" onclick="pick(this,4,1,0,2)"><span class="lt">A</span><span>Recopier l'avis du formateur</span></div><div class="opt" onclick="pick(this,4,1,1,2)"><span class="lt">B</span><span>Comparer son salaire futur à celui des autres</span></div><div class="opt" onclick="pick(this,4,1,2,2)"><span class="lt">C</span><span>Comparer honnêtement les exigences du métier avec ses goûts et aptitudes</span></div><div class="opt" onclick="pick(this,4,1,3,2)"><span class="lt">D</span><span>Choisir un métier au hasard</span></div><div class="expl" id="ex-4-1">S'auto-évaluer, c'est mettre en regard les exigences du métier et son propre profil, sans complaisance.</div></div><div class="quiz-q" id="q-4-2"><div class="qn">Question 3 / 4</div><div class="qt">Quel élément NE fait PAS partie du rapport d'orientation professionnelle ?</div><div class="opt" onclick="pick(this,4,2,0,3)"><span class="lt">A</span><span>Le résumé de ses goûts et aptitudes</span></div><div class="opt" onclick="pick(this,4,2,1,3)"><span class="lt">B</span><span>Le parallèle entre profil et exigences du métier</span></div><div class="opt" onclick="pick(this,4,2,2,3)"><span class="lt">C</span><span>La conclusion motivant la décision</span></div><div class="opt" onclick="pick(this,4,2,3,3)"><span class="lt">D</span><span>Le salaire détaillé de chaque collègue de promotion</span></div><div class="expl" id="ex-4-2">Le rapport porte sur soi et le métier (goûts/aptitudes, exigences, parallèle, conclusion), pas sur le salaire des autres.</div></div><div class="quiz-q" id="q-4-3"><div class="qn">Question 4 / 4</div><div class="qt">À quoi sert, au fond, le module « Métier et formation » ?</div><div class="opt" onclick="pick(this,4,3,0,0)"><span class="lt">A</span><span>À se situer face au métier et à la formation pour confirmer son orientation</span></div><div class="opt" onclick="pick(this,4,3,1,0)"><span class="lt">B</span><span>À apprendre à réparer un moteur</span></div><div class="opt" onclick="pick(this,4,3,2,0)"><span class="lt">C</span><span>À obtenir directement un emploi garanti</span></div><div class="opt" onclick="pick(this,4,3,3,0)"><span class="lt">D</span><span>À remplacer tous les autres modules</span></div><div class="expl" id="ex-4-3">C'est un module d'information et de motivation : se situer face au métier et à la démarche de formation.</div></div>
+    <div class="quiz-foot">
+     <div class="quiz-score">Score : <b id="sc-4">0</b> / 4 <span style="color:var(--g500);font-weight:600">(il faut 3/4)</span></div>
+     <button class="btn ghost" onclick="resetQuiz(4)">↻ Recommencer</button>
+    </div>
+    <div class="gate-msg" id="gate-4">Atteignez 3/4 pour débloquer le chapitre suivant.</div>
+   </div>
+  </div>
+ </div>
+</div>
+   <div class="pc" id="pc-essentiel" data-step="essentiel">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">★</div><div class="chapter-info"><h2>L'essentiel à retenir</h2><div class="chapter-meta"><span>Synthèse du module</span></div></div></div>
+  <div class="chapter-body">
+   <div class="content-section"><p>Avant l'examen blanc, voici la synthèse du module. Le but n'était pas technique : il s'agissait de <strong>se situer</strong> face au métier et à la formation, pour décider en connaissance de cause.</p></div>
+   <div class="ess-grid"><div class="ess-card"><h4>Chapitre 1 — La réalité du métier et le marché du travail</h4><p>Électromécanique = électrique + mécanique sur un même équipement. Tâche : début, fin et résultat précis ; activité : une étape de la tâche. En Haïti, les débouchés se concentrent sur l'énergie (génératrices, solaire), l'industrie et la maintenance.</p></div><div class="ess-card"><h4>Chapitre 2 — Tâches, exigences et qualités du métier</h4><p>Tâches clés : installer, mettre en service, entretenir, dépanner, documenter. Au seuil d'entrée : diplôme/attestation, respect des normes, autonomie sur les tâches de base. Habileté (geste) ≠ aptitude (disposition) ≠ attitude (comportement) ≠ connaissance (notion).</p></div><div class="ess-card"><h4>Chapitre 3 — Le programme de formation ELM et son évaluation</h4><p>Approche par compétences : centrée sur le « savoir-faire », évaluation critériée. Programme ELM : 26 modules, 1800 heures (660 h particulières + 1140 h générales). Deux évaluations : formative (pour progresser) et de sanction (pour réussir) ; droit à la reprise.</p></div><div class="ess-card"><h4>Chapitre 4 — Confirmer mon orientation professionnelle</h4><p>Champ d'intérêt (ce que j'aime) ≠ aptitude (ce que je peux réaliser). S'auto-évaluer = comparer honnêtement exigences du métier et profil personnel. Le rapport d'orientation : goûts/aptitudes + exigences + parallèle + conclusion motivée.</p></div></div>
+   <div class="mini-projet">
+    <h4>🛠️ Mini-projet — Mon rapport d'orientation professionnelle</h4>
+    <p style="font-size:.82rem;color:#5a3008;line-height:1.6;margin-bottom:.6rem">Production finale qui atteste la compétence du module. Rédigez un court rapport (1 à 2 pages) structuré ainsi :</p>
+    <ol>
+     <li><strong>Mon profil</strong> : mes goûts, mes aptitudes et mes champs d'intérêt.</li>
+     <li><strong>Les exigences du métier</strong> : tâches, conditions de travail, qualités requises, risques.</li>
+     <li><strong>Le parallèle</strong> : en quoi mon profil correspond — ou non — aux exigences du métier.</li>
+     <li><strong>Ma conclusion</strong> : ma décision motivée de poursuivre (ou non) la formation en électromécanique.</li>
+    </ol>
+   </div>
+  </div>
+ </div>
+</div>
+   <div class="pc" id="pc-examen" data-step="examen">
+ <div class="chapter">
+  <div class="chapter-header"><div class="chapter-num">🎓</div><div class="chapter-info"><h2>Examen blanc — ELM-01</h2><div class="chapter-meta"><span>Sur 100 points · seuil de réussite 70 %</span></div></div></div>
+  <div class="chapter-body">
+   <div class="content-section"><p>L'examen comporte deux parties : <strong>A — Théorie</strong> (6 questions, 30 points) et <strong>B — Mises en situation</strong> (4 questions, 70 points). Répondez à toutes les questions, puis cliquez sur « Corriger l'examen ».</p></div>
+   <div class="exam-part">Partie A — Théorie <span style="font-weight:600;color:var(--g500)">(30 pts)</span></div>
+   <div class="quiz"><div class="quiz-q" id="eq-A-0"><div class="qn">Théorie 1</div><div class="qt">L'électromécanique réunit, sur un même équipement :</div><div class="opt" onclick="epick(this,'A',0,0,2)"><span class="lt">A</span><span>L'informatique et la comptabilité</span></div><div class="opt" onclick="epick(this,'A',0,1,2)"><span class="lt">B</span><span>Le génie civil et l'architecture</span></div><div class="opt" onclick="epick(this,'A',0,2,2)"><span class="lt">C</span><span>Des fonctions électriques et des fonctions mécaniques</span></div><div class="opt" onclick="epick(this,'A',0,3,2)"><span class="lt">D</span><span>La chimie et la biologie</span></div></div><div class="quiz-q" id="eq-A-1"><div class="qn">Théorie 2</div><div class="qt">« Remplacer un roulement de moteur » est :</div><div class="opt" onclick="epick(this,'A',1,0,0)"><span class="lt">A</span><span>Une tâche</span></div><div class="opt" onclick="epick(this,'A',1,1,0)"><span class="lt">B</span><span>une activité isolée sans but</span></div><div class="opt" onclick="epick(this,'A',1,2,0)"><span class="lt">C</span><span>un loisir</span></div><div class="opt" onclick="epick(this,'A',1,3,0)"><span class="lt">D</span><span>une attitude</span></div></div><div class="quiz-q" id="eq-A-2"><div class="qn">Théorie 3</div><div class="qt">Une disposition naturelle comme la dextérité manuelle est :</div><div class="opt" onclick="epick(this,'A',2,0,3)"><span class="lt">A</span><span>Une connaissance</span></div><div class="opt" onclick="epick(this,'A',2,1,3)"><span class="lt">B</span><span>une habileté</span></div><div class="opt" onclick="epick(this,'A',2,2,3)"><span class="lt">C</span><span>une attitude</span></div><div class="opt" onclick="epick(this,'A',2,3,3)"><span class="lt">D</span><span>une aptitude</span></div></div><div class="quiz-q" id="eq-A-3"><div class="qn">Théorie 4</div><div class="qt">Le programme de formation en électromécanique compte :</div><div class="opt" onclick="epick(this,'A',3,0,1)"><span class="lt">A</span><span>13 modules / 825 h</span></div><div class="opt" onclick="epick(this,'A',3,1,1)"><span class="lt">B</span><span>26 modules / 1800 h</span></div><div class="opt" onclick="epick(this,'A',3,2,1)"><span class="lt">C</span><span>6 modules / 300 h</span></div><div class="opt" onclick="epick(this,'A',3,3,1)"><span class="lt">D</span><span>50 modules / 5000 h</span></div></div><div class="quiz-q" id="eq-A-4"><div class="qn">Théorie 5</div><div class="qt">L'évaluation qui décide de la réussite d'un module est :</div><div class="opt" onclick="epick(this,'A',4,0,0)"><span class="lt">A</span><span>L'évaluation de sanction</span></div><div class="opt" onclick="epick(this,'A',4,1,0)"><span class="lt">B</span><span>l'évaluation formative</span></div><div class="opt" onclick="epick(this,'A',4,2,0)"><span class="lt">C</span><span>l'auto-évaluation libre</span></div><div class="opt" onclick="epick(this,'A',4,3,0)"><span class="lt">D</span><span>aucune</span></div></div><div class="quiz-q" id="eq-A-5"><div class="qn">Théorie 6</div><div class="qt">Le rapport d'orientation se termine par :</div><div class="opt" onclick="epick(this,'A',5,0,1)"><span class="lt">A</span><span>La liste des salaires de la promotion</span></div><div class="opt" onclick="epick(this,'A',5,1,1)"><span class="lt">B</span><span>une conclusion motivant la décision de poursuivre ou non</span></div><div class="opt" onclick="epick(this,'A',5,2,1)"><span class="lt">C</span><span>un dessin technique</span></div><div class="opt" onclick="epick(this,'A',5,3,1)"><span class="lt">D</span><span>le règlement intérieur recopié</span></div></div></div>
+   <div class="exam-part">Partie B — Mises en situation <span style="font-weight:600;color:var(--g500)">(70 pts)</span></div>
+   <div class="quiz"><div class="quiz-q" id="eq-B-0"><div class="qn">Mise en situation 1</div><div class="qt">Mise en situation 1 — Une usine agroalimentaire de Port-au-Prince cherche un débutant pour l'entretien de ses moteurs et de son groupe électrogène. Que doit pouvoir démontrer le candidat au seuil d'entrée ?</div><div class="opt" onclick="epick(this,'B',0,0,1)"><span class="lt">A</span><span>Vingt ans d'expérience et un doctorat</span></div><div class="opt" onclick="epick(this,'B',0,1,1)"><span class="lt">B</span><span>Une qualification reconnue, le respect des normes de sécurité et l'autonomie sur les tâches de base</span></div><div class="opt" onclick="epick(this,'B',0,2,1)"><span class="lt">C</span><span>Uniquement la capacité à travailler vite, sans normes</span></div><div class="opt" onclick="epick(this,'B',0,3,1)"><span class="lt">D</span><span>Aucune compétence : tout s'apprend sur le tas sans formation</span></div></div><div class="quiz-q" id="eq-B-1"><div class="qn">Mise en situation 2</div><div class="qt">Mise en situation 2 — Un étudiant adore l'électronique mais constate qu'il a peu de patience pour les gestes manuels minutieux. Comment doit-il aborder son orientation ?</div><div class="opt" onclick="epick(this,'B',1,0,2)"><span class="lt">A</span><span>Ignorer ce constat et foncer</span></div><div class="opt" onclick="epick(this,'B',1,1,2)"><span class="lt">B</span><span>Abandonner toute formation technique</span></div><div class="opt" onclick="epick(this,'B',1,2,2)"><span class="lt">C</span><span>Comparer honnêtement ses goûts et ses aptitudes avec les exigences du métier avant de décider</span></div><div class="opt" onclick="epick(this,'B',1,3,2)"><span class="lt">D</span><span>Choisir au hasard un autre métier</span></div></div><div class="quiz-q" id="eq-B-2"><div class="qn">Mise en situation 3</div><div class="qt">Mise en situation 3 — Pendant une rencontre de groupe, un participant coupe sans cesse la parole aux autres. Quelle règle de discussion rappelle-t-on ?</div><div class="opt" onclick="epick(this,'B',2,0,0)"><span class="lt">A</span><span>Le respect des tours de parole et l'écoute des autres</span></div><div class="opt" onclick="epick(this,'B',2,1,0)"><span class="lt">B</span><span>Parler le plus fort possible</span></div><div class="opt" onclick="epick(this,'B',2,2,0)"><span class="lt">C</span><span>Quitter la salle</span></div><div class="opt" onclick="epick(this,'B',2,3,0)"><span class="lt">D</span><span>Interdire toute prise de parole</span></div></div><div class="quiz-q" id="eq-B-3"><div class="qn">Mise en situation 4</div><div class="qt">Mise en situation 4 — Au terme du module, un étudiant doit remettre sa production finale. Laquelle atteste la compétence « se situer au regard du métier et de la formation » ?</div><div class="opt" onclick="epick(this,'B',3,0,1)"><span class="lt">A</span><span>Un schéma de câblage de moteur</span></div><div class="opt" onclick="epick(this,'B',3,1,1)"><span class="lt">B</span><span>Un rapport d'orientation : profil personnel, exigences du métier, parallèle et conclusion motivée</span></div><div class="opt" onclick="epick(this,'B',3,2,1)"><span class="lt">C</span><span>La réparation d'une génératrice</span></div><div class="opt" onclick="epick(this,'B',3,3,1)"><span class="lt">D</span><span>Un examen de mathématiques</span></div></div></div>
+   <div style="text-align:center;margin-top:1.4rem"><button class="btn" onclick="gradeExam()">✓ Corriger l'examen</button></div>
+   <div class="exam-result" id="exam-result"><div class="big" id="exam-score">—</div><div id="exam-msg"></div></div>
+  </div>
+ </div>
+</div>
+   <div class="pnav bottom">
+    <button class="pnav-btn" onclick="plPrev()">← Précédent</button>
+    <div class="pnav-mid"></div>
+    <button class="pnav-btn" id="pl-next2" onclick="plNext()">Suivant →</button>
+   </div>
+   <div class="complete-banner" id="complete-banner">
+    <h2>🎉 Module ELM-01 terminé !</h2>
+    <p>Félicitations — vous vous êtes situé(e) au regard du métier et de la démarche de formation. Bonne continuation en électromécanique avec Prof. Aneas Diabod.</p>
+   </div>
+  </main>
+ </div>
+</div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+const KEY='ELM01v1_';const NCH=4;const SEUIL=70;
+const QNEED={"1": 3, "2": 3, "3": 3, "4": 3},QLEN={"1": 4, "2": 4, "3": 4, "4": 4},TITLES={"1": "La réalité du métier et le marché du travail", "2": "Tâches, exigences et qualités du métier", "3": "Le programme de formation ELM et son évaluation", "4": "Confirmer mon orientation professionnelle"};
+const EXAM={"A": [2, 0, 3, 1, 0, 1], "B": [1, 2, 0, 1]};
+function rd(k,d){try{var v=localStorage.getItem(KEY+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(KEY+k,JSON.stringify(v));}catch(e){}}
+function chDone(n){var d=rd('done',{});return !!d[n];}
+function setDone(n){var d=rd('done',{});d[n]=true;wr('done',d);}
+function doneChapter(n){ setDone(n); refreshTOC(); updateProgress(); }
+var STEPS=['plan'];for(var i=1;i<=NCH;i++)STEPS.push('ch-'+i);STEPS.push('essentiel','examen');
+var cur=0;
+function stepUnlocked(idx){
+  var id=STEPS[idx];
+  if(id==='plan'||id==='ch-1')return true;
+  if(id.indexOf('ch-')===0){var n=+id.split('-')[1];return chDone(n-1);}
+  // essentiel / examen : tous les chapitres faits
+  for(var n=1;n<=NCH;n++){if(!chDone(n))return false;}return true;
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+function lab(id){
+  if(id==='plan')return 'Plan du module';
+  if(id==='essentiel')return "L'essentiel à retenir";
+  if(id==='examen')return 'Examen blanc';
+  var n=id.split('-')[1];return 'Chapitre '+n+' — '+(TITLES[n]||'');
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function show(idx){
+  if(idx<0||idx>=STEPS.length)return;
+  if(!stepUnlocked(idx)){return;}
+  cur=idx;
+  document.querySelectorAll('.pc').forEach(function(p){p.classList.remove('show');});
+  var el=document.getElementById('pc-'+STEPS[idx]);if(el)el.classList.add('show');
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+STEPS[idx]);if(ti)ti.classList.add('act');
+  // nav
+  var lbl=lab(STEPS[idx]);
+  document.getElementById('pl-lbl').textContent=lbl;
+  var pct=Math.round((idx/(STEPS.length-1))*100);
+  document.getElementById('pl-fill').style.width=pct+'%';
+  document.getElementById('pl-prev').disabled=(idx===0);
+  var nextOk = idx<STEPS.length-1 && stepUnlocked(idx+1);
+  document.getElementById('pl-next').disabled=!nextOk;
+  document.getElementById('pl-next2').disabled=!nextOk;
+  window.scrollTo({top:0,behavior:'smooth'});
+  closeTOC();
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+function goTo(id){var idx=STEPS.indexOf(id);if(idx>=0)show(idx);}
+function plPrev(){show(cur-1);}
+function plNext(){show(cur+1);}
+function refreshTOC(){
+  STEPS.forEach(function(id){
+    var ti=document.getElementById('ti-'+id);if(!ti)return;
+    var done=false;
+    if(id.indexOf('ch-')===0)done=chDone(+id.split('-')[1]);
+    if(id==='examen')done=rd('examPass',false);
+    ti.classList.toggle('done',!!done);
+    ti.style.opacity = stepUnlocked(STEPS.indexOf(id))?'1':'.45';
+  });
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
+function updateProgress(){
+  var done=0;for(var n=1;n<=NCH;n++)if(chDone(n))done++;
+  if(rd('examPass',false))done++;
+  var total=NCH+1;var pct=Math.round(done/total*100);
+  document.getElementById('global-progress').style.width=pct+'%';
+  document.getElementById('progress-text').textContent=pct+'% complété';
+  document.getElementById('complete-banner').classList.toggle('show',rd('examPass',false));
 }
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
+/* ---- QUIZ ---- */
+function pick(el,n,qi,oi,ans){
+  var q=document.getElementById('q-'+n+'-'+qi);
+  if(q.dataset.locked)return;
+  q.dataset.locked='1';
+  var opts=q.querySelectorAll('.opt');
+  opts.forEach(function(o,k){o.classList.add('lock');if(k===ans)o.classList.add('ok');});
+  if(oi!==ans)el.classList.add('no');
+  document.getElementById('ex-'+n+'-'+qi).classList.add('show');
+  // store correctness
+  var st=rd('quiz_'+n,{});st[qi]=(oi===ans);wr('quiz_'+n,st);
+  tallyQuiz(n);
 }
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+function tallyQuiz(n){
+  var st=rd('quiz_'+n,{});var sc=0;for(var k in st)if(st[k])sc++;
+  document.getElementById('sc-'+n).textContent=sc;
+  if(sc>=QNEED[n]){
+    if(!chDone(n)){doneChapter(n);}
+    document.getElementById('gate-'+n).classList.remove('show');
+    document.getElementById('pl-next').disabled=false;
+    document.getElementById('pl-next2').disabled=false;
+  }else{
+    var answered=Object.keys(st).length;
+    if(answered>=QLEN[n])document.getElementById('gate-'+n).classList.add('show');
   }
 }
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+function resetQuiz(n){
+  wr('quiz_'+n,{});
+  for(var qi=0;qi<QLEN[n];qi++){
+    var q=document.getElementById('q-'+n+'-'+qi);q.removeAttribute('data-locked');
+    q.querySelectorAll('.opt').forEach(function(o){o.classList.remove('lock','ok','no');});
+    document.getElementById('ex-'+n+'-'+qi).classList.remove('show');
+  }
+  document.getElementById('sc-'+n).textContent='0';
+  document.getElementById('gate-'+n).classList.remove('show');
 }
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+/* ---- EXAMEN ---- */
+var examPick={A:{},B:{}};
+function epick(el,part,qi,oi){
+  var q=document.getElementById('eq-'+part+'-'+qi);
+  q.querySelectorAll('.opt').forEach(function(o){o.classList.remove('ok');});
+  el.classList.add('ok');
+  examPick[part][qi]=oi;
 }
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+function gradeExam(){
+  var ptA=30/EXAM.A.length, ptB=70/EXAM.B.length, score=0;
+  EXAM.A.forEach(function(a,i){if(examPick.A[i]===a)score+=ptA;});
+  EXAM.B.forEach(function(a,i){if(examPick.B[i]===a)score+=ptB;});
+  score=Math.round(score);
+  var pass=score>=SEUIL;
+  var box=document.getElementById('exam-result');
+  box.classList.remove('pass','fail');box.classList.add('show',pass?'pass':'fail');
+  document.getElementById('exam-score').textContent=score+' / 100';
+  document.getElementById('exam-msg').innerHTML=pass
+    ? "<strong>Réussi !</strong> Vous avez atteint le seuil de "+SEUIL+" %. Module terminé."
+    : "<strong>Pas encore.</strong> Il faut "+SEUIL+" %. Revoyez la synthèse et recommencez.";
+  wr('examPass',pass);wr('examScore',score);
+  refreshTOC();updateProgress();
+  box.scrollIntoView({behavior:'smooth',block:'center'});
 }
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
-  },1000);
+/* ---- TOC mobile ---- */
+function toggleTOC(){document.getElementById('toc').classList.toggle('open');}
+function closeTOC(){document.getElementById('toc').classList.remove('open');}
+/* ---- restore ---- */
+function restore(){
+  // La progression (chapitres validés, examen) est conservée ; les quiz restent rejouables.
+  refreshTOC();updateProgress();
+  if(rd('examPass',false)){
+    var es=rd('examScore',0);
+    var box=document.getElementById('exam-result');
+    box.classList.add('show','pass');
+    document.getElementById('exam-score').textContent=es+' / 100';
+    document.getElementById('exam-msg').innerHTML="<strong>Réussi !</strong> Vous avez atteint le seuil de "+SEUIL+" %. Module terminé.";
+  }
+  show(0);
 }
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+document.addEventListener('DOMContentLoaded',restore);
 </script>
 </body>
 </html>
