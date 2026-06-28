@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MEI-09 — Exécution de travaux d'usinage sur machines-outils · Canado Technique</title>
+<title>MEI-12 — Utilisation de techniques d'alignement · Canado Technique</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
@@ -351,13 +351,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- HEADER -->
 <div class="mod-header">
-  <div class="mod-hero-img" style="background-image:url('../../../cours/assets/images/slide-mei-09.jpg')"></div>
+  <div class="mod-hero-img" style="background-image:url('../../../cours/assets/images/slide-mei-12.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">⚙️ MEI-09 · Compétence particulière · Objectif de comportement</div>
-    <h1>Exécution de travaux d'usinage sur <em>machines-outils</em></h1>
-    <p class="mod-desc">Préparer et calculer les paramètres, puis usiner des pièces sur les machines-outils — tour parallèle et fraiseuse : tourner, percer, aléser, tronçonner, fraiser, rectifier — en respectant les cotes de précision et les règles de sécurité.</p>
+    <div class="mod-tag">📐 MEI-12 · Compétence particulière · Objectif de comportement</div>
+    <h1>Utilisation de techniques d'<em>alignement</em></h1>
+    <p class="mod-desc">Comprendre le désalignement et ses effets, relever l'alignement de deux arbres au comparateur (ou au laser), calculer l'épaisseur des cales et corriger, puis vérifier l'alignement final — un travail de précision essentiel à la durée de vie des machines.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ <strong>90 heures</strong></div>
+      <div class="mod-meta-item">⏱ <strong>60 heures</strong></div>
       <div class="mod-meta-item">🎯 Objectif de <strong>comportement</strong></div>
       <div class="mod-meta-item">📚 <strong>5 chapitres</strong></div>
       <div class="mod-meta-item">🧮 <strong>Avec calculs</strong></div>
@@ -372,14 +372,14 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <div class="wrap"><div class="layout">
 <div class="toc" id="toc-sidebar">
-  <div class="toc-title">📋 Sommaire MEI-09</div>
+  <div class="toc-title">📋 Sommaire MEI-12</div>
   <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
   <div class="toc-sep">Contenu du module</div>
-  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Machines-outils &amp; préparation</span></div>
-  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Calculs d'usinage</span></div>
-  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Le tournage</span></div>
-  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Fraisage &amp; alésage</span></div>
-  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Rectification &amp; vérification</span></div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Principes du désalignement</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Calculs de cales</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Instruments d'alignement</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Méthodes au comparateur</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Corriger &amp; vérifier</span></div>
   <div class="toc-sep">Synthèse</div>
   <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
   <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
@@ -387,160 +387,161 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div id="main-content">
 
 <div class="pc step" id="plan">
-<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">MEI-09 · Exécution de travaux d'usinage sur machines-outils · Programme MEI</div></div></div>
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">MEI-12 · Utilisation de techniques d'alignement · Programme MEI</div></div></div>
 <div class="pc-body">
 <div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module MEI-09</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
-  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI09/final/MEI09-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module MEI-12</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI12/final/MEI12-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
   <div class="pc-id">
-    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">MEI-09</div></div>
-    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">90 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">MEI-12</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">60 heures</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
-    <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">MEI-07 (usinage manuel)</div></div>
-    <div class="pc-id-cell"><div class="pc-id-lbl">Durée épreuve</div><div class="pc-id-val">6 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Préalable</div><div class="pc-id-val">MEI-06 (instruments de mesure)</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée épreuve</div><div class="pc-id-val">4 heures</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 80/100</div></div>
   </div>
 
-  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Exécuter des travaux d'usinage sur des machines-outils.</strong></p></div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Utiliser des techniques d'alignement.</strong></p></div>
 
   <div class="pc-sec"><h4>Présentation du module</h4>
-    <p>Après l'usinage manuel (MEI-07), le mécanicien passe aux <strong>machines-outils</strong> : le <strong>tour parallèle</strong> et la <strong>fraiseuse</strong>. Ce module développe la capacité à <strong>planifier</strong> l'usinage, à <strong>calculer les paramètres</strong> (vitesse, avance, perçage), à <strong>tourner, percer, aléser, tronçonner, fraiser et rectifier</strong> conformément aux cotes de précision, et à <strong>travailler en sécurité</strong>.</p></div>
+    <p>Quand deux arbres accouplés ne sont pas <strong>alignés</strong>, l'ensemble vibre, chauffe et use prématurément roulements, joints et accouplements. Ce module développe la capacité à <strong>diagnostiquer le désalignement</strong>, à <strong>relever</strong> l'alignement au comparateur (ou au laser), à <strong>calculer l'épaisseur des cales</strong>, à <strong>corriger</strong> en vertical et en horizontal, et à <strong>vérifier</strong> l'alignement final dans les tolérances.</p></div>
 
   <div class="pc-sec"><h4>Éléments de la compétence et pondération de l'épreuve</h4>
-    <table class="dtable"><thead><tr><th>Élément retenu</th><th>Points (/100)</th></tr></thead><tbody><tr><td>Interpréter les directives de travail</td><td>10</td></tr><tr><td>Effectuer les calculs relatifs aux travaux d'usinage sur machines-outils</td><td>10</td></tr><tr><td>Préparer l'aire · choisir outils, accessoires, appareils · sélectionner les matériaux</td><td>15</td></tr><tr><td>Exécuter les travaux d'usinage sur machines-outils (technique &amp; conformité)</td><td>45</td></tr><tr><td>Vérifier la qualité du travail</td><td>10</td></tr><tr><td>Ranger et nettoyer l'aire de travail</td><td>10</td></tr></tbody></table>
-    <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération de l'<strong>épreuve pratique officielle</strong> (Guide d'évaluation MEI), seuil <strong>80/100</strong>, durée 6 h. La majeure partie des points porte sur l'<strong>exécution conforme</strong> (45).</div>
-    <div class="ibox red"><span class="ibox-label">⚠️ Règle de verdict</span>Tout <strong>manquement aux règles de santé et de sécurité</strong> pouvant mettre en péril les personnes ou les biens entraîne l'<strong>échec</strong> de l'épreuve.</div></div>
+    <table class="dtable"><thead><tr><th>Élément retenu</th><th>Points (/100)</th></tr></thead><tbody><tr><td>Interpréter l'information relative à l'alignement (plans, devis, manuels)</td><td>05</td></tr><tr><td>Choisir les outils, les accessoires et les appareils</td><td>05</td></tr><tr><td>Vérifier l'équipement et corriger le pied boiteux</td><td>15</td></tr><tr><td>Effectuer les calculs (épaisseur des cales)</td><td>10</td></tr><tr><td>Utiliser les instruments et respecter les tolérances</td><td>25</td></tr><tr><td>Installer les cales aux endroits appropriés</td><td>25</td></tr><tr><td>Vérifier la qualité de l'alignement</td><td>10</td></tr><tr><td>Ranger et nettoyer l'aire de travail</td><td>05</td></tr></tbody></table>
+    <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération de l'<strong>épreuve pratique officielle</strong> (Guide d'évaluation MEI), seuil <strong>80/100</strong>, durée 4 h. La majeure partie des points porte sur l'<strong>installation des cales</strong> (25) et l'<strong>utilisation des instruments</strong> (25, tolérances comprises). L'épreuve se déroule sur une <strong>machine rotative horizontale</strong>, avec un <strong>pied boiteux à corriger</strong>.</div>
+    <div class="ibox red"><span class="ibox-label">⚠️ Règle de verdict</span>Tout <strong>manquement aux règles de santé et de sécurité</strong> (machine non consignée, démarrage intempestif) pouvant mettre en péril les personnes ou les biens entraîne l'<strong>échec</strong>.</div></div>
 
   <div class="pc-sec"><h4>Contexte de réalisation</h4>
     <div class="pc-cols">
-      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Un plan de travail incluant régime moteur, diamètres de perçage, avances et liste des outils · des plans, croquis, tableaux et abaques.</div>
-      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Un tour parallèle · une fraiseuse · une calculatrice · les instruments de mesure et les outils désignés au plan de travail.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Deux machines accouplées (par ex. moteur et pompe) à aligner · des plans et tolérances d'alignement.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Une règle droite et des jauges d'épaisseur · des comparateurs à cadran et leurs supports · un appareil d'alignement laser · des cales calibrées · une calculatrice.</div>
     </div></div>
 
   <div class="pc-sec"><h4>Découpage en chapitres</h4>
-    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Objet</th></tr></thead><tbody><tr><td>1</td><td>Machines-outils &amp; préparation</td><td>Tour, fraiseuse, plan, sécurité</td></tr><tr><td>2</td><td>Calculs d'usinage</td><td>Vitesse, rotation, avance, perçage</td></tr><tr><td>3</td><td>Le tournage</td><td>Chariotage, conique, perçage, tronçonnage</td></tr><tr><td>4</td><td>Fraisage &amp; alésage</td><td>Surfaçage, chemin de clé, alésage</td></tr><tr><td>5</td><td>Rectification &amp; vérification</td><td>Rectifier, métalliser, vérifier</td></tr></tbody></table></div>
+    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Objet</th></tr></thead><tbody><tr><td>1</td><td>Principes du désalignement</td><td>Effets, types parallèle/angulaire</td></tr><tr><td>2</td><td>Calculs de cales</td><td>Décalage, règle de trois, conversion</td></tr><tr><td>3</td><td>Instruments d'alignement</td><td>Règle/jauge, comparateur, laser</td></tr><tr><td>4</td><td>Méthodes au comparateur</td><td>Périphérie-et-face, relevés</td></tr><tr><td>5</td><td>Corriger &amp; vérifier</td><td>Cales, soft foot, vérification</td></tr></tbody></table></div>
 
   <div class="pc-sec"><h4>Modalités d'évaluation</h4>
     <ul>
-      <li><strong>Évaluation formative (en ligne)</strong> — quiz de chapitre et <em>examen blanc</em> en trois volets : machines &amp; préparation (QCM), <strong>calculs d'usinage</strong> (saisie numérique), opérations (QCM). Seuil indicatif : 80 %.</li>
-      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique en atelier</strong> (6 h) : planification puis usinage d'une pièce sur le tour et la fraiseuse (tournage, perçage, alésage, tronçonnage, chemin de clé).</li>
+      <li><strong>Évaluation formative (en ligne)</strong> — quiz de chapitre et <em>examen blanc</em> en trois volets : principes &amp; instruments (QCM), <strong>calculs de cales</strong> (saisie numérique), méthodes &amp; correction (QCM). Seuil indicatif : 80 %.</li>
+      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique en atelier</strong> (4 h) : alignement réel de deux arbres (relevés, calcul des cales, correction, vérification).</li>
       <li><strong>Seuil de réussite</strong> — <strong>80 sur 100</strong>. Règle de verdict de sécurité applicable.</li>
     </ul></div>
 
   <div class="pc-sec"><h4>Références</h4>
     <ul>
       <li>Guide pédagogique et Guide d'évaluation, programme <em>Mécanique d'entretien industrielle</em> (INFP / CFPH – Canado Technique).</li>
-      <li>Tables de vitesses de coupe et d'avances · Machinery's Handbook · manuels du tour et de la fraiseuse.</li>
+      <li>Manuels d'alignement d'arbres · documentation des appareils d'alignement (comparateurs, laser).</li>
     </ul></div>
 </div></div>
 
 <div class="chapter step" id="ch-1">
 <div class="ch-header">
   <div class="ch-num">01</div>
-  <div class="ch-info"><h2>Machines-outils &amp; préparation</h2><div class="ch-meta"><span class="ch-badge">Tour · Fraiseuse · Sécurité</span></div></div>
+  <div class="ch-info"><h2>Principes du désalignement</h2><div class="ch-meta"><span class="ch-badge">Effets · Parallèle · Angulaire</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Connaître les machines</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Comprendre le désalignement</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>distinguer tour, fraiseuse et rectifieuse ;</li><li>interpréter le plan et préparer le poste ;</li><li>appliquer les règles de sécurité.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>C'est la première leçon. Tu maîtrises l'usinage manuel (MEI-07) et la mesure (MEI-06).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>expliquer les effets du désalignement ;</li><li>distinguer décalage et angle ;</li><li>situer les tolérances.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>C'est la première leçon. Tu sais utiliser les instruments de mesure (MEI-06).</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Les machines-outils et la préparation</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
-  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI09/final/MEI09-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Les principes du désalignement</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI12/final/MEI12-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>1.1 Les machines-outils</h3>
-<p>Deux machines dominent l'atelier : le <strong>tour parallèle</strong>, où la <strong>pièce tourne</strong> et l'outil se déplace, et la <strong>fraiseuse</strong>, où l'<strong>outil tourne</strong> et la pièce se déplace. La <strong>rectifieuse</strong> finit les surfaces avec une meule de précision.</p>
-<figure class="fig"><svg viewBox="0 0 500 180" role="img" aria-label="Tour parallele">
+<h3>1.1 Pourquoi aligner ?</h3>
+<p>Deux arbres mal alignés provoquent des <strong>vibrations</strong>, de la <strong>chaleur</strong> et une <strong>usure prématurée</strong> des roulements, des joints et des accouplements. Un bon alignement <strong>prolonge la durée de vie</strong> des machines et réduit la consommation d'énergie.</p>
+</div>
+
+<div class="section">
+<h3>1.2 Les types de désalignement</h3>
+<p>On distingue le désalignement <strong>parallèle</strong> (les axes restent parallèles mais <strong>décalés</strong>) et le désalignement <strong>angulaire</strong> (les axes forment un <strong>angle</strong>). En réalité, on rencontre souvent les deux à la fois : le désalignement <strong>combiné</strong>.</p>
+<figure class="fig"><svg viewBox="0 0 470 180" role="img" aria-label="Types de desalignement">
 <g font-family="var(--fM)" font-size="10" fill="var(--navy)" stroke="var(--navy)">
-<rect x="30" y="120" width="440" height="20" fill="rgba(43,86,192,.06)" stroke-width="1.4"/>
-<rect x="40" y="70" width="60" height="50" fill="rgba(43,86,192,.12)" stroke-width="1.6"/><text x="70" y="60" stroke="none" text-anchor="middle" font-size="9">mandrin</text>
-<g stroke-width="0.8"><line x1="46" y1="78" x2="46" y2="112"/><line x1="54" y1="78" x2="54" y2="112"/></g>
-<rect x="100" y="86" width="240" height="18" fill="#fff" stroke-width="1.4"/><text x="220" y="80" stroke="none" text-anchor="middle" font-size="9">pièce (en rotation)</text>
-<rect x="360" y="99" width="30" height="14" fill="rgba(43,86,192,.15)"/><polygon points="360,99 345,93 360,93" fill="rgba(43,86,192,.2)" stroke-width="1"/><text x="375" y="128" stroke="none" text-anchor="middle" font-size="9">outil / chariot</text>
-<polygon points="430,80 410,95 430,110" fill="#fff" stroke-width="1.4"/><text x="446" y="98" stroke="none" font-size="9">contre-pointe</text>
-</g></svg><figcaption>Le tour parallèle : le mandrin fait tourner la pièce, l'outil monté sur le chariot se déplace pour usiner.</figcaption></figure>
+<rect x="20" y="46" width="90" height="16" fill="rgba(43,86,192,.12)" stroke-width="1.4"/><rect x="130" y="58" width="90" height="16" fill="rgba(43,86,192,.12)" stroke-width="1.4"/>
+<line x1="20" y1="54" x2="110" y2="54" stroke-dasharray="3 3" stroke-width="0.8"/><line x1="130" y1="66" x2="220" y2="66" stroke-dasharray="3 3" stroke-width="0.8"/>
+<line x1="118" y1="40" x2="118" y2="80" stroke-width="1"/><text x="120" y="34" stroke="none" font-size="9" text-anchor="middle">décalage</text>
+<text x="120" y="100" stroke="none" text-anchor="middle" font-weight="700" font-size="9">Parallèle (décalage)</text>
+<g transform="translate(250,0)"><rect x="20" y="50" width="90" height="16" fill="rgba(192,57,43,.10)" stroke-width="1.4"/><rect x="130" y="40" width="90" height="22" fill="rgba(192,57,43,.10)" stroke-width="1.4" transform="rotate(11 130 51)"/>
+<line x1="118" y1="38" x2="118" y2="80" stroke-width="1"/><path d="M122 58 a18 18 0 0 1 14 -8" fill="none" stroke="#c0392b" stroke-width="1.2"/><text x="150" y="40" stroke="none" font-size="9" fill="#c0392b">angle</text>
+<text x="120" y="100" stroke="none" text-anchor="middle" font-weight="700" font-size="9">Angulaire</text></g>
+</g></svg><figcaption>Le désalignement parallèle (décalage des axes) et le désalignement angulaire (axes en angle).</figcaption></figure>
 </div>
 
 <div class="section">
-<h3>1.2 Interpréter le plan et préparer</h3>
-<p>On <strong>interprète les directives</strong> et les données d'usinage (plans, tableaux, abaques), puis on <strong>prépare l'aire</strong> : choix des outils, accessoires, appareils et matériaux, et vérification des machines.</p>
+<h3>1.3 Les tolérances</h3>
+<p>Un alignement n'est jamais parfait : on vise une <strong>tolérance</strong> (souvent quelques centièmes de millimètre) qui dépend de la <strong>vitesse de rotation</strong> et des recommandations du fabricant. Plus la machine tourne vite, plus la tolérance est serrée.</p>
+<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>Mal aligné = vibrations, chaleur, usure. On corrige le <strong>décalage</strong> et l'<strong>angle</strong> jusqu'à entrer dans la <strong>tolérance</strong> du fabricant.</div>
 </div>
 
 <div class="section">
-<h3>1.3 La sécurité sur machines-outils</h3>
-<p>Les machines-outils tournent vite et happent : on attache les cheveux, on évite les vêtements amples et les gants près des pièces en rotation, on porte des <strong>lunettes</strong>, et on n'enlève jamais un copeau à la main. Un manquement grave entraîne l'<strong>échec</strong>.</p>
-<div class="ibox red"><span class="ibox-label">⚠️ À retenir</span>Près d'une pièce en rotation : pas de gants, pas de manches flottantes, pas de main sur les copeaux. La sécurité passe avant la production.</div>
-</div>
-
-<div class="section">
-<h3>1.4 Les machines-outils — clique pour explorer</h3>
+<h3>1.4 Les types de désalignement — clique pour explorer</h3>
 <div class="dora-grid" style="grid-template-columns:repeat(3,1fr)">
-  <div class="dora-card active" onclick="showInfo('machines',0,this)"><div class="dora-letter">🔄</div><div class="dora-word">Tour parallèle</div><div class="dora-hint">La pièce tourne</div></div>
-  <div class="dora-card" onclick="showInfo('machines',1,this)"><div class="dora-letter">⚙️</div><div class="dora-word">Fraiseuse</div><div class="dora-hint">L'outil tourne</div></div>
-  <div class="dora-card" onclick="showInfo('machines',2,this)"><div class="dora-letter">✨</div><div class="dora-word">Rectifieuse</div><div class="dora-hint">Meule de précision</div></div>
+  <div class="dora-card active" onclick="showInfo('desalign',0,this)"><div class="dora-letter">⇅</div><div class="dora-word">Parallèle</div><div class="dora-hint">Décalage des axes</div></div>
+  <div class="dora-card" onclick="showInfo('desalign',1,this)"><div class="dora-letter">∠</div><div class="dora-word">Angulaire</div><div class="dora-hint">Axes en angle</div></div>
+  <div class="dora-card" onclick="showInfo('desalign',2,this)"><div class="dora-letter">✕</div><div class="dora-word">Combiné</div><div class="dora-hint">Décalage + angle</div></div>
 </div>
-<div class="dora-detail show" id="machines-detail" style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.18);color:#1a2f52">
-  <strong>Le tour parallèle :</strong> la pièce tourne, l'outil fixe se déplace ; sert au tournage cylindrique, conique, au perçage, à l'alésage et au tronçonnage.
+<div class="dora-detail show" id="desalign-detail" style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.18);color:#1a2f52">
+  <strong>Désalignement parallèle (décalage) :</strong> les deux axes restent parallèles mais sont décalés ; le comparateur en périphérie le révèle.
 </div></div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Tour parallèle</dt><dd>Machine où la pièce tourne et l'outil se déplace.</dd><dt>Fraiseuse</dt><dd>Machine où l'outil (la fraise) tourne et la pièce se déplace.</dd><dt>Rectifieuse</dt><dd>Machine de finition à meule, très précise.</dd><dt>Mandrin</dt><dd>Dispositif du tour qui serre et entraîne la pièce.</dd><dt>Plan de travail</dt><dd>Document donnant opérations, paramètres et outils.</dd></dl>
+  <dl><dt>Alignement</dt><dd>Mise sur le même axe de deux arbres accouplés.</dd><dt>Désalignement parallèle</dt><dd>Axes parallèles mais décalés.</dd><dt>Désalignement angulaire</dt><dd>Axes formant un angle.</dd><dt>Accouplement</dt><dd>Pièce reliant deux arbres en transmettant le couple.</dd><dt>Tolérance d'alignement</dt><dd>Écart maximal admis, selon la vitesse.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>Le <strong>tour</strong> : la pièce tourne ; la <strong>fraiseuse</strong> : l'outil tourne.</li><li>La <strong>rectifieuse</strong> finit les surfaces (meule de précision).</li><li>On interprète le plan et on prépare outils, accessoires et matériaux.</li><li><strong>Sécurité</strong> : pas de gants/manches près des rotations ; manquement grave = échec.</li></ul>
+  <ul class="recap-list"><li>Mal aligné = <strong>vibrations, chaleur, usure</strong> (roulements, joints).</li><li>Deux types : <strong>parallèle</strong> (décalage) et <strong>angulaire</strong> (angle).</li><li>Souvent <strong>combiné</strong> : on corrige les deux.</li><li>On vise une <strong>tolérance</strong> selon la vitesse et le fabricant.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="1">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Sur le tour parallèle :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>L'outil tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>La pièce tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Rien ne tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>La table tourne</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Un désalignement provoque :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Un meilleur rendement</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Des vibrations et de l'usure</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Plus de couple</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Sur la fraiseuse :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>La pièce tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>L'outil (fraise) tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Rien ne bouge</button>
-    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Le mandrin coupe</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le désalignement parallèle, c'est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Des axes en angle</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Des axes décalés mais parallèles</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Un bon alignement</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Un accouplement</button>
   </div><div class="qexpl" id="qe-1-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">La rectifieuse sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Finir une surface à la meule</button>
-    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Mesurer</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Le désalignement angulaire, c'est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Des axes décalés parallèles</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Des axes formant un angle</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Aucun écart</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Un roulement</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Près d'une pièce en rotation, on évite :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Les lunettes</button>
-    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Les gants et les manches amples</button>
-    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>La concentration</button>
-    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Le plan</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le désalignement use surtout :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>La peinture</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Roulements, joints, accouplements</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Les boulons seulement</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-1-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Un manquement grave à la sécurité :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Donne des points</button>
-    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Entraîne l'échec</button>
-    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>N'a aucun effet</button>
-    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Est toléré</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">La tolérance d'alignement dépend surtout :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>De la couleur</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>De la vitesse de rotation</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Du prix</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>De l'heure</button>
   </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1,1,1],['Au tour, la pièce tourne et l\u0027outil se déplace.','À la fraiseuse, l\u0027outil tourne.','Elle finit les surfaces avec une meule de précision.','Gants et vêtements amples peuvent être happés.','La règle de verdict : manquement grave = échec.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1,1,1],['Vibrations, chaleur et usure prématurée.','Les axes restent parallèles mais décalés.','Les axes forment un angle.','Roulements, joints et accouplements souffrent.','Plus la machine tourne vite, plus elle est serrée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
@@ -551,99 +552,98 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-2">
 <div class="ch-header">
   <div class="ch-num">02</div>
-  <div class="ch-info"><h2>Calculs d'usinage</h2><div class="ch-meta"><span class="ch-badge">Vitesse · Rotation · Avance · Perçage</span></div></div>
+  <div class="ch-info"><h2>Calculs de cales</h2><div class="ch-meta"><span class="ch-badge">Décalage · Règle de trois · Conversion</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Calculer les paramètres</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Calculer les cales</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>calculer la vitesse de rotation N ;</li><li>calculer la vitesse de coupe et l'avance ;</li><li>déterminer un diamètre de perçage.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu connais les machines et la préparation (chapitre 1).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>déduire le décalage d'un relevé ;</li><li>calculer une cale par règle de trois ;</li><li>additionner les corrections.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu connais les types de désalignement (chapitre 1).</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz. Les calculs reviennent à l'examen blanc.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Les calculs d'usinage</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
-  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI09/final/MEI09-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Les calculs de cales</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI12/final/MEI12-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>2.1 Vitesse de coupe et vitesse de rotation</h3>
-<p>Chaque matière a une <strong>vitesse de coupe</strong> Vc (m/min). Au tour, à partir de Vc et du <strong>diamètre D de la pièce</strong>, on calcule la <strong>vitesse de rotation</strong> de la broche : <strong>N = 1000 · Vc / (π · D)</strong>. Inversement, Vc = π · D · N / 1000.</p>
-<figure class="fig"><svg viewBox="0 0 460 170" role="img" aria-label="Vitesse de coupe au tour">
+<h3>2.1 Du relevé au décalage</h3>
+<p>Quand le comparateur fait le tour de l'arbre, il indique le <strong>TIR</strong> (relevé total, du haut au bas). Le <strong>décalage réel</strong> des axes vaut la <strong>moitié</strong> du TIR : décalage = TIR ÷ 2.</p>
+</div>
+
+<div class="section">
+<h3>2.2 La cale par règle de trois</h3>
+<p>La correction angulaire se calcule par proportion : l'<strong>écart</strong> mesuré sur le <strong>diamètre</strong> de mesure se projette à la <strong>distance du pied</strong>. <strong>cale = (écart ÷ Ø de mesure) × distance au pied</strong>. Un pied plus éloigné demande une cale plus grande.</p>
+<figure class="fig"><svg viewBox="0 0 470 180" role="img" aria-label="Calcul de la cale">
 <g font-family="var(--fM)" font-size="10" fill="var(--navy)" stroke="var(--navy)">
-<rect x="50" y="70" width="150" height="40" rx="4" fill="rgba(43,86,192,.10)" stroke-width="1.6"/>
-<path d="M205 60 a40 40 0 1 1 -8 -26" fill="none" stroke="var(--blue)" stroke-width="2" marker-end="url(#vrot)"/>
-<marker id="vrot" markerWidth="9" markerHeight="9" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--blue)"/></marker>
-<polygon points="225,108 205,95 225,82" fill="rgba(43,86,192,.2)" stroke-width="1"/><text x="232" y="100" stroke="none" font-size="9">outil</text>
-<line x1="40" y1="70" x2="28" y2="70" stroke-width="0.8"/><line x1="40" y1="110" x2="28" y2="110" stroke-width="0.8"/><text x="14" y="93" stroke="none" font-size="9">D</text>
-<text x="250" y="70" stroke="none" font-weight="700">Vitesse de rotation</text>
-<text x="250" y="94" stroke="none" font-family="var(--fM)">N = 1000 · Vc / (π · D)</text>
-<text x="250" y="116" stroke="none" font-size="9" fill="var(--g500)">D = diamètre de la pièce tournée</text>
-</g></svg><figcaption>Au tour, la vitesse de rotation se calcule à partir de la vitesse de coupe et du diamètre de la pièce.</figcaption></figure>
+<line x1="40" y1="120" x2="430" y2="120" stroke-width="1.6"/>
+<line x1="70" y1="120" x2="70" y2="60" stroke-width="0.8"/><line x1="70" y1="60" x2="170" y2="60" stroke-width="1"/><line x1="170" y1="60" x2="170" y2="56" stroke="#c0392b" stroke-width="2"/>
+<text x="120" y="52" stroke="none" font-size="9">écart (lecture) sur Ø</text>
+<line x1="70" y1="134" x2="380" y2="134" stroke-width="0.8" marker-start="url(#cA)" marker-end="url(#cB)"/><text x="225" y="148" stroke="none" text-anchor="middle" font-size="9">distance au pied</text>
+<rect x="360" y="100" width="40" height="20" fill="rgba(43,86,192,.10)" stroke-width="1.4"/><rect x="360" y="120" width="40" height="8" fill="rgba(230,165,0,.30)" stroke-width="1.2"/><text x="380" y="96" stroke="none" text-anchor="middle" font-size="9" fill="#b27d00">cale</text>
+<defs><marker id="cA" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M4,0 L0,3 L4,6 Z" fill="var(--navy)"/></marker><marker id="cB" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto"><path d="M0,0 L4,3 L0,6 Z" fill="var(--navy)"/></marker></defs>
+<text x="40" y="30" stroke="none" font-weight="700">cale = (écart ÷ Ø de mesure) × distance au pied</text>
+</g></svg><figcaption>La cale se calcule par proportion : (écart ÷ Ø de mesure) × distance au pied.</figcaption></figure>
 </div>
 
 <div class="section">
-<h3>2.2 L'avance de l'outil</h3>
-<p>L'<strong>avance</strong> est le déplacement de l'outil par tour (mm/tour). L'<strong>avance par minute</strong> Vf = N · f. Une avance bien choisie donne un bon état de surface sans casser l'outil.</p>
-</div>
-
-<div class="section">
-<h3>2.3 Le diamètre de perçage</h3>
-<p>Au tour comme à la perceuse, le <strong>perçage</strong> précède souvent l'alésage. Avant un <strong>taraudage</strong>, on perce à <strong>Ø = diamètre nominal − pas</strong>. On respecte les <strong>cotes de précision</strong> du plan.</p>
-<div class="ibox blue"><span class="ibox-label">💡 Repère</span>N = 1000·Vc/(π·D) · Vc = π·D·N/1000 · Vf = N·f · Ø perçage = D − pas · 1 po = 25,4 mm.</div>
+<h3>2.3 Additionner et convertir</h3>
+<p>Sous un pied, la <strong>cale totale</strong> additionne la part <strong>angulaire</strong> et la part de <strong>décalage</strong>. Les cales se vendent souvent en <strong>pouces</strong> : 1 po = 25,4 mm (par ex. 0,010 po = 0,254 mm).</p>
+<div class="ibox blue"><span class="ibox-label">💡 Repère</span>décalage = TIR ÷ 2 · cale = (écart ÷ Ø) × distance · cale totale = angulaire + décalage · 1 po = 25,4 mm.</div>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Vitesse de coupe (Vc)</dt><dd>Vitesse de l'outil dans la matière (m/min).</dd><dt>Vitesse de rotation (N)</dt><dd>Tours par minute : N = 1000·Vc/(π·D).</dd><dt>Avance</dt><dd>Déplacement de l'outil par tour (mm/tour).</dd><dt>Avance par minute (Vf)</dt><dd>Vf = N · f.</dd><dt>Cote de précision</dt><dd>Dimension à respecter avec une faible tolérance.</dd></dl>
+  <dl><dt>TIR</dt><dd>Relevé total du comparateur (haut au bas).</dd><dt>Décalage</dt><dd>Écart réel des axes = TIR ÷ 2.</dd><dt>Règle de trois</dt><dd>Proportion donnant la cale selon la distance.</dd><dt>Cale</dt><dd>Plaque calibrée glissée sous un pied pour corriger.</dd><dt>Conversion</dt><dd>1 pouce = 25,4 mm.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li><strong>N = 1000·Vc/(π·D)</strong> (D = diamètre de la pièce) ; Vc = π·D·N/1000.</li><li>L'<strong>avance</strong> par tour (mm/tr) ; Vf = N · f.</li><li>Avant taraudage : <strong>Ø perçage = nominal − pas</strong>.</li><li>On respecte les <strong>cotes de précision</strong> ; 1 po = 25,4 mm.</li></ul>
+  <ul class="recap-list"><li>Le <strong>décalage</strong> réel = <strong>TIR ÷ 2</strong>.</li><li><strong>cale = (écart ÷ Ø de mesure) × distance au pied</strong>.</li><li><strong>Cale totale</strong> = part angulaire + part de décalage.</li><li>Cales en pouces : <strong>1 po = 25,4 mm</strong>.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="2">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La vitesse de rotation se calcule par :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>N = π·D·Vc</button>
-    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>N = 1000·Vc/(π·D)</button>
-    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>N = D/Vc</button>
-    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>N = Vc + D</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le décalage réel des axes vaut :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Le TIR</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Le TIR ÷ 2</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Le TIR × 2</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>0</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La vitesse de coupe Vc vaut :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>π·D·N/1000</button>
-    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>1000/N</button>
-    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>D·N</button>
-    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>π·D</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La cale par règle de trois :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>(écart ÷ Ø) × distance</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>écart + distance</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Ø × distance</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>distance ÷ écart</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">L'avance par minute Vf se calcule par :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Vf = N + f</button>
-    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Vf = N · f</button>
-    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Vf = N/f</button>
-    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Vf = f/N</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Un pied plus éloigné demande une cale :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Plus petite</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Plus grande</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Identique</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Nulle</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour un taraudage M8 au pas de 1,25 mm, on perce à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>8 mm</button>
-    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>6,75 mm</button>
-    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>9,25 mm</button>
-    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>1,25 mm</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">La cale totale sous un pied :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>angulaire − décalage</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>angulaire + décalage</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>seulement angulaire</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>seulement décalage</button>
   </div><div class="qexpl" id="qe-2-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Au tour, le D de la formule de N est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>le diamètre de la pièce</button>
-    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>la longueur</button>
-    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>la vitesse</button>
-    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>l'avance</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">0,010 pouce vaut :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>0,254 mm</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>2,54 mm</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>0,10 mm</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>25,4 mm</button>
   </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,0,1,1,0],['N = 1000·Vc/(π·D).','Vc = π·D·N/1000.','Vf = N · f.','Ø = 8 − 1,25 = 6,75 mm.','D est le diamètre de la pièce tournée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,0,1,1,0],['décalage = TIR ÷ 2.','cale = (écart ÷ Ø de mesure) × distance au pied.','La cale croît avec la distance au pied.','On additionne les deux parts.','0,010 × 25,4 = 0,254 mm.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
@@ -654,108 +654,105 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-3">
 <div class="ch-header">
   <div class="ch-num">03</div>
-  <div class="ch-info"><h2>Le tournage</h2><div class="ch-meta"><span class="ch-badge">Chariotage · Conique · Perçage · Tronçonnage</span></div></div>
+  <div class="ch-info"><h2>Instruments d'alignement</h2><div class="ch-meta"><span class="ch-badge">Règle/jauge · Comparateur · Laser</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Tourner une pièce</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Choisir l'instrument</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>monter la pièce et chariotter ;</li><li>réaliser un tournage conique ;</li><li>percer, aléser et tronçonner au tour.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais calculer les paramètres d'usinage (chapitre 2).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>dégrossir à la règle et à la jauge ;</li><li>relever au comparateur ;</li><li>reconnaître l'alignement laser.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais calculer les cales (chapitre 2).</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Le tournage au tour parallèle</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
-  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI09/final/MEI09-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Les instruments d'alignement</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI12/final/MEI12-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>3.1 Le montage et le chariotage</h3>
-<p>On <strong>monte la pièce</strong> dans le mandrin (et la contre-pointe pour les pièces longues). Le <strong>chariotage</strong> (tournage cylindrique) réduit le diamètre sur une longueur en déplaçant l'outil parallèlement à l'axe ; le <strong>dressage</strong> usine la face.</p>
-<figure class="fig"><svg viewBox="0 0 460 160" role="img" aria-label="Chariotage">
-<g font-family="var(--fM)" font-size="10" fill="var(--navy)" stroke="var(--navy)">
-<rect x="40" y="60" width="240" height="44" fill="rgba(43,86,192,.06)" stroke-width="1.6"/>
-<rect x="40" y="60" width="240" height="12" fill="rgba(43,86,192,.14)"/><text x="160" y="52" stroke="none" text-anchor="middle" font-size="9">copeau enlevé</text>
-<polygon points="300,96 270,82 300,68" fill="rgba(43,86,192,.2)" stroke-width="1.2"/><line x1="285" y1="82" x2="285" y2="70" stroke="var(--blue)" stroke-width="1.4" marker-end="url(#adv)"/>
-<marker id="adv" markerWidth="8" markerHeight="8" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--blue)"/></marker>
-<text x="305" y="86" stroke="none" font-size="9">avance de l'outil</text>
-<text x="160" y="128" stroke="none" text-anchor="middle" font-size="9" fill="var(--g500)">Chariotage : l'outil avance le long de l'axe et réduit le diamètre.</text>
-</g></svg><figcaption>Le chariotage : l'outil avance le long de l'axe et enlève un copeau pour réduire le diamètre.</figcaption></figure>
+<h3>3.1 La règle droite et la jauge d'épaisseur</h3>
+<p>La <strong>règle droite</strong> posée sur les deux moyeux d'accouplement révèle un décalage ; la <strong>jauge d'épaisseur</strong> mesure l'ouverture angulaire entre les faces. Méthode <strong>rapide</strong>, utile pour <strong>dégrossir</strong> avant l'alignement fin.</p>
+<figure class="fig"><svg viewBox="0 0 480 150" role="img" aria-label="Instruments d alignement">
+<g font-family="var(--fM)" font-size="10" fill="var(--navy)" stroke="var(--navy)" text-anchor="middle">
+<g transform="translate(20,30)"><rect x="0" y="20" width="90" height="8" fill="rgba(43,86,192,.15)"/><rect x="30" y="28" width="6" height="18" fill="rgba(46,160,87,.3)"/><text x="45" y="66" stroke="none">Règle + jauge</text></g>
+<g transform="translate(170,16)"><circle cx="45" cy="30" r="26" fill="#fff" stroke-width="1.6"/><circle cx="45" cy="30" r="21" fill="none" stroke-width="0.6"/><line x1="45" y1="30" x2="60" y2="14" stroke="#c0392b" stroke-width="1.6"/><circle cx="45" cy="30" r="2.5" fill="var(--navy)" stroke="none"/><rect x="40" y="56" width="10" height="14" fill="rgba(43,86,192,.12)"/><text x="45" y="84" stroke="none">Comparateur</text></g>
+<g transform="translate(320,26)"><rect x="20" y="14" width="44" height="26" rx="4" fill="rgba(43,86,192,.12)" stroke-width="1.4"/><line x1="64" y1="27" x2="120" y2="27" stroke="#c0392b" stroke-width="2"/><polygon points="120,23 130,27 120,31" fill="#c0392b" stroke="none"/><text x="60" y="62" stroke="none">Laser</text></g>
+</g></svg><figcaption>Trois niveaux de précision : règle + jauge, comparateurs à cadran, alignement laser.</figcaption></figure>
 </div>
 
 <div class="section">
-<h3>3.2 Le tournage conique et le perçage au tour</h3>
-<p>Le <strong>tournage conique</strong> usine un cône en inclinant le chariot ou en décalant la contre-pointe. On peut aussi <strong>percer au tour</strong> (foret dans la contre-pointe) et <strong>aléser</strong> pour finir un trou aux cotes.</p>
+<h3>3.2 Les comparateurs à cadran</h3>
+<p>Les <strong>comparateurs à cadran</strong>, montés sur un support qui relie les deux arbres, mesurent précisément le <strong>décalage</strong> (lecture en périphérie) et l'<strong>angle</strong> (lecture en face), en faisant <strong>tourner</strong> les arbres ensemble.</p>
 </div>
 
 <div class="section">
-<h3>3.3 Le tronçonnage</h3>
-<p>Le <strong>tronçonnage</strong> sépare la pièce avec un outil étroit, perpendiculaire à l'axe. On avance lentement et régulièrement pour éviter de coincer l'outil.</p>
-<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>Chariotage = réduire le diamètre ; dressage = usiner la face ; tronçonnage = séparer. On respecte toujours les <strong>cotes de précision</strong>.</div>
+<h3>3.3 L'alignement laser</h3>
+<p>L'<strong>alignement laser</strong> est la méthode la plus <strong>précise et rapide</strong> : deux têtes laser mesurent les écarts et l'appareil <strong>calcule directement</strong> les cales à poser et les déplacements à faire.</p>
+<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>On dégrossit à la règle + jauge, on aligne finement au <strong>comparateur</strong> ou au <strong>laser</strong>. Plus l'instrument est précis, plus l'alignement final est fiable.</div>
 </div>
 
 <div class="section">
-<h3>3.4 Les opérations au tour — clique pour explorer</h3>
+<h3>3.4 Les méthodes d'alignement — clique pour explorer</h3>
 <div class="dora-grid" style="grid-template-columns:repeat(3,1fr)">
-  <div class="dora-card active" onclick="showInfo('tourops',0,this)"><div class="dora-letter">▭</div><div class="dora-word">Chariotage</div><div class="dora-hint">Réduire le Ø</div></div>
-  <div class="dora-card" onclick="showInfo('tourops',1,this)"><div class="dora-letter">◣</div><div class="dora-word">Conique</div><div class="dora-hint">Usiner un cône</div></div>
-  <div class="dora-card" onclick="showInfo('tourops',2,this)"><div class="dora-letter">✂️</div><div class="dora-word">Tronçonnage</div><div class="dora-hint">Séparer la pièce</div></div>
+  <div class="dora-card active" onclick="showInfo('methodes',0,this)"><div class="dora-letter">📏</div><div class="dora-word">Règle + jauge</div><div class="dora-hint">Dégrossissage</div></div>
+  <div class="dora-card" onclick="showInfo('methodes',1,this)"><div class="dora-letter">🕐</div><div class="dora-word">Comparateurs</div><div class="dora-hint">Précis</div></div>
+  <div class="dora-card" onclick="showInfo('methodes',2,this)"><div class="dora-letter">🔆</div><div class="dora-word">Laser</div><div class="dora-hint">Le plus précis</div></div>
 </div>
-<div class="dora-detail show" id="tourops-detail" style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.18);color:#1a2f52">
-  <strong>Tournage cylindrique (chariotage) :</strong> on réduit le diamètre sur une longueur en déplaçant l'outil parallèlement à l'axe.
+<div class="dora-detail show" id="methodes-detail" style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.18);color:#1a2f52">
+  <strong>Règle droite et jauge d'épaisseur :</strong> méthode simple et rapide pour un dégrossissage de l'alignement.
 </div></div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Chariotage</dt><dd>Tournage cylindrique réduisant le diamètre.</dd><dt>Dressage</dt><dd>Usinage de la face d'extrémité de la pièce.</dd><dt>Tournage conique</dt><dd>Usinage d'un cône (chariot incliné).</dd><dt>Alésage</dt><dd>Finition précise d'un trou (barre à aléser, alésoir).</dd><dt>Tronçonnage</dt><dd>Séparation de la pièce avec un outil étroit.</dd></dl>
+  <dl><dt>Règle droite</dt><dd>Outil révélant un décalage entre deux moyeux.</dd><dt>Jauge d'épaisseur</dt><dd>Lames mesurant l'ouverture angulaire.</dd><dt>Comparateur à cadran</dt><dd>Instrument précis lisant décalage et angle.</dd><dt>Support d'alignement</dt><dd>Montage reliant les comparateurs aux arbres.</dd><dt>Alignement laser</dt><dd>Méthode la plus précise, calcul automatique.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>On <strong>monte la pièce</strong> au mandrin (+ contre-pointe si longue).</li><li><strong>Chariotage</strong> = réduire le Ø ; <strong>dressage</strong> = usiner la face.</li><li><strong>Conique</strong> (chariot incliné) ; perçage et alésage au tour.</li><li><strong>Tronçonnage</strong> = séparer ; avancer lentement et régulièrement.</li></ul>
+  <ul class="recap-list"><li><strong>Règle + jauge</strong> : rapide, pour dégrossir.</li><li><strong>Comparateurs à cadran</strong> : décalage (périphérie) et angle (face).</li><li><strong>Laser</strong> : le plus précis, calcule directement les corrections.</li><li>On dégrossit, puis on aligne finement.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="3">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le chariotage sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Usiner la face</button>
-    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Réduire le diamètre</button>
-    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Séparer la pièce</button>
-    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Percer</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La règle droite et la jauge servent à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Aligner au centième</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Dégrossir l'alignement</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Mesurer la vitesse</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le dressage usine :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>La face d'extrémité</button>
-    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Le filet</button>
-    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Le trou</button>
-    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Le cône</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Les comparateurs mesurent :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>La couleur</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Le décalage et l'angle</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>La température</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Le poids</button>
   </div><div class="qexpl" id="qe-3-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pour usiner un cône, on fait :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Un tronçonnage</button>
-    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Un tournage conique</button>
-    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Un dressage</button>
-    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Un perçage</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">La méthode la plus précise est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>La règle</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Le laser</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>La jauge seule</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>L'œil</button>
   </div><div class="qexpl" id="qe-3-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le tronçonnage sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Séparer la pièce</button>
-    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Peindre</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour relever au comparateur, on doit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Laisser les arbres fixes</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Faire tourner les arbres ensemble</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Démonter l'accouplement</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Chauffer</button>
   </div><div class="qexpl" id="qe-3-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Au tour, on peut aussi :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Percer et aléser</button>
-    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Fileter à la filière seulement</button>
-    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Rien</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">L'alignement laser :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Estime au hasard</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Calcule directement les corrections</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Ne mesure rien</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Sert à souder</button>
   </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,0,1,0,0],['Le chariotage réduit le diamètre sur une longueur.','Le dressage usine la face d\u0027extrémité.','Le tournage conique usine un cône.','Il sépare la pièce avec un outil étroit.','On perce (contre-pointe) et on alèse au tour.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,1,1,1,1],['Méthode rapide pour dégrossir.','Décalage (périphérie) et angle (face).','L\u0027alignement laser est le plus précis.','On tourne les arbres pour lire à plusieurs positions.','L\u0027appareil calcule cales et déplacements.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
@@ -766,98 +763,97 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-4">
 <div class="ch-header">
   <div class="ch-num">04</div>
-  <div class="ch-info"><h2>Fraisage &amp; alésage</h2><div class="ch-meta"><span class="ch-badge">Surfaçage · Chemin de clé · Alésage</span></div></div>
+  <div class="ch-info"><h2>Méthodes au comparateur</h2><div class="ch-meta"><span class="ch-badge">Périphérie-et-face · Relevés</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Fraiser et aléser</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Relever l'alignement</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>surfacer et rainurer à la fraiseuse ;</li><li>réaliser un chemin de clé ;</li><li>aléser à la barre et à l'alésoir.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais tourner une pièce (chapitre 3).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>monter les comparateurs ;</li><li>relever en périphérie et en face ;</li><li>contrôler la validité des relevés.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais reconnaître les instruments (chapitre 3).</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Le fraisage et l'alésage</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
-  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI09/final/MEI09-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Les méthodes au comparateur</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI12/final/MEI12-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>4.1 Le fraisage</h3>
-<p>À la <strong>fraiseuse</strong>, l'<strong>outil (la fraise) tourne</strong> et la pièce, fixée sur la table, se déplace. On réalise du <strong>surfaçage</strong> (aplanir une surface), des <strong>rainures</strong> et des épaulements.</p>
-<figure class="fig"><svg viewBox="0 0 460 170" role="img" aria-label="Fraisage et chemin de cle">
+<h3>4.1 Le montage périphérie-et-face</h3>
+<p>On monte un comparateur en <strong>périphérie</strong> (il lit le <strong>décalage</strong>) et un en <strong>face</strong> (il lit l'<strong>angle</strong>) sur l'accouplement. On met les comparateurs à <strong>zéro</strong> en haut avant de relever.</p>
+<figure class="fig"><svg viewBox="0 0 470 180" role="img" aria-label="Methode au comparateur sur accouplement">
 <g font-family="var(--fM)" font-size="10" fill="var(--navy)" stroke="var(--navy)">
-<circle cx="180" cy="60" r="34" fill="rgba(43,86,192,.10)" stroke-width="1.6"/>
-<g stroke-width="1"><line x1="214.0" y1="60.0" x2="220.0" y2="60.0"/><line x1="209.4" y1="77.0" x2="214.6" y2="80.0"/><line x1="197.0" y1="89.4" x2="200.0" y2="94.6"/><line x1="180.0" y1="94.0" x2="180.0" y2="100.0"/><line x1="163.0" y1="89.4" x2="160.0" y2="94.6"/><line x1="150.6" y1="77.0" x2="145.4" y2="80.0"/><line x1="146.0" y1="60.0" x2="140.0" y2="60.0"/><line x1="150.6" y1="43.0" x2="145.4" y2="40.0"/><line x1="163.0" y1="30.6" x2="160.0" y2="25.4"/><line x1="180.0" y1="26.0" x2="180.0" y2="20.0"/><line x1="197.0" y1="30.6" x2="200.0" y2="25.4"/><line x1="209.4" y1="43.0" x2="214.6" y2="40.0"/></g>
-<path d="M210 40 a34 34 0 0 1 -6 -20" fill="none" stroke="var(--blue)" stroke-width="1.6" marker-end="url(#frot)"/>
-<marker id="frot" markerWidth="8" markerHeight="8" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--blue)"/></marker>
-<text x="180" y="14" stroke="none" text-anchor="middle" font-size="9">fraise (en rotation)</text>
-<rect x="70" y="104" width="220" height="40" fill="rgba(43,86,192,.06)" stroke-width="1.6"/>
-<rect x="150" y="104" width="22" height="22" fill="#fff" stroke-width="1.2"/><text x="242" y="128" stroke="none" font-size="9">chemin de clé</text>
-</g></svg><figcaption>Le fraisage : la fraise tourne et usine la pièce ; ici, l'usinage d'un chemin de clé.</figcaption></figure>
+<rect x="40" y="74" width="150" height="32" fill="rgba(43,86,192,.10)" stroke-width="1.6"/><rect x="280" y="74" width="150" height="32" fill="rgba(43,86,192,.10)" stroke-width="1.6"/>
+<rect x="190" y="56" width="20" height="68" fill="rgba(43,86,192,.18)" stroke-width="1.4"/><rect x="260" y="56" width="20" height="68" fill="rgba(43,86,192,.18)" stroke-width="1.4"/>
+<text x="235" y="150" stroke="none" text-anchor="middle" font-size="9">accouplement</text>
+<rect x="222" y="30" width="26" height="16" rx="3" fill="#fff" stroke-width="1.4"/><line x1="235" y1="46" x2="235" y2="58" stroke-width="1.4"/><text x="235" y="24" stroke="none" text-anchor="middle" font-size="9">comparateur (périphérie)</text>
+<rect x="284" y="64" width="14" height="10" rx="2" fill="#fff" stroke-width="1.2"/><line x1="284" y1="69" x2="276" y2="69" stroke-width="1.4"/><text x="330" y="50" stroke="none" font-size="9">comparateur (face)</text>
+<line x1="318" y1="54" x2="296" y2="66" stroke-width="0.8"/>
+</g></svg><figcaption>La méthode périphérie-et-face : un comparateur lit le décalage, l'autre lit l'angle.</figcaption></figure>
 </div>
 
 <div class="section">
-<h3>4.2 Le chemin de clé</h3>
-<p>Le <strong>chemin de clé</strong> (rainure de clavette) se fraise dans un arbre ou un moyeu pour loger une <strong>clavette</strong> qui transmet le couple. On respecte la largeur, la profondeur et la position.</p>
+<h3>4.2 Les relevés en tournant</h3>
+<p>On fait <strong>tourner les deux arbres ensemble</strong> et on note les lectures à <strong>quatre positions</strong> (haut, droite, bas, gauche). La différence haut-bas (et droite-gauche) donne le désalignement <strong>vertical</strong> et <strong>horizontal</strong>.</p>
 </div>
 
 <div class="section">
-<h3>4.3 L'alésage</h3>
-<p>L'<strong>alésage</strong> finit un trou aux cotes précises : à la <strong>barre à aléser</strong> (gros diamètres) ou à l'<strong>alésoir</strong> (finition fine). On vise le bon diamètre et un bon état de surface.</p>
-<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>À la fraiseuse, c'est la <strong>fraise qui tourne</strong>. Le chemin de clé loge la clavette. L'alésage donne le trou final aux cotes.</div>
+<h3>4.3 Contrôler la validité</h3>
+<p>Pour un relevé fiable, la somme des lectures opposées doit être <strong>cohérente</strong> (haut + bas ≈ droite + gauche) : c'est la <strong>règle de validité</strong>. Si elle n'est pas respectée, le montage bouge (jeu, bras qui fléchit) et on recommence.</p>
+<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>Zéro en haut, on tourne ensemble, on lit aux 4 positions. La <strong>règle de validité</strong> (haut+bas ≈ gauche+droite) confirme un relevé fiable.</div>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Fraisage</dt><dd>Usinage par une fraise tournante sur pièce fixée.</dd><dt>Surfaçage</dt><dd>Aplanissement d'une surface à la fraiseuse.</dd><dt>Chemin de clé</dt><dd>Rainure logeant une clavette dans un arbre/moyeu.</dd><dt>Clavette</dt><dd>Pièce transmettant le couple entre arbre et moyeu.</dd><dt>Barre à aléser</dt><dd>Outil alésant les trous de grand diamètre.</dd></dl>
+  <dl><dt>Lecture en périphérie</dt><dd>Relevé du décalage sur le pourtour de l'accouplement.</dd><dt>Lecture en face</dt><dd>Relevé de l'angle sur la face de l'accouplement.</dd><dt>Mise à zéro</dt><dd>Réglage du comparateur en position haute.</dd><dt>Quatre positions</dt><dd>Haut, droite, bas, gauche du relevé.</dd><dt>Règle de validité</dt><dd>Haut + bas ≈ gauche + droite.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>À la <strong>fraiseuse</strong>, la fraise tourne, la pièce se déplace.</li><li>On fait du <strong>surfaçage</strong>, des rainures et des épaulements.</li><li>Le <strong>chemin de clé</strong> loge une clavette (transmission du couple).</li><li>L'<strong>alésage</strong> finit le trou aux cotes (barre à aléser, alésoir).</li></ul>
+  <ul class="recap-list"><li>Périphérie = <strong>décalage</strong> ; face = <strong>angle</strong>.</li><li>On met à <strong>zéro en haut</strong>, on tourne les arbres ensemble.</li><li>On lit aux <strong>4 positions</strong> (haut, droite, bas, gauche).</li><li><strong>Règle de validité</strong> : haut + bas ≈ gauche + droite.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="4">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">À la fraiseuse, ce qui tourne, c'est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>La pièce</button>
-    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>La fraise</button>
-    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>La table</button>
-    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Le mandrin</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le comparateur en périphérie lit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>L'angle</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Le décalage</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>La vitesse</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>La couleur</button>
   </div><div class="qexpl" id="qe-4-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le surfaçage sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Aplanir une surface</button>
-    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Séparer</button>
-    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Tarauder</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le comparateur en face lit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Le décalage</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>L'angle</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Le poids</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Le chemin de clé loge :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Un roulement</button>
-    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Une clavette</button>
-    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Une vis</button>
-    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Un foret</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Avant de relever, on met le comparateur à zéro :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>En bas</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>En haut</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>À droite</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>N'importe où</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour finir un trou aux cotes, on emploie :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Une fraise</button>
-    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Un alésoir / une barre à aléser</button>
-    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Un tronçonnage</button>
-    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Un compas</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour relever, on tourne :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Un seul arbre</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Les deux arbres ensemble</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>L'accouplement seul</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-4-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">La clavette sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Décorer</button>
-    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Transmettre le couple</button>
-    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Souder</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">La règle de validité dit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>haut = 0</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>haut + bas ≈ gauche + droite</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>tout = TIR</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>rien</button>
   </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,1],['La fraise tourne ; la pièce se déplace.','Le surfaçage aplanit une surface.','Il loge une clavette qui transmet le couple.','L\u0027alésoir ou la barre à aléser finit le trou.','La clavette transmet le couple entre arbre et moyeu.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,1],['Il lit le décalage.','Il lit l\u0027angle.','On met à zéro en position haute.','On tourne les deux arbres ensemble.','Les sommes opposées doivent être cohérentes.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
@@ -868,98 +864,98 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-5">
 <div class="ch-header">
   <div class="ch-num">05</div>
-  <div class="ch-info"><h2>Rectification &amp; vérification</h2><div class="ch-meta"><span class="ch-badge">Rectifier · Métalliser · Vérifier</span></div></div>
+  <div class="ch-info"><h2>Corriger &amp; vérifier</h2><div class="ch-meta"><span class="ch-badge">Cales · Soft foot · Vérification</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 5</div><div class="lpl-title">Finir et vérifier</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 5</div><div class="lpl-title">Corriger et vérifier</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>rectifier une surface ;</li><li>comprendre la métallisation ;</li><li>vérifier la conformité du travail.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais fraiser et aléser (chapitre 4).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>corriger en vertical par cales ;</li><li>corriger en horizontal ;</li><li>détecter le soft foot et vérifier.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais relever l'alignement (chapitre 4).</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour terminer le module et accéder à l'examen blanc.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — Rectification, métallisation et vérification</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
-  <div class="vembed"><video id="vf5" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI09/final/MEI09-CH05.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — Corriger et vérifier l'alignement</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf5" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI12/final/MEI12-CH05.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>5.1 La rectification</h3>
-<p>La <strong>rectification</strong> finit une surface avec une <strong>meule</strong> tournant à grande vitesse : elle donne une grande <strong>précision dimensionnelle</strong> et un excellent <strong>état de surface</strong>, là où le tour ou la fraiseuse ne suffisent pas.</p>
-<figure class="fig"><svg viewBox="0 0 460 160" role="img" aria-label="Rectification">
+<h3>5.1 La correction verticale par cales</h3>
+<p>On corrige le <strong>vertical</strong> en ajoutant ou en retirant des <strong>cales</strong> calibrées sous les pieds de la machine mobile, selon les valeurs calculées (chapitre 2). On agit sur les pieds avant et arrière pour traiter le décalage et l'angle. <strong>Règle d'or : au maximum quatre cales par pied</strong> (pied boiteux inclus) ; au-delà, l'appui devient instable et il faut usiner ou rectifier la portée.</p>
+<figure class="fig"><svg viewBox="0 0 470 170" role="img" aria-label="Correction par cales et soft foot">
 <g font-family="var(--fM)" font-size="10" fill="var(--navy)" stroke="var(--navy)">
-<circle cx="170" cy="60" r="40" fill="rgba(43,86,192,.10)" stroke-width="1.6"/><circle cx="170" cy="60" r="10" fill="#fff"/>
-<path d="M205 44 a40 40 0 0 1 -6 -22" fill="none" stroke="var(--blue)" stroke-width="1.6" marker-end="url(#grot)"/>
-<marker id="grot" markerWidth="8" markerHeight="8" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--blue)"/></marker>
-<text x="170" y="14" stroke="none" text-anchor="middle" font-size="9">meule</text>
-<rect x="70" y="104" width="240" height="34" fill="rgba(43,86,192,.06)" stroke-width="1.6"/>
-<rect x="70" y="104" width="240" height="6" fill="rgba(46,160,87,.25)"/><text x="318" y="124" stroke="none" font-size="9">fini de surface</text>
-<text x="190" y="152" stroke="none" text-anchor="middle" font-size="9" fill="var(--g500)">La rectification donne une grande précision et un beau fini.</text>
-</g></svg><figcaption>La rectification : une meule de précision affine la surface pour un fini soigné.</figcaption></figure>
+<rect x="60" y="40" width="150" height="40" fill="rgba(43,86,192,.10)" stroke-width="1.6"/><text x="135" y="34" stroke="none" text-anchor="middle" font-size="9">machine mobile</text>
+<rect x="70" y="80" width="24" height="14" fill="rgba(43,86,192,.18)"/><rect x="176" y="80" width="24" height="14" fill="rgba(43,86,192,.18)"/>
+<rect x="70" y="94" width="24" height="6" fill="rgba(230,165,0,.35)"/><rect x="176" y="94" width="24" height="9" fill="rgba(230,165,0,.35)"/>
+<text x="82" y="118" stroke="none" text-anchor="middle" font-size="8" fill="#b27d00">cale</text><text x="188" y="124" stroke="none" text-anchor="middle" font-size="8" fill="#b27d00">cale</text>
+<line x1="50" y1="104" x2="420" y2="104" stroke-width="1.6"/>
+<g transform="translate(300,0)"><rect x="0" y="50" width="120" height="36" fill="rgba(192,57,43,.06)" stroke-width="1.4"/><rect x="10" y="86" width="20" height="10" fill="rgba(43,86,192,.18)"/><rect x="90" y="86" width="20" height="14" fill="rgba(43,86,192,.18)"/><path d="M90 86 l20 -6" stroke="#c0392b" stroke-width="1.4" fill="none"/><text x="60" y="44" stroke="none" text-anchor="middle" font-size="9" fill="#c0392b">soft foot (pied bancal)</text></g>
+</g></svg><figcaption>On corrige le vertical par des cales sous les pieds ; un pied bancal (soft foot) fausse l'alignement.</figcaption></figure>
+<div class="ibox blue"><span class="ibox-label">🌡️ Dilatation thermique</span>Une machine chaude n'a pas les mêmes cotes qu'à froid. Quand le fabricant le précise, on <strong>tient compte de la dilatation thermique</strong> en alignant volontairement avec un léger décalage à froid, pour que l'alignement soit parfait à la <strong>température de fonctionnement</strong>.</div>
 </div>
 
 <div class="section">
-<h3>5.2 La métallisation</h3>
-<p>La <strong>métallisation</strong> projette du métal en fusion sur une surface usée pour la <strong>recharger</strong> ; on la réusine ensuite aux cotes. C'est une technique de réparation d'arbres et de portées.</p>
+<h3>5.2 La correction horizontale et le soft foot</h3>
+<p>On corrige l'<strong>horizontal</strong> en <strong>déplaçant</strong> latéralement la machine (vis de réglage, légers coups). Attention au <strong>soft foot</strong> (pied bancal) : un pied qui ne touche pas le socle fausse tout ; on le détecte et on le corrige <strong>avant</strong> d'aligner.</p>
 </div>
 
 <div class="section">
-<h3>5.3 Vérifier et finir</h3>
-<p>On <strong>vérifie</strong> la conformité des travaux : dimensions, état de surface (absence de stries), uniformité, qualité de l'alésage — avec les instruments de mesure. Puis on <strong>range et nettoie</strong> en prenant soin des machines.</p>
-<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>La <strong>rectification</strong> donne le fini et la précision ; la <strong>métallisation</strong> recharge une pièce usée. On vérifie toujours les cotes et l'état de surface.</div>
+<h3>5.3 Le serrage et la vérification finale</h3>
+<p>On <strong>serre</strong> les pieds au couple, puis on <strong>refait un relevé</strong> pour confirmer que l'alignement est dans la <strong>tolérance</strong>. On consigne la machine pendant tout le travail et on ne la redémarre qu'après vérification.</p>
+<div class="ibox blue"><span class="ibox-label">💡 À retenir</span>Vertical = cales ; horizontal = déplacement. On élimine le <strong>soft foot</strong> d'abord. On serre, on revérifie, on reste dans la <strong>tolérance</strong>.</div>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Rectification</dt><dd>Finition d'une surface à la meule, très précise.</dd><dt>État de surface</dt><dd>Qualité du fini (rugosité, absence de stries).</dd><dt>Métallisation</dt><dd>Rechargement d'une surface usée par projection de métal.</dd><dt>Portée</dt><dd>Surface d'un arbre recevant un roulement ou un coussinet.</dd><dt>Vérification</dt><dd>Contrôle des dimensions et du fini par rapport au plan.</dd></dl>
+  <dl><dt>Correction verticale</dt><dd>Ajout/retrait de cales sous les pieds.</dd><dt>Correction horizontale</dt><dd>Déplacement latéral de la machine.</dd><dt>Soft foot</dt><dd>Pied bancal qui ne porte pas, à corriger d'abord.</dd><dt>Serrage au couple</dt><dd>Serrage des pieds à la valeur prescrite.</dd><dt>Vérification finale</dt><dd>Relevé de contrôle dans la tolérance.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>La <strong>rectification</strong> donne précision et bel état de surface (meule).</li><li>La <strong>métallisation</strong> recharge une surface usée, puis on réusine.</li><li>On <strong>vérifie</strong> dimensions, état de surface, uniformité, alésage.</li><li>On range et nettoie en prenant soin des machines.</li></ul>
+  <ul class="recap-list"><li><strong>Vertical</strong> = cales sous les pieds ; <strong>horizontal</strong> = déplacement.</li><li>Au <strong>maximum quatre cales par pied</strong> (pied boiteux inclus).</li><li>On détecte et corrige le <strong>soft foot</strong> avant d'aligner.</li><li>On tient compte de la <strong>dilatation thermique</strong> si elle est spécifiée.</li><li>On <strong>serre au couple</strong>, on refait un relevé, on reste dans la <strong>tolérance</strong>.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="5">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La rectification donne :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>Un trou</button>
-    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>Précision et bel état de surface</button>
-    <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>Une soudure</button>
-    <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>Un filet</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La correction verticale se fait :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>Par déplacement</button>
+    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>Par cales sous les pieds</button>
+    <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>Par soudage</button>
+    <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>Par peinture</button>
   </div><div class="qexpl" id="qe-5-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La métallisation sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>Recharger une surface usée</button>
-    <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Tronçonner</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La correction horizontale se fait :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>Par cales</button>
+    <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>Par déplacement latéral</button>
+    <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Par chauffage</button>
+    <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Par serrage seul</button>
   </div><div class="qexpl" id="qe-5-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">L'état de surface concerne :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Le poids</button>
-    <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>La qualité du fini</button>
-    <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Le prix</button>
-    <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>La couleur</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Le soft foot est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Un bon appui</button>
+    <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>Un pied bancal qui fausse tout</button>
+    <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Une cale</button>
+    <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>Un comparateur</button>
   </div><div class="qexpl" id="qe-5-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">On vérifie la conformité avec :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>Les instruments de mesure</button>
-    <button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Un marteau</button>
-    <button class="qopt" onclick="selQ(this,'5',3,2)"><span class="qletter">C</span>De la peinture</button>
-    <button class="qopt" onclick="selQ(this,'5',3,3)"><span class="qletter">D</span>Rien</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Combien de cales au maximum par pied ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>Une seule</button>
+    <button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Quatre</button>
+    <button class="qopt" onclick="selQ(this,'5',3,2)"><span class="qletter">C</span>Dix</button>
+    <button class="qopt" onclick="selQ(this,'5',3,3)"><span class="qletter">D</span>Autant qu'on veut</button>
   </div><div class="qexpl" id="qe-5-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">En fin de travail, on doit :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',4,0)"><span class="qletter">A</span>Laisser la machine sale</button>
-    <button class="qopt" onclick="selQ(this,'5',4,1)"><span class="qletter">B</span>Ranger et prendre soin des machines</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Après correction, on doit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',4,0)"><span class="qletter">A</span>Démarrer tout de suite</button>
+    <button class="qopt" onclick="selQ(this,'5',4,1)"><span class="qletter">B</span>Refaire un relevé de vérification</button>
     <button class="qopt" onclick="selQ(this,'5',4,2)"><span class="qletter">C</span>Tout démonter</button>
-    <button class="qopt" onclick="selQ(this,'5',4,3)"><span class="qletter">D</span>Rien faire</button>
+    <button class="qopt" onclick="selQ(this,'5',4,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-5-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,0,1,0,1],['Elle donne précision et excellent fini.','Elle recharge une surface usée par projection de métal.','C\u0027est la qualité du fini (rugosité, stries).','On contrôle dimensions et fini avec les instruments.','On range, nettoie et prend soin des machines.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,1,1,1],['On ajoute/retire des cales.','On déplace latéralement la machine.','Un pied qui ne porte pas fausse l\u0027alignement.','Au maximum quatre cales par pied, pied boiteux inclus.','On revérifie l\u0027alignement dans la tolérance.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-5"></span>
 </div>
@@ -970,12 +966,12 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="step" id="essentiel">
 <div class="ch-header">
   <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
-  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module MEI-09</span></div></div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module MEI-12</span></div></div>
 </div>
 <div class="ch-body">
 <div class="recap recap-final">
   <div class="recap-h"><span class="recap-ic">📌</span> L'essentiel du module MEI-06</div>
-  <ul class="recap-list"><li><strong>Machines &amp; préparation —</strong> tour (la pièce tourne), fraiseuse (l'outil tourne), rectifieuse (meule) ; lire le plan, préparer ; sécurité (pas de gants/manches près des rotations ; règle de verdict).</li><li><strong>Calculs —</strong> N = 1000·Vc/(π·D) · Vc = π·D·N/1000 · Vf = N·f · Ø perçage = nominal − pas · 1 po = 25,4 mm.</li><li><strong>Tournage —</strong> montage au mandrin ; chariotage (réduire le Ø), dressage (face), conique, perçage et alésage au tour, tronçonnage (séparer).</li><li><strong>Fraisage &amp; alésage —</strong> la fraise tourne ; surfaçage, rainures, chemin de clé (loge la clavette) ; alésage à la barre à aléser et à l'alésoir.</li><li><strong>Finition —</strong> rectification (précision + fini), métallisation (recharger une pièce usée) ; vérifier dimensions et état de surface, ranger et soigner les machines.</li></ul>
+  <ul class="recap-list"><li><strong>Principes —</strong> un désalignement provoque vibrations, chaleur et usure ; deux types : parallèle (décalage) et angulaire (angle), souvent combinés ; on vise une tolérance selon la vitesse.</li><li><strong>Calculs —</strong> décalage = TIR ÷ 2 · cale = (écart ÷ Ø de mesure) × distance au pied · cale totale = angulaire + décalage · 1 po = 25,4 mm.</li><li><strong>Instruments —</strong> règle + jauge (dégrossir), comparateurs à cadran (décalage en périphérie, angle en face), alignement laser (le plus précis, calcule les corrections).</li><li><strong>Méthodes —</strong> montage périphérie-et-face, zéro en haut, on tourne les deux arbres, relevés aux 4 positions ; règle de validité : haut + bas ≈ gauche + droite.</li><li><strong>Corriger &amp; vérifier —</strong> vertical par cales, horizontal par déplacement ; éliminer le soft foot d'abord ; serrer au couple, refaire un relevé, rester dans la tolérance.</li></ul>
 </div>
 </div>
 </div>
@@ -985,8 +981,8 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 80 %</span></div></div></div>
 <div class="ch-body">
 <div class="exam-head"><h3>🎓 Avant de commencer</h3>
-  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : machines &amp; préparation (QCM), <strong>calculs d'usinage</strong> (saisie numérique) et opérations (QCM). L'<strong>usinage réel sur machines-outils</strong> est évalué <strong>en atelier par le professeur</strong>, lors de l'épreuve pratique officielle (6 h, seuil 80/100). Une règle de verdict de sécurité s'applique.</p>
-  <div class="exam-rules"><span class="exam-rule">A · Machines &amp; préparation — 40%</span><span class="exam-rule">B · Calculs d'usinage — 20%</span><span class="exam-rule">C · Opérations — 40%</span><span class="exam-rule">Validation en ligne : ≥ 80%</span></div>
+  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : principes &amp; instruments (QCM), <strong>calculs de cales</strong> (saisie numérique) et méthodes &amp; correction (QCM). L'<strong>alignement réel de deux arbres</strong> est évalué <strong>en atelier par le professeur</strong>, lors de l'épreuve pratique officielle (4 h, seuil 80/100). Une règle de verdict de sécurité s'applique.</p>
+  <div class="exam-rules"><span class="exam-rule">A · Principes &amp; instruments — 40%</span><span class="exam-rule">B · Calculs de cales — 20%</span><span class="exam-rule">C · Méthodes &amp; correction — 40%</span><span class="exam-rule">Validation en ligne : ≥ 80%</span></div>
 </div>
 <div class="exid">
   <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
@@ -994,130 +990,130 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <div><label>Date</label><div class="exid-fixed" id="ex-date">—</div></div>
 </div>
 
-<div class="exam-part"><span>Partie A — Machines &amp; préparation</span><span class="ex-chip" id="exA-score">40% · non soumis</span></div>
+<div class="exam-part"><span>Partie A — Principes &amp; instruments</span><span class="ex-chip" id="exA-score">40% · non soumis</span></div>
 <div class="qblock" data-qid="exa">
 <div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Sur le tour parallèle :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>L'outil tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>La pièce tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Rien ne tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>La table tourne</button>
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Un désalignement provoque :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Un meilleur rendement</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>Des vibrations et de l'usure</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Plus de couple</button>
   </div><div class="qexpl" id="qe-exa-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Sur la fraiseuse :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>La pièce tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>L'outil (fraise) tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Rien ne bouge</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Le mandrin coupe</button>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Le désalignement parallèle, c'est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>Des axes en angle</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>Des axes décalés mais parallèles</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Un bon alignement</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Un accouplement</button>
   </div><div class="qexpl" id="qe-exa-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">La rectifieuse sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Finir une surface à la meule</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Mesurer</button>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Le désalignement angulaire, c'est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Des axes décalés parallèles</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Des axes formant un angle</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Aucun écart</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Un roulement</button>
   </div><div class="qexpl" id="qe-exa-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Où lit-on les paramètres d'usinage ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>Sur l'étiquette</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Sur les plans, tableaux et abaques</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Sur la peinture</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Nulle part</button>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">La tolérance d'alignement dépend de :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>La couleur</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>La vitesse de rotation</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Le prix</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>L'heure</button>
   </div><div class="qexpl" id="qe-exa-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Près d'une pièce en rotation, on évite :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Les lunettes</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Les gants et manches amples</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>La concentration</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Le plan</button>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">La règle + jauge sert à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Aligner au centième</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Dégrossir l'alignement</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Mesurer la vitesse</button>
   </div><div class="qexpl" id="qe-exa-4"></div></div>
-  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Un manquement grave à la sécurité :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Donne des points</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Entraîne l'échec (règle de verdict)</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>N'a aucun effet</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Est toléré</button>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Les comparateurs mesurent :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>La couleur</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Le décalage et l'angle</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>La température</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Le poids</button>
   </div><div class="qexpl" id="qe-exa-5"></div></div>
-  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Le mandrin sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Serrer et entraîner la pièce</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Peindre</button>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La méthode la plus précise est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>La règle</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Le laser</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>La jauge seule</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>L'œil</button>
   </div><div class="qexpl" id="qe-exa-6"></div></div>
-  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Avant d'usiner, on doit :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Commencer sans préparer</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Préparer outils, accessoires et matériaux</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Retirer les protections</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Ignorer le plan</button>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Le décalage réel des axes vaut :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Le TIR</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Le TIR ÷ 2</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Le TIR × 2</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>0</button>
   </div><div class="qexpl" id="qe-exa-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,1,1,1,1,1,1,1],['Au tour, la pièce tourne.','À la fraiseuse, l\u0027outil tourne.','Elle finit les surfaces à la meule.','Plans, tableaux et abaques.','Gants et manches peuvent être happés.','Règle de verdict : manquement grave = échec.','Le mandrin serre et entraîne la pièce au tour.','On prépare le poste et le matériel.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,1,1,1,1,1,1,1],['Vibrations, chaleur, usure.','Axes parallèles mais décalés.','Les axes forment un angle.','Plus la vitesse est haute, plus elle est serrée.','Méthode rapide de dégrossissage.','Décalage et angle.','L\u0027alignement laser.','décalage = TIR ÷ 2.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exa"></span>
 </div>
 </div>
 
-<div class="exam-part"><span>Partie B — Calculs d'usinage (saisie numérique)</span><span class="ex-chip" id="exB-score">20% · non soumis</span></div>
+<div class="exam-part"><span>Partie B — Calculs de cales (saisie numérique)</span><span class="ex-chip" id="exB-score">20% · non soumis</span></div>
 <p style="font-size:.83rem;color:var(--g700);margin:0 0 .6rem">Saisis chaque résultat (décimales avec un point ou une virgule), puis vérifie. Une tolérance est admise.</p>
-<div class="exq"><div class="exq-t">1. On tourne une pièce de <strong>diamètre 50 mm</strong> en acier à une vitesse de coupe <strong>Vc = 40 m/min</strong>. Calcule la <strong>vitesse de rotation N</strong>.</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">tr/min</span></div><div class="exn-fb" id="exnf-0"></div></div>
-<div class="exq"><div class="exq-t">2. Une pièce de <strong>diamètre 40 mm</strong> tourne à <strong>500 tr/min</strong>. Calcule la <strong>vitesse de coupe Vc</strong>.</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">m/min</span></div><div class="exn-fb" id="exnf-1"></div></div>
-<div class="exq"><div class="exq-t">3. La broche tourne à <strong>300 tr/min</strong> et l'outil avance de <strong>0,15 mm/tour</strong>. Calcule l'<strong>avance par minute</strong> (Vf).</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm/min</span></div><div class="exn-fb" id="exnf-2"></div></div>
-<div class="exq"><div class="exq-t">4. Pour un taraudage <strong>M8 au pas de 1,25 mm</strong>, calcule le <strong>diamètre de perçage</strong>.</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-3"></div></div>
-<div class="exq"><div class="exq-t">5. Une pièce a un diamètre de <strong>2 pouces</strong>. Combien de millimètres ? (1 po = 25,4 mm)</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-4"></div></div>
+<div class="exq"><div class="exq-t">1. Un comparateur en périphérie lit un <strong>TIR de 0,16 mm</strong>. Quel est le <strong>décalage réel</strong> des axes ?</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-0"></div></div>
+<div class="exq"><div class="exq-t">2. Un <strong>écart de 0,05 mm</strong> est mesuré sur un <strong>diamètre de 100 mm</strong>. Le pied est à <strong>400 mm</strong>. Calcule la <strong>cale</strong>.</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-1"></div></div>
+<div class="exq"><div class="exq-t">3. Avec un <strong>écart de 0,06 mm</strong> sur un <strong>Ø de 100 mm</strong>, calcule la <strong>cale</strong> au pied avant situé à <strong>250 mm</strong>.</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-2"></div></div>
+<div class="exq"><div class="exq-t">4. Sous un pied, il faut <strong>0,15 mm</strong> pour l'angle et <strong>0,10 mm</strong> pour le décalage. Quelle <strong>cale totale</strong> ?</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-3"></div></div>
+<div class="exq"><div class="exq-t">5. Une cale de <strong>0,010 pouce</strong> vaut combien de <strong>millimètres</strong> ? (1 po = 25,4 mm)</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-4"></div></div>
 <div class="qfooter"><button class="qbtn qbtn-submit" onclick="numGrade()">✓ Vérifier mes calculs</button></div>
 
-<div class="exam-part"><span>Partie C — Opérations d'usinage</span><span class="ex-chip" id="exC-score">40% · non soumis</span></div>
+<div class="exam-part"><span>Partie C — Méthodes &amp; correction</span><span class="ex-chip" id="exC-score">40% · non soumis</span></div>
 <div class="qblock" data-qid="exc">
 <div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Le chariotage sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Usiner la face</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Réduire le diamètre</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Séparer la pièce</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Percer</button>
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Le comparateur en périphérie lit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>L'angle</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Le décalage</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>La vitesse</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>La couleur</button>
   </div><div class="qexpl" id="qe-exc-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Le dressage usine :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>La face d'extrémité</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Le filet</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Le trou</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Le cône</button>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Le comparateur en face lit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Le décalage</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>L'angle</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Le poids</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-exc-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Le tronçonnage sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Séparer la pièce</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Peindre</button>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Avant de relever, on met le comparateur à zéro :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>En bas</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>En haut</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>À droite</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>N'importe où</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">À la fraiseuse, ce qui tourne, c'est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>La pièce</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>La fraise</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>La table</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Le mandrin</button>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">La règle de validité dit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>haut = 0</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>haut + bas ≈ gauche + droite</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>tout = TIR</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>rien</button>
   </div><div class="qexpl" id="qe-exc-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Le chemin de clé loge :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Un roulement</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Une clavette</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Une vis</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Un foret</button>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">La correction verticale se fait :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Par déplacement</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Par cales sous les pieds</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Par soudage</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Par peinture</button>
   </div><div class="qexpl" id="qe-exc-4"></div></div>
-  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Pour finir un trou aux cotes, on emploie :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',5,0)"><span class="qletter">A</span>Une fraise</button>
-    <button class="qopt" onclick="selQ(this,'exc',5,1)"><span class="qletter">B</span>Un alésoir / une barre à aléser</button>
-    <button class="qopt" onclick="selQ(this,'exc',5,2)"><span class="qletter">C</span>Un tronçonnage</button>
-    <button class="qopt" onclick="selQ(this,'exc',5,3)"><span class="qletter">D</span>Un compas</button>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">La correction horizontale se fait :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',5,0)"><span class="qletter">A</span>Par cales</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,1)"><span class="qletter">B</span>Par déplacement latéral</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,2)"><span class="qletter">C</span>Par chauffage</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,3)"><span class="qletter">D</span>Par serrage seul</button>
   </div><div class="qexpl" id="qe-exc-5"></div></div>
-  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La rectification donne :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',6,0)"><span class="qletter">A</span>Un trou</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,1)"><span class="qletter">B</span>Précision et bel état de surface</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,2)"><span class="qletter">C</span>Une soudure</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,3)"><span class="qletter">D</span>Un filet</button>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Le soft foot est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',6,0)"><span class="qletter">A</span>Un bon appui</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,1)"><span class="qletter">B</span>Un pied bancal qui fausse tout</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,2)"><span class="qletter">C</span>Une cale</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,3)"><span class="qletter">D</span>Un comparateur</button>
   </div><div class="qexpl" id="qe-exc-6"></div></div>
-  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">La métallisation sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',7,0)"><span class="qletter">A</span>Recharger une surface usée</button>
-    <button class="qopt" onclick="selQ(this,'exc',7,1)"><span class="qletter">B</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'exc',7,2)"><span class="qletter">C</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'exc',7,3)"><span class="qletter">D</span>Tronçonner</button>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Après correction, on doit :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',7,0)"><span class="qletter">A</span>Démarrer tout de suite</button>
+    <button class="qopt" onclick="selQ(this,'exc',7,1)"><span class="qletter">B</span>Refaire un relevé de vérification</button>
+    <button class="qopt" onclick="selQ(this,'exc',7,2)"><span class="qletter">C</span>Tout démonter</button>
+    <button class="qopt" onclick="selQ(this,'exc',7,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-exc-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,0,0,1,1,1,1,0],['Le chariotage réduit le diamètre.','Le dressage usine la face.','Il sépare la pièce avec un outil étroit.','La fraise tourne.','Il loge une clavette.','L\u0027alésoir ou la barre à aléser.','Précision et excellent fini.','Elle recharge une surface usée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,1,1,1,1,1],['Il lit le décalage.','Il lit l\u0027angle.','On met à zéro en haut.','Les sommes opposées sont cohérentes.','Par cales.','Par déplacement latéral.','Un pied qui ne porte pas.','On revérifie dans la tolérance.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exc"></span>
 </div>
@@ -1135,14 +1131,14 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
   <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
   <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
-    <li style="margin-bottom:.4rem"><strong style="color:#fff">Calculs —</strong> calcule la vitesse de rotation pour tourner des pièces de Ø 30, 60 et 90 mm à Vc = 35 m/min.</li>
-    <li style="margin-bottom:.4rem"><strong style="color:#fff">Tournage —</strong> planifie l'ordre des opérations pour une pièce : dressage, chariotage, perçage, alésage, tronçonnage.</li>
-    <li><strong style="color:#fff">Fraisage —</strong> détermine largeur et profondeur d'un chemin de clé pour un arbre donné.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Calculs —</strong> avec un écart de 0,08 mm sur Ø 120 mm, calcule la cale pour un pied à 350 mm.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Relevés —</strong> applique la règle de validité à un jeu de quatre lectures et vérifie sa cohérence.</li>
+    <li><strong style="color:#fff">Pratique —</strong> repère, sur une machine, où ajouter une cale et comment détecter un soft foot.</li>
   </ul>
 </div>
 <div class="complete-banner" id="complete-banner">
-  <h2>🎓 Module MEI-09 — chapitres validés !</h2>
-  <p>Tu sais préparer, calculer et usiner sur le tour et la fraiseuse. Prépare l'épreuve pratique en atelier (6 h, seuil 80/100) — et la sécurité d'abord.</p>
+  <h2>🎓 Module MEI-12 — chapitres validés !</h2>
+  <p>Tu sais diagnostiquer le désalignement, relever au comparateur, calculer les cales et corriger. Prépare l'épreuve pratique en atelier (4 h, seuil 80/100).</p>
 </div>
 </div><!-- /main-content -->
 </div><!-- /layout -->
@@ -1152,7 +1148,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <script>
 // ═══ STATE & PERSISTENCE ═══
 var ST={done:{},qs:{},sel:{}};
-var K='MEI09v1_';
+var K='MEI12v1_';
 function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
 function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
 
@@ -1243,15 +1239,15 @@ function retryQ(qid,count){
 
 // ═══ CARTES INTERACTIVES (réflexion) ═══
 var INFO={
-  machines:[
-    '<strong>Le tour parallèle :</strong> la pièce tourne, l\u0027outil fixe se déplace ; sert au tournage cylindrique, conique, au perçage, à l\u0027alésage et au tronçonnage.',
-    '<strong>La fraiseuse :</strong> l\u0027outil (la fraise) tourne, la pièce fixée se déplace ; sert au surfaçage, aux rainures et aux chemins de clé.',
-    '<strong>La rectifieuse :</strong> une meule tourne à grande vitesse pour rectifier une surface avec une grande précision et un beau fini.'
+  desalign:[
+    '<strong>Désalignement parallèle (décalage) :</strong> les deux axes restent parallèles mais sont décalés ; le comparateur en périphérie le révèle.',
+    '<strong>Désalignement angulaire :</strong> les deux axes forment un angle ; les faces des accouplements ne sont pas parallèles.',
+    '<strong>Désalignement combiné :</strong> en pratique on a souvent à la fois un décalage et un angle ; on corrige les deux.'
   ],
-  tourops:[
-    '<strong>Tournage cylindrique (chariotage) :</strong> on réduit le diamètre sur une longueur en déplaçant l\u0027outil parallèlement à l\u0027axe.',
-    '<strong>Tournage conique :</strong> on usine un cône en inclinant le chariot ou en décalant la contre-pointe.',
-    '<strong>Tronçonnage :</strong> on sépare la pièce avec un outil à tronçonner étroit, perpendiculaire à l\u0027axe.'
+  methodes:[
+    '<strong>Règle droite et jauge d\u0027épaisseur :</strong> méthode simple et rapide pour un dégrossissage de l\u0027alignement.',
+    '<strong>Comparateurs à cadran :</strong> méthode précise ; on lit le décalage et l\u0027angle en faisant tourner les arbres.',
+    '<strong>Alignement laser :</strong> la méthode la plus précise et la plus rapide ; l\u0027appareil calcule directement les corrections.'
   ]
 };
 function showInfo(group,idx,btn){
@@ -1295,18 +1291,18 @@ function toast(msg){
 /* ===== LECTEUR DE COURS v3 ===== */
 (function(){
   var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','essentiel','examen'];
-  var LABELS={plan:'Plan de cours','ch-1':'Machines-outils & préparation','ch-2':'Calculs d\u0027usinage','ch-3':'Le tournage','ch-4':'Fraisage & alésage','ch-5':'Rectification & vérification','essentiel':"L\u0027essentiel à retenir",'examen':'Examen blanc'};
+  var LABELS={plan:'Plan de cours','ch-1':'Principes du désalignement','ch-2':'Calculs de cales','ch-3':'Instruments d\u0027alignement','ch-4':'Méthodes au comparateur','ch-5':'Corriger & vérifier','essentiel':"L\u0027essentiel à retenir",'examen':'Examen blanc'};
   var QUIZ={1:1,2:1,3:1,4:1,5:1};   // chapitres ayant un quiz
   var PASS=0.6;                          // seuil de réussite
-  var PK='MEI09v1_step', VK='MEI09v1_viewed';
+  var PK='MEI12v1_step', VK='MEI12v1_viewed';
   var cur=0, DUR={};
 
   function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
   function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
   function hasQuiz(n){return !!QUIZ[n];}
   function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
-  function isPassed(n){return !!readJSON('MEI09v1_done')[n];}
-  function countDone(){var d=readJSON('MEI09v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function isPassed(n){return !!readJSON('MEI12v1_done')[n];}
+  function countDone(){var d=readJSON('MEI12v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
   function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
   function refreshDur(){for(var N=1;N<=5;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
 
@@ -1377,10 +1373,10 @@ function toast(msg){
       if(window.exUpdateA)window.exUpdateA();
       updateGate();return;
     }
-    try{var qs=readJSON('MEI09v1_qs')[qid];
+    try{var qs=readJSON('MEI12v1_qs')[qid];
       if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
         if(window.ST){window.ST.done[qid]=true;}
-        try{var d=readJSON('MEI09v1_done');d[qid]=true;localStorage.setItem('MEI09v1_done',JSON.stringify(d));}catch(e){}
+        try{var d=readJSON('MEI12v1_done');d[qid]=true;localStorage.setItem('MEI12v1_done',JSON.stringify(d));}catch(e){}
         if(window.applyDone)applyDone(qid);
         if(window.updateProg)updateProg();
         if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
@@ -1452,8 +1448,8 @@ function toast(msg){
 /* ===== Activité globale comportement (examen blanc) — MEI-06 ===== */
 (function(){
   function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
-  var K='MEI09v1_', SEUIL=0.8, W={a:40,b:20,c:40};
-  var NUM=[{"ans": 255, "tol": 6, "unit": "tr/min", "sol": "N = 1000·Vc/(π·D) = (1000×40)/(π×50)"}, {"ans": 62.83, "tol": 1, "unit": "m/min", "sol": "Vc = π·D·N/1000 = (π×40×500)/1000"}, {"ans": 45, "tol": 1, "unit": "mm/min", "sol": "Vf = N · f = 300 × 0,15"}, {"ans": 6.75, "tol": 0.1, "unit": "mm", "sol": "Ø perçage = D − pas = 8 − 1,25"}, {"ans": 50.8, "tol": 0.1, "unit": "mm", "sol": "2 po = 2 × 25,4 mm/po"}];
+  var K='MEI12v1_', SEUIL=0.8, W={a:40,b:20,c:40};
+  var NUM=[{"ans": 0.08, "tol": 0.005, "unit": "mm", "sol": "décalage = TIR ÷ 2 = 0,16 ÷ 2"}, {"ans": 0.2, "tol": 0.01, "unit": "mm", "sol": "cale = (écart ÷ Ø) × distance = (0,05 ÷ 100) × 400"}, {"ans": 0.15, "tol": 0.01, "unit": "mm", "sol": "cale = (0,06 ÷ 100) × 250"}, {"ans": 0.25, "tol": 0.01, "unit": "mm", "sol": "cale totale = angulaire + décalage = 0,15 + 0,10"}, {"ans": 0.254, "tol": 0.01, "unit": "mm", "sol": "0,010 po × 25,4 mm/po"}];
   window.exNm=function(el){try{localStorage.setItem(K+'exNm',el.value);}catch(e){}};
   window.__exB=null;
   window.numGrade=function(){
@@ -1492,20 +1488,20 @@ function toast(msg){
     var pass=r.tot>=Math.round(SEUIL*100);
     if(res){res.className='exam-result '+(pass?'pass':'fail');
       res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 80% non atteint.')
-        +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle est une <strong>épreuve pratique en atelier</strong> (6 h, seuil 80/100) : usinage réel d\u0027une pièce sur machines-outils (tournage, fraisage, perçage, alésage, tronçonnage), évalué par le professeur. Une règle de verdict de sécurité s\u0027applique.</span>';}
+        +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle est une <strong>épreuve pratique en atelier</strong> (4 h, seuil 80/100) : alignement réel de deux arbres (relevés au comparateur, calcul des cales, correction et vérification), évalué par le professeur. Une règle de verdict de sécurité s\u0027applique.</span>';}
     if(pass){try{localStorage.setItem(K+'exam','passed');}catch(e){}var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}
   };
   window.exPrint=function(){
     var nm=(document.getElementById('ex-nm')||{}).value||'';
     var w=window.open('','_blank');if(!w)return;
     var rows='';for(var i=0;i<NUM.length;i++){var inp=document.getElementById('exn-'+i);rows+='<tr><td>'+(i+1)+'</td><td>'+((inp&&inp.value)||'')+'</td><td>'+NUM[i].ans+' '+NUM[i].unit+'</td></tr>';}
-    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale MEI-09</title>'
+    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale MEI-12</title>'
       +'<style>body{font-family:Arial;margin:2cm;color:#111}h1{font-size:18px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #999;padding:6px;font-size:13px}</style></head><body>'
-      +'<h1>Activité globale — Module MEI-09 : Exécution de travaux d\u0027usinage sur machines-outils</h1>'
+      +'<h1>Activité globale — Module MEI-12 : Utilisation de techniques d\u0027alignement</h1>'
       +'<p><strong>Programme :</strong> Mécanique d\u0027entretien industrielle &nbsp; <strong>Apprenant :</strong> '+nm+'</p>'
-      +'<p>Partie calculs — usinage (saisie de l\u0027apprenant vs réponse attendue) :</p>'
+      +'<p>Partie calculs — alignement et cales (saisie de l\u0027apprenant vs réponse attendue) :</p>'
       +'<table><tr><th>#</th><th>Réponse de l\u0027apprenant</th><th>Réponse attendue</th></tr>'+rows+'</table>'
-      +'<p style="margin-top:14px">Évaluation sommative officielle : épreuve pratique en atelier, 6 h, seuil 80/100.</p>'
+      +'<p style="margin-top:14px">Évaluation sommative officielle : épreuve pratique en atelier, 4 h, seuil 80/100.</p>'
       +'</body></html>');w.document.close();w.print();
   };
   function init(){
