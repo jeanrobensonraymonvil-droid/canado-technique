@@ -3284,12 +3284,34 @@ function renderExamModules(progFilter) {
 /* ══════════════════════════════════════
    PAGE PAIEMENT
 ══════════════════════════════════════ */
-const TARIFS = {
-  TRI:  {an1:4500, an2:5000, full:8500, cert:500},
-  MEI:  {an1:4000, an2:4500, full:7500, cert:500},
-  ELM:  {an1:4200, an2:4700, full:8000, cert:500},
-  TEL:  {an1:4000, an2:4500, full:7500, cert:500},
+/* ══ GRILLE TARIFAIRE (éditable par l'admin) ══
+   Source de vérité des prix. Défauts ci-dessous ; surchargés par localStorage
+   'canado_tarifs' (réglé dans le panneau « Grille tarifaire »). À terme : SIGES. */
+const TARIF_DEFAULTS = {
+  programmes: {
+    TRI: {an1:4500, an2:5000, full:8500, cert:500, versements:[750,750,750,750,750,750]},
+    MEI: {an1:4000, an2:4500, full:7500, cert:500, versements:[667,667,667,667,666,666]},
+    ELM: {an1:4200, an2:4700, full:8000, cert:500, versements:[700,700,700,700,700,700]},
+    TEL: {an1:4000, an2:4500, full:7500, cert:500, versements:[667,667,667,667,666,666]},
+  },
+  commun: { inscription:0, blouse_blanche:0, blouse_bleue:0 }
 };
+function loadTarifsConfig(){
+  let saved=null;
+  try{ saved = JSON.parse(localStorage.getItem('canado_tarifs')||'null'); }catch(e){}
+  const cfg = JSON.parse(JSON.stringify(TARIF_DEFAULTS));
+  if(saved){
+    if(saved.programmes) for(const p in cfg.programmes) if(saved.programmes[p]) Object.assign(cfg.programmes[p], saved.programmes[p]);
+    if(saved.commun) Object.assign(cfg.commun, saved.commun);
+  }
+  return cfg;
+}
+function buildTarifsFlat(cfg){
+  const o={}; for(const p in cfg.programmes){ const x=cfg.programmes[p]; o[p]={an1:x.an1,an2:x.an2,full:x.full,cert:x.cert}; } return o;
+}
+let TARIF_CONFIG = loadTarifsConfig();
+let TARIFS = buildTarifsFlat(TARIF_CONFIG);   // vue à plat rétro-compatible (an1/an2/full/cert)
+function reloadTarifs(){ TARIF_CONFIG = loadTarifsConfig(); TARIFS = buildTarifsFlat(TARIF_CONFIG); }
 const HTG = ' HTG';
 const USD_RATE = 133; // 1 USD ≈ 133 HTG
 
@@ -3369,6 +3391,7 @@ function renderPaiement() {
 
   <!-- ── PROGRAMMES RÉGULIERS ── -->
   <div id="ptab-reg">
+    ${fraisObligatoiresHTML()}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;margin-bottom:1.5rem" id="tarif-cards"></div>
   </div>
 
@@ -4188,6 +4211,8 @@ const ROLES = {
       {section:'Administration'},
       {id:'etudiants', icon:'👥', label:'Inscriptions & étudiants'},
       {id:'paiements-admin', icon:'💳', label:'Paiements'},
+      {id:'bourses',         icon:'🏷️', label:'Bourses & réductions'},
+      {id:'tarifs',          icon:'💲', label:'Grille tarifaire'},
       {id:'validation-hub', icon:'✅', label:'Validation & flux'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
@@ -4216,6 +4241,8 @@ const ROLES = {
       {section:'Administration'},
       {id:'etudiants', icon:'👥', label:'Inscriptions & étudiants'},
       {id:'paiements-admin', icon:'💳', label:'Paiements'},
+      {id:'bourses',         icon:'🏷️', label:'Bourses & réductions'},
+      {id:'tarifs',          icon:'💲', label:'Grille tarifaire'},
       {id:'validation-hub', icon:'✅', label:'File de validation'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
@@ -4233,6 +4260,8 @@ const ROLES = {
       {section:'Administration'},
       {id:'etudiants', icon:'👥', label:'Dossiers étudiants'},
       {id:'paiements-admin', icon:'💳', label:'Paiements & inscriptions'},
+      {id:'bourses',         icon:'🏷️', label:'Bourses & réductions'},
+      {id:'tarifs',          icon:'💲', label:'Grille tarifaire'},
       {id:'cours-detache-prof', icon:'🛒', label:'Cours détachés'},
       {section:'Suivi'},
       {id:'rapports', icon:'📈', label:'Rapports'},
@@ -4598,6 +4627,8 @@ function showPanel(id) {
     case 'reservations': renderReservationsAdmin(c); break;
     case 'zoom-panel': renderZoom(c); break;
     case 'paiements-admin': renderPaiementsAdmin(c); break;
+    case 'bourses': renderBourses(c); break;
+    case 'tarifs': renderTarifs(c); break;
     case 'audit': renderAuditLog(c); break;
     case 'validation-hub': renderValidationHub(c); break;
     case 'epreuve-pratique': renderEpreuvePratique(c); break;
@@ -4623,47 +4654,50 @@ function showPanel(id) {
 ══════════════════════════════════════ */
 function renderDash(c) {
   if(currentRole==='admin') {
+    const ins=getInscriptions();
+    const total=ins.length;
+    const enAttente=ins.filter(i=>i.statut==='en_attente'||!i.statut).length;
+    const valides=ins.filter(i=>i.statut==='valide').length;
+    const byProg={TRI:0,MEI:0,ELM:0,TEL:0};
+    ins.forEach(i=>{ if(byProg[i.programme]!=null) byProg[i.programme]++; });
+    const maxProg=Math.max(1,byProg.TRI,byProg.MEI,byProg.ELM,byProg.TEL);
+    let notifs=[]; try{ notifs=JSON.parse(localStorage.getItem('canado_notifications')||'[]'); }catch(e){}
     c.innerHTML = `<div class="ph2">Tableau de bord — Administration</div>
     <div class="kgrid">
-      <div class="kcard"><div class="knum">1 200</div><div class="klbl">Étudiants inscrits</div></div>
-      <div class="kcard kr"><div class="knum">187</div><div class="klbl">En attente paiement</div></div>
-      <div class="kcard kg"><div class="knum">1 455</div><div class="klbl">En règle</div></div>
+      <div class="kcard"><div class="knum">${total}</div><div class="klbl">Étudiants inscrits</div></div>
+      <div class="kcard kr"><div class="knum">${enAttente}</div><div class="klbl">En attente de validation</div></div>
+      <div class="kcard kg"><div class="knum">${valides}</div><div class="klbl">Validés</div></div>
       <div class="kcard kgd"><div class="knum">107</div><div class="klbl">Total modules (1A+2A)</div></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
       <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem">
         <h4 style="font-size:.82rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Répartition par programme</h4>
-        ${Object.entries(PROG_INFO).map(([p,i])=>`
+        ${Object.entries(PROG_INFO).map(([p,info])=>`
           <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem">
-            <span style="font-size:.85rem">${i.icon}</span>
+            <span style="font-size:.85rem">${info.icon}</span>
             <span style="font-size:.78rem;flex:1;color:var(--text)">${p}</span>
-            <div class="pbar" style="width:80px"><div class="pfill" style="width:${p==='TRI'?78:p==='MEI'?52:p==='ELM'?38:20}%"></div></div>
-            <span style="font-size:.72rem;color:var(--g500);width:35px;text-align:right">${p==='TRI'?620:p==='MEI'?480:p==='ELM'?355:187}</span>
+            <div class="pbar" style="width:80px"><div class="pfill" style="width:${Math.round((byProg[p]||0)/maxProg*100)}%"></div></div>
+            <span style="font-size:.72rem;color:var(--g500);width:35px;text-align:right">${byProg[p]||0}</span>
           </div>`).join('')}
       </div>
       <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem">
         <h4 style="font-size:.82rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Activité récente</h4>
-        <div style="display:flex;flex-direction:column;gap:.5rem">
-          ${[
-            {icon:'🎓',txt:'Marie L. validée — TRI-05 (85%)',t:'Il y a 5 min'},
-            {icon:'💳',txt:'Nouveau paiement — Jean P. MEI 1ère an.',t:'Il y a 12 min'},
-            {icon:'📅',txt:'Réservation labo — Samuel T. TRI2',t:'Il y a 30 min'},
-            {icon:'📝',txt:'Examen généré par Prof. Raymonvil',t:'Il y a 1h'},
-          ].map(a=>`<div style="display:flex;gap:.6rem;align-items:flex-start">
-            <span style="font-size:.9rem">${a.icon}</span>
-            <div><div style="font-size:.78rem;font-weight:500;color:var(--text)">${a.txt}</div>
-            <div style="font-size:.7rem;color:var(--g500)">${a.t}</div></div>
-          </div>`).join('')}
-        </div>
+        ${notifs.length?`<div style="display:flex;flex-direction:column;gap:.5rem">${notifs.slice(0,5).map(nf=>`<div style="display:flex;gap:.6rem;align-items:flex-start">
+            <span style="font-size:.9rem">${nf.type==='inscription'?'🎓':nf.type==='paiement'?'💳':'🔔'}</span>
+            <div><div style="font-size:.78rem;font-weight:500;color:var(--text)">${nf.message||''}</div>
+            <div style="font-size:.7rem;color:var(--g500)">${timeAgo(nf.date)}</div></div>
+          </div>`).join('')}</div>`:'<p style="font-size:.78rem;color:var(--g500)">Aucune activité récente.</p>'}
       </div>
     </div>
     <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Dernières inscriptions</h4>
-    <div class="tw"><table><thead><tr><th>Matricule</th><th>Nom</th><th>Programme</th><th>Paiement</th><th>Accès</th><th>Action</th></tr></thead><tbody>
-      <tr><td>TRI-2026-001</td><td style="font-weight:500">Marie Louisiane</td><td><span class="chip cb">TRI 1A</span></td><td><span class="chip cg">Payé</span></td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm">Voir</button></td></tr>
-      <tr><td>MEI-2026-042</td><td style="font-weight:500">Jean-Paul Estimé</td><td><span class="chip cgd">MEI 1A</span></td><td><span class="chip cr">En attente</span></td><td><span class="chip cgy">Suspendu</span></td><td><button class="btn btn-outline btn-sm">Voir</button></td></tr>
-      <tr><td>TRI2-2026-007</td><td style="font-weight:500">Samuel Toussaint</td><td><span class="chip cb">TRI 2A</span></td><td><span class="chip cg">Payé</span></td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm">Voir</button></td></tr>
-      <tr><td>ELM-2026-018</td><td style="font-weight:500">Roseline Dorcé</td><td><span class="chip cg">ELM 1A</span></td><td><span class="chip cg">Payé</span></td><td><span class="chip cg">Actif</span></td><td><button class="btn btn-outline btn-sm">Voir</button></td></tr>
-    </tbody></table></div>`;
+    ${total?`<div class="tw"><table><thead><tr><th>Matricule</th><th>Nom</th><th>Programme</th><th>Statut</th><th>Action</th></tr></thead><tbody>
+      ${ins.slice().reverse().slice(0,6).map(i=>`<tr>
+        <td>${insMat(i)}</td><td style="font-weight:500">${insNom(i)}</td>
+        <td><span class="chip ${(PROG_INFO[i.programme]&&PROG_INFO[i.programme].chip)||'cb'}">${i.programme||'—'} ${i.annee==='2'?'2A':'1A'}</span></td>
+        <td>${insStatutChip(i)}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="showPanel('validation')">Voir</button></td>
+      </tr>`).join('')}
+    </tbody></table></div>`:'<p style="font-size:.8rem;color:var(--g500)">Aucune inscription pour le moment. Les demandes soumises via le formulaire apparaîtront ici.</p>'}`;
   } else if(currentRole==='prof') {
     c.innerHTML = `<div class="ph2">Tableau de bord — Prof. Rooby Raymonvil</div>
     <div class="kgrid">
@@ -4693,25 +4727,70 @@ function renderDash(c) {
   }
 }
 
-function renderEtudiants(c) {
-  c.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+/* ── Données étudiants réelles (depuis canado_inscriptions) ── */
+function getInscriptions(){ try{ return JSON.parse(localStorage.getItem('canado_inscriptions')||'[]'); }catch(e){ return []; } }
+function insNom(i){ return ((i.prenom||'')+' '+(i.nom||'')).trim()||'—'; }
+function insMat(i){ return i.code_etudiant || i.matricule || '—'; }
+function insStatutChip(i){
+  if(i.statut==='valide') return '<span class="chip cg">Validé</span>';
+  if(i.statut==='rejete') return '<span class="chip cr">Rejeté</span>';
+  return '<span class="chip cgy">En attente</span>';
+}
+function timeAgo(iso){
+  const d=new Date(iso), now=new Date(), s=Math.floor((now-d)/1000);
+  if(isNaN(s)) return '';
+  if(s<60) return "à l'instant";
+  if(s<3600) return 'il y a '+Math.floor(s/60)+' min';
+  if(s<86400) return 'il y a '+Math.floor(s/3600)+' h';
+  return 'le '+d.toLocaleDateString('fr-FR');
+}
+
+function renderEtudiants(c){
+  const ins=getInscriptions();
+  c.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
     <div class="ph2" style="margin:0">Étudiants inscrits</div>
     <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-      <input type="text" placeholder="Rechercher..." style="padding:.4rem .8rem;border:1.5px solid var(--bdr);border-radius:7px;font-size:.8rem;color:var(--text);width:200px">
-      <select style="padding:.4rem .7rem;border:1.5px solid var(--bdr);border-radius:7px;font-size:.8rem;color:var(--text)">
-        <option>Tous les programmes</option>
-        <option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option>
+      <input type="text" id="et-search" placeholder="Rechercher..." oninput="filterEtudiants()" style="padding:.4rem .8rem;border:1.5px solid var(--bdr);border-radius:7px;font-size:.8rem;color:var(--text);width:200px">
+      <select id="et-prog" onchange="filterEtudiants()" style="padding:.4rem .7rem;border:1.5px solid var(--bdr);border-radius:7px;font-size:.8rem;color:var(--text)">
+        <option value="">Tous les programmes</option><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option>
       </select>
-      <button class="btn btn-red btn-sm" onclick="showToastNotif('📧 Export','Liste exportée en CSV avec succès')">Exporter CSV</button>
+      <button class="btn btn-red btn-sm" onclick="exportEtudiantsCSV()">Exporter CSV</button>
     </div>
   </div>
-  <div class="tw"><table><thead><tr><th>Matricule</th><th>Nom</th><th>Programme</th><th>Année</th><th>Paiement</th><th>Accès</th><th>Actions</th></tr></thead><tbody>
-    <tr><td>TRI-2026-001</td><td style="font-weight:500">Marie Louisiane</td><td><span class="chip cb">TRI</span></td><td>1ère</td><td><span class="chip cg">Payé</span></td><td><button class="tgl on" onclick="this.classList.toggle('on')"></button></td><td><button class="btn btn-outline btn-sm">Modifier</button></td></tr>
-    <tr><td>MEI-2026-042</td><td style="font-weight:500">Jean-Paul Estimé</td><td><span class="chip cgd">MEI</span></td><td>1ère</td><td><span class="chip cr">En attente</span></td><td><button class="tgl" onclick="this.classList.toggle('on')"></button></td><td><button class="btn btn-outline btn-sm">Modifier</button></td></tr>
-    <tr><td>TRI2-2026-007</td><td style="font-weight:500">Samuel Toussaint</td><td><span class="chip cb">TRI</span></td><td>2ème</td><td><span class="chip cg">Payé</span></td><td><button class="tgl on" onclick="this.classList.toggle('on')"></button></td><td><button class="btn btn-outline btn-sm">Modifier</button></td></tr>
-    <tr><td>ELM-2026-018</td><td style="font-weight:500">Roseline Dorcé</td><td><span class="chip cg">ELM</span></td><td>1ère</td><td><span class="chip cg">Payé</span></td><td><button class="tgl on" onclick="this.classList.toggle('on')"></button></td><td><button class="btn btn-outline btn-sm">Modifier</button></td></tr>
-    <tr><td>TEL-2026-009</td><td style="font-weight:500">Marc Idelson</td><td><span class="chip cgy">TEL</span></td><td>1ère</td><td><span class="chip cg">Payé</span></td><td><button class="tgl on" onclick="this.classList.toggle('on')"></button></td><td><button class="btn btn-outline btn-sm">Modifier</button></td></tr>
+  <div id="et-tbl">${renderEtudiantsTableHTML(ins)}</div>`;
+}
+function renderEtudiantsTableHTML(list){
+  if(!list.length) return '<p style="font-size:.8rem;color:var(--g500)">Aucune inscription enregistrée. Les demandes soumises via le formulaire d\'inscription apparaîtront ici automatiquement.</p>';
+  return `<div class="tw"><table><thead><tr><th>Matricule</th><th>Nom</th><th>Programme</th><th>Année</th><th>Email</th><th>Statut</th><th>Actions</th></tr></thead><tbody>
+    ${list.slice().reverse().map(i=>`<tr>
+      <td>${insMat(i)}</td><td style="font-weight:500">${insNom(i)}</td>
+      <td><span class="chip ${(PROG_INFO[i.programme]&&PROG_INFO[i.programme].chip)||'cb'}">${i.programme||'—'}</span></td>
+      <td>${i.annee==='2'?'2ème':'1ère'}</td>
+      <td style="font-size:.74rem;color:var(--g500)">${i.email||'—'}</td>
+      <td>${insStatutChip(i)}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="showPanel('validation')">Gérer</button></td>
+    </tr>`).join('')}
   </tbody></table></div>`;
+}
+function filterEtudiants(){
+  const q=(document.getElementById('et-search').value||'').toLowerCase();
+  const p=document.getElementById('et-prog').value;
+  const list=getInscriptions().filter(i=>{
+    const okp=!p||i.programme===p;
+    const okq=!q||insNom(i).toLowerCase().includes(q)||insMat(i).toLowerCase().includes(q)||(i.email||'').toLowerCase().includes(q);
+    return okp&&okq;
+  });
+  document.getElementById('et-tbl').innerHTML=renderEtudiantsTableHTML(list);
+}
+function exportEtudiantsCSV(){
+  const ins=getInscriptions();
+  if(!ins.length){ toast('Aucune inscription à exporter.'); return; }
+  const rows=[['Matricule','Prénom','Nom','Programme','Année','Email','Téléphone','Statut','Date']];
+  ins.forEach(i=>rows.push([insMat(i),i.prenom||'',i.nom||'',i.programme||'',i.annee||'',i.email||'',i.telephone||'',i.statut||'',(i.date_soumission||'').slice(0,10)]));
+  const csv=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='etudiants_canado.csv'; a.click();
+  toast('📧 Liste exportée en CSV ('+ins.length+' étudiants)');
 }
 
 function renderCoursMgmt(c) {
@@ -5623,19 +5702,354 @@ function rdLoadDemo() {
   toast('✓ '+demos.length+' évaluations démo chargées');
 }
 
-function renderPaiementsAdmin(c) {
-  c.innerHTML = `<div class="ph2">Gestion des paiements</div>
-  <div class="kgrid">
-    <div class="kcard kgold"><div class="knum">4.2M</div><div class="klbl">HTG ce mois</div></div>
-    <div class="kcard kg"><div class="knum">187</div><div class="klbl">Confirmés</div></div>
-    <div class="kcard kr"><div class="knum">43</div><div class="klbl">En attente</div></div>
-    <div class="kcard kgd"><div class="knum">12</div><div class="klbl">Partiels</div></div>
+/* ══════════════════════════════════════
+   BOURSES & RÉDUCTIONS DE FRAIS
+   Demi-bourse / bourse complète / montant fixe / pourcentage → reste à payer auto.
+   Données : localStorage 'canado_bourses' en démo → backend SIGES en prod.
+══════════════════════════════════════ */
+// Grille des frais de scolarité (HTG) par programme / année.
+// À terme : à charger depuis data.json / SIGES.
+// Frais désormais centralisés dans TARIF_CONFIG / TARIFS (panneau Grille tarifaire).
+function fmtHTG(n){ return Math.round(n||0).toLocaleString('fr-FR') + ' HTG'; }
+
+function renderBourses(c){
+  const list = JSON.parse(localStorage.getItem('canado_bourses')||'[]');
+  c.innerHTML = `
+  <div class="ph2">🏷️ Bourses & réductions de frais</div>
+  <p style="font-size:.82rem;color:#3A4A6B;margin-bottom:1.2rem;line-height:1.6">
+    Accordez une subvention à un étudiant : choisissez le type (demi-bourse, bourse complète, montant ou pourcentage) —
+    le <strong>reste à payer</strong> se calcule automatiquement.
+  </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem">
+    <div class="fsec"><h4>Étudiant & programme</h4>
+      <div class="fg"><label>Nom de l'étudiant *</label><input type="text" id="bo-nom" placeholder="Nom complet"></div>
+      <div class="fg"><label>Matricule</label><input type="text" id="bo-mat" placeholder="CT-TRI-2026-XXXX"></div>
+      <div class="fg"><label>Programme</label>
+        <select id="bo-prog" onchange="bourseFillFrais()" style="width:100%">
+          <option value="">— Choisir —</option><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option>
+        </select></div>
+      <div class="fg"><label>Année</label>
+        <select id="bo-an" onchange="bourseFillFrais()" style="width:100%">
+          <option value="1">1ère année</option><option value="2">2ème année</option>
+        </select></div>
+    </div>
+    <div class="fsec"><h4>Réduction accordée</h4>
+      <div class="fg"><label>Frais général (HTG)</label><input type="number" id="bo-frais" min="0" placeholder="0" oninput="bourseCompute()"></div>
+      <div class="fg"><label>Type de réduction</label>
+        <select id="bo-type" onchange="bourseTypeChange()" style="width:100%">
+          <option value="demi">Demi-bourse (50%)</option>
+          <option value="complete">Bourse complète (100%)</option>
+          <option value="montant">Montant fixe (HTG)</option>
+          <option value="pourcent">Pourcentage (%)</option>
+        </select></div>
+      <div class="fg" id="bo-val-wrap" style="display:none"><label id="bo-val-lbl">Valeur</label><input type="number" id="bo-val" min="0" placeholder="0" oninput="bourseCompute()"></div>
+      <div class="fg"><label>Motif (optionnel)</label><input type="text" id="bo-motif" placeholder="Ex. situation familiale, mérite…"></div>
+    </div>
   </div>
-  <div class="tw"><table><thead><tr><th>Date</th><th>Étudiant</th><th>Programme</th><th>Formule</th><th>Montant</th><th>Statut</th><th>Action</th></tr></thead><tbody>
-    <tr><td>13 Mai 2026</td><td>Marie Louisiane</td><td><span class="chip cb">TRI</span></td><td>1ère année</td><td style="font-weight:700">4 500 HTG</td><td><span class="chip cg">Confirmé</span></td><td><button class="btn btn-outline btn-sm">Reçu</button></td></tr>
-    <tr><td>12 Mai 2026</td><td>Samuel Toussaint</td><td><span class="chip cb">TRI</span></td><td>Programme complet</td><td style="font-weight:700">8 500 HTG</td><td><span class="chip cg">Confirmé</span></td><td><button class="btn btn-outline btn-sm">Reçu</button></td></tr>
-    <tr><td>11 Mai 2026</td><td>Jean-Paul Estimé</td><td><span class="chip cgd">MEI</span></td><td>1ère année</td><td style="font-weight:700">4 000 HTG</td><td><span class="chip cr">En attente</span></td><td><button class="btn btn-green btn-sm" onclick="toast('Paiement confirmé')">Confirmer</button></td></tr>
-  </tbody></table></div>`;
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;margin-bottom:1.1rem">
+    <div style="background:#f4f7fd;border:1px solid var(--bdr);border-radius:12px;padding:.9rem;text-align:center">
+      <div style="font-size:.66rem;color:#4a5e8a;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Frais général</div>
+      <div id="bo-out-frais" style="font-family:var(--fD);font-weight:800;font-size:1.18rem;color:#0B1525;margin-top:.2rem">0 HTG</div>
+    </div>
+    <div style="background:#fff7ed;border:1px solid #f0d9b5;border-radius:12px;padding:.9rem;text-align:center">
+      <div style="font-size:.66rem;color:#8B5E00;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Réduction</div>
+      <div id="bo-out-reduc" style="font-family:var(--fD);font-weight:800;font-size:1.18rem;color:#8B5E00;margin-top:.2rem">0 HTG</div>
+    </div>
+    <div style="background:#eafaf1;border:1px solid #b7e4c7;border-radius:12px;padding:.9rem;text-align:center">
+      <div style="font-size:.66rem;color:#006B46;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Reste à payer</div>
+      <div id="bo-out-reste" style="font-family:var(--fD);font-weight:800;font-size:1.18rem;color:#006B46;margin-top:.2rem">0 HTG</div>
+    </div>
+  </div>
+
+  <button class="btn btn-blue" onclick="saveBourse()" style="margin-bottom:1.4rem">✓ Accorder la réduction</button>
+
+  <div class="fsec"><h4>Bourses & réductions actives</h4>
+    <div id="bo-list">${renderBoursesListHTML(list)}</div>
+  </div>`;
+  bourseTypeChange();
+}
+
+function bourseFillFrais(){
+  const p=document.getElementById('bo-prog').value, y=document.getElementById('bo-an').value;
+  const tp=TARIFS[p]||{}; const f=(y==='2'?tp.an2:tp.an1);
+  if(f!=null) document.getElementById('bo-frais').value=f;
+  bourseCompute();
+}
+function bourseTypeChange(){
+  const t=document.getElementById('bo-type').value;
+  const wrap=document.getElementById('bo-val-wrap'), lbl=document.getElementById('bo-val-lbl');
+  if(t==='montant'){ wrap.style.display='block'; lbl.textContent='Montant de la réduction (HTG)'; }
+  else if(t==='pourcent'){ wrap.style.display='block'; lbl.textContent='Pourcentage de réduction (%)'; }
+  else { wrap.style.display='none'; }
+  bourseCompute();
+}
+function bourseCalc(){
+  const frais=parseFloat(document.getElementById('bo-frais').value)||0;
+  const t=document.getElementById('bo-type').value;
+  const ve=document.getElementById('bo-val');
+  const v=parseFloat(ve?ve.value:0)||0;
+  let reduc=0;
+  if(t==='demi') reduc=frais*0.5;
+  else if(t==='complete') reduc=frais;
+  else if(t==='montant') reduc=v;
+  else if(t==='pourcent') reduc=frais*(v/100);
+  reduc=Math.max(0, Math.min(reduc, frais));
+  return { frais, reduc, reste:frais-reduc, type:t, val:v };
+}
+function bourseCompute(){
+  const r=bourseCalc();
+  document.getElementById('bo-out-frais').textContent=fmtHTG(r.frais);
+  document.getElementById('bo-out-reduc').textContent='− '+fmtHTG(r.reduc);
+  document.getElementById('bo-out-reste').textContent=fmtHTG(r.reste);
+}
+function saveBourse(){
+  const nom=(document.getElementById('bo-nom').value||'').trim();
+  if(!nom){ toast("⚠️ Entrez le nom de l'étudiant."); return; }
+  const r=bourseCalc();
+  if(r.frais<=0){ toast("⚠️ Renseignez le frais général."); return; }
+  if(r.reduc<=0){ toast("⚠️ La réduction est nulle — vérifiez le type/valeur."); return; }
+  const typeLbl={demi:'Demi-bourse (50%)',complete:'Bourse complète',montant:'Montant fixe',pourcent:(r.val+'%')}[r.type];
+  const rec={
+    id:'bo_'+Date.now(),
+    nom, matricule:(document.getElementById('bo-mat').value||'').trim(),
+    programme:document.getElementById('bo-prog').value||'—',
+    annee:document.getElementById('bo-an').value||'1',
+    frais_general:r.frais, type:r.type, type_label:typeLbl,
+    reduction:r.reduc, reste:r.reste,
+    motif:(document.getElementById('bo-motif').value||'').trim(),
+    accorde_par:(ROLES[currentRole]&&ROLES[currentRole].name)||'—',
+    date:new Date().toISOString()
+  };
+  const list=JSON.parse(localStorage.getItem('canado_bourses')||'[]');
+  list.push(rec);
+  localStorage.setItem('canado_bourses', JSON.stringify(list));
+  toast("✅ Réduction accordée à "+nom+" — reste à payer : "+fmtHTG(r.reste));
+  document.getElementById('bo-list').innerHTML=renderBoursesListHTML(list);
+  document.getElementById('bo-nom').value=''; document.getElementById('bo-mat').value=''; document.getElementById('bo-motif').value='';
+}
+function revokeBourse(id){
+  let list=JSON.parse(localStorage.getItem('canado_bourses')||'[]');
+  list=list.filter(b=>b.id!==id);
+  localStorage.setItem('canado_bourses', JSON.stringify(list));
+  document.getElementById('bo-list').innerHTML=renderBoursesListHTML(list);
+  toast("Réduction révoquée");
+}
+function renderBoursesListHTML(list){
+  if(!list||!list.length) return '<p style="font-size:.78rem;color:#4a5e8a">Aucune bourse accordée pour le moment.</p>';
+  return `<div class="tw"><table>
+    <thead><tr><th>Étudiant</th><th>Prog.</th><th>Frais</th><th>Type</th><th>Réduction</th><th>Reste</th><th>Accordé par</th><th></th></tr></thead>
+    <tbody>${list.slice().reverse().map(b=>`
+      <tr>
+        <td style="font-weight:700">${b.nom}${b.matricule?`<div style="font-size:.66rem;color:#4a5e8a;font-weight:500">${b.matricule}</div>`:''}${b.motif?`<div style="font-size:.66rem;color:#4a5e8a;font-weight:500">${b.motif}</div>`:''}</td>
+        <td><span class="chip ${(PROG_INFO[b.programme]&&PROG_INFO[b.programme].chip)||'cb'}">${b.programme}</span> ${anneeLabel(b.annee)}</td>
+        <td>${fmtHTG(b.frais_general)}</td>
+        <td style="font-size:.72rem">${b.type_label}</td>
+        <td style="font-weight:700;color:#8B5E00">− ${fmtHTG(b.reduction)}</td>
+        <td style="font-weight:800;color:#006B46">${fmtHTG(b.reste)}</td>
+        <td style="font-size:.7rem;color:#4a5e8a">${b.accorde_par}</td>
+        <td><button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red);font-size:.66rem" onclick="revokeBourse('${b.id}')">Révoquer</button></td>
+      </tr>`).join('')}</tbody></table></div>`;
+}
+
+
+/* ══════════════════════════════════════
+   PANNEAU « GRILLE TARIFAIRE » (admin)
+   Règle inscription, frais généraux, 6 versements, blouses → alimente
+   le menu d'inscription, les bourses et les paiements.
+   Données : localStorage 'canado_tarifs' en démo → backend SIGES en prod.
+══════════════════════════════════════ */
+function tfVal(id){ const el=document.getElementById(id); return Math.max(0, parseFloat(el?el.value:0)||0); }
+
+function renderTarifs(c){
+  reloadTarifs();
+  const C = TARIF_CONFIG;
+  const num = (id,val)=>`<input type="number" min="0" id="${id}" value="${val||0}" style="width:100%">`;
+  const progCard = (p)=>{
+    const x=C.programmes[p], info=PROG_INFO[p];
+    const vers=(x.versements||[]).concat([0,0,0,0,0,0]).slice(0,6);
+    return `<div class="fsec" style="border:1px solid var(--bdr);border-radius:12px;padding:1rem;margin-bottom:1rem">
+      <h4>${info.icon} ${p} — ${info.label}</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;margin-bottom:.8rem">
+        <div class="fg"><label>Frais 1ère année</label>${num('tf-'+p+'-an1',x.an1)}</div>
+        <div class="fg"><label>Frais 2ème année</label>${num('tf-'+p+'-an2',x.an2)}</div>
+        <div class="fg"><label>Programme complet</label>${num('tf-'+p+'-full',x.full)}</div>
+      </div>
+      <label style="font-size:.7rem;font-weight:700;color:#1B3A8C">6 versements annuels (HTG)</label>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;margin-top:.3rem">
+        ${vers.map((v,i)=>`<div><div style="font-size:.6rem;color:#4a5e8a;text-align:center;margin-bottom:2px">V${i+1}</div>${num('tf-'+p+'-v'+i,v)}</div>`).join('')}
+      </div>
+      <div style="font-size:.68rem;color:#4a5e8a;margin-top:.45rem">Total des 6 versements : <strong id="tf-${p}-vtot" style="color:#0B1525">—</strong></div>
+    </div>`;
+  };
+  c.innerHTML=`
+  <div class="ph2">💲 Grille tarifaire</div>
+  <p style="font-size:.82rem;color:#3A4A6B;margin-bottom:1.2rem;line-height:1.6">
+    Réglez ici tous les frais depuis votre compte. Ils alimentent automatiquement le
+    <strong>menu d'inscription</strong>, le panneau <strong>Bourses</strong> et les <strong>paiements</strong>.
+  </p>
+  <div class="fsec" style="border:1px solid var(--bdr);border-radius:12px;padding:1rem;margin-bottom:1.2rem;background:#f8faff">
+    <h4>Frais communs (obligatoires)</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem">
+      <div class="fg"><label>Frais d'inscription</label>${num('tf-inscription',C.commun.inscription)}</div>
+      <div class="fg"><label>Blouse blanche (obligatoire)</label>${num('tf-blouse_blanche',C.commun.blouse_blanche)}</div>
+      <div class="fg"><label>Blouse bleue (obligatoire)</label>${num('tf-blouse_bleue',C.commun.blouse_bleue)}</div>
+    </div>
+  </div>
+  ${['TRI','MEI','ELM','TEL'].map(progCard).join('')}
+  <div style="display:flex;gap:.7rem;align-items:center;margin-top:.4rem;flex-wrap:wrap">
+    <button class="btn btn-blue" onclick="saveTarifs()">💾 Enregistrer la grille tarifaire</button>
+    <button class="btn btn-outline btn-sm" onclick="resetTarifs()">↺ Valeurs par défaut</button>
+  </div>`;
+  tarifUpdateTotals();
+  ['TRI','MEI','ELM','TEL'].forEach(p=>{ for(let i=0;i<6;i++){ const el=document.getElementById('tf-'+p+'-v'+i); if(el) el.addEventListener('input',tarifUpdateTotals); } });
+}
+function tarifUpdateTotals(){
+  ['TRI','MEI','ELM','TEL'].forEach(p=>{
+    let t=0; for(let i=0;i<6;i++){ t+=tfVal('tf-'+p+'-v'+i); }
+    const out=document.getElementById('tf-'+p+'-vtot'); if(out) out.textContent=fmtHTG(t);
+  });
+}
+function saveTarifs(){
+  const cfg={programmes:{}, commun:{
+    inscription:tfVal('tf-inscription'), blouse_blanche:tfVal('tf-blouse_blanche'), blouse_bleue:tfVal('tf-blouse_bleue')
+  }};
+  ['TRI','MEI','ELM','TEL'].forEach(p=>{
+    cfg.programmes[p]={
+      an1:tfVal('tf-'+p+'-an1'), an2:tfVal('tf-'+p+'-an2'), full:tfVal('tf-'+p+'-full'),
+      cert:(TARIF_CONFIG.programmes[p]&&TARIF_CONFIG.programmes[p].cert)||0,
+      versements:[0,1,2,3,4,5].map(i=>tfVal('tf-'+p+'-v'+i))
+    };
+  });
+  localStorage.setItem('canado_tarifs', JSON.stringify(cfg));
+  reloadTarifs();
+  toast("✅ Grille tarifaire enregistrée — le menu d'inscription est à jour.");
+}
+function resetTarifs(){
+  localStorage.removeItem('canado_tarifs');
+  reloadTarifs();
+  showPanel('tarifs');
+  toast("↺ Grille réinitialisée aux valeurs par défaut.");
+}
+
+// Encadré « frais obligatoires » affiché sur la page publique d'inscription.
+function fraisObligatoiresHTML(){
+  const k=TARIF_CONFIG.commun;
+  if(!(k.inscription||k.blouse_blanche||k.blouse_bleue)) return '';
+  const row=(lbl,v)=> v ? `<div style="display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid #eef2fb"><span style="color:#3A4A6B;font-size:.8rem">${lbl}</span><strong style="color:#0B1525">${fmtPriceDual(v)}</strong></div>` : '';
+  return `<div style="background:#fff;border:1.5px solid var(--gold);border-radius:var(--rL);padding:1.1rem 1.3rem;margin-bottom:1.5rem">
+    <div style="font-family:var(--fD);font-weight:800;font-size:.9rem;color:#0B1525;margin-bottom:.5rem">📋 Frais obligatoires <span style="font-weight:500;color:#3A4A6B;font-size:.76rem">(en sus de la scolarité)</span></div>
+    ${row("Frais d'inscription",k.inscription)}
+    ${row("Blouse blanche (obligatoire)",k.blouse_blanche)}
+    ${row("Blouse bleue (obligatoire)",k.blouse_bleue)}
+  </div>`;
+}
+
+
+function paieList(){ try{ return JSON.parse(localStorage.getItem('canado_paiements')||'[]'); }catch(e){ return []; } }
+function paieKey(){
+  return {
+    nom:(document.getElementById('pa-nom').value||'').trim(),
+    mat:(document.getElementById('pa-mat').value||'').trim(),
+    prog:document.getElementById('pa-prog').value,
+    formule:document.getElementById('pa-formule').value
+  };
+}
+function paieDu(prog,formule){ const x=(TARIF_CONFIG.programmes[prog]||{}); return x[formule]||0; }
+function paieBourse(mat,nom,prog){
+  let bs; try{ bs=JSON.parse(localStorage.getItem('canado_bourses')||'[]'); }catch(e){ bs=[]; }
+  const ml=(mat||'').toLowerCase(), nl=(nom||'').toLowerCase();
+  const m=bs.filter(b=> b.programme===prog && ( (ml && (b.matricule||'').toLowerCase()===ml) || (!ml && nl && (b.nom||'').toLowerCase()===nl) ));
+  return m.length ? (m[m.length-1].reduction||0) : 0;
+}
+function paiePaid(mat,nom,prog,formule){
+  const ml=(mat||'').toLowerCase(), nl=(nom||'').toLowerCase();
+  return paieList().filter(p=> p.programme===prog && p.formule===formule && ( (ml && (p.matricule||'').toLowerCase()===ml) || (!ml && nl && (p.nom||'').toLowerCase()===nl) ))
+    .reduce((s,p)=>s+(p.montant_verse||0),0);
+}
+function paieCompute(){
+  const k=paieKey();
+  const frais=paieDu(k.prog,k.formule);
+  const bourse=Math.min(paieBourse(k.mat,k.nom,k.prog), frais);
+  const net=Math.max(0, frais-bourse);
+  const paid=paiePaid(k.mat,k.nom,k.prog,k.formule);
+  const reste=Math.max(0, net-paid);
+  const set=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  set('pa-out-frais', fmtHTG(frais));
+  set('pa-out-bourse', bourse? ('− '+fmtHTG(bourse)) : '—');
+  set('pa-out-net', fmtHTG(net));
+  set('pa-out-paid', fmtHTG(paid));
+  set('pa-out-reste', fmtHTG(reste));
+  return {frais,bourse,net,paid,reste};
+}
+function paieKpiHTML(){
+  const list=paieList();
+  const total=list.reduce((s,p)=>s+(p.montant_verse||0),0);
+  const students=new Set(list.map(p=>(p.matricule||p.nom||'').toLowerCase()).filter(Boolean)).size;
+  return `<div class="kcard kgold"><div class="knum">${total.toLocaleString('fr-FR')}</div><div class="klbl">HTG encaissés</div></div>
+    <div class="kcard kg"><div class="knum">${list.length}</div><div class="klbl">Versements</div></div>
+    <div class="kcard kgd"><div class="knum">${students}</div><div class="klbl">Étudiants payeurs</div></div>`;
+}
+function renderPaieHistHTML(){
+  const list=paieList();
+  if(!list.length) return '<p style="font-size:.78rem;color:#4a5e8a">Aucun paiement enregistré pour le moment.</p>';
+  return `<div class="tw"><table>
+    <thead><tr><th>Date</th><th>Étudiant</th><th>Prog.</th><th>Formule</th><th>Versé</th><th>Reste après</th><th>Reçu par</th></tr></thead>
+    <tbody>${list.slice().reverse().map(p=>`<tr>
+      <td>${new Date(p.date).toLocaleDateString('fr-FR')}</td>
+      <td style="font-weight:700">${p.nom}${p.matricule?`<div style="font-size:.66rem;color:#4a5e8a;font-weight:500">${p.matricule}</div>`:''}</td>
+      <td><span class="chip ${(PROG_INFO[p.programme]&&PROG_INFO[p.programme].chip)||'cb'}">${p.programme}</span></td>
+      <td style="font-size:.72rem">${p.formule_label||p.formule}</td>
+      <td style="font-weight:700;color:#006B46">${fmtHTG(p.montant_verse)}</td>
+      <td style="font-weight:700;color:${p.reste_apres>0?'#8B5E00':'#006B46'}">${fmtHTG(p.reste_apres)}</td>
+      <td style="font-size:.7rem;color:#4a5e8a">${p.recu_par||'—'}</td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+function savePaiement(){
+  const k=paieKey();
+  if(!k.nom){ toast("⚠️ Entrez le nom de l'étudiant."); return; }
+  const versement=Math.max(0, parseFloat(document.getElementById('pa-montant').value||0)||0);
+  if(versement<=0){ toast("⚠️ Entrez le montant versé."); return; }
+  const r=paieCompute();
+  const formuleLbl={an1:'1ère année',an2:'2ème année',full:'Programme complet'}[k.formule];
+  const rec={ id:'pa_'+Date.now(), nom:k.nom, matricule:k.mat, programme:k.prog,
+    formule:k.formule, formule_label:formuleLbl, frais:r.frais, bourse:r.bourse, net:r.net,
+    montant_verse:versement, reste_apres:Math.max(0, r.reste-versement),
+    recu_par:(ROLES[currentRole]&&ROLES[currentRole].name)||'—', date:new Date().toISOString() };
+  const list=paieList(); list.push(rec); localStorage.setItem('canado_paiements', JSON.stringify(list));
+  const kpi=document.getElementById('pa-kpi'); if(kpi) kpi.innerHTML=paieKpiHTML();
+  const hist=document.getElementById('pa-hist'); if(hist) hist.innerHTML=renderPaieHistHTML();
+  document.getElementById('pa-montant').value='';
+  paieCompute();
+  toast("✅ Paiement enregistré ("+fmtHTG(versement)+") — reste à payer : "+fmtHTG(rec.reste_apres));
+}
+function renderPaiementsAdmin(c) {
+  c.innerHTML = `
+  <div class="ph2">💳 Gestion des paiements</div>
+  <div class="kgrid" id="pa-kpi">${paieKpiHTML()}</div>
+
+  <div class="fsec"><h4>Enregistrer un paiement</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+      <div>
+        <div class="fg"><label>Nom de l'étudiant *</label><input id="pa-nom" placeholder="Nom complet" oninput="paieCompute()"></div>
+        <div class="fg"><label>Matricule</label><input id="pa-mat" placeholder="CT-TRI-2026-XXXX" oninput="paieCompute()"></div>
+      </div>
+      <div>
+        <div class="fg"><label>Programme</label><select id="pa-prog" onchange="paieCompute()" style="width:100%"><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option></select></div>
+        <div class="fg"><label>Formule</label><select id="pa-formule" onchange="paieCompute()" style="width:100%"><option value="an1">1ère année</option><option value="an2">2ème année</option><option value="full">Programme complet</option></select></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;margin:.5rem 0 1rem">
+      ${[['Frais','pa-out-frais','#0B1525','#f4f7fd'],['Bourse','pa-out-bourse','#8B5E00','#fff7ed'],['Net dû','pa-out-net','#1B3A8C','#eef3fb'],['Déjà payé','pa-out-paid','#3A4A6B','#f4f7fd'],['Reste à payer','pa-out-reste','#006B46','#eafaf1']].map(x=>`<div style="background:${x[3]};border:1px solid var(--bdr);border-radius:10px;padding:.7rem .35rem;text-align:center"><div style="font-size:.58rem;color:#4a5e8a;font-weight:700;text-transform:uppercase;letter-spacing:.02em">${x[0]}</div><div id="${x[1]}" style="font-family:var(--fD);font-weight:800;font-size:.98rem;color:${x[2]};margin-top:.25rem">—</div></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:.7rem;align-items:flex-end;flex-wrap:wrap">
+      <div class="fg" style="margin-bottom:0"><label>Montant versé maintenant (HTG)</label><input type="number" id="pa-montant" min="0" placeholder="0" style="width:210px"></div>
+      <button class="btn btn-blue" onclick="savePaiement()">✓ Enregistrer le paiement</button>
+    </div>
+  </div>
+
+  <div class="fsec"><h4>Historique des paiements</h4><div id="pa-hist">${renderPaieHistHTML()}</div></div>`;
+  paieCompute();
 }
 
 /* ══════════════════════════════════════
