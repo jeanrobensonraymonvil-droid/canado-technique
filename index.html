@@ -4992,7 +4992,10 @@ function maListHTML(){
     return `<div class="mrow">
       <div style="flex:1;min-width:150px">
         <div style="font-weight:600;font-size:.82rem;color:#0B1525">${insNom(s)}</div>
-        <div style="font-size:.7rem;color:#4a5e8a">${s.code_etudiant||'—'}${s.salle?(' · '+s.salle):''}</div>
+        <div style="font-size:.7rem;color:#4a5e8a;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap">${s.code_etudiant||'—'} ·
+          <select onchange="maSetSalle('${id}',this.value)" style="font-size:.7rem;padding:.12rem .3rem;border:1px solid var(--bdr);border-radius:5px;background:#fff;color:#0B1525">
+            <option value="">— salle —</option>${maSalleOptionsFor(prog,year,s.salle)}
+          </select></div>
       </div>
       ${ov?'<span class="chip cgd" style="font-size:.62rem">Exception</span>':'<span class="chip cgy" style="font-size:.62rem">Hérité</span>'}
       <button class="tgl ${eff?'on':''}" title="${eff?'Désactiver':'Activer'} pour cet étudiant" onclick="maToggle('${id}',this)"></button>
@@ -5017,15 +5020,51 @@ function maBulk(val){
   toast(val===null?('Réinitialisé pour '+studs.length+' étudiant(s)'):((val?'Activé':'Désactivé')+' pour '+studs.length+' étudiant(s)'));
   maRefresh();
 }
+/* ══ CATALOGUE DE SALLES par programme/année (store: canado_salles) ══ */
+const SALLES_DEFAULTS = {
+  TRI:{1:['D-301','D-303','D-305','E-104'], 2:['D-201','D-202','D-203','D-205']},
+  ELM:{1:['ELM-A1','ELM-A2','ELM-A3','ELM-A4','MD-1','MD-2'], 2:['ELM-A1','ELM-A2','ELM-A3','ELM-A4','MD-1','MD-2','MD-3']},
+  TEL:{1:['TEL-A1','TEL-A2','Spéc. TRI/TEL'], 2:['TEL-A1','TEL-A2']},
+  MEI:{1:['MEI-A1','MEI-A2'], 2:['MEI-B1','MEI-B2','Spécialisation']}
+};
+function loadSalles(){ try{ const s=JSON.parse(localStorage.getItem('canado_salles')||'null'); return s||JSON.parse(JSON.stringify(SALLES_DEFAULTS)); }catch(e){ return JSON.parse(JSON.stringify(SALLES_DEFAULTS)); } }
+function saveSalles(cfg){ localStorage.setItem('canado_salles', JSON.stringify(cfg)); }
+function sallesFor(prog,year){ const cfg=loadSalles(); return (cfg[prog]&&cfg[prog][year])||[]; }
+function addSalle(prog,year,code){ const cfg=loadSalles(); cfg[prog]=cfg[prog]||{}; cfg[prog][year]=cfg[prog][year]||[]; if(code&&cfg[prog][year].indexOf(code)<0){ cfg[prog][year].push(code); saveSalles(cfg); } }
+function removeSalle(prog,year,code){ const cfg=loadSalles(); if(cfg[prog]&&cfg[prog][year]){ cfg[prog][year]=cfg[prog][year].filter(s=>s!==code); saveSalles(cfg); } }
+function maSalleOptionsFor(prog,year,current){ return sallesFor(prog,year).map(s=>`<option value="${s}" ${s===current?'selected':''}>${s}</option>`).join(''); }
+function maSetSalle(id, salle){
+  const ins=(typeof getInscriptions==='function')?getInscriptions():[];
+  const x=ins.find(i=>(i.code_etudiant===id)||(i.id===id)); if(!x) return;
+  x.salle=salle||''; localStorage.setItem('canado_inscriptions', JSON.stringify(ins));
+  toast(salle?('Affecté à '+salle):'Salle retirée'); maRefresh();
+}
+function maToggleSallesEdit(){ window._maSallesEdit=!window._maSallesEdit; renderModuleAccess(document.getElementById('p-content')); }
+function maAddSalle(){ const x=maContext(); const el=document.getElementById('ma-new-salle'); const v=(el&&el.value||'').trim(); if(!v) return; addSalle(x.prog,x.year,v); renderModuleAccess(document.getElementById('p-content')); }
+function maRemoveSalle(code){ const x=maContext(); removeSalle(x.prog,x.year,code); renderModuleAccess(document.getElementById('p-content')); }
+function maSallesEditorHTML(){
+  const x=maContext(); const list=sallesFor(x.prog,x.year);
+  return `<div style="background:#f8faff;border:1px solid var(--bdr);border-radius:10px;padding:.7rem .9rem;margin-bottom:.7rem">
+    <div style="font-size:.76rem;font-weight:700;color:#0B1525;margin-bottom:.5rem">Salles de ${x.prog} — ${x.year===1?'1ère':'2ème'} année <span style="font-weight:400;color:var(--g500)">(ajuste librement)</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem">
+      ${list.length?list.map(s=>`<span style="display:inline-flex;align-items:center;gap:.3rem;background:#fff;border:1px solid var(--bdr);border-radius:20px;padding:.2rem .35rem .2rem .6rem;font-size:.74rem;color:#0B1525">${s}<button onclick="maRemoveSalle('${s.replace(/'/g,"\\'")}')" title="Retirer" style="border:none;background:none;color:#E8192C;cursor:pointer;font-weight:700;font-size:.95rem;line-height:1">×</button></span>`).join(''):'<span style="font-size:.74rem;color:var(--g500)">Aucune salle pour cette filière/année.</span>'}
+    </div>
+    <div style="display:flex;gap:.4rem">
+      <input id="ma-new-salle" type="text" placeholder="Nouveau code (ex: D-301)" style="flex:1;font-size:.78rem;border:1.5px solid var(--bdr);border-radius:7px;padding:.35rem .55rem" onkeydown="event.key==='Enter'&&maAddSalle()">
+      <button class="btn btn-blue btn-sm" onclick="maAddSalle()">+ Ajouter</button>
+    </div>
+  </div>`;
+}
+
 function renderModuleAccess(c){
   const { isprof, prog, year, arr, code } = maContext();
-  const salles = Array.from(new Set(maStudents(prog,year).map(s=>s.salle||'Non assignée')));
+  const salles = Array.from(new Set(sallesFor(prog,year).concat(maStudents(prog,year).map(s=>s.salle).filter(Boolean))));
   const selSalle = window._maSalle || 'Toutes';
   const progSel = isprof ? '' : ['TRI','TEL','ELM','MEI'].map(p=>`<button class="btn btn-sm ${p===prog?'btn-blue':'btn-outline'}" onclick="window._maProg='${p}';window._maModule='';renderModuleAccess(document.getElementById('p-content'))">${p}</button>`).join('');
   const yearSel = [1,2].map(y=>`<button class="btn btn-sm ${y===year?'btn-blue':'btn-outline'}" onclick="window._maYear=${y};window._maModule='';renderModuleAccess(document.getElementById('p-content'))">${y===1?'1ère':'2ème'}</button>`).join('');
   const modOpts = arr.map(m=>`<option value="${m.code}" ${m.code===code?'selected':''}>${m.code} · ${m.title}</option>`).join('');
   const salleOpts = ['Toutes'].concat(salles).map(s=>`<option value="${s}" ${s===selSalle?'selected':''}>${s==='Toutes'?'Toutes les salles':s}</option>`).join('');
-  c.innerHTML = `<div class="ph2">${isprof?'Activation par étudiant':'Activation par étudiant — '+prog}</div>
+  c.innerHTML = `<div class="ph2">Activation par étudiant</div>
   <div style="font-size:.78rem;color:#3A4A6B;margin-bottom:1rem;line-height:1.6">Active ou désactive un module <strong>pour un étudiant précis</strong> sans toucher au reste de la classe — par ex. pour un étudiant qui n'est pas en règle.</div>
   <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.6rem">
     ${isprof?'':'<span style="font-size:.8rem;color:var(--g500)">Filière :</span>'+progSel}
@@ -5035,10 +5074,12 @@ function renderModuleAccess(c){
     <div class="fg" style="margin:0;min-width:240px"><label style="font-size:.72rem">Module</label>
       <select onchange="window._maModule=this.value;renderModuleAccess(document.getElementById('p-content'))">${modOpts}</select></div>
     <div class="fg" style="margin:0;min-width:160px"><label style="font-size:.72rem">Salle</label>
-      <select onchange="window._maSalle=this.value;maRefresh()">${salleOpts}</select></div>
+      <div style="display:flex;gap:.3rem"><select style="flex:1" onchange="window._maSalle=this.value;maRefresh()">${salleOpts}</select>
+        <button class="btn btn-outline btn-sm" title="Gérer les salles" onclick="maToggleSallesEdit()" style="padding:.3rem .5rem">⚙️</button></div></div>
     <div class="fg" style="margin:0;flex:1;min-width:160px"><label style="font-size:.72rem">Rechercher un étudiant</label>
       <input type="text" value="${(window._maSearch||'').replace(/"/g,'&quot;')}" placeholder="Nom ou matricule…" oninput="window._maSearch=this.value;maRefresh()"></div>
   </div>
+  ${window._maSallesEdit?maSallesEditorHTML():''}
   <div class="fsec"><div id="ma-list">${maListHTML()}</div></div>`;
 }
 
