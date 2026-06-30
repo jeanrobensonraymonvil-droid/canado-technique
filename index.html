@@ -5117,8 +5117,14 @@ function renderExamBuilder(c) {
     </div>
 
     <div class="fg" style="margin-bottom:1rem">
-      <label>Modèle d'examen de référence <span style="font-size:.7rem;font-weight:400;color:var(--g500)">(optionnel — colle un examen passé pour caler le style et le niveau)</span></label>
-      <textarea id="eb-reference" placeholder="Colle ici le texte d'un examen déjà utilisé pour ce module. L'IA s'en inspirera pour le style, le format et le niveau — sans recopier les questions." style="height:90px;resize:vertical"></textarea>
+      <label>Modèle d'examen de référence <span style="font-size:.7rem;font-weight:400;color:var(--g500)">(optionnel — importe un Word .docx ou colle le texte ; l'IA s'en inspire)</span></label>
+      <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0">📄 Importer un Word (.docx)
+          <input type="file" id="eb-ref-file" accept=".docx" onchange="importRefDocx(event)" style="display:none">
+        </label>
+        <span id="eb-ref-status" style="font-size:.72rem;color:var(--g500)"></span>
+      </div>
+      <textarea id="eb-reference" placeholder="Importe un .docx ci-dessus, ou colle ici le texte d'un examen déjà utilisé. L'IA s'en inspirera pour le style, le format et le niveau — sans recopier les questions." style="height:90px;resize:vertical"></textarea>
     </div>
 
     <button class="btn btn-blue btn-lg" id="ai-gen-btn" onclick="generateAIExam()" style="width:100%;justify-content:center">
@@ -5144,6 +5150,44 @@ function updateModList() {
   sel.innerHTML = all.map(m=>`<option value="${m.code}">${m.code} · ${m.title}</option>`).join('');
 }
 
+function loadScriptWithFallback(urls){
+  return new Promise((resolve,reject)=>{
+    let i=0;
+    (function tryNext(){
+      if(window.mammoth){ resolve(); return; }
+      if(i>=urls.length){ reject(new Error('sources indisponibles')); return; }
+      const s=document.createElement('script'); s.src=urls[i++]; s.setAttribute('data-lib','mammoth');
+      s.onload=()=>{ window.mammoth ? resolve() : tryNext(); };
+      s.onerror=()=>{ s.remove(); tryNext(); };
+      document.head.appendChild(s);
+    })();
+  });
+}
+async function importRefDocx(ev){
+  const input=ev.target; const file=input.files&&input.files[0]; if(!file) return;
+  const status=document.getElementById('eb-ref-status');
+  const setS=t=>{ if(status) status.textContent=t; };
+  if(!file.name.toLowerCase().endsWith('.docx')){ setS('⚠️ Format non supporté — utilise un fichier .docx'); toast('⚠️ Utilise un fichier .docx'); input.value=''; return; }
+  setS('⏳ Lecture de '+file.name+'…');
+  try{
+    if(!window.mammoth){
+      await loadScriptWithFallback([
+        'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.11.0/mammoth.browser.min.js',
+        'https://cdn.jsdelivr.net/npm/mammoth@1.11.0/mammoth.browser.min.js'
+      ]);
+    }
+    const buf=await file.arrayBuffer();
+    const res=await window.mammoth.extractRawText({arrayBuffer:buf});
+    const text=((res&&res.value)||'').replace(/\n{3,}/g,'\n\n').trim();
+    if(!text){ setS('Aucun texte trouvé dans le document.'); toast('⚠️ Aucun texte extrait du document'); input.value=''; return; }
+    const ta=document.getElementById('eb-reference'); if(ta) ta.value=text;
+    setS('✅ Importé : '+file.name+' — '+text.length+' caractères');
+    toast('📄 Modèle Word importé');
+  }catch(e){
+    setS('Échec : impossible de lire ce .docx (vérifie ta connexion).');
+    toast('⚠️ Lecture du .docx impossible');
+  } finally { input.value=''; }
+}
 async function generateAIExam() {
   if(aiExamGenerating) return;
   const prog = document.getElementById('eb-prog').value;
