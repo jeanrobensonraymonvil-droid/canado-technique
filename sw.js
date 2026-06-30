@@ -1,4 +1,4 @@
-const CACHE = 'canado-v5';
+const CACHE = 'canado-v9';
 const ASSETS = ['./index.html', './data.json', './manifest.json'];
 
 self.addEventListener('install', e => {
