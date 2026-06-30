@@ -4342,6 +4342,7 @@ const ROLES = {
       {id:'validation-hub', icon:'✅', label:'Validation & flux'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
+      {id:'module-access', icon:'🎚️', label:'Activation par étudiant'},
       {id:'assign-cours', icon:'🔗', label:'Gestion de cours'},
       {id:'cours-detache-prof', icon:'🛒', label:'Cours détachés'},
       {id:'creer-cours', icon:'✏️', label:'Créer un cours'},
@@ -4374,6 +4375,7 @@ const ROLES = {
       {id:'validation-hub', icon:'✅', label:'File de validation'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
+      {id:'module-access', icon:'🎚️', label:'Activation par étudiant'},
       {id:'assign-cours', icon:'🔗', label:'Gestion de cours'},
       {id:'cours-detache-prof', icon:'🛒', label:'Cours détachés'},
       {id:'exam-builder', icon:'📝', label:'Examens IA'},
@@ -4404,6 +4406,7 @@ const ROLES = {
       {id:'dash', icon:'📊', label:'Tableau de bord'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
+      {id:'module-access', icon:'🎚️', label:'Activation par étudiant'},
       {section:'Pédagogie'},
       {id:'rapport-direction', icon:'📋', label:'Rapport de direction'},
       {id:'rapports-ia', icon:'🤖', label:'Rapport pédagogique'},
@@ -4432,6 +4435,7 @@ const ROLES = {
       {id:'dash', icon:'📊', label:'Tableau de bord'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Mes modules'},
+      {id:'module-access', icon:'🎚️', label:'Activation par étudiant'},
       {id:'creer-cours', icon:'✏️', label:'Créer un cours'},
       {id:'acces-etudiants', icon:'🔑', label:'Accès étudiants'},
       {section:'Examens & Évaluations'},
@@ -4748,6 +4752,7 @@ function showPanel(id) {
     case 'dash': renderDash(c); break;
     case 'etudiants': renderEtudiants(c); break;
     case 'cours-mgmt': renderCoursMgmt(c); break;
+    case 'module-access': renderModuleAccess(c); break;
     case 'exam-builder': renderExamBuilder(c); break;
     case 'rapports': renderRapports(c); break;
     case 'rapport-direction': renderRapportDirection(c); break;
@@ -4929,6 +4934,114 @@ function exportEtudiantsCSV(){
   toast('📧 Liste exportée en CSV ('+ins.length+' étudiants)');
 }
 
+/* ══════════════════════════════════════════════════════════════
+   ACTIVATION DE MODULE PAR ÉTUDIANT (store: canado_module_access)
+   Exception par étudiant : on (dés)active un module pour un seul
+   étudiant sans toucher la classe. Effectif = exception si définie,
+   sinon état de la classe (getModuleStates).
+══════════════════════════════════════════════════════════════ */
+function getModuleAccess(){ try{ return JSON.parse(localStorage.getItem('canado_module_access')||'{}'); }catch(e){ return {}; } }
+function maKey(id,prog,code){ return id+'::'+prog+'::'+code; }
+function hasModuleOverride(id,prog,code){ return maKey(id,prog,code) in getModuleAccess(); }
+function moduleAccessFor(id,prog,code,classState){ if(!id) return classState; const m=getModuleAccess(); const k=maKey(id,prog,code); return (k in m)? m[k] : classState; }
+function setStudentModuleAccess(id,prog,code,val){ const m=getModuleAccess(); m[maKey(id,prog,code)]=val; localStorage.setItem('canado_module_access', JSON.stringify(m)); }
+function clearStudentModuleAccess(id,prog,code){ const m=getModuleAccess(); delete m[maKey(id,prog,code)]; localStorage.setItem('canado_module_access', JSON.stringify(m)); }
+function currentMatricule(){ try{ const s=JSON.parse(sessionStorage.getItem('canado_session')||'null'); return (s&&s.matricule)||null; }catch(e){ return null; } }
+function studId(s){ return s.code_etudiant || s.id; }
+
+function maContext(){
+  const isprof = currentRole==='prof';
+  const prog = isprof ? (etudProg||'TRI') : (window._maProg||'TRI');
+  const year = parseInt(window._maYear)||1;
+  const arr  = year===1 ? (MODULES[prog]||[]) : (MODULES_2[prog]||[]);
+  let code = window._maModule; if(!arr.find(m=>m.code===code)) code = arr[0] && arr[0].code;
+  const mod = arr.find(m=>m.code===code) || null;
+  return { isprof, prog, year, arr, code, mod };
+}
+function maStudents(prog, year){
+  const ins = (typeof getInscriptions==='function') ? getInscriptions() : [];
+  return ins.filter(i=>i.statut==='valide' && i.programme===prog && String(i.annee)===String(year));
+}
+function maFilteredStudents(){
+  const { prog, year } = maContext();
+  let studs = maStudents(prog, year);
+  const selSalle = window._maSalle || 'Toutes';
+  if(selSalle!=='Toutes') studs = studs.filter(s=>(s.salle||'Non assignée')===selSalle);
+  const q=(window._maSearch||'').trim().toLowerCase();
+  if(q) studs = studs.filter(s=>((s.prenom||'')+' '+(s.nom||'')+' '+(s.code_etudiant||'')).toLowerCase().indexOf(q)>=0);
+  return studs;
+}
+function maListHTML(){
+  const { prog, year, code, mod } = maContext();
+  if(!mod) return '<p style="font-size:.82rem;color:var(--g500)">Aucun module pour cette année.</p>';
+  const classOn = getModuleStates(prog, year)[code]===true;
+  const classBadge = classOn?'<span class="chip cg">ACTIF</span>':'<span class="chip cgy">INACTIF</span>';
+  const head = `<div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:.2rem 0 .9rem">
+    <span style="font-size:.78rem;color:#3A4A6B">Au niveau classe, <strong>${code}</strong> est ${classBadge}.</span>
+    <span style="margin-left:auto;display:flex;gap:.35rem;flex-wrap:wrap">
+      <button class="btn btn-green btn-sm" onclick="maBulk(true)">Activer pour tous</button>
+      <button class="btn btn-outline btn-sm" onclick="maBulk(false)">Désactiver pour tous</button>
+      <button class="btn btn-outline btn-sm" onclick="maBulk(null)">↺ Hériter (classe)</button>
+    </span></div>`;
+  const studs = maFilteredStudents();
+  if(!studs.length) return head+'<p style="font-size:.82rem;color:var(--g500)">Aucun étudiant validé pour cette filière/année. Les étudiants apparaissent ici une fois leur inscription validée.</p>';
+  const rows = studs.map(s=>{
+    const id=studId(s);
+    const ov=hasModuleOverride(id,prog,code);
+    const eff=moduleAccessFor(id,prog,code,classOn);
+    return `<div class="mrow">
+      <div style="flex:1;min-width:150px">
+        <div style="font-weight:600;font-size:.82rem;color:#0B1525">${insNom(s)}</div>
+        <div style="font-size:.7rem;color:#4a5e8a">${s.code_etudiant||'—'}${s.salle?(' · '+s.salle):''}</div>
+      </div>
+      ${ov?'<span class="chip cgd" style="font-size:.62rem">Exception</span>':'<span class="chip cgy" style="font-size:.62rem">Hérité</span>'}
+      <button class="tgl ${eff?'on':''}" title="${eff?'Désactiver':'Activer'} pour cet étudiant" onclick="maToggle('${id}',this)"></button>
+      <span style="font-size:.7rem;color:var(--g500);min-width:44px">${eff?'Actif':'Inactif'}</span>
+      ${ov?`<button class="btn btn-outline btn-sm" style="font-size:.68rem" onclick="maReset('${id}')" title="Hériter de la classe">↺</button>`:''}
+    </div>`;
+  }).join('');
+  return head+'<div class="mlist">'+rows+'</div>';
+}
+function maRefresh(){ const el=document.getElementById('ma-list'); if(el) el.innerHTML=maListHTML(); }
+function maToggle(id){
+  const x=maContext(); const classOn=getModuleStates(x.prog,x.year)[x.code]===true;
+  const nv=!moduleAccessFor(id,x.prog,x.code,classOn);
+  setStudentModuleAccess(id,x.prog,x.code,nv);
+  toast('Module '+x.code+(nv?' activé':' désactivé')+' pour cet étudiant');
+  maRefresh();
+}
+function maReset(id){ const x=maContext(); clearStudentModuleAccess(id,x.prog,x.code); toast('Exception retirée — hérite de la classe'); maRefresh(); }
+function maBulk(val){
+  const x=maContext(); const studs=maFilteredStudents();
+  studs.forEach(s=>{ const id=studId(s); if(val===null) clearStudentModuleAccess(id,x.prog,x.code); else setStudentModuleAccess(id,x.prog,x.code,val); });
+  toast(val===null?('Réinitialisé pour '+studs.length+' étudiant(s)'):((val?'Activé':'Désactivé')+' pour '+studs.length+' étudiant(s)'));
+  maRefresh();
+}
+function renderModuleAccess(c){
+  const { isprof, prog, year, arr, code } = maContext();
+  const salles = Array.from(new Set(maStudents(prog,year).map(s=>s.salle||'Non assignée')));
+  const selSalle = window._maSalle || 'Toutes';
+  const progSel = isprof ? '' : ['TRI','TEL','ELM','MEI'].map(p=>`<button class="btn btn-sm ${p===prog?'btn-blue':'btn-outline'}" onclick="window._maProg='${p}';window._maModule='';renderModuleAccess(document.getElementById('p-content'))">${p}</button>`).join('');
+  const yearSel = [1,2].map(y=>`<button class="btn btn-sm ${y===year?'btn-blue':'btn-outline'}" onclick="window._maYear=${y};window._maModule='';renderModuleAccess(document.getElementById('p-content'))">${y===1?'1ère':'2ème'}</button>`).join('');
+  const modOpts = arr.map(m=>`<option value="${m.code}" ${m.code===code?'selected':''}>${m.code} · ${m.title}</option>`).join('');
+  const salleOpts = ['Toutes'].concat(salles).map(s=>`<option value="${s}" ${s===selSalle?'selected':''}>${s==='Toutes'?'Toutes les salles':s}</option>`).join('');
+  c.innerHTML = `<div class="ph2">${isprof?'Activation par étudiant':'Activation par étudiant — '+prog}</div>
+  <div style="font-size:.78rem;color:#3A4A6B;margin-bottom:1rem;line-height:1.6">Active ou désactive un module <strong>pour un étudiant précis</strong> sans toucher au reste de la classe — par ex. pour un étudiant qui n'est pas en règle.</div>
+  <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.6rem">
+    ${isprof?'':'<span style="font-size:.8rem;color:var(--g500)">Filière :</span>'+progSel}
+    <span style="font-size:.8rem;color:var(--g500);margin-left:.3rem">Année :</span>${yearSel}
+  </div>
+  <div style="display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:.4rem">
+    <div class="fg" style="margin:0;min-width:240px"><label style="font-size:.72rem">Module</label>
+      <select onchange="window._maModule=this.value;renderModuleAccess(document.getElementById('p-content'))">${modOpts}</select></div>
+    <div class="fg" style="margin:0;min-width:160px"><label style="font-size:.72rem">Salle</label>
+      <select onchange="window._maSalle=this.value;maRefresh()">${salleOpts}</select></div>
+    <div class="fg" style="margin:0;flex:1;min-width:160px"><label style="font-size:.72rem">Rechercher un étudiant</label>
+      <input type="text" value="${(window._maSearch||'').replace(/"/g,'&quot;')}" placeholder="Nom ou matricule…" oninput="window._maSearch=this.value;maRefresh()"></div>
+  </div>
+  <div class="fsec"><div id="ma-list">${maListHTML()}</div></div>`;
+}
+
 function renderCoursMgmt(c) {
   const isprof = currentRole === 'prof';
   // Le prof voit son programme, l'admin voit tous
@@ -4969,21 +5082,17 @@ function renderCoursMgmt(c) {
         : arr.map((m, i) => {
           const on = states[m.code] === true;
           const hasFile = !!m.fichier;
-          const fileBadge = hasFile
-            ? '<span class="chip cg" style="font-size:.65rem">📄 HTML</span>'
-            : '<span class="chip cgy" style="font-size:.65rem">Sans fichier</span>';
           const coursBtn = hasFile
-            ? `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)"
+            ? `<button class="btn btn-blue btn-sm" style="font-size:.72rem"
                 data-fichier="${m.fichier}" data-titre="${m.code} · ${m.title.replace(/"/g,'&quot;')}"
-                onclick="openCoursViewer(this.dataset.fichier, this.dataset.titre)">📖 Prévisualiser</button>`
-            : '';
+                onclick="openCoursViewer(this.dataset.fichier, this.dataset.titre)">▶ Lancer le module</button>`
+            : '<span style="font-size:.7rem;color:var(--g400)">Cours à venir</span>';
           return `<div class="mrow">
             <div class="mnum">${String(i+1).padStart(2,'0')}</div>
-            <div class="mtitle" style="display:flex;align-items:center;gap:.4rem">${m.code} · ${m.title} ${fileBadge}</div>
+            <div class="mtitle" style="display:flex;align-items:center;gap:.4rem">${m.code} · ${m.title}</div>
             <div class="mdur">${m.dur}h</div>
             <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
               ${coursBtn}
-              <button class="btn btn-outline btn-sm" onclick="openVideoManager('${m.code}')">🎥 Vidéo</button>
               <button class="tgl ${on?'on':''}" title="${on?'Désactiver':'Activer'}"
                 onclick="toggleModule('${selProg}','${m.code}',this,${selYear})"></button>
               <span style="font-size:.7rem;color:var(--g500)">${on?'Actif':'Inactif'}</span>
@@ -6458,7 +6567,7 @@ function renderMesCours(c) {
 
   // Tableau des modules
   const rows = arr.map((m, i) => {
-    const active  = states[m.code] === true;
+    const active  = moduleAccessFor(currentMatricule(), prog, m.code, states[m.code] === true);
     const hasFile = !!m.fichier;
     const sc = m.seuil>=85?'cr':m.seuil>=80?'cgd':m.seuil>=75?'cb':'cg';
 
