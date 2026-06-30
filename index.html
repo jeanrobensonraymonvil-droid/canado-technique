@@ -9,6 +9,7 @@
   // Changer cette ligne selon l'environnement :
   // window.ROOBY_API_URL = 'https://api.canadotechnique.tech/api/rooby';
   window.ROOBY_API_URL = 'https://canado-backend-production.up.railway.app/api/rooby';
+  // window.DATA_API_URL = 'https://canado-backend-production.up.railway.app/api/v1'; // données opérationnelles (même backend Railway, section /api/v1, distincte de /api/rooby) — vide = mode démo localStorage
 
   // ── Base CDN des images (Cloudflare R2) ──
   // Les assets sont servis depuis R2, bucket canado-technique-videos, sous Programme/_assets/.
@@ -81,6 +82,7 @@
   --g100:    #E8EEFF;
   --g200:    #D4DEFC;
   --g300:    #C0CCEE;
+  --g400:    #9AA9D0;
   --g500:    #7B8DB8;
   --g700:    #3A4A6B;
   --text:    #0B1525;
@@ -3731,6 +3733,12 @@ function openInscriptionModal(type, programme, moduleCode, extra) {
   <!-- SECTION 3 : Parcours académique -->
   <div class="fsec">
     <h4>🎓 Parcours académique</h4>
+    <div class="fg"><label>Mode de formation *</label>
+      <select id="ins-mode" style="width:100%;padding:.6rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82rem;color:var(--text)">
+        <option value="presentiel">Présentiel — test d'admission à l'école</option>
+        <option value="enligne">En ligne — examen d'admission en ligne</option>
+      </select>
+    </div>
     <div class="frow">
       <div class="fg"><label>Niveau d'études *</label>
         <select id="ins-niveau" style="width:100%;padding:.6rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82rem;color:var(--text)">
@@ -3810,6 +3818,122 @@ function openInscriptionModal(type, programme, moduleCode, extra) {
   document.getElementById('pay-modal').classList.add('show');
 }
 
+/* ══════════════════════════════════════════════════════════════
+   COUCHE DataAPI — données opérationnelles (inscriptions / étudiants)
+   DEMO_MODE (localStorage) ↔ Production (HTTP vers SIGES, DATA_API_URL).
+   Implémente le contrat d'API v1. Distinct de ROOBY_API_URL (IA).
+══════════════════════════════════════════════════════════════ */
+window.DATA_API_URL   = window.DATA_API_URL   || '';   // ex: https://siges.canado.tech/api/v1 — vide = mode démo
+window.DATA_API_TOKEN = window.DATA_API_TOKEN || '';   // JWT de session SIGES
+window.DEMO_MODE = (typeof window.DEMO_MODE === 'boolean') ? window.DEMO_MODE : !window.DATA_API_URL;
+
+const DataAPI = (function(){
+  const LS_INS = 'canado_inscriptions';
+  const read  = k => { try{ return JSON.parse(localStorage.getItem(k)||'[]'); }catch(e){ return []; } };
+  const write = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+  const nowISO = () => new Date().toISOString();
+
+  function qs(params){
+    if(!params) return '';
+    const u = Object.keys(params).filter(k=>params[k]!=null && params[k]!=='').map(k=>encodeURIComponent(k)+'='+encodeURIComponent(params[k]));
+    return u.length ? ('?'+u.join('&')) : '';
+  }
+  async function http(method, path, body){
+    const headers = {'Content-Type':'application/json'};
+    if(window.DATA_API_TOKEN) headers['Authorization'] = 'Bearer '+window.DATA_API_TOKEN;
+    const r = await fetch(window.DATA_API_URL+path, { method, headers, body: body!=null ? JSON.stringify(body) : undefined });
+    if(!r.ok){ let e=null; try{ e=await r.json(); }catch(_){} throw new Error((e&&e.error&&e.error.message) || ('HTTP '+r.status)); }
+    if(r.status===204) return null;
+    return r.json();
+  }
+
+  function paginate(list, p){
+    p=p||{}; const page=Math.max(1,parseInt(p.page)||1); const per=Math.min(200,Math.max(1,parseInt(p.per_page)||50));
+    const total=list.length, start=(page-1)*per;
+    return { data:list.slice(start,start+per), meta:{ page, per_page:per, total, total_pages:Math.max(1,Math.ceil(total/per)) } };
+  }
+  function filterIns(list, p){
+    p=p||{}; let out=list.slice();
+    if(p.statut)    out=out.filter(x=>x.statut===p.statut);
+    if(p.programme) out=out.filter(x=>x.programme===p.programme);
+    if(p.annee)     out=out.filter(x=>String(x.annee)===String(p.annee));
+    if(p.mode)      out=out.filter(x=>(x.mode||'presentiel')===p.mode);
+    if(p.q){ const q=(''+p.q).toLowerCase(); out=out.filter(x=>(((x.prenom||'')+' '+(x.nom||'')+' '+(x.email||'')+' '+(x.code_etudiant||'')).toLowerCase().indexOf(q)>=0)); }
+    if(p.date_from) out=out.filter(x=>(x.date_soumission||'')>=p.date_from);
+    if(p.date_to)   out=out.filter(x=>(x.date_soumission||'')<=p.date_to);
+    return out;
+  }
+  function filterEtu(list, p){
+    p=p||{}; let out=list.slice();
+    if(p.programme) out=out.filter(x=>x.programme===p.programme);
+    if(p.annee)     out=out.filter(x=>String(x.annee)===String(p.annee));
+    if(p.statut)    out=out.filter(x=>x.statut===p.statut);
+    if(p.q){ const q=(''+p.q).toLowerCase(); out=out.filter(x=>(((x.prenom||'')+' '+(x.nom||'')+' '+(x.matricule||'')).toLowerCase().indexOf(q)>=0)); }
+    return out;
+  }
+  function genMatricule(prog){ return 'CT-'+(prog||'GEN')+'-'+new Date().getFullYear()+'-'+(Math.floor(Math.random()*9000)+1000); }
+  function toEtudiant(i){
+    return { matricule:i.code_etudiant, inscription_id:i.id, prenom:i.prenom, nom:i.nom, programme:i.programme, annee:i.annee, mode:i.mode||'presentiel', email:i.email, telephone:i.telephone, statut:i.statut_etudiant||'actif', date_admission:i.date_validation||i.date_admission||null };
+  }
+
+  const inscriptions = {
+    async list(params){
+      if(window.DEMO_MODE) return paginate(filterIns(read(LS_INS), params), params);
+      return http('GET','/inscriptions'+qs(params));
+    },
+    async get(id){
+      if(window.DEMO_MODE){ const x=read(LS_INS).find(r=>r.id===id); if(!x) throw new Error('Inscription introuvable'); return x; }
+      return http('GET','/inscriptions/'+id);
+    },
+    async create(payload){
+      if(window.DEMO_MODE){ const all=read(LS_INS); const rec=Object.assign({ id:'ins_'+Date.now(), statut:'en_attente', date_soumission:nowISO(), code_etudiant:null }, payload); all.push(rec); write(LS_INS,all); return rec; }
+      return http('POST','/inscriptions', payload);
+    },
+    async update(id, patch){
+      if(window.DEMO_MODE){ const all=read(LS_INS); const x=all.find(r=>r.id===id); if(!x) throw new Error('Inscription introuvable'); Object.assign(x,patch); write(LS_INS,all); return x; }
+      return http('PATCH','/inscriptions/'+id, patch);
+    },
+    async submitAdmissionExam(id, result){
+      if(window.DEMO_MODE) return inscriptions.update(id, { admission_score:result.score, admission_passed:result.passed, admission_date:nowISO() });
+      return http('POST','/inscriptions/'+id+'/admission-exam', result);
+    },
+    async valider(id){
+      if(window.DEMO_MODE){ const all=read(LS_INS); const x=all.find(r=>r.id===id); if(!x) throw new Error('Inscription introuvable'); x.statut='valide'; x.code_etudiant=x.code_etudiant||genMatricule(x.programme); x.date_validation=nowISO(); x.statut_etudiant='actif'; write(LS_INS,all); return toEtudiant(x); }
+      return http('POST','/inscriptions/'+id+'/valider');
+    },
+    async rejeter(id, motif){
+      if(window.DEMO_MODE) return inscriptions.update(id, { statut:'rejete', motif_rejet:motif||'' });
+      return http('POST','/inscriptions/'+id+'/rejeter', { motif:motif||'' });
+    },
+    async remove(id){
+      if(window.DEMO_MODE){ write(LS_INS, read(LS_INS).filter(r=>r.id!==id)); return null; }
+      return http('DELETE','/inscriptions/'+id);
+    }
+  };
+
+  const etudiants = {
+    async list(params){
+      if(window.DEMO_MODE){ const v=read(LS_INS).filter(i=>i.statut==='valide').map(toEtudiant); return paginate(filterEtu(v, params), params); }
+      return http('GET','/etudiants'+qs(params));
+    },
+    async get(matricule){
+      if(window.DEMO_MODE){ const x=read(LS_INS).find(i=>i.code_etudiant===matricule); if(!x) throw new Error('Étudiant introuvable'); return toEtudiant(x); }
+      return http('GET','/etudiants/'+encodeURIComponent(matricule));
+    },
+    async update(matricule, patch){
+      if(window.DEMO_MODE){ const all=read(LS_INS); const x=all.find(i=>i.code_etudiant===matricule); if(!x) throw new Error('Étudiant introuvable'); Object.assign(x, patch); write(LS_INS,all); return toEtudiant(x); }
+      return http('PATCH','/etudiants/'+encodeURIComponent(matricule), patch);
+    },
+    async stats(){
+      if(window.DEMO_MODE){ const ins=read(LS_INS); const parProg={}; ins.forEach(i=>{ parProg[i.programme]=(parProg[i.programme]||0)+1; }); return { total_inscriptions:ins.length, en_attente:ins.filter(i=>i.statut==='en_attente').length, valides:ins.filter(i=>i.statut==='valide').length, rejetes:ins.filter(i=>i.statut==='rejete').length, par_programme:parProg }; }
+      return http('GET','/etudiants/stats');
+    }
+  };
+
+  return { inscriptions, etudiants, config(){ return { url:window.DATA_API_URL, demo:window.DEMO_MODE, hasToken:!!window.DATA_API_TOKEN }; } };
+})();
+window.DataAPI = DataAPI;
+
 function submitInscription() {
   const required = ['ins-prenom','ins-nom','ins-dob','ins-sexe','ins-nationalite','ins-email','ins-tel','ins-ville','ins-adresse','ins-pays','ins-niveau','ins-moyen-paiement'];
   for(const id of required) {
@@ -3849,6 +3973,8 @@ function submitInscription() {
       ref_paiement: document.getElementById('ins-ref').value,
       preuve_paiement: e.target.result,
       preuve_nom: file.name,
+      mode: (document.getElementById('ins-mode')&&document.getElementById('ins-mode').value)||'presentiel',
+      test_date: null, test_date_id: null,
       statut: 'en_attente',
       date_soumission: new Date().toISOString(),
       username: null, password_temp: null, code_etudiant: null
@@ -3863,8 +3989,7 @@ function submitInscription() {
     notifs.unshift({id:'n_'+Date.now(), type:'inscription', message:`Nouvelle inscription : ${ins.prenom} ${ins.nom} (${ins.programme}${ins.module_code?' — '+ins.module_code:''})`, lu:false, date:new Date().toISOString()});
     localStorage.setItem('canado_notifications', JSON.stringify(notifs));
 
-    closePayModal();
-    showToastNotif('🎉 Demande envoyée !', `Merci ${ins.prenom} ! Votre dossier a été soumis. L'administration vous contactera sous 24-48h à l'adresse ${ins.email}.`);
+    showInscriptionNextStep(ins.id);
     toast('✅ Inscription soumise avec succès !');
   };
   reader.readAsDataURL(file);
@@ -4213,6 +4338,7 @@ const ROLES = {
       {id:'paiements-admin', icon:'💳', label:'Paiements'},
       {id:'bourses',         icon:'🏷️', label:'Bourses & réductions'},
       {id:'tarifs',          icon:'💲', label:'Grille tarifaire'},
+      {id:'test-sessions',   icon:'🗓️', label:'Sessions de test'},
       {id:'validation-hub', icon:'✅', label:'Validation & flux'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
@@ -4223,6 +4349,7 @@ const ROLES = {
       {section:'Examens & Évaluations'},
       {id:'sessions-examens', icon:'📅', label:"Sessions d'examens"},
       {id:'exam-builder', icon:'📝', label:'Examens IA'},
+      {id:'banque-examens', icon:'🏦', label:"Banque d'examens"},
       {id:'epreuve-pratique', icon:'🧪', label:'Épreuve pratique'},
       {section:'Infrastructure'},
       {id:'reservations', icon:'🗓', label:'Réservations labo'},
@@ -4243,12 +4370,14 @@ const ROLES = {
       {id:'paiements-admin', icon:'💳', label:'Paiements'},
       {id:'bourses',         icon:'🏷️', label:'Bourses & réductions'},
       {id:'tarifs',          icon:'💲', label:'Grille tarifaire'},
+      {id:'test-sessions',   icon:'🗓️', label:'Sessions de test'},
       {id:'validation-hub', icon:'✅', label:'File de validation'},
       {section:'Programmes & Modules'},
       {id:'cours-mgmt', icon:'📚', label:'Gestion de module'},
       {id:'assign-cours', icon:'🔗', label:'Gestion de cours'},
       {id:'cours-detache-prof', icon:'🛒', label:'Cours détachés'},
       {id:'exam-builder', icon:'📝', label:'Examens IA'},
+      {id:'banque-examens', icon:'🏦', label:"Banque d'examens"},
       {section:'Infrastructure'},
       {id:'reservations', icon:'🗓', label:'Réservations labo'},
     ]},
@@ -4262,6 +4391,7 @@ const ROLES = {
       {id:'paiements-admin', icon:'💳', label:'Paiements & inscriptions'},
       {id:'bourses',         icon:'🏷️', label:'Bourses & réductions'},
       {id:'tarifs',          icon:'💲', label:'Grille tarifaire'},
+      {id:'test-sessions',   icon:'🗓️', label:'Sessions de test'},
       {id:'cours-detache-prof', icon:'🛒', label:'Cours détachés'},
       {section:'Suivi'},
       {id:'rapports', icon:'📈', label:'Rapports'},
@@ -4289,6 +4419,7 @@ const ROLES = {
       {id:'dash', icon:'📊', label:'Tableau de bord'},
       {section:'Examens & Évaluations'},
       {id:'exam-builder', icon:'📝', label:'Examens IA'},
+      {id:'banque-examens', icon:'🏦', label:"Banque d'examens"},
       {id:'validation-hub', icon:'✅', label:'Contrôle & conformité'},
       {id:'epreuve-pratique', icon:'🧪', label:'Épreuve pratique'},
       {section:'Suivi'},
@@ -4306,6 +4437,7 @@ const ROLES = {
       {section:'Examens & Évaluations'},
       {id:'sessions-examens', icon:'📅', label:"Sessions d'examens"},
       {id:'exam-builder', icon:'📝', label:'Examens IA'},
+      {id:'banque-examens', icon:'🏦', label:"Banque d'examens"},
       {id:'epreuve-pratique', icon:'🧪', label:'Épreuve pratique'},
       {section:'Suivi pédagogique'},
       {id:'rapports-ia', icon:'🤖', label:'Rapport pédagogique'},
@@ -4629,8 +4761,10 @@ function showPanel(id) {
     case 'paiements-admin': renderPaiementsAdmin(c); break;
     case 'bourses': renderBourses(c); break;
     case 'tarifs': renderTarifs(c); break;
+    case 'test-sessions': renderTestSessions(c); break;
     case 'audit': renderAuditLog(c); break;
     case 'validation-hub': renderValidationHub(c); break;
+    case 'banque-examens': renderBanqueExamens(c); break;
     case 'epreuve-pratique': renderEpreuvePratique(c); break;
     // ── NOUVELLES FEATURES ──
     case 'jumeau':          renderJumeauNumerique(c); break;
@@ -4699,29 +4833,31 @@ function renderDash(c) {
       </tr>`).join('')}
     </tbody></table></div>`:'<p style="font-size:.8rem;color:var(--g500)">Aucune inscription pour le moment. Les demandes soumises via le formulaire apparaîtront ici.</p>'}`;
   } else if(currentRole==='prof') {
-    c.innerHTML = `<div class="ph2">Tableau de bord — Prof. Rooby Raymonvil</div>
+    const prog=etudProg||'TRI';
+    const ins=getInscriptions().filter(i=>i.programme===prog);
+    const st1=getModuleStates(prog,1), st2=getModuleStates(prog,2);
+    const activ=Object.values(st1).filter(Boolean).length+Object.values(st2).filter(Boolean).length;
+    let exs=[]; try{ exs=JSON.parse(localStorage.getItem('canado_examens')||'[]'); }catch(e){}
+    const exProg=exs.filter(e=>!e.programme||e.programme===prog).length;
+    const mods=MODULES[prog]||[];
+    c.innerHTML = `<div class="ph2">Tableau de bord — ${(ROLES[currentRole]&&ROLES[currentRole].name)||'Enseignant'}</div>
     <div class="kgrid">
-      <div class="kcard"><div class="knum">48</div><div class="klbl">Mes étudiants</div></div>
-      <div class="kcard kg"><div class="knum">5</div><div class="klbl">Modules activés</div></div>
-      <div class="kcard kgd"><div class="knum">3</div><div class="klbl">Examens créés</div></div>
-      <div class="kcard kr"><div class="knum">4</div><div class="klbl">Réservations en attente</div></div>
+      <div class="kcard"><div class="knum">${ins.length}</div><div class="klbl">Étudiants ${prog}</div></div>
+      <div class="kcard kg"><div class="knum">${activ}</div><div class="klbl">Modules activés</div></div>
+      <div class="kcard kgd"><div class="knum">${exProg}</div><div class="klbl">Examens créés</div></div>
+      <div class="kcard kr"><div class="knum">${mods.length}</div><div class="klbl">Modules au programme</div></div>
     </div>
-    <div class="zoom-card" style="margin-bottom:1rem" onclick="showPanel('zoom-panel')">
-      <div class="zoom-icon">📹</div>
-      <div style="flex:1">
-        <div style="font-size:.85rem;font-weight:700;color:var(--text)">Prochaine séance Zoom</div>
-        <div style="font-size:.78rem;color:var(--g500);margin-top:2px">TRI-05 · Système d'exploitation — Aujourd'hui 14h00</div>
-      </div>
-      <button class="btn btn-blue btn-sm">Démarrer →</button>
+    <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem">
+      <button class="btn btn-blue btn-sm" onclick="showPanel('exam-builder')">📝 Générer un examen IA</button>
+      <button class="btn btn-outline btn-sm" onclick="showPanel('cours-mgmt')">📚 Gérer mes modules</button>
     </div>
-    <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Progression de ma classe TRI 1ère année</h4>
-    <div class="tw"><table><thead><tr><th>Code</th><th>Module</th><th>Étudiants</th><th>Progression moy.</th><th>Action</th></tr></thead><tbody>
-      ${[['TRI-01','Métier et formation',48,100],['TRI-03','Mathématiques',48,72],['TRI-05',"Système d'exploitation",48,55],['TRI-08','Bureautique',48,38],['TRI-10','Installation poste',48,20]].map(([c,t,e,p])=>`<tr>
-        <td><span class="chip cb">${c}</span></td><td style="font-weight:500">${t}</td><td>${e}</td>
-        <td><div style="display:flex;align-items:center;gap:.5rem"><div class="pbar" style="width:100px"><div class="pfill" style="width:${p}%"></div></div><span style="font-size:.72rem;color:var(--g500)">${p}%</span></div></td>
-        <td><button class="btn btn-outline btn-sm" onclick="showPanel('exam-builder')">Examen IA</button></td>
-      </tr>`).join('')}
-    </tbody></table></div>`;
+    <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Mes modules — ${prog} 1ère année</h4>
+    ${mods.length?`<div class="tw"><table><thead><tr><th>Code</th><th>Module</th><th>Durée</th><th>État</th></tr></thead><tbody>
+      ${mods.map(m=>{const open=st1[m.code]===true;return `<tr>
+        <td><span class="chip cb">${m.code}</span></td><td style="font-weight:500">${m.title}</td><td>${m.dur}h</td>
+        <td>${open?'<span class="chip cg">Activé</span>':'<span class="chip cgy">Verrouillé</span>'}</td>
+      </tr>`;}).join('')}
+    </tbody></table></div>`:'<p style="font-size:.8rem;color:var(--g500)">Aucun module pour ce programme.</p>'}`;
   } else {
     renderEtudDash(c);
   }
@@ -4980,6 +5116,11 @@ function renderExamBuilder(c) {
       <textarea id="eb-instruct" placeholder="Ex: Insister sur les commandes Cisco IOS, le routage inter-VLAN, le dépannage réseau..." style="height:65px;resize:none"></textarea>
     </div>
 
+    <div class="fg" style="margin-bottom:1rem">
+      <label>Modèle d'examen de référence <span style="font-size:.7rem;font-weight:400;color:var(--g500)">(optionnel — colle un examen passé pour caler le style et le niveau)</span></label>
+      <textarea id="eb-reference" placeholder="Colle ici le texte d'un examen déjà utilisé pour ce module. L'IA s'en inspirera pour le style, le format et le niveau — sans recopier les questions." style="height:90px;resize:vertical"></textarea>
+    </div>
+
     <button class="btn btn-blue btn-lg" id="ai-gen-btn" onclick="generateAIExam()" style="width:100%;justify-content:center">
       ✨ Générer l'examen avec l'IA
     </button>
@@ -5012,6 +5153,7 @@ async function generateAIExam() {
   const diff = document.getElementById('eb-diff').value;
   const pts = document.getElementById('eb-pts').value;
   const instruct = document.getElementById('eb-instruct').value;
+  const reference = document.getElementById('eb-reference') ? document.getElementById('eb-reference').value : '';
 
   // Collect checked sections
   const sectionChecks = document.querySelectorAll('#eb-sections input[type=checkbox]:checked');
@@ -5063,6 +5205,7 @@ Durée: ${duree} minutes
 Total: ${pts} points
 Seuil de réussite: ${mod.seuil}%
 ${instruct ? 'Instructions du professeur: ' + instruct : ''}
+${reference ? 'MODÈLE DE RÉFÉRENCE — inspire-toi du STYLE, du FORMAT et du NIVEAU de cet examen passé, sans recopier les questions :\n"""\n'+reference+'\n"""' : ''}
 
 Chaque version doit contenir ces sections (répartis les ${pts} pts entre elles) :
 ${sectionsPrompt}
@@ -5107,6 +5250,7 @@ RÉPONDS UNIQUEMENT en JSON valide, sans markdown, selon ce format :
         duree: parseInt(duree),
         pts_total: parseInt(pts),
         instructions: instruct,
+        exemple_reference: reference,
         prompt_override: prompt  // envoyer le prompt complet au backend
       })
     });
@@ -5181,6 +5325,7 @@ function renderGeneratedExam(data, mod, prog, sections) {
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
         <button class="btn btn-green btn-sm" onclick="publishExam('${mod.code}')">✓ Publier</button>
+        <button class="btn btn-blue btn-sm" onclick="saveToBanque('${mod.code}','${prog}')">💾 Enregistrer dans la banque</button>
         <button class="btn btn-outline btn-sm" onclick="exportExamPDF('${mod.code}')">🖨️ PDF</button>
       </div>
     </div>
@@ -5712,6 +5857,163 @@ function rdLoadDemo() {
 // Frais désormais centralisés dans TARIF_CONFIG / TARIFS (panneau Grille tarifaire).
 function fmtHTG(n){ return Math.round(n||0).toLocaleString('fr-FR') + ' HTG'; }
 
+/* Sélecteur d'étudiant inscrit (réutilisé par Bourses & Paiements) */
+function studentPickerHTML(prefix){
+  const ins=getInscriptions();
+  if(!ins.length) return '';
+  return `<div class="fg"><label>Choisir un étudiant inscrit</label><select onchange="fillStudentInto(this.value,'${prefix}')" style="width:100%"><option value="">— ou saisie manuelle —</option>${ins.slice().reverse().map(i=>`<option value="${i.id}">${insNom(i)} · ${i.programme||''} ${i.annee==='2'?'2A':'1A'}${insMat(i)!=='—'?(' · '+insMat(i)):''}</option>`).join('')}</select></div>`;
+}
+function fillStudentInto(id,prefix){
+  if(!id) return;
+  const i=getInscriptions().find(x=>x.id===id); if(!i) return;
+  const set=(suf,val)=>{ const e=document.getElementById(prefix+suf); if(e&&val!=null) e.value=val; };
+  set('-nom',insNom(i)); set('-mat',insMat(i)==='—'?'':insMat(i)); set('-prog',i.programme||'');
+  const an=document.getElementById(prefix+'-an'); if(an) an.value=(i.annee==='2'?'2':'1');
+  if(prefix==='bo') bourseFillFrais();
+  if(prefix==='pa') paieCompute();
+}
+
+/* ══════════════════════════════════════
+   TEST DE PRÉ-ADMISSION
+   Admin règle période + dates + quota/jour. L'étudiant (présentiel) choisit
+   une date après inscription ; (en ligne) reçoit un examen en ligne.
+   Données : localStorage 'canado_test_config' + champs mode/test_date sur l'inscription.
+══════════════════════════════════════ */
+function loadTestConfig(){
+  try{ const c=JSON.parse(localStorage.getItem('canado_test_config')||'null'); if(c&&c.dates) return c; }catch(e){}
+  return { periode:'Août – Septembre 2026', dates:[] };
+}
+function saveTestConfig(cfg){ localStorage.setItem('canado_test_config', JSON.stringify(cfg)); }
+function testDateCount(dateId){ return getInscriptions().filter(i=>i.test_date_id===dateId).length; }
+function fmtDateFr(iso){ if(!iso) return '—'; const d=new Date(iso+'T00:00:00'); return isNaN(d)?iso:d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }
+
+function renderTestSessions(c){
+  const cfg=loadTestConfig();
+  const ins=getInscriptions();
+  c.innerHTML=`
+  <div class="ph2">🗓️ Sessions de test de pré-admission</div>
+  <p style="font-size:.82rem;color:#3A4A6B;margin-bottom:1.2rem;line-height:1.6">Définis la période et les dates de test (présentiel) avec un <strong>quota par jour</strong> selon le nombre d'inscrits. Après inscription, les étudiants en présentiel choisissent leur date ; ceux en ligne reçoivent un examen en ligne.</p>
+
+  <div class="fsec" style="border:1px solid var(--bdr);border-radius:12px;padding:1rem;margin-bottom:1.2rem;background:#f8faff">
+    <h4>Période & dates de test</h4>
+    <div class="fg"><label>Libellé de la période</label><input id="ts-periode" value="${cfg.periode||''}" style="max-width:340px"></div>
+    <div id="ts-dates">${renderTestDatesEditorHTML(cfg)}</div>
+    <div style="display:flex;gap:.5rem;align-items:flex-end;margin-top:.7rem;flex-wrap:wrap">
+      <div class="fg" style="margin-bottom:0"><label>Nouvelle date</label><input type="date" id="ts-newdate"></div>
+      <div class="fg" style="margin-bottom:0"><label>Quota / jour</label><input type="number" id="ts-newquota" min="1" value="30" style="width:120px"></div>
+      <button class="btn btn-outline btn-sm" onclick="addTestDate()">+ Ajouter la date</button>
+      <button class="btn btn-blue btn-sm" onclick="saveTestSessions()">💾 Enregistrer</button>
+    </div>
+  </div>
+
+  <div class="fsec"><h4>Rapport — répartition par date</h4>${renderTestReportHTML(cfg)}</div>
+  <div class="fsec"><h4>Inscrits & mode (${ins.length})</h4>${renderTestInscritsHTML(ins)}</div>`;
+}
+function renderTestDatesEditorHTML(cfg){
+  if(!cfg.dates.length) return '<p style="font-size:.78rem;color:#4a5e8a;margin:.5rem 0">Aucune date définie. Ajoute une date ci-dessous.</p>';
+  return `<div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem">${cfg.dates.map(d=>`
+    <div style="display:flex;align-items:center;gap:.7rem;background:#fff;border:1px solid var(--bdr);border-radius:8px;padding:.5rem .8rem;flex-wrap:wrap">
+      <span style="flex:1;min-width:160px;font-size:.8rem;font-weight:600;color:#0B1525">${fmtDateFr(d.date)}</span>
+      <label style="font-size:.68rem;color:#4a5e8a">Quota</label>
+      <input type="number" id="tsq-${d.id}" value="${d.quota}" min="1" style="width:80px;padding:.3rem .5rem;border:1.5px solid var(--bdr);border-radius:7px">
+      <span style="font-size:.7rem;color:#4a5e8a">${testDateCount(d.id)} inscrits</span>
+      <button class="btn btn-sm" style="background:#fff5f5;color:var(--red);border:1px solid var(--red);font-size:.66rem" onclick="removeTestDate('${d.id}')">Retirer</button>
+    </div>`).join('')}</div>`;
+}
+function renderTestReportHTML(cfg){
+  if(!cfg.dates.length) return '<p style="font-size:.78rem;color:#4a5e8a">Aucune date — définis-en ci-dessus.</p>';
+  return `<div class="tw"><table><thead><tr><th>Date</th><th>Programmés</th><th>Quota</th><th>Places restantes</th></tr></thead><tbody>
+    ${cfg.dates.map(d=>{const n=testDateCount(d.id),r=Math.max(0,d.quota-n);return `<tr>
+      <td>${fmtDateFr(d.date)}</td><td style="font-weight:700">${n}</td><td>${d.quota}</td>
+      <td style="font-weight:700;color:${r>0?'#006B46':'#E8192C'}">${r>0?(r+' places'):'Complet'}</td></tr>`;}).join('')}
+  </tbody></table></div>`;
+}
+function renderTestInscritsHTML(ins){
+  if(!ins.length) return '<p style="font-size:.78rem;color:#4a5e8a">Aucun inscrit pour le moment.</p>';
+  return `<div class="tw"><table><thead><tr><th>Étudiant</th><th>Programme</th><th>Mode</th><th>Date de test</th></tr></thead><tbody>
+    ${ins.slice().reverse().map(i=>`<tr>
+      <td style="font-weight:500">${insNom(i)}</td>
+      <td><span class="chip ${(PROG_INFO[i.programme]&&PROG_INFO[i.programme].chip)||'cb'}">${i.programme||'—'}</span></td>
+      <td>${(i.mode||'presentiel')==='enligne'?'<span class="chip cgy">En ligne</span>':'<span class="chip cb">Présentiel</span>'}</td>
+      <td style="font-size:.76rem">${i.mode==='enligne'?(i.admission_score!=null?('Examen en ligne — '+i.admission_score+'%'):'Examen en ligne'):(i.test_date?fmtDateFr(i.test_date):'<span style="color:#E8192C">Non choisie</span>')}</td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+function addTestDate(){
+  const d=document.getElementById('ts-newdate').value;
+  const q=Math.max(1,parseInt(document.getElementById('ts-newquota').value)||30);
+  if(!d){ toast('⚠️ Choisis une date.'); return; }
+  const cfg=loadTestConfig();
+  cfg.periode=document.getElementById('ts-periode').value||cfg.periode;
+  if(cfg.dates.some(x=>x.date===d)){ toast('Cette date existe déjà.'); return; }
+  cfg.dates.push({id:'td_'+Date.now(), date:d, quota:q});
+  cfg.dates.sort((a,b)=>a.date.localeCompare(b.date));
+  saveTestConfig(cfg); showPanel('test-sessions'); toast('✅ Date ajoutée');
+}
+function removeTestDate(id){
+  const cfg=loadTestConfig(); cfg.dates=cfg.dates.filter(x=>x.id!==id);
+  saveTestConfig(cfg); showPanel('test-sessions'); toast('Date retirée');
+}
+function saveTestSessions(){
+  const cfg=loadTestConfig();
+  cfg.periode=document.getElementById('ts-periode').value||cfg.periode;
+  cfg.dates.forEach(x=>{ const el=document.getElementById('tsq-'+x.id); if(el) x.quota=Math.max(1,parseInt(el.value)||x.quota); });
+  saveTestConfig(cfg); showPanel('test-sessions'); toast('✅ Sessions de test enregistrées');
+}
+
+/* Étape après soumission du formulaire d'inscription */
+function showInscriptionNextStep(insId){
+  const ins=getInscriptions().find(i=>i.id===insId);
+  const c=document.getElementById('pay-modal-content');
+  if(!ins||!c){ closePayModal(); return; }
+  if((ins.mode||'presentiel')==='enligne'){
+    c.innerHTML=`<div style="text-align:center;padding:1rem">
+      <div style="font-size:2.2rem">🎉</div>
+      <h3 style="font-family:var(--fD);font-weight:800;color:#0B1525;margin:.5rem 0">Dossier soumis !</h3>
+      <p style="font-size:.84rem;color:#3A4A6B;line-height:1.6;max-width:440px;margin:0 auto 1rem">Merci ${ins.prenom} ! Pour les formations <strong>en ligne</strong>, l'admission se fait via un <strong>examen d'admission en ligne</strong>.</p>
+      <div style="background:#eef3fb;border:1px solid var(--bdr);border-radius:12px;padding:1rem;max-width:440px;margin:0 auto 1rem">
+        <div style="font-weight:700;color:#0B1525;margin-bottom:.3rem">💻 Examen d'admission en ligne</div>
+        <div style="font-size:.78rem;color:#3A4A6B">Passe ton examen d'admission maintenant — résultat immédiat. (Un lien te sera aussi envoyé à <strong>${ins.email}</strong>.)</div>
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-blue" onclick="startAdmissionExam('${ins.id}')">Passer l'examen maintenant →</button>
+        <button class="btn btn-outline" onclick="closePayModal()">Plus tard</button>
+      </div>
+    </div>`;
+    return;
+  }
+  const cfg=loadTestConfig();
+  const dispo=cfg.dates.filter(d=>testDateCount(d.id)<d.quota);
+  c.innerHTML=`<div style="padding:.5rem">
+    <div style="text-align:center;margin-bottom:1rem"><div style="font-size:2rem">📅</div>
+      <h3 style="font-family:var(--fD);font-weight:800;color:#0B1525;margin:.4rem 0">Choisis ta date de test</h3>
+      <p style="font-size:.83rem;color:#3A4A6B;max-width:470px;margin:0 auto">Merci ${ins.prenom} ! Dernière étape : choisis une <strong>date officielle</strong> pour venir passer le test de pré-admission à l'école (${cfg.periode}).</p>
+    </div>
+    ${dispo.length?`<div style="display:flex;flex-direction:column;gap:.5rem;max-width:480px;margin:0 auto">
+      ${dispo.map(d=>{const r=d.quota-testDateCount(d.id);return `<button onclick="chooseTestDate('${ins.id}','${d.id}')" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1.5px solid var(--bdr);border-radius:10px;padding:.7rem .9rem;cursor:pointer;text-align:left">
+        <span style="font-size:.82rem;font-weight:600;color:#0B1525">${fmtDateFr(d.date)}</span>
+        <span style="font-size:.7rem;color:#006B46;font-weight:700">${r} place${r>1?'s':''}</span></button>`;}).join('')}
+    </div>`:`<div style="background:#fff5f5;border:1px solid var(--red);border-radius:10px;padding:1rem;max-width:470px;margin:0 auto;text-align:center;font-size:.82rem;color:#0B1525">Aucune date de test n'est encore ouverte. L'administration te contactera à <strong>${ins.email}</strong> pour fixer ta date.</div>`}
+    <div style="text-align:center;margin-top:1rem"><button class="btn btn-outline btn-sm" onclick="closePayModal()">Plus tard</button></div>
+  </div>`;
+}
+function chooseTestDate(insId,dateId){
+  const all=getInscriptions(); const i=all.find(x=>x.id===insId); if(!i) return;
+  const cfg=loadTestConfig(); const d=cfg.dates.find(x=>x.id===dateId); if(!d) return;
+  if(testDateCount(dateId)>=d.quota){ toast('⚠️ Cette date est complète, choisis-en une autre.'); showInscriptionNextStep(insId); return; }
+  i.test_date_id=dateId; i.test_date=d.date;
+  localStorage.setItem('canado_inscriptions', JSON.stringify(all));
+  const c=document.getElementById('pay-modal-content');
+  if(c) c.innerHTML=`<div style="text-align:center;padding:1.5rem">
+    <div style="font-size:2.4rem">✅</div>
+    <h3 style="font-family:var(--fD);font-weight:800;color:#006B46;margin:.5rem 0">Date confirmée !</h3>
+    <p style="font-size:.85rem;color:#3A4A6B;max-width:450px;margin:0 auto 1rem">Ta date de test est fixée au <strong>${fmtDateFr(d.date)}</strong>. Présente-toi à l'école (157 Ave MLK) avec une pièce d'identité. Un rappel sera envoyé à ${i.email}.</p>
+    <button class="btn btn-blue" onclick="closePayModal()">Terminer</button>
+  </div>`;
+  toast('✅ Date de test confirmée');
+}
+
+
 function renderBourses(c){
   const list = JSON.parse(localStorage.getItem('canado_bourses')||'[]');
   c.innerHTML = `
@@ -5721,7 +6023,7 @@ function renderBourses(c){
     le <strong>reste à payer</strong> se calcule automatiquement.
   </p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem">
-    <div class="fsec"><h4>Étudiant & programme</h4>
+    <div class="fsec"><h4>Étudiant & programme</h4>${studentPickerHTML('bo')}
       <div class="fg"><label>Nom de l'étudiant *</label><input type="text" id="bo-nom" placeholder="Nom complet"></div>
       <div class="fg"><label>Matricule</label><input type="text" id="bo-mat" placeholder="CT-TRI-2026-XXXX"></div>
       <div class="fg"><label>Programme</label>
@@ -5777,7 +6079,7 @@ function bourseFillFrais(){
   bourseCompute();
 }
 function bourseTypeChange(){
-  const t=document.getElementById('bo-type').value;
+  const te=document.getElementById('bo-type'); if(!te) return; const t=te.value;
   const wrap=document.getElementById('bo-val-wrap'), lbl=document.getElementById('bo-val-lbl');
   if(t==='montant'){ wrap.style.display='block'; lbl.textContent='Montant de la réduction (HTG)'; }
   else if(t==='pourcent'){ wrap.style.display='block'; lbl.textContent='Pourcentage de réduction (%)'; }
@@ -5785,8 +6087,9 @@ function bourseTypeChange(){
   bourseCompute();
 }
 function bourseCalc(){
-  const frais=parseFloat(document.getElementById('bo-frais').value)||0;
-  const t=document.getElementById('bo-type').value;
+  const ff=document.getElementById('bo-frais'), tt=document.getElementById('bo-type');
+  const frais=ff?(parseFloat(ff.value)||0):0;
+  const t=tt?tt.value:'demi';
   const ve=document.getElementById('bo-val');
   const v=parseFloat(ve?ve.value:0)||0;
   let reduc=0;
@@ -5948,12 +6251,8 @@ function fraisObligatoiresHTML(){
 
 function paieList(){ try{ return JSON.parse(localStorage.getItem('canado_paiements')||'[]'); }catch(e){ return []; } }
 function paieKey(){
-  return {
-    nom:(document.getElementById('pa-nom').value||'').trim(),
-    mat:(document.getElementById('pa-mat').value||'').trim(),
-    prog:document.getElementById('pa-prog').value,
-    formule:document.getElementById('pa-formule').value
-  };
+  const gv=id=>{const e=document.getElementById(id);return e?e.value:'';};
+  return { nom:(gv('pa-nom')||'').trim(), mat:(gv('pa-mat')||'').trim(), prog:gv('pa-prog'), formule:gv('pa-formule') };
 }
 function paieDu(prog,formule){ const x=(TARIF_CONFIG.programmes[prog]||{}); return x[formule]||0; }
 function paieBourse(mat,nom,prog){
@@ -6028,7 +6327,7 @@ function renderPaiementsAdmin(c) {
   <div class="ph2">💳 Gestion des paiements</div>
   <div class="kgrid" id="pa-kpi">${paieKpiHTML()}</div>
 
-  <div class="fsec"><h4>Enregistrer un paiement</h4>
+  <div class="fsec"><h4>Enregistrer un paiement</h4>${studentPickerHTML('pa')}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
       <div>
         <div class="fg"><label>Nom de l'étudiant *</label><input id="pa-nom" placeholder="Nom complet" oninput="paieCompute()"></div>
@@ -6057,32 +6356,26 @@ function renderPaiementsAdmin(c) {
 ══════════════════════════════════════ */
 function renderEtudDash(c) {
   const prog = etudProg || 'TRI';
-  c.innerHTML = `<div class="ph2">Bonjour, Marie ! 👋</div>
+  const yr = parseInt(etudYear)||1;
+  const mods = (yr===2?(MODULES_2[prog]||[]):(MODULES[prog]||[]));
+  const states = getModuleStates(prog, yr);
+  const ouverts = mods.filter(m=>states[m.code]===true).length;
+  const totalH = mods.reduce((s,m)=>s+(m.dur||0),0);
+  c.innerHTML = `<div class="ph2">Bonjour 👋</div>
+  <p style="font-size:.82rem;color:var(--g500);margin-bottom:1rem">${prog} · ${anneeLabel(yr)} année</p>
   <div class="kgrid">
-    <div class="kcard"><div class="knum">3</div><div class="klbl">Modules complétés</div></div>
-    <div class="kcard kg"><div class="knum">78%</div><div class="klbl">Moyenne générale</div></div>
-    <div class="kcard kgd"><div class="knum">2</div><div class="klbl">Examens disponibles</div></div>
-    <div class="kcard kr"><div class="knum">13</div><div class="klbl">Modules restants</div></div>
+    <div class="kcard"><div class="knum">${mods.length}</div><div class="klbl">Modules au programme</div></div>
+    <div class="kcard kg"><div class="knum">${ouverts}</div><div class="klbl">Modules ouverts</div></div>
+    <div class="kcard kgd"><div class="knum">${totalH}h</div><div class="klbl">Heures de formation</div></div>
+    <div class="kcard kr"><div class="knum">${Math.max(0,mods.length-ouverts)}</div><div class="klbl">À venir</div></div>
   </div>
-  <div style="background:rgba(232,25,44,.06);border:1px solid rgba(232,25,44,.15);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
-    <p style="font-size:.83rem;font-weight:600;color:var(--text)">📅 Prochain examen : TRI-05 — Système d'exploitation</p>
-    <p style="font-size:.75rem;color:var(--g500);margin-top:3px">Disponible jusqu'au 20 juin 2026 · 75 min · 30 questions · Seuil 80%</p>
-    <button class="btn btn-red btn-sm" style="margin-top:.8rem" onclick="showPanel('choisir-exam')">Passer l'examen →</button>
-  </div>
-  <div class="zoom-card" style="margin-bottom:1rem" onclick="showPanel('zoom-panel')">
-    <div class="zoom-icon">📹</div>
-    <div style="flex:1">
-      <div style="font-size:.85rem;font-weight:700;color:var(--text)">Prochaine séance Zoom disponible</div>
-      <div style="font-size:.78rem;color:var(--g500);margin-top:2px">TRI-05 · Système d'exploitation — Aujourd'hui 14h00</div>
-    </div>
-    <button class="btn btn-blue btn-sm">Rejoindre →</button>
-  </div>
-  <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Mes modules — ${prog} 1ère année</h4>
+  ${ouverts===0?`<div style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:1rem;margin-bottom:1rem"><p style="font-size:.82rem;color:var(--text)">Tes modules s'afficheront ici dès que l'administration les activera. 📚</p></div>`:''}
+  <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Mes modules — ${prog} ${anneeLabel(yr)} année</h4>
   <div class="mlist">
-    ${MODULES[prog].slice(0,7).map((m,i)=>{
-      const st = i<3?'done':i===3?'cur':'lock';
-      const icon = st==='done'?'✅':st==='cur'?'▶':'🔒';
-      const chip = st==='done'?'<span class="chip cg">Validé</span>':st==='cur'?'<span class="chip cb">En cours</span>':'<span class="chip cgy">Verrouillé</span>';
+    ${mods.map((m,i)=>{
+      const open=states[m.code]===true;
+      const icon=open?'▶':'🔒';
+      const chip=open?'<span class="chip cb">Disponible</span>':'<span class="chip cgy">Verrouillé</span>';
       return `<div class="mrow"><div class="mnum">${String(i+1).padStart(2,'0')}</div><div class="mtitle">${icon} ${m.code} · ${m.title}</div><div class="mdur">${m.dur}h</div>${chip}</div>`;
     }).join('')}
   </div>`;
@@ -6249,6 +6542,203 @@ const LABO_PROFS = ['Rooby Raymonvil','Jean Christophe','Marie-France Dolce'];
 const SLOTS_DISPO = ['08h00–10h00','10h00–12h00','13h00–15h00','15h00–17h00'];
 const SLOTS_FULL = ['10h00–12h00'];
 
+/* ── RÉSERVATIONS LABO (données réelles : canado_reservations) ── */
+function getReservations(){ try{ return JSON.parse(localStorage.getItem('canado_reservations')||'[]'); }catch(e){ return []; } }
+function resaStatutChip(s){ return s==='confirme'?'<span class="chip cg">Confirmé</span>':s==='refuse'?'<span class="chip cr">Refusé</span>':'<span class="chip cgd">En attente</span>'; }
+function mesResasHTML(){
+  const list=getReservations();
+  const inner=!list.length?'<p style="font-size:.8rem;color:var(--g500)">Aucune réservation pour le moment.</p>'
+    :`<div class="tw"><table><thead><tr><th>Date</th><th>Créneau</th><th>Type</th><th>Professeur</th><th>Statut</th></tr></thead><tbody>
+      ${list.slice().reverse().map(r=>`<tr><td>${r.date_label}</td><td>${r.slot}</td><td>${r.type}</td><td>${r.prof}</td><td>${resaStatutChip(r.statut)}</td></tr>`).join('')}
+    </tbody></table></div>`;
+  return `<h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Mes réservations</h4>${inner}`;
+}
+function resaAdminTblHTML(){
+  const list=getReservations();
+  if(!list.length) return '<p style="font-size:.8rem;color:var(--g500)">Aucune demande de réservation. Les demandes des étudiants apparaîtront ici.</p>';
+  return `<div class="tw"><table><thead><tr><th>Étudiant</th><th>Date</th><th>Créneau</th><th>Type</th><th>Prof.</th><th>Statut</th><th>Action</th></tr></thead><tbody>
+    ${list.slice().reverse().map(r=>`<tr>
+      <td style="font-weight:500">${r.etudiant||'—'}</td><td>${r.date_label}</td><td>${r.slot}</td><td>${r.type}</td><td>${r.prof}</td>
+      <td>${resaStatutChip(r.statut)}</td>
+      <td>${r.statut==='en_attente'?`<div style="display:flex;gap:.3rem"><button class="btn btn-green btn-sm" onclick="setResaStatut('${r.id}','confirme')">✓</button><button class="btn btn-outline btn-sm" onclick="setResaStatut('${r.id}','refuse')">✕</button></div>`:'—'}</td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+function setResaStatut(id,st){
+  const list=getReservations(); const r=list.find(x=>x.id===id); if(!r) return;
+  r.statut=st; localStorage.setItem('canado_reservations', JSON.stringify(list));
+  const t=document.getElementById('resa-admin-tbl'); if(t) t.innerHTML=resaAdminTblHTML();
+  toast(st==='confirme'?'Réservation confirmée':'Réservation refusée');
+}
+
+/* ── EXAMEN D'ADMISSION EN LIGNE (branché sur le moteur /api/generate-exam) ── */
+const ADMISSION_FALLBACK=[
+  {q:"Si un train parcourt 120 km en 2 heures, quelle est sa vitesse moyenne ?",opts:["40 km/h","60 km/h","80 km/h","120 km/h"],ans:1},
+  {q:"Quel nombre complète la suite : 2, 4, 8, 16, … ?",opts:["20","24","32","30"],ans:2},
+  {q:"« Rigoureux » est le contraire de :",opts:["Précis","Méticuleux","Négligent","Sérieux"],ans:2},
+  {q:"Combien font 15 % de 200 ?",opts:["15","20","30","45"],ans:2},
+  {q:"Un atelier a 3 machines ; chacune produit 25 pièces/heure. Combien de pièces en 4 heures ?",opts:["100","150","200","300"],ans:2},
+  {q:"Pourquoi choisir une formation technique professionnelle ?",opts:["Pour acquérir des compétences pratiques et un métier","Pour éviter d'apprendre","Sans raison particulière","Pour ne rien faire"],ans:0}
+];
+async function fetchAdmissionQuestions(prog){
+  const BACKEND=(window.ROOBY_API_URL&&window.ROOBY_API_URL.replace('/api/rooby',''))||'https://canado-backend-production.up.railway.app';
+  try{
+    const r=await fetch(`${BACKEND}/api/generate-exam`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      module_code:'ADMISSION', module_titre:"Test d'admission", programme:prog, annee:'1', nb_questions:8, versions:1,
+      sections:['qcm'], difficulte:'facile',
+      instructions:"Test d'admission général pour un nouveau candidat au programme "+prog+" : logique, calcul de base, compréhension et motivation. Questions QCM simples, accessibles sans connaissances techniques préalables."
+    })});
+    const data=await r.json();
+    let parsed=null;
+    if(data.versions) parsed=data;
+    else if(data.reply) parsed=JSON.parse(data.reply.replace(/```json|```/g,'').trim());
+    else if(data.content) parsed=JSON.parse(data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim());
+    const qcm=parsed&&parsed.versions&&parsed.versions[0]&&parsed.versions[0].sections&&parsed.versions[0].sections.qcm;
+    if(qcm&&qcm.length) return qcm.map(q=>({q:q.q,opts:q.opts,ans:(typeof q.ans==='number'?q.ans:0)}));
+  }catch(e){}
+  return ADMISSION_FALLBACK;
+}
+async function startAdmissionExam(insId){
+  const ins=getInscriptions().find(i=>i.id===insId);
+  const c=document.getElementById('pay-modal-content');
+  if(!ins||!c) return;
+  c.innerHTML=`<div style="text-align:center;padding:2rem"><div style="font-size:1.6rem">⏳</div><p style="font-size:.85rem;color:#3A4A6B;margin-top:.6rem">Préparation de ton examen d'admission…</p></div>`;
+  const questions=await fetchAdmissionQuestions(ins.programme||'TRI');
+  renderAdmissionExam(insId, questions);
+}
+function renderAdmissionExam(insId, questions){
+  const c=document.getElementById('pay-modal-content'); if(!c) return;
+  window._admExam={insId, questions, answers:{}};
+  c.innerHTML=`<div style="padding:.3rem">
+    <h3 style="font-family:var(--fD);font-weight:800;color:#0B1525;margin:.2rem 0">💻 Examen d'admission en ligne</h3>
+    <p style="font-size:.78rem;color:#3A4A6B;margin-bottom:1rem">Réponds aux ${questions.length} questions. Résultat immédiat à la soumission.</p>
+    ${questions.map((q,i)=>`<div style="background:#f8faff;border:1px solid var(--bdr);border-radius:10px;padding:.8rem;margin-bottom:.7rem">
+      <div style="font-size:.82rem;font-weight:600;color:#0B1525;margin-bottom:.5rem">Q${i+1}. ${q.q}</div>
+      ${q.opts.map((o,j)=>`<div onclick="admPick(${i},${j})" id="adm-${i}-${j}" style="display:flex;gap:.5rem;align-items:center;padding:.45rem .6rem;border:1.5px solid var(--bdr);border-radius:8px;margin-bottom:.35rem;cursor:pointer;background:#fff">
+        <span style="width:22px;height:22px;border-radius:50%;background:#eef3fb;color:#1B3A8C;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">${String.fromCharCode(65+j)}</span>
+        <span style="font-size:.8rem;color:#0B1525">${o}</span></div>`).join('')}
+    </div>`).join('')}
+    <div style="text-align:center;margin-top:.6rem"><button class="btn btn-blue" onclick="submitAdmissionExam()">✓ Soumettre l'examen</button></div>
+  </div>`;
+}
+function admPick(qi,oi){
+  const ex=window._admExam; if(!ex) return;
+  ex.answers[qi]=oi;
+  ex.questions[qi].opts.forEach((o,j)=>{ const el=document.getElementById('adm-'+qi+'-'+j); if(el){ el.style.borderColor=(j===oi)?'#1B3A8C':'rgba(100,130,220,.22)'; el.style.background=(j===oi)?'#eef3fb':'#fff'; } });
+}
+function submitAdmissionExam(){
+  const ex=window._admExam; if(!ex) return;
+  if(Object.keys(ex.answers).length<ex.questions.length){ toast('⚠️ Réponds à toutes les questions.'); return; }
+  let correct=0; ex.questions.forEach((q,i)=>{ if(ex.answers[i]===q.ans) correct++; });
+  const score=Math.round(correct/ex.questions.length*100);
+  const passed=score>=60;
+  const all=getInscriptions(); const i=all.find(x=>x.id===ex.insId);
+  if(i){ i.admission_score=score; i.admission_passed=passed; i.admission_date=new Date().toISOString(); localStorage.setItem('canado_inscriptions', JSON.stringify(all)); }
+  const c=document.getElementById('pay-modal-content');
+  if(c) c.innerHTML=`<div style="text-align:center;padding:1.5rem">
+    <div style="font-size:2.4rem">${passed?'🎉':'📋'}</div>
+    <h3 style="font-family:var(--fD);font-weight:800;color:${passed?'#006B46':'#1B3A8C'};margin:.5rem 0">${passed?'Félicitations !':'Examen terminé'}</h3>
+    <div style="font-size:2rem;font-weight:800;font-family:var(--fD);color:${passed?'#006B46':'#8B5E00'}">${score}%</div>
+    <p style="font-size:.84rem;color:#3A4A6B;max-width:450px;margin:.6rem auto 1rem">${passed?"Tu as réussi le test d'admission en ligne. L'administration validera ton dossier et te recontactera.":"Merci d'avoir passé le test. L'administration examinera ton dossier et te recontactera pour les prochaines étapes."}</p>
+    <button class="btn btn-blue" onclick="closePayModal()">Terminer</button>
+  </div>`;
+  toast("✅ Examen d'admission soumis : "+score+'%');
+}
+
+/* ══════════════════════════════════════
+   BANQUE D'EXAMENS (canado_banque)
+   Examens générés, classés filière → module → versions, réutilisables.
+   Accès : prof = sa filière ; detudes/devals/dg/admin = général.
+══════════════════════════════════════ */
+function getBanque(){ try{ return JSON.parse(localStorage.getItem('canado_banque')||'[]'); }catch(e){ return []; } }
+function saveToBanque(modCode, prog){
+  if(!generatedExam||!generatedExam.versions||!generatedExam.versions.length){ toast('Aucun examen généré à enregistrer.'); return; }
+  const allMods=[...(MODULES[prog]||[]),...(MODULES_2[prog]||[])];
+  const mod=allMods.find(m=>m.code===modCode)||{code:modCode,title:''};
+  const dEl=document.getElementById('eb-diff');
+  const entry={
+    id:'bq_'+Date.now(), programme:prog, module_code:modCode, module_titre:mod.title||'',
+    nb_versions:generatedExam.versions.length,
+    versions:generatedExam.versions,
+    sections:Object.keys(generatedExam.versions[0]&&generatedExam.versions[0].sections||{}),
+    difficulte:(dEl&&dEl.value)||'', duree:(generatedExam.versions[0]&&generatedExam.versions[0].duree)||'',
+    pts:(generatedExam.versions[0]&&generatedExam.versions[0].pts_total)||'',
+    prof:(ROLES[currentRole]&&ROLES[currentRole].name)||'Professeur',
+    date:new Date().toISOString(), statut:'genere',
+    wf:freshWf((ROLES[currentRole]&&ROLES[currentRole].name)||'Professeur', new Date().toISOString())
+  };
+  const list=getBanque(); list.push(entry); localStorage.setItem('canado_banque', JSON.stringify(list));
+  toast('💾 Enregistré dans la banque — '+entry.nb_versions+' version(s)');
+  showToastNotif('🏦 Ajouté à la banque + soumis à validation', modCode+' est enregistré et entre dans le flux Prof → Études → Évaluations → Publication.');
+}
+function renderBanqueExamens(c){
+  const isProf=currentRole==='prof';
+  let list=getBanque();
+  if(isProf) list=list.filter(e=>e.programme===(etudProg||'TRI'));
+  c.innerHTML=`<div class="ph2">🏦 Banque d'examens</div>
+  <p style="font-size:.82rem;color:#3A4A6B;margin-bottom:1.2rem;line-height:1.6">Tous les examens générés${isProf?' de ta filière':''}, classés par <strong>filière</strong> puis par <strong>module</strong>. Réutilise n'importe quelle version à volonté.</p>
+  ${list.length?renderBanqueGroups(list):'<p style="font-size:.82rem;color:var(--g500)">Aucun examen dans la banque. Génère un examen dans « Examens IA » puis clique « 💾 Enregistrer dans la banque ».</p>'}`;
+}
+function renderBanqueGroups(list){
+  const byProg={};
+  list.forEach(e=>{ byProg[e.programme]=byProg[e.programme]||{}; byProg[e.programme][e.module_code]=byProg[e.programme][e.module_code]||{titre:e.module_titre,entries:[]}; byProg[e.programme][e.module_code].entries.push(e); });
+  return Object.keys(byProg).sort().map(prog=>{
+    const info=PROG_INFO[prog]||{icon:'📘',label:prog};
+    const mods=byProg[prog];
+    return `<div style="margin-bottom:1.4rem">
+      <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#0B1525;margin-bottom:.6rem">${info.icon} ${prog} — ${info.label}</div>
+      ${Object.keys(mods).sort().map(code=>`<div style="border:1px solid var(--bdr);border-radius:10px;padding:.8rem 1rem;margin-bottom:.7rem;background:#fff">
+        <div style="font-weight:700;font-size:.84rem;color:#0B1525;margin-bottom:.5rem">${code} · ${mods[code].titre}</div>
+        ${mods[code].entries.slice().reverse().map(e=>banqueEntryHTML(e)).join('')}
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+function banqueEntryHTML(e){
+  let badge='<span class="chip cgd">Généré</span>';
+  const wf=e.wf;
+  if(wf){
+    if(wf[3].status==='done') badge='<span class="chip cg">Validé</span>';
+    else if(wf.some(s=>s.status==='rejected')) badge='<span class="chip cr">Rejeté</span>';
+    else if(wf[1].status==='done') badge='<span class="chip cb">En validation</span>';
+  }
+  return `<div style="background:#f8faff;border:1px solid var(--bdr);border-radius:8px;padding:.6rem .8rem;margin-bottom:.5rem">
+    <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
+      <span style="font-size:.78rem;font-weight:600;color:#0B1525">${e.nb_versions} version(s) · ${(e.sections||[]).join(', ')||'—'}</span>
+      ${badge}
+      <span style="font-size:.7rem;color:#4a5e8a">par ${e.prof} · ${fmtDateShort(e.date)}</span>
+      <span style="margin-left:auto;display:flex;gap:.35rem;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="banqueVoir('${e.id}')">Voir</button>
+        <button class="btn btn-blue btn-sm" onclick="banqueReutiliser('${e.id}')">Réutiliser</button>
+      </span>
+    </div>
+    <div id="bq-detail-${e.id}" style="display:none;margin-top:.6rem"></div>
+  </div>`;
+}
+function banqueDetailHTML(e){
+  return e.versions.map(v=>`<div style="border:1px solid var(--bdr);border-radius:8px;padding:.5rem .7rem;margin-bottom:.4rem;background:#fff">
+    <div style="font-weight:700;font-size:.76rem;color:#1B3A8C;margin-bottom:.3rem">Version ${v.version} · ${v.pts_total||''} pts · ${v.duree||''} min</div>
+    ${Object.entries(v.sections||{}).map(([k,items])=>{const arr=Array.isArray(items)?items:[items];const meta=(typeof SECTION_META!=='undefined'&&SECTION_META[k])||{icon:'📄',label:k};return `<div style="font-size:.74rem;color:#3A4A6B;margin-bottom:.15rem">${meta.icon} ${meta.label} — ${arr.length} élément(s)</div>`;}).join('')}
+  </div>`).join('');
+}
+function banqueVoir(id){
+  const e=getBanque().find(x=>x.id===id); if(!e) return;
+  const d=document.getElementById('bq-detail-'+id); if(!d) return;
+  if(d.style.display==='none'){ d.innerHTML=banqueDetailHTML(e); d.style.display='block'; }
+  else { d.style.display='none'; }
+}
+function banqueReutiliser(id){
+  const e=getBanque().find(x=>x.id===id); if(!e) return;
+  generatedExam={versions:e.versions};
+  showPanel('exam-builder');
+  setTimeout(()=>{
+    const mod={code:e.module_code,title:e.module_titre,seuil:75};
+    try{ renderGeneratedExam(generatedExam, mod, e.programme, e.sections||[]); }catch(err){}
+    const sel=document.getElementById('eb-prog'); if(sel){ sel.value=e.programme; if(typeof updateModList==='function') updateModList(); }
+  },60);
+  toast('♻️ Examen chargé dans le générateur — '+e.module_code);
+}
+
 function renderReserver(c) {
   const today = new Date();
   const month = today.getMonth();
@@ -6323,12 +6813,7 @@ function renderReserver(c) {
       </div>
     </div>
   </div>
-  <div id="mes-resas" style="margin-top:1.5rem">
-    <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Mes réservations</h4>
-    <div class="tw"><table><thead><tr><th>Date</th><th>Créneau</th><th>Type</th><th>Professeur</th><th>Statut</th></tr></thead><tbody>
-      <tr><td>Lun 20 Mai 2026</td><td>08h00–10h00</td><td>Labo informatique</td><td>Rooby Raymonvil</td><td><span class="chip cg">Confirmé</span></td></tr>
-      <tr><td>Jeu 22 Mai 2026</td><td>13h00–15h00</td><td>Projet de groupe</td><td>Jean Christophe</td><td><span class="chip cgd">En attente</span></td></tr>
-    </tbody></table></div>
+  <div id="mes-resas" style="margin-top:1.5rem">${mesResasHTML()}
   </div>`;
 }
 
@@ -6358,22 +6843,29 @@ function confirmResa() {
   if(!selectedDate||!selectedSlot) { toast('⚠️ Sélectionnez une date et un créneau'); return; }
   const type = document.getElementById('resa-type').value;
   const prof = document.getElementById('resa-prof').value;
-  toast(`✅ Réservation envoyée — ${selectedDate} Mai · ${selectedSlot}`);
-  showToastNotif('📅 Réservation envoyée !', `Votre demande pour le ${selectedDate} Mai (${selectedSlot}) a été transmise à ${prof}. Confirmation sous 24h.`);
+  const ne=document.getElementById('resa-notes'); const notes=(ne&&ne.value||'').trim();
+  const now=new Date(); const mn=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const dateLabel=`${selectedDate} ${mn[now.getMonth()]} ${now.getFullYear()}`;
+  const list=getReservations();
+  list.push({id:'rs_'+Date.now(), date_label:dateLabel, jour:selectedDate, slot:selectedSlot, type, prof, notes, statut:'en_attente', date_demande:new Date().toISOString(), etudiant:'Étudiant '+(etudProg||'')});
+  localStorage.setItem('canado_reservations', JSON.stringify(list));
+  toast(`✅ Réservation envoyée — ${dateLabel} · ${selectedSlot}`);
+  showToastNotif('📅 Réservation envoyée !', `Votre demande pour le ${dateLabel} (${selectedSlot}) a été transmise à ${prof}. Confirmation sous 24h.`);
+  const mr=document.getElementById('mes-resas'); if(mr) mr.innerHTML=mesResasHTML();
+  selectedDate=null; selectedSlot=null;
+  const rf=document.getElementById('resa-form'); if(rf) rf.style.display='none';
 }
 
 function renderReservationsAdmin(c) {
+  const list=getReservations();
+  const conf=list.filter(r=>r.statut==='confirme').length, att=list.filter(r=>r.statut==='en_attente').length;
   c.innerHTML = `<div class="ph2">${currentRole==='admin'?'Gestion des réservations':'Demandes de pratique'}</div>
   <div class="kgrid">
-    <div class="kcard"><div class="knum">8</div><div class="klbl">Demandes ce mois</div></div>
-    <div class="kcard kg"><div class="knum">5</div><div class="klbl">Confirmées</div></div>
-    <div class="kcard kr"><div class="knum">3</div><div class="klbl">En attente</div></div>
+    <div class="kcard"><div class="knum">${list.length}</div><div class="klbl">Demandes</div></div>
+    <div class="kcard kg"><div class="knum">${conf}</div><div class="klbl">Confirmées</div></div>
+    <div class="kcard kr"><div class="knum">${att}</div><div class="klbl">En attente</div></div>
   </div>
-  <div class="tw"><table><thead><tr><th>Étudiant</th><th>Date demandée</th><th>Créneau</th><th>Type</th><th>Prof.</th><th>Statut</th><th>Action</th></tr></thead><tbody>
-    <tr><td style="font-weight:500">Marie Louisiane</td><td>20 Mai 2026</td><td>08h00–10h00</td><td>Labo informatique</td><td>R. Raymonvil</td><td><span class="chip cg">Confirmé</span></td><td>—</td></tr>
-    <tr><td style="font-weight:500">Samuel Toussaint</td><td>22 Mai 2026</td><td>13h00–15h00</td><td>Projet de groupe</td><td>J. Christophe</td><td><span class="chip cgd">En attente</span></td><td><div style="display:flex;gap:.3rem"><button class="btn btn-green btn-sm" onclick="toast('Réservation confirmée')">✓</button><button class="btn btn-outline btn-sm" onclick="toast('Réservation refusée')">✕</button></div></td></tr>
-    <tr><td style="font-weight:500">Darlène Joseph</td><td>23 Mai 2026</td><td>08h00–10h00</td><td>Révision examen</td><td>R. Raymonvil</td><td><span class="chip cgd">En attente</span></td><td><div style="display:flex;gap:.3rem"><button class="btn btn-green btn-sm" onclick="toast('Réservation confirmée')">✓</button><button class="btn btn-outline btn-sm" onclick="toast('Réservation refusée')">✕</button></div></td></tr>
-  </tbody></table></div>`;
+  <div id="resa-admin-tbl">${resaAdminTblHTML()}</div>`;
 }
 
 /* ══════════════════════════════════════
@@ -6869,46 +7361,51 @@ function filterAudit(search) {
    FLUX DE VALIDATION DES EXAMENS
    Prof → Dir.Études → Dir.Évaluations → Publication
 ══════════════════════════════════════ */
-const VALIDATION_QUEUE = [
-  {id:'V001',code:'TRI-19',title:'Routage et commutation',prof:'Rooby Raymonvil',created:'13 Mai 2026',
-   steps:[
-     {level:'Professeur',who:'Rooby Raymonvil',status:'done',date:'13 Mai 2026 09:15',comment:'Examen soumis pour validation'},
-     {level:'Dir. Études',who:'Marie-France Dolce',status:'pending',date:null,comment:''},
-     {level:'Dir. Évaluations',who:'Jean Christophe',status:'waiting',date:null,comment:''},
-     {level:'Publication',who:'Système',status:'waiting',date:null,comment:''},
-   ]},
-  {id:'V002',code:'ELM-20',title:'Électronique de puissance',prof:'Jean Alix',created:'12 Mai 2026',
-   steps:[
-     {level:'Professeur',who:'Jean Alix',status:'done',date:'12 Mai 2026 08:00',comment:'Version A et B soumises'},
-     {level:'Dir. Études',who:'Marie-France Dolce',status:'done',date:'12 Mai 2026 10:30',comment:'Contenu conforme au programme'},
-     {level:'Dir. Évaluations',who:'Jean Christophe',status:'rejected',date:'12 Mai 2026 14:22',comment:'Barème incorrect — réviser questions 8 et 12'},
-     {level:'Publication',who:'Système',status:'waiting',date:null,comment:''},
-   ]},
-  {id:'V003',code:'MEI-22',title:'Montage circuits hydrauliques',prof:'Carla Noel',created:'11 Mai 2026',
-   steps:[
-     {level:'Professeur',who:'Carla Noel',status:'done',date:'11 Mai 2026',comment:'Épreuve pratique soumise'},
-     {level:'Dir. Études',who:'Marie-France Dolce',status:'done',date:'11 Mai 2026',comment:'Validé pédagogiquement'},
-     {level:'Dir. Évaluations',who:'Jean Christophe',status:'done',date:'12 Mai 2026',comment:'Barème vérifié — conforme'},
-     {level:'Publication',who:'Système',status:'done',date:'12 Mai 2026',comment:'Publié aux étudiants'},
-   ]},
-];
-
+/* ══ FLUX DE VALIDATION — données réelles (canado_examens) ══ */
+function getExamens(){ try{ return JSON.parse(localStorage.getItem('canado_examens')||'[]'); }catch(e){ return []; } }
+function fmtDateShort(iso){ if(!iso) return '—'; const d=new Date(iso); return isNaN(d)?iso:d.toLocaleDateString('fr-FR'); }
+function freshWf(who, dateIso){
+  return [
+    {level:'Professeur',who:who||'Professeur',status:'done',date:fmtDateShort(dateIso),comment:'Examen soumis pour validation'},
+    {level:'Dir. Études',who:'Direction des Études',status:'pending',date:null,comment:''},
+    {level:'Dir. Évaluations',who:'Direction des Évaluations',status:'waiting',date:null,comment:''},
+    {level:'Publication',who:'Système',status:'waiting',date:null,comment:''}
+  ];
+}
+function ensureWf(ex){
+  if(!ex.wf){ ex.wf=freshWf(ex.prof||ex.prof_id, ex.date||ex.date_creation); }
+  return ex;
+}
+function getValidationQueue(){
+  const list=getBanque(); let changed=false;
+  list.forEach(ex=>{ if(!ex.wf){ ensureWf(ex); changed=true; } });
+  if(changed) localStorage.setItem('canado_banque', JSON.stringify(list));
+  return list;
+}
+function examToV(ex){
+  ensureWf(ex);
+  return { id:ex.id, code:ex.module_code||'—', title:ex.module_titre||'', prof:ex.prof||ex.prof_id||'Professeur', created:fmtDateShort(ex.date||ex.date_creation), steps:ex.wf };
+}
 function renderValidationHub(c) {
   const canValidateEtudes = ['dg','admin','detudes'].includes(currentRole);
   const canValidateEvals = ['dg','admin','devals'].includes(currentRole);
   const canPublish = ['dg'].includes(currentRole);
-
+  const vs = getValidationQueue().map(examToV);
+  const publies = vs.filter(v=>v.steps[3].status==='done').length;
+  const rejetes = vs.filter(v=>v.steps.some(s=>s.status==='rejected')).length;
+  const enAttente = vs.filter(v=>[1,2,3].some(k=>v.steps[k].status==='pending')).length;
+  const enFile = vs.filter(v=>v.steps[3].status!=='done' && !v.steps.some(s=>s.status==='rejected')).length;
   c.innerHTML = `<div class="ph2">✅ Flux de Validation des Examens</div>
   <div style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1.2rem;font-size:.78rem;color:var(--blue)">
     📋 <strong>Workflow obligatoire :</strong> Professeur → Direction des Études → Direction des Évaluations → Publication. Aucun examen ne peut être publié sans les 3 validations.
   </div>
   <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
-    <div class="kcard" style="flex:1;min-width:120px"><div class="knum">${VALIDATION_QUEUE.length}</div><div class="klbl">En file</div></div>
-    <div class="kcard kg" style="flex:1;min-width:120px"><div class="knum">1</div><div class="klbl">Publiés</div></div>
-    <div class="kcard kr" style="flex:1;min-width:120px"><div class="knum">1</div><div class="klbl">Rejetés</div></div>
-    <div class="kcard kgd" style="flex:1;min-width:120px"><div class="knum">1</div><div class="klbl">En attente</div></div>
+    <div class="kcard" style="flex:1;min-width:120px"><div class="knum">${enFile}</div><div class="klbl">En file</div></div>
+    <div class="kcard kg" style="flex:1;min-width:120px"><div class="knum">${publies}</div><div class="klbl">Publiés</div></div>
+    <div class="kcard kr" style="flex:1;min-width:120px"><div class="knum">${rejetes}</div><div class="klbl">Rejetés</div></div>
+    <div class="kcard kgd" style="flex:1;min-width:120px"><div class="knum">${enAttente}</div><div class="klbl">En attente</div></div>
   </div>
-  ${VALIDATION_QUEUE.map(v=>renderWorkflowCard(v,canValidateEtudes,canValidateEvals,canPublish)).join('')}`;
+  ${vs.length?vs.map(v=>renderWorkflowCard(v,canValidateEtudes,canValidateEvals,canPublish)).join(''):'<p style="font-size:.82rem;color:var(--g500)">Aucun examen en attente de validation. Les examens générés puis enregistrés dans la banque apparaîtront ici automatiquement.</p>'}`;
 }
 
 function renderWorkflowCard(v,canDE,canDEV,canPub) {
@@ -6967,29 +7464,31 @@ function renderWorkflowCard(v,canDE,canDEV,canPub) {
 }
 
 function validateStep(vid,stepIdx,who) {
-  const v = VALIDATION_QUEUE.find(x=>x.id===vid);
-  if(!v) return;
-  const commentEl = document.getElementById(`comment-de-${vid}`)||document.getElementById(`comment-dev-${vid}`);
-  const comment = commentEl?.value||'Validé sans commentaire';
-  v.steps[stepIdx].status = 'done';
-  v.steps[stepIdx].date = new Date().toLocaleDateString('fr-FR');
-  v.steps[stepIdx].comment = comment;
-  if(stepIdx<v.steps.length-1) v.steps[stepIdx+1].status='pending';
-  logAudit('VALIDATION',`${v.code} — Étape ${who}`,v.steps[stepIdx-1]?.status||'Soumis','Validé');
-  toast(`✅ Étape "${who}" validée pour ${v.code}`);
-  showToastNotif('✅ Validation enregistrée',`${v.code} avance vers l'étape suivante. Action tracée dans l'audit.`);
+  const list=getBanque(); const ex=list.find(x=>x.id===vid); if(!ex) return; ensureWf(ex);
+  const commentEl = document.getElementById('comment-de-'+vid)||document.getElementById('comment-dev-'+vid);
+  const comment = (commentEl&&commentEl.value)||'Validé sans commentaire';
+  ex.wf[stepIdx].status='done';
+  ex.wf[stepIdx].date=new Date().toLocaleDateString('fr-FR');
+  ex.wf[stepIdx].comment=comment;
+  if(ROLES[currentRole]&&ROLES[currentRole].name&&stepIdx>0&&stepIdx<3) ex.wf[stepIdx].who=ROLES[currentRole].name;
+  if(stepIdx<ex.wf.length-1) ex.wf[stepIdx+1].status='pending';
+  if(stepIdx===3) ex.statut='publie';
+  localStorage.setItem('canado_banque', JSON.stringify(list));
+  if(typeof logAudit==='function') logAudit('VALIDATION', (ex.module_code||'')+' — Étape '+who, '', 'Validé');
+  toast('✅ Étape "'+who+'" validée pour '+(ex.module_code||''));
+  showToastNotif('✅ Validation enregistrée', (ex.module_code||'')+" avance vers l'étape suivante. Action tracée dans l'audit.");
   showPanel('validation-hub');
 }
-
 function rejectStep(vid,stepIdx,who) {
-  const v = VALIDATION_QUEUE.find(x=>x.id===vid);
-  if(!v) return;
-  const commentEl = document.getElementById(`comment-de-${vid}`)||document.getElementById(`comment-dev-${vid}`);
-  const comment = commentEl?.value||'Corrections requises';
-  v.steps[stepIdx].status = 'rejected';
-  v.steps[stepIdx].comment = comment;
-  logAudit('REJET_EXAMEN',`${v.code} — Rejeté par ${who}`,'En validation',`Rejeté — ${comment}`);
-  toast(`❌ Examen ${v.code} rejeté — retour au professeur`);
+  const list=getBanque(); const ex=list.find(x=>x.id===vid); if(!ex) return; ensureWf(ex);
+  const commentEl = document.getElementById('comment-de-'+vid)||document.getElementById('comment-dev-'+vid);
+  const comment = (commentEl&&commentEl.value)||'Corrections requises';
+  ex.wf[stepIdx].status='rejected';
+  ex.wf[stepIdx].comment=comment;
+  ex.wf[stepIdx].date=new Date().toLocaleDateString('fr-FR');
+  localStorage.setItem('canado_banque', JSON.stringify(list));
+  if(typeof logAudit==='function') logAudit('REJET_EXAMEN', (ex.module_code||'')+' — Rejeté par '+who, '', 'Rejeté — '+comment);
+  toast('❌ Examen '+(ex.module_code||'')+' rejeté — retour au professeur');
   showPanel('validation-hub');
 }
 
