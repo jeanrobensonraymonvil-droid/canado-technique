@@ -11,10 +11,11 @@
     "is_inscription_visible": true,
     "text_inscription": "📋 Les inscriptions pour la session <strong>Septembre 2026</strong> sont ouvertes — Places limitées.",
     "stats": {
-      "etudiants": "1 200+",
-      "modules": "107",
+      "etudiants": "1 642",
+      "modules": "108",
       "annees_experience": "50+"
-    }
+    },
+    "video_histoire": "assets/videos/notre-histoire-apc.mp4"
   },
   "carrousel": [
     {
@@ -102,7 +103,7 @@
       "icon": "⚙️",
       "color_rgb": "16,185,129",
       "badge": "Technique",
-      "modules_count": "25 modules",
+      "modules_count": "26 modules",
       "duree": "2 ans",
       "nb_etudiants": 310,
       "short_description": "Systèmes électromécaniques, automates, moteurs et installations industrielles.",
@@ -776,7 +777,7 @@
         },
         {
           "annee": 2,
-          "heures": 960,
+          "heures": 1035,
           "modules": [
             {
               "code": "ELM-12",
@@ -784,6 +785,13 @@
               "heures": 90,
               "seuil": 85,
               "fichier": "cours/elm/elm-2/elm-12-groupes-onduleurs-solaires.html"
+            },
+            {
+              "code": "ELM-13",
+              "titre": "Dispositifs de transmission de mouvement",
+              "heures": 75,
+              "seuil": 85,
+              "fichier": "cours/elm/elm-2/elm-13-dispositifs-transmission-mouvement.html"
             },
             {
               "code": "ELM-16",

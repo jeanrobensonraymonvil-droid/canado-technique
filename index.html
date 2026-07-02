@@ -28,6 +28,9 @@
     document.querySelectorAll('[data-cdn-src]').forEach(function(el){
       el.src = window.cdn(el.getAttribute('data-cdn-src'));
     });
+    document.querySelectorAll('[data-cdn-poster]').forEach(function(el){
+      el.poster = window.cdn(el.getAttribute('data-cdn-poster'));
+    });
   });
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -220,6 +223,14 @@ img{max-width:100%;display:block}
 .ecole-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
 .ecole-photo{border-radius:var(--rXL);overflow:hidden;box-shadow:var(--shadowL);aspect-ratio:4/3;background:#0d1f3c}
 .ecole-photo img{width:100%;height:100%;object-fit:cover}
+.ecole-video{margin-top:1.5rem}
+.ecv-screen{position:relative;background:#0b1526;border:10px solid #16233a;border-bottom:none;border-radius:18px 18px 0 0;overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadowL)}
+.ecv-screen video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.ecv-play{position:absolute;inset:0;margin:auto;width:66px;height:66px;border-radius:50%;border:none;background:rgba(232,25,44,.92);color:#fff;font-size:1.35rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding-left:5px;box-shadow:0 10px 34px rgba(0,0,0,.55);transition:transform .2s,background .2s;z-index:2}
+.ecv-play:hover{transform:scale(1.1);background:var(--red,#E8192C)}
+.ecv-base{height:13px;background:linear-gradient(180deg,#8ba3bd,#65809e);border-radius:0 0 16px 16px;margin:0 -12px;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.ecv-caption{text-align:center;font-size:.78rem;color:rgba(255,255,255,.55);margin-top:.7rem}
+.ecv-missing{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:.85rem;padding:1rem;text-align:center}
 .ecole-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
 .ecole-badge{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.06);border:1px solid var(--bdrDk);border-radius:10px;padding:.55rem .9rem;font-size:.76rem;color:rgba(255,255,255,.8)}
 .ecole-badge span{font-size:1rem}
@@ -1751,6 +1762,16 @@ td{color:var(--text)!important}
             <img data-cdn-src="assets/images/hero/school-photo.jpg" alt="Campus Canado Technique"
               onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'" loading="lazy" decoding="async">
           </div>
+          <!-- Vidéo : histoire de l'école & méthode APC (cadre laptop) -->
+          <div class="ecole-video">
+            <div class="ecv-screen">
+              <video id="ecole-video" preload="none" playsinline
+                data-cdn-poster="assets/images/hero/school-photo.jpg"></video>
+              <button class="ecv-play" id="ecole-video-play" onclick="playEcoleVideo()" aria-label="Lire la vidéo de présentation">▶</button>
+            </div>
+            <div class="ecv-base"></div>
+            <div class="ecv-caption">🎬 Notre histoire &amp; la méthode APC</div>
+          </div>
         </div>
         <div>
           <div class="sh dark" style="text-align:left;margin-bottom:1.2rem">
@@ -2310,6 +2331,7 @@ td{color:var(--text)!important}
         <select id="letud-year">
           <option value="1">1ère année</option>
           <option value="2">2ème année</option>
+          <option value="3">Spécialisation (3ᵉ)</option>
         </select>
       </div>
     </div>
@@ -2529,6 +2551,7 @@ const MODULES_2 = {
   ],
   ELM:[
   {code:"ELM-12",title:"Installation de groupes électrogènes, onduleurs et panneaux solaires",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-12-groupes-onduleurs-solaires.html"},
+  {code:"ELM-13",title:"Dispositifs de transmission de mouvement",dur:75,seuil:85,fichier:"cours/elm/elm-2/elm-13-dispositifs-transmission-mouvement.html"},
   {code:"ELM-16",title:"Fonctionnement des moteurs à essence et diesel",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-16-moteurs-essence-diesel.html"},
   {code:"ELM-17",title:"Réparation et entretien de groupes électrogènes",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-17-groupes-electrogenes.html"},
   {code:"ELM-18",title:"Circuits pneumatiques et électropneumatiques",dur:90,seuil:85,fichier:"cours/elm/elm-2/elm-18-circuits-pneumatiques-electropneumatiques.html"},
@@ -4057,6 +4080,25 @@ function applyConfig() {
   // Titre école nav
   const logoEl = document.getElementById('nav-ecole-nom');
   if(logoEl && cfg.nom_ecole) logoEl.textContent = cfg.nom_ecole;
+
+  // Vidéo histoire & APC (chemin surchargable)
+  if(cfg.video_histoire) window.ECOLE_VIDEO_SRC = cfg.video_histoire;
+}
+
+/* ── Vidéo histoire & APC (section À propos) ── */
+window.ECOLE_VIDEO_SRC = 'assets/videos/notre-histoire-apc.mp4'; // R2 : Programme/_assets/videos/... — surchargable via data.json config.video_histoire
+function playEcoleVideo(){
+  const v = document.getElementById('ecole-video');
+  const btn = document.getElementById('ecole-video-play');
+  if(!v) return;
+  v.onerror = function(){
+    const scr = v.parentElement;
+    if(scr) scr.innerHTML = '<div class="ecv-missing">🎬 La vidéo de présentation sera bientôt disponible.</div>';
+  };
+  if(!v.getAttribute('src')) v.src = cdn(window.ECOLE_VIDEO_SRC);
+  if(btn) btn.style.display = 'none';
+  v.setAttribute('controls','');
+  const p = v.play(); if(p && p.catch) p.catch(function(){});
 }
 
 /* ── Galerie photos ── */
@@ -4499,7 +4541,10 @@ function selRoleBtn(r, el) {
   document.getElementById('lprog-wrap').style.display = (r==='etud')?'block':'none';
 }
 
-function showLogin() { document.getElementById('login-overlay').classList.add('show'); }
+function showLogin() {
+  if (!DEMO_MODE) { const h = document.getElementById('login-hint'); if (h) h.style.display = 'none'; }
+  document.getElementById('login-overlay').classList.add('show');
+}
 function hideLogin() { document.getElementById('login-overlay').classList.remove('show'); }
 
 /* ══════════════════════════════════════════════════════════
@@ -4519,8 +4564,11 @@ function hideLogin() { document.getElementById('login-overlay').classList.remove
    2. Renseigner AUTH_URL (endpoint de connexion du backend Railway)
    3. Le backend valide identifiant + mot de passe et gère la 2FA réelle
 ══════════════════════════════════════════════════════════ */
-const DEMO_MODE = true; // ⚠️ METTRE À false EN PRODUCTION
-const AUTH_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
+// ── Connexion réelle activée ── (repli comptes de démo : définir window.DEMO_LOGIN = true)
+const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : false;
+const AUTH_URL    = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
+const VERIFY_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/verify-2fa';
+let   tfaChallengeId = null;
 
 // Comptes de DÉMONSTRATION uniquement (ignorés si DEMO_MODE = false).
 // Identifiants de test communiqués séparément — pas de mot de passe universel.
@@ -4600,12 +4648,15 @@ async function initLogin() {
         errEl.style.display = 'block';
         return;
       }
-      // Le backend renvoie le rôle (et idéalement un token de session)
-      selRole = data.role;
-      if (data.token) { try { sessionStorage.setItem('canado_token', data.token); } catch(e){} }
-      if (data.programme) document.getElementById('lprog').value = data.programme;
-      if (data.annee && document.getElementById('letud-year')) document.getElementById('letud-year').value = data.annee;
-      document.getElementById('lprog-wrap').style.display = (data.role === 'etud') ? 'block' : 'none';
+      // ── Le backend exige la 2FA : un code a été envoyé ──
+      if (data.mfa_required) {
+        tfaChallengeId = data.challenge_id;
+        showTFAStep();
+        if (data.dev_code) toast('🔐 Code (DEV) : ' + data.dev_code);
+        return;
+      }
+      // ── Pas de 2FA : token direct ──
+      applyAuthData(data);
       doLogin();
     } catch(e) {
       errEl.textContent = '❌ Connexion au serveur impossible. Réessayez plus tard.';
@@ -4636,6 +4687,28 @@ async function initLogin() {
   doLogin();
 }
 
+// Applique le rôle / programme / token renvoyés par le backend
+function applyAuthData(data) {
+  selRole = data.role;
+  if (data.token) {
+    try { sessionStorage.setItem('canado_token', data.token); } catch(e){}
+    window.DATA_API_TOKEN = data.token; // authentifie aussi les appels DataAPI
+  }
+  if (data.programme) document.getElementById('lprog').value = data.programme;
+  if (data.annee && document.getElementById('letud-year')) document.getElementById('letud-year').value = data.annee;
+  document.getElementById('lprog-wrap').style.display = (data.role === 'etud') ? 'block' : 'none';
+}
+
+// Bascule l'écran de connexion vers l'étape « code à 6 chiffres »
+function showTFAStep() {
+  document.getElementById('login-error').style.display = 'none';
+  const hint = document.getElementById('login-hint'); if (hint) hint.style.display = 'none';
+  document.getElementById('tfa-box').classList.add('show');
+  document.getElementById('tfa-step').style.display = 'block';
+  document.getElementById('normal-login-btn').style.display = 'none';
+  const first = document.querySelector('.tfa-digit'); if (first) first.focus();
+}
+
 function tfaNext(el, idx) {
   el.value = el.value.replace(/\D/g,'').slice(0,1);   // chiffres uniquement
   if(el.value && idx < 5) {
@@ -4663,14 +4736,33 @@ function tfaKey(e, idx) {
   }
 }
 
-function verifyTFA() {
+async function verifyTFA() {
   const code = Array.from(document.querySelectorAll('.tfa-digit')).map(el=>el.value).join('');
-  // ⚠️ En production, la 2FA doit être validée par le backend (envoi SMS/email + vérification serveur).
-  if(DEMO_MODE && code.length === 6) {
+  if (code.length !== 6) { toast('❌ Code à 6 chiffres requis.'); return; }
+
+  // ── MODE DÉMO : aucune vérification serveur ──
+  if (DEMO_MODE) { tfaVerified = true; doLogin(); return; }
+
+  // ── MODE PRODUCTION : le backend valide le code ──
+  const errEl = document.getElementById('login-error');
+  try {
+    const res = await fetch(VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ challenge_id: tfaChallengeId, code: code })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      toast('❌ ' + (data.message || 'Code incorrect.'));
+      document.querySelectorAll('.tfa-digit').forEach(el=>el.value='');
+      const first = document.querySelector('.tfa-digit'); if (first) first.focus();
+      return;
+    }
     tfaVerified = true;
+    applyAuthData(data);
     doLogin();
-  } else {
-    toast('❌ Code à 6 chiffres requis.');
+  } catch(e) {
+    if (errEl) { errEl.textContent = '❌ Connexion au serveur impossible. Réessayez.'; errEl.style.display = 'block'; }
   }
 }
 
@@ -4688,6 +4780,7 @@ function doLogin() {
   document.getElementById('luser').value = '';
   document.getElementById('lpass').value = '';
   document.querySelectorAll('.tfa-digit').forEach(el=>el.value='');
+  tfaChallengeId = null;
   // Sauvegarde de session — survit au rafraîchissement (F5) de la page
   try { sessionStorage.setItem('canado_session', JSON.stringify({role:currentRole, prog:etudProg, year:etudYear})); } catch(e){}
   mountPortal('dash');
@@ -4713,6 +4806,8 @@ function mountPortal(panel) {
 // Restaure la session après un F5 : garde l'utilisateur connecté sur la même vue
 function restoreSession() {
   try {
+    const tok = sessionStorage.getItem('canado_token');
+    if (tok) window.DATA_API_TOKEN = tok;
     const s = JSON.parse(sessionStorage.getItem('canado_session') || 'null');
     if(s && s.role && ROLES[s.role]) {
       currentRole = s.role;
@@ -4724,7 +4819,8 @@ function restoreSession() {
 }
 
 function doLogout() {
-  try { sessionStorage.removeItem('canado_session'); sessionStorage.removeItem('canado_panel'); } catch(e){}
+  try { sessionStorage.removeItem('canado_session'); sessionStorage.removeItem('canado_panel'); sessionStorage.removeItem('canado_token'); } catch(e){}
+  window.DATA_API_TOKEN = '';
   currentRole = '';
   goPage('accueil');
   toast('Déconnexion réussie');
@@ -8844,7 +8940,7 @@ function deleteCours(id){if(!confirm('Supprimer ?'))return;localStorage.setItem(
 /* ══════════════════════════════════════════════════════════
    FIX 7 — SESSIONS D'EXAMENS (PROF)
 ══════════════════════════════════════════════════════════ */
-const MODULES_PROF={TRI:{1:[{code:'TRI-01',titre:"Métier et formation",heures:30},{code:'TRI-02',titre:"Gestion du temps",heures:30},{code:'TRI-03',titre:"Mathématiques",heures:60},{code:'TRI-04',titre:"Anglais technique",heures:60},{code:'TRI-05',titre:"Système d'exploitation",heures:75},{code:'TRI-06',titre:"Résolution problèmes",heures:45},{code:'TRI-07',titre:"Recherche information",heures:45},{code:'TRI-08',titre:"Logiciels bureautique",heures:105},{code:'TRI-09',titre:"Communication pro",heures:45},{code:'TRI-10',titre:"Installation poste",heures:60},{code:'TRI-11',titre:"Base de données",heures:75},{code:'TRI-12',titre:"Dépannage poste",heures:75},{code:'TRI-13',titre:"Technologies internet",heures:45},{code:'TRI-14',titre:"Programmation scripts",heures:60},{code:'TRI-15',titre:"Assistance technique",heures:60},{code:'TRI-16',titre:"Entrepreneuriat",heures:30}],2:[{code:'TRI-17',titre:"Initiation réseautique",heures:75},{code:'TRI-18',titre:"Installation serveur",heures:90},{code:'TRI-19',titre:"Routage commutation",heures:90},{code:'TRI-20',titre:"Configuration serveurs",heures:90},{code:'TRI-21',titre:"Évolutivité réseaux",heures:60},{code:'TRI-22',titre:"Maintenance serveurs",heures:75},{code:'TRI-23',titre:"Câblage structuré",heures:60},{code:'TRI-24',titre:"Supervision dépannage",heures:75},{code:'TRI-25',titre:"Connexion réseaux",heures:60},{code:'TRI-26',titre:"Sécurité réseau",heures:75},{code:'TRI-27',titre:"Implantation réseau",heures:90},{code:'TRI-28',titre:"Recherche emploi",heures:30}]},MEI:{1:[{code:'MEI-01',titre:"Métier et formation",heures:30},{code:'MEI-02',titre:"Utilisation ordinateur",heures:45},{code:'MEI-03',titre:"Croquis et schémas",heures:60},{code:'MEI-04',titre:"Interprétation plans",heures:60},{code:'MEI-05',titre:"Santé et sécurité",heures:30},{code:'MEI-06',titre:"Instruments mesure",heures:60},{code:'MEI-07',titre:"Usinage manuel",heures:105},{code:'MEI-08',titre:"Coupage soudage",heures:105},{code:'MEI-09',titre:"Usinage machines",heures:105},{code:'MEI-10',titre:"Lubrification",heures:60}],2:[{code:'MEI-14',titre:"Éléments transmission",heures:75},{code:'MEI-15',titre:"Tubes tuyaux",heures:60},{code:'MEI-16',titre:"Pompes hydrauliques",heures:75},{code:'MEI-19',titre:"Équilibrage",heures:75},{code:'MEI-20',titre:"Analyse vibrations",heures:75},{code:'MEI-25',titre:"Maintenance préventive",heures:90},{code:'MEI-26',titre:"Installation équipement",heures:90},{code:'MEI-27',titre:"Dépannage équipement",heures:90}]},ELM:{1:[{code:'ELM-01',titre:"Métier et formation",heures:30},{code:'ELM-02',titre:"Utilisation ordinateur",heures:45},{code:'ELM-03',titre:"Circuits CC et CA",heures:90},{code:'ELM-04',titre:"Croquis et schémas",heures:60},{code:'ELM-05',titre:"Plans et devis",heures:60},{code:'ELM-06',titre:"Santé sécurité",heures:30},{code:'ELM-07',titre:"Usinage assemblage",heures:90},{code:'ELM-08',titre:"Électrification bâtiments",heures:90},{code:'ELM-09',titre:"Moteurs générateurs",heures:75}],2:[{code:'ELM-12',titre:"Groupes onduleurs",heures:90},{code:'ELM-16',titre:"Moteurs diesel",heures:90},{code:'ELM-17',titre:"Groupes électrogènes",heures:75},{code:'ELM-18',titre:"Circuits pneumatiques",heures:75},{code:'ELM-19',titre:"Circuits hydrauliques",heures:75},{code:'ELM-20',titre:"Électronique puissance",heures:75},{code:'ELM-21',titre:"Programmation automate",heures:90},{code:'ELM-22',titre:"Raccordement automates",heures:75},{code:'ELM-23',titre:"Dépannage automatisé",heures:75},{code:'ELM-24',titre:"Maintenance planifiée",heures:90}]},TEL:{1:[{code:'TEL-01',titre:"Métier et formation",heures:30},{code:'TEL-02',titre:"Circuits CC et CA",heures:90},{code:'TEL-03',titre:"Utilisation ordinateur",heures:45},{code:'TEL-04',titre:"Croquis et schémas",heures:60},{code:'TEL-05',titre:"Électronique analogique",heures:75},{code:'TEL-06',titre:"Oscillation filtration",heures:75},{code:'TEL-07',titre:"Électronique numérique",heures:75},{code:'TEL-08',titre:"Circuits modulation",heures:75},{code:'TEL-09',titre:"Santé sécurité",heures:30},{code:'TEL-10',titre:"Transmissions protocoles",heures:90},{code:'TEL-11',titre:"Installation antennes",heures:60},{code:'TEL-12',titre:"Terminologie anglaise",heures:45},{code:'TEL-13',titre:"Microprocesseurs",heures:75},{code:'TEL-14',titre:"Remplacement composants",heures:75}],2:[{code:'TEL-15',titre:"Communication radio",heures:75},{code:'TEL-16',titre:"Câblage structuré",heures:75},{code:'TEL-17',titre:"Réseau informatique",heures:90},{code:'TEL-18',titre:"Système téléphonique",heures:75},{code:'TEL-19',titre:"Fibre optique",heures:60},{code:'TEL-20',titre:"Communication sans fil",heures:75},{code:'TEL-21',titre:"Téléphonie IP",heures:75},{code:'TEL-22',titre:"Câblodistribution",heures:60},{code:'TEL-23',titre:"Téléphonie sans fil",heures:60},{code:'TEL-24',titre:"Alimentation appoint",heures:60},{code:'TEL-25',titre:"Entrepreneuriat",heures:30},{code:'TEL-26',titre:"Marché du travail",heures:30}]}};
+const MODULES_PROF={TRI:{1:[{code:'TRI-01',titre:"Métier et formation",heures:30},{code:'TRI-02',titre:"Gestion du temps",heures:30},{code:'TRI-03',titre:"Mathématiques",heures:60},{code:'TRI-04',titre:"Anglais technique",heures:60},{code:'TRI-05',titre:"Système d'exploitation",heures:75},{code:'TRI-06',titre:"Résolution problèmes",heures:45},{code:'TRI-07',titre:"Recherche information",heures:45},{code:'TRI-08',titre:"Logiciels bureautique",heures:105},{code:'TRI-09',titre:"Communication pro",heures:45},{code:'TRI-10',titre:"Installation poste",heures:60},{code:'TRI-11',titre:"Base de données",heures:75},{code:'TRI-12',titre:"Dépannage poste",heures:75},{code:'TRI-13',titre:"Technologies internet",heures:45},{code:'TRI-14',titre:"Programmation scripts",heures:60},{code:'TRI-15',titre:"Assistance technique",heures:60},{code:'TRI-16',titre:"Entrepreneuriat",heures:30}],2:[{code:'TRI-17',titre:"Initiation réseautique",heures:75},{code:'TRI-18',titre:"Installation serveur",heures:90},{code:'TRI-19',titre:"Routage commutation",heures:90},{code:'TRI-20',titre:"Configuration serveurs",heures:90},{code:'TRI-21',titre:"Évolutivité réseaux",heures:60},{code:'TRI-22',titre:"Maintenance serveurs",heures:75},{code:'TRI-23',titre:"Câblage structuré",heures:60},{code:'TRI-24',titre:"Supervision dépannage",heures:75},{code:'TRI-25',titre:"Connexion réseaux",heures:60},{code:'TRI-26',titre:"Sécurité réseau",heures:75},{code:'TRI-27',titre:"Implantation réseau",heures:90},{code:'TRI-28',titre:"Recherche emploi",heures:30}]},MEI:{1:[{code:'MEI-01',titre:"Métier et formation",heures:30},{code:'MEI-02',titre:"Utilisation ordinateur",heures:45},{code:'MEI-03',titre:"Croquis et schémas",heures:60},{code:'MEI-04',titre:"Interprétation plans",heures:60},{code:'MEI-05',titre:"Santé et sécurité",heures:30},{code:'MEI-06',titre:"Instruments mesure",heures:60},{code:'MEI-07',titre:"Usinage manuel",heures:105},{code:'MEI-08',titre:"Coupage soudage",heures:105},{code:'MEI-09',titre:"Usinage machines",heures:105},{code:'MEI-10',titre:"Lubrification",heures:60}],2:[{code:'MEI-14',titre:"Éléments transmission",heures:75},{code:'MEI-15',titre:"Tubes tuyaux",heures:60},{code:'MEI-16',titre:"Pompes hydrauliques",heures:75},{code:'MEI-19',titre:"Équilibrage",heures:75},{code:'MEI-20',titre:"Analyse vibrations",heures:75},{code:'MEI-25',titre:"Maintenance préventive",heures:90},{code:'MEI-26',titre:"Installation équipement",heures:90},{code:'MEI-27',titre:"Dépannage équipement",heures:90}]},ELM:{1:[{code:'ELM-01',titre:"Métier et formation",heures:30},{code:'ELM-02',titre:"Utilisation ordinateur",heures:45},{code:'ELM-03',titre:"Circuits CC et CA",heures:90},{code:'ELM-04',titre:"Croquis et schémas",heures:60},{code:'ELM-05',titre:"Plans et devis",heures:60},{code:'ELM-06',titre:"Santé sécurité",heures:30},{code:'ELM-07',titre:"Usinage assemblage",heures:90},{code:'ELM-08',titre:"Électrification bâtiments",heures:90},{code:'ELM-09',titre:"Moteurs générateurs",heures:75}],2:[{code:'ELM-12',titre:"Groupes onduleurs",heures:90},{code:'ELM-13',titre:"Dispositifs de transmission de mouvement",heures:75},{code:'ELM-16',titre:"Moteurs diesel",heures:90},{code:'ELM-17',titre:"Groupes électrogènes",heures:75},{code:'ELM-18',titre:"Circuits pneumatiques",heures:75},{code:'ELM-19',titre:"Circuits hydrauliques",heures:75},{code:'ELM-20',titre:"Électronique puissance",heures:75},{code:'ELM-21',titre:"Programmation automate",heures:90},{code:'ELM-22',titre:"Raccordement automates",heures:75},{code:'ELM-23',titre:"Dépannage automatisé",heures:75},{code:'ELM-24',titre:"Maintenance planifiée",heures:90}]},TEL:{1:[{code:'TEL-01',titre:"Métier et formation",heures:30},{code:'TEL-02',titre:"Circuits CC et CA",heures:90},{code:'TEL-03',titre:"Utilisation ordinateur",heures:45},{code:'TEL-04',titre:"Croquis et schémas",heures:60},{code:'TEL-05',titre:"Électronique analogique",heures:75},{code:'TEL-06',titre:"Oscillation filtration",heures:75},{code:'TEL-07',titre:"Électronique numérique",heures:75},{code:'TEL-08',titre:"Circuits modulation",heures:75},{code:'TEL-09',titre:"Santé sécurité",heures:30},{code:'TEL-10',titre:"Transmissions protocoles",heures:90},{code:'TEL-11',titre:"Installation antennes",heures:60},{code:'TEL-12',titre:"Terminologie anglaise",heures:45},{code:'TEL-13',titre:"Microprocesseurs",heures:75},{code:'TEL-14',titre:"Remplacement composants",heures:75}],2:[{code:'TEL-15',titre:"Communication radio",heures:75},{code:'TEL-16',titre:"Câblage structuré",heures:75},{code:'TEL-17',titre:"Réseau informatique",heures:90},{code:'TEL-18',titre:"Système téléphonique",heures:75},{code:'TEL-19',titre:"Fibre optique",heures:60},{code:'TEL-20',titre:"Communication sans fil",heures:75},{code:'TEL-21',titre:"Téléphonie IP",heures:75},{code:'TEL-22',titre:"Câblodistribution",heures:60},{code:'TEL-23',titre:"Téléphonie sans fil",heures:60},{code:'TEL-24',titre:"Alimentation appoint",heures:60},{code:'TEL-25',titre:"Entrepreneuriat",heures:30},{code:'TEL-26',titre:"Marché du travail",heures:30}]}};
 
 function renderSessionsExamens(c){
   const examens=JSON.parse(localStorage.getItem('canado_examens')||'[]');
