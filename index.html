@@ -4373,6 +4373,7 @@ const ROLES = {
       {id:'dash', icon:'📊', label:'Tableau de bord'},
       {id:'audit', icon:'🔍', label:"Journal d'audit"},
       {id:'rapport-direction', icon:'📋', label:'Rapport de direction'},
+      {id:'quete-satisfaction', icon:'📝', label:'Quête de satisfaction'},
       {id:'rapports', icon:'📈', label:'Rapports & stats'},
       {id:'rapports-ia', icon:'🤖', label:'Rapport pédagogique'},
       {section:'Administration'},
@@ -4407,6 +4408,7 @@ const ROLES = {
       {section:"Vue d'ensemble"},
       {id:'dash', icon:'📊', label:'Tableau de bord'},
       {id:'rapport-direction', icon:'📋', label:'Rapport de direction'},
+      {id:'quete-satisfaction', icon:'📝', label:'Quête de satisfaction'},
       {id:'rapports', icon:'📈', label:'Rapports & stats'},
       {section:'Administration'},
       {id:'etudiants', icon:'👥', label:'Inscriptions & étudiants'},
@@ -4869,6 +4871,7 @@ function showPanel(id) {
     case 'epreuve-pratique': renderEpreuvePratique(c); break;
     // ── NOUVELLES FEATURES ──
     case 'jumeau':          renderJumeauNumerique(c); break;
+    case 'quete-satisfaction': renderQueteSatisfaction(c); break;
     case 'certification':   renderCertification(c); break;
     case 'alumni-net':      renderAlumniNetwork(c); break;
     case 'prog-enfant':     renderProgEnfant(c); break;
@@ -4902,8 +4905,27 @@ function renderDash(c) {
       <div class="kcard"><div class="knum">${total}</div><div class="klbl">Étudiants inscrits</div></div>
       <div class="kcard kr"><div class="knum">${enAttente}</div><div class="klbl">En attente de validation</div></div>
       <div class="kcard kg"><div class="knum">${valides}</div><div class="klbl">Validés</div></div>
-      <div class="kcard kgd"><div class="knum">107</div><div class="klbl">Total modules (1A+2A)</div></div>
+      <div class="kcard kgd"><div class="knum">${['TRI','MEI','ELM','TEL'].reduce((s,p)=>s+((MODULES[p]||[]).length+(MODULES_2[p]||[]).length),0)}</div><div class="klbl">Total modules (1A+2A)</div></div>
     </div>
+    ${(function(){
+      const pays=paieList(); const percu=pays.reduce((s,p)=>s+(p.montant_verse||0),0);
+      const reste=pays.length?pays[pays.length-1]:null;
+      let banque=[]; try{ banque=JSON.parse(localStorage.getItem('canado_banque')||'[]'); }catch(e){}
+      let resas=[]; try{ resas=JSON.parse(localStorage.getItem('canado_reservations')||'[]'); }catch(e){}
+      const resasAtt=resas.filter(r=>r.statut!=='confirme'&&r.statut!=='refuse').length;
+      const allRes=getAllResults();
+      return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.2rem">
+        ${[['💳',fmtHTG?fmtHTG(percu):percu+' HTG','Paiements perçus ('+pays.length+' versements)','var(--green)'],
+           ['📝',banque.length,'Examens en banque','var(--blue)'],
+           ['🧪',allRes.length,'Examens passés','#5B2D8E'],
+           ['🔬',resasAtt,'Réservations labo en attente',resasAtt?'#A07000':'var(--g500)']].map(([i,v,l,col])=>`
+        <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:.9rem;text-align:center;cursor:pointer" onclick="${i==='💳'?"showPanel('paiements')":i==='🔬'?"showPanel('reservations')":"showPanel('banque-examens')"}">
+          <div style="font-size:1.1rem">${i}</div>
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.1rem;color:${col}">${v}</div>
+          <div style="font-size:.68rem;color:var(--g500)">${l}</div>
+        </div>`).join('')}
+      </div>`;
+    })()}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
       <div style="background:var(--g50);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem">
         <h4 style="font-size:.82rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Répartition par programme</h4>
@@ -4959,9 +4981,81 @@ function renderDash(c) {
         <td>${open?'<span class="chip cg">Activé</span>':'<span class="chip cgy">Verrouillé</span>'}</td>
       </tr>`;}).join('')}
     </tbody></table></div>`:'<p style="font-size:.8rem;color:var(--g500)">Aucun module pour ce programme.</p>'}`;
+  } else if(['dg','detudes','devals'].includes(currentRole)) {
+    renderDirectionDash(c);
+  } else if(currentRole==='parent') {
+    renderParentDash(c);
   } else {
     renderEtudDash(c);
   }
+}
+
+/* ── Tableau de bord DIRECTION — vue globale des 4 programmes ── */
+function renderDirectionDash(c) {
+  const ins = getInscriptions();
+  const valides = ins.filter(i=>i.statut==='valide');
+  const enAttente = ins.filter(i=>i.statut==='en_attente'||!i.statut).length;
+  const progs = ['TRI','MEI','ELM','TEL'];
+  const totalModules = progs.reduce((s,p)=>s+((MODULES[p]||[]).length+(MODULES_2[p]||[]).length),0);
+  let banque=[]; try{ banque=JSON.parse(localStorage.getItem('canado_banque')||'[]'); }catch(e){}
+  const allRes = getAllResults();
+  let evals=[]; try{ evals=JSON.parse(localStorage.getItem('canado_evaluations')||'[]'); }catch(e){}
+  const pays = paieList();
+  const totalPercu = pays.reduce((s,p)=>s+(p.montant_verse||0),0);
+  const wfStatus = ex => { const wf=ex.wf; if(!wf||!wf.steps) return 'genere';
+    if(wf.steps.some(s=>s.status==='rejete')) return 'rejete';
+    if(wf.steps.every(s=>s.status==='valide')) return 'valide';
+    if(wf.steps.some(s=>s.status==='valide')) return 'en_validation'; return 'genere'; };
+  const nbValides = banque.filter(e=>wfStatus(e)==='valide').length;
+  const nbEnVal   = banque.filter(e=>wfStatus(e)==='en_validation'||wfStatus(e)==='genere').length;
+
+  const progRows = progs.map(p=>{
+    const m1=(MODULES[p]||[]), m2=(MODULES_2[p]||[]);
+    const st1=getModuleStates(p,1), st2=getModuleStates(p,2);
+    const ouverts=m1.filter(m=>st1[m.code]===true).length+m2.filter(m=>st2[m.code]===true).length;
+    const etuds=valides.filter(i=>i.programme===p).length;
+    const attente=ins.filter(i=>i.programme===p&&(i.statut==='en_attente'||!i.statut)).length;
+    const res=allRes.filter(r=>r.prog===p);
+    const moy=res.length?Math.round(res.reduce((s,r)=>s+r.score,0)/res.length):null;
+    const reussite=res.length?Math.round(res.filter(r=>r.status==='Validé').length/res.length*100):null;
+    const info=PROG_INFO[p]||{};
+    return `<tr>
+      <td><span class="chip ${info.chip||'cb'}">${info.icon||''} ${p}</span></td>
+      <td style="text-align:center;font-weight:700">${m1.length+m2.length}</td>
+      <td style="text-align:center">${ouverts}</td>
+      <td style="text-align:center;font-weight:600">${etuds}</td>
+      <td style="text-align:center;color:${attente?'#A07000':'var(--g500)'}">${attente||'—'}</td>
+      <td style="text-align:center">${res.length||'—'}</td>
+      <td style="text-align:center;font-weight:700;color:${moy==null?'var(--g500)':moy>=75?'var(--green)':'#A07000'}">${moy==null?'—':moy+'%'}</td>
+      <td style="text-align:center;font-weight:700;color:${reussite==null?'var(--g500)':reussite>=70?'var(--green)':'var(--red)'}">${reussite==null?'—':reussite+'%'}</td>
+    </tr>`; }).join('');
+
+  c.innerHTML = `<div class="ph2">Tableau de bord — Direction <span class="ai-badge">Vue globale</span></div>
+  <p style="font-size:.82rem;color:var(--g500);margin-bottom:1rem">${(ROLES[currentRole]&&ROLES[currentRole].role)||''} · Les 4 programmes en un coup d'œil</p>
+  <div class="kgrid">
+    <div class="kcard"><div class="knum">${valides.length}</div><div class="klbl">Étudiants validés</div></div>
+    <div class="kcard kr"><div class="knum">${enAttente}</div><div class="klbl">Inscriptions en attente</div></div>
+    <div class="kcard kgd"><div class="knum">${totalModules}</div><div class="klbl">Modules au catalogue</div></div>
+    <div class="kcard kg"><div class="knum">${fmtHTG?fmtHTG(totalPercu):totalPercu+' HTG'}</div><div class="klbl">Total perçu</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.2rem">
+    ${[['📝',banque.length,'Examens en banque','var(--blue)'],['⏳',nbEnVal,'En validation','#A07000'],['✅',nbValides,'Examens validés','var(--green)'],['🧪',allRes.length,'Examens passés (étudiants)','#5B2D8E'],['📋',evals.length,'Quêtes de satisfaction','var(--blue)']].map(([i,v,l,col])=>`
+    <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:.9rem;text-align:center">
+      <div style="font-size:1.1rem">${i}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.25rem;color:${col}">${v}</div>
+      <div style="font-size:.68rem;color:var(--g500)">${l}</div>
+    </div>`).join('')}
+  </div>
+  <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Situation par programme</h4>
+  <div class="tw"><table><thead><tr><th>Programme</th><th>Modules</th><th>Ouverts</th><th>Étudiants</th><th>En attente</th><th>Examens passés</th><th>Moyenne</th><th>Réussite</th></tr></thead><tbody>
+    ${progRows}
+  </tbody></table></div>
+  <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+    <button class="btn btn-blue btn-sm" onclick="showPanel('rapport-direction')">📋 Rapport de direction</button>
+    <button class="btn btn-outline btn-sm" onclick="showPanel('rapports')">📈 Rapports & stats</button>
+    ${currentRole==='dg'?'<button class="btn btn-outline btn-sm" onclick="showPanel(\'audit\')">🔍 Journal d\'audit</button>':''}
+    <button class="btn btn-outline btn-sm" onclick="showPanel('validation')">✅ Validation & flux</button>
+  </div>`;
 }
 
 /* ── Données étudiants réelles (depuis canado_inscriptions) ── */
@@ -5246,6 +5340,7 @@ function toggleModule(prog, code, btn, year) {
   const newState = !nowOn;
   btn.classList.toggle('on', newState);
   setModuleActive(prog, code, newState, yr);
+  if(typeof logAudit==='function') logAudit('ACTIVATION_MODULE', prog+' '+code+' (année '+yr+')', nowOn?'Actif':'Inactif', newState?'Actif':'Inactif');
   const stateLabel = btn.nextElementSibling;
   if (stateLabel) stateLabel.textContent = newState ? 'Actif' : 'Inactif';
   toast('Module ' + code + ' ' + (newState ? 'activé ✅' : 'désactivé 🔒'));
@@ -5791,20 +5886,48 @@ async function lancerSyntheseIndex(btn) {
 }
 
 function renderRapports(c) {
-  c.innerHTML = `<div class="ph2">Rapports & Statistiques</div>
+  const ins=getInscriptions();
+  const valides=ins.filter(i=>i.statut==='valide');
+  const allRes=getAllResults();
+  let banque=[]; try{ banque=JSON.parse(localStorage.getItem('canado_banque')||'[]'); }catch(e){}
+  let evals=[]; try{ evals=JSON.parse(localStorage.getItem('canado_evaluations')||'[]'); }catch(e){}
+  const reussite=allRes.length?Math.round(allRes.filter(r=>r.status==='Validé').length/allRes.length*100):null;
+  const moisRes=allRes.filter(r=>{ const d=new Date(r.iso||0); const n=new Date(); return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear(); }).length;
+  const echecKeys=new Set(allRes.filter(r=>r.status!=='Validé').map(r=>r.key));
+  const progs=['TRI','MEI','ELM','TEL'];
+  c.innerHTML = `<div class="ph2">Rapports & Statistiques <span class="ai-badge">Données réelles</span></div>
   <div class="kgrid">
-    <div class="kcard kg"><div class="knum">74%</div><div class="klbl">Taux réussite moyen</div></div>
-    <div class="kcard"><div class="knum">312</div><div class="klbl">Examens ce mois</div></div>
-    <div class="kcard kgd"><div class="knum">88%</div><div class="klbl">Taux de présence</div></div>
-    <div class="kcard kr"><div class="knum">14</div><div class="klbl">Étudiants en échec</div></div>
+    <div class="kcard kg"><div class="knum">${reussite==null?'—':reussite+'%'}</div><div class="klbl">Taux réussite (examens)</div></div>
+    <div class="kcard"><div class="knum">${moisRes}</div><div class="klbl">Examens ce mois</div></div>
+    <div class="kcard kgd"><div class="knum">${evals.length}</div><div class="klbl">Quêtes de satisfaction</div></div>
+    <div class="kcard kr"><div class="knum">${echecKeys.size}</div><div class="klbl">Étudiants avec module(s) en échec</div></div>
   </div>
   <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Résultats par programme</h4>
-  <div class="tw"><table><thead><tr><th>Programme</th><th>Étudiants</th><th>Modules actifs</th><th>Examens</th><th>Moy.</th><th>Taux réussite</th></tr></thead><tbody>
-    <tr><td><span class="chip cb">TRI</span></td><td>620</td><td>5/44</td><td>155</td><td>76%</td><td style="color:var(--green);font-weight:700">82%</td></tr>
-    <tr><td><span class="chip cgd">MEI</span></td><td>480</td><td>3/26</td><td>98</td><td>71%</td><td style="color:var(--green);font-weight:700">74%</td></tr>
-    <tr><td><span class="chip cg">ELM</span></td><td>355</td><td>4/22</td><td>59</td><td>69%</td><td style="color:#A07000;font-weight:700">68%</td></tr>
-    <tr><td><span class="chip cgy">TEL</span></td><td>187</td><td>2/22</td><td>0</td><td>—</td><td>—</td></tr>
-  </tbody></table></div>`;
+  <div class="tw"><table><thead><tr><th>Programme</th><th>Étudiants</th><th>Modules actifs</th><th>Examens passés</th><th>Examens en banque</th><th>Moy.</th><th>Taux réussite</th></tr></thead><tbody>
+    ${progs.map(p=>{
+      const m1=(MODULES[p]||[]), m2=(MODULES_2[p]||[]);
+      const st1=getModuleStates(p,1), st2=getModuleStates(p,2);
+      const actifs=m1.filter(m=>st1[m.code]===true).length+m2.filter(m=>st2[m.code]===true).length;
+      const et=valides.filter(i=>i.programme===p).length;
+      const res=allRes.filter(r=>r.prog===p);
+      const bq=banque.filter(e=>(e.programme||e.prog||(e.module_code||'').split('-')[0])===p).length;
+      const moy=res.length?Math.round(res.reduce((s,r)=>s+r.score,0)/res.length):null;
+      const tx=res.length?Math.round(res.filter(r=>r.status==='Validé').length/res.length*100):null;
+      const info=PROG_INFO[p]||{};
+      return `<tr><td><span class="chip ${info.chip||'cb'}">${p}</span></td>
+        <td style="text-align:center">${et}</td>
+        <td style="text-align:center">${actifs}/${m1.length+m2.length}</td>
+        <td style="text-align:center">${res.length||'—'}</td>
+        <td style="text-align:center">${bq||'—'}</td>
+        <td style="text-align:center;font-weight:700">${moy==null?'—':moy+'%'}</td>
+        <td style="text-align:center;font-weight:700;color:${tx==null?'var(--g500)':tx>=70?'var(--green)':'var(--red)'}">${tx==null?'—':tx+'%'}</td></tr>`;
+    }).join('')}
+  </tbody></table></div>
+  <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+    <button class="btn btn-blue btn-sm" onclick="showPanel('quete-satisfaction')">📝 Quête de satisfaction</button>
+    <button class="btn btn-outline btn-sm" onclick="showPanel('rapport-direction')">📋 Rapport de direction</button>
+    <button class="btn btn-outline btn-sm" onclick="showPanel('epreuve-pratique')">🧪 Rapport des examens</button>
+  </div>`;
 }
 
 function renderRapportDirection(c) {
@@ -6514,6 +6637,7 @@ function saveTarifs(){
       versements:[0,1,2,3,4,5].map(i=>tfVal('tf-'+p+'-v'+i))
     };
   });
+  if(typeof logAudit==='function') logAudit('MODIFICATION_TARIFS','Grille tarifaire','','Barème mis à jour');
   localStorage.setItem('canado_tarifs', JSON.stringify(cfg));
   reloadTarifs();
   toast("✅ Grille tarifaire enregistrée — le menu d'inscription est à jour.");
@@ -6606,6 +6730,7 @@ function savePaiement(){
     montant_verse:versement, reste_apres:Math.max(0, r.reste-versement),
     recu_par:(ROLES[currentRole]&&ROLES[currentRole].name)||'—', date:new Date().toISOString() };
   const list=paieList(); list.push(rec); localStorage.setItem('canado_paiements', JSON.stringify(list));
+  if(typeof logAudit==='function') logAudit('PAIEMENT', k.nom+' ('+(k.mat||'—')+')', '', fmtHTG(versement)+' — reste '+fmtHTG(rec.reste_apres));
   const kpi=document.getElementById('pa-kpi'); if(kpi) kpi.innerHTML=paieKpiHTML();
   const hist=document.getElementById('pa-hist'); if(hist) hist.innerHTML=renderPaieHistHTML();
   document.getElementById('pa-montant').value='';
@@ -6718,14 +6843,13 @@ function renderMesCours(c) {
       const doneClass = states[m.code+'_done'] ? 'cg' : 'cb';
       const doneLabel = states[m.code+'_done'] ? '✅ Validé' : '▶ En cours';
       statusBadge = `<span class="chip ${doneClass}">${doneLabel}</span>`;
-      actionBtns  = `<button class="btn btn-outline btn-sm" style="font-size:.72rem;border-color:rgba(27,58,140,.3);color:var(--blue)" 
+      actionBtns  = `<button class="btn btn-blue btn-sm" style="font-size:.72rem"
           data-fichier="${m.fichier}" data-titre="${m.code} · ${m.title.replace(/"/g,'&quot;')}"
-          onclick="openCoursViewer(this.dataset.fichier,this.dataset.titre)">📖 Ouvrir le cours</button>
-        <button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>`;
+          onclick="openCoursViewer(this.dataset.fichier,this.dataset.titre)">📖 Ouvrir le cours</button>`;
     } else {
       // Module actif sans fichier HTML
       statusBadge = '<span class="chip cb">▶ En cours</span>';
-      actionBtns  = `<button class="btn btn-blue btn-sm" onclick="openVideoPlayer('${m.code}')">▶ Vidéo</button>`;
+      actionBtns  = '<span style="font-size:.72rem;color:var(--g500)">Contenu en préparation</span>';
     }
 
     return `<div class="mrow" style="${!active?'opacity:.55':''}">
@@ -6785,42 +6909,121 @@ function openVideoPlayer(code) {
 /* ══════════════════════════════════════
    ZOOM PANEL
 ══════════════════════════════════════ */
+/* ══ ZOOM OPÉRATIONNEL ══
+   canado_zoom_config = { lien, meeting_id, code, note }  ← compte Zoom PRO de la Direction Générale
+   canado_zoom        = [ {id, prog, module, titre, date(ISO), lien, by, role} ]
+   Le lien du compte pro (DG) est utilisé par défaut pour toutes les séances. */
+function zoomCfg(){ try{ return JSON.parse(localStorage.getItem('canado_zoom_config')||'{}'); }catch(e){ return {}; } }
+function zoomList(){ try{ return JSON.parse(localStorage.getItem('canado_zoom')||'[]'); }catch(e){ return []; } }
+function zoomSaveCfg(){
+  const cfg={ lien:(document.getElementById('zc-lien')||{}).value.trim(),
+    meeting_id:(document.getElementById('zc-id')||{}).value.trim(),
+    code:(document.getElementById('zc-code')||{}).value.trim(),
+    note:(document.getElementById('zc-note')||{}).value.trim() };
+  if(cfg.lien && !/^https:\/\/[a-z0-9.-]*zoom\.us\//i.test(cfg.lien)){ toast('⚠️ Le lien doit être un lien Zoom (https://...zoom.us/...)'); return; }
+  localStorage.setItem('canado_zoom_config', JSON.stringify(cfg));
+  if(typeof logAudit==='function') logAudit('CONFIG_ZOOM','Compte Zoom pro (Direction Générale)','',cfg.lien?'Lien mis à jour':'Lien effacé');
+  toast('✅ Compte Zoom professionnel enregistré — utilisé par défaut pour toutes les séances.');
+  showPanel('zoom-panel');
+}
+function zoomPlanifier(){
+  const mod=(document.getElementById('zp-module')||{}).value||'';
+  const dt=(document.getElementById('zp-date')||{}).value||'';
+  const lienCustom=((document.getElementById('zp-lien')||{}).value||'').trim();
+  const cfg=zoomCfg();
+  if(!mod||!dt){ toast('⚠️ Choisis le module et la date/heure.'); return; }
+  const lien=lienCustom||cfg.lien||'';
+  if(!lien){ toast('⚠️ Aucun lien : la Direction Générale doit d\'abord configurer le compte Zoom pro (ou colle un lien).'); return; }
+  const [code,...rest]=mod.split(' · ');
+  const prog=(code||'').split('-')[0]||etudProg||'TRI';
+  const s={ id:'zm_'+Date.now(), prog, module:code, titre:rest.join(' · '), date:dt,
+    lien, by:(ROLES[currentRole]&&ROLES[currentRole].name)||'—', role:currentRole,
+    created:new Date().toISOString() };
+  const list=zoomList(); list.push(s);
+  localStorage.setItem('canado_zoom', JSON.stringify(list));
+  try{ const nf=JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+    nf.unshift({type:'zoom',message:'🎥 Séance Zoom planifiée — '+code+' ('+new Date(dt).toLocaleString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})+')',date:new Date().toISOString()});
+    localStorage.setItem('canado_notifications', JSON.stringify(nf)); }catch(e){}
+  if(typeof logAudit==='function') logAudit('SÉANCE_ZOOM', code, '', 'Planifiée '+dt);
+  toast('✅ Séance planifiée ! Les étudiants '+prog+' sont notifiés.');
+  showPanel('zoom-panel');
+}
+function zoomSupprimer(id){
+  const list=zoomList().filter(s=>s.id!==id);
+  localStorage.setItem('canado_zoom', JSON.stringify(list));
+  if(typeof logAudit==='function') logAudit('SUPPRESSION','Séance Zoom '+id,'','Supprimée');
+  showPanel('zoom-panel');
+}
+function zoomStatus(s){
+  const d=new Date(s.date), now=new Date(), diff=d-now;
+  if(diff<-2*3600e3) return ['Terminée','cgy'];
+  if(diff<=15*60e3 && diff>-2*3600e3) return ['🔴 Maintenant','cr'];
+  if(diff<=24*3600e3) return ['À venir','cb'];
+  return ['Planifiée','cgd'];
+}
 function renderZoom(c) {
-  const sessions = [
-    {code:'TRI-05',title:"Système d'exploitation",prof:'Rooby Raymonvil',date:'Aujourd\'hui 14h00',link:'https://zoom.us/j/demo1',status:'Maintenant'},
-    {code:'TRI-08',title:'Logiciels de bureautique',prof:'Rooby Raymonvil',date:'Demain 09h00',link:'https://zoom.us/j/demo2',status:'À venir'},
-    {code:'TRI-10',title:"Installation d'un poste",prof:'Rooby Raymonvil',date:'Ven 15 Mai · 10h00',link:'https://zoom.us/j/demo3',status:'Planifié'},
-  ];
-  c.innerHTML = `<div class="ph2">🎥 Séances Zoom</div>
-  ${currentRole==='prof'?`<div style="margin-bottom:1.2rem">
-    <div class="fsec"><h4>Planifier une nouvelle séance</h4>
-      <div class="frow">
-        <div class="fg"><label>Module</label>
-          <select>${MODULES.TRI.map(m=>`<option>${m.code} · ${m.title}</option>`).join('')}</select>
-        </div>
-        <div class="fg"><label>Date et heure</label><input type="datetime-local"></div>
-      </div>
-      <div class="fg" style="margin-bottom:.8rem"><label>Lien Zoom</label><input type="text" placeholder="https://zoom.us/j/..."></div>
-      <button class="btn btn-blue btn-sm" onclick="toast('Séance Zoom planifiée ! Étudiants notifiés.')">+ Planifier la séance</button>
+  const cfg=zoomCfg();
+  const isDG=['dg','admin'].includes(currentRole);
+  const canPlan=['prof','dg','admin','detudes'].includes(currentRole);
+  const prog=etudProg||'TRI';
+  let sessions=zoomList().slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  if(currentRole==='etud') sessions=sessions.filter(s=>s.prog===prog);
+  const modOpts = canPlan ? (currentRole==='prof'
+      ? ((MODULES[prog]||[]).concat(MODULES_2[prog]||[]))
+      : ['TRI','MEI','ELM','TEL'].flatMap(p=>(MODULES[p]||[]).concat(MODULES_2[p]||[]))) : [];
+
+  c.innerHTML = `<div class="ph2">🎥 Séances Zoom <span class="ai-badge">${cfg.lien?'Compte pro actif':'Compte pro à configurer'}</span></div>
+
+  ${isDG?`<div class="fsec" style="margin-bottom:1.2rem;border:1.5px solid rgba(245,197,24,.4);background:rgba(245,197,24,.05)">
+    <h4>🏛️ Compte Zoom professionnel — Direction Générale</h4>
+    <p style="font-size:.75rem;color:var(--g500);margin-bottom:.8rem">Ce lien est le lien officiel de l'école. Il est utilisé <strong>par défaut</strong> pour toutes les séances planifiées par les professeurs.</p>
+    <div class="frow">
+      <div class="fg"><label>Lien de réunion Zoom (salle personnelle pro)</label><input type="text" id="zc-lien" placeholder="https://zoom.us/j/..." value="${(cfg.lien||'').replace(/"/g,'&quot;')}"></div>
+      <div class="fg"><label>ID de réunion</label><input type="text" id="zc-id" placeholder="123 456 7890" value="${(cfg.meeting_id||'').replace(/"/g,'&quot;')}"></div>
     </div>
+    <div class="frow">
+      <div class="fg"><label>Code d'accès (partagé aux profs)</label><input type="text" id="zc-code" placeholder="Code secret" value="${(cfg.code||'').replace(/"/g,'&quot;')}"></div>
+      <div class="fg"><label>Note interne</label><input type="text" id="zc-note" placeholder="ex. Compte Zoom Pro annuel" value="${(cfg.note||'').replace(/"/g,'&quot;')}"></div>
+    </div>
+    <button class="btn btn-gold btn-sm" onclick="zoomSaveCfg()">💾 Enregistrer le compte pro</button>
   </div>`:''}
-  <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Séances disponibles</h4>
+
+  ${canPlan?`<div class="fsec" style="margin-bottom:1.2rem">
+    <h4>Planifier une nouvelle séance</h4>
+    ${cfg.lien?`<p style="font-size:.73rem;color:#006B46;margin-bottom:.6rem">✓ Le lien du compte pro de la Direction Générale sera utilisé automatiquement${cfg.code?' (code : '+cfg.code+')':''}.</p>`
+      :`<p style="font-size:.73rem;color:#A07000;margin-bottom:.6rem">⚠️ Aucun compte pro configuré — colle un lien Zoom ci-dessous ou demande à la Direction Générale.</p>`}
+    <div class="frow">
+      <div class="fg"><label>Module</label>
+        <select id="zp-module">${modOpts.map(m=>`<option>${m.code} · ${m.title}</option>`).join('')}</select>
+      </div>
+      <div class="fg"><label>Date et heure</label><input type="datetime-local" id="zp-date"></div>
+    </div>
+    <div class="fg" style="margin-bottom:.8rem"><label>Lien Zoom ${cfg.lien?'(optionnel — défaut : compte pro)':''}</label><input type="text" id="zp-lien" placeholder="${cfg.lien?'Laisser vide pour utiliser le compte pro':'https://zoom.us/j/...'}"></div>
+    <button class="btn btn-blue btn-sm" onclick="zoomPlanifier()">+ Planifier la séance</button>
+  </div>`:''}
+
+  <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem">Séances ${currentRole==='etud'?prog+' ':''}(${sessions.length})</h4>
+  ${!sessions.length?`<div style="text-align:center;padding:2rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--rL)">
+    <div style="font-size:1.6rem;margin-bottom:.4rem">📹</div>
+    <div style="font-size:.82rem;color:var(--g500)">Aucune séance planifiée pour le moment.${canPlan?' Utilise le formulaire ci-dessus.':''}</div>
+  </div>`:`
   <div style="display:flex;flex-direction:column;gap:.8rem">
-    ${sessions.map(s=>`
-      <div class="zoom-card">
+    ${sessions.map(s=>{
+      const [lbl,chip]=zoomStatus(s);
+      const dateLbl=new Date(s.date).toLocaleString('fr-FR',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      return `<div class="zoom-card">
         <div class="zoom-icon">📹</div>
-        <div style="flex:1">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text)">${s.code} · ${s.title}</div>
-          <div style="font-size:.75rem;color:var(--g500);margin-top:2px">${s.prof} · ${s.date}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text)">${s.module} · ${s.titre||''} <span class="chip cb" style="margin-left:.3rem">${s.prog}</span></div>
+          <div style="font-size:.75rem;color:var(--g500);margin-top:2px">${s.by} · ${dateLbl}</div>
         </div>
-        <div>
-          <span class="chip ${s.status==='Maintenant'?'cr':s.status==='À venir'?'cb':'cgy'}" style="margin-right:.5rem">${s.status}</span>
-          <a href="${s.link}" target="_blank" class="btn btn-blue btn-sm" onclick="event.preventDefault();toast('Ouverture de Zoom pour ${s.code}')">
-            ${s.status==='Maintenant'?'Rejoindre maintenant →':'Rejoindre →'}
-          </a>
+        <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+          <span class="chip ${chip}">${lbl}</span>
+          <a href="${s.lien}" target="_blank" rel="noopener" class="btn btn-blue btn-sm">${lbl.includes('Maintenant')?'Rejoindre maintenant →':'Rejoindre →'}</a>
+          ${(canPlan&&(isDG||s.role===currentRole))?`<button class="btn btn-outline btn-sm" style="color:var(--red);border-color:rgba(232,25,44,.3)" onclick="zoomSupprimer('${s.id}')">🗑</button>`:''}
         </div>
-      </div>`).join('')}
-  </div>`;
+      </div>`;}).join('')}
+  </div>`}`;
 }
 
 /* ══════════════════════════════════════
@@ -6957,7 +7160,8 @@ function saveToBanque(modCode, prog){
     date:new Date().toISOString(), statut:'genere',
     wf:freshWf((ROLES[currentRole]&&ROLES[currentRole].name)||'Professeur', new Date().toISOString())
   };
-  const list=getBanque(); list.push(entry); localStorage.setItem('canado_banque', JSON.stringify(list));
+  const list=getBanque(); list.push(entry); if(typeof logAudit==='function') logAudit('CRÉATION_EXAMEN', (modCode||'')+' — enregistré dans la banque', '', 'Version ajoutée');
+  localStorage.setItem('canado_banque', JSON.stringify(list));
   toast('💾 Enregistré dans la banque — '+entry.nb_versions+' version(s)');
   showToastNotif('🏦 Ajouté à la banque + soumis à validation', modCode+' est enregistré et entre dans le flux Prof → Études → Évaluations → Publication.');
 }
@@ -7163,23 +7367,34 @@ function renderReservationsAdmin(c) {
 ══════════════════════════════════════ */
 function renderChoisirExam(c) {
   const prog = etudProg || 'TRI';
-  const available = MODULES[prog].slice(0,6);
+  const yr = parseInt(etudYear)||1;
+  const mods = (yr===2?(MODULES_2[prog]||[]):(MODULES[prog]||[]));
+  const states = getModuleStates(prog, yr);
+  const mat = currentMatricule();
+  const myRes = getMyResults();
   c.innerHTML = `<div class="ph2">Choisir et passer un examen</div>
   <div style="background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.12);border-radius:8px;padding:.8rem 1rem;margin-bottom:1rem;font-size:.78rem;color:var(--g700)">
-    📝 Seuls les modules dont le professeur a ouvert l'examen sont disponibles. Résultats immédiats après soumission.
+    📝 L'examen blanc d'un module est accessible dès que le module est <strong>activé</strong> pour ta classe. Correction automatique et résultat immédiat — puis remplis la <strong>quête de satisfaction</strong> du module.
   </div>
   <div class="esel-grid">
-    ${available.map(m=>{
+    ${mods.map(m=>{
+      const classOpen = states[m.code]===true;
+      const open = (typeof moduleAccessFor==='function') ? moduleAccessFor(mat, prog, m.code, classOpen) : classOpen;
       const hasExam = !!EXAMS[m.code];
-      const badge = hasExam
-        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066"><span style="width:7px;height:7px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible</span>`
-        : `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.15)">◐ En attente</span>`;
-      return `<div class="esel-card" onclick="${hasExam?`startExam('${m.code}','A')`:`toast('Examen non encore disponible pour ${m.code}')`}">
-        <div class="esel-prog">${m.code}</div>
+      const ready = open && hasExam;
+      const last = myRes.filter(r=>r.code===m.code).sort((a,b)=>(b.iso||'').localeCompare(a.iso||''))[0];
+      const badge = !open
+        ? `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.15)">🔒 Module verrouillé</span>`
+        : ready
+          ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e6f9f0;color:#006B46;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid #00A066"><span style="width:7px;height:7px;border-radius:50%;background:#00A066;display:inline-block;animation:pulse 1.5s infinite"></span>Disponible</span>`
+          : `<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.15)">◐ Examen en préparation</span>`;
+      const lastBadge = last ? `<span style="font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:6px;background:${last.status==='Validé'?'rgba(0,160,102,.2)':'rgba(232,25,44,.18)'};color:${last.status==='Validé'?'#7CE3B4':'#ff9aa2'}">${last.status==='Validé'?'✓':'✗'} ${last.score}%</span>` : '';
+      return `<div class="esel-card" style="${!ready?'opacity:.62;':''}" onclick="${ready?`startExam('${m.code}','A')`:!open?`toast('🔒 ${m.code} n\\'est pas encore activé pour ta classe')`:`toast('Examen non encore disponible pour ${m.code}')`}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="esel-prog">${m.code}</div>${lastBadge}</div>
         <div class="esel-title">${m.title}</div>
         <div class="esel-meta" style="margin-top:.3rem;margin-bottom:.5rem">Seuil: ${m.seuil}% · ${m.dur}h</div>
         <div style="display:flex;align-items:center;justify-content:space-between">
-          ${badge}${hasExam?'<span style="font-size:.68rem;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.12)">Version A</span>':''}
+          ${badge}${ready?'<span style="font-size:.68rem;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.12)">Version A</span>':''}
         </div>
       </div>`;
     }).join('')}
@@ -7275,6 +7490,14 @@ function submitExam() {
       <div class="rbdg rbdg-b">🎯 Score: ${pct}%</div>
       <div class="rbdg rbdg-gd">📊 Seuil requis: ${seuil}%</div>
     </div>
+    <div style="margin-top:1.2rem;padding:.9rem 1rem;background:rgba(245,197,24,.1);border:1.5px solid rgba(245,197,24,.35);border-radius:10px;text-align:left;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+      <span style="font-size:1.3rem">📋</span>
+      <div style="flex:1;min-width:180px">
+        <div style="font-weight:700;font-size:.82rem">Quête de satisfaction du module</div>
+        <div style="font-size:.72rem;opacity:.75">Ton avis sur ${examState.code} aide la direction à améliorer la formation (2 min).</div>
+      </div>
+      <button class="btn btn-gold btn-sm" onclick="openEvalModule('${examState.code}')">📝 Remplir maintenant</button>
+    </div>
     <button class="btn btn-ghost" style="margin-top:1rem" onclick="showPanel('choisir-exam')">← Retour aux examens</button>`;
   document.getElementById('p-content').appendChild(rd);
   rd.scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -7285,40 +7508,290 @@ function submitExam() {
 /* ══════════════════════════════════════
    RÉSULTATS ÉTUDIANT
 ══════════════════════════════════════ */
-let studentResults = [
-  {code:'TRI-01',title:'Métier et formation',score:85,status:'Validé',date:'03 Mai 2026'},
-  {code:'TRI-02',title:'Gestion du temps',score:78,status:'Validé',date:'10 Mai 2026'},
-  {code:'TRI-03',title:'Mathématiques en informatique',score:62,status:'Échec',date:'12 Mai 2026'},
-];
+/* Résultats RÉELS persistés dans canado_resultats.
+   Clé étudiant = matricule (login SIGES) ou clé démo par programme/année. */
+function resKey(){ return currentMatricule() || ('demo::'+(etudProg||'TRI')+'::'+(parseInt(etudYear)||1)); }
+function getAllResults(){ try{ return JSON.parse(localStorage.getItem('canado_resultats')||'[]'); }catch(e){ return []; } }
+function getMyResults(){ const k=resKey(); return getAllResults().filter(r=>r.key===k); }
+function evalDoneFor(code){ // la quête de satisfaction a-t-elle été remplie pour ce module ?
+  try{ const evs=JSON.parse(localStorage.getItem('canado_evaluations')||'[]');
+    const k=resKey(); return evs.some(ev=>(ev.module_code===code||ev.moduleCode===code)&&(ev.etudiant_key===k)); }catch(e){ return false; }
+}
 
 function saveResult(code, pct, success) {
-  const mod = MODULES_FLAT.find(m=>m.code===code);
+  const mod = MODULES_FLAT.find(m=>m.code===code) || MODULES_2_FLAT.find(m=>m.code===code);
   const today = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
-  const existing = studentResults.findIndex(r=>r.code===code);
-  const entry = {code,title:mod?.title||code,score:pct,status:success?'Validé':'Échec',date:today};
-  if(existing>=0) studentResults[existing] = entry;
-  else studentResults.push(entry);
+  const list = getAllResults();
+  const k = resKey();
+  const entry = {key:k, matricule:currentMatricule()||null, nom:(ROLES[currentRole]&&ROLES[currentRole].name)||'Étudiant',
+    prog:etudProg||'TRI', annee:parseInt(etudYear)||1,
+    code, title:mod?.title||code, seuil:mod?.seuil||75, score:pct, status:success?'Validé':'Échec',
+    tentative:(list.filter(r=>r.key===k&&r.code===code).length)+1,
+    date:today, iso:new Date().toISOString(), corrige:true /* correction automatique immédiate */};
+  const existing = list.findIndex(r=>r.key===k && r.code===code);
+  if(existing>=0){ entry.tentative=(list[existing].tentative||1)+1; list[existing]=entry; }
+  else list.push(entry);
+  try{ localStorage.setItem('canado_resultats', JSON.stringify(list)); }catch(e){}
+  if(typeof logAudit==='function') logAudit('EXAMEN_PASSÉ', code+' — '+entry.nom, '', pct+'% ('+entry.status+')');
+  // certificat de module auto-généré si validé
+  if(success && typeof ensureModuleCert==='function') ensureModuleCert(entry);
+}
+
+/* ══════════════════════════════════════
+   QUÊTE DE SATISFACTION — formulaire intégré (après examen blanc)
+   Store : canado_evaluations (compatible rapport de direction rdLoadData)
+══════════════════════════════════════ */
+const EVAL_STARS = [
+  ['clarte','📖','Clarté du contenu','Le cours était-il bien expliqué et facile à comprendre ?'],
+  ['prof','👨‍🏫','Qualité du professeur','Pédagogie, disponibilité, maîtrise du sujet'],
+  ['supports','📁','Supports pédagogiques','Qualité des documents, vidéos et exercices'],
+  ['plateforme','💻','Plateforme e-learning & vidéos','Cours en ligne, professeur virtuel, quiz interactifs'],
+  ['rythme','⏱️','Rythme du cours','Le cours avançait-il à un bon rythme ?'],
+  ['pratique','🔧','Utilité pratique / terrain','Ce module prépare-t-il bien au monde professionnel ?'],
+  ['environnement','🏛️','Environnement (salle/matériel)','Conditions d\'apprentissage, équipements disponibles'],
+];
+const EVAL_YN = [
+  ['objectifs','Les objectifs du module ont été clairement expliqués au début'],
+  ['questions','Tu as pu poser des questions et obtenir des réponses satisfaisantes'],
+  ['exercices','Les exercices pratiques étaient en lien avec la théorie du cours'],
+  ['pret','Tu te sens prêt(e) pour l\'épreuve pratique officielle de ce module'],
+  ['materiel','Le matériel/équipement disponible était suffisant pour ce cours'],
+  ['examblanc','L\'examen blanc reflétait bien le contenu étudié dans le module'],
+];
+let evalState = {code:null, stars:{}, yn:{}, global:null, charge:null, reco:null, nps:null};
+
+function openEvalModule(code){
+  const mod = MODULES_FLAT.find(m=>m.code===code) || MODULES_2_FLAT.find(m=>m.code===code) || {code,title:code};
+  evalState = {code, title:mod.title, stars:{}, yn:{}, global:null, charge:null, reco:null, nps:null};
+  const c = document.getElementById('p-content'); if(!c) return;
+  c.innerHTML = `
+  <div class="ph2">📋 Quête de satisfaction <span class="ai-badge">${code}</span></div>
+  <p style="font-size:.8rem;color:var(--g500);margin-bottom:1rem">${mod.title} — Ton avis est transmis à la Direction des études pour améliorer la formation. Anonymat côté professeur, identité visible côté direction.</p>
+
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
+    <h4 style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;color:var(--text)">⭐ Note les critères (1 = très insuffisant, 5 = excellent)</h4>
+    <p style="font-size:.72rem;color:var(--g500);margin-bottom:.9rem">Clique sur les étoiles</p>
+    ${EVAL_STARS.map(([k,ico,t,d])=>`
+    <div style="display:flex;align-items:center;gap:.8rem;padding:.55rem 0;border-bottom:1px solid var(--g100);flex-wrap:wrap">
+      <span style="font-size:1.05rem">${ico}</span>
+      <div style="flex:1;min-width:180px"><div style="font-size:.8rem;font-weight:600;color:var(--text)">${t}</div>
+      <div style="font-size:.68rem;color:var(--g500)">${d}</div></div>
+      <div id="ev-st-${k}" style="display:flex;gap:2px">${[1,2,3,4,5].map(n=>`<span onclick="evSetStar('${k}',${n})" style="cursor:pointer;font-size:1.25rem;color:var(--g300)" data-n="${n}">★</span>`).join('')}</div>
+    </div>`).join('')}
+  </div>
+
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
+    <h4 style="font-size:.85rem;font-weight:700;margin-bottom:.9rem;color:var(--text)">😊 Satisfaction globale</h4>
+    <div style="font-size:.78rem;font-weight:600;margin-bottom:.4rem;color:var(--text)">Comment évalues-tu ce module dans l'ensemble ?</div>
+    <div id="ev-global" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">
+      ${[['5','😄 Très satisfait'],['4','🙂 Satisfait'],['3','😐 Neutre'],['2','😕 Insatisfait'],['1','😞 Très insatisfait']].map(([v,l])=>`<button class="btn btn-outline btn-sm ev-opt" data-v="${v}" onclick="evSetOpt('global','${v}',this)">${l}</button>`).join('')}
+    </div>
+    <div style="font-size:.78rem;font-weight:600;margin-bottom:.4rem;color:var(--text)">La charge de travail était :</div>
+    <div id="ev-charge" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">
+      ${[['equilibree','✅ Bien équilibrée'],['intense','⚡ Un peu intense'],['lourde','🔥 Trop lourde'],['legere','😴 Trop légère']].map(([v,l])=>`<button class="btn btn-outline btn-sm ev-opt" data-v="${v}" onclick="evSetOpt('charge','${v}',this)">${l}</button>`).join('')}
+    </div>
+    <div style="font-size:.78rem;font-weight:600;margin-bottom:.4rem;color:var(--text)">Recommanderais-tu ce module à d'autres étudiants ?</div>
+    <div id="ev-reco" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">
+      ${[['4','👍 Absolument'],['3','🤔 Probablement'],['2','😬 Pas vraiment'],['1','👎 Non']].map(([v,l])=>`<button class="btn btn-outline btn-sm ev-opt" data-v="${v}" onclick="evSetOpt('reco','${v}',this)">${l}</button>`).join('')}
+    </div>
+    <div style="font-size:.78rem;font-weight:600;margin-bottom:.4rem;color:var(--text)">Sur 10, recommanderais-tu la formation Canado Technique à un ami ? <span style="font-weight:400;color:var(--g500)">(0 = jamais, 10 = certainement)</span></div>
+    <div id="ev-nps" style="display:flex;gap:3px;flex-wrap:wrap">
+      ${Array.from({length:11},(_,n)=>`<button class="btn btn-outline btn-sm ev-opt" data-v="${n}" style="min-width:34px;padding:.35rem 0" onclick="evSetOpt('nps','${n}',this)">${n}</button>`).join('')}
+    </div>
+  </div>
+
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
+    <h4 style="font-size:.85rem;font-weight:700;margin-bottom:.9rem;color:var(--text)">✔️ Questions rapides — Oui / Non</h4>
+    ${EVAL_YN.map(([k,q])=>`
+    <div style="display:flex;align-items:center;gap:.8rem;padding:.5rem 0;border-bottom:1px solid var(--g100);flex-wrap:wrap">
+      <div style="flex:1;min-width:200px;font-size:.8rem;color:var(--text)">${q}</div>
+      <div id="ev-yn-${k}" style="display:flex;gap:.4rem">
+        <button class="btn btn-outline btn-sm ev-opt" data-v="oui" onclick="evSetYN('${k}','oui',this)">Oui ✓</button>
+        <button class="btn btn-outline btn-sm ev-opt" data-v="non" onclick="evSetYN('${k}','non',this)">Non ✗</button>
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
+    <h4 style="font-size:.85rem;font-weight:700;margin-bottom:.9rem;color:var(--text)">💬 Tes commentaires</h4>
+    <div class="fg" style="margin-bottom:.7rem"><label>Ce qui t'a le plus aidé dans ce module</label><textarea id="ev-fort" rows="2" style="width:100%;padding:.55rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;font-family:var(--fB);color:#0B1525;background:#fff"></textarea></div>
+    <div class="fg" style="margin-bottom:.7rem"><label>Ce qui devrait être amélioré</label><textarea id="ev-faible" rows="2" style="width:100%;padding:.55rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;font-family:var(--fB);color:#0B1525;background:#fff"></textarea></div>
+    <div class="fg"><label>Suggestions libres (optionnel)</label><textarea id="ev-sugg" rows="2" style="width:100%;padding:.55rem .8rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;font-family:var(--fB);color:#0B1525;background:#fff"></textarea></div>
+  </div>
+
+  <div style="display:flex;gap:.7rem;flex-wrap:wrap">
+    <button class="btn btn-blue" onclick="submitEvalModule()">✅ Soumettre mon évaluation</button>
+    <button class="btn btn-ghost" onclick="showPanel('mes-resultats')">Plus tard</button>
+  </div>`;
+  c.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function evSetStar(k,n){
+  evalState.stars[k]=n;
+  const wrap=document.getElementById('ev-st-'+k); if(!wrap) return;
+  wrap.querySelectorAll('span').forEach(s=>{ s.style.color=(+s.dataset.n<=n)?'var(--gold)':'var(--g300)'; });
+}
+function evSetOpt(field,v,btn){
+  evalState[field]=isNaN(+v)?v:+v;
+  const wrap=document.getElementById('ev-'+field); if(!wrap) return;
+  wrap.querySelectorAll('.ev-opt').forEach(b=>{ b.style.background=''; b.style.color=''; b.style.borderColor=''; });
+  btn.style.background='var(--blue)'; btn.style.color='#fff'; btn.style.borderColor='var(--blue)';
+}
+function evSetYN(k,v,btn){
+  evalState.yn[k]=v;
+  const wrap=document.getElementById('ev-yn-'+k); if(!wrap) return;
+  wrap.querySelectorAll('.ev-opt').forEach(b=>{ b.style.background=''; b.style.color=''; b.style.borderColor=''; });
+  btn.style.background=v==='oui'?'#00A066':'var(--red)'; btn.style.color='#fff'; btn.style.borderColor='transparent';
+}
+function submitEvalModule(){
+  const nbStars = Object.keys(evalState.stars).length;
+  if(nbStars < EVAL_STARS.length){ toast('⭐ Merci de noter les '+EVAL_STARS.length+' critères.'); return; }
+  if(!evalState.global){ toast('😊 Indique ta satisfaction globale.'); return; }
+  if(Object.keys(evalState.yn).length < EVAL_YN.length){ toast('✔️ Réponds aux questions Oui/Non.'); return; }
+  const mod = MODULES_FLAT.find(m=>m.code===evalState.code) || MODULES_2_FLAT.find(m=>m.code===evalState.code) || {};
+  const entry = {
+    id:'ev_'+Date.now(),
+    module_code:evalState.code, module_titre:evalState.title||mod.title||evalState.code,
+    programme:etudProg||'TRI', annee:parseInt(etudYear)||1,
+    etudiant_key:resKey(), matricule:currentMatricule()||null,
+    nom:(ROLES[currentRole]&&ROLES[currentRole].name)||'Étudiant',
+    date:new Date().toISOString(),
+    ratings:Object.assign({},evalState.stars),
+    satis:{satis_globale:+evalState.global, satis_recommande:+(evalState.reco||0)},
+    charge:evalState.charge||null, nps:evalState.nps==null?null:+evalState.nps,
+    yesno:Object.assign({},evalState.yn),
+    comments:{fort:(document.getElementById('ev-fort')||{}).value||'', faible:(document.getElementById('ev-faible')||{}).value||'', suggestion:(document.getElementById('ev-sugg')||{}).value||''},
+    recommande:+(evalState.reco||0)>=3,
+  };
+  let evs=[]; try{ evs=JSON.parse(localStorage.getItem('canado_evaluations')||'[]'); }catch(e){}
+  evs.push(entry);
+  try{ localStorage.setItem('canado_evaluations', JSON.stringify(evs)); }catch(e){}
+  if(typeof logAudit==='function') logAudit('ÉVALUATION_MODULE', evalState.code, '', 'Quête soumise ('+nbStars+' critères)');
+  try{ const nf=JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+    nf.unshift({type:'evaluation',message:'📋 Quête de satisfaction reçue — '+evalState.code,date:new Date().toISOString()});
+    localStorage.setItem('canado_notifications', JSON.stringify(nf)); }catch(e){}
+  toast('✅ Merci ! Ton évaluation a été transmise à la Direction des études.');
+  showPanel('mes-resultats');
+}
+
+/* ══════════════════════════════════════
+   QUÊTE DE SATISFACTION — RAPPORT (Direction des études / DG)
+══════════════════════════════════════ */
+function renderQueteSatisfaction(c){
+  if(!['dg','detudes','devals','admin'].includes(currentRole)){
+    c.innerHTML='<div class="ph2">🔒 Accès restreint</div><p style="font-size:.85rem;color:var(--g500)">Section réservée à la direction.</p>'; return;
+  }
+  let evs=[]; try{ evs=JSON.parse(localStorage.getItem('canado_evaluations')||'[]'); }catch(e){}
+  const fProg = window._qsProg||'';
+  const list = fProg?evs.filter(e=>e.programme===fProg):evs;
+  // agrégats par module
+  const byMod={};
+  list.forEach(e=>{
+    const k=e.module_code||e.moduleCode||'—';
+    if(!byMod[k]) byMod[k]={code:k,titre:e.module_titre||e.moduleTitre||k,prog:e.programme||'—',n:0,stars:0,glob:0,reco:0,nps:[],pret:0,pretN:0,comments:[]};
+    const m=byMod[k]; m.n++;
+    const sv=Object.values(e.ratings||{}); if(sv.length) m.stars+=sv.reduce((a,b)=>a+b,0)/sv.length;
+    m.glob += +(e.satis&&e.satis.satis_globale||0);
+    if(e.recommande) m.reco++;
+    if(e.nps!=null) m.nps.push(+e.nps);
+    if(e.yesno&&e.yesno.pret){ m.pretN++; if(e.yesno.pret==='oui') m.pret++; }
+    const cm=e.comments||{}; ['fort','faible','suggestion'].forEach(t=>{ if(cm[t]) m.comments.push({t,x:cm[t],mod:k}); });
+  });
+  const mods=Object.values(byMod).sort((a,b)=>b.n-a.n);
+  const totNPS=list.map(e=>e.nps).filter(v=>v!=null);
+  const npsScore=totNPS.length?Math.round((totNPS.filter(v=>v>=9).length-totNPS.filter(v=>v<=6).length)/totNPS.length*100):null;
+  const avgAll=list.length?(list.flatMap(e=>Object.values(e.ratings||{})).reduce((a,b)=>a+b,0)/Math.max(1,list.flatMap(e=>Object.values(e.ratings||{})).length)).toFixed(1):'—';
+  const comments=mods.flatMap(m=>m.comments.map(cm=>({...cm,code:m.code}))).slice(-30).reverse();
+
+  c.innerHTML=`<div class="ph2">📝 Quête de satisfaction — Rapport <span class="ai-badge">Évaluations modules</span></div>
+  <p style="font-size:.8rem;color:var(--g500);margin-bottom:1rem">Remplie par chaque étudiant après l'examen blanc d'un module. Base de la démarche qualité APC.</p>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
+    ${['','TRI','MEI','ELM','TEL'].map(p=>`<button class="btn ${fProg===p?'btn-blue':'btn-outline'} btn-sm" onclick="window._qsProg='${p}';showPanel('quete-satisfaction')">${p||'Tous'}</button>`).join('')}
+    <button class="btn btn-red btn-sm" style="margin-left:auto" onclick="exportEvalsCSV()">📥 Export CSV</button>
+  </div>
+  <div class="kgrid">
+    <div class="kcard"><div class="knum">${list.length}</div><div class="klbl">Évaluations reçues</div></div>
+    <div class="kcard kgd"><div class="knum">${avgAll}/5</div><div class="klbl">Note moyenne critères</div></div>
+    <div class="kcard kg"><div class="knum">${list.length?Math.round(list.filter(e=>e.recommande).length/list.length*100)+'%':'—'}</div><div class="klbl">Recommandation module</div></div>
+    <div class="kcard ${npsScore!=null&&npsScore<0?'kr':''}"><div class="knum">${npsScore==null?'—':(npsScore>0?'+':'')+npsScore}</div><div class="klbl">NPS école (sur 10)</div></div>
+  </div>
+  ${!list.length?`<div style="text-align:center;padding:2.5rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--rL)">
+    <div style="font-size:2rem;margin-bottom:.5rem">📭</div>
+    <div style="font-weight:700;color:var(--text)">Aucune évaluation reçue</div>
+    <div style="font-size:.78rem;color:var(--g500);margin-top:.3rem">Les quêtes remplies par les étudiants après leurs examens blancs apparaîtront ici.</div>
+  </div>`:`
+  <h4 style="font-size:.83rem;font-weight:700;margin:1rem 0 .8rem;color:var(--text)">Synthèse par module</h4>
+  <div class="tw"><table><thead><tr><th>Module</th><th>Prog.</th><th>Réponses</th><th>Note moy.</th><th>Satisf. globale</th><th>Reco.</th><th>Prêts pour l'épreuve</th><th>État</th></tr></thead><tbody>
+    ${mods.map(m=>{
+      const stars=m.n?(m.stars/m.n):0, glob=m.n?(m.glob/m.n):0;
+      const pretPct=m.pretN?Math.round(m.pret/m.pretN*100):null;
+      const alert=stars<3||glob<3;
+      return `<tr>
+        <td><span class="chip cb">${m.code}</span> <span style="font-size:.72rem;color:var(--g500)">${m.titre}</span></td>
+        <td>${m.prog}</td>
+        <td style="text-align:center;font-weight:700">${m.n}</td>
+        <td style="font-weight:700;color:${stars>=4?'var(--green)':stars>=3?'#A07000':'var(--red)'}">${stars.toFixed(1)}/5 <span style="color:var(--gold)">${'★'.repeat(Math.round(stars))}</span></td>
+        <td>${glob.toFixed(1)}/5</td>
+        <td>${Math.round(m.reco/m.n*100)}%</td>
+        <td style="font-weight:700;color:${pretPct==null?'var(--g500)':pretPct>=70?'var(--green)':'var(--red)'}">${pretPct==null?'—':pretPct+'%'}</td>
+        <td>${alert?'<span class="chip cr">🚨 Alerte</span>':'<span class="chip cg">✓ OK</span>'}</td>
+      </tr>`;}).join('')}
+  </tbody></table></div>
+  ${comments.length?`<h4 style="font-size:.83rem;font-weight:700;margin:1.2rem 0 .8rem;color:var(--text)">💬 Derniers commentaires</h4>
+  <div style="display:flex;flex-direction:column;gap:.5rem">
+    ${comments.slice(0,12).map(cm=>`<div style="background:${cm.t==='fort'?'#e6f9f0':cm.t==='faible'?'#fff5f5':'#fffbeb'};border-radius:8px;padding:.6rem .9rem;font-size:.78rem;color:var(--text)">
+      <span class="chip cb" style="margin-right:.4rem">${cm.code}</span>
+      <strong>${cm.t==='fort'?'👍 Point fort':cm.t==='faible'?'⚠️ À améliorer':'💡 Suggestion'} :</strong> ${String(cm.x).slice(0,220)}</div>`).join('')}
+  </div>`:''}`}`;
+}
+function exportEvalsCSV(){
+  let evs=[]; try{ evs=JSON.parse(localStorage.getItem('canado_evaluations')||'[]'); }catch(e){}
+  const esc=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=[['Date','Module','Programme','Étudiant','Notes critères (moy.)','Satisf. globale','Reco','NPS','Prêt épreuve','Point fort','À améliorer','Suggestion']]
+    .concat(evs.map(e=>{const sv=Object.values(e.ratings||{});return [
+      (e.date||'').slice(0,10), e.module_code||'', e.programme||'', e.nom||e.matricule||'',
+      sv.length?(sv.reduce((a,b)=>a+b,0)/sv.length).toFixed(1):'', (e.satis&&e.satis.satis_globale)||'',
+      e.recommande?'oui':'non', e.nps==null?'':e.nps, (e.yesno&&e.yesno.pret)||'',
+      (e.comments&&e.comments.fort)||'', (e.comments&&e.comments.faible)||'', (e.comments&&e.comments.suggestion)||'' ];}));
+  const csv='\ufeff'+rows.map(r=>r.map(esc).join(';')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='quete_satisfaction_canado_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('📥 Évaluations exportées ('+evs.length+')');
 }
 
 function renderMesResultats(c) {
-  const avg = studentResults.length?Math.round(studentResults.reduce((s,r)=>s+r.score,0)/studentResults.length):0;
-  const val = studentResults.filter(r=>r.status==='Validé').length;
+  const rs = getMyResults().slice().sort((a,b)=>(b.iso||'').localeCompare(a.iso||''));
+  const avg = rs.length?Math.round(rs.reduce((s,r)=>s+r.score,0)/rs.length):0;
+  const val = rs.filter(r=>r.status==='Validé').length;
   c.innerHTML = `<div class="ph2">Mes résultats d'examens</div>
   <div class="kgrid">
     <div class="kcard kg"><div class="knum">${avg}%</div><div class="klbl">Moyenne générale</div></div>
-    <div class="kcard"><div class="knum">${studentResults.length}</div><div class="klbl">Examens passés</div></div>
+    <div class="kcard"><div class="knum">${rs.length}</div><div class="klbl">Examens passés</div></div>
     <div class="kcard kgd"><div class="knum">${val}</div><div class="klbl">Modules validés</div></div>
-    <div class="kcard kr"><div class="knum">${studentResults.length-val}</div><div class="klbl">À repasser</div></div>
+    <div class="kcard kr"><div class="knum">${rs.length-val}</div><div class="klbl">À repasser</div></div>
   </div>
-  <div class="tw"><table><thead><tr><th>Code</th><th>Module</th><th>Date</th><th>Score</th><th>Résultat</th></tr></thead><tbody>
-    ${studentResults.map(r=>`<tr>
+  ${!rs.length?`<div style="text-align:center;padding:2.5rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--rL)">
+    <div style="font-size:2rem;margin-bottom:.5rem">📝</div>
+    <div style="font-weight:700;color:var(--text)">Aucun examen passé pour le moment</div>
+    <div style="font-size:.8rem;color:var(--g500);margin:.4rem 0 1rem">Tes résultats apparaîtront ici après ton premier examen blanc.</div>
+    <button class="btn btn-blue btn-sm" onclick="showPanel('choisir-exam')">📝 Passer un examen →</button>
+  </div>`:`
+  <div class="tw"><table><thead><tr><th>Code</th><th>Module</th><th>Date</th><th>Tentative</th><th>Score</th><th>Seuil</th><th>Résultat</th><th>Quête</th><th>Action</th></tr></thead><tbody>
+    ${rs.map(r=>{
+      const evOK = evalDoneFor(r.code);
+      return `<tr>
       <td><span class="chip cb">${r.code}</span></td>
       <td style="font-weight:500">${r.title}</td>
       <td>${r.date}</td>
-      <td style="font-weight:700;color:${r.score>=80?'var(--green)':r.score>=70?'#A07000':'var(--red)'}">${r.score}%</td>
+      <td style="text-align:center">${r.tentative||1}</td>
+      <td style="font-weight:700;color:${r.score>=(r.seuil||75)?'var(--green)':'var(--red)'}">${r.score}%</td>
+      <td>${r.seuil||75}%</td>
       <td><span class="chip ${r.status==='Validé'?'cg':'cr'}">${r.status}</span></td>
-    </tr>`).join('')}
-  </tbody></table></div>`;
+      <td>${evOK?'<span class="chip cg">✓ Remplie</span>':`<button class="btn btn-outline btn-sm" style="font-size:.68rem" onclick="openEvalModule('${r.code}')">📝 Remplir</button>`}</td>
+      <td>${r.status!=='Validé'?`<button class="btn btn-blue btn-sm" style="font-size:.68rem" onclick="startExam('${r.code}','A')">↺ Repasser</button>`:'—'}</td>
+    </tr>`;}).join('')}
+  </tbody></table></div>`}`;
 }
 
 /* ══════════════════════════════════════
@@ -7545,16 +8018,8 @@ function toast(msg) {
 /* ══════════════════════════════════════
    SYSTÈME D'AUDIT & TRAÇABILITÉ
 ══════════════════════════════════════ */
-const AUDIT_LOG = [
-  {id:1,user:'Jean Robenson Raymonvil',role:'Dir. Général',action:'VALIDATION',target:'Examen TRI-19 Version A',time:'13 Mai 2026 · 10:42',type:'validate',old:'En attente',new:'Publié'},
-  {id:2,user:'Rooby Raymonvil',role:'Professeur',action:'CRÉATION_EXAMEN',target:'TRI-19 Routage et commutation',time:'13 Mai 2026 · 09:15',type:'create',old:null,new:'Brouillon créé'},
-  {id:3,user:'Carline Dorcé',role:'Administration',action:'MODIFICATION_NOTE',target:'Marie Louisiane — TRI-05',time:'13 Mai 2026 · 08:30',type:'edit',old:'72%',new:'75%'},
-  {id:4,user:'Marie-France Dolce',role:'Dir. Études',action:'VALIDATION_PROGRAMME',target:'2ème année TRI — Semestre 4',time:'12 Mai 2026 · 16:00',type:'validate',old:'Soumis',new:'Validé (Études)'},
-  {id:5,user:'Jean Christophe',role:'Dir. Évaluations',action:'REJET_EXAMEN',target:'ELM-20 Électronique de puissance',time:'12 Mai 2026 · 14:22',type:'reject',old:'En validation',new:'Rejeté — corrections requises'},
-  {id:6,user:'Gary Pierre',role:'Admin Sys',action:'CRÉATION_COMPTE',target:'Étudiant: Samuel Toussaint TRI2',time:'12 Mai 2026 · 11:05',type:'create',old:null,new:'Compte actif'},
-  {id:7,user:'Rooby Raymonvil',role:'Professeur',action:'ACTIVATION_MODULE',target:'TRI-24 Supervision réseau',time:'11 Mai 2026 · 15:30',type:'edit',old:'Désactivé',new:'Activé'},
-  {id:8,user:'Carline Dorcé',role:'Administration',action:'INSCRIPTION',target:'Jean-Paul Estimé — MEI 1ère année',time:'11 Mai 2026 · 09:00',type:'create',old:null,new:'Dossier créé · Paiement en attente'},
-];
+let AUDIT_LOG = (function(){ try{ const s=JSON.parse(localStorage.getItem('canado_audit')||'null'); if(Array.isArray(s)) return s; }catch(e){} return []; })();
+// (anciennes entrées de démonstration supprimées — le journal reflète les actions réelles)
 
 const AUDIT_TYPE_CONFIG = {
   validate:{icon:'✅',bg:'rgba(0,107,70,.12)',color:'var(--green)'},
@@ -7565,16 +8030,30 @@ const AUDIT_TYPE_CONFIG = {
 };
 
 function logAudit(action,target,oldVal,newVal) {
-  const r = ROLES[currentRole];
+  const r = ROLES[currentRole] || {name:'Système',badge:'Système'};
   AUDIT_LOG.unshift({
     id:Date.now(),
     user:r.name,role:r.badge,action,target,
     time:new Date().toLocaleString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    iso:new Date().toISOString(),
     type:action.toLowerCase().includes('valid')?'validate':
-         action.toLowerCase().includes('creat')||action.toLowerCase().includes('ajout')?'create':
+         action.toLowerCase().includes('creat')||action.toLowerCase().includes('ajout')||action.toLowerCase().includes('génér')?'create':
          action.toLowerCase().includes('rejet')||action.toLowerCase().includes('suppr')?'reject':'edit',
     old:oldVal||null,new:newVal||null
   });
+  if(AUDIT_LOG.length>500) AUDIT_LOG.length = 500; // rotation
+  try{ localStorage.setItem('canado_audit', JSON.stringify(AUDIT_LOG)); }catch(e){}
+}
+function exportAuditCSV(){
+  const esc = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows = [['Date','Utilisateur','Rôle','Action','Cible','Ancienne valeur','Nouvelle valeur']]
+    .concat(AUDIT_LOG.map(l=>[l.time,l.user,l.role,l.action,l.target,l.old||'',l.new||'']));
+  const csv = '\ufeff'+rows.map(r=>r.map(esc).join(';')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download = 'journal_audit_canado_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('📥 Journal d\'audit exporté ('+AUDIT_LOG.length+' entrées)');
 }
 
 function renderAuditLog(c) {
@@ -7594,7 +8073,7 @@ function renderAuditLog(c) {
     <button class="btn btn-sm" style="background:rgba(232,25,44,.1);color:#C8101E;border:1.5px solid var(--red);font-weight:700" onclick="filterAuditType('REJET')">❌ REJET</button>
     <button class="btn btn-sm" style="background:rgba(91,45,142,.1);color:#5B2D8E;border:1.5px solid #8A50CC;font-weight:700" onclick="filterAuditType('CRÉATION_COMPTE')">👤 CRÉATION COMPTE</button>
     <button class="btn btn-sm" style="background:rgba(59,123,255,.1);color:#2B56C0;border:1.5px solid #3B7BFF;font-weight:700" onclick="filterAuditType('INSCRIPTION')">📋 INSCRIPTION</button>
-    <button class="btn btn-red btn-sm" onclick="toast('📥 Export CSV du journal d\'audit...')">Export CSV</button>
+    <button class="btn btn-red btn-sm" onclick="exportAuditCSV()">Export CSV</button>
   </div>
   <div id="audit-list">
     ${renderAuditRows(AUDIT_LOG)}
@@ -7785,8 +8264,60 @@ function rejectStep(vid,stepIdx,who) {
 /* ══════════════════════════════════════
    ÉPREUVE PRATIQUE A — SECTION
 ══════════════════════════════════════ */
+function examReportHTML(){
+  // Rapport des examens : banque (générés/corrigés=auto/versions) + résultats étudiants
+  let banque=[]; try{ banque=JSON.parse(localStorage.getItem('canado_banque')||'[]'); }catch(e){}
+  const allRes=getAllResults();
+  const ins=getInscriptions().filter(i=>i.statut==='valide');
+  const wfStatus = ex => { const wf=ex.wf; if(!wf||!wf.steps) return 'genere';
+    if(wf.steps.some(s=>s.status==='rejete')) return 'rejete';
+    if(wf.steps.every(s=>s.status==='valide')) return 'valide';
+    if(wf.steps.some(s=>s.status==='valide')) return 'en_validation'; return 'genere'; };
+  const nbVal=banque.filter(e=>wfStatus(e)==='valide').length;
+  const nbEnCours=banque.filter(e=>['genere','en_validation'].includes(wfStatus(e))).length;
+  const etudPassed=new Set(allRes.map(r=>r.key)).size;
+  const reussis=allRes.filter(r=>r.status==='Validé').length;
+  // versions par module (banque) + passages par module (résultats)
+  const byMod={};
+  banque.forEach(e=>{ const k=e.module_code||e.module||'—'; (byMod[k]=byMod[k]||{code:k,versions:0,passed:0,scores:[]}).versions++; });
+  allRes.forEach(r=>{ (byMod[r.code]=byMod[r.code]||{code:r.code,versions:0,passed:0,scores:[]}); byMod[r.code].passed++; byMod[r.code].scores.push(r.score); });
+  const rows=Object.values(byMod).sort((a,b)=>b.passed-a.passed);
+  return `
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1.4rem">
+    <h4 style="font-family:var(--fD);font-weight:800;font-size:.92rem;color:var(--text);margin-bottom:.9rem">📊 Rapport des examens — temps réel</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1rem">
+      ${[['📝',banque.length,'Examens générés','var(--blue)'],
+         ['⏳',nbEnCours,'Versions en cours de validation','#A07000'],
+         ['✅',nbVal,'Versions validées','var(--green)'],
+         ['👥',etudPassed,'Étudiants ayant passé un examen','#5B2D8E'],
+         ['🧾',allRes.length,'Examens passés (corrigés : '+allRes.length+')','var(--blue)'],
+         ['🏆',allRes.length?Math.round(reussis/allRes.length*100)+'%':'—','Taux de réussite','var(--green)']].map(([i,v,l,col])=>`
+      <div style="background:var(--g50);border:1px solid var(--g100);border-radius:10px;padding:.8rem;text-align:center">
+        <div style="font-size:1rem">${i}</div>
+        <div style="font-family:var(--fD);font-weight:800;font-size:1.15rem;color:${col}">${v}</div>
+        <div style="font-size:.64rem;color:var(--g500);line-height:1.3">${l}</div>
+      </div>`).join('')}
+    </div>
+    <div style="font-size:.7rem;color:var(--g500);margin-bottom:.8rem">✓ Correction automatique : 100% des examens blancs passés sont corrigés immédiatement. ${ins.length} étudiant(s) validé(s) inscrit(s) sur la plateforme.</div>
+    ${rows.length?`<div class="tw"><table><thead><tr><th>Module</th><th>Versions en banque</th><th>Étudiants ayant passé</th><th>Corrigés</th><th>Moyenne</th><th>Réussite</th></tr></thead><tbody>
+      ${rows.map(m=>{
+        const moy=m.scores.length?Math.round(m.scores.reduce((a,b)=>a+b,0)/m.scores.length):null;
+        const ok=m.scores.filter(s=>s>=75).length;
+        return `<tr>
+          <td><span class="chip cb">${m.code}</span></td>
+          <td style="text-align:center">${m.versions||'—'}</td>
+          <td style="text-align:center;font-weight:700">${m.passed||'—'}</td>
+          <td style="text-align:center">${m.passed?m.passed+' ✓':'—'}</td>
+          <td style="text-align:center;font-weight:700;color:${moy==null?'var(--g500)':moy>=75?'var(--green)':'#A07000'}">${moy==null?'—':moy+'%'}</td>
+          <td style="text-align:center">${m.scores.length?Math.round(ok/m.scores.length*100)+'%':'—'}</td>
+        </tr>`;}).join('')}
+    </tbody></table></div>`:'<p style="font-size:.76rem;color:var(--g500)">Aucun examen généré ni passé pour le moment — les statistiques s\'afficheront ici automatiquement.</p>'}
+  </div>`;
+}
 function renderEpreuvePratique(c) {
+  const showReport=['dg','detudes','devals','admin','prof'].includes(currentRole);
   c.innerHTML = `<div class="ph2">🧪 Épreuve Pratique A — Exemple Officiel</div>
+  ${showReport?examReportHTML():''}
 
   <div class="ep-header">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem">
@@ -8286,18 +8817,29 @@ function renderJumeauNumerique(c) {
   const active = mods.filter(m => states[m.code] && !states[m.code+'_done']).length;
   const pct    = mods.length ? Math.round(done/mods.length*100) : 0;
 
-  // Analyse prédictive
-  const avgScore = 78; // simulé — sera tiré de la BDD
-  const velocity = done > 0 ? (done / 12).toFixed(1) : 0; // modules/semaine
+  // Analyse prédictive — DONNÉES RÉELLES (canado_resultats)
+  const myRes = getMyResults();
+  const doneExam = mods.filter(m=>myRes.some(r=>r.code===m.code&&r.status==='Validé')).length;
+  const avgScore = myRes.length ? Math.round(myRes.reduce((s,r)=>s+r.score,0)/myRes.length) : 0;
+  const weakMods = myRes.filter(r=>r.status!=='Validé').slice(0,4);
+  // rythme réel : modules validés / semaines écoulées depuis le 1er examen
+  let velocity = 0;
+  if(myRes.length){
+    const first = myRes.map(r=>r.iso).filter(Boolean).sort()[0];
+    const weeks = Math.max(1, (Date.now()-new Date(first))/6048e5);
+    velocity = +(doneExam/weeks).toFixed(1);
+  }
   const projWeeks = mods.length - done > 0 ? Math.ceil((mods.length-done)/Math.max(+velocity,0.5)) : 0;
   const riskLevel = pct < 30 ? 'eleve' : pct < 60 ? 'moyen' : 'faible';
   const riskColors = {eleve:'#C8101E',moyen:'#C98A00',faible:'#006B46'};
   const riskLabels = {eleve:'🔴 Risque élevé',moyen:'🟡 À surveiller',faible:'🟢 En bonne voie'};
   const predictions = [
-    pct < 30 && {icon:'⚠️',text:`À ce rythme, tu risques de ne pas valider ${prog} ${anneeLabel(yr)} année. Accelere !`,color:'#fff5f5',border:'var(--red)'},
-    avgScore < 75 && {icon:'📉',text:`Ta moyenne (${avgScore}%) est proche du seuil. Concentre-toi sur les modules faibles.`,color:'#fffbeb',border:'#C98A00'},
+    !myRes.length && {icon:'🚀',text:'Passe ton premier examen blanc pour activer les prédictions personnalisées de ton jumeau.',color:'#e8eeff',border:'var(--blue)'},
+    myRes.length>0 && pct < 30 && {icon:'⚠️',text:`À ce rythme, tu risques de ne pas valider ${prog} ${anneeLabel(yr)} année. Accélère !`,color:'#fff5f5',border:'var(--red)'},
+    myRes.length>0 && avgScore < 75 && {icon:'📉',text:`Ta moyenne réelle (${avgScore}%) est proche du seuil. Concentre-toi sur les modules faibles.`,color:'#fffbeb',border:'#C98A00'},
+    weakMods.length>0 && {icon:'🎯',text:`Module(s) à repasser en priorité : ${weakMods.map(r=>r.code+' ('+r.score+'%)').join(', ')}.`,color:'#fff5f5',border:'var(--red)'},
     active > 3 && {icon:'📚',text:`Tu as ${active} modules en cours simultanément. Finis-en un avant d'ouvrir le suivant.`,color:'#f0eeff',border:'#8A50CC'},
-    done === mods.length && {icon:'🎉',text:'Félicitations ! Tu as complété tous les modules. Prêt pour la certification.',color:'#e6f9f0',border:'#006B46'},
+    done === mods.length && done>0 && {icon:'🎉',text:'Félicitations ! Tu as complété tous les modules. Prêt pour la certification.',color:'#e6f9f0',border:'#006B46'},
   ].filter(Boolean);
 
   const BACKEND = window.ROOBY_API_URL?.replace('/api/rooby','')||'https://canado-backend-production.up.railway.app';
@@ -8325,7 +8867,7 @@ function renderJumeauNumerique(c) {
       ${[
         ['📚 Modules complétés',`${done} / ${mods.length}`,'#1B3A8C'],
         ['⚡ En cours',`${active} module(s)`,'#C98A00'],
-        ['📈 Moyenne générale',`${avgScore}%`,'#1B3A8C'],
+        ['📈 Moyenne générale (réelle)',myRes.length?`${avgScore}%`:'—','#1B3A8C'],
         ['⏱ Rythme',`${velocity} mod/sem`,'#5B2D8E'],
         ['🎯 Estimation fin',projWeeks>0?`${projWeeks} semaines`:'Terminé !','#0B1525'],
         ['🔰 Statut',riskLabels[riskLevel],riskColors[riskLevel]],
@@ -8409,122 +8951,262 @@ async function getConseilIA(btn, data) {
 /* ══════════════════════════════════════════════════════════
    FEATURE 2 — CERTIFICATION QR CODE VÉRIFIABLE
 ══════════════════════════════════════════════════════════ */
+/* ══ CERTIFICATION ÉLECTRONIQUE OPÉRATIONNELLE ══
+   canado_certificats : certificats auto-générés à la réussite.
+   Deux niveaux : attestation de MODULE (dès validation d'un examen blanc) + certificat de PROGRAMME (tous modules validés).
+   Modèle de référence adaptatif : couleurs/intitulés selon le programme. ID stable + QR de vérification. */
+const CERT_PROG_INFO = {
+  TRI:{titre:'Techniques de Réseaux Informatiques',c1:'#1B3A8C',c2:'#2B56C0',ico:'🌐'},
+  MEI:{titre:"Mécanique d'Entretien Industrielle",c1:'#8B5E00',c2:'#C98A00',ico:'🔧'},
+  ELM:{titre:'Électromécanique Industrielle',c1:'#006B46',c2:'#00A066',ico:'⚡'},
+  TEL:{titre:'Télécommunications',c1:'#5B2D8E',c2:'#8A50CC',ico:'📡'}
+};
+function certList(){ try{ return JSON.parse(localStorage.getItem('canado_certificats')||'[]'); }catch(e){ return []; } }
+function certSave(list){ try{ localStorage.setItem('canado_certificats', JSON.stringify(list)); }catch(e){} }
+/* Génération AUTOMATIQUE d'une attestation de module (appelée par saveResult à la réussite) */
+function ensureModuleCert(res){
+  const list=certList();
+  if(list.some(c=>c.key===res.key && c.module===res.code)) return;
+  const seq=String(list.length+1).padStart(4,'0');
+  const cert={ id:'CT-'+res.prog+'-'+new Date().getFullYear()+'-M'+seq, type:'module',
+    key:res.key, matricule:res.matricule, nom:res.nom, prog:res.prog, annee:res.annee,
+    module:res.code, module_titre:res.title, score:res.score, seuil:res.seuil,
+    date:new Date().toISOString() };
+  list.push(cert); certSave(list);
+  if(typeof logAudit==='function') logAudit('CERTIFICAT_GÉNÉRÉ', res.code+' — '+res.nom, '', cert.id);
+  try{ const nf=JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+    nf.unshift({type:'certificat',message:'🎓 Attestation générée — '+res.code+' ('+cert.id+')',date:new Date().toISOString()});
+    localStorage.setItem('canado_notifications', JSON.stringify(nf)); }catch(e){}
+}
+/* Certificat de PROGRAMME quand tous les modules de l'année sont validés */
+function ensureProgramCert(prog,yr){
+  const k=resKey(); const list=certList();
+  if(list.some(c=>c.key===k && c.type==='programme' && c.prog===prog && c.annee===yr)) return null;
+  const mods=(yr===2?(MODULES_2[prog]||[]):(MODULES[prog]||[]));
+  const myRes=getMyResults();
+  const valides=mods.filter(m=>myRes.some(r=>r.code===m.code&&r.status==='Validé'));
+  if(!mods.length || valides.length<mods.length) return null;
+  const seq=String(list.filter(c=>c.type==='programme').length+1).padStart(4,'0');
+  const cert={ id:'CT-'+prog+'-'+new Date().getFullYear()+'-P'+seq, type:'programme',
+    key:k, matricule:currentMatricule(), nom:(ROLES[currentRole]&&ROLES[currentRole].name)||'Étudiant',
+    prog, annee:yr, modules:mods.length, date:new Date().toISOString() };
+  list.push(cert); certSave(list);
+  if(typeof logAudit==='function') logAudit('DIPLÔME_GÉNÉRÉ', prog+' '+anneeLabel(yr)+' année — '+cert.nom, '', cert.id);
+  // ACTIVATION AUTOMATIQUE DU MODE ALUMNI (fin de programme = 2e année complétée)
+  if(yr>=2 && typeof activateAlumni==='function'){
+    activateAlumni({key:k,id:'al_'+Date.now(),nom:cert.nom,prog,promo:String(new Date().getFullYear()),
+      poste:'',entreprise:'',ville:'',mentorStatus:null,date:new Date().toISOString(),via:'diplome '+cert.id});
+  }
+  return cert;
+}
+function certVerifyURL(cert){ return 'https://canadotechnique.tech/verify?cert='+encodeURIComponent(cert.id); }
+/* Vue plein-cadre d'un certificat — MODÈLE DE RÉFÉRENCE adaptatif */
+function openCert(id){
+  const cert=certList().find(c=>c.id===id); if(!cert){ toast('Certificat introuvable'); return; }
+  const P=CERT_PROG_INFO[cert.prog]||CERT_PROG_INFO.TRI;
+  const isProg=cert.type==='programme';
+  const qr='https://api.qrserver.com/v1/create-qr-code/?size=110x110&data='+encodeURIComponent(certVerifyURL(cert));
+  const c=document.getElementById('p-content'); if(!c) return;
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem">
+    <div class="ph2" style="margin:0">🎓 ${isProg?'Certificat de programme':'Attestation de module'}</div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <button class="btn btn-blue btn-sm" onclick="window.print()">🖨️ Imprimer / PDF</button>
+      <button class="btn btn-outline btn-sm" onclick="navigator.clipboard?.writeText('${certVerifyURL(cert)}').then(()=>toast('✓ Lien de vérification copié !'))">🔗 Copier le lien</button>
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('certification')">← Retour</button>
+    </div>
+  </div>
+  <div style="background:#fff;border:3px solid ${P.c1};border-radius:var(--rL);padding:2.2rem 2rem;text-align:center;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,${P.c1},var(--gold),${P.c2})"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,${P.c1}0d,transparent 55%)"></div>
+    <div style="position:relative">
+      <img src="${cdn('assets/images/logo/cfph.png')}" alt="Logo" style="height:52px;border-radius:10px;margin-bottom:.9rem" onerror="this.style.display='none'">
+      <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;color:var(--g500);text-transform:uppercase">Centre de Formation Professionnelle d'Haïti</div>
+      <div style="font-size:.68rem;color:var(--g500);margin-bottom:1.1rem">Canado Technique · Fondé en 1973 · Port-au-Prince, Haïti</div>
+      <div style="display:inline-block;font-size:1.6rem;margin-bottom:.4rem">${P.ico}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.05rem;color:${P.c1};text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem">${isProg?'Certificat de réussite de programme':'Attestation de réussite de module'}</div>
+      <div style="font-size:.95rem;color:var(--g700)">${isProg?'Certifie que':'Atteste que'}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.7rem;color:var(--text);margin:.3rem 0">${cert.nom}</div>
+      ${cert.matricule?'<div style="font-family:monospace;font-size:.78rem;color:var(--g500);margin-bottom:.5rem">Matricule '+cert.matricule+'</div>':''}
+      <div style="font-size:.84rem;color:var(--g700);margin-bottom:.3rem">${isProg?'a complété avec succès le programme de':'a validé avec succès le module'}</div>
+      <div style="font-family:var(--fD);font-weight:700;font-size:1.05rem;color:${P.c1};margin-bottom:1rem">
+        ${isProg?P.titre+' ('+cert.prog+') · '+anneeLabel(cert.annee)+' année · '+cert.modules+' modules'
+                :cert.module+' — '+cert.module_titre+'<br><span style="font-size:.8rem;color:var(--g700)">Programme '+P.titre+' ('+cert.prog+')</span>'}
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:1.1rem;flex-wrap:wrap">
+        <div><div style="font-size:.62rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">Délivré le</div>
+          <div style="font-weight:700;font-size:.82rem">${new Date(cert.date).toLocaleDateString('fr-HT',{day:'2-digit',month:'long',year:'numeric'})}</div></div>
+        <div><div style="font-size:.62rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">N° Certificat</div>
+          <div style="font-family:monospace;font-weight:800;font-size:.82rem;color:${P.c1}">${cert.id}</div></div>
+        ${!isProg?`<div><div style="font-size:.62rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">Résultat</div>
+          <div style="font-weight:700;font-size:.82rem;color:#006B46">${cert.score}% <span style="color:var(--g500);font-weight:400">(seuil ${cert.seuil}%)</span></div></div>`:''}
+      </div>
+      <div style="display:inline-block;padding:.7rem;background:#fff;border:2px solid var(--g200);border-radius:12px">
+        <img src="${qr}" alt="QR Vérification" style="width:110px;height:110px;display:block">
+        <div style="font-size:.6rem;color:var(--g500);margin-top:.35rem">Scanner pour vérifier</div>
+      </div>
+      <div style="font-size:.66rem;color:var(--g500);margin-top:.6rem">Document électronique authentifiable · APC homologuée MENFP · canadotechnique.tech</div>
+    </div>
+  </div>`;
+}
+
 function renderCertification(c) {
   const prog = etudProg || 'TRI';
   const yr   = parseInt(etudYear) || 1;
-  const mods = (yr===1?MODULES[prog]:MODULES_2[prog])||[];
-  const states = getModuleStates(prog, yr);
-  const done = mods.filter(m=>states[m.code+'_done']).length;
-  const pct  = mods.length ? Math.round(done/mods.length*100) : 0;
-  const certId = `CT-${prog}-${new Date().getFullYear()}-${Math.floor(Math.random()*9000)+1000}`;
-  const isEligible = pct >= 80;
-  const PROG_INFO_MAP = {TRI:'Techniques de Réseaux Informatiques',MEI:"Mécanique d'Entretien Industrielle",ELM:'Électromécanique Industrielle',TEL:'Télécommunications'};
-  const etudName = ROLES[currentRole]?.name || 'Étudiant';
-
-  // QR data — en production pointera vers l'URL de vérification
-  const qrData = `https://canadotechnique.tech/verify?cert=${certId}&prog=${prog}&yr=${yr}`;
+  const mods = (yr===2?MODULES_2[prog]:MODULES[prog])||[];
+  const myRes = getMyResults();
+  const valides = mods.filter(m=>myRes.some(r=>r.code===m.code&&r.status==='Validé'));
+  const pct = mods.length ? Math.round(valides.length/mods.length*100) : 0;
+  // synchroniser les certificats avec les résultats (rattrapage) + certificat de programme si complet
+  myRes.filter(r=>r.status==='Validé').forEach(r=>ensureModuleCert(r));
+  ensureProgramCert(prog, yr);
+  const myCerts = certList().filter(ce=>ce.key===resKey()).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const progCert = myCerts.find(ce=>ce.type==='programme'&&ce.prog===prog&&ce.annee===yr);
+  const P = CERT_PROG_INFO[prog]||CERT_PROG_INFO.TRI;
 
   c.innerHTML = `
-  <div class="ph2">🎓 Mes certifications <span class="ai-badge">QR Vérifiable</span></div>
+  <div class="ph2">🎓 Mes certifications <span class="ai-badge">Génération automatique · QR vérifiable</span></div>
 
-  <!-- PROGRESSION VERS CERTIFICATION -->
+  <!-- PROGRESSION VERS LE CERTIFICAT DE PROGRAMME -->
   <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.2rem">
-    <div style="background:linear-gradient(135deg,${isEligible?'#006B46':'var(--navy3)'},${isEligible?'#00A066':'var(--blue)'});padding:1.2rem 1.4rem;display:flex;align-items:center;gap:1rem">
-      <div style="font-size:2rem">${isEligible?'🎓':'⏳'}</div>
+    <div style="background:linear-gradient(135deg,${progCert?'#006B46':P.c1},${progCert?'#00A066':P.c2});padding:1.2rem 1.4rem;display:flex;align-items:center;gap:1rem">
+      <div style="font-size:2rem">${progCert?'🎓':'⏳'}</div>
       <div style="flex:1">
         <div style="font-family:var(--fD);font-weight:800;font-size:.95rem;color:#fff">
-          ${isEligible?'Félicitations ! Tu es éligible à ta certification':'En cours de formation'}
+          ${progCert?'Félicitations ! Ton certificat de programme est disponible':'En route vers ton certificat de programme'}
         </div>
-        <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:3px">
-          ${PROG_INFO_MAP[prog]} · ${anneeLabel(yr)} année · ${done}/${mods.length} modules validés
+        <div style="font-size:.75rem;color:rgba(255,255,255,.65);margin-top:3px">
+          ${P.titre} · ${anneeLabel(yr)} année · ${valides.length}/${mods.length} modules validés par examen
         </div>
       </div>
-      <div style="font-family:var(--fD);font-weight:800;font-size:1.8rem;color:${isEligible?'#fff':'rgba(255,255,255,.7)'}">${pct}%</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.8rem;color:#fff">${pct}%</div>
     </div>
     <div style="padding:.8rem 1.4rem;background:var(--g50)">
       <div style="height:8px;background:var(--g200);border-radius:4px;overflow:hidden;margin-bottom:.4rem">
-        <div style="height:8px;border-radius:4px;background:${pct>=80?'linear-gradient(90deg,#006B46,#00A066)':'linear-gradient(90deg,var(--blue),var(--blueL))'};width:${pct}%;transition:width .5s"></div>
+        <div style="height:8px;border-radius:4px;background:linear-gradient(90deg,${P.c1},${P.c2});width:${pct}%;transition:width .5s"></div>
       </div>
-      <div style="font-size:.72rem;color:var(--g500)">Seuil de certification : 80% de modules validés — Il te reste ${Math.max(0,Math.ceil(mods.length*0.8)-done)} module(s)</div>
+      <div style="font-size:.72rem;color:var(--g500)">${progCert?`Certificat n° ${progCert.id} — clique dessus ci-dessous pour l'afficher.`:`Le certificat de programme se génère automatiquement quand les ${mods.length} modules sont validés. Il te reste ${mods.length-valides.length} module(s).`}</div>
     </div>
   </div>
 
-  ${isEligible ? `
-  <!-- DIPLÔME NUMÉRIQUE -->
-  <div style="background:#fff;border:3px solid var(--goldD);border-radius:var(--rL);padding:2rem;margin-bottom:1.2rem;text-align:center;position:relative;overflow:hidden">
-    <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red),var(--gold),var(--blue))"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(212,168,0,.04),transparent 60%)"></div>
-    <div style="position:relative">
-      <img src="${cdn('assets/images/logo/cfph.png')}" alt="Logo Canado Technique" style="height:50px;border-radius:10px;margin-bottom:1rem" onerror="this.style.display='none'" loading="lazy" decoding="async">
-      <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;color:var(--g500);text-transform:uppercase;margin-bottom:.3rem">Centre de Formation Professionnelle d'Haïti</div>
-      <div style="font-size:.68rem;color:var(--g500);margin-bottom:1.2rem">Canado Technique · Port-au-Prince, Haïti</div>
-      <div style="font-size:1rem;color:var(--g700);margin-bottom:.4rem">Certifie que</div>
-      <div style="font-family:var(--fD);font-weight:800;font-size:1.8rem;color:var(--text);margin-bottom:.4rem">${etudName}</div>
-      <div style="font-size:.82rem;color:var(--g700);margin-bottom:.3rem">a complété avec succès le programme de</div>
-      <div style="font-family:var(--fD);font-weight:700;font-size:1.1rem;color:var(--blue);margin-bottom:1.2rem">${PROG_INFO_MAP[prog]} (${prog}) · ${anneeLabel(yr)} année</div>
-      <div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:1.2rem;flex-wrap:wrap">
-        <div>
-          <div style="font-size:.65rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">Délivré le</div>
-          <div style="font-weight:700;font-size:.82rem">${new Date().toLocaleDateString('fr-HT',{day:'2-digit',month:'long',year:'numeric'})}</div>
+  <!-- MES CERTIFICATS GÉNÉRÉS -->
+  <h4 style="font-size:.85rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">📜 Mes certificats (${myCerts.length})</h4>
+  ${!myCerts.length?`<div style="text-align:center;padding:2.5rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--rL)">
+    <div style="font-size:2rem;margin-bottom:.5rem">🎓</div>
+    <div style="font-weight:700;color:var(--text)">Aucun certificat pour le moment</div>
+    <div style="font-size:.8rem;color:var(--g500);margin:.4rem 0 1rem">Chaque module validé (examen réussi) génère <strong>automatiquement</strong> ton attestation électronique ici.</div>
+    <button class="btn btn-blue btn-sm" onclick="showPanel('choisir-exam')">📝 Passer un examen →</button>
+  </div>`:`
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem">
+    ${myCerts.map(ce=>{
+      const cp=CERT_PROG_INFO[ce.prog]||P; const isP=ce.type==='programme';
+      return `<div onclick="openCert('${ce.id}')" style="cursor:pointer;background:#fff;border:2px solid ${isP?'var(--gold)':cp.c1+'40'};border-radius:var(--rL);padding:1rem;position:relative;overflow:hidden;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,${cp.c1},${isP?'var(--gold)':cp.c2})"></div>
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem">
+          <span style="font-size:1.4rem">${isP?'🏆':cp.ico}</span>
+          <span style="font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:${cp.c1}">${isP?'Certificat de programme':'Attestation de module'}</span>
         </div>
-        <div>
-          <div style="font-size:.65rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">N° Certificat</div>
-          <div style="font-family:monospace;font-weight:800;font-size:.82rem;color:var(--blue)">${certId}</div>
-        </div>
-        <div>
-          <div style="font-size:.65rem;color:var(--g500);text-transform:uppercase;letter-spacing:.08em">Résultat</div>
-          <div style="font-weight:700;font-size:.82rem;color:#006B46">${done}/${mods.length} modules · Mention Bien</div>
-        </div>
-      </div>
-      <!-- QR CODE (généré via API publique) -->
-      <div style="display:inline-block;padding:.8rem;background:#fff;border:2px solid var(--g200);border-radius:12px;margin-bottom:.8rem">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrData)}" 
-          alt="QR Vérification" style="width:120px;height:120px;display:block" loading="lazy" decoding="async">
-        <div style="font-size:.62rem;color:var(--g500);margin-top:.4rem;text-align:center">Scanner pour vérifier</div>
-      </div>
-      <div style="font-size:.68rem;color:var(--g500)">Ce certificat est vérifiable en ligne via le QR code ci-dessus</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
-    <button class="btn btn-blue btn-sm" onclick="window.print()">🖨️ Imprimer / Télécharger PDF</button>
-    <button class="btn btn-outline btn-sm" onclick="navigator.clipboard?.writeText('${qrData}').then(()=>toast('✓ Lien copié !'))">🔗 Copier le lien de vérification</button>
-  </div>` : `
-  <!-- PAS ENCORE ÉLIGIBLE -->
-  <div style="text-align:center;padding:2rem;background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL)">
-    <div style="font-size:2.5rem;margin-bottom:.8rem">🎓</div>
-    <div style="font-family:var(--fD);font-weight:700;font-size:1rem;color:var(--text);margin-bottom:.4rem">Certification disponible à 80% de progression</div>
-    <div style="font-size:.82rem;color:var(--g500);margin-bottom:1rem">Complète encore <strong>${Math.max(0,Math.ceil(mods.length*0.8)-done)} module(s)</strong> pour débloquer ton certificat numérique vérifiable.</div>
-    <button class="btn btn-blue btn-sm" onclick="showPanel('mes-cours')">📚 Continuer mes cours →</button>
+        <div style="font-weight:700;font-size:.86rem;color:var(--text);margin-bottom:.2rem">${isP?cp.titre+' — '+anneeLabel(ce.annee)+' année':ce.module+' · '+ce.module_titre}</div>
+        <div style="font-size:.7rem;color:var(--g500)">${new Date(ce.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}${!isP?' · '+ce.score+'%':''}</div>
+        <div style="font-family:monospace;font-size:.66rem;color:${cp.c1};margin-top:.4rem">${ce.id}</div>
+        <div style="font-size:.68rem;color:var(--blue);font-weight:600;margin-top:.5rem">👁 Afficher / imprimer →</div>
+      </div>`;}).join('')}
   </div>`}`;
 }
 
 /* ══════════════════════════════════════════════════════════
-   FEATURE 3 — RÉSEAU ALUMNI
+   FEATURE 3 — RÉSEAU ALUMNI (OPÉRATIONNEL — stores réels)
+   canado_alumni : profils d'anciens (activés après diplôme)
+   canado_offres : offres d'emploi/stage publiées
+   Flux mentor : demande alumni → validation par prof/responsable de programme
 ══════════════════════════════════════════════════════════ */
-function renderAlumniNetwork(c) {
-  // Données simulées — viendront de la BDD
-  const alumni = [
-    {nom:'Samuel Thermidor',promo:'TRI 2024',poste:'Technicien réseau Sr',entreprise:'Digicel Haïti',ville:'Port-au-Prince',disponible:true,avt:'ST',color:'#1B3A8C'},
-    {nom:'Claudia Pierre',promo:'TEL 2023',poste:'Ingénieure télécoms',entreprise:'Natcom',ville:'Port-au-Prince',disponible:false,avt:'CP',color:'#5B2D8E'},
-    {nom:'Remy Alexis',promo:'ELM 2022',poste:'Chef maintenance',entreprise:'SOGENER',ville:'Pétion-Ville',disponible:true,avt:'RA',color:'#006B46'},
-    {nom:'Nadège François',promo:'MEI 2024',poste:'Technicienne industrie',entreprise:'Ciment Haïti',ville:'Croix-des-Bouquets',disponible:true,avt:'NF',color:'#8B5E00'},
-    {nom:'Wilfrid Cadet',promo:'TRI 2023',poste:'Admin systèmes',entreprise:'BNC Haïti',ville:'Port-au-Prince',disponible:false,avt:'WC',color:'#1B3A8C'},
-    {nom:'Josué Pierre-Louis',promo:'TEL 2024',poste:'Tech. fibre optique',entreprise:'E-Power',ville:'Delmas',disponible:true,avt:'JP',color:'#5B2D8E'},
-  ];
+function alumniList(){ try{ return JSON.parse(localStorage.getItem('canado_alumni')||'[]'); }catch(e){ return []; } }
+function alumniSave(list){ try{ localStorage.setItem('canado_alumni', JSON.stringify(list)); }catch(e){} }
+function offresList(){ try{ return JSON.parse(localStorage.getItem('canado_offres')||'[]'); }catch(e){ return []; } }
+function alumniKey(){ return currentMatricule() || ('alumni::'+((ROLES[currentRole]&&ROLES[currentRole].name)||'demo')); }
+function myAlumniProfile(){ const k=alumniKey(); return alumniList().find(a=>a.key===k)||null; }
+/* Activation automatique du mode alumni à l'obtention du diplôme (appelée par la certification) */
+function activateAlumni(entry){
+  const list=alumniList();
+  if(list.some(a=>a.key===entry.key)) return;
+  list.push(entry); alumniSave(list);
+  if(typeof logAudit==='function') logAudit('ACTIVATION_ALUMNI', entry.nom+' ('+entry.prog+')', '', 'Mode alumni activé après diplôme');
+  try{ const nf=JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+    nf.unshift({type:'alumni',message:'🤝 Nouveau membre alumni — '+entry.nom+' ('+entry.prog+' '+entry.promo+')',date:new Date().toISOString()});
+    localStorage.setItem('canado_notifications', JSON.stringify(nf)); }catch(e){}
+}
+function alumniSaveProfil(){
+  const k=alumniKey(); const list=alumniList();
+  let p=list.find(a=>a.key===k);
+  const val=id=>((document.getElementById(id)||{}).value||'').trim();
+  if(!p){ p={key:k,id:'al_'+Date.now(),date:new Date().toISOString(),mentorStatus:null}; list.push(p); }
+  p.nom=val('alp-nom')||((ROLES[currentRole]&&ROLES[currentRole].name)||'Alumni');
+  p.prog=val('alp-prog')||'TRI'; p.promo=val('alp-promo')||String(new Date().getFullYear());
+  p.poste=val('alp-poste'); p.entreprise=val('alp-entreprise'); p.ville=val('alp-ville');
+  alumniSave(list);
+  if(typeof logAudit==='function') logAudit('PROFIL_ALUMNI', p.nom, '', 'Profil mis à jour');
+  toast('✅ Profil alumni enregistré — visible dans le réseau.');
+  showPanel('alumni-net');
+}
+function alumniDemanderMentor(){
+  const k=alumniKey(); const list=alumniList();
+  const p=list.find(a=>a.key===k);
+  if(!p){ toast('⚠️ Crée d\'abord ton profil alumni.'); return; }
+  const dom=((document.getElementById('alm-domaines')||{}).value||'').trim();
+  p.mentorStatus='en_attente'; p.mentorDomaines=dom; p.mentorDemande=new Date().toISOString();
+  alumniSave(list);
+  if(typeof logAudit==='function') logAudit('DEMANDE_MENTOR', p.nom, '', 'En attente de validation');
+  try{ const nf=JSON.parse(localStorage.getItem('canado_notifications')||'[]');
+    nf.unshift({type:'mentor',message:'🧑‍🏫 Demande de mentorat — '+p.nom+' ('+p.prog+') à valider',date:new Date().toISOString()});
+    localStorage.setItem('canado_notifications', JSON.stringify(nf)); }catch(e){}
+  toast('✅ Candidature mentor soumise ! Elle sera validée par le responsable de ton programme.');
+  showPanel(currentRole==='alumni'?'mentoring':'alumni-net');
+}
+function alumniValiderMentor(id, ok){
+  const list=alumniList(); const p=list.find(a=>a.id===id); if(!p) return;
+  p.mentorStatus=ok?'valide':'refuse';
+  p.mentorValidePar=(ROLES[currentRole]&&ROLES[currentRole].name)||'—';
+  alumniSave(list);
+  if(typeof logAudit==='function') logAudit(ok?'VALIDATION_MENTOR':'REJET_MENTOR', p.nom, 'en_attente', ok?'Mentor validé':'Refusé');
+  toast(ok?'✅ '+p.nom+' est maintenant mentor officiel !':'Candidature refusée.');
+  showPanel('alumni-net');
+}
+function offrePublier(){
+  const val=id=>((document.getElementById(id)||{}).value||'').trim();
+  const poste=val('of-poste'), ent=val('of-entreprise');
+  if(!poste||!ent){ toast('⚠️ Poste et entreprise requis.'); return; }
+  const o={id:'of_'+Date.now(),poste,entreprise:ent,type:val('of-type')||'CDI',prog:val('of-prog')||'TRI',
+    contact:val('of-contact'),by:(ROLES[currentRole]&&ROLES[currentRole].name)||'—',date:new Date().toISOString()};
+  const list=offresList(); list.unshift(o);
+  localStorage.setItem('canado_offres', JSON.stringify(list));
+  if(typeof logAudit==='function') logAudit('CRÉATION_OFFRE', poste+' — '+ent, '', o.type+' '+o.prog);
+  toast('✅ Offre publiée dans le réseau alumni !');
+  showPanel('alumni-net');
+}
+function offreSupprimer(id){
+  localStorage.setItem('canado_offres', JSON.stringify(offresList().filter(o=>o.id!==id)));
+  showPanel('alumni-net');
+}
 
-  const offres = [
-    {poste:'Technicien réseau',entreprise:'Digicel Haïti',type:'CDI',date:'Il y a 2 jours',prog:'TRI',icon:'🌐'},
-    {poste:'Électromécanicien',entreprise:'SOGENER',type:'CDI',date:'Il y a 3 jours',prog:'ELM',icon:'⚡'},
-    {poste:'Technicien télécoms',entreprise:'Natcom',type:'Stage',date:'Il y a 5 jours',prog:'TEL',icon:'📡'},
-    {poste:'Technicien maintenance',entreprise:'Caribbean Flour Mills',type:'CDI',date:'Il y a 1 semaine',prog:'MEI',icon:'🔧'},
-  ];
+function renderAlumniNetwork(c) {
+  const list=alumniList();
+  const offres=offresList();
+  const mentors=list.filter(a=>a.mentorStatus==='valide');
+  const pending=list.filter(a=>a.mentorStatus==='en_attente');
+  const canValidate=['prof','dg','admin','detudes'].includes(currentRole);
+  const canPost=['dg','admin','alumni','detudes'].includes(currentRole);
+  const me=myAlumniProfile();
+  const progIcons={TRI:'🌐',TEL:'📡',ELM:'⚡',MEI:'🔧'};
+  const progColors={TRI:'#1B3A8C',TEL:'#5B2D8E',ELM:'#006B46',MEI:'#8B5E00'};
+  const timeSince=iso=>{const s=Math.floor((Date.now()-new Date(iso))/864e5);return s<=0?'Aujourd\'hui':s===1?'Hier':'Il y a '+s+' jours';};
 
   c.innerHTML = `
-  <div class="ph2">🤝 Réseau Alumni <span class="ai-badge">Canado Technique</span></div>
+  <div class="ph2">🤝 Réseau Alumni <span class="ai-badge">Opérationnel</span></div>
+  <p style="font-size:.78rem;color:var(--g500);margin-bottom:1rem">Le mode alumni s'active automatiquement sur le compte de l'étudiant à l'obtention de son diplôme.</p>
 
-  <!-- STATS RÉSEAU -->
+  <!-- STATS RÉELLES -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.4rem">
-    ${[['247','Alumni actifs'],['89%','Taux d\'emploi'],['142','Entreprises partenaires'],['23','Offres actives']].map(([v,l])=>`
+    ${[[list.length,'Alumni inscrits'],[mentors.length,'Mentors validés'],[offres.length,'Offres actives'],[pending.length,'Demandes mentor']].map(([v,l])=>`
     <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1rem;text-align:center">
       <div style="font-family:var(--fD);font-weight:800;font-size:1.5rem;color:var(--blue)">${v}</div>
       <div style="font-size:.72rem;color:var(--g500);margin-top:2px">${l}</div>
@@ -8532,80 +9214,126 @@ function renderAlumniNetwork(c) {
   </div>
 
   <!-- TABS -->
-  <div style="display:flex;gap:.5rem;margin-bottom:1rem;border-bottom:2px solid var(--g100);padding-bottom:.5rem">
+  <div style="display:flex;gap:.5rem;margin-bottom:1rem;border-bottom:2px solid var(--g100);padding-bottom:.5rem;flex-wrap:wrap">
     <button class="btn btn-blue btn-sm alu-tab act" onclick="aluTab('membres',this)">👥 Membres</button>
     <button class="btn btn-outline btn-sm alu-tab" onclick="aluTab('offres',this)">💼 Offres d'emploi</button>
-    <button class="btn btn-outline btn-sm alu-tab" onclick="aluTab('mentoring',this)">🧑‍🏫 Trouver un mentor</button>
+    <button class="btn btn-outline btn-sm alu-tab" onclick="aluTab('mentoring',this)">🧑‍🏫 Mentors</button>
+    ${currentRole==='alumni'?'<button class="btn btn-outline btn-sm alu-tab" onclick="aluTab(\'profil\',this)">👤 Mon profil</button>':''}
+    ${canValidate?`<button class="btn btn-outline btn-sm alu-tab" onclick="aluTab('validations',this)">✅ Validations mentor ${pending.length?'<span style="background:var(--red);color:#fff;border-radius:10px;padding:0 6px;font-size:.65rem;margin-left:3px">'+pending.length+'</span>':''}</button>`:''}
   </div>
 
   <!-- MEMBRES -->
   <div id="alu-membres">
+    ${!list.length?`<div style="text-align:center;padding:2.5rem;background:var(--g50);border:1px solid var(--g100);border-radius:var(--rL)">
+      <div style="font-size:2rem;margin-bottom:.5rem">🎓</div>
+      <div style="font-weight:700;color:var(--text)">Le réseau démarre</div>
+      <div style="font-size:.78rem;color:var(--g500);margin-top:.3rem">Les diplômés apparaîtront ici automatiquement à l'activation de leur mode alumni.${currentRole==='alumni'?' Crée ton profil dans l\'onglet « Mon profil ».':''}</div>
+    </div>`:`
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.8rem">
-      ${alumni.map(a=>`
+      ${list.map(a=>`
       <div style="background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL);padding:1rem;display:flex;gap:.8rem;align-items:flex-start">
-        <div style="width:42px;height:42px;border-radius:50%;background:${a.color};display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0">${a.avt}</div>
+        <div style="width:42px;height:42px;border-radius:50%;background:${progColors[a.prog]||'#1B3A8C'};display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0">${(a.nom||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</div>
         <div style="flex:1;min-width:0">
           <div style="font-weight:700;font-size:.85rem;color:var(--text)">${a.nom}</div>
-          <div style="font-size:.75rem;color:var(--g500);margin-bottom:.3rem">${a.poste} · ${a.entreprise}</div>
+          <div style="font-size:.75rem;color:var(--g500);margin-bottom:.3rem">${a.poste||'—'}${a.entreprise?' · '+a.entreprise:''}</div>
           <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-            <span style="font-size:.68rem;background:#e8eeff;color:#1B3A8C;padding:1px 7px;border-radius:8px;font-weight:600">${a.promo}</span>
-            <span style="font-size:.65rem;color:var(--g500)">📍 ${a.ville}</span>
+            <span style="font-size:.68rem;background:#e8eeff;color:#1B3A8C;padding:1px 7px;border-radius:8px;font-weight:600">${progIcons[a.prog]||''} ${a.prog} ${a.promo||''}</span>
+            ${a.ville?'<span style="font-size:.65rem;color:var(--g500)">📍 '+a.ville+'</span>':''}
           </div>
         </div>
-        ${a.disponible?`<span style="font-size:.65rem;background:#e6f9f0;color:#006B46;padding:2px 6px;border-radius:6px;font-weight:700;white-space:nowrap">Mentor dispo</span>`:''}
+        ${a.mentorStatus==='valide'?'<span style="font-size:.65rem;background:#e6f9f0;color:#006B46;padding:2px 6px;border-radius:6px;font-weight:700;white-space:nowrap">✓ Mentor</span>':a.mentorStatus==='en_attente'?'<span style="font-size:.65rem;background:#fffbeb;color:#8B5E00;padding:2px 6px;border-radius:6px;font-weight:700;white-space:nowrap">⏳ Mentor</span>':''}
       </div>`).join('')}
-    </div>
+    </div>`}
   </div>
 
-  <!-- OFFRES D'EMPLOI -->
+  <!-- OFFRES -->
   <div id="alu-offres" style="display:none">
+    ${canPost?`<div class="fsec" style="margin-bottom:1rem">
+      <h4>📣 Publier une offre</h4>
+      <div class="frow">
+        <div class="fg"><label>Poste</label><input type="text" id="of-poste" placeholder="ex. Technicien réseau"></div>
+        <div class="fg"><label>Entreprise</label><input type="text" id="of-entreprise" placeholder="ex. Digicel Haïti"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Type</label><select id="of-type"><option>CDI</option><option>CDD</option><option>Stage</option><option>Freelance</option></select></div>
+        <div class="fg"><label>Programme visé</label><select id="of-prog"><option>TRI</option><option>MEI</option><option>ELM</option><option>TEL</option><option value="Tous">Tous</option></select></div>
+      </div>
+      <div class="fg" style="margin-bottom:.8rem"><label>Contact (email / téléphone)</label><input type="text" id="of-contact" placeholder="rh@entreprise.ht"></div>
+      <button class="btn btn-blue btn-sm" onclick="offrePublier()">+ Publier l'offre</button>
+    </div>`:''}
+    ${!offres.length?'<p style="font-size:.8rem;color:var(--g500);text-align:center;padding:1.5rem">Aucune offre publiée pour le moment.</p>':`
     <div style="display:flex;flex-direction:column;gap:.6rem">
       ${offres.map(o=>`
-      <div style="background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL);padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--g100)'">
-        <div style="width:40px;height:40px;border-radius:10px;background:#e8eeff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">${o.icon}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:.88rem;color:var(--text)">${o.poste}</div>
-          <div style="font-size:.75rem;color:var(--g500)">${o.entreprise} · ${o.date}</div>
+      <div style="background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL);padding:.9rem 1.1rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+        <span style="font-size:1.2rem">${progIcons[o.prog]||'💼'}</span>
+        <div style="flex:1;min-width:160px">
+          <div style="font-weight:700;font-size:.85rem;color:var(--text)">${o.poste}</div>
+          <div style="font-size:.74rem;color:var(--g500)">${o.entreprise} · ${timeSince(o.date)} · par ${o.by}${o.contact?' · 📞 '+o.contact:''}</div>
         </div>
-        <div style="display:flex;gap:.5rem;align-items:center">
-          <span style="font-size:.7rem;background:#e8eeff;color:#1B3A8C;padding:2px 8px;border-radius:8px;font-weight:600">${o.prog}</span>
-          <span style="font-size:.7rem;background:${o.type==='CDI'?'#e6f9f0':'#fffbeb'};color:${o.type==='CDI'?'#006B46':'#8B5E00'};padding:2px 8px;border-radius:8px;font-weight:600">${o.type}</span>
-          <button class="btn btn-blue btn-sm" style="font-size:.72rem;padding:.3rem .7rem">Postuler →</button>
-        </div>
+        <span class="chip ${o.type==='Stage'?'cgd':'cg'}">${o.type}</span>
+        <span class="chip cb">${o.prog}</span>
+        ${['dg','admin'].includes(currentRole)?`<button class="btn btn-outline btn-sm" style="color:var(--red)" onclick="offreSupprimer('${o.id}')">🗑</button>`:''}
       </div>`).join('')}
-    </div>
-    <div style="text-align:center;margin-top:1rem">
-      <button class="btn btn-outline btn-sm" onclick="toast('📢 Toutes les offres seront disponibles en production')">Voir toutes les offres →</button>
-    </div>
+    </div>`}
   </div>
 
-  <!-- MENTORING -->
+  <!-- MENTORS -->
   <div id="alu-mentoring" style="display:none">
-    <div style="background:#fffbeb;border:1.5px solid rgba(245,197,24,.3);border-radius:var(--rL);padding:1rem 1.2rem;margin-bottom:1rem;font-size:.82rem;color:#5c4000;line-height:1.65">
-      🧑‍🏫 <strong>Programme de mentorat Canado Technique</strong> — Connecte-toi avec un alumni de ton programme pour des conseils de carrière, de la pratique supplémentaire ou une préparation aux entretiens.
-    </div>
+    ${!mentors.length?'<p style="font-size:.8rem;color:var(--g500);text-align:center;padding:1.5rem">Aucun mentor validé pour le moment. Les alumni peuvent candidater — validation par le responsable de programme.</p>':`
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.8rem">
-      ${alumni.filter(a=>a.disponible).map(a=>`
-      <div style="background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL);overflow:hidden">
-        <div style="background:${a.color};padding:.8rem 1rem;display:flex;align-items:center;gap:.7rem">
-          <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:var(--fD);font-weight:800;font-size:.82rem;color:#fff">${a.avt}</div>
-          <div><div style="font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff">${a.nom}</div>
-          <div style="font-size:.68rem;color:rgba(255,255,255,.6)">${a.promo}</div></div>
-        </div>
-        <div style="padding:.9rem 1rem">
-          <div style="font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:.2rem">${a.poste}</div>
-          <div style="font-size:.75rem;color:var(--g500);margin-bottom:.7rem">${a.entreprise} · ${a.ville}</div>
-          <button class="btn btn-blue btn-sm" style="width:100%;justify-content:center;font-size:.78rem" onclick="toast('📧 Demande de mentorat envoyée à ${a.nom} !')">
-            📩 Contacter comme mentor
-          </button>
-        </div>
+      ${mentors.map(a=>`
+      <div style="background:#fff;border:1.5px solid rgba(0,160,102,.35);border-radius:var(--rL);padding:1rem">
+        <div style="font-weight:700;font-size:.85rem;color:var(--text)">🧑‍🏫 ${a.nom} <span class="chip cg" style="margin-left:.3rem">Mentor ${a.prog}</span></div>
+        <div style="font-size:.75rem;color:var(--g500);margin:.3rem 0">${a.poste||''}${a.entreprise?' · '+a.entreprise:''}</div>
+        ${a.mentorDomaines?'<div style="font-size:.73rem;color:var(--g700);background:var(--g50);border-radius:8px;padding:.4rem .6rem">💡 '+a.mentorDomaines+'</div>':''}
+        <div style="font-size:.66rem;color:var(--g500);margin-top:.4rem">Validé par ${a.mentorValidePar||'—'}</div>
       </div>`).join('')}
+    </div>`}
+    ${currentRole==='etud'?'<p style="font-size:.75rem;color:var(--g500);margin-top:.8rem">💬 Contacte un mentor via ton professeur ou la direction des études.</p>':''}
+  </div>
+
+  ${currentRole==='alumni'?`
+  <!-- MON PROFIL (alumni) -->
+  <div id="alu-profil" style="display:none">
+    <div class="fsec">
+      <h4>👤 Mon profil alumni ${me?'<span class="chip cg" style="margin-left:.4rem">Actif</span>':'<span class="chip cgd" style="margin-left:.4rem">À créer</span>'}</h4>
+      <div class="frow">
+        <div class="fg"><label>Nom complet</label><input type="text" id="alp-nom" value="${(me&&me.nom||ROLES[currentRole].name||'').replace(/"/g,'&quot;')}"></div>
+        <div class="fg"><label>Programme</label><select id="alp-prog">${['TRI','MEI','ELM','TEL'].map(p=>`<option ${me&&me.prog===p?'selected':''}>${p}</option>`).join('')}</select></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Promotion (année)</label><input type="text" id="alp-promo" value="${me&&me.promo||''}" placeholder="2024"></div>
+        <div class="fg"><label>Poste actuel</label><input type="text" id="alp-poste" value="${(me&&me.poste||'').replace(/"/g,'&quot;')}" placeholder="ex. Technicien réseau"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Entreprise</label><input type="text" id="alp-entreprise" value="${(me&&me.entreprise||'').replace(/"/g,'&quot;')}"></div>
+        <div class="fg"><label>Ville</label><input type="text" id="alp-ville" value="${(me&&me.ville||'').replace(/"/g,'&quot;')}" placeholder="Port-au-Prince"></div>
+      </div>
+      <button class="btn btn-blue btn-sm" onclick="alumniSaveProfil()">💾 Enregistrer mon profil</button>
     </div>
-  </div>`;
+  </div>`:''}
+
+  ${canValidate?`
+  <!-- VALIDATIONS MENTOR (responsable de programme / direction) -->
+  <div id="alu-validations" style="display:none">
+    ${!pending.length?'<p style="font-size:.8rem;color:var(--g500);text-align:center;padding:1.5rem">Aucune demande de mentorat en attente.</p>':`
+    <div style="display:flex;flex-direction:column;gap:.7rem">
+      ${pending.map(a=>`
+      <div style="background:#fff;border:1.5px solid rgba(245,197,24,.4);border-radius:var(--rL);padding:1rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="font-weight:700;font-size:.85rem;color:var(--text)">${a.nom} <span class="chip cb">${a.prog} ${a.promo||''}</span></div>
+          <div style="font-size:.74rem;color:var(--g500)">${a.poste||''}${a.entreprise?' · '+a.entreprise:''}</div>
+          ${a.mentorDomaines?'<div style="font-size:.73rem;color:var(--g700);margin-top:.3rem">💡 Domaines : '+a.mentorDomaines+'</div>':''}
+        </div>
+        <button class="btn btn-green btn-sm" onclick="alumniValiderMentor('${a.id}',true)">✅ Valider mentor</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--red)" onclick="alumniValiderMentor('${a.id}',false)">✗ Refuser</button>
+      </div>`).join('')}
+    </div>`}
+  </div>`:''}`;
 }
 
 function aluTab(tab, btn) {
-  ['membres','offres','mentoring'].forEach(t=>{
+  ['membres','offres','mentoring','profil','validations'].forEach(t=>{
     const el=document.getElementById('alu-'+t);
     if(el) el.style.display=t===tab?'block':'none';
   });
@@ -8616,17 +9344,72 @@ function aluTab(tab, btn) {
 /* ══════════════════════════════════════════════════════════
    FEATURE 4 — TABLEAU DE BORD PARENTS
 ══════════════════════════════════════════════════════════ */
+/* ── TABLEAU DE BORD PARENT — résultats de l'enfant par module ── */
+function parentChild(){
+  // En production : lié au matricule de l'enfant via le compte SIGES du parent.
+  // En démo : Marie Louisiane, TRI 1ère année (résultats partagés avec le compte étudiant démo TRI).
+  return { nom:'Marie Louisiane', prog:'TRI', annee:1, key:'demo::TRI::1', matricule:null };
+}
+function renderParentDash(c){
+  const ch=parentChild();
+  const mods=(ch.annee===2?(MODULES_2[ch.prog]||[]):(MODULES[ch.prog]||[]));
+  const states=getModuleStates(ch.prog, ch.annee);
+  const allRes=getAllResults().filter(r=>r.key===ch.key||(ch.matricule&&r.matricule===ch.matricule));
+  const lastByCode={}; allRes.forEach(r=>{ const p=lastByCode[r.code]; if(!p||(r.iso||'')>(p.iso||'')) lastByCode[r.code]=r; });
+  const results=Object.values(lastByCode);
+  const valides=results.filter(r=>r.status==='Validé').length;
+  const moy=results.length?Math.round(results.reduce((s,r)=>s+r.score,0)/results.length):null;
+  const ouverts=mods.filter(m=>states[m.code]===true).length;
+  const info=PROG_INFO[ch.prog]||{};
+  const P=(typeof CERT_PROG_INFO!=='undefined'&&CERT_PROG_INFO[ch.prog])||{titre:ch.prog,c1:'#1B3A8C'};
+  // paiements de l'enfant (démo : dernier enregistrement du store)
+  const pays=paieList();
+  const lastPay=pays.length?pays[pays.length-1]:null;
+
+  c.innerHTML=`<div class="ph2">👨‍👧 Suivi de ${ch.nom} <span class="ai-badge">${ch.prog} · ${anneeLabel(ch.annee)} année</span></div>
+  <p style="font-size:.8rem;color:var(--g500);margin-bottom:1rem">${P.titre} — Résultats module par module, mis à jour après chaque examen.</p>
+  <div class="kgrid">
+    <div class="kcard kg"><div class="knum">${moy==null?'—':moy+'%'}</div><div class="klbl">Moyenne générale</div></div>
+    <div class="kcard"><div class="knum">${valides}/${mods.length}</div><div class="klbl">Modules validés</div></div>
+    <div class="kcard kgd"><div class="knum">${ouverts}</div><div class="klbl">Modules ouverts</div></div>
+    <div class="kcard ${results.length-valides?'kr':''}"><div class="knum">${results.length-valides}</div><div class="klbl">À repasser</div></div>
+  </div>
+  ${lastPay?`<div style="background:${lastPay.reste_apres>0?'#fffbeb':'#e6f9f0'};border:1.5px solid ${lastPay.reste_apres>0?'rgba(245,197,24,.4)':'#00A066'};border-radius:var(--r);padding:.8rem 1rem;margin-bottom:1rem;font-size:.8rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+    <span>💳 Situation financière : <strong>${lastPay.reste_apres>0?fmtHTG(lastPay.reste_apres)+' restant à payer':'Frais à jour ✓'}</strong></span>
+    <button class="btn btn-outline btn-sm" onclick="showPanel('paiements-parent')">Détails →</button>
+  </div>`:''}
+  <h4 style="font-size:.83rem;font-weight:700;margin-bottom:.8rem;color:var(--text)">Résultats par module — ${ch.prog} ${anneeLabel(ch.annee)} année</h4>
+  <div class="tw"><table><thead><tr><th>#</th><th>Module</th><th>État classe</th><th>Score</th><th>Seuil</th><th>Résultat</th></tr></thead><tbody>
+    ${mods.map((m,i)=>{
+      const open=states[m.code]===true;
+      const r=lastByCode[m.code];
+      return `<tr>
+        <td>${String(i+1).padStart(2,'0')}</td>
+        <td style="font-weight:500">${m.code} · ${m.title}</td>
+        <td>${open?'<span class="chip cb">Ouvert</span>':'<span class="chip cgy">🔒 Verrouillé</span>'}</td>
+        <td style="font-weight:700;color:${!r?'var(--g500)':r.score>=(r.seuil||m.seuil)?'var(--green)':'var(--red)'}">${r?r.score+'%':'—'}</td>
+        <td>${m.seuil}%</td>
+        <td>${!r?'<span style="font-size:.72rem;color:var(--g500)">Pas encore passé</span>':r.status==='Validé'?'<span class="chip cg">✅ Validé</span>':'<span class="chip cr">✗ À repasser</span>'}</td>
+      </tr>`;}).join('')}
+  </tbody></table></div>
+  ${!results.length?'<div style="background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.12);border-radius:8px;padding:.8rem 1rem;margin-top:.8rem;font-size:.78rem;color:var(--g700)">ℹ️ Les résultats apparaîtront ici dès que '+ch.nom.split(' ')[0]+' passera ses examens blancs sur la plateforme.</div>':''}`;
+}
+
 function renderProgEnfant(c) {
-  const prog='TRI', yr=1, nom='Marie Louisiane';
-  const mods=MODULES[prog]||[];
-  const states=getModuleStates(prog,yr);
-  const done=mods.filter(m=>states[m.code+'_done']).length;
+  const ch=parentChild();
+  const mods=(ch.annee===2?(MODULES_2[ch.prog]||[]):(MODULES[ch.prog]||[]));
+  const states=getModuleStates(ch.prog, ch.annee);
+  const allRes=getAllResults().filter(r=>r.key===ch.key||(ch.matricule&&r.matricule===ch.matricule));
+  const validesCodes=new Set(allRes.filter(r=>r.status==='Validé').map(r=>r.code));
+  const done=mods.filter(m=>validesCodes.has(m.code)).length;
   const pct=mods.length?Math.round(done/mods.length*100):0;
+  const moy=allRes.length?Math.round(allRes.reduce((s,r)=>s+r.score,0)/allRes.length):null;
+  const ouverts=mods.filter(m=>states[m.code]===true).length;
 
   c.innerHTML=`
-  <div class="ph2">📚 Progression de ${nom}</div>
+  <div class="ph2">📚 Progression de ${ch.nom}</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.2rem">
-    ${[['📊',pct+'%','Progression globale'],['✅',done+'/'+mods.length,'Modules validés'],['📈','78%','Moyenne générale'],['📅','Lun-Mer-Ven','Jours de cours']].map(([ico,v,l])=>`
+    ${[['📊',pct+'%','Progression globale'],['✅',done+'/'+mods.length,'Modules validés'],['📈',moy==null?'—':moy+'%','Moyenne générale'],['📖',ouverts,'Modules ouverts']].map(([ico,v,l])=>`
     <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1rem;text-align:center">
       <div style="font-size:1.3rem;margin-bottom:.4rem">${ico}</div>
       <div style="font-family:var(--fD);font-weight:800;font-size:1.3rem;color:var(--text)">${v}</div>
@@ -8634,41 +9417,57 @@ function renderProgEnfant(c) {
     </div>`).join('')}
   </div>
   <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;margin-bottom:1rem">
-    <div style="font-family:var(--fD);font-weight:700;margin-bottom:.8rem">📅 Absences ce mois</div>
-    ${[['Lun 5 mai','TRI-08 Logiciels bureau.','Présent','#e6f9f0','#006B46'],['Mer 7 mai','TRI-09 Sécurité réseau','Absent','#fff5f5','var(--red)'],['Lun 12 mai','TRI-10 Réseau sans fil','Présent','#e6f9f0','#006B46']].map(([d,m,s,bg,col])=>`
-    <div style="display:flex;align-items:center;gap:.8rem;padding:.6rem .8rem;background:${bg};border-radius:8px;margin-bottom:.4rem">
-      <div style="font-size:.75rem;color:var(--g700);width:80px;flex-shrink:0">${d}</div>
-      <div style="font-size:.8rem;color:var(--text);flex:1">${m}</div>
-      <span style="font-size:.7rem;font-weight:700;color:${col}">${s}</span>
-    </div>`).join('')}
-  </div>
-  <div style="background:#fffbeb;border:1px solid rgba(245,197,24,.3);border-radius:var(--rL);padding:1rem;font-size:.8rem;color:#5c4000;line-height:1.65">
-    💡 <strong>Message de l'administration :</strong> Marie affiche une excellente progression. Nous recommandons de l'encourager à préparer le module TRI-11 en avance. Prochain examen le 3 juin.
+    <div style="font-family:var(--fD);font-weight:700;margin-bottom:.8rem">Avancement par module</div>
+    ${mods.map(m=>{
+      const ok=validesCodes.has(m.code), open=states[m.code]===true;
+      return `<div style="display:flex;align-items:center;gap:.7rem;padding:.45rem 0;border-bottom:1px solid var(--g100)">
+        <span style="font-size:.95rem">${ok?'✅':open?'📖':'🔒'}</span>
+        <span style="flex:1;font-size:.8rem;color:var(--text)">${m.code} · ${m.title}</span>
+        <span style="font-size:.7rem;color:var(--g500)">${m.dur}h</span>
+        <span class="chip ${ok?'cg':open?'cb':'cgy'}">${ok?'Validé':open?'En cours':'À venir'}</span>
+      </div>`;}).join('')}
   </div>`;
 }
 
 function renderPaiementsParent(c) {
+  const ch=parentChild();
+  const cfg=loadTarifsConfig();
+  const t=cfg.programmes[ch.prog]||{};
+  const frais=(ch.annee===2?t.an2:t.an1)||0;
+  const commun=Object.values(cfg.commun||{}).reduce((s,v)=>s+(+v||0),0);
+  const totalAnnuel=frais+commun+(t.cert||0);
+  const pays=paieList(); // en prod : filtrés par matricule de l'enfant
+  const paye=pays.reduce((s,p)=>s+(p.montant_verse||0),0);
+  const reste=Math.max(0,totalAnnuel-paye);
   c.innerHTML=`
-  <div class="ph2">💳 Paiements & Frais</div>
+  <div class="ph2">💳 Paiements & Frais — ${ch.nom}</div>
+  <p style="font-size:.75rem;color:var(--g500);margin-bottom:1rem">Grille tarifaire officielle ${ch.prog} ${anneeLabel(ch.annee)} année · versements enregistrés par l'administration.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin-bottom:1.2rem">
-    ${[['Total annuel','128 100 HTG','var(--text)'],['Payé','77 100 HTG','#006B46'],['Restant','51 000 HTG','var(--red)']].map(([l,v,c])=>`
+    ${[['Total annuel',fmtHTG(totalAnnuel),'var(--text)'],['Payé',fmtHTG(paye),'#006B46'],['Restant',fmtHTG(reste),reste>0?'var(--red)':'#006B46']].map(([l,v,col])=>`
     <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1rem;text-align:center">
       <div style="font-size:.72rem;color:var(--g500);margin-bottom:.3rem">${l}</div>
-      <div style="font-family:var(--fD);font-weight:800;font-size:1.1rem;color:${c}">${v}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1.05rem;color:${col}">${v}</div>
     </div>`).join('')}
   </div>
-  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden">
-    <div style="padding:.8rem 1.2rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">Historique des paiements</div>
+  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem">
+    <div style="padding:.8rem 1.2rem;border-bottom:1px solid var(--g100);font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text)">Historique des versements</div>
     <div style="padding:.8rem 1.2rem">
-      ${[['Janv. 2026','1er versement (Écolage)','77 100 HTG','Payé','#e6f9f0','#006B46'],['Janv. 2026','Frais généraux (partiel)','25 000 HTG','Payé','#e6f9f0','#006B46'],['Avr. 2026','2e versement','12 850 HTG','Payé','#e6f9f0','#006B46'],['Juil. 2026','3e versement','12 850 HTG','À payer','#fffbeb','#8B5E00']].map(([d,d2,m,s,bg,col])=>`
-      <div style="display:flex;align-items:center;gap:.8rem;padding:.65rem;border-radius:8px;background:${bg};margin-bottom:.4rem">
-        <div style="font-size:.72rem;color:var(--g500);width:80px;flex-shrink:0">${d}</div>
-        <div style="flex:1;font-size:.8rem;color:var(--text)">${d2}</div>
-        <div style="font-family:var(--fD);font-weight:700;font-size:.82rem;color:${col}">${m}</div>
-        <span style="font-size:.68rem;font-weight:700;color:${col}">${s}</span>
+      ${!pays.length?'<p style="font-size:.78rem;color:var(--g500);text-align:center;padding:1rem">Aucun versement enregistré pour le moment.</p>':
+      pays.slice().reverse().map(p=>`
+      <div style="display:flex;align-items:center;gap:.8rem;padding:.65rem;border-radius:8px;background:#e6f9f0;margin-bottom:.4rem">
+        <div style="font-size:.72rem;color:var(--g500);width:90px;flex-shrink:0">${new Date(p.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}</div>
+        <div style="flex:1;font-size:.8rem;color:var(--text)">${p.formule_label||'Versement'} — reçu par ${p.recu_par||'—'}</div>
+        <div style="font-family:var(--fD);font-weight:700;font-size:.82rem;color:#006B46">${fmtHTG(p.montant_verse)}</div>
+        <span style="font-size:.68rem;font-weight:700;color:#006B46">Payé ✓</span>
       </div>`).join('')}
     </div>
-  </div>`;
+  </div>
+  ${t.versements?`<div style="background:var(--g50);border:1px solid var(--g100);border-radius:var(--rL);padding:1rem">
+    <div style="font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:.5rem">📅 Plan des 6 versements (écolage ${anneeLabel(ch.annee)} année)</div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      ${t.versements.map((v,i)=>`<span class="chip cb">V${i+1} · ${fmtHTG(v)}</span>`).join('')}
+    </div>
+  </div>`:''}`;
 }
 
 function renderAbsences(c) {
@@ -8683,29 +9482,58 @@ function renderAbsences(c) {
 }
 
 function renderResultatsParent(c) {
-  c.innerHTML=`<div class="ph2">🏆 Résultats & Notes</div>
-  <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rL);padding:1.2rem">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1rem">
-      ${[['Moyenne générale','78%','#1B3A8C'],['Meilleur module','TRI-05 (92%)','#006B46'],['À renforcer','TRI-11 (65%)','#C98A00']].map(([l,v,c])=>`
-      <div style="text-align:center;padding:.9rem;background:var(--g50);border:1px solid var(--g100);border-radius:10px">
-        <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">${l}</div>
-        <div style="font-family:var(--fD);font-weight:800;font-size:1rem;color:${c}">${v}</div>
-      </div>`).join('')}
-    </div>
-    <p style="font-size:.78rem;color:var(--g500);text-align:center">Détail complet des résultats disponible en production.</p>
-  </div>`;
+  const ch=parentChild();
+  const allRes=getAllResults().filter(r=>r.key===ch.key||(ch.matricule&&r.matricule===ch.matricule))
+    .sort((a,b)=>(b.iso||'').localeCompare(a.iso||''));
+  const moy=allRes.length?Math.round(allRes.reduce((s,r)=>s+r.score,0)/allRes.length):null;
+  const best=allRes.slice().sort((a,b)=>b.score-a.score)[0];
+  const worst=allRes.slice().sort((a,b)=>a.score-b.score)[0];
+  c.innerHTML=`<div class="ph2">🏆 Résultats & Notes — ${ch.nom}</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1rem">
+    ${[['Moyenne générale',moy==null?'—':moy+'%','#1B3A8C'],['Meilleur module',best?best.code+' ('+best.score+'%)':'—','#006B46'],['À renforcer',worst&&worst.status!=='Validé'?worst.code+' ('+worst.score+'%)':'—','#C98A00']].map(([l,v,col])=>`
+    <div style="text-align:center;padding:.9rem;background:var(--g50);border:1px solid var(--g100);border-radius:10px">
+      <div style="font-size:.7rem;color:var(--g500);margin-bottom:.3rem">${l}</div>
+      <div style="font-family:var(--fD);font-weight:800;font-size:1rem;color:${col}">${v}</div>
+    </div>`).join('')}
+  </div>
+  ${!allRes.length?`<div style="text-align:center;padding:2rem;background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL)">
+    <div style="font-size:1.6rem;margin-bottom:.4rem">📝</div>
+    <div style="font-size:.82rem;color:var(--g500)">Aucun examen passé pour le moment. Les résultats de ${ch.nom.split(' ')[0]} s'afficheront ici en temps réel.</div>
+  </div>`:`
+  <div class="tw"><table><thead><tr><th>Date</th><th>Module</th><th>Tentative</th><th>Score</th><th>Seuil</th><th>Résultat</th></tr></thead><tbody>
+    ${allRes.map(r=>`<tr>
+      <td>${r.date}</td>
+      <td style="font-weight:500"><span class="chip cb">${r.code}</span> ${r.title}</td>
+      <td style="text-align:center">${r.tentative||1}</td>
+      <td style="font-weight:700;color:${r.score>=(r.seuil||75)?'var(--green)':'var(--red)'}">${r.score}%</td>
+      <td>${r.seuil||75}%</td>
+      <td><span class="chip ${r.status==='Validé'?'cg':'cr'}">${r.status}</span></td>
+    </tr>`).join('')}
+  </tbody></table></div>`}`;
 }
 
 /* ══════════════════════════════════════════════════════════
    FEATURE 5 — MENTORING ALUMNI
 ══════════════════════════════════════════════════════════ */
 function renderMentoring(c) {
+  const me=myAlumniProfile();
+  const st=me&&me.mentorStatus;
   c.innerHTML=`
   <div class="ph2">🧑‍🏫 Devenir mentor</div>
   <div style="background:linear-gradient(135deg,rgba(245,197,24,.08),rgba(27,58,140,.05));border:1.5px solid rgba(245,197,24,.3);border-radius:var(--rL);padding:1.2rem;margin-bottom:1.2rem">
     <div style="font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.5rem">🌟 Partage ton expérience avec les futurs techniciens</div>
-    <div style="font-size:.82rem;color:var(--g700);line-height:1.65">En devenant mentor Canado Technique, tu aides les étudiants actuels à réussir leur formation, à trouver un emploi et à développer leurs compétences. 1-2 heures par semaine peuvent changer une carrière.</div>
+    <div style="font-size:.82rem;color:var(--g700);line-height:1.65">En devenant mentor Canado Technique, tu aides les étudiants actuels à réussir leur formation et à trouver un emploi. Ta candidature est <strong>validée par le responsable de ton programme</strong> ou un professeur.</div>
   </div>
+  ${st==='valide'?`<div style="background:#e6f9f0;border:1.5px solid #00A066;border-radius:var(--rL);padding:1.2rem;text-align:center">
+    <div style="font-size:1.8rem">✅</div>
+    <div style="font-family:var(--fD);font-weight:800;color:#006B46;margin:.3rem 0">Tu es mentor officiel Canado Technique !</div>
+    <div style="font-size:.78rem;color:var(--g700)">Validé par ${me.mentorValidePar||'la direction'} · Domaines : ${me.mentorDomaines||'—'}</div>
+  </div>`
+  :st==='en_attente'?`<div style="background:#fffbeb;border:1.5px solid rgba(245,197,24,.5);border-radius:var(--rL);padding:1.2rem;text-align:center">
+    <div style="font-size:1.8rem">⏳</div>
+    <div style="font-family:var(--fD);font-weight:800;color:#8B5E00;margin:.3rem 0">Candidature en attente de validation</div>
+    <div style="font-size:.78rem;color:var(--g700)">Le responsable de programme ${me.prog||''} examinera ta demande.</div>
+  </div>`:`
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem">
     ${[['📚','Partager mes compétences techniques','Aide sur les modules de ton programme'],['💼','Préparer aux entretiens','Simulation d\'entretiens et conseils RH'],['🗺️','Orienter vers les entreprises','Présente les opportunités du marché haïtien'],['📞','Sessions vidéo hebdo','1h/semaine via Zoom ou WhatsApp']].map(([i,t,d])=>`
     <div style="background:#fff;border:1.5px solid var(--g100);border-radius:var(--rL);padding:1rem;display:flex;gap:.8rem">
@@ -8714,9 +9542,12 @@ function renderMentoring(c) {
       <div style="font-size:.74rem;color:var(--g500)">${d}</div></div>
     </div>`).join('')}
   </div>
-  <button class="btn btn-blue" style="width:100%;justify-content:center" onclick="toast('✅ Candidature mentor soumise ! L\'équipe Canado vous contactera sous 48h.')">
-    🤝 Rejoindre le programme mentor
-  </button>`;
+  ${!me?'<div style="background:rgba(27,58,140,.06);border:1px solid rgba(27,58,140,.15);border-radius:10px;padding:.8rem 1rem;font-size:.78rem;color:var(--text);margin-bottom:1rem">👤 Crée d\'abord ton profil dans <strong>Réseau & emplois → Mon profil</strong>, puis reviens candidater ici.</div>':''}
+  <div class="fg" style="margin-bottom:.8rem"><label>Tes domaines de mentorat (compétences, modules, secteurs)</label>
+    <input type="text" id="alm-domaines" placeholder="ex. Cisco CCNA, câblage structuré, préparation entretiens"></div>
+  <button class="btn btn-blue" style="width:100%;justify-content:center" onclick="alumniDemanderMentor()">
+    🤝 Soumettre ma candidature mentor
+  </button>`}`;
 }
 
 /* ══════════════════════════════════════════════════════════
