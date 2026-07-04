@@ -257,6 +257,11 @@ img{max-width:100%;display:block}
 .ecole-photo{border-radius:var(--rXL);overflow:hidden;box-shadow:var(--shadowL);aspect-ratio:4/3;background:#0d1f3c}
 .ecole-photo img{width:100%;height:100%;object-fit:cover}
 .ecole-video{margin-top:1.5rem}
+.ecole-duo{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.ecole-duo .ecole-photo{aspect-ratio:4/3}
+.ecole-duo.solo{grid-template-columns:1fr}
+.ecole-duo.solo .ecole-photo{aspect-ratio:16/9}
+@media(max-width:640px){.ecole-duo{gap:.7rem}}
 .ecv-screen{position:relative;background:#0b1526;border:10px solid #16233a;border-bottom:none;border-radius:18px 18px 0 0;overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadowL)}
 .ecv-screen video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .ecv-play{position:absolute;inset:0;margin:auto;width:66px;height:66px;border-radius:50%;border:none;background:rgba(232,25,44,.92);color:#fff;font-size:1.35rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding-left:5px;box-shadow:0 10px 34px rgba(0,0,0,.55);transition:transform .2s,background .2s;z-index:2}
@@ -1797,12 +1802,8 @@ td{color:var(--text)!important}
     <div class="si-lg">
       <div class="ecole-grid">
         <div>
-          <div class="ecole-photo">
-            <img data-cdn-src="assets/images/hero/school-photo.jpg" alt="Campus Canado Technique"
-              onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'" loading="lazy" decoding="async">
-          </div>
-          <!-- Vidéo : histoire de l'école & méthode APC (cadre laptop) -->
-          <div class="ecole-video">
+          <!-- Vidéo EN HAUT : histoire de l'école & méthode APC (cadre laptop) -->
+          <div class="ecole-video" style="margin-top:0">
             <div class="ecv-screen">
               <video id="ecole-video" preload="none" playsinline
                 data-cdn-poster="assets/images/hero/school-photo.jpg"></video>
@@ -1810,6 +1811,17 @@ td{color:var(--text)!important}
             </div>
             <div class="ecv-base"></div>
             <div class="ecv-caption">🎬 Notre histoire &amp; la méthode APC</div>
+          </div>
+          <!-- Duo de photos du campus (la 2e est optionnelle : si absente, la 1re prend toute la largeur) -->
+          <div class="ecole-duo">
+            <div class="ecole-photo">
+              <img data-cdn-src="assets/images/hero/school-photo.jpg" alt="Campus Canado Technique"
+                onerror="this.parentElement.style.background='linear-gradient(135deg,#0C1F3D,#1B3A8C)';this.style.display='none'" loading="lazy" decoding="async">
+            </div>
+            <div class="ecole-photo" id="ecole-photo-2">
+              <img data-cdn-src="assets/images/hero/school-photo-2.jpg" alt="Vie étudiante au Canado Technique"
+                onerror="document.getElementById('ecole-photo-2').style.display='none';document.querySelector('.ecole-duo').classList.add('solo')" loading="lazy" decoding="async">
+            </div>
           </div>
         </div>
         <div>
