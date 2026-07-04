@@ -23,6 +23,39 @@
     p = p.replace(/^assets\//, 'Programme/_assets/');                // mappe vers l'arborescence R2
     return window.CDN_BASE + p;
   };
+  // ── Images HERO des modules de cours ──
+  // Convention R2 : Programme/{PROG}/_assets/hero/{CODE}.jpg  (ex. Programme/TRI/_assets/hero/TRI-01.jpg)
+  // Repli automatique jpg → png → webp → jpeg → badge numéroté. Fonctionne pour les 4 filières.
+  window.HERO_EXTS = ['jpg','png','webp','jpeg'];
+  // Deux conventions de nommage acceptées : TRI-01.jpg (code module) et slide-tri-01.jpg (exports Rooby)
+  window.heroCandidates = function(prog, code){
+    var num = String(code).split('-')[1] || '';
+    var names = [code, 'slide-' + String(prog).toLowerCase() + '-' + num];
+    var base = window.CDN_BASE + 'Programme/' + prog + '/_assets/hero/';
+    var out = [];
+    names.forEach(function(n){ window.HERO_EXTS.forEach(function(e){ out.push(base + n + '.' + e); }); });
+    return out;
+  };
+  window.heroSrc = function(prog, code, ext){
+    return window.CDN_BASE + 'Programme/' + prog + '/_assets/hero/' + code + '.' + (ext||'jpg');
+  };
+  window.heroErr = function(img){
+    var cands = window.heroCandidates(img.dataset.prog, img.dataset.code);
+    var i = (+img.dataset.ei || 0) + 1;
+    if(i < cands.length){
+      img.dataset.ei = i;
+      img.src = cands[i];
+    } else {
+      img.parentNode.classList.add('nohero');
+      img.style.display = 'none';
+      var nb = img.nextElementSibling;
+      if(nb) nb.style.display = 'flex';
+    }
+  };
+  window.heroThumbHTML = function(prog, code, num){
+    return '<div class="mthumb"><img src="' + window.heroSrc(prog, code) + '" data-prog="' + prog + '" data-code="' + code + '" alt="" loading="lazy" decoding="async" onerror="heroErr(this)">' +
+      '<div class="mnum" style="display:none">' + num + '</div></div>';
+  };
   // Résout les images statiques marquées data-cdn-src (logos nav/footer)
   window.addEventListener('DOMContentLoaded', function(){
     document.querySelectorAll('[data-cdn-src]').forEach(function(el){
@@ -458,6 +491,12 @@ tr:hover td code{background:#1a2f52;color:#7BA7FF}
   color:#ffffff;font-size:.7rem;font-weight:800;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   box-shadow:0 2px 8px rgba(43,86,192,.35);letter-spacing:.03em}
+.mthumb{width:78px;height:46px;border-radius:9px;overflow:hidden;flex-shrink:0;position:relative;background:var(--g100);border:1px solid var(--bdr)}
+.mthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.mthumb .mnum{position:absolute;inset:0;width:100%;height:100%;border-radius:0;font-size:.78rem}
+.mthumb.nohero{width:32px;height:32px;border:none;background:transparent;overflow:visible}
+.mthumb.nohero .mnum{border-radius:7px}
+@media(max-width:640px){.mthumb{width:58px;height:38px}.mthumb.nohero{width:32px;height:32px}}
 .mtitle{flex:1;font-size:.8rem;font-weight:600;color:#0B1A35}
 .mdur{font-size:.68rem;color:#2a3d6b;font-weight:600;white-space:nowrap}
 .mseuil{font-size:.68rem;padding:2px 7px;border-radius:7px;font-weight:600;white-space:nowrap}
@@ -4567,7 +4606,7 @@ function hideLogin() { document.getElementById('login-overlay').classList.remove
    3. Le backend valide identifiant + mot de passe et gère la 2FA réelle
 ══════════════════════════════════════════════════════════ */
 // ── Connexion réelle activée ── (repli comptes de démo : définir window.DEMO_LOGIN = true)
-const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : true;
+const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : false;
 const AUTH_URL    = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
 const VERIFY_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/verify-2fa';
 let   tfaChallengeId = null;
@@ -5319,7 +5358,7 @@ function renderCoursMgmt(c) {
                 onclick="openCoursViewer(this.dataset.fichier, this.dataset.titre)">▶ Lancer le module</button>`
             : '<span style="font-size:.7rem;color:var(--g400)">Cours à venir</span>';
           return `<div class="mrow">
-            <div class="mnum">${String(i+1).padStart(2,'0')}</div>
+            ${heroThumbHTML(selProg, m.code, String(i+1).padStart(2,'0'))}
             <div class="mtitle" style="display:flex;align-items:center;gap:.4rem">${m.code} · ${m.title}</div>
             <div class="mdur">${m.dur}h</div>
             <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
@@ -6791,7 +6830,7 @@ function renderEtudDash(c) {
       const open=states[m.code]===true;
       const icon=open?'▶':'🔒';
       const chip=open?'<span class="chip cb">Disponible</span>':'<span class="chip cgy">Verrouillé</span>';
-      return `<div class="mrow"><div class="mnum">${String(i+1).padStart(2,'0')}</div><div class="mtitle">${icon} ${m.code} · ${m.title}</div><div class="mdur">${m.dur}h</div>${chip}</div>`;
+      return `<div class="mrow">${heroThumbHTML(prog, m.code, String(i+1).padStart(2,'0'))}<div class="mtitle">${icon} ${m.code} · ${m.title}</div><div class="mdur">${m.dur}h</div>${chip}</div>`;
     }).join('')}
   </div>`;
 }
@@ -6853,7 +6892,7 @@ function renderMesCours(c) {
     }
 
     return `<div class="mrow" style="${!active?'opacity:.55':''}">
-      <div class="mnum">${String(i+1).padStart(2,'0')}</div>
+      ${heroThumbHTML(prog, m.code, String(i+1).padStart(2,'0'))}
       <div class="mtitle">${active?'':'🔒 '}${m.code} · ${m.title}</div>
       <div class="mdur">${m.dur}h</div>
       <div class="mseuil"><span class="chip ${sc}">${m.seuil}%</span></div>
