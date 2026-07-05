@@ -30,7 +30,7 @@
   // Deux conventions de nommage acceptées : TRI-01.jpg (code module) et slide-tri-01.jpg (exports Rooby)
   window.heroCandidates = function(prog, code){
     var num = String(code).split('-')[1] || '';
-    var names = [code, 'slide-' + String(prog).toLowerCase() + '-' + num];
+    var names = ['slide-' + String(prog).toLowerCase() + '-' + num, code];
     var base = window.CDN_BASE + 'Programme/' + prog + '/_assets/hero/';
     var out = [];
     names.forEach(function(n){ window.HERO_EXTS.forEach(function(e){ out.push(base + n + '.' + e); }); });
@@ -1574,7 +1574,7 @@ td{color:var(--text)!important}
           </div>
           <div class="hstats" style="animation:fadeUp .4s .6s both">
             <div class="hstat"><div class="hstat-n" id="stat-etudiants">1 200+</div><div class="hstat-l">Étudiants</div></div>
-            <div class="hstat"><div class="hstat-n" id="stat-modules">107</div><div class="hstat-l">Modules</div></div>
+            <div class="hstat"><div class="hstat-n" id="stat-modules">108</div><div class="hstat-l">Modules</div></div>
             <div class="hstat"><div class="hstat-n" id="stat-ans">50+</div><div class="hstat-l">Ans d'expérience</div></div>
           </div>
         </div>
@@ -1594,7 +1594,7 @@ td{color:var(--text)!important}
               </div>
               <div class="pmini" onclick="goPage('programmes')">
                 <div class="pmini-icon" style="background:rgba(0,107,70,.1)">⚡</div>
-                <div class="pmini-info"><p>Électromécanique (ELM)</p><small>25 modules · 2 ans</small></div>
+                <div class="pmini-info"><p>Électromécanique (ELM)</p><small>26 modules · 2 ans</small></div>
                 <div class="pbadge" style="background:rgba(0,107,70,.85);color:#fff">Disponible</div>
               </div>
               <div class="pmini" onclick="goPage('programmes')">
@@ -1673,7 +1673,7 @@ td{color:var(--text)!important}
           <p>Circuits électriques, automatisation, moteurs et systèmes de commande industrielle.</p>
           <div class="pcard-badges">
             <span class="pcard-badge">⏱ 2 ans</span>
-            <span class="pcard-badge">📦 25 modules</span>
+            <span class="pcard-badge">📦 26 modules</span>
             <span class="pcard-badge cert">🏅 Automatisation</span>
           </div>
           <div class="pcard-jobs"><b>Débouchés</b>Électromécanicien · Technicien automate · Agent de maintenance électrique</div>
@@ -1846,7 +1846,7 @@ td{color:var(--text)!important}
               <div style="font-size:.67rem;color:rgba(255,255,255,.55);margin-top:.2rem">Informatique &amp; comptabilité</div>
             </div>
             <div style="flex:1;min-width:92px;background:rgba(255,255,255,.04);border:1px solid var(--bdrDk);border-radius:14px;padding:.85rem .5rem;text-align:center">
-              <div style="font-family:var(--fD);font-weight:800;font-size:1.25rem;color:var(--gold)">2025</div>
+              <div style="font-family:var(--fD);font-weight:800;font-size:1.25rem;color:var(--gold)">2026</div>
               <div style="font-size:.67rem;color:rgba(255,255,255,.55);margin-top:.2rem">E-learning &amp; IA Rooby</div>
             </div>
           </div>
@@ -2058,7 +2058,7 @@ td{color:var(--text)!important}
       <!-- Métriques rapides -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-bottom:none">
         <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
-          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">107</div>
+          <div style="font-family:var(--fD);font-weight:800;font-size:1.6rem;color:#fff">108</div>
           <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Modules évalués</div>
         </div>
         <div style="background:rgba(4,13,26,.6);padding:1.2rem 1.4rem;backdrop-filter:blur(12px)">
@@ -2538,7 +2538,7 @@ const MODULES = {
   {code:"MEI-24",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/mei/mei-1/mei-24-entrepreneuriat.html"},
   ],
   ELM:[
-  {code:"ELM-01",title:"Métier et formation",dur:30,seuil:80,fichier:"cours/elm/elm-1/elm-01-metier-formation.html"},
+  {code:"ELM-01",title:"Métier et formation",dur:30,seuil:70,fichier:"cours/elm/elm-1/elm-01-metier-formation.html"},
   {code:"ELM-02",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/elm/elm-1/elm-02-utilisation-ordinateur.html"},
   {code:"ELM-03",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/elm/elm-1/elm-03-circuits-cc-ca.html"},
   {code:"ELM-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/elm/elm-1/elm-04-croquis-schemas.html"},
@@ -2553,7 +2553,7 @@ const MODULES = {
   {code:"ELM-15",title:"Circuits d'électronique numérique",dur:60,seuil:80,fichier:"cours/elm/elm-1/elm-15-electronique-numerique.html"},
   ],
   TEL:[
-  {code:"TEL-01",title:"Métier et Formation",dur:30,seuil:70,fichier:"cours/tel/tel-1/tel-01-metier-formation.html"},
+  {code:"TEL-01",title:"Métier et formation",dur:30,seuil:70,fichier:"cours/tel/tel-1/tel-01-metier-formation.html"},
   {code:"TEL-02",title:"Circuits à courant continu et à courant alternatif",dur:90,seuil:85,fichier:"cours/tel/tel-1/tel-02-circuits-cc-ca.html"},
   {code:"TEL-03",title:"Utilisation de l'ordinateur",dur:45,seuil:80,fichier:"cours/tel/tel-1/tel-03-utilisation-ordinateur.html"},
   {code:"TEL-04",title:"Croquis et schémas",dur:30,seuil:85,fichier:"cours/tel/tel-1/tel-04-croquis-schemas.html"},
@@ -2572,18 +2572,18 @@ const MODULES = {
 
 const MODULES_2 = {
   TRI:[
-  {code:"TRI-17",title:"Initiation à la réseautique",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-17-initiation-reseautique.html"},
-  {code:"TRI-18",title:"Installation de serveur",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-18-installation-serveur.html"},
+  {code:"TRI-17",title:"Initiation à la réseautique",dur:90,seuil:75,fichier:"cours/tri/tri-2/tri-17-initiation-reseautique.html"},
+  {code:"TRI-18",title:"Installation de serveurs",dur:105,seuil:75,fichier:"cours/tri/tri-2/tri-18-installation-serveur.html"},
   {code:"TRI-19",title:"Routage et commutation",dur:90,seuil:80,fichier:"cours/tri/tri-2/tri-19-routage-commutation.html"},
-  {code:"TRI-20",title:"Configuration des serveurs",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-20-configuration-serveurs.html"},
-  {code:"TRI-21",title:"Évolutivité des réseaux",dur:90,seuil:80,fichier:"cours/tri/tri-2/tri-21-evolutivite-reseaux.html"},
-  {code:"TRI-22",title:"Maintenance des serveurs",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-22-maintenance-serveurs.html"},
-  {code:"TRI-23",title:"Câblage structuré",dur:90,seuil:80,fichier:"cours/tri/tri-2/tri-23-cablage-structure.html"},
-  {code:"TRI-24",title:"Supervision et dépannage réseau",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-24-supervision-depannage.html"},
+  {code:"TRI-20",title:"Configuration de serveurs",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-20-configuration-serveurs.html"},
+  {code:"TRI-21",title:"Évolutivité des réseaux",dur:75,seuil:80,fichier:"cours/tri/tri-2/tri-21-evolutivite-reseaux.html"},
+  {code:"TRI-22",title:"Maintenance de serveurs",dur:45,seuil:75,fichier:"cours/tri/tri-2/tri-22-maintenance-serveurs.html"},
+  {code:"TRI-23",title:"Câblage structuré",dur:45,seuil:80,fichier:"cours/tri/tri-2/tri-23-cablage-structure.html"},
+  {code:"TRI-24",title:"Supervision et dépannage réseau",dur:90,seuil:75,fichier:"cours/tri/tri-2/tri-24-supervision-depannage.html"},
   {code:"TRI-25",title:"Connexion de réseaux",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-25-connexion-reseaux.html"},
-  {code:"TRI-26",title:"Sécurité de réseau",dur:75,seuil:75,fichier:"cours/tri/tri-2/tri-26-securite-reseau.html"},
+  {code:"TRI-26",title:"Sécurité réseau",dur:60,seuil:75,fichier:"cours/tri/tri-2/tri-26-securite-reseau.html"},
   {code:"TRI-27",title:"Implantation d'un réseau",dur:120,seuil:85,fichier:"cours/tri/tri-2/tri-27-implantation-reseau.html"},
-  {code:"TRI-28",title:"Recherche d'emploi",dur:45,seuil:75,fichier:"cours/tri/tri-2/tri-28-recherche-emploi.html"},
+  {code:"TRI-28",title:"Recherche d'emploi",dur:30,seuil:75,fichier:"cours/tri/tri-2/tri-28-recherche-emploi.html"},
   ],
   MEI:[
   {code:"MEI-14",title:"Éléments de transmission",dur:75,seuil:85,fichier:"cours/mei/mei-2/mei-14-elements-transmission.html"},
@@ -2623,7 +2623,7 @@ const MODULES_2 = {
   {code:"TEL-20",title:"Communication sans fil",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-20-communication-sans-fil.html"},
   {code:"TEL-21",title:"Téléphonie IP",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-21-telephonie-ip.html"},
   {code:"TEL-22",title:"Câblodistribution",dur:75,seuil:80,fichier:"cours/tel/tel-2/tel-22-cablodistribution.html"},
-  {code:"TEL-23",title:"Téléphonie sans fil",dur:60,seuil:80,fichier:"cours/tel/tel-2/tel-23-telephonie-sans-fil.html"},
+  {code:"TEL-23",title:"Téléphonie sans fil",dur:60,seuil:85,fichier:"cours/tel/tel-2/tel-23-telephonie-sans-fil.html"},
   {code:"TEL-24",title:"Alimentation d'appoint",dur:60,seuil:80,fichier:"cours/tel/tel-2/tel-24-alimentation-appoint.html"},
   {code:"TEL-25",title:"Entrepreneuriat",dur:30,seuil:75,fichier:"cours/tel/tel-2/tel-25-entrepreneuriat.html"},
   {code:"TEL-26",title:"Marché du travail",dur:45,seuil:75,fichier:"cours/tel/tel-2/tel-26-marche-travail.html"},
@@ -4115,8 +4115,8 @@ function applyConfig() {
   const sEtud = document.getElementById('stat-etudiants');
   const sMod  = document.getElementById('stat-modules');
   const sAns  = document.getElementById('stat-ans');
-  if(sEtud) sEtud.textContent = stats.etudiants || '1 200+';
-  if(sMod)  sMod.textContent  = stats.modules    || '107';
+  if(sEtud) sEtud.textContent = stats.etudiants || '72k+';
+  if(sMod)  sMod.textContent  = stats.modules    || '108';
   if(sAns)  sAns.textContent  = stats.annees_experience || '50+';
 
   // Bannière d'inscription
@@ -4617,7 +4617,7 @@ function hideLogin() { document.getElementById('login-overlay').classList.remove
    3. Le backend valide identifiant + mot de passe et gère la 2FA réelle
 ══════════════════════════════════════════════════════════ */
 // ── Connexion réelle activée ── (repli comptes de démo : définir window.DEMO_LOGIN = true)
-const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : true;
+const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : false;
 const AUTH_URL    = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
 const VERIFY_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/verify-2fa';
 let   tfaChallengeId = null;
@@ -7878,8 +7878,11 @@ TARIFS (HTG = Gourdes haïtiennes | 1 USD ≈ 133 HTG):
 - ELM 1ère année: 4200 HTG | 2ème année: 4700 HTG | Programme complet: 8000 HTG
 - TEL 1ère année: 4000 HTG | 2ème année: 4500 HTG | Programme complet: 7500 HTG
 
-TRI 2ÈME ANNÉE (28 modules):
-Cisco CCNA 1 et 2, Windows Server, Active Directory, Linux, Sécurité réseau, VMware, Cloud AWS/Azure, Python, MySQL, PHP, Microsoft 365, PowerShell, etc.
+PROGRAMMES (108 modules officiels APC au total):
+- TRI: 28 modules (16 en 1ère année + 12 en 2ème année) — installation/dépannage de postes, bases de données, programmation de scripts, puis réseautique, serveurs, routage et commutation, câblage structuré, sécurité réseau, implantation de réseau (Cisco CCNA intégré en 2ème année)
+- MEI: 28 modules (16 + 12) — usinage, soudage, lubrification, alignement, puis hydraulique, pneumatique, vibrations, maintenance préventive, dépannage d'équipement
+- ELM: 26 modules (13 + 13) — circuits CC/CA, électrification de bâtiments, moteurs et transformateurs, puis groupes électrogènes, panneaux solaires, automates programmables, électronique de puissance
+- TEL: 26 modules (14 + 12) — électronique analogique/numérique, modulation, antennes, puis radio AM/FM, fibre optique, téléphonie IP, communication sans fil, câblodistribution
 
 FONCTIONNALITÉS DE LA PLATEFORME:
 - Examens QCM multi-versions générés par IA
