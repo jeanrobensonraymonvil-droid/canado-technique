@@ -1779,8 +1779,7 @@ function buildPrint(blank){
   B3X.forEach(function(q,i){var v=gv('b3s-'+i);line((i+4)+'. '+q.q,blank?'':(v>=0&&q.o[v]?q.o[v]:'\u2014'),blank?null:(parseInt(v,10)===B3SC[i]));});
   if(!blank){d+='<hr><p><b>Score : '+document.getElementById('s-t').textContent+'</b></p>';}
   var END='</bo'+'dy></ht'+'ml>';
-  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-21 \u2014 Examen blanc</title><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}
-</style></head><body>'+d+END);
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-21 \u2014 Examen blanc</title><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}</style></head><body>'+d+END);
   w.document.close();setTimeout(function(){w.print();},300);
 }
 window.exPrint=function(){buildPrint(false);};

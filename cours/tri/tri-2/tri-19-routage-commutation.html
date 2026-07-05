@@ -2060,8 +2060,7 @@ function buildPrint(blank){
   var B3Q=["Quel protocole a installé cette route (code de la table) ?", "Quelle est la distance administrative indiquée ?", "Quelle est la métrique (coût) de cette route ?", "Quelle est l'adresse du prochain saut (next-hop) ?", "Dans show ip ospf neighbor, quel état confirme une adjacence complète ?"];B3Q.forEach(function(q,i){var v=gv('b3-'+i);line((i+1)+'. '+q,blank?'':v,blank?null:(function(){var val=nrm(v);return B3V[i].some(function(x){return val===x||val.indexOf(x)===0;});})());});
   if(!blank){d+='<hr><p><b>Score : '+document.getElementById('s-t').textContent+'</b></p>';}
   var END='</bo'+'dy></ht'+'ml>';
-  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-19 \u2014 Examen blanc</title><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}
-</style></head><body>'+d+END);
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>TRI-19 \u2014 Examen blanc</title><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:28px;color:#111}h1,h2,h3{margin:.6em 0 .3em}</style></head><body>'+d+END);
   w.document.close();setTimeout(function(){w.print();},300);
 }
 window.exPrint=function(){buildPrint(false);};
