@@ -4617,7 +4617,7 @@ function hideLogin() { document.getElementById('login-overlay').classList.remove
    3. Le backend valide identifiant + mot de passe et gère la 2FA réelle
 ══════════════════════════════════════════════════════════ */
 // ── Connexion réelle activée ── (repli comptes de démo : définir window.DEMO_LOGIN = true)
-const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : false;
+const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : true;
 const AUTH_URL    = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
 const VERIFY_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/verify-2fa';
 let   tfaChallengeId = null;
