@@ -351,7 +351,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- HEADER -->
 <div class="mod-header">
-  <div class="mod-hero-img" style="background-image:url('../../../cours/assets/images/slide-mei-06.jpg')"></div>
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/_assets/hero/slide-mei-06.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">📏 MEI-06 · Compétence particulière · Objectif de comportement</div>
     <h1>Utilisation d'<em>instruments de mesure</em></h1>
@@ -510,26 +510,26 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Combien vaut 1 pouce en millimètres ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>10 mm</button>
-    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>25,4 mm</button>
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>25,4 mm</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>10 mm</button>
     <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>2,54 mm</button>
     <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>12 mm</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel instrument est le plus précis ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>La règle</button>
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Le micromètre</button>
     <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Le pied à coulisse</button>
-    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Le micromètre</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>La règle</button>
     <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Le compas</button>
   </div><div class="qexpl" id="qe-1-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">La cote nominale est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>La valeur visée d'une dimension</button>
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>La plus petite cote</button>
     <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>La plus grande cote</button>
-    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>La plus petite cote</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>La valeur visée d'une dimension</button>
     <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Une erreur</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">L'intervalle de tolérance (IT) vaut :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>maxi + mini</button>
-    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>maxi − mini</button>
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>maxi − mini</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>maxi + mini</button>
     <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>mini − maxi</button>
     <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>maxi × mini</button>
   </div><div class="qexpl" id="qe-1-3"></div></div>
@@ -541,7 +541,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,2,0,1,1],['1 po = 25,4 mm.','Le micromètre lit le centième de millimètre.','C\u0027est la valeur visée de la dimension.','IT = cote maxi − cote mini.','On choisit selon la précision (tolérance) demandée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[0,0,2,0,1],['1 po = 25,4 mm.','Le micromètre lit le centième de millimètre.','C\u0027est la valeur visée de la dimension.','IT = cote maxi − cote mini.','On choisit selon la précision (tolérance) demandée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
@@ -624,26 +624,26 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le pied à coulisse doit sa précision :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>À sa longueur</button>
-    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>À son vernier</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>À son poids</button>
     <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>À sa couleur</button>
-    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>À son poids</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>À son vernier</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le vernier d'un pied à coulisse donne :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Les mètres</button>
-    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Les dixièmes de mm</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Les heures</button>
     <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Les kilomètres</button>
-    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Les heures</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Les dixièmes de mm</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pour mesurer un petit diamètre avec grande précision, on utilise :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>La règle</button>
-    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Le micromètre</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Le rapporteur</button>
     <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Le compas</button>
-    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Le rapporteur</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Le micromètre</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le compas extérieur mesure :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>Par comparaison (écartement reporté)</button>
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>La vitesse</button>
     <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>Le voltage</button>
-    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>La vitesse</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>Par comparaison (écartement reporté)</button>
     <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>La température</button>
   </div><div class="qexpl" id="qe-2-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Pourquoi fermer doucement le micromètre ?</div><div class="q-opts">
@@ -654,7 +654,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1,0,1],['Le vernier permet de lire les dixièmes de millimètre.','Le vernier donne les dixièmes de millimètre.','Le micromètre offre la meilleure précision.','On reporte l\u0027écartement sur une règle (mesure par comparaison).','Trop serrer déforme la pièce et fausse la lecture.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[3,3,3,2,1],['Le vernier permet de lire les dixièmes de millimètre.','Le vernier donne les dixièmes de millimètre.','Le micromètre offre la meilleure précision.','On reporte l\u0027écartement sur une règle (mesure par comparaison).','Trop serrer déforme la pièce et fausse la lecture.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
@@ -724,38 +724,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le calibre d'épaisseur sert à mesurer :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>La vitesse</button>
-    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Les petits jeux</button>
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Les petits jeux</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>La vitesse</button>
     <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>La tension</button>
     <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Les angles</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pour mesurer un diamètre intérieur, on emploie :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Un tachymètre</button>
-    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Une jauge télescopique</button>
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Une jauge télescopique</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Un tachymètre</button>
     <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Un rapporteur</button>
     <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Un compas extérieur</button>
   </div><div class="qexpl" id="qe-3-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Le comparateur à cadran mesure :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>La couleur</button>
-    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Le voilage et la concentricité</button>
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Le voilage et la concentricité</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>La couleur</button>
     <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Le poids</button>
     <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>La température</button>
   </div><div class="qexpl" id="qe-3-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le tachymètre mesure :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Une longueur</button>
-    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>La vitesse de rotation</button>
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>La vitesse de rotation</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Une longueur</button>
     <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Un angle</button>
     <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Une masse</button>
   </div><div class="qexpl" id="qe-3-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Le calibre de filetage identifie :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Le diamètre du trou</button>
-    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Le pas d'un filet</button>
-    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>La dureté</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>La dureté</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Le pas d'un filet</button>
     <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>La vitesse</button>
   </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,1,1,1,1],['On glisse une lame calibrée dans le jeu.','La jauge télescopique mesure l\u0027alésage, relue au micromètre.','Il mesure jeu axial, concentricité et voilage.','Il mesure la vitesse de rotation en tr/min.','Il identifie le pas d\u0027un filet par comparaison.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,0,0,0,2],['On glisse une lame calibrée dans le jeu.','La jauge télescopique mesure l\u0027alésage, relue au micromètre.','Il mesure jeu axial, concentricité et voilage.','Il mesure la vitesse de rotation en tr/min.','Il identifie le pas d\u0027un filet par comparaison.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
@@ -826,19 +826,19 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Que fait-on avant de mesurer ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>On peint l'instrument</button>
-    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>On l'étalonne (zéro)</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Rien</button>
     <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>On le chauffe</button>
-    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>On l'étalonne (zéro)</button>
   </div><div class="qexpl" id="qe-4-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Un micromètre s'étalonne avec :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Une règle</button>
-    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Une cale étalon</button>
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Une cale étalon</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Une règle</button>
     <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>De l'eau</button>
     <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Un tachymètre</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Vérifier la conformité, c'est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Comparer aux spécifications</button>
-    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Repeindre la pièce</button>
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Repeindre la pièce</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Comparer aux spécifications</button>
     <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Mesurer la vitesse</button>
     <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Souder</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
@@ -856,7 +856,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,0,1,1],['On étalonne : on vérifie et règle le zéro.','On contrôle le zéro sur sa cale étalon.','On compare les mesures aux spécifications du fabricant.','Le voilage est l\u0027oscillation d\u0027une pièce en rotation (position).','Un mauvais étalonnage fausse la mesure, même bien lue.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[3,0,1,1,1],['On étalonne : on vérifie et règle le zéro.','On contrôle le zéro sur sa cale étalon.','On compare les mesures aux spécifications du fabricant.','Le voilage est l\u0027oscillation d\u0027une pièce en rotation (position).','Un mauvais étalonnage fausse la mesure, même bien lue.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
@@ -936,13 +936,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">L'intervalle de tolérance se calcule par :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>maxi + mini</button>
-    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>maxi − mini</button>
-    <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>arbre − alésage</button>
+    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>arbre − alésage</button>
+    <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>maxi − mini</button>
     <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>nominale × 2</button>
   </div><div class="qexpl" id="qe-5-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le jeu entre arbre et alésage vaut :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>arbre − alésage</button>
-    <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>alésage − arbre</button>
+    <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>alésage − arbre</button>
+    <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>arbre − alésage</button>
     <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>arbre + alésage</button>
     <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>alésage × arbre</button>
   </div><div class="qexpl" id="qe-5-1"></div></div>
@@ -960,13 +960,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-5-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Un ajustement « incertain » peut donner :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'5',4,0)"><span class="qletter">A</span>Toujours du jeu</button>
-    <button class="qopt" onclick="selQ(this,'5',4,1)"><span class="qletter">B</span>Un jeu ou un serrage</button>
+    <button class="qopt" onclick="selQ(this,'5',4,1)"><span class="qletter">B</span>Rien</button>
     <button class="qopt" onclick="selQ(this,'5',4,2)"><span class="qletter">C</span>Toujours du serrage</button>
-    <button class="qopt" onclick="selQ(this,'5',4,3)"><span class="qletter">D</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'5',4,3)"><span class="qletter">D</span>Un jeu ou un serrage</button>
   </div><div class="qexpl" id="qe-5-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,1,0,1,1],['IT = cote maxi − cote mini.','jeu = alésage − arbre.','jeu maxi = alésage maxi − arbre mini.','L\u0027arbre est plus grand : montage à effort.','Selon les cotes réelles, jeu ou serrage.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[2,0,0,1,3],['IT = cote maxi − cote mini.','jeu = alésage − arbre.','jeu maxi = alésage maxi − arbre mini.','L\u0027arbre est plus grand : montage à effort.','Selon les cotes réelles, jeu ou serrage.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-5"></span>
 </div>
@@ -1007,55 +1007,55 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Combien vaut 1 pouce en millimètres ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>10 mm</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>25,4 mm</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>2,54 mm</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>2,54 mm</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>25,4 mm</button>
     <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>12 mm</button>
   </div><div class="qexpl" id="qe-exa-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Quel instrument est le plus précis ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>La règle</button>
     <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>Le pied à coulisse</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Le micromètre</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Le compas</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Le compas</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Le micromètre</button>
   </div><div class="qexpl" id="qe-exa-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Le vernier d'un pied à coulisse donne :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Les mètres</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Les dixièmes de mm</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Les kilos</button>
     <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Les heures</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Les kilos</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Les dixièmes de mm</button>
   </div><div class="qexpl" id="qe-exa-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Pour mesurer un petit diamètre avec grande précision :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>La règle</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Le micromètre</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Le rapporteur</button>
     <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Le compas</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Le rapporteur</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Le micromètre</button>
   </div><div class="qexpl" id="qe-exa-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Le compas extérieur mesure :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Par comparaison</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>La température</button>
     <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Le voltage</button>
     <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>La vitesse</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>La température</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Par comparaison</button>
   </div><div class="qexpl" id="qe-exa-4"></div></div>
   <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Le rapporteur d'angle mesure :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Les angles</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Les diamètres</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Les diamètres</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Les angles</button>
     <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>La vitesse</button>
     <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>La masse</button>
   </div><div class="qexpl" id="qe-exa-5"></div></div>
   <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La cote nominale est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>La valeur visée</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>La plus petite cote</button>
     <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>La plus grande cote</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>La plus petite cote</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>La valeur visée</button>
     <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Une erreur</button>
   </div><div class="qexpl" id="qe-exa-6"></div></div>
   <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">On choisit un instrument selon :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>sa couleur</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>la précision recherchée</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>sa marque</button>
     <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>son poids</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>sa marque</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>la précision recherchée</button>
   </div><div class="qexpl" id="qe-exa-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,2,1,1,0,0,0,1],['1 po = 25,4 mm.','Le micromètre lit le centième de mm.','Le vernier donne les dixièmes de millimètre.','Le micromètre offre la meilleure précision.','On reporte l\u0027écartement sur une règle.','Le rapporteur d\u0027angle mesure les angles.','C\u0027est la valeur visée de la dimension.','Selon la précision (tolérance) demandée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[2,3,3,3,3,1,2,3],['1 po = 25,4 mm.','Le micromètre lit le centième de mm.','Le vernier donne les dixièmes de millimètre.','Le micromètre offre la meilleure précision.','On reporte l\u0027écartement sur une règle.','Le rapporteur d\u0027angle mesure les angles.','C\u0027est la valeur visée de la dimension.','Selon la précision (tolérance) demandée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exa"></span>
 </div>
@@ -1076,45 +1076,45 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Que fait-on avant de mesurer ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>On peint l'instrument</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>On l'étalonne (zéro)</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Rien</button>
     <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>On le chauffe</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>On l'étalonne (zéro)</button>
   </div><div class="qexpl" id="qe-exc-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Le calibre d'épaisseur sert à mesurer :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>La vitesse</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Les petits jeux</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Les angles</button>
     <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>La tension</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Les angles</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Les petits jeux</button>
   </div><div class="qexpl" id="qe-exc-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Pour mesurer un diamètre intérieur :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Un tachymètre</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Une jauge télescopique</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Un rapporteur</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Un rapporteur</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Une jauge télescopique</button>
     <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Un compas extérieur</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Le comparateur à cadran mesure :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>La couleur</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Le voilage et la concentricité</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>La température</button>
     <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Le poids</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>La température</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Le voilage et la concentricité</button>
   </div><div class="qexpl" id="qe-exc-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Le tachymètre mesure :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Une longueur</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>La vitesse de rotation</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>La vitesse de rotation</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Une longueur</button>
     <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Un angle</button>
     <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Une masse</button>
   </div><div class="qexpl" id="qe-exc-4"></div></div>
   <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Vérifier la conformité, c'est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',5,0)"><span class="qletter">A</span>Comparer aux spécifications</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,0)"><span class="qletter">A</span>Souder</button>
     <button class="qopt" onclick="selQ(this,'exc',5,1)"><span class="qletter">B</span>Repeindre</button>
     <button class="qopt" onclick="selQ(this,'exc',5,2)"><span class="qletter">C</span>Mesurer la vitesse</button>
-    <button class="qopt" onclick="selQ(this,'exc',5,3)"><span class="qletter">D</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,3)"><span class="qletter">D</span>Comparer aux spécifications</button>
   </div><div class="qexpl" id="qe-exc-5"></div></div>
   <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Le voilage est un défaut de :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',6,0)"><span class="qletter">A</span>Couleur</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,1)"><span class="qletter">B</span>Position (rotation)</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,1)"><span class="qletter">B</span>Température</button>
     <button class="qopt" onclick="selQ(this,'exc',6,2)"><span class="qletter">C</span>Poids</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,3)"><span class="qletter">D</span>Température</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,3)"><span class="qletter">D</span>Position (rotation)</button>
   </div><div class="qexpl" id="qe-exc-6"></div></div>
   <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Un manquement grave aux règles de sécurité :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',7,0)"><span class="qletter">A</span>N'a aucune conséquence</button>
@@ -1124,7 +1124,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-exc-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,1,1,0,1,1],['On étalonne : on vérifie et règle le zéro.','On glisse une lame calibrée dans le jeu.','La jauge télescopique, relue au micromètre.','Jeu axial, concentricité et voilage.','La vitesse de rotation (tr/min).','Comparer les mesures aux spécifications du fabricant.','Le voilage = oscillation d\u0027une pièce en rotation.','La règle de verdict de sécurité entraîne l\u0027échec.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[3,3,2,3,0,3,3,1],['On étalonne : on vérifie et règle le zéro.','On glisse une lame calibrée dans le jeu.','La jauge télescopique, relue au micromètre.','Jeu axial, concentricité et voilage.','La vitesse de rotation (tr/min).','Comparer les mesures aux spécifications du fabricant.','Le voilage = oscillation d\u0027une pièce en rotation.','La règle de verdict de sécurité entraîne l\u0027échec.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exc"></span>
 </div>

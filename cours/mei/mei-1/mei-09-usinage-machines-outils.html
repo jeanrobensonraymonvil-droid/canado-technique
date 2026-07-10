@@ -351,7 +351,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- HEADER -->
 <div class="mod-header">
-  <div class="mod-hero-img" style="background-image:url('../../../cours/assets/images/slide-mei-09.jpg')"></div>
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/_assets/hero/slide-mei-09.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">⚙️ MEI-09 · Compétence particulière · Objectif de comportement</div>
     <h1>Exécution de travaux d'usinage sur <em>machines-outils</em></h1>
@@ -510,9 +510,9 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Sur le tour parallèle :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>L'outil tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>La pièce tourne</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>La table tourne</button>
     <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Rien ne tourne</button>
-    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>La table tourne</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>La pièce tourne</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Sur la fraiseuse :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>La pièce tourne</button>
@@ -522,25 +522,25 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-1-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">La rectifieuse sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Finir une surface à la meule</button>
-    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Finir une surface à la meule</button>
     <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Mesurer</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Près d'une pièce en rotation, on évite :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Les lunettes</button>
-    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Les gants et les manches amples</button>
-    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>La concentration</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>La concentration</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Les gants et les manches amples</button>
     <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Le plan</button>
   </div><div class="qexpl" id="qe-1-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Un manquement grave à la sécurité :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Donne des points</button>
-    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Entraîne l'échec</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Est toléré</button>
     <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>N'a aucun effet</button>
-    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Est toléré</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Entraîne l'échec</button>
   </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1,1,1],['Au tour, la pièce tourne et l\u0027outil se déplace.','À la fraiseuse, l\u0027outil tourne.','Elle finit les surfaces avec une meule de précision.','Gants et vêtements amples peuvent être happés.','La règle de verdict : manquement grave = échec.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[3,1,2,2,3],['Au tour, la pièce tourne et l\u0027outil se déplace.','À la fraiseuse, l\u0027outil tourne.','Elle finit les surfaces avec une meule de précision.','Gants et vêtements amples peuvent être happés.','La règle de verdict : manquement grave = échec.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
@@ -612,38 +612,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La vitesse de rotation se calcule par :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>N = π·D·Vc</button>
-    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>N = 1000·Vc/(π·D)</button>
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>N = 1000·Vc/(π·D)</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>N = π·D·Vc</button>
     <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>N = D/Vc</button>
     <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>N = Vc + D</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La vitesse de coupe Vc vaut :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>π·D·N/1000</button>
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>π·D</button>
     <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>1000/N</button>
     <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>D·N</button>
-    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>π·D</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>π·D·N/1000</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">L'avance par minute Vf se calcule par :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Vf = N + f</button>
-    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Vf = N · f</button>
-    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Vf = N/f</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Vf = N/f</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Vf = N · f</button>
     <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Vf = f/N</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour un taraudage M8 au pas de 1,25 mm, on perce à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>8 mm</button>
-    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>6,75 mm</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>1,25 mm</button>
     <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>9,25 mm</button>
-    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>1,25 mm</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>6,75 mm</button>
   </div><div class="qexpl" id="qe-2-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Au tour, le D de la formule de N est :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>le diamètre de la pièce</button>
-    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>la longueur</button>
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>la longueur</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>le diamètre de la pièce</button>
     <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>la vitesse</button>
     <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>l'avance</button>
   </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,0,1,1,0],['N = 1000·Vc/(π·D).','Vc = π·D·N/1000.','Vf = N · f.','Ø = 8 − 1,25 = 6,75 mm.','D est le diamètre de la pièce tournée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[0,3,2,3,1],['N = 1000·Vc/(π·D).','Vc = π·D·N/1000.','Vf = N · f.','Ø = 8 − 1,25 = 6,75 mm.','D est le diamètre de la pièce tournée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
@@ -725,9 +725,9 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le chariotage sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Usiner la face</button>
-    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Réduire le diamètre</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Percer</button>
     <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Séparer la pièce</button>
-    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Percer</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Réduire le diamètre</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le dressage usine :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>La face d'extrémité</button>
@@ -748,14 +748,14 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Peindre</button>
   </div><div class="qexpl" id="qe-3-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Au tour, on peut aussi :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Percer et aléser</button>
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Rien</button>
     <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Souder</button>
     <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Fileter à la filière seulement</button>
-    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Percer et aléser</button>
   </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,0,1,0,0],['Le chariotage réduit le diamètre sur une longueur.','Le dressage usine la face d\u0027extrémité.','Le tournage conique usine un cône.','Il sépare la pièce avec un outil étroit.','On perce (contre-pointe) et on alèse au tour.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[3,0,1,0,3],['Le chariotage réduit le diamètre sur une longueur.','Le dressage usine la face d\u0027extrémité.','Le tournage conique usine un cône.','Il sépare la pièce avec un outil étroit.','On perce (contre-pointe) et on alèse au tour.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
@@ -833,13 +833,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-4-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le surfaçage sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Aplanir une surface</button>
-    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Séparer</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Séparer</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Aplanir une surface</button>
     <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Tarauder</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Le chemin de clé loge :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Un roulement</button>
-    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Une clavette</button>
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Une clavette</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Un roulement</button>
     <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Une vis</button>
     <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Un foret</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
@@ -851,13 +851,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-4-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">La clavette sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Décorer</button>
-    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Transmettre le couple</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Souder</button>
     <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Transmettre le couple</button>
   </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,1],['La fraise tourne ; la pièce se déplace.','Le surfaçage aplanit une surface.','Il loge une clavette qui transmet le couple.','L\u0027alésoir ou la barre à aléser finit le trou.','La clavette transmet le couple entre arbre et moyeu.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,2,0,1,3],['La fraise tourne ; la pièce se déplace.','Le surfaçage aplanit une surface.','Il loge une clavette qui transmet le couple.','L\u0027alésoir ou la barre à aléser finit le trou.','La clavette transmet le couple entre arbre et moyeu.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
@@ -928,8 +928,8 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La rectification donne :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>Un trou</button>
-    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>Précision et bel état de surface</button>
+    <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>Précision et bel état de surface</button>
+    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>Un trou</button>
     <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>Une soudure</button>
     <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>Un filet</button>
   </div><div class="qexpl" id="qe-5-0"></div></div>
@@ -941,13 +941,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-5-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">L'état de surface concerne :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>Le poids</button>
-    <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>La qualité du fini</button>
+    <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>La couleur</button>
     <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>Le prix</button>
-    <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>La couleur</button>
+    <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>La qualité du fini</button>
   </div><div class="qexpl" id="qe-5-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">On vérifie la conformité avec :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>Les instruments de mesure</button>
-    <button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Un marteau</button>
+    <button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>Un marteau</button>
+    <button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Les instruments de mesure</button>
     <button class="qopt" onclick="selQ(this,'5',3,2)"><span class="qletter">C</span>De la peinture</button>
     <button class="qopt" onclick="selQ(this,'5',3,3)"><span class="qletter">D</span>Rien</button>
   </div><div class="qexpl" id="qe-5-3"></div></div>
@@ -959,7 +959,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-5-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('5',[1,0,1,0,1],['Elle donne précision et excellent fini.','Elle recharge une surface usée par projection de métal.','C\u0027est la qualité du fini (rugosité, stries).','On contrôle dimensions et fini avec les instruments.','On range, nettoie et prend soin des machines.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[0,0,3,1,1],['Elle donne précision et excellent fini.','Elle recharge une surface usée par projection de métal.','C\u0027est la qualité du fini (rugosité, stries).','On contrôle dimensions et fini avec les instruments.','On range, nettoie et prend soin des machines.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-5"></span>
 </div>
@@ -1000,27 +1000,27 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Sur le tour parallèle :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>L'outil tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>La pièce tourne</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>La table tourne</button>
     <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Rien ne tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>La table tourne</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>La pièce tourne</button>
   </div><div class="qexpl" id="qe-exa-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Sur la fraiseuse :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>La pièce tourne</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>L'outil (fraise) tourne</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>L'outil (fraise) tourne</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>La pièce tourne</button>
     <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Rien ne bouge</button>
     <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Le mandrin coupe</button>
   </div><div class="qexpl" id="qe-exa-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">La rectifieuse sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Percer</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Finir une surface à la meule</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Souder</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Finir une surface à la meule</button>
     <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Mesurer</button>
   </div><div class="qexpl" id="qe-exa-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Où lit-on les paramètres d'usinage ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>Sur l'étiquette</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Sur les plans, tableaux et abaques</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Nulle part</button>
     <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Sur la peinture</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Nulle part</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Sur les plans, tableaux et abaques</button>
   </div><div class="qexpl" id="qe-exa-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Près d'une pièce en rotation, on évite :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Les lunettes</button>
@@ -1036,19 +1036,19 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-exa-5"></div></div>
   <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Le mandrin sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Mesurer</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Serrer et entraîner la pièce</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Peindre</button>
     <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Peindre</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Serrer et entraîner la pièce</button>
   </div><div class="qexpl" id="qe-exa-6"></div></div>
   <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Avant d'usiner, on doit :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Commencer sans préparer</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Préparer outils, accessoires et matériaux</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Ignorer le plan</button>
     <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Retirer les protections</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Ignorer le plan</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Préparer outils, accessoires et matériaux</button>
   </div><div class="qexpl" id="qe-exa-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,1,1,1,1,1,1,1],['Au tour, la pièce tourne.','À la fraiseuse, l\u0027outil tourne.','Elle finit les surfaces à la meule.','Plans, tableaux et abaques.','Gants et manches peuvent être happés.','Règle de verdict : manquement grave = échec.','Le mandrin serre et entraîne la pièce au tour.','On prépare le poste et le matériel.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[3,0,2,3,1,1,3,3],['Au tour, la pièce tourne.','À la fraiseuse, l\u0027outil tourne.','Elle finit les surfaces à la meule.','Plans, tableaux et abaques.','Gants et manches peuvent être happés.','Règle de verdict : manquement grave = échec.','Le mandrin serre et entraîne la pièce au tour.','On prépare le poste et le matériel.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exa"></span>
 </div>
@@ -1069,21 +1069,21 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Le chariotage sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Usiner la face</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Réduire le diamètre</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Séparer la pièce</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Séparer la pièce</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Réduire le diamètre</button>
     <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Percer</button>
   </div><div class="qexpl" id="qe-exc-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Le dressage usine :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>La face d'extrémité</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Le cône</button>
     <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Le filet</button>
     <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Le trou</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Le cône</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>La face d'extrémité</button>
   </div><div class="qexpl" id="qe-exc-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Le tronçonnage sert à :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Séparer la pièce</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Peindre</button>
     <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Mesurer</button>
     <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Souder</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Peindre</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Séparer la pièce</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">À la fraiseuse, ce qui tourne, c'est :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>La pièce</button>
@@ -1098,16 +1098,16 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Un foret</button>
   </div><div class="qexpl" id="qe-exc-4"></div></div>
   <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Pour finir un trou aux cotes, on emploie :</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',5,0)"><span class="qletter">A</span>Une fraise</button>
-    <button class="qopt" onclick="selQ(this,'exc',5,1)"><span class="qletter">B</span>Un alésoir / une barre à aléser</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,0)"><span class="qletter">A</span>Un alésoir / une barre à aléser</button>
+    <button class="qopt" onclick="selQ(this,'exc',5,1)"><span class="qletter">B</span>Une fraise</button>
     <button class="qopt" onclick="selQ(this,'exc',5,2)"><span class="qletter">C</span>Un tronçonnage</button>
     <button class="qopt" onclick="selQ(this,'exc',5,3)"><span class="qletter">D</span>Un compas</button>
   </div><div class="qexpl" id="qe-exc-5"></div></div>
   <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La rectification donne :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',6,0)"><span class="qletter">A</span>Un trou</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,1)"><span class="qletter">B</span>Précision et bel état de surface</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,1)"><span class="qletter">B</span>Un filet</button>
     <button class="qopt" onclick="selQ(this,'exc',6,2)"><span class="qletter">C</span>Une soudure</button>
-    <button class="qopt" onclick="selQ(this,'exc',6,3)"><span class="qletter">D</span>Un filet</button>
+    <button class="qopt" onclick="selQ(this,'exc',6,3)"><span class="qletter">D</span>Précision et bel état de surface</button>
   </div><div class="qexpl" id="qe-exc-6"></div></div>
   <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">La métallisation sert à :</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',7,0)"><span class="qletter">A</span>Recharger une surface usée</button>
@@ -1117,7 +1117,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   </div><div class="qexpl" id="qe-exc-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,0,0,1,1,1,1,0],['Le chariotage réduit le diamètre.','Le dressage usine la face.','Il sépare la pièce avec un outil étroit.','La fraise tourne.','Il loge une clavette.','L\u0027alésoir ou la barre à aléser.','Précision et excellent fini.','Elle recharge une surface usée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[2,3,3,1,1,0,3,0],['Le chariotage réduit le diamètre.','Le dressage usine la face.','Il sépare la pièce avec un outil étroit.','La fraise tourne.','Il loge une clavette.','L\u0027alésoir ou la barre à aléser.','Précision et excellent fini.','Elle recharge une surface usée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exc"></span>
 </div>
