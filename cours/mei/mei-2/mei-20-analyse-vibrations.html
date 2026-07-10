@@ -1,499 +1,1346 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MEI-20 - Analyse de vibrations</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MEI-20 — Analyse de vibrations · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
+/* ===== LECTEUR DE COURS v3 ===== */
+.wrap{max-width:1280px}
+.mod-header-in{max-width:1280px}
+.layout{grid-template-columns:300px 1fr;gap:2rem}
+body.player .step{display:none}
+body.player .step.active{display:block;animation:stepIn .4s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pl-bar{display:flex;align-items:center;gap:1rem}
+.pl-bar-top{position:sticky;top:.6rem;z-index:60;background:rgba(255,255,255,.93);backdrop-filter:blur(10px) saturate(1.3);border:1px solid var(--bdr);border-radius:var(--rL);padding:.7rem 1rem;margin-bottom:1.3rem;box-shadow:0 6px 24px rgba(12,31,61,.07);flex-wrap:wrap}
+.pl-mid{flex:1;min-width:0}
+.pl-count{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--g500);font-family:var(--fD)}
+.pl-title{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-prog{height:5px;background:var(--g100);border-radius:3px;overflow:hidden;margin-top:.5rem}
+.pl-prog i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--blueG),var(--greenL));transition:width .55s ease}
+.pl-ic{width:38px;height:38px;border-radius:11px;background:var(--g100);color:var(--blue);font-size:1.15rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.pl-ic:hover:not(:disabled){background:var(--blue);color:#fff}
+.pl-ic:disabled{opacity:.3;cursor:default}
+.pl-bar-bottom{justify-content:space-between;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--bdr);flex-wrap:wrap;gap:.7rem}
+.pl-btn{padding:.6rem 1.2rem;border-radius:11px;font-family:var(--fD);font-weight:700;font-size:.83rem;background:var(--g100);color:var(--g700);transition:.15s}
+.pl-btn:hover:not(:disabled){background:var(--g300)}
+.pl-btn:disabled{opacity:.5;cursor:default}
+.pl-cta{background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;box-shadow:0 5px 16px rgba(43,86,192,.32)}
+.pl-cta:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.pl-cta:disabled{background:var(--g300);color:var(--g500);box-shadow:none}
+.toc-item.lock{opacity:.5;cursor:not-allowed}
+.toc-item.lock:hover{background:transparent;color:var(--g700)}
+.toc-item.viewed .toc-dot{background:var(--blueG)}
+.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-item.done .toc-num::after{content:' ✓';color:var(--greenL);font-weight:800}
+.toc-right{margin-left:auto;font-size:.62rem;color:var(--g500);font-family:var(--fM);flex-shrink:0}
+.resume-banner{display:flex;align-items:center;gap:.9rem;background:linear-gradient(135deg,rgba(43,86,192,.09),rgba(59,123,255,.04));border:1px solid rgba(43,86,192,.22);border-radius:var(--rL);padding:.85rem 1.1rem;margin-bottom:1.2rem}
+.resume-banner .rb-i{font-size:1.25rem}
+.resume-banner .rb-t{flex:1;font-size:.82rem;color:#1a2f52;line-height:1.45}
+.resume-banner .rb-t strong{color:var(--blue);font-family:var(--fD)}
+.resume-banner button{padding:.45rem 1rem;border-radius:9px;font-family:var(--fD);font-weight:700;font-size:.78rem}
+.rb-go{background:var(--blue);color:#fff}.rb-go:hover{background:var(--blueL)}
+.rb-x{background:transparent;color:var(--g500);font-size:1.05rem;padding:.2rem .55rem}
+@media(max-width:768px){.pl-title{font-size:.92rem}.pl-bar-top{top:0;border-radius:0;margin:0 -1.2rem 1.1rem;padding:.7rem 1.2rem}.pl-bar-bottom .pl-btn{flex:1;text-align:center}}
+
+
+/* ===== v4 : plan de leçon intégré + étapes de leçon ===== */
+.lesson-plan{background:linear-gradient(135deg,#f6f9ff,#eef3ff);border:1px solid var(--bdr);border-left:4px solid var(--blueG);border-radius:var(--rL);padding:1rem 1.1rem;margin-bottom:1.4rem}
+.lpl-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.85rem}
+.lpl-ic{width:34px;height:34px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.lpl-h{flex:1}
+.lpl-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);font-family:var(--fD)}
+.lpl-title{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);line-height:1.2}
+.lpl-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem}
+.lpl-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.7rem .8rem}
+.lpl-k{font-size:.66rem;font-weight:800;color:var(--blue);margin-bottom:.35rem;font-family:var(--fD)}
+.lpl-card p,.lpl-card li{font-size:.78rem;color:#2a3d6b;line-height:1.6}
+.lpl-card ul{padding-left:1.05rem;margin:0}
+.lpl-card li{margin-bottom:.2rem}
+.lesson-step-label{font-family:var(--fD);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin:1.6rem 0 .7rem;padding-bottom:.4rem;border-bottom:1px dashed var(--bdr)}
+
+
+/* ===== Bon à savoir (récap de leçon + récap final) ===== */
+.recap{margin-top:1.4rem;background:linear-gradient(135deg,#fffaf0,#fff3d4);border:1px solid #f0d98a;border-left:4px solid var(--gold);border-radius:var(--rL);padding:1rem 1.15rem}
+.recap-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#7a5b00;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.recap-ic{font-size:1rem}
+.recap-list{margin:0;padding-left:1.15rem}
+.recap-list li{font-size:.83rem;color:#5c4a1a;line-height:1.65;margin-bottom:.4rem}
+.recap-list li strong{color:#3d3000}
+.recap-final{background:linear-gradient(135deg,#0B1525,#13243f);border:1px solid rgba(255,197,24,.3);border-left:4px solid var(--gold)}
+.recap-final .recap-h{color:var(--gold)}
+.recap-final .recap-list li{color:#e8eeff}
+.recap-final .recap-list li strong{color:#fff}
+
+
+/* ===== Termes clés ===== */
+.terms{margin-top:1.4rem;background:linear-gradient(135deg,#f2fbf6,#e7f7ee);border:1px solid #bfe5cf;border-left:4px solid #1d9e5f;border-radius:var(--rL);padding:1rem 1.15rem}
+.terms-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#0f5c36;display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.terms dl{margin:0}
+.terms dt{font-weight:800;font-size:.8rem;color:#0f5c36;margin-top:.55rem}
+.terms dt:first-child{margin-top:0}
+.terms dd{margin:0 0 .15rem 0;font-size:.8rem;color:#27513c;line-height:1.6}
+/* ===== Examen blanc ===== */
+.exam-head{background:linear-gradient(135deg,#0B1525,#1a2c4d);border-radius:var(--rL);padding:1.1rem 1.2rem;margin-bottom:1.3rem;border:1px solid rgba(255,197,24,.25)}
+.exam-head h3{font-family:var(--fD);color:#fff;font-size:1rem;margin:0 0 .4rem}
+.exam-head p{color:#c9d6f2;font-size:.8rem;line-height:1.65;margin:0}
+.exam-head .exam-rules{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.exam-head .exam-rule{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:700;color:#ffd95e}
+.exam-result{display:none;margin-top:1.2rem;border-radius:var(--rL);padding:1rem 1.2rem;font-size:.85rem;font-weight:700}
+.exam-result.pass{display:block;background:#e9f9f0;border:1px solid #1d9e5f;color:#0f5c36}
+.exam-result.fail{display:block;background:#fdeeee;border:1px solid #d24a43;color:#8c2722}
+
+
+/* ===== Activité de réflexion ===== */
+.activity{margin-top:1.4rem;background:linear-gradient(135deg,#f7f3ff,#efe9fc);border:1px solid #d8c9f2;border-left:4px solid #6c3fc5;border-radius:var(--rL);padding:1rem 1.15rem}
+.activity-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#46287e;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.activity ol{margin:0;padding-left:1.2rem}
+.activity li{font-size:.81rem;color:#3d2a66;line-height:1.65;margin-bottom:.45rem}
+.activity .act-note{margin-top:.6rem;font-size:.74rem;color:#6b5694;font-style:italic}
+/* ===== Examen blanc 4 parties ===== */
+.exam-part{font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin:1.8rem 0 .8rem;padding:.55rem .9rem;background:linear-gradient(135deg,#f6f9ff,#eef3ff);border-left:4px solid var(--blue);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.exam-part .ex-chip{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.18);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.exid{display:grid;grid-template-columns:1fr auto auto;gap:.7rem;margin-bottom:.4rem}
+.exid label{font-size:.68rem;font-weight:800;color:var(--g500);display:block;margin-bottom:.25rem;font-family:var(--fD)}
+.exid input{width:100%;border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .7rem;font-size:.85rem;font-family:inherit}
+.exid .exid-fixed{border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .9rem;font-size:.85rem;background:#f7f9fe;color:var(--text);font-weight:700}
+.exq{margin-bottom:1.1rem}
+.exq-t{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.extxt{width:100%;min-height:92px;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem;font-size:.83rem;font-family:inherit;line-height:1.6;resize:vertical}
+.extxt:focus{outline:2px solid rgba(27,58,140,.25)}
+.ex-cnt{font-size:.66rem;color:var(--g500);margin-top:.2rem;text-align:right}
+.ex-cnt.ok{color:#1d9e5f;font-weight:700}
+.reveal-btn{margin-top:.35rem;background:none;border:none;color:var(--blue);font-size:.72rem;font-weight:800;cursor:pointer;padding:0;font-family:var(--fD)}
+.reveal{display:none;margin-top:.5rem;background:#f2fbf6;border:1px dashed #1d9e5f;border-radius:var(--r);padding:.65rem .85rem;font-size:.76rem;color:#27513c;line-height:1.6}
+.reveal.show{display:block}
+.reveal ul{margin:.2rem 0 0;padding-left:1.1rem}
+.engage{list-style:none;margin:0;padding:0}
+.engage li{margin-bottom:.5rem}
+.engage label{display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;color:var(--text);cursor:pointer;line-height:1.5}
+.engage input{width:17px;height:17px;margin-top:2px;accent-color:#1d9e5f;cursor:pointer}
+.exam-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;align-items:center}
+.exam-score-line{font-size:.74rem;color:var(--g500);font-weight:700}
+.btn-print{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem 1.1rem;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--fD);color:var(--text)}
+.btn-print:hover{border-color:var(--blue);color:var(--blue)}
+.ex-bar{height:8px;background:#e8edf8;border-radius:6px;overflow:hidden;margin-top:.5rem}
+.ex-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#1d9e5f);border-radius:6px;transition:width .5s ease}
+@media(max-width:700px){.exid{grid-template-columns:1fr}}
+
+
+/* responsive fix — force one column on mobile */
+@media(max-width:768px){.layout{display:block!important;grid-template-columns:1fr!important}#main-content{width:100%!important}}
+/* numeric exam inputs + svg figures */
+.exnum{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:.5rem 0}
+.exnum input{width:150px;padding:.5rem .7rem;border:1px solid var(--bdr);border-radius:9px;font-family:var(--fM);font-size:.95rem}
+.exnum input.ok{border-color:var(--greenL);background:rgba(46,160,87,.06)}
+.exnum input.ko{border-color:#c0392b;background:rgba(192,57,43,.05)}
+.exn-unit{font-family:var(--fM);font-size:.85rem;color:var(--g500)}
+.exn-fb{display:none;font-size:.82rem;margin:.2rem 0 .4rem;padding:.5rem .7rem;border-radius:8px}
+.exn-fb.show-ok{display:block;background:rgba(46,160,87,.1);color:#1e7e45}
+.exn-fb.show-ko{display:block;background:rgba(192,57,43,.08);color:#a5281b}
+.fig{margin:1rem 0;background:#fff;border:1px solid var(--bdr);border-radius:12px;padding:1rem;text-align:center}
+.fig svg{max-width:100%;height:auto}
+.fig figcaption{font-size:.78rem;color:var(--g500);margin-top:.5rem;font-family:var(--fM)}
 </style>
 </head>
 <body>
+
+<!-- HEADER -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/_assets/hero/slide-mei-20.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">📳 Module MEI-20 · 1ère Année</div>
-    <h1>Analyse <em>de vibrations</em></h1>
+    <div class="mod-tag">📈 MEI-20 · Compétence particulière · Objectif de comportement</div>
+    <h1>Analyse de <em>vibrations</em></h1>
+    <p class="mod-desc">Utilisation de techniques d'analyse de vibrations · 45 heures — Acquérir les connaissances et les habiletés requises pour collecter des mesures de vibrations sur une route d'équipements, lire les spectres et repérer les problèmes de fonctionnement avec le logiciel d'analyse.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>90 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>80%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Travaux pratiques</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport de travaux</strong></div>
+      <div class="mod-meta-item">⏱ <strong>45 heures</strong></div>
+      <div class="mod-meta-item">🎯 Objectif de <strong>comportement</strong></div>
+      <div class="mod-meta-item">📚 <strong>4 chapitres</strong></div>
+      <div class="mod-meta-item">🏭 <strong>Dominante atelier & laboratoire</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
-  </div>
-</div><div id="mod-code-data" data-code="MEI-20" style="display:none"></div><div id="seuil-data" data-seuil="80" style="display:none"></div><div id="toc-overlay" onclick="toggleToc()"></div><button id="toc-mob-btn" onclick="toggleToc()" aria-label="Menu">☰</button><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Principes des vibrations mecaniques</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Capteurs et instruments de mesure</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Analyse spectrale et diagnostic</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Actions correctives sur les vibrations</span></div>
-  
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Principes des vibrations mecaniques</h2>
-      <div class="chapter-meta"><span>🕐 22h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Principes des vibrations mecaniques — cours et demonstrations</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Principes des vibrations mecaniques (5 min)</strong> — Fondamentaux, normes industrielles, applications Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et outils de Principes des vibrations mecaniques (5 min)</strong> — Identification, selection, caracteristiques.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures d'intervention (4 min)</strong> — Methodes, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> — EPI specifiques, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Principes des vibrations mecaniques en MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des equipements industriels</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Uniquement grandes usines</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Remplace par informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_1">La maitrise de Principes des vibrations mecaniques assure la disponibilite des equipements et reduit les pannes non planifiees.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Priorite numero 1 avant toute intervention industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Commencer immediatement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Consignation LOTO: couper l'energie, purger, cadenasser, etiqueter</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Appeler le fabricant</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Verifier le budget</button></div>
-    <div class="quiz-expl" id="expl-q1_1">LOTO protege contre la remise en marche accidentelle. Non-negociable en securite industrielle.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation d'intervention MEI sert a?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Obligation administrative seulement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Alimenter l'historique, planifier la maintenance preventive, former les autres techniciens</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Uniquement pour les assurances</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Inutile si la machine remarche</button></div>
-    <div class="quiz-expl" id="expl-q2_1">Historique = outil de prevention. Chaque panne documentee aide a anticiper les suivantes.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI obligatoire en atelier MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Cravate et costume</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Lunettes de securite, chaussures acier, combinaison de travail</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_1">EPI de base obligatoires en tout temps. Supplementaires selon la tache: masque soudage, gants thermiques, harnais en hauteur.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 4 chapitres</span></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Capteurs et instruments de mesure</h2>
-      <div class="chapter-meta"><span>🕐 22h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
+
+<div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong> &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div>
+</div>
+
+<div class="wrap"><div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire MEI-20</div>
+  <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+  <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>La vibration, signature de la machine</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Collecter les données : la route de mesure</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Lire un spectre : les signatures de défauts</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Interpréter, diagnostiquer, rapporter</span></div>
+  <div class="toc-sep">Synthèse</div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+</div>
+<div id="main-content">
+
+<div class="pc step" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">MEI-20 · Utiliser des techniques d'analyse de vibrations · Programme Mécanique d'entretien industrielle</div></div></div>
+<div class="pc-body">
+<div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module MEI-20</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI20/final/MEI20-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">MEI-20</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">45 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence particulière</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">MEI-02 · 06 · 14 · 19</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique 3 h · 80/100</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Capteurs et instruments de mesure — cours et demonstrations</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Capteurs et instruments de mesure (5 min)</strong> — Fondamentaux, normes industrielles, applications Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et outils de Capteurs et instruments de mesure (5 min)</strong> — Identification, selection, caracteristiques.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures d'intervention (4 min)</strong> — Methodes, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> — EPI specifiques, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Capteurs et instruments de mesure en MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des equipements industriels</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Uniquement grandes usines</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Remplace par informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_2">La maitrise de Capteurs et instruments de mesure assure la disponibilite des equipements et reduit les pannes non planifiees.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Priorite numero 1 avant toute intervention industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Commencer immediatement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Consignation LOTO: couper l'energie, purger, cadenasser, etiqueter</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Appeler le fabricant</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Verifier le budget</button></div>
-    <div class="quiz-expl" id="expl-q1_2">LOTO protege contre la remise en marche accidentelle. Non-negociable en securite industrielle.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation d'intervention MEI sert a?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Obligation administrative seulement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Alimenter l'historique, planifier la maintenance preventive, former les autres techniciens</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Uniquement pour les assurances</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Inutile si la machine remarche</button></div>
-    <div class="quiz-expl" id="expl-q2_2">Historique = outil de prevention. Chaque panne documentee aide a anticiper les suivantes.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI obligatoire en atelier MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Cravate et costume</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Lunettes de securite, chaussures acier, combinaison de travail</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_2">EPI de base obligatoires en tout temps. Supplementaires selon la tache: masque soudage, gants thermiques, harnais en hauteur.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Utiliser des techniques d'analyse de vibrations.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4>
+    <p>Ce module vise à acquérir les connaissances et les habiletés requises pour <strong>évaluer la condition générale d'un équipement et en déceler les problèmes</strong> par l'analyse de vibrations. L'étudiant apprend à préparer et transférer une route de mesure, à relever les vibrations sur les équipements avec l'analyseur en respectant la technique de collecte, puis à interpréter les spectres avec le logiciel d'analyse, les tableaux et les abaques pour repérer avec justesse les problèmes de fonctionnement.</p>
+    <p>À dominante <strong>atelier et laboratoire informatique</strong>, il s'appuie sur un banc mécanique fonctionnel, un analyseur de vibrations et un ordinateur équipé du logiciel d'analyse.</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4>
+    <table class="dtable"><thead><tr><th>Élément de la compétence (programme officiel)</th><th>Points (épreuve /100)</th></tr></thead><tbody>
+    <tr><td>1 · Interpréter les directives de travail et les plans</td><td>10</td></tr>
+    <tr><td>2 · Sélectionner les outils, les appareils et les accessoires</td><td>10</td></tr>
+    <tr><td>3 · Utiliser l'analyseur en mode collecte : transférer la route, relever les données, transférer vers l'ordinateur, imprimer les rapports</td><td>25</td></tr>
+    <tr><td>4 · Interpréter les données recueillies : logiciel d'analyse, processus, tableaux et abaques, repérage juste des problèmes</td><td>45</td></tr>
+    <tr><td>5 · Ranger et nettoyer le matériel utilisé et le poste informatique</td><td>10</td></tr>
+    </tbody></table>
+    <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération de la fiche d'évaluation officielle (guide MEI, MENFP/ACDI 2014). Les tableaux et abaques nécessaires sont fournis par l'examinateur ; des problèmes de nature mécanique sont provoqués (bris de roulement, poids fixé sur une pale de ventilateur). Chaque critère est noté <strong>tout ou rien</strong>.</div></div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4>
+    <div class="pc-cols">
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Directives et plans · banc mécanique fonctionnel · route d'équipements à mesurer · tableaux et abaques fournis par l'examinateur · rapport d'équilibrage et historiques.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Analyseur de vibrations et ses accessoires (capteur accéléromètre, câbles) · ordinateur avec le logiciel d'analyse installé · imprimante pour les rapports et les spectres.</div>
+    </div></div>
+  <div class="pc-sec"><h4>Découpage en chapitres</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Contenu</th></tr></thead><tbody><tr><td>1</td><td>La vibration, signature de la machine</td><td>Amplitude, fréquence, sévérité, capteur</td></tr><tr><td>2</td><td>Collecter les données : la route de mesure</td><td>Analyseur, transferts, technique de lecture</td></tr><tr><td>3</td><td>Lire un spectre : les signatures de défauts</td><td>Balourd 1×, désalignement 2×, roulements</td></tr><tr><td>4</td><td>Interpréter, diagnostiquer, rapporter</td><td>Processus, abaques, rapport d'action, tendance</td></tr></tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4>
+    <ul>
+      <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 80 %.</li>
+      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique</strong> (3 h) en deux parties : (1) au logiciel, entrer une série d'équipements pour une prise de mesures, relever ces mesures sur les équipements en respectant la technique de collecte, puis transférer les mesures dans le logiciel ; (2) au laboratoire informatique, analyser avec le logiciel, les tableaux et les abaques afin d'évaluer la condition générale des équipements et d'en déceler les problèmes.</li>
+      <li><strong>Seuil de réussite</strong> — <strong>80 sur 100</strong>. <strong>Règle de verdict :</strong> tout manquement grave aux règles de santé et de sécurité pouvant mettre en péril les personnes et les biens entraîne l'échec.</li>
+    </ul></div>
+  <div class="pc-sec"><h4>Liens avec les autres modules</h4>
+    <p><strong>Réinvestit :</strong> MEI-02 (utilisation de l'ordinateur), MEI-06 (instruments de mesure), MEI-13 (arbres et roulements), MEI-14 (éléments de transmission — calculs de vitesses), MEI-19 (équilibrage — balourd et phase).<br>
+    <strong>Contribue à :</strong> MEI-25 (maintenance préventive et prédictive), MEI-27 (dépannage d'équipement).</p></div>
+  <div class="pc-sec"><h4>Références</h4>
+    <ul>
+      <li>Évaluation des apprentissages — <em>Mécanique d'entretien industrielle</em>, spécifications pour la sanction, module « Utilisation de techniques d'analyse de vibrations » (MENFP / ACDI, R. Lapierre, 2014).</li>
+      <li>Programme <em>Mécanique d'entretien industrielle</em> (INFP / CFPH – Canado Technique).</li>
+      <li>Tableaux de sévérité vibratoire et abaques des fabricants ; manuel de l'analyseur et du logiciel d'analyse.</li>
+    </ul></div>
+</div></div>
+
+<div class="chapter step" id="ch-1">
+<div class="ch-header">
+  <div class="ch-num">01</div>
+  <div class="ch-info"><h2>La vibration, signature de la machine</h2><div class="ch-meta"><span class="ch-badge">Amplitude · Fréquence · Sévérité</span></div></div>
+</div>
+<div class="ch-body">
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Comprendre la vibration d'une machine</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>définir amplitude, fréquence et phase d'une vibration ;</li><li>distinguer déplacement, vitesse et accélération vibratoires ;</li><li>situer la sévérité d'une vibration avec les tableaux de référence.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>C'est la première leçon du module. Tu réinvestis MEI-19 (équilibrage) : le balourd que tu corrigais est justement la première source de vibration.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Ce que la vibration raconte</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI20/final/MEI20-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+<div class="lesson-step-label">② Lecture</div>
+
+<div class="section">
+<h3>1.1 Pourquoi mesurer les vibrations ?</h3>
+<p>Toute machine tournante vibre. Ce qui compte, c'est <strong>combien</strong> et <strong>à quelles fréquences</strong> : chaque défaut mécanique (balourd, désalignement, roulement usé, desserrage) laisse une <strong>signature vibratoire</strong> reconnaissable. L'analyse de vibrations permet donc d'<strong>évaluer la condition générale d'un équipement</strong> et d'en <strong>déceler les problèmes</strong> sans rien démonter — c'est l'outil roi de la maintenance prédictive (que tu retrouveras en MEI-25).</p>
+</div>
+
+<div class="section">
+<h3>1.2 Les trois grandeurs d'une vibration</h3>
+<p>Une vibration se décrit par son <strong>amplitude</strong> (sa force), sa <strong>fréquence</strong> (combien de fois par seconde, en hertz — ou en multiples de la vitesse de rotation, notés 1×, 2×, 3×) et sa <strong>phase</strong> (le calage angulaire, déjà rencontré en équilibrage).</p>
+<div class="ibox blue"><span class="ibox-label">🧮 Conversion clé</span>La fréquence de rotation d'un arbre : <strong>f (Hz) = N (tr/min) ÷ 60</strong>. Un moteur à 1750 tr/min a une fréquence 1× de 29,2 Hz.</div>
+</div>
+
+<div class="section">
+<h3>1.3 Déplacement, vitesse, accélération</h3>
+<table class="dtable"><thead><tr><th>Grandeur mesurée</th><th>Unité courante</th><th>Sensible aux…</th></tr></thead><tbody>
+<tr><td>Déplacement</td><td>µm (microns), mils</td><td>Basses fréquences (arbres lents)</td></tr>
+<tr><td><strong>Vitesse vibratoire</strong></td><td><strong>mm/s (ou po/s)</strong></td><td>Fréquences moyennes — la référence de sévérité générale</td></tr>
+<tr><td>Accélération</td><td>g</td><td>Hautes fréquences (roulements, engrènements)</td></tr>
+</tbody></table>
+<p>La <strong>vitesse vibratoire en mm/s</strong> sert d'indicateur de sévérité globale : les <strong>tableaux et abaques</strong> de référence (fournis à l'épreuve) classent la machine de « bonne » à « inadmissible » selon sa valeur et son type.</p>
+</div>
+
+<div class="section">
+<h3>1.4 Le capteur : l'accéléromètre</h3>
+<p>Le capteur standard est l'<strong>accéléromètre</strong>, posé sur le <strong>palier</strong> (au plus court chemin des roulements), tenu par aimant ou goujon. Sa <strong>position</strong> et sa <strong>stabilité</strong> conditionnent toute la mesure — c'est un critère explicite de la fiche d'évaluation.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Amplitude</dt><dd>Intensité de la vibration (µm, mm/s ou g selon la grandeur).</dd><dt>Fréquence</dt><dd>Nombre de cycles par seconde (Hz) ; souvent exprimée en multiples de la rotation (1×, 2×…).</dd><dt>Vitesse vibratoire</dt><dd>Grandeur de référence de la sévérité globale, en mm/s.</dd><dt>Accéléromètre</dt><dd>Capteur de vibrations posé sur le palier, par aimant ou goujon.</dd><dt>Signature vibratoire</dt><dd>Combinaison de fréquences et d'amplitudes propre à chaque défaut mécanique.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Chaque défaut a sa <strong>signature</strong> : on diagnostique sans démonter.</li><li><strong>f (Hz) = N ÷ 60</strong> ; les fréquences se lisent en multiples de la rotation (1×, 2×…).</li><li>Sévérité globale = <strong>vitesse vibratoire en mm/s</strong>, comparée aux tableaux de référence.</li><li>Capteur = <strong>accéléromètre sur le palier</strong>, bien positionné et stable.</li></ul>
+</div>
+
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">L'analyse de vibrations permet de :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Réparer sans outils</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Peindre les machines</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Évaluer la condition d'un équipement et déceler ses problèmes sans démonter</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Mesurer le débit d'huile</button>
+  </div><div class="qexpl" id="qe-1-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">La fréquence de rotation d'un moteur à 1750 tr/min est d'environ :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>1750 Hz</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>60 Hz</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>29,2 Hz</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>17,5 Hz</button>
+  </div><div class="qexpl" id="qe-1-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">La grandeur de référence pour la sévérité globale d'une vibration est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Le déplacement en microns</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>La température</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>La vitesse vibratoire en mm/s</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>La pression</button>
+  </div><div class="qexpl" id="qe-1-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">L'accélération vibratoire (en g) est surtout sensible :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Aux basses fréquences</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>À la couleur du carter</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Aux hautes fréquences (roulements, engrènements)</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Au niveau d'huile</button>
+  </div><div class="qexpl" id="qe-1-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Le capteur de vibrations standard se pose :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Sur le sol</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Dans le réservoir</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Sur la courroie</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Sur le palier, par aimant ou goujon, stable</button>
+  </div><div class="qexpl" id="qe-1-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[2, 2, 2, 2, 3],['Chaque défaut a une signature vibratoire : on diagnostique machine en marche.','f = N ÷ 60 = 1750 ÷ 60 ≈ 29,2 Hz.','La vitesse (mm/s) sert d\\u0027indicateur de sévérité, comparée aux tableaux.','Déplacement = basses fréquences ; accélération = hautes fréquences.','Position et stabilité du capteur : critère explicite de la fiche d\\u0027évaluation.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Analyse spectrale et diagnostic</h2>
-      <div class="chapter-meta"><span>🕐 22h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Analyse spectrale et diagnostic — cours et demonstrations</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Analyse spectrale et diagnostic (5 min)</strong> — Fondamentaux, normes industrielles, applications Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et outils de Analyse spectrale et diagnostic (5 min)</strong> — Identification, selection, caracteristiques.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures d'intervention (4 min)</strong> — Methodes, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> — EPI specifiques, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Analyse spectrale et diagnostic en MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des equipements industriels</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Uniquement grandes usines</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Remplace par informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_3">La maitrise de Analyse spectrale et diagnostic assure la disponibilite des equipements et reduit les pannes non planifiees.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Priorite numero 1 avant toute intervention industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Commencer immediatement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Consignation LOTO: couper l'energie, purger, cadenasser, etiqueter</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Appeler le fabricant</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Verifier le budget</button></div>
-    <div class="quiz-expl" id="expl-q1_3">LOTO protege contre la remise en marche accidentelle. Non-negociable en securite industrielle.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation d'intervention MEI sert a?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Obligation administrative seulement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Alimenter l'historique, planifier la maintenance preventive, former les autres techniciens</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Uniquement pour les assurances</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Inutile si la machine remarche</button></div>
-    <div class="quiz-expl" id="expl-q2_3">Historique = outil de prevention. Chaque panne documentee aide a anticiper les suivantes.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI obligatoire en atelier MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Cravate et costume</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Lunettes de securite, chaussures acier, combinaison de travail</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_3">EPI de base obligatoires en tout temps. Supplementaires selon la tache: masque soudage, gants thermiques, harnais en hauteur.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+
+<div class="chapter step" id="ch-2">
+<div class="ch-header">
+  <div class="ch-num">02</div>
+  <div class="ch-info"><h2>Collecter les données : la route de mesure</h2><div class="ch-meta"><span class="ch-badge">Analyseur · Capteur · Route · Transfert</span></div></div>
+</div>
+<div class="ch-body">
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">La collecte de données avec l'analyseur</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>transférer une route de l'ordinateur vers l'analyseur de vibrations ;</li><li>positionner le capteur et relever les mesures selon la technique ;</li><li>transférer les données vers l'ordinateur et imprimer les rapports.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Au chapitre 1, tu as appris ce qu'on mesure ; tu passes maintenant à la collecte — 25 points de l'épreuve.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Collecter une route de mesures</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI20/final/MEI20-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+<div class="lesson-step-label">② Lecture</div>
+
+<div class="section">
+<h3>2.1 La route de mesure</h3>
+<p>Une <strong>route</strong> est la liste ordonnée des équipements et des <strong>points de mesure</strong> à relever (chaque palier, en directions <strong>horizontale, verticale et axiale</strong>). Elle se prépare dans le <strong>logiciel d'analyse</strong> sur l'ordinateur, puis se <strong>transfère vers l'analyseur de vibrations</strong> — c'est la première étape officielle de la collecte.</p>
+</div>
+
+<div class="section">
+<h3>2.2 Brancher et paramétrer l'analyseur</h3>
+<p>Le <strong>branchement des appareils</strong> (capteur → analyseur, analyseur → ordinateur) doit être <strong>conforme aux directives</strong>, et le <strong>bon menu de collecte</strong> sélectionné sur l'analyseur. Ces trois gestes — capteur bien positionné et stable, branchement conforme, bon choix de menu — valent à eux seuls 10 points de la fiche.</p>
+</div>
+
+<div class="section">
+<h3>2.3 Relever les mesures sur l'équipement</h3>
+<p>Machine <strong>en fonctionnement stabilisé</strong>, on suit la route point par point : capteur posé <strong>au même endroit, dans la même direction</strong> à chaque mesure (répétabilité !), lecture stabilisée avant validation, valeurs enregistrées dans l'analyseur. La <strong>technique de prise de lecture</strong> est un critère noté (10 points).</p>
+<div class="ibox gold"><span class="ibox-label">⚠️ Sécurité</span>On mesure sur des machines <strong>en marche</strong> : vêtements ajustés, pas de câble près des pièces tournantes, protecteurs en place. La règle de verdict santé-sécurité s'applique.</div>
+</div>
+
+<div class="section">
+<h3>2.4 Transférer et imprimer</h3>
+<p>De retour au poste, on <strong>transfère les données de l'analyseur vers l'ordinateur</strong>, puis on imprime les <strong>rapports nécessaires</strong> : le <strong>rapport d'action</strong> issu du transfert et les <strong>spectres</strong> montrant les problèmes trouvés. Le bon choix des rapports à imprimer est le troisième critère de la collecte (5 points).</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Route de mesure</dt><dd>Liste ordonnée des équipements et points de mesure, préparée au logiciel puis transférée à l'analyseur.</dd><dt>Point de mesure</dt><dd>Emplacement et direction de mesure (horizontal, vertical, axial) sur un palier.</dd><dt>Analyseur de vibrations</dt><dd>Appareil portable qui collecte, mémorise puis restitue les mesures de la route.</dd><dt>Rapport d'action</dt><dd>Rapport imprimé lors du transfert, listant les mesures et alarmes relevées.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Séquence officielle : <strong>route ordinateur → analyseur → mesures → analyseur → ordinateur → rapports</strong>.</li><li>Points de mesure : chaque palier en <strong>H, V et A</strong> — toujours au même endroit (répétabilité).</li><li>Capteur <strong>positionné et stable</strong>, branchements conformes, bon menu : 10 points.</li><li>Imprimer le <strong>rapport d'action</strong> et les <strong>spectres</strong> des problèmes : 5 points.</li></ul>
+</div>
+
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Une route de mesure est :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Un chemin d'accès à l'atelier</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>La liste ordonnée des équipements et points de mesure à relever</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Un câble</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Un type de spectre</button>
+  </div><div class="qexpl" id="qe-2-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Les points de mesure d'un palier se prennent en directions :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Horizontale, verticale et axiale</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Nord, sud, est</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Haute et basse</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Gauche uniquement</button>
+  </div><div class="qexpl" id="qe-2-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pour des mesures comparables d'une collecte à l'autre, le capteur doit être posé :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>N'importe où</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Toujours au même endroit, dans la même direction</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Sur une pièce tournante</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>À distance de la machine</button>
+  </div><div class="qexpl" id="qe-2-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Les mesures se prennent machine :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>À l'arrêt</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>Sans protecteurs</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>En démontage</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>En fonctionnement stabilisé</button>
+  </div><div class="qexpl" id="qe-2-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Après la collecte, on imprime :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>Le rapport d'action et les spectres montrant les problèmes</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>La liste du personnel</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>Le manuel complet</button>
+  </div><div class="qexpl" id="qe-2-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1, 0, 1, 3, 0],['La route se prépare au logiciel puis se transfère vers l\\u0027analyseur.','H, V et A : chaque direction révèle des défauts différents.','La répétabilité conditionne le suivi des tendances.','On mesure en marche — d\\u0027où les règles de sécurité (vêtements, câbles, protecteurs).','Le bon choix des rapports à imprimer vaut 5 points à la fiche.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Actions correctives sur les vibrations</h2>
-      <div class="chapter-meta"><span>🕐 22h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Actions correctives sur les vibrations — cours et demonstrations</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Actions correctives sur les vibrations (5 min)</strong> — Fondamentaux, normes industrielles, applications Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et outils de Actions correctives sur les vibrations (5 min)</strong> — Identification, selection, caracteristiques.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures d'intervention (4 min)</strong> — Methodes, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> — EPI specifiques, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Actions correctives sur les vibrations en MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des equipements industriels</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Uniquement grandes usines</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Remplace par informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_4">La maitrise de Actions correctives sur les vibrations assure la disponibilite des equipements et reduit les pannes non planifiees.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Priorite numero 1 avant toute intervention industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Commencer immediatement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Consignation LOTO: couper l'energie, purger, cadenasser, etiqueter</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Appeler le fabricant</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Verifier le budget</button></div>
-    <div class="quiz-expl" id="expl-q1_4">LOTO protege contre la remise en marche accidentelle. Non-negociable en securite industrielle.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation d'intervention MEI sert a?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Obligation administrative seulement</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Alimenter l'historique, planifier la maintenance preventive, former les autres techniciens</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Uniquement pour les assurances</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Inutile si la machine remarche</button></div>
-    <div class="quiz-expl" id="expl-q2_4">Historique = outil de prevention. Chaque panne documentee aide a anticiper les suivantes.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI obligatoire en atelier MEI?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Cravate et costume</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Lunettes de securite, chaussures acier, combinaison de travail</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_4">EPI de base obligatoires en tout temps. Supplementaires selon la tache: masque soudage, gants thermiques, harnais en hauteur.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+
+<div class="chapter step" id="ch-3">
+<div class="ch-header">
+  <div class="ch-num">03</div>
+  <div class="ch-info"><h2>Lire un spectre : les signatures de défauts</h2><div class="ch-meta"><span class="ch-badge">Balourd · Désalignement · Roulements</span></div></div>
+</div>
+<div class="ch-body">
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Reconnaître les défauts dans le spectre</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>lire un spectre de vibrations (amplitude en fonction de la fréquence) ;</li><li>associer chaque défaut à sa signature : balourd, désalignement, roulement, desserrage ;</li><li>calculer les fréquences caractéristiques d'une machine.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tes mesures du chapitre 2 sont dans le logiciel : tu apprends à y reconnaître les défauts.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Les signatures des défauts au spectre</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI20/final/MEI20-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+<div class="lesson-step-label">② Lecture</div>
+
+<div class="section">
+<h3>3.1 Le spectre de vibrations</h3>
+<p>Le logiciel transforme le signal mesuré en <strong>spectre</strong> : un graphique de l'<strong>amplitude en fonction de la fréquence</strong>. Chaque pic correspond à une source de vibration. Pour l'interpréter, on repère d'abord la fréquence de rotation <strong>1×</strong> de l'arbre — tout le reste se lit par rapport à elle.</p>
+</div>
+
+<div class="section">
+<h3>3.2 Les signatures des défauts courants</h3>
+<table class="dtable"><thead><tr><th>Défaut</th><th>Signature au spectre</th></tr></thead><tbody>
+<tr><td><strong>Balourd</strong></td><td>Pic dominant à <strong>1× RPM</strong>, surtout en radial (H/V) — ex. un poids fixé sur une pale de ventilateur</td></tr>
+<tr><td><strong>Désalignement</strong></td><td>Pics à <strong>2× RPM</strong> (et 1×), forte composante <strong>axiale</strong></td></tr>
+<tr><td><strong>Desserrage mécanique</strong></td><td>Série d'<strong>harmoniques</strong> (1×, 2×, 3×, 4×…)</td></tr>
+<tr><td><strong>Roulement endommagé</strong></td><td>Pics en <strong>hautes fréquences</strong>, non multiples exacts du 1× (fréquences propres des bagues et billes), qui montent avec la dégradation</td></tr>
+<tr><td><strong>Engrènement</strong></td><td>Pic à la fréquence d'engrènement = nombre de dents × fréquence de rotation</td></tr>
+<tr><td><strong>Passage de pales</strong></td><td>Pic à <strong>nombre de pales × fréquence de rotation</strong></td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>3.3 Calculer les fréquences caractéristiques</h3>
+<p>Exemples chiffrés : un moteur à <strong>1750 tr/min</strong> a un 1× à 1750 ÷ 60 ≈ <strong>29,2 Hz</strong> ; son 2× (désalignement) tombe à ≈ <strong>58,3 Hz</strong>. Un ventilateur de <strong>8 pales</strong> à 1200 tr/min crée un pic de passage de pales à 8 × 1200 ÷ 60 = <strong>160 Hz</strong>. Si la machine est entraînée par courroie, la vitesse de l'arbre mesuré se calcule d'abord (N2 = N1 × D1 / D2, comme en MEI-14).</p>
+</div>
+
+<div class="section">
+<h3>3.4 Tableaux et abaques</h3>
+<p>Les <strong>tableaux et abaques</strong> (fournis à l'épreuve) donnent les seuils de sévérité par type de machine et les fréquences caractéristiques des roulements du commerce. Le critère officiel exige leur <strong>utilisation correcte</strong> : on n'interprète jamais un spectre sans ses références.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Spectre</dt><dd>Graphique amplitude/fréquence issu du signal vibratoire ; chaque pic = une source.</dd><dt>1× RPM</dt><dd>Fréquence de rotation de l'arbre, référence de lecture du spectre.</dd><dt>Harmoniques</dt><dd>Multiples entiers du 1× (2×, 3×…) ; leur série signe un desserrage.</dd><dt>Fréquence d'engrènement</dt><dd>Nombre de dents × fréquence de rotation de la roue.</dd><dt>Fréquence de passage de pales</dt><dd>Nombre de pales × fréquence de rotation du ventilateur.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li><strong>1× = balourd</strong> ; <strong>2× + axial = désalignement</strong> ; harmoniques en série = desserrage.</li><li>Roulement usé = pics en <strong>hautes fréquences</strong>, non multiples exacts du 1×.</li><li>f (Hz) = N ÷ 60 ; passage de pales = <strong>pales × f</strong> ; engrènement = <strong>dents × f</strong>.</li><li>Toujours interpréter <strong>avec les tableaux et abaques</strong> — critère officiel.</li></ul>
+</div>
+
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Un pic dominant à 1× RPM en radial signe :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Un désalignement</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Un engrènement</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Un roulement usé</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Un balourd</button>
+  </div><div class="qexpl" id="qe-3-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Un pic marqué à 2× RPM avec forte composante axiale évoque :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Un désalignement</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Un balourd</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Une courroie neuve</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Un excès d'huile</button>
+  </div><div class="qexpl" id="qe-3-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Une série d'harmoniques (1×, 2×, 3×, 4×…) signe :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Un capteur neuf</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Une machine parfaite</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Un desserrage mécanique</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Un filtre propre</button>
+  </div><div class="qexpl" id="qe-3-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Un roulement endommagé apparaît au spectre comme :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Des pics en hautes fréquences, non multiples exacts du 1×</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Un seul pic à 1×</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Une ligne plate</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Un pic à 0 Hz</button>
+  </div><div class="qexpl" id="qe-3-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Un ventilateur de 8 pales à 1200 tr/min crée un pic de passage de pales à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>1200 Hz</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>20 Hz</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>8 Hz</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>160 Hz</button>
+  </div><div class="qexpl" id="qe-3-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[3, 0, 2, 0, 3],['Le balourd vibre une fois par tour : gros pic 1×, surtout en H/V.','Le désalignement se signe à 2× (et 1×) avec de l\\u0027axial.','Le desserrage génère toute la série des harmoniques.','Les fréquences propres des bagues et billes ne sont pas des harmoniques exactes.','8 × 1200 ÷ 60 = 160 Hz.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
 </div></div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module MEI-20 termine!</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+
+<div class="chapter step" id="ch-4">
+<div class="ch-header">
+  <div class="ch-num">04</div>
+  <div class="ch-info"><h2>Interpréter, diagnostiquer, rapporter</h2><div class="ch-meta"><span class="ch-badge">Logiciel · Abaques · Rapport d'action</span></div></div>
+</div>
+<div class="ch-body">
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Le diagnostic et le rapport</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>suivre le processus d'analyse avec le logiciel, les tableaux et les abaques ;</li><li>évaluer la condition générale d'un équipement et repérer les problèmes ;</li><li>imprimer le rapport d'action et les spectres, et ranger le poste.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Dernier chapitre : tu boucles la démarche complète, exactement comme à l'épreuve — 45 points portent sur l'interprétation.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Du spectre au diagnostic</div><div class="vsub">Prof. Fernand Bernateau Mentor</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/MEI/MEI20/final/MEI20-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+<div class="lesson-step-label">② Lecture</div>
+
+<div class="section">
+<h3>4.1 Le processus d'analyse</h3>
+<p>L'interprétation vaut <strong>45 points sur 100</strong> à l'épreuve. Le processus : (1) vérifier la <strong>sévérité globale</strong> (mm/s) de chaque point contre les seuils du tableau ; (2) ouvrir les <strong>spectres</strong> des points en alarme ; (3) identifier la fréquence de chaque pic et la rapporter au 1× ; (4) croiser avec les <strong>directions</strong> (radial/axial) et les <strong>tableaux et abaques</strong> ; (5) conclure sur le <strong>problème de fonctionnement</strong> — de façon juste et précise.</p>
+</div>
+
+<div class="section">
+<h3>4.2 Les cas provoqués à l'épreuve</h3>
+<p>La consigne officielle prévoit des <strong>problèmes provoqués</strong> sur le banc mécanique : typiquement un <strong>roulement brisé</strong> (pics hautes fréquences croissants) et un <strong>poids fixé sur une pale de ventilateur</strong> (balourd : gros pic 1× radial). Ce sont exactement les signatures du chapitre 3 — sache les reconnaître du premier coup d'œil.</p>
+</div>
+
+<div class="section">
+<h3>4.3 Évaluer la condition générale</h3>
+<p>Au-delà du défaut ponctuel, on qualifie la <strong>condition générale</strong> de chaque équipement de la route (bonne / acceptable / à surveiller / inadmissible) et l'on suit sa <strong>tendance</strong> d'une collecte à l'autre : une amplitude qui monte régulièrement annonce la panne — c'est le cœur de la maintenance prédictive.</p>
+</div>
+
+<div class="section">
+<h3>4.4 Rapporter et ranger</h3>
+<p>Le diagnostic se matérialise par le <strong>rapport d'action</strong> et les <strong>spectres imprimés</strong> montrant les problèmes trouvés, remis avec des recommandations claires (équilibrer, aligner, remplacer le roulement…). On termine par le <strong>rangement et le nettoyage corrects du matériel et du poste informatique</strong> — 10 points de la fiche.</p>
+</div>
+
+<div class="section">
+<h3>4.5 L'épreuve pratique du module</h3>
+<p><strong>3 heures</strong>, seuil <strong>80/100</strong>, en deux parties : <strong>Partie 1</strong> — au logiciel, entrer une série d'équipements (route), prendre les mesures sur les équipements en respectant la technique de collecte, transférer les mesures dans le logiciel. <strong>Partie 2</strong> — au laboratoire informatique, analyser avec le logiciel, les tableaux et les abaques fournis, évaluer la condition générale des équipements et en déceler les problèmes.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Sévérité globale</dt><dd>Niveau vibratoire d'ensemble (mm/s) comparé aux seuils du tableau de référence.</dd><dt>Tendance</dt><dd>Évolution des amplitudes d'une collecte à l'autre ; une montée régulière annonce la panne.</dd><dt>Condition générale</dt><dd>État qualifié de l'équipement : bonne, acceptable, à surveiller, inadmissible.</dd><dt>Maintenance prédictive</dt><dd>Stratégie qui planifie l'intervention d'après l'état mesuré, avant la panne.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Processus : sévérité → spectres → fréquences vs 1× → directions + abaques → <strong>diagnostic juste</strong> (45 pts).</li><li>Cas types de l'épreuve : <strong>roulement brisé</strong> et <strong>poids sur une pale</strong> (balourd 1×).</li><li>Condition générale + <strong>tendance</strong> = maintenance prédictive.</li><li>Livrables : <strong>rapport d'action + spectres imprimés</strong> ; poste informatique rangé (10 pts).</li></ul>
+</div>
+
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">L'interprétation des données pèse à l'épreuve :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>45 points sur 100</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>10 points</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>5 points</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>80 points</button>
+  </div><div class="qexpl" id="qe-4-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Un poids fixé sur une pale de ventilateur (cas provoqué) produira :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Un pic 1× dominant (balourd)</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Un silence total</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Un pic à 0 Hz</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Une baisse de température</button>
+  </div><div class="qexpl" id="qe-4-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Une amplitude qui monte régulièrement d'une collecte à l'autre indique :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Une amélioration</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Un capteur trop propre</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Une dégradation qui annonce la panne</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Rien</button>
+  </div><div class="qexpl" id="qe-4-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">L'interprétation d'un spectre se fait :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>De mémoire</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Avec le logiciel, les tableaux et les abaques fournis</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Au hasard</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Sans référence</button>
+  </div><div class="qexpl" id="qe-4-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">La fiche d'évaluation note aussi, en fin d'épreuve :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>La vitesse de frappe</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>La couleur du rapport</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Le nombre de cafés</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Le rangement et le nettoyage corrects du matériel et du poste informatique</button>
+  </div><div class="qexpl" id="qe-4-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[0, 0, 2, 1, 3],['C\\u0027est le bloc le plus lourd : logiciel, processus, abaques, repérage juste.','C\\u0027est le cas type de l\\u0027épreuve : balourd = 1× radial dominant.','Le suivi de tendance est le cœur de la maintenance prédictive.','Utilisation correcte des tableaux et abaques : critère officiel.','Rangement du poste informatique : 10 points.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<div class="step" id="essentiel">
+<div class="ch-header">
+  <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module MEI-20</span></div></div>
+</div>
+<div class="ch-body">
+<div class="recap recap-final">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module MEI-20</div>
+
+  <ul class="recap-list"><li><strong>Principe —</strong> chaque défaut mécanique a une signature vibratoire : on évalue la condition d'un équipement et on décèle ses problèmes sans démonter.</li><li><strong>Grandeurs —</strong> amplitude, fréquence (f = N ÷ 60 ; multiples 1×, 2×…), phase ; sévérité globale = vitesse vibratoire en mm/s, comparée aux tableaux.</li><li><strong>Collecte (25 pts) —</strong> route ordinateur → analyseur ; capteur accéléromètre positionné et stable sur le palier (H, V, A), branchements conformes, bon menu ; mesures répétables ; transfert retour + rapport d'action et spectres imprimés.</li><li><strong>Signatures —</strong> balourd = 1× radial ; désalignement = 2× + axial ; desserrage = série d'harmoniques ; roulement usé = hautes fréquences non harmoniques ; pales/dents = nombre × fréquence de rotation.</li><li><strong>Interprétation (45 pts) —</strong> sévérité → spectres → fréquences vs 1× → directions + tableaux et abaques → repérage juste des problèmes ; cas provoqués : roulement brisé, poids sur pale.</li><li><strong>Prédictif —</strong> suivre la tendance des amplitudes annonce la panne avant qu'elle n'arrive (→ MEI-25).</li><li><strong>Démarche —</strong> rapport d'action + spectres remis ; matériel et poste informatique rangés (10 pts) ; épreuve pratique 3 h, seuil 80/100.</li></ul>
+</div>
+</div>
+</div>
+
+<div class="step" id="examen">
+<div class="ch-header"><div class="ch-num" style="background:#c0392b;color:#fff">🎓</div>
+  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 80 %</span></div></div></div>
+<div class="ch-body">
+<div class="exam-head"><h3>🎓 Avant de commencer</h3>
+  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : interprétation et connaissances (QCM), <strong>calculs</strong> (saisie numérique) et démarche/sécurité. Les volets <strong>pratiques</strong> (manutention, entretien, réparation sur banc) sont évalués <strong>par le professeur</strong>, lors de l'épreuve pratique (3 h, seuil 80/100).</p>
+  <div class="exam-rules"><span class="exam-rule">A · Connaissances &amp; interprétation — 40%</span><span class="exam-rule">B · Calculs — 40%</span><span class="exam-rule">C · Démarche &amp; sécurité — 20%</span><span class="exam-rule">Validation en ligne : ≥ 80%</span></div>
+</div>
+<div class="exid">
+  <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
+  <div><label>Programme</label><div class="exid-fixed">MEI — Mécanique d'entretien industrielle</div></div>
+  <div><label>Date</label><div class="exid-fixed" id="ex-date">—</div></div>
+</div>
+<div class="exam-part"><span>Partie A — Connaissances &amp; interprétation</span><span class="ex-chip" id="exA-score">40% · non soumis</span></div>
+<div class="qblock" data-qid="exa">
+<div class="qblock-header"><span>📝</span><h3>QCM — 6 questions</h3><span class="qblock-count">6 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 6</div><div class="q-text">Le grand avantage de l'analyse de vibrations est de :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Nettoyer la machine</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>Éviter tout entretien</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Remplacer la lubrification</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Diagnostiquer l'état d'un équipement sans le démonter</button>
+  </div><div class="qexpl" id="qe-exa-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 6</div><div class="q-text">La sévérité globale d'une machine se juge en comparant :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>Sa vitesse vibratoire (mm/s) aux tableaux de référence</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>Sa couleur au nuancier</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Son poids à la balance</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Son prix au catalogue</button>
+  </div><div class="qexpl" id="qe-exa-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 6</div><div class="q-text">Un gros pic à 1× RPM en radial sur un ventilateur indique d'abord :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Un balourd (ex. poids sur une pale)</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Un désalignement</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Un roulement neuf</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Un manque d'huile</button>
+  </div><div class="qexpl" id="qe-exa-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 6</div><div class="q-text">Des pics à 2× RPM avec une forte composante axiale évoquent :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>Un balourd</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Une route mal transférée</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Un désalignement d'accouplement</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Un capteur trop stable</button>
+  </div><div class="qexpl" id="qe-exa-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 6</div><div class="q-text">Des pics en hautes fréquences, non multiples exacts du 1×, qui grossissent de mois en mois :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Machine parfaite</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Roulement en dégradation</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Erreur d'impression</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Balourd pur</button>
+  </div><div class="qexpl" id="qe-exa-4"></div></div>
+  <div class="q-item"><div class="q-num">Question 6 / 6</div><div class="q-text">La route de mesure se prépare :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Sur l'analyseur seulement</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Après les mesures</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Sur papier uniquement</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Dans le logiciel sur l'ordinateur, puis se transfère vers l'analyseur</button>
+  </div><div class="qexpl" id="qe-exa-5"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[3, 0, 0, 2, 1, 3],['On évalue la condition et on repère les défauts machine en marche.','Les tableaux fournis classent la machine de bonne à inadmissible selon les mm/s.','Le balourd vibre une fois par tour : c\\u0027est le cas provoqué type de l\\u0027épreuve.','Le désalignement se signe à 2× avec de l\\u0027axial — à vérifier à l\\u0027accouplement.','Les fréquences de défaut de roulement ne sont pas des harmoniques exactes ; leur montée annonce la casse.','Séquence officielle : ordinateur → analyseur → mesures → ordinateur.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',6)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exa"></span>
+</div>
+</div>
+<div class="exam-part"><span>Partie B — Calculs (saisie numérique)</span><span class="ex-chip" id="exB-score">40% · non soumis</span></div>
+<p style="font-size:.83rem;color:var(--g700);margin:0 0 .6rem">Saisis chaque résultat (décimales avec un point ou une virgule), puis vérifie. Une tolérance est admise.</p>
+<div class="exq"><div class="exq-t">1. Un moteur tourne à <strong>1750 tr/min</strong>. Calcule sa fréquence de rotation <strong>1×</strong> (f = N ÷ 60).</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">Hz</span></div><div class="exn-fb" id="exnf-0"></div></div>
+<div class="exq"><div class="exq-t">2. Calcule la fréquence <strong>2×</strong> de ce même moteur (signature typique du désalignement).</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">Hz</span></div><div class="exn-fb" id="exnf-1"></div></div>
+<div class="exq"><div class="exq-t">3. Un ventilateur de <strong>8 pales</strong> tourne à <strong>1200 tr/min</strong>. Calcule la fréquence de <strong>passage de pales</strong>.</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">Hz</span></div><div class="exn-fb" id="exnf-2"></div></div>
+<div class="exq"><div class="exq-t">4. La machine mesurée est entraînée par courroie : moteur <strong>1750 tr/min</strong>, poulies <strong>D1 = 150 mm</strong> et <strong>D2 = 250 mm</strong>. Calcule la vitesse de l'arbre mesuré.</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">tr/min</span></div><div class="exn-fb" id="exnf-3"></div></div>
+<div class="exq"><div class="exq-t">5. Un tableau américain donne une sévérité de <strong>0,28 po/s</strong>. Convertis-la en mm/s (1 po = 25,4 mm).</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm/s</span></div><div class="exn-fb" id="exnf-4"></div></div>
+<div class="qfooter"><button class="qbtn qbtn-submit" onclick="numGrade()">✓ Vérifier mes calculs</button></div>
+<div class="exam-part"><span>Partie C — Démarche &amp; sécurité</span><span class="ex-chip" id="exC-score">20% · non soumis</span></div>
+<div class="qblock" data-qid="exc">
+<div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La première partie de l'épreuve consiste à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Analyser les spectres</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Entrer la route au logiciel, mesurer sur les équipements et transférer</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Ranger le poste</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Démonter le banc</button>
+  </div><div class="qexpl" id="qe-exc-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Trois gestes de la collecte valent 10 points :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Café, pause, discussion</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Nettoyage du clavier</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Impression en couleur</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Capteur positionné et stable, branchements conformes, bon menu de collecte</button>
+  </div><div class="qexpl" id="qe-exc-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pendant les mesures sur machine en marche, on veille à :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Retirer les protecteurs</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Accélérer la machine</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>S'appuyer sur l'accouplement</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Vêtements ajustés, câbles loin des pièces tournantes, protecteurs en place</button>
+  </div><div class="qexpl" id="qe-exc-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Les livrables imprimés de l'épreuve sont :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Aucun</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Le rapport d'action et les spectres indiquant les problèmes trouvés</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Le manuel du logiciel</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>La liste des étudiants</button>
+  </div><div class="qexpl" id="qe-exc-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">L'épreuve se termine par :</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Le transfert de la route</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Une nouvelle collecte</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Le rangement et le nettoyage corrects du matériel et du poste informatique</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Le démontage du capteur au marteau</button>
+  </div><div class="qexpl" id="qe-exc-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1, 3, 3, 1, 2],['Partie 1 = collecte complète ; partie 2 = analyse au laboratoire informatique.','Critère 3.1 de la fiche officielle.','Règle de verdict santé-sécurité : tout manquement grave = échec.','Choix approprié des rapports à imprimer : critère noté.','Rangement du poste informatique : 10 points de la fiche.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exc"></span>
+</div>
+</div>
+<div class="exam-actions">
+  <button class="qbtn qbtn-submit" onclick="exValidate()">✓ Valider mon activité globale</button>
+  <button class="btn-print" onclick="exPrint()">🖨️ Imprimer / remettre au professeur</button>
+  <span class="exam-score-line" id="ex-total">Total : —</span>
+</div>
+<div class="ex-bar"><i id="ex-bar-fill"></i></div>
+<div class="exam-result" id="exam-result"></div>
+</div></div>
+
+<div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
+  <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
+  <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
+
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Atelier —</strong> sur le banc mécanique, relève un point en H, V et A, fixe un petit poids sur une pale, remesure : observe le pic 1× grimper, puis retire le poids.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Calculs —</strong> pour trois machines de l'atelier, calcule 1×, 2× et la fréquence de passage de pales ou d'engrènement : tu liras les spectres dix fois plus vite.</li>
+    <li><strong style="color:#fff">Lien avec la suite —</strong> prochaine étape : <strong style="color:#fff">MEI-21 — Pompes à vide, moteurs pneumatiques et compresseurs</strong>.</li>
+  </ul>
+</div>
+<div class="complete-banner" id="complete-banner">
+  <h2>🎓 Module MEI-20 — chapitres validés !</h2>
+  <p>Tu sais collecter une route de mesures et lire les signatures des défauts dans les spectres. Prépare maintenant l'épreuve pratique (3 h, seuil 80/100). Prochaine étape : MEI-21 — Pompes à vide, moteurs pneumatiques et compresseurs.</p>
+</div>
+</div><!-- /main-content -->
+</div><!-- /layout -->
+</div><!-- /wrap -->
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+// ═══ STATE & PERSISTENCE ═══
+var ST={done:{},qs:{},sel:{}};
+var K='MEI20v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+// ═══ INIT ═══
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){
+    var el=document.getElementById('qs-'+qid);
+    if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}
+  });
+  initTimer();updateProg();
+});
+
+// ═══ PROGRESS ═══
+var TOTAL=4;
+function updateProg(){
+  var done=Object.keys(ST.done).filter(function(k){return ST.done[k];}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';
+  if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');
+  if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+
+// ═══ CHAPTER DONE ═══
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+
+// ═══ TOC / NAV ═══
+function goTo(n){
+  var el=document.getElementById(typeof n==='string'?n:'ch-'+n);
+  if(!el){toast('ℹ️ Section bientôt disponible.');return;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');
+  if(window.innerWidth<=768)toggleToc();
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function toggleToc(){
+  var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');
+  t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+
+// ═══ PLANS DE LEÇON (accordéon) ═══
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+
+// ═══ QUIZ ENGINE ═══
+function selQ(btn,qid,qi,val){
+  var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');
+  var idx=parseInt(qi);
+  if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+function submitQ(qid,answers,expls){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var sel=ST.sel[qid]||{};var total=answers.length;
+  for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}
+  var ok=0;var qItems=block.querySelectorAll('.q-item');
+  for(var i=0;i<total;i++){
+    var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;
+    qItem.querySelectorAll('.qopt').forEach(function(b,j){
+      b.disabled=true;
+      if(j===correct)b.classList.add('ok');
+      else if(j===chosen&&chosen!==correct)b.classList.add('ko');
+    });
+    var expl=document.getElementById('qe-'+qid+'-'+i);
+    if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}
+    if(chosen===correct)ok++;
   }
+  ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';
+  updateProg();
+  toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');
 }
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+function retryQ(qid,count){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});
+  block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});
+  if(ST.sel[qid])ST.sel[qid]={};
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';
 }
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+
+// ═══ CARTES INTERACTIVES (réflexion) ═══
+var INFO={};
+function showInfo(group,idx,btn){
+  var grid=btn.closest('.dora-grid');
+  grid.querySelectorAll('.dora-card').forEach(function(s){s.classList.remove('active');});
+  btn.classList.add('active');
+  var d=document.getElementById(group+'-detail');
+  if(d){d.innerHTML=INFO[group][idx];d.className='dora-detail show';d.style.cssText='background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.2);color:#1a2f52;border-radius:var(--r);padding:.9rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:block';}
 }
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+
+// ═══ VIDEO ═══
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){
+  var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;
+  var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+  var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);
+  if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';
 }
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+
+// ═══ TIMER ═══
+var timerStart=Date.now();
+function initTimer(){
+  var saved=ld('time',0);timerStart=Date.now()-saved*1000;
+  setInterval(function(){
+    var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);
+    var el=document.getElementById('session-timer');
+    if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
   },1000);
 }
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+// ═══ TOAST ═══
+var _tt;
+function toast(msg){
+  var t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);
+}
+</script>
+<script>
+/* ===== LECTEUR DE COURS v3 ===== */
+(function(){
+  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','essentiel','examen'];
+  var LABELS={"plan": "Plan de cours", "ch-1": "La vibration, signature de la machine", "ch-2": "Collecter les données : la route de mesure", "ch-3": "Lire un spectre : les signatures de défauts", "ch-4": "Interpréter, diagnostiquer, rapporter", "essentiel": "L\u0027essentiel à retenir", "examen": "Examen blanc"};
+  var QUIZ={1:1,2:1,3:1,4:1};   // chapitres ayant un quiz
+  var PASS=0.6;                          // seuil de réussite
+  var PK='MEI20v1_step', VK='MEI20v1_viewed';
+  var cur=0, DUR={};
+
+  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
+  function hasQuiz(n){return !!QUIZ[n];}
+  function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  function isPassed(n){return !!readJSON('MEI20v1_done')[n];}
+  function countDone(){var d=readJSON('MEI20v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
+  function refreshDur(){for(var N=1;N<=4;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
+
+  function updateGate(){
+    refreshDur();
+    for(var N=1;N<=4;N++){
+      var ti=document.getElementById('ti-'+N);if(!ti)continue;
+      var locked=N>1&&!isPassed(N-1);
+      ti.classList.toggle('lock',locked);
+      if(isPassed(N))ti.classList.add('done');
+      var tr=document.getElementById('tr-'+N);
+      if(tr)tr.textContent=locked?'🔒':(DUR[N]||'');
+    }
+    var ad=allDone();
+    ['ti-essentiel','ti-examen'].forEach(function(tid){var t=document.getElementById(tid);if(t){t.classList.toggle('lock',!ad);}});
+    var pf=document.getElementById('pl-prog-fill');if(pf)pf.style.width=Math.round(countDone()/4*100)+'%';
+    var id=STEPS[cur],n=chNum(id),blocked=false,label;
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){blocked=true;label='🔒 Réussis le quiz pour continuer';}
+    else if(cur===STEPS.length-1){label='Terminer le module ✓';}
+    else{label=(n!==null?'Terminer & continuer →':'Continuer →');}
+    var nBot=document.getElementById('pl-next-btn'),nTop=document.getElementById('pl-next-top');
+    if(nBot){nBot.textContent=label;nBot.disabled=blocked;}
+    if(nTop)nTop.disabled=blocked;
+    var pTop=document.getElementById('pl-prev-top'),pBot=document.getElementById('pl-prev-btn');
+    if(pTop)pTop.disabled=cur===0;if(pBot)pBot.disabled=cur===0;
+    var cb=document.getElementById('complete-banner');if(cb)cb.style.display=(cur===STEPS.length-1&&countDone()>=6)?'block':'none';
+  }
+  function render(){
+    var id=STEPS[cur];
+    document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+    var el=document.getElementById(id);if(el)el.classList.add('active');
+    document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+    var ti=document.getElementById(tiId(id));if(ti)ti.classList.add('act');
+    var T=document.getElementById('pl-title');if(T)T.textContent=LABELS[id]||'';
+    var C=document.getElementById('pl-count');if(C)C.textContent='Étape '+(cur+1)+' / '+STEPS.length;
+    try{var prev=parseInt(localStorage.getItem(PK)||'0')||0;if(cur>prev)localStorage.setItem(PK,String(cur));}catch(e){}
+    updateGate();
+    var mc=document.getElementById('main-content');
+    if(mc){var y=mc.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y<0?0:y,behavior:'smooth'});}
+    if(window.innerWidth<=768){var t=document.getElementById('toc-sidebar');if(t)t.classList.remove('open');var o=document.getElementById('mob-overlay');if(o)o.style.display='none';}
+  }
+
+  function allDone(){for(var N=1;N<=4;N++){if(!isPassed(N))return false;}return true;}
+  function firstUnfinished(){for(var N=1;N<=4;N++){if(!isPassed(N))return STEPS.indexOf('ch-'+N);}return STEPS.indexOf('essentiel');}
+  window.goTo=function(n){
+    var id=(n==='plan'||n==='lecons'||n==='essentiel'||n==='examen')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
+    var cn=chNum(id);
+    if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
+    if((id==='essentiel'||id==='examen')&&!allDone()){if(window.toast)toast('🔒 Termine et valide les 4 leçons pour accéder à la synthèse et à l\u2019examen blanc.');return;}
+    cur=i;render();
+  };
+  window.plPrev=function(){if(cur>0){cur--;render();}};
+  window.plNext=function(){
+    var id=STEPS[cur],n=chNum(id);
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){if(window.toast)toast('🔒 Termine le quiz de ce chapitre pour continuer.');return;}
+    if(n!==null&&!hasQuiz(n)&&window.doneChapter)doneChapter(n);
+    if(cur<STEPS.length-1){cur++;render();}
+    else{var cb=document.getElementById('complete-banner');if(cb){cb.style.display='block';cb.scrollIntoView({behavior:'smooth'});}if(window.toast)toast('🎓 Module terminé, bravo !');}
+  };
+
+  // quiz reussi -> marque le chapitre fait + debloque le suivant
+  var _submit=window.submitQ;
+  var PASS_EX=0.8;
+  window.submitQ=function(qid,answers,expls){
+    _submit(qid,answers,expls);
+    if(qid==='ex'){
+      if(window.exUpdateA)window.exUpdateA();
+      updateGate();return;
+    }
+    try{var qs=readJSON('MEI20v1_qs')[qid];
+      if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
+        if(window.ST){window.ST.done[qid]=true;}
+        try{var d=readJSON('MEI20v1_done');d[qid]=true;localStorage.setItem('MEI20v1_done',JSON.stringify(d));}catch(e){}
+        if(window.applyDone)applyDone(qid);
+        if(window.updateProg)updateProg();
+        if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
+      }
+    }catch(e){}
+    updateGate();
+  };
+  var _retry=window.retryQ;
+  window.retryQ=function(qid,count){_retry(qid,count);updateGate();};
+
+  function markViewed(N){
+    var ti=document.getElementById('ti-'+N);
+    if(ti&&!isPassed(N))ti.classList.add('viewed');
+    try{var v=readJSON(VK);v[N]=true;localStorage.setItem(VK,JSON.stringify(v));}catch(e){}
+    if(window.toast)toast('▶️ Vidéo terminée — fais le quiz pour valider le chapitre.');
+  }
+  function attachVideos(){
+    for(var N=1;N<=4;N++){
+      var v=document.getElementById('vf'+N);if(!v)continue;
+      v.addEventListener('loadedmetadata',function(){var n=this.id.replace('vf','');DUR[n]=fmt(this.duration);updateGate();});
+      v.addEventListener('ended',function(){markViewed(this.id.replace('vf',''));});
+    }
+    // restaure les "vus"
+    var vv=readJSON(VK);Object.keys(vv).forEach(function(N){if(vv[N]){var ti=document.getElementById('ti-'+N);if(ti&&!isPassed(N))ti.classList.add('viewed');}});
+  }
+
+  function build(){
+    var main=document.getElementById('main-content');if(!main)return;
+    // barre sticky haute
+    var top=document.createElement('div');top.className='pl-bar pl-bar-top';
+    top.innerHTML='<button id="pl-prev-top" class="pl-ic" onclick="plPrev()" aria-label="Précédent">←</button>'
+      +'<div class="pl-mid"><div class="pl-count" id="pl-count"></div><div class="pl-title" id="pl-title"></div><div class="pl-prog"><i id="pl-prog-fill"></i></div></div>'
+      +'<button id="pl-next-top" class="pl-ic" onclick="plNext()" aria-label="Suivant">→</button>';
+    main.insertBefore(top,main.firstChild);
+    // banniere reprendre
+    var lastReached=0;try{lastReached=parseInt(localStorage.getItem(PK)||'0')||0;}catch(e){}
+    if(lastReached>0){
+      var rb=document.createElement('div');rb.className='resume-banner';rb.id='resume-banner';
+      rb.innerHTML='<span class="rb-i">↩️</span><div class="rb-t">Tu avais avancé jusqu\'à <strong>'+(LABELS[STEPS[lastReached]]||'')+'</strong>.</div>'
+        +'<button class="rb-go" onclick="(function(){document.getElementById(\'resume-banner\').remove();window.__resume('+lastReached+');})()">Reprendre</button>'
+        +'<button class="rb-x" onclick="document.getElementById(\'resume-banner\').remove()" aria-label="Fermer">✕</button>';
+      main.insertBefore(rb,top.nextSibling);
+    }
+    // barre basse
+    var bot=document.createElement('div');bot.className='pl-bar pl-bar-bottom';
+    bot.innerHTML='<button id="pl-prev-btn" class="pl-btn" onclick="plPrev()">← Précédent</button>'
+      +'<button id="pl-next-btn" class="pl-btn pl-cta" onclick="plNext()">Continuer →</button>';
+    main.appendChild(bot);
+    // numero + duree dans le sommaire
+    for(var N=1;N<=4;N++){var ti=document.getElementById('ti-'+N);if(ti){var sp=document.createElement('span');sp.className='toc-right';sp.id='tr-'+N;ti.appendChild(sp);}}
+  }
+  window.__resume=function(i){if(i>=0&&i<STEPS.length){var id=STEPS[i];if((id==='essentiel'||id==='examen')&&!allDone()){i=firstUnfinished();}cur=i;render();}};
+
+  // navigation clavier
+  document.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'){var b=document.getElementById('pl-next-btn');if(b&&!b.disabled)plNext();}
+    else if(e.key==='ArrowLeft'){var p=document.getElementById('pl-prev-btn');if(p&&!p.disabled)plPrev();}
+  });
+
+  window.addEventListener('load',function(){
+    document.body.classList.add('player');
+    build();attachVideos();
+    cur=0;render();
+  });
+})();
+</script>
+<script>
+/* ===== Activité globale comportement (examen blanc) — MEI-20 ===== */
+(function(){
+  function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  var K='MEI20v1_', SEUIL=0.8, W={a:40,b:40,c:20};
+  var NUM=[{"ans": 29.17, "tol": 0.3, "unit": "Hz", "sol": "f = 1750 ÷ 60"}, {"ans": 58.33, "tol": 0.5, "unit": "Hz", "sol": "2 × 29,17"}, {"ans": 160, "tol": 2, "unit": "Hz", "sol": "8 × 1200 ÷ 60"}, {"ans": 1050, "tol": 10, "unit": "tr/min", "sol": "N2 = 1750 × 150 / 250"}, {"ans": 7.11, "tol": 0.15, "unit": "mm/s", "sol": "0,28 × 25,4"}];
+  window.exNm=function(el){try{localStorage.setItem(K+'exNm',el.value);}catch(e){}};
+  window.__exB=null;
+  window.numGrade=function(){
+    var ok=0,total=NUM.length;
+    for(var i=0;i<total;i++){
+      var inp=document.getElementById('exn-'+i),fb=document.getElementById('exnf-'+i);
+      var raw=((inp&&inp.value)||'').replace(',','.').trim();var v=parseFloat(raw);
+      var good=(!isNaN(v))&&Math.abs(v-NUM[i].ans)<=NUM[i].tol;
+      if(inp){inp.classList.remove('ok','ko');inp.classList.add(good?'ok':'ko');}
+      if(fb){fb.className='exn-fb '+(good?'show-ok':'show-ko');
+        fb.innerHTML=(good?'✓ ':'✗ ')+'Réponse attendue : <strong>'+NUM[i].ans+' '+NUM[i].unit+'</strong>'+(NUM[i].sol?'<br><span style="opacity:.8">'+NUM[i].sol+'</span>':'');}
+      if(good)ok++;
+    }
+    window.__exB={ok:ok,total:total};
+    var chip=document.getElementById('exB-score');if(chip)chip.textContent=W.b+'% · '+ok+'/'+total+' exacts';
+    if(window.toast)toast(ok===total?'🎉 Calculs exacts : '+ok+'/'+total:'Calculs : '+ok+'/'+total);
+    exTotal(false);
+  };
+  function part(qid){var q=gx(K+'qs')[qid];return (q&&q.total>0)?q:null;}
+  function exTotal(fin){
+    var a=part('exa'),c=part('exc'),b=window.__exB;
+    var pa=a?a.ok/a.total:0, pc=c?c.ok/c.total:0, pb=b?b.ok/b.total:0;
+    var av=document.getElementById('exA-score');if(av)av.textContent=W.a+'% · '+(a?a.ok+'/'+a.total:'non soumis');
+    var cv=document.getElementById('exC-score');if(cv)cv.textContent=W.c+'% · '+(c?c.ok+'/'+c.total:'non soumis');
+    var bv=document.getElementById('exB-score');if(bv&&!b)bv.textContent=W.b+'% · non soumis';
+    var tot=Math.round(pa*W.a+pb*W.b+pc*W.c);
+    var bar=document.getElementById('ex-bar-fill');if(bar)bar.style.width=tot+'%';
+    var tt=document.getElementById('ex-total');if(tt)tt.textContent='Total : '+tot+'%';
+    return {tot:tot,done:!!(a&&c&&b)};
+  }
+  window.exValidate=function(){
+    var nm=document.getElementById('ex-nm');
+    if(nm&&!nm.value.trim()){if(window.toast)toast('✍️ Inscris ton nom avant de valider.');nm.focus();return;}
+    var r=exTotal(true),res=document.getElementById('exam-result');
+    if(!r.done){if(res){res.className='exam-result';res.innerHTML='⚠️ Complète les trois parties (QCM, calculs, démarche) avant de valider.';}return;}
+    var pass=r.tot>=Math.round(SEUIL*100);
+    if(res){res.className='exam-result '+(pass?'pass':'fail');
+      res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 80% non atteint.')
+        +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle du module est une <strong>épreuve pratique</strong> (3 h, seuil 80/100) en deux parties : collecte de mesures sur les équipements avec l\u0027analyseur de vibrations (route, capteur, transfert), puis analyse au laboratoire informatique avec le logiciel, les tableaux et les abaques pour évaluer la condition des équipements et repérer les problèmes.</span>';}
+    if(pass){try{localStorage.setItem(K+'exam','passed');}catch(e){}var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}
+  };
+  window.exPrint=function(){
+    var nm=(document.getElementById('ex-nm')||{}).value||'';
+    var w=window.open('','_blank');if(!w)return;
+    var rows='';for(var i=0;i<NUM.length;i++){var inp=document.getElementById('exn-'+i);rows+='<tr><td>'+(i+1)+'</td><td>'+((inp&&inp.value)||'')+'</td><td>'+NUM[i].ans+' '+NUM[i].unit+'</td></tr>';}
+    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale MEI-20</title>'
+      +'<style>body{font-family:Arial;margin:2cm;color:#111}h1{font-size:18px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #999;padding:6px;font-size:13px}</style></head><body>'
+      +'<h1>Activité globale — Module MEI-20 : Utiliser des techniques d\u0027analyse de vibrations</h1>'
+      +'<p><strong>Programme :</strong> Mécanique d\u0027entretien industrielle &nbsp; <strong>Apprenant :</strong> '+nm+'</p>'
+      +'<p>Partie calculs (saisie de l\u0027apprenant vs réponse attendue) :</p>'
+      +'<table><tr><th>#</th><th>Réponse de l\u0027apprenant</th><th>Réponse attendue</th></tr>'+rows+'</table>'
+      +'<p style="margin-top:14px">Évaluation sommative officielle : épreuve pratique (3 h, seuil 80/100).</p>'
+      +'</body></html>');w.document.close();w.print();
+  };
+  function init(){
+    var d=document.getElementById('ex-date');if(d)d.textContent=new Date().toLocaleDateString('fr-FR');
+    try{var nm=localStorage.getItem(K+'exNm');if(nm){var e=document.getElementById('ex-nm');if(e)e.value=nm;}}catch(e){}
+    exTotal(false);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
 </script>
 </body>
 </html>
