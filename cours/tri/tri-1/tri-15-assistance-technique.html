@@ -22,6 +22,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 /* HEADER */
 .mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
 .mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
 .mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
 .mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
@@ -316,6 +317,7 @@ body.player #plan.active{display:block}
 
 <!-- ═══ EN-TÊTE ═══ -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/TRI/_assets/hero/slide-tri-15.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">🎓 TRI · Techniques de Réseaux Informatiques</div>
     <h1>TRI-15 — <em>Assistance technique</em></h1>
