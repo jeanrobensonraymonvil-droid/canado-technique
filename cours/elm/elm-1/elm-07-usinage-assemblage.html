@@ -1,499 +1,1340 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ELM-07 - Usinage manuel et assemblage</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELM-07 — Usinage manuel et assemblage · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
+/* ===== LECTEUR DE COURS v3 ===== */
+.wrap{max-width:1280px}
+.mod-header-in{max-width:1280px}
+.layout{grid-template-columns:300px 1fr;gap:2rem}
+body.player .step{display:none}
+body.player .step.active{display:block;animation:stepIn .4s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pl-bar{display:flex;align-items:center;gap:1rem}
+.pl-bar-top{position:sticky;top:.6rem;z-index:60;background:rgba(255,255,255,.93);backdrop-filter:blur(10px) saturate(1.3);border:1px solid var(--bdr);border-radius:var(--rL);padding:.7rem 1rem;margin-bottom:1.3rem;box-shadow:0 6px 24px rgba(12,31,61,.07);flex-wrap:wrap}
+.pl-mid{flex:1;min-width:0}
+.pl-count{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--g500);font-family:var(--fD)}
+.pl-title{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-prog{height:5px;background:var(--g100);border-radius:3px;overflow:hidden;margin-top:.5rem}
+.pl-prog i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--blueG),var(--greenL));transition:width .55s ease}
+.pl-ic{width:38px;height:38px;border-radius:11px;background:var(--g100);color:var(--blue);font-size:1.15rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.pl-ic:hover:not(:disabled){background:var(--blue);color:#fff}
+.pl-ic:disabled{opacity:.3;cursor:default}
+.pl-bar-bottom{justify-content:space-between;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--bdr);flex-wrap:wrap;gap:.7rem}
+.pl-btn{padding:.6rem 1.2rem;border-radius:11px;font-family:var(--fD);font-weight:700;font-size:.83rem;background:var(--g100);color:var(--g700);transition:.15s}
+.pl-btn:hover:not(:disabled){background:var(--g300)}
+.pl-btn:disabled{opacity:.5;cursor:default}
+.pl-cta{background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;box-shadow:0 5px 16px rgba(43,86,192,.32)}
+.pl-cta:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.pl-cta:disabled{background:var(--g300);color:var(--g500);box-shadow:none}
+.toc-item.lock{opacity:.5;cursor:not-allowed}
+.toc-item.lock:hover{background:transparent;color:var(--g700)}
+.toc-item.viewed .toc-dot{background:var(--blueG)}
+.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-item.done .toc-num::after{content:' ✓';color:var(--greenL);font-weight:800}
+.toc-right{margin-left:auto;font-size:.62rem;color:var(--g500);font-family:var(--fM);flex-shrink:0}
+.resume-banner{display:flex;align-items:center;gap:.9rem;background:linear-gradient(135deg,rgba(43,86,192,.09),rgba(59,123,255,.04));border:1px solid rgba(43,86,192,.22);border-radius:var(--rL);padding:.85rem 1.1rem;margin-bottom:1.2rem}
+.resume-banner .rb-i{font-size:1.25rem}
+.resume-banner .rb-t{flex:1;font-size:.82rem;color:#1a2f52;line-height:1.45}
+.resume-banner .rb-t strong{color:var(--blue);font-family:var(--fD)}
+.resume-banner button{padding:.45rem 1rem;border-radius:9px;font-family:var(--fD);font-weight:700;font-size:.78rem}
+.rb-go{background:var(--blue);color:#fff}.rb-go:hover{background:var(--blueL)}
+.rb-x{background:transparent;color:var(--g500);font-size:1.05rem;padding:.2rem .55rem}
+@media(max-width:768px){.pl-title{font-size:.92rem}.pl-bar-top{top:0;border-radius:0;margin:0 -1.2rem 1.1rem;padding:.7rem 1.2rem}.pl-bar-bottom .pl-btn{flex:1;text-align:center}}
+
+
+/* ===== v4 : plan de leçon intégré + étapes de leçon ===== */
+.lesson-plan{background:linear-gradient(135deg,#f6f9ff,#eef3ff);border:1px solid var(--bdr);border-left:4px solid var(--blueG);border-radius:var(--rL);padding:1rem 1.1rem;margin-bottom:1.4rem}
+.lpl-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.85rem}
+.lpl-ic{width:34px;height:34px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.lpl-h{flex:1}
+.lpl-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);font-family:var(--fD)}
+.lpl-title{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);line-height:1.2}
+.lpl-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem}
+.lpl-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.7rem .8rem}
+.lpl-k{font-size:.66rem;font-weight:800;color:var(--blue);margin-bottom:.35rem;font-family:var(--fD)}
+.lpl-card p,.lpl-card li{font-size:.78rem;color:#2a3d6b;line-height:1.6}
+.lpl-card ul{padding-left:1.05rem;margin:0}
+.lpl-card li{margin-bottom:.2rem}
+.lesson-step-label{font-family:var(--fD);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin:1.6rem 0 .7rem;padding-bottom:.4rem;border-bottom:1px dashed var(--bdr)}
+
+
+/* ===== Bon à savoir (récap de leçon + récap final) ===== */
+.recap{margin-top:1.4rem;background:linear-gradient(135deg,#fffaf0,#fff3d4);border:1px solid #f0d98a;border-left:4px solid var(--gold);border-radius:var(--rL);padding:1rem 1.15rem}
+.recap-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#7a5b00;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.recap-ic{font-size:1rem}
+.recap-list{margin:0;padding-left:1.15rem}
+.recap-list li{font-size:.83rem;color:#5c4a1a;line-height:1.65;margin-bottom:.4rem}
+.recap-list li strong{color:#3d3000}
+.recap-final{background:linear-gradient(135deg,#0B1525,#13243f);border:1px solid rgba(255,197,24,.3);border-left:4px solid var(--gold)}
+.recap-final .recap-h{color:var(--gold)}
+.recap-final .recap-list li{color:#e8eeff}
+.recap-final .recap-list li strong{color:#fff}
+
+
+/* ===== Termes clés ===== */
+.terms{margin-top:1.4rem;background:linear-gradient(135deg,#f2fbf6,#e7f7ee);border:1px solid #bfe5cf;border-left:4px solid #1d9e5f;border-radius:var(--rL);padding:1rem 1.15rem}
+.terms-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#0f5c36;display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.terms dl{margin:0}
+.terms dt{font-weight:800;font-size:.8rem;color:#0f5c36;margin-top:.55rem}
+.terms dt:first-child{margin-top:0}
+.terms dd{margin:0 0 .15rem 0;font-size:.8rem;color:#27513c;line-height:1.6}
+/* ===== Examen blanc ===== */
+.exam-head{background:linear-gradient(135deg,#0B1525,#1a2c4d);border-radius:var(--rL);padding:1.1rem 1.2rem;margin-bottom:1.3rem;border:1px solid rgba(255,197,24,.25)}
+.exam-head h3{font-family:var(--fD);color:#fff;font-size:1rem;margin:0 0 .4rem}
+.exam-head p{color:#c9d6f2;font-size:.8rem;line-height:1.65;margin:0}
+.exam-head .exam-rules{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.exam-head .exam-rule{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:700;color:#ffd95e}
+.exam-result{display:none;margin-top:1.2rem;border-radius:var(--rL);padding:1rem 1.2rem;font-size:.85rem;font-weight:700}
+.exam-result.pass{display:block;background:#e9f9f0;border:1px solid #1d9e5f;color:#0f5c36}
+.exam-result.fail{display:block;background:#fdeeee;border:1px solid #d24a43;color:#8c2722}
+
+
+/* ===== Activité de réflexion ===== */
+.activity{margin-top:1.4rem;background:linear-gradient(135deg,#f7f3ff,#efe9fc);border:1px solid #d8c9f2;border-left:4px solid #6c3fc5;border-radius:var(--rL);padding:1rem 1.15rem}
+.activity-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#46287e;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.activity ol{margin:0;padding-left:1.2rem}
+.activity li{font-size:.81rem;color:#3d2a66;line-height:1.65;margin-bottom:.45rem}
+.activity .act-note{margin-top:.6rem;font-size:.74rem;color:#6b5694;font-style:italic}
+/* ===== Examen blanc 4 parties ===== */
+.exam-part{font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin:1.8rem 0 .8rem;padding:.55rem .9rem;background:linear-gradient(135deg,#f6f9ff,#eef3ff);border-left:4px solid var(--blue);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.exam-part .ex-chip{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.18);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.exid{display:grid;grid-template-columns:1fr auto auto;gap:.7rem;margin-bottom:.4rem}
+.exid label{font-size:.68rem;font-weight:800;color:var(--g500);display:block;margin-bottom:.25rem;font-family:var(--fD)}
+.exid input{width:100%;border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .7rem;font-size:.85rem;font-family:inherit}
+.exid .exid-fixed{border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .9rem;font-size:.85rem;background:#f7f9fe;color:var(--text);font-weight:700}
+.exq{margin-bottom:1.1rem}
+.exq-t{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.extxt{width:100%;min-height:92px;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem;font-size:.83rem;font-family:inherit;line-height:1.6;resize:vertical}
+.extxt:focus{outline:2px solid rgba(27,58,140,.25)}
+.ex-cnt{font-size:.66rem;color:var(--g500);margin-top:.2rem;text-align:right}
+.ex-cnt.ok{color:#1d9e5f;font-weight:700}
+.reveal-btn{margin-top:.35rem;background:none;border:none;color:var(--blue);font-size:.72rem;font-weight:800;cursor:pointer;padding:0;font-family:var(--fD)}
+.reveal{display:none;margin-top:.5rem;background:#f2fbf6;border:1px dashed #1d9e5f;border-radius:var(--r);padding:.65rem .85rem;font-size:.76rem;color:#27513c;line-height:1.6}
+.reveal.show{display:block}
+.reveal ul{margin:.2rem 0 0;padding-left:1.1rem}
+.engage{list-style:none;margin:0;padding:0}
+.engage li{margin-bottom:.5rem}
+.engage label{display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;color:var(--text);cursor:pointer;line-height:1.5}
+.engage input{width:17px;height:17px;margin-top:2px;accent-color:#1d9e5f;cursor:pointer}
+.exam-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;align-items:center}
+.exam-score-line{font-size:.74rem;color:var(--g500);font-weight:700}
+.btn-print{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem 1.1rem;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--fD);color:var(--text)}
+.btn-print:hover{border-color:var(--blue);color:var(--blue)}
+.ex-bar{height:8px;background:#e8edf8;border-radius:6px;overflow:hidden;margin-top:.5rem}
+.ex-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#1d9e5f);border-radius:6px;transition:width .5s ease}
+@media(max-width:700px){.exid{grid-template-columns:1fr}}
+
+
+/* responsive fix — force one column on mobile */
+@media(max-width:768px){.layout{display:block!important;grid-template-columns:1fr!important}#main-content{width:100%!important}}
+/* numeric exam inputs + svg figures */
+.exnum{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:.5rem 0}
+.exnum input{width:150px;padding:.5rem .7rem;border:1px solid var(--bdr);border-radius:9px;font-family:var(--fM);font-size:.95rem}
+.exnum input.ok{border-color:var(--greenL);background:rgba(46,160,87,.06)}
+.exnum input.ko{border-color:#c0392b;background:rgba(192,57,43,.05)}
+.exn-unit{font-family:var(--fM);font-size:.85rem;color:var(--g500)}
+.exn-fb{display:none;font-size:.82rem;margin:.2rem 0 .4rem;padding:.5rem .7rem;border-radius:8px}
+.exn-fb.show-ok{display:block;background:rgba(46,160,87,.1);color:#1e7e45}
+.exn-fb.show-ko{display:block;background:rgba(192,57,43,.08);color:#a5281b}
+.fig{margin:1rem 0;background:#fff;border:1px solid var(--bdr);border-radius:12px;padding:1rem;text-align:center}
+.fig svg{max-width:100%;height:auto}
+.fig figcaption{font-size:.78rem;color:var(--g500);margin-top:.5rem;font-family:var(--fM)}
 </style>
 </head>
 <body>
+
+<!-- HEADER -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/slide-elm-07.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🔧 Module ELM-07 · 1ère Année</div>
-    <h1>Usinage manuel <em>et assemblage</em></h1>
+    <div class="mod-tag">🔧 ELM-07 · Compétence générale · Objectif de comportement</div>
+    <h1>Usinage manuel et <em>assemblage</em></h1>
+    <p class="mod-desc">Usinage manuel et assemblage · 105 heures — Travailler le métal à l'établi : choisir le matériau, tracer et mesurer avec précision, scier, limer, percer, tarauder, fileter, plier, puis assembler par boulonnage, rivetage et soudage — en sécurité.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>105 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>85%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Labo obligatoire</strong></div><div class="mod-meta-item">🎭 Demo : <strong>Execution devant prof</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport complet</strong></div>
+      <div class="mod-meta-item">⏱ <strong>105 heures</strong></div>
+      <div class="mod-meta-item">🎯 Objectif de <strong>comportement</strong></div>
+      <div class="mod-meta-item">📚 <strong>4 chapitres</strong></div>
+      <div class="mod-meta-item">🏭 <strong>Dominante atelier</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
-  </div>
-</div><div id="mod-code-data" data-code="ELM-07" style="display:none"></div><div id="seuil-data" data-seuil="85" style="display:none"></div><div id="toc-overlay" onclick="toggleToc()"></div><button id="toc-mob-btn" onclick="toggleToc()" aria-label="Menu">☰</button><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Outils et techniques d'usinage de base</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Percage taraudage et filetage</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Assemblage mecanique et ajustement</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Controle qualite et tolerances</span></div>
-  
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Outils et techniques d'usinage de base</h2>
-      <div class="chapter-meta"><span>🕐 26h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Outils et techniques d'usinage de base - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Outils et techniques d'usinage de base (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Outils et techniques d'usinage de base (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Outils et techniques d'usinage de base en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_1">La maitrise de Outils et techniques d'usinage de base est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_1">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_1">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 4 chapitres</span></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>Percage taraudage et filetage</h2>
-      <div class="chapter-meta"><span>🕐 26h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
+
+<div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong> &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div>
+</div>
+
+<div class="wrap"><div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire ELM-07</div>
+  <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+  <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Métaux, traçage et métrologie d'atelier</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Sciage, limage et perçage</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Taraudage, filetage et pliage</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Les assemblages mécaniques</span></div>
+  <div class="toc-sep">Synthèse</div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+</div>
+
+<div id="main-content">
+
+<!-- PLAN DE COURS -->
+<div class="pc step" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">ELM-07 · Usinage manuel et assemblage · Programme Électromécanique (ELM)</div></div></div>
+<div class="pc-body">
+<div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module ELM-07</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">ELM-07</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">105 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">ELM-04 · 06</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 85/100</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — Percage taraudage et filetage - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Percage taraudage et filetage (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Percage taraudage et filetage (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Percage taraudage et filetage en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_2">La maitrise de Percage taraudage et filetage est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_2">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_2">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Usiner manuellement et assembler des pièces métalliques.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Ce module est le <strong>savoir-faire manuel</strong> qui fonde tout montage électromécanique : fabriquer un support, percer un bâti, tarauder une fixation, assembler un ensemble. L'étudiant apprend d'abord à reconnaître les <strong>métaux</strong> (ferreux et non ferreux), à <strong>tracer</strong> et à mesurer avec précision (pied à coulisse, équerre) — car on ne façonne bien que ce qu'on a bien tracé.</p><p>Il enchaîne ensuite les gestes de l'établi : <strong>sciage, limage, perçage</strong>, puis <strong>taraudage, filetage et pliage</strong>, avant d'aborder les trois grandes familles d'<strong>assemblage</strong> : le <strong>boulonnage</strong> (démontable), le <strong>rivetage</strong> et le <strong>soudage</strong> (permanents). La sécurité — bridage des pièces, lunettes, gants, ventilation — accompagne chaque geste.</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence et pondération de l'épreuve</h4>
+    <table class="dtable"><thead><tr><th>Élément de la compétence</th><th>Points (épreuve /100)</th></tr></thead><tbody><tr><td>Identifier les métaux et réaliser le traçage</td><td>15</td></tr><tr><td>Mesurer et contrôler avec précision (pied à coulisse, équerre)</td><td>15</td></tr><tr><td>Scier, limer et percer aux cotes</td><td>25</td></tr><tr><td>Tarauder, fileter et plier</td><td>20</td></tr><tr><td>Réaliser des assemblages (boulonnage, rivetage, soudage)</td><td>20</td></tr><tr><td>Respecter les règles de sécurité et ranger l'aire de travail</td><td>05</td></tr></tbody></table>
+    <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération <strong>indicative</strong>, en attente de l'épreuve pratique officielle du module ; elle suit la structure des éléments de la compétence.</div></div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4>
+    <div class="pc-cols">
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Dessins de définition et croquis cotés (ELM-04) · tôles, plats et profilés d'acier · consignes de fabrication · gabarits.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Établi et étau · scie à métaux, limes, perceuse et forets · tarauds et filières · pied à coulisse, équerre, pointeau, trusquin · clé dynamométrique · EPI (lunettes, gants, chaussures).</div>
+    </div></div>
+  <div class="pc-sec"><h4>Découpage en chapitres</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Contenu</th></tr></thead><tbody><tr><td>1</td><td>Métaux, traçage et métrologie d'atelier</td><td>Métaux · Traçage · Métrologie d'atelier</td></tr><tr><td>2</td><td>Sciage, limage et perçage</td><td>Sciage · Limage · Perçage</td></tr><tr><td>3</td><td>Taraudage, filetage et pliage</td><td>Taraudage · Filetage · Pliage</td></tr><tr><td>4</td><td>Les assemblages mécaniques</td><td>Boulonnage · Rivetage · Soudage</td></tr></tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4>
+    <ul>
+      <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 85 %.</li>
+      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique : fabrication complète d'une pièce à partir d'un dessin (traçage, sciage, limage, perçage, taraudage, assemblage), contrôlée aux cotes</strong>, évaluée par le professeur.</li>
+      <li><strong>Seuil de réussite</strong> — <strong>85 sur 100</strong>.</li>
+    </ul></div>
+  <div class="pc-sec"><h4>Liens avec les autres modules</h4><p><strong>Réinvestit :</strong> ELM-04 (croquis et schémas : lecture du dessin de définition), ELM-06 (santé et sécurité au travail).<br><strong>Contribue à :</strong> ELM-08 (électrification : supports et fixations), ELM-10 (raccordement des moteurs), ELM-13 (dispositifs de transmission de mouvement), ELM-17 (réparation de groupes électrogènes) — et à toute installation d'équipement sur site.</p></div>
+  <div class="pc-sec"><h4>Références</h4><ul><li>Programme de formation <em>Électromécanique</em> (INFP / CFPH – Canado Technique), guide d'apprentissage ELM-07.</li><li>Tables de perçage et de taraudage (diamètres d'avant-trous, pas ISO métriques).</li><li>Documentation des fabricants d'outillage et de consommables de soudage.</li></ul></div>
+</div>
+</div>
+
+<div class="chapter step" id="ch-1">
+<div class="ch-header">
+  <div class="ch-num">01</div>
+  <div class="ch-info"><h2>Métaux, traçage et métrologie d'atelier</h2><div class="ch-meta"><span class="ch-badge">Métaux · Traçage · Métrologie d'atelier</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Métaux, traçage et métrologie d'atelier</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Distinguer les métaux ferreux des métaux non ferreux et citer leurs propriétés.</li><li>Utiliser les instruments de mesure de l'atelier (réglet, pied à coulisse, équerre).</li><li>Réaliser un traçage précis à partir d'une face de référence.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Au module ELM-04 « Croquis et schéma » et ELM-05 « Plan et devis », vous avez appris à lire et à coter un dessin technique. Nous passons maintenant du papier à la matière&nbsp;: transformer une pièce métallique conformément à un plan.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Métaux, traçage et métrologie d'atelier</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>Les métaux de l'atelier</h3>
+<p>On classe les métaux en deux grandes familles. Les métaux <strong>ferreux</strong> contiennent du fer&nbsp;: c'est le cas de l'<strong>acier</strong> (fer + carbone, le plus courant en construction) et de la <strong>fonte</strong> (plus riche en carbone, dure mais cassante). Ils sont résistants et bon marché, mais <em>rouillent</em> s'ils ne sont pas protégés, et ils sont attirés par l'aimant.</p>
+<p>Les métaux <strong>non ferreux</strong> ne contiennent pas de fer&nbsp;: l'<strong>aluminium</strong> (léger, résiste à la corrosion), le <strong>cuivre</strong> (excellent conducteur électrique et thermique), le <strong>laiton</strong> (alliage cuivre-zinc) et le <strong>zinc</strong>. Ils ne rouillent pas et ne sont pas magnétiques. Choisir le bon métal, c'est tenir compte de l'effort, du poids, de la corrosion et de la conductivité recherchée.</p>
+</div>
+
+<div class="section">
+<h3>La métrologie d'atelier</h3>
+<p>Mesurer avec justesse est la base du façonnage. Le <strong>réglet</strong> (règle graduée en acier) donne une lecture au millimètre. Le <strong>pied à coulisse</strong> mesure des longueurs, des diamètres extérieurs, intérieurs et des profondeurs&nbsp;; grâce à son <em>vernier</em>, il lit couramment au 1/50, soit <strong>0,02 mm</strong>. Le <strong>micromètre</strong> (ou palmer) est encore plus précis (0,01 mm). L'<strong>équerre</strong> vérifie qu'un angle est bien à 90°.</p>
+<p>Pour lire un pied à coulisse au 1/50&nbsp;: on lit d'abord les millimètres entiers sur la règle, en face du zéro du vernier, puis on repère le trait du vernier parfaitement aligné avec un trait de la règle, qui donne les centièmes de millimètre. Une bonne mesure exige un instrument propre, sans jeu, et une pièce ébavurée.</p>
+</div>
+
+<div class="section">
+<h3>Le traçage</h3>
+<p><strong>Tracer</strong>, c'est reporter sur la pièce, d'après le plan, les traits qui guideront la coupe, le pliage et le perçage. On enduit parfois la surface de <strong>bleu de traçage</strong> pour faire ressortir les traits. La <strong>pointe à tracer</strong> raye des lignes fines, le <strong>trusquin</strong> trace des parallèles à un bord, le <strong>compas d'atelier</strong> trace des cercles, et le <strong>pointeau</strong> marque d'un petit creux le centre d'un futur trou pour empêcher le foret de glisser.</p>
+<p>Règle d'or&nbsp;: tout traçage part d'une <strong>face de référence</strong> (un bord droit et propre) à partir de laquelle on mesure toutes les cotes. On évite ainsi que les petites erreurs ne s'additionnent. On contrôle toujours son traçage avant de couper&nbsp;: un trait effacé se refait, une pièce coupée trop court est perdue.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Métal ferreux</dt><dd>Métal contenant du fer (acier, fonte) : magnétique, sensible à la rouille.</dd><dt>Métal non ferreux</dt><dd>Aluminium, cuivre, laiton : non magnétiques, plus légers ou meilleurs conducteurs.</dd><dt>Traçage</dt><dd>Report du dessin sur la pièce : lignes, axes et centres à réaliser.</dd><dt>Pointeau</dt><dd>Outil qui marque le centre d'un futur trou pour guider le foret.</dd><dt>Pied à coulisse</dt><dd>Instrument de mesure de précision ; au 1/50, il lit au 0,02 mm.</dd><dt>Équerre</dt><dd>Contrôle la planéité et l'équerrage d'une surface limée.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Un métal attiré par l'aimant est ferreux&nbsp;: c'est un test rapide pour distinguer l'acier de l'aluminium.</li><li>« Mesurer deux fois, couper une fois »&nbsp;: le contrôle avant coupe évite de gâcher la matière.</li><li>Le pointeau se place exactement à l'intersection des deux traits de centre&nbsp;; un pointage décalé donne un trou décalé.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Parmi ces métaux, lequel est un métal <strong>ferreux</strong>&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>L'aluminium</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Le cuivre</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>L'acier</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Le laiton</button>
+  </div><div class="qexpl" id="qe-1-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quelle est la précision de lecture usuelle d'un pied à coulisse au 1/50&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>1 mm</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>0,1 mm</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>0,02 mm</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>0,5 mm</button>
+  </div><div class="qexpl" id="qe-1-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">À quoi sert le <strong>pointeau</strong> avant de percer un trou&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>À mesurer un angle</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>À marquer d'un petit creux le centre du trou pour guider le foret</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>À couper le métal</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>À réaliser un filetage</button>
+  </div><div class="qexpl" id="qe-1-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Comment reconnaître simplement un métal ferreux ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Il est toujours rouge</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>L'aimant y adhère</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Il flotte sur l'eau</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Il ne rouille jamais</button>
+  </div><div class="qexpl" id="qe-1-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Pourquoi trace-t-on avant d'usiner ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Pour décorer la pièce</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Pour matérialiser les formes et les axes à réaliser, et travailler aux cotes</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Ce n'est pas nécessaire</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Pour user le métal</button>
+  </div><div class="qexpl" id="qe-1-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[2,2,1,1,1],['<strong>Explication&nbsp;:</strong> L’acier contient du fer&nbsp;: c’est un métal ferreux, magnétique et sujet à la rouille. L’aluminium, le cuivre et le laiton sont des métaux non ferreux.','<strong>Explication&nbsp;:</strong> Le vernier au 1/50 divise le millimètre en 50 parties&nbsp;: la précision est de 1/50 = 0,02 mm.','<strong>Explication&nbsp;:</strong> Le coup de pointeau crée un petit creux au centre du futur trou&nbsp;; il empêche le foret de glisser au démarrage et assure un perçage bien centré.','Les métaux ferreux (acier, fonte) sont magnétiques ; l’aluminium et le cuivre ne le sont pas.','Le traçage reporte le dessin sur la pièce : sans lui, impossible de scier, percer ou limer aux bonnes dimensions.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Assemblage mecanique et ajustement</h2>
-      <div class="chapter-meta"><span>🕐 26h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Assemblage mecanique et ajustement - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Assemblage mecanique et ajustement (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Assemblage mecanique et ajustement (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Assemblage mecanique et ajustement en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_3">La maitrise de Assemblage mecanique et ajustement est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_3">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_3">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_3">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+
+<div class="chapter step" id="ch-2">
+<div class="ch-header">
+  <div class="ch-num">02</div>
+  <div class="ch-info"><h2>Sciage, limage et perçage</h2><div class="ch-meta"><span class="ch-badge">Sciage · Limage · Perçage</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Sciage, limage et perçage</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Scier une pièce à la scie à métaux en choisissant la bonne lame.</li><li>Limer une surface plane et en contrôler la planéité.</li><li>Percer un trou en toute sécurité à la perceuse.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vous savez tracer une pièce à partir d'un plan. Il faut maintenant enlever de la matière pour la mettre à la bonne forme et à la bonne dimension&nbsp;: on scie, on lime, on perce.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Sciage, limage et perçage</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>Le sciage à la scie à métaux</h3>
+<p>La <strong>scie à métaux</strong> se compose d'un archet (le cadre) et d'une <strong>lame</strong> dentée montée <em>dents vers l'avant</em>, car elle coupe en poussant. La lame doit être bien <strong>tendue</strong> pour ne pas dévier. On serre solidement la pièce dans l'<strong>étau</strong>, au plus près du trait, pour éviter les vibrations.</p>
+<p>Le choix de la <strong>denture</strong> dépend de l'épaisseur&nbsp;: pour une pièce mince ou un tube (tôle, profilé fin), on prend une lame à <strong>denture fine</strong> (beaucoup de dents), afin qu'au moins deux ou trois dents soient toujours en prise&nbsp;; sinon les dents s'accrochent et se cassent. Pour une pièce épaisse et tendre, une denture plus grosse évacue mieux le copeau. On scie avec des mouvements longs et réguliers, sans forcer.</p>
+</div>
+
+<div class="section">
+<h3>Le limage</h3>
+<p>La <strong>lime</strong> sert à enlever de la matière pour ajuster une cote, dresser une surface ou ébavurer. Les limes se distinguent par leur <strong>taille</strong> (bâtarde pour dégrossir, demi-douce, puis douce pour finir) et par leur <strong>forme</strong> (plate, ronde, demi-ronde, carrée, triangulaire) adaptée à la surface à travailler. La lime, comme la scie, ne coupe qu'en <em>poussant</em>&nbsp;: on soulève légèrement au retour pour ne pas user les dents.</p>
+<p>Pour obtenir une surface plane, on lime en croisant les passes et on contrôle régulièrement la <strong>planéité</strong> et l'<strong>équerrage</strong> à l'<strong>équerre</strong>&nbsp;: en plaçant l'équerre contre la pièce face à la lumière, un jour (un filet de lumière) révèle les creux et les bosses à reprendre.</p>
+</div>
+
+<div class="section">
+<h3>Le perçage</h3>
+<p>On perce à la <strong>perceuse à colonne</strong> (ou sensitive) avec un <strong>foret hélicoïdal</strong>. La <strong>vitesse de rotation</strong> se règle selon le diamètre et le matériau&nbsp;: <em>plus le foret est gros, plus on tourne lentement</em>&nbsp;; les métaux durs demandent aussi une vitesse plus faible. On <strong>lubrifie</strong> (huile de coupe) pour évacuer la chaleur, sauf pour la fonte et le laiton qui se percent à sec.</p>
+<p>La sécurité est capitale&nbsp;: on <strong>bride toujours la pièce</strong> (étau de perçage, brides) — jamais tenue à la main, car le foret peut l'entraîner en rotation et blesser gravement. On retire les <strong>bavures</strong> à la sortie du trou avec un foret plus gros ou un ébavureur. On porte des lunettes, on attache les cheveux et on ne porte ni gants ni vêtements flottants près de la broche en rotation.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Sciage</dt><dd>Coupe du métal à la scie à métaux ; au moins trois dents en prise sur l'épaisseur.</dd><dt>Denture fine</dt><dd>Beaucoup de dents : pour les tôles minces et les profilés.</dd><dt>Limage</dt><dd>Mise aux cotes et finition d'une surface à la lime ; contrôle à l'équerre.</dd><dt>Bridage</dt><dd>Immobilisation de la pièce (étau, brides) avant perçage — règle de sécurité absolue.</dd><dt>Vitesse de rotation</dt><dd>Plus le diamètre du foret est grand, plus la vitesse doit être faible.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Lame et lime coupent en poussant&nbsp;: on n'appuie qu'à l'aller, on relâche au retour.</li><li>Denture fine pour le mince, denture grosse pour l'épais&nbsp;: il faut toujours au moins deux dents en prise.</li><li>À la perceuse, gros foret = vitesse lente&nbsp;; et la pièce est bridée, jamais tenue à la main.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Pour scier une tôle mince, quelle lame de scie à métaux choisit-on&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Une lame à grosses dents espacées</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Une lame à denture fine (beaucoup de dents)</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Une lame sans denture</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Une lame montée dents vers l'arrière</button>
+  </div><div class="qexpl" id="qe-2-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel instrument permet de contrôler la planéité et l'équerrage d'une surface limée&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Le pied à coulisse</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>L'équerre, en observant le jour de lumière</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Le foret</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Le pointeau</button>
+  </div><div class="qexpl" id="qe-2-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pourquoi faut-il toujours brider (fixer) la pièce avant de percer à la perceuse&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Pour gagner du temps</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Pour éviter que le foret n'entraîne la pièce en rotation et blesse l'opérateur</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Pour refroidir le foret</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Pour mesurer le trou</button>
+  </div><div class="qexpl" id="qe-2-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quelle denture de lame choisir pour scier une tôle mince ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>Une denture fine (beaucoup de dents)</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>Une denture très grossière</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>Peu importe</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>Une lame sans dents</button>
+  </div><div class="qexpl" id="qe-2-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Avant de percer une pièce à la perceuse, tu dois…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>La tenir à la main</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>La brider dans un étau ou avec des brides</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>L'huiler abondamment</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>La chauffer</button>
+  </div><div class="qexpl" id="qe-2-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1,0,1],['<strong>Explication&nbsp;:</strong> Sur une pièce mince, une denture fine garde toujours deux ou trois dents en prise&nbsp;; une denture trop grosse s’accroche dans la tôle et se casse.','<strong>Explication&nbsp;:</strong> Placée contre la pièce face à la lumière, l’équerre révèle par un filet de lumière (le jour) les creux et les bosses, et vérifie l’angle à 90°.','<strong>Explication&nbsp;:</strong> Une pièce non bridée peut être happée par le foret et se mettre à tourner violemment&nbsp;: c’est un accident fréquent et grave. On la fixe toujours dans un étau de perçage ou avec des brides.','Au moins trois dents doivent être en prise : sur une tôle mince, il faut une denture fine, sinon la lame accroche et casse.','Une pièce non bridée peut se mettre à tourner avec le foret : c’est l’accident classique du perçage.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Controle qualite et tolerances</h2>
-      <div class="chapter-meta"><span>🕐 26h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Controle qualite et tolerances - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Controle qualite et tolerances (5 min)</strong> - Fondamentaux, normes electriques NEC, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements de Controle qualite et tolerances (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, outils requis, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Importance de Controle qualite et tolerances en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite des installations electromecaniques industrielles</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_4">La maitrise de Controle qualite et tolerances est essentielle pour assurer la fiabilite et la disponibilite des installations electromecaniques.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_4">LOTO + verif absence de tension = regle absolue avant toute intervention electrique.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_4">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Gants isolants, lunettes de securite, chaussures isolantes, vetements non conducteurs</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Les EPI electriques sont obligatoires en electromecanique industrielle selon la tension de travail.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+
+<div class="chapter step" id="ch-3">
+<div class="ch-header">
+  <div class="ch-num">03</div>
+  <div class="ch-info"><h2>Taraudage, filetage et pliage</h2><div class="ch-meta"><span class="ch-badge">Taraudage · Filetage · Pliage</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Taraudage, filetage et pliage</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Réaliser un taraudage (filet intérieur) dans un trou.</li><li>Exécuter un filetage extérieur à la filière sur une tige.</li><li>Plier ou cintrer une pièce en tenant compte du retour élastique.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vous savez scier, limer et percer. Pour qu'une pièce reçoive une vis ou se raccorde à une autre, il faut créer des filets&nbsp;; et pour lui donner une forme, il faut savoir la plier.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Taraudage, filetage et pliage</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>Le taraudage&nbsp;: créer un filet intérieur</h3>
+<p><strong>Tarauder</strong>, c'est réaliser un filet <em>à l'intérieur</em> d'un trou pour y visser une vis. On utilise un jeu de trois <strong>tarauds</strong> (ébaucheur, intermédiaire, finisseur) montés sur un <strong>tourne-à-gauche</strong>. Le trou doit d'abord être percé au bon diamètre&nbsp;: c'est l'<strong>avant-trou</strong>. Pour un filetage métrique, on retient une règle simple&nbsp;: <em>diamètre de l'avant-trou = diamètre nominal − pas</em>. Ainsi, pour un M6 au pas de 1&nbsp;mm, l'avant-trou fait 6 − 1 = <strong>5&nbsp;mm</strong>.</p>
+<p>On engage le taraud bien droit (contrôle à l'équerre), on lubrifie, et l'on tourne d'un tour en avant puis d'un <strong>quart de tour en arrière</strong> pour briser le copeau. Sans ce dévissage régulier, le copeau bourre le filet et <strong>casse le taraud</strong> dans le trou — un incident très difficile à réparer.</p>
+</div>
+
+<div class="section">
+<h3>Le filetage extérieur à la filière</h3>
+<p>Pour réaliser un filet <em>à l'extérieur</em> d'une tige (fabriquer une vis ou un goujon), on utilise une <strong>filière</strong> montée dans un <strong>porte-filière</strong>. On prépare d'abord un petit <strong>chanfrein</strong> au bout de la tige pour amorcer, on présente la filière bien perpendiculaire, on lubrifie et l'on procède comme pour le taraudage, avec le même mouvement avant / quart de tour arrière. Retenez la paire&nbsp;: <strong>taraud = intérieur</strong>, <strong>filière = extérieur</strong>.</p>
+</div>
+
+<div class="section">
+<h3>Le pliage et le cintrage</h3>
+<p><strong>Plier</strong> une tôle ou <strong>cintrer</strong> un tube donne à la pièce sa forme sans enlever de matière. Le pliage se fait à froid, à l'étau avec des tasseaux, à la <strong>plieuse</strong> ou avec une cintreuse pour les tubes. La zone qui ne s'allonge ni ne se raccourcit s'appelle la <strong>fibre neutre</strong>&nbsp;; c'est à partir d'elle qu'on calcule la longueur développée à débiter.</p>
+<p>Un phénomène important est le <strong>retour élastique</strong>&nbsp;: après le pliage, le métal se détend et « revient » légèrement en arrière. Pour obtenir 90°, il faut donc plier un peu plus. On respecte aussi un <strong>rayon de pliage</strong> minimal&nbsp;: plier trop serré fissure le métal, surtout l'aluminium et les aciers durs.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Taraudage</dt><dd>Réalisation d'un filet <strong>intérieur</strong> dans un trou, à l'aide d'un taraud.</dd><dt>Filetage</dt><dd>Réalisation d'un filet <strong>extérieur</strong> sur une tige, à l'aide d'une filière.</dd><dt>Avant-trou</dt><dd>Trou percé avant le taraudage : diamètre ≈ diamètre nominal − pas (M8 pas 1,25 → 6,75 mm).</dd><dt>Pas</dt><dd>Distance entre deux filets consécutifs ; il détermine le diamètre de l'avant-trou.</dd><dt>Pliage</dt><dd>Déformation permanente de la tôle pour obtenir un angle, à la plieuse ou à l'étau.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Avant-trou de taraudage&nbsp;: diamètre nominal − pas (M6 pas 1 → 5 mm&nbsp;; M8 pas 1,25 → 6,75 mm).</li><li>Un tour en avant, un quart de tour en arrière&nbsp;: le geste qui casse le copeau et sauve le taraud.</li><li>Le retour élastique oblige à « sur-plier » légèrement pour obtenir l'angle voulu.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Le taraudage sert à réaliser&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Un filet extérieur sur une tige</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Un filet intérieur dans un trou</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Un trou lisse</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Une soudure</button>
+  </div><div class="qexpl" id="qe-3-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pour tarauder un trou M6 (pas de 1 mm), quel est le diamètre de l'avant-trou&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>6 mm</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>3 mm</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>5 mm</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>8 mm</button>
+  </div><div class="qexpl" id="qe-3-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pendant le taraudage, pourquoi dévisse-t-on d'un quart de tour de temps en temps&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Pour aller plus vite</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Pour briser le copeau et éviter de casser le taraud</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Pour mesurer le trou</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Pour chauffer la pièce</button>
+  </div><div class="qexpl" id="qe-3-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quel outil réalise un filet intérieur dans un trou ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>La filière</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Le taraud</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Le pointeau</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>La lime</button>
+  </div><div class="qexpl" id="qe-3-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Pourquoi lubrifier pendant le taraudage ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Pour faire briller</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Pour évacuer les copeaux, réduire l'échauffement et éviter la casse du taraud</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Pour aller plus vite uniquement</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Ce n'est jamais utile</button>
+  </div><div class="qexpl" id="qe-3-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,2,1,1,1],['<strong>Explication&nbsp;:</strong> Le taraud crée un filet à l’intérieur d’un trou (pour recevoir une vis). Le filet extérieur sur une tige, lui, se fait à la filière.','<strong>Explication&nbsp;:</strong> Règle du filetage métrique&nbsp;: avant-trou = diamètre nominal − pas = 6 − 1 = 5 mm.','<strong>Explication&nbsp;:</strong> Le mouvement arrière casse le copeau qui, sinon, bourre le filet et bloque puis casse le taraud dans le trou.','Le taraud réalise le filet intérieur (taraudage) ; la filière réalise le filet extérieur (filetage).','Le lubrifiant évacue les copeaux et limite l’échauffement : un taraud cassé dans un trou est très difficile à retirer.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
 </div></div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module ELM-07 termine - ELM 1ere annee!</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+
+<div class="chapter step" id="ch-4">
+<div class="ch-header">
+  <div class="ch-num">04</div>
+  <div class="ch-info"><h2>Les assemblages mécaniques</h2><div class="ch-meta"><span class="ch-badge">Boulonnage · Rivetage · Soudage</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Les assemblages mécaniques</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Distinguer les assemblages démontables des assemblages permanents.</li><li>Réaliser un assemblage boulonné et le freiner correctement.</li><li>Connaître le rivetage et le soudage et leur bon usage.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vos pièces sont façonnées, percées et filetées. Dernière étape&nbsp;: les réunir. Le choix de la liaison dépend de la nécessité de démonter, de l'effort à transmettre et des matériaux.</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour terminer le module et accéder à l'examen blanc.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Les assemblages mécaniques</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>Assemblages démontables</h3>
+<p>Un assemblage <strong>démontable</strong> peut être défait puis refait sans détruire les pièces&nbsp;: c'est le règne de la <strong>visserie</strong>. La <strong>vis</strong> se visse dans un trou taraudé&nbsp;; le <strong>boulon</strong> associe une vis et un <strong>écrou</strong> traversant deux pièces&nbsp;; le <strong>goujon</strong> est une tige filetée aux deux bouts. On intercale des <strong>rondelles</strong>&nbsp;: la rondelle plate répartit la pression, la rondelle éventail ou frein (Grower) empêche le desserrage sous les vibrations.</p>
+<p>Un boulon doit être serré au bon <strong>couple</strong> — ni trop peu (il se desserre), ni trop (la vis casse ou le filet s'arrache). On utilise pour cela une <strong>clé dynamométrique</strong>, qui indique ou limite le couple appliqué. Sur les machines soumises aux vibrations, on ajoute un <strong>freinage</strong> (rondelle frein, écrou autofreiné, frein-filet).</p>
+</div>
+
+<div class="section">
+<h3>Assemblages permanents</h3>
+<p>Un assemblage <strong>permanent</strong> ne se défait pas sans détruire la liaison. Le <strong>rivetage</strong> réunit deux tôles avec un <strong>rivet</strong> que l'on écrase&nbsp;; le rivet « pop » (aveugle) se pose d'un seul côté à la pince à river, très pratique en tôlerie. Le <strong>soudage</strong> fond localement le métal (à l'arc électrique, au chalumeau oxyacétylénique) pour créer une liaison très résistante. Le <strong>collage</strong> par adhésifs structuraux complète ces techniques pour certains matériaux.</p>
+<p>Ces liaisons sont solides et étanches mais définitives&nbsp;: pour les défaire, il faut percer le rivet ou meuler le cordon de soudure. On les choisit quand le démontage n'est pas nécessaire et que l'on recherche résistance et permanence.</p>
+</div>
+
+<div class="section">
+<h3>Choisir le bon assemblage… en sécurité</h3>
+<p>Le choix se raisonne&nbsp;: faut-il <strong>démonter</strong> un jour (entretien, remplacement)&nbsp;? → visserie. La liaison est-elle <strong>définitive</strong> et fortement sollicitée&nbsp;? → rivetage ou soudage. On tient compte des <strong>matériaux</strong> (on ne soude pas facilement l'aluminium à l'acier), de l'<strong>effort</strong> et de l'ambiance (corrosion, vibrations).</p>
+<p>Côté sécurité, chaque procédé a ses risques&nbsp;: projections au meulage et au rivetage, rayonnement et fumées au soudage. On porte les <strong>EPI</strong> adaptés — lunettes ou masque, gants, vêtements de protection — et l'on travaille dans un espace ventilé, en respectant les consignes vues au module ELM-03 « Santé et sécurité au travail ».</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Boulonnage</dt><dd>Assemblage <strong>démontable</strong> par vis, écrous et rondelles.</dd><dt>Rivetage</dt><dd>Assemblage <strong>permanent</strong> : le rivet se déforme et ne se démonte pas sans destruction.</dd><dt>Soudage</dt><dd>Assemblage permanent par fusion des métaux ; exige EPI et ventilation.</dd><dt>Clé dynamométrique</dt><dd>Clé qui serre un boulon au couple prescrit, sans surserrage ni desserrage.</dd><dt>Couple de serrage</dt><dd>Effort de serrage prescrit, exprimé en newtons-mètres (N·m).</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Démontable = visserie (vis, boulon, goujon)&nbsp;; permanent = rivetage, soudage, collage.</li><li>La rondelle frein et l'écrou autofreiné empêchent le desserrage sous vibrations.</li><li>On serre au couple avec une clé dynamométrique&nbsp;: trop serrer casse le filet, pas assez le laisse se desserrer.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Un assemblage réalisé par un boulon (vis + écrou) est&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Permanent</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Démontable</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Impossible à défaire</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Une soudure</button>
+  </div><div class="qexpl" id="qe-4-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Lequel de ces assemblages est <strong>permanent</strong> (non démontable sans destruction)&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Le boulonnage</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Le vissage</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Le rivetage</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>L'assemblage par goujon</button>
+  </div><div class="qexpl" id="qe-4-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Quel outil permet de serrer une vis ou un boulon à un couple précis&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Le marteau</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>La clé dynamométrique</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>La lime</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Le foret</button>
+  </div><div class="qexpl" id="qe-4-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quel assemblage est démontable ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Le rivetage</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>La soudure</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Le boulonnage</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Le collage structural</button>
+  </div><div class="qexpl" id="qe-4-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">À quoi sert une clé dynamométrique ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>À couper les boulons</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>À serrer un boulon à un couple précis</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>À percer</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>À tracer</button>
+  </div><div class="qexpl" id="qe-4-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,2,1,2,1],['<strong>Explication&nbsp;:</strong> Un boulon se démonte en dévissant l’écrou&nbsp;: c’est un assemblage démontable, réutilisable.','<strong>Explication&nbsp;:</strong> Le rivet est écrasé définitivement&nbsp;: pour le défaire, il faut le percer. C’est un assemblage permanent, comme la soudure.','<strong>Explication&nbsp;:</strong> La clé dynamométrique mesure (ou limite) le couple de serrage&nbsp;: elle garantit un serrage correct, ni trop faible ni excessif.','Le boulonnage se démonte et se remonte ; rivetage et soudure sont permanents.','Elle garantit le couple de serrage prescrit : ni desserrage en service, ni rupture par surserrage.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<div class="step" id="essentiel">
+<div class="ch-header">
+  <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module ELM-07</span></div></div>
+</div>
+<div class="ch-body">
+<div class="recap recap-final">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module ELM-07</div>
+  <ul class="recap-list"><li>Les métaux ferreux (acier, fonte) contiennent du fer, sont magnétiques et rouillent&nbsp;; les non ferreux (aluminium, cuivre, laiton) ne rouillent pas et ne sont pas magnétiques.</li><li>Le pied à coulisse au 1/50 lit au 0,02 mm&nbsp;; tout traçage part d'une face de référence, et le pointeau marque le centre des trous.</li><li>Scie et lime coupent en poussant&nbsp;; on choisit une denture fine pour le mince (au moins deux dents en prise).</li><li>Au perçage, la pièce est toujours bridée (jamais tenue à la main) et un gros foret tourne lentement.</li><li>Taraud = filet intérieur, filière = filet extérieur&nbsp;; avant-trou de taraudage = diamètre nominal − pas.</li><li>On taraude par un tour en avant / un quart de tour en arrière pour casser le copeau et ne pas casser le taraud.</li><li>Assemblages démontables = visserie (vis, boulon, goujon, serrés au couple)&nbsp;; permanents = rivetage, soudage, collage.</li><li><strong>La règle d'or —</strong> <strong>brider avant de percer</strong>, lubrifier au taraudage, contrôler aux cotes après chaque étape ; <strong>boulonnage = démontable</strong>, rivetage et soudage = permanents.</li></ul>
+</div>
+
+<div class="section">
+<h3>🎯 Mini-projet — Fabriquer une équerre-support en tôle d'acier</h3>
+<p>Objectif&nbsp;: enchaîner en une seule pièce toutes les opérations du module — tracer, scier, limer, percer, tarauder, plier et assembler. Réalisez les étapes dans l'ordre, sur un poste de l'atelier, à partir d'un plan coté simple (support en L pour fixer un petit boîtier).</p>
+<ol>
+<li>À partir d'une face de référence, tracez sur une tôle d'acier de 2&nbsp;mm le contour du flan développé (avec la longueur du pli) et repérez le centre des deux trous au pointeau.</li>
+<li>Sciez le flan à la scie à métaux, puis dressez les bords à la lime et contrôlez l'équerrage à l'équerre.</li>
+<li>Bridez la pièce et percez un trou de passage Ø6 mm et un avant-trou de Ø5 mm pour un taraudage M6.</li>
+<li>Taraudez le trou de Ø5 mm en M6 (un tour avant / un quart de tour arrière, avec lubrifiant).</li>
+<li>Pliez la tôle à 90° à l'étau en tenant compte du retour élastique, puis vérifiez l'angle à l'équerre.</li>
+<li>Assemblez le support à un profilé à l'aide d'un boulon M6 avec rondelle plate et rondelle frein, serré à la clé, et vérifiez la tenue.</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div class="step" id="examen">
+<div class="ch-header"><div class="ch-num" style="background:#c0392b;color:#fff">🎓</div>
+  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 85 %</span></div></div></div>
+<div class="ch-body">
+<div class="exam-head"><h3>🎓 Avant de commencer</h3>
+  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : connaissances (QCM), <strong>calculs</strong> (saisie numérique) et démarche. Le volet <strong>pratique</strong> — fabrication complète d'une pièce à partir d'un dessin, contrôlée aux cotes — est évalué <strong>par le professeur</strong>, lors de l'épreuve pratique officielle (seuil 85/100).</p>
+  <div class="exam-rules"><span class="exam-rule">A · Connaissances — 40%</span><span class="exam-rule">B · Calculs — 40%</span><span class="exam-rule">C · Démarche — 20%</span><span class="exam-rule">Validation en ligne : ≥ 85%</span></div>
+</div>
+<div class="exid">
+  <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
+  <div><label>Programme</label><div class="exid-fixed">ELM — Électromécanique</div></div>
+  <div><label>Date</label><div class="exid-fixed" id="ex-date">—</div></div>
+</div>
+
+<div class="exam-part"><span>Partie A — Connaissances</span><span class="ex-chip" id="exA-score">40% · non soumis</span></div>
+<div class="qblock" data-qid="exa">
+<div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Parmi ces métaux, lequel est ferreux&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>L'aluminium</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>L'acier</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Le cuivre</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Le laiton</button>
+  </div><div class="qexpl" id="qe-exa-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">La précision de lecture d'un pied à coulisse au 1/50 est&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>1 mm</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>0,5 mm</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>0,02 mm</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>2 mm</button>
+  </div><div class="qexpl" id="qe-exa-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Le pointeau sert à&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Couper le métal</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Marquer le centre d'un futur trou</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Plier une tôle</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Souder deux pièces</button>
+  </div><div class="qexpl" id="qe-exa-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Le taraudage permet de réaliser&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>Un filet extérieur</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Un filet intérieur dans un trou</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Un trou lisse</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Un pliage</button>
+  </div><div class="qexpl" id="qe-exa-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Lequel de ces assemblages est démontable&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Le rivetage</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Le soudage</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Le boulonnage</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Le collage</button>
+  </div><div class="qexpl" id="qe-exa-4"></div></div>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">On contrôle la planéité et l'équerrage d'une surface limée avec&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Le foret</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>L'équerre</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Le marteau</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>La filière</button>
+  </div><div class="qexpl" id="qe-exa-5"></div></div>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Pour réaliser un filet extérieur sur une tige, on utilise&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Un taraud</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Une filière</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>Un foret</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Une lime</button>
+  </div><div class="qexpl" id="qe-exa-6"></div></div>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Le rivetage est un assemblage&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Démontable à volonté</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Permanent (non démontable sans destruction)</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Réglable en position</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Identique au vissage</button>
+  </div><div class="qexpl" id="qe-exa-7"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,2,1,1,2,1,1,1],['Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','La filière réalise le filet extérieur ; le taraud, le filet intérieur.','Le rivetage est permanent : on ne le démonte pas sans détruire le rivet.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exa"></span>
+</div>
+</div>
+
+<div class="exam-part"><span>Partie B — Calculs (saisie numérique)</span><span class="ex-chip" id="exB-score">40% · non soumis</span></div>
+<p style="font-size:.83rem;color:var(--g700);margin:0 0 .6rem">Saisis chaque résultat (décimales avec un point ou une virgule), puis vérifie.</p>
+<div class="exq"><div class="exq-t">1. Pour tarauder un trou <strong>M8</strong> (pas de <strong>1,25 mm</strong>), quel est le diamètre de l'<strong>avant-trou</strong> ?</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-0"></div></div>
+<div class="exq"><div class="exq-t">2. Pour tarauder un trou <strong>M10</strong> (pas de <strong>1,5 mm</strong>), quel est le diamètre de l'<strong>avant-trou</strong> ?</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-1"></div></div>
+<div class="exq"><div class="exq-t">3. Quelle est la <strong>précision de lecture</strong> d'un pied à coulisse au <strong>1/50</strong> ?</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-2"></div></div>
+<div class="exq"><div class="exq-t">4. Une pièce doit mesurer <strong>95 mm</strong> ; ton brut fait <strong>120 mm</strong>. Quelle longueur faut-il <strong>enlever</strong> ?</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mm</span></div><div class="exn-fb" id="exnf-3"></div></div>
+<div class="exq"><div class="exq-t">5. Une équerre-support comporte <strong>deux ailes</strong>, percées chacune de <strong>deux trous</strong> de fixation. Combien de trous au <strong>total</strong> ?</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">trous</span></div><div class="exn-fb" id="exnf-4"></div></div>
+<div class="qfooter"><button class="qbtn qbtn-submit" onclick="numGrade()">✓ Vérifier mes calculs</button></div>
+
+<div class="exam-part"><span>Partie C — Démarche</span><span class="ex-chip" id="exC-score">20% · non soumis</span></div>
+<div class="qblock" data-qid="exc">
+<div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Pour scier une tôle mince, on utilise une lame à&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Grosses dents espacées</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Denture fine (beaucoup de dents)</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Aucune denture</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Denture indifférente</button>
+  </div><div class="qexpl" id="qe-exc-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Avant de percer un trou à la perceuse, on doit&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Tenir la pièce fermement à la main</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Brider la pièce dans un étau ou avec des brides</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Retirer les protections</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Enlever le lubrifiant</button>
+  </div><div class="qexpl" id="qe-exc-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Pour percer un trou de gros diamètre, la vitesse de rotation doit être&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Très élevée</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Faible</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Nulle</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Sans importance</button>
+  </div><div class="qexpl" id="qe-exc-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pour serrer un boulon à un couple précis, on utilise&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Une clé dynamométrique</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Un marteau</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Une pince</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Un tournevis plat</button>
+  </div><div class="qexpl" id="qe-exc-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Ton taraud force et risque de casser dans le trou. Que fais-tu ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Tu forces davantage</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Tu vérifies l'avant-trou et le lubrifiant, et tu dégages les copeaux par quarts de tour arrière</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Tu chauffes la pièce au chalumeau</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Tu changes de pièce</button>
+  </div><div class="qexpl" id="qe-exc-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,0,1],['Au moins trois dents en prise : une tôle mince exige une denture fine.','Brider la pièce avant de percer : une pièce libre peut être entraînée par le foret.','Gros diamètre → vitesse de rotation faible, sinon échauffement et usure du foret.','La clé dynamométrique garantit le couple prescrit.','Avant-trou trop petit ou copeaux non évacués : on lubrifie, on recule d’un quart de tour régulièrement — jamais forcer.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exc"></span>
+</div>
+</div>
+
+<div class="exam-actions">
+  <button class="qbtn qbtn-submit" onclick="exValidate()">✓ Valider mon activité globale</button>
+  <button class="btn-print" onclick="exPrint()">🖨️ Imprimer / remettre au professeur</button>
+  <span class="exam-score-line" id="ex-total">Total : —</span>
+</div>
+<div class="ex-bar"><i id="ex-bar-fill"></i></div>
+<div class="exam-result" id="exam-result"></div>
+</div></div>
+
+<div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
+  <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
+  <p style="color:#dbe6ff;margin:0 0 .7rem;line-height:1.65">Tu as acquis les bases de ce module. Pour ancrer ces acquis :</p>
+  <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Mini-projet</strong> — fabrique l'équerre-support en tôle d'acier : traçage, sciage, limage, perçage, taraudage, contrôle aux cotes.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Veille</strong> — relève sur une machine de l'atelier trois assemblages différents et identifie lesquels sont démontables.</li>
+    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape : <strong style="color:#fff">ELM-08 — Électrification de bâtiments</strong>.</li>
+  </ul>
+</div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🎓 Module ELM-07 validé !</h2>
+  <p>Tu maîtrises les gestes de l'établi : tracer, scier, limer, percer, tarauder, plier et assembler. Prépare l'épreuve pratique (seuil 85/100). Prochaine étape : ELM-08 — Électrification de bâtiments.</p>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /layout -->
+</div><!-- /wrap -->
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+// ═══ STATE & PERSISTENCE ═══
+var ST={done:{},qs:{},sel:{}};
+var K='ELM07v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+// ═══ INIT ═══
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){
+    var el=document.getElementById('qs-'+qid);
+    if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}
+  });
+  initTimer();updateProg();
+});
+
+// ═══ PROGRESS ═══
+var TOTAL=4;
+function updateProg(){
+  var done=Object.keys(ST.done).filter(function(k){return ST.done[k]&&/^\d+$/.test(k)&&(+k)<=TOTAL;}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';
+  if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');
+  if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+
+// ═══ CHAPTER DONE ═══
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+
+// ═══ TOC / NAV ═══
+function goTo(n){
+  var el=document.getElementById(typeof n==='string'?n:'ch-'+n);
+  if(!el){toast('ℹ️ Section bientôt disponible.');return;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');
+  if(window.innerWidth<=768)toggleToc();
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function toggleToc(){
+  var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');
+  t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+
+// ═══ PLANS DE LEÇON (accordéon) ═══
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+
+// ═══ QUIZ ENGINE ═══
+function selQ(btn,qid,qi,val){
+  var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');
+  var idx=parseInt(qi);
+  if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+function submitQ(qid,answers,expls){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var sel=ST.sel[qid]||{};var total=answers.length;
+  for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}
+  var ok=0;var qItems=block.querySelectorAll('.q-item');
+  for(var i=0;i<total;i++){
+    var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;
+    qItem.querySelectorAll('.qopt').forEach(function(b,j){
+      b.disabled=true;
+      if(j===correct)b.classList.add('ok');
+      else if(j===chosen&&chosen!==correct)b.classList.add('ko');
+    });
+    var expl=document.getElementById('qe-'+qid+'-'+i);
+    if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}
+    if(chosen===correct)ok++;
   }
+  ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';
+  updateProg();
+  toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');
 }
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+function retryQ(qid,count){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});
+  block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});
+  if(ST.sel[qid])ST.sel[qid]={};
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';
 }
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+
+// ═══ CARTES INTERACTIVES (réflexion) ═══
+var INFO={};
+function showInfo(group,idx,btn){
+  var grid=btn.closest('.dora-grid');
+  grid.querySelectorAll('.dora-card').forEach(function(s){s.classList.remove('active');});
+  btn.classList.add('active');
+  var d=document.getElementById(group+'-detail');
+  if(d){d.innerHTML=INFO[group][idx];d.className='dora-detail show';d.style.cssText='background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.2);color:#1a2f52;border-radius:var(--r);padding:.9rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:block';}
 }
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+
+// ═══ VIDEO ═══
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){
+  var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;
+  var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+  var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);
+  if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';
 }
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+
+// ═══ TIMER ═══
+var timerStart=Date.now();
+function initTimer(){
+  var saved=ld('time',0);timerStart=Date.now()-saved*1000;
+  setInterval(function(){
+    var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);
+    var el=document.getElementById('session-timer');
+    if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
   },1000);
 }
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+// ═══ TOAST ═══
+var _tt;
+function toast(msg){
+  var t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);
+}
+</script>
+<script>
+/* ===== LECTEUR DE COURS v3 ===== */
+(function(){
+  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','essentiel','examen'];
+  var LABELS={plan:'Plan de cours','ch-1':"Métaux, traçage et métrologie d'atelier",'ch-2':"Sciage, limage et perçage",'ch-3':"Taraudage, filetage et pliage",'ch-4':"Les assemblages mécaniques",'essentiel':"L'essentiel à retenir",'examen':'Examen blanc'};
+  var QUIZ={1:1,2:1,3:1,4:1};   // chapitres ayant un quiz
+  var PASS=0.6;                          // seuil de réussite
+  var PK='ELM07v1_step', VK='ELM07v1_viewed';
+  var cur=0, DUR={};
+
+  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
+  function hasQuiz(n){return !!QUIZ[n];}
+  function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  function isPassed(n){return !!readJSON('ELM07v1_done')[n];}
+  function countDone(){var d=readJSON('ELM07v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
+  function refreshDur(){for(var N=1;N<=4;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
+
+  function updateGate(){
+    refreshDur();
+    for(var N=1;N<=4;N++){
+      var ti=document.getElementById('ti-'+N);if(!ti)continue;
+      var locked=N>1&&!isPassed(N-1);
+      ti.classList.toggle('lock',locked);
+      if(isPassed(N))ti.classList.add('done');
+      var tr=document.getElementById('tr-'+N);
+      if(tr)tr.textContent=locked?'🔒':(DUR[N]||'');
+    }
+    var ad=allDone();
+    ['ti-essentiel','ti-examen'].forEach(function(tid){var t=document.getElementById(tid);if(t){t.classList.toggle('lock',!ad);}});
+    var pf=document.getElementById('pl-prog-fill');if(pf)pf.style.width=Math.round(countDone()/4*100)+'%';
+    var id=STEPS[cur],n=chNum(id),blocked=false,label;
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){blocked=true;label='🔒 Réussis le quiz pour continuer';}
+    else if(cur===STEPS.length-1){label='Terminer le module ✓';}
+    else{label=(n!==null?'Terminer & continuer →':'Continuer →');}
+    var nBot=document.getElementById('pl-next-btn'),nTop=document.getElementById('pl-next-top');
+    if(nBot){nBot.textContent=label;nBot.disabled=blocked;}
+    if(nTop)nTop.disabled=blocked;
+    var pTop=document.getElementById('pl-prev-top'),pBot=document.getElementById('pl-prev-btn');
+    if(pTop)pTop.disabled=cur===0;if(pBot)pBot.disabled=cur===0;
+    var cb=document.getElementById('complete-banner');if(cb)cb.style.display=(cur===STEPS.length-1&&countDone()>=4)?'block':'none';
+  }
+  function render(){
+    var id=STEPS[cur];
+    document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+    var el=document.getElementById(id);if(el)el.classList.add('active');
+    document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+    var ti=document.getElementById(tiId(id));if(ti)ti.classList.add('act');
+    var T=document.getElementById('pl-title');if(T)T.textContent=LABELS[id]||'';
+    var C=document.getElementById('pl-count');if(C)C.textContent='Étape '+(cur+1)+' / '+STEPS.length;
+    try{var prev=parseInt(localStorage.getItem(PK)||'0')||0;if(cur>prev)localStorage.setItem(PK,String(cur));}catch(e){}
+    updateGate();
+    var mc=document.getElementById('main-content');
+    if(mc){var y=mc.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y<0?0:y,behavior:'smooth'});}
+    if(window.innerWidth<=768){var t=document.getElementById('toc-sidebar');if(t)t.classList.remove('open');var o=document.getElementById('mob-overlay');if(o)o.style.display='none';}
+  }
+
+  function allDone(){for(var N=1;N<=4;N++){if(!isPassed(N))return false;}return true;}
+  function firstUnfinished(){for(var N=1;N<=4;N++){if(!isPassed(N))return STEPS.indexOf('ch-'+N);}return STEPS.indexOf('essentiel');}
+  window.goTo=function(n){
+    var id=(n==='plan'||n==='lecons'||n==='essentiel'||n==='examen')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
+    var cn=chNum(id);
+    if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
+    if((id==='essentiel'||id==='examen')&&!allDone()){if(window.toast)toast('🔒 Termine et valide les 4 leçons pour accéder à la synthèse et à l\u2019examen blanc.');return;}
+    cur=i;render();
+  };
+  window.plPrev=function(){if(cur>0){cur--;render();}};
+  window.plNext=function(){
+    var id=STEPS[cur],n=chNum(id);
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){if(window.toast)toast('🔒 Termine le quiz de ce chapitre pour continuer.');return;}
+    if(n!==null&&!hasQuiz(n)&&window.doneChapter)doneChapter(n);
+    if(cur<STEPS.length-1){cur++;render();}
+    else{var cb=document.getElementById('complete-banner');if(cb){cb.style.display='block';cb.scrollIntoView({behavior:'smooth'});}if(window.toast)toast('🎓 Module terminé, bravo !');}
+  };
+
+  // quiz reussi -> marque le chapitre fait + debloque le suivant
+  var _submit=window.submitQ;
+  var PASS_EX=0.8;
+  window.submitQ=function(qid,answers,expls){
+    _submit(qid,answers,expls);
+    if(qid==='ex'){
+      if(window.exUpdateA)window.exUpdateA();
+      updateGate();return;
+    }
+    try{var qs=readJSON('ELM07v1_qs')[qid];
+      if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
+        if(window.ST){window.ST.done[qid]=true;}
+        try{var d=readJSON('ELM07v1_done');d[qid]=true;localStorage.setItem('ELM07v1_done',JSON.stringify(d));}catch(e){}
+        if(window.applyDone)applyDone(qid);
+        if(window.updateProg)updateProg();
+        if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
+      }
+    }catch(e){}
+    updateGate();
+  };
+  var _retry=window.retryQ;
+  window.retryQ=function(qid,count){_retry(qid,count);updateGate();};
+
+  function markViewed(N){
+    var ti=document.getElementById('ti-'+N);
+    if(ti&&!isPassed(N))ti.classList.add('viewed');
+    try{var v=readJSON(VK);v[N]=true;localStorage.setItem(VK,JSON.stringify(v));}catch(e){}
+    if(window.toast)toast('▶️ Vidéo terminée — fais le quiz pour valider le chapitre.');
+  }
+  function attachVideos(){
+    for(var N=1;N<=4;N++){
+      var v=document.getElementById('vf'+N);if(!v)continue;
+      v.addEventListener('loadedmetadata',function(){var n=this.id.replace('vf','');DUR[n]=fmt(this.duration);updateGate();});
+      v.addEventListener('ended',function(){markViewed(this.id.replace('vf',''));});
+    }
+    // restaure les "vus"
+    var vv=readJSON(VK);Object.keys(vv).forEach(function(N){if(vv[N]){var ti=document.getElementById('ti-'+N);if(ti&&!isPassed(N))ti.classList.add('viewed');}});
+  }
+
+  function build(){
+    var main=document.getElementById('main-content');if(!main)return;
+    // barre sticky haute
+    var top=document.createElement('div');top.className='pl-bar pl-bar-top';
+    top.innerHTML='<button id="pl-prev-top" class="pl-ic" onclick="plPrev()" aria-label="Précédent">←</button>'
+      +'<div class="pl-mid"><div class="pl-count" id="pl-count"></div><div class="pl-title" id="pl-title"></div><div class="pl-prog"><i id="pl-prog-fill"></i></div></div>'
+      +'<button id="pl-next-top" class="pl-ic" onclick="plNext()" aria-label="Suivant">→</button>';
+    main.insertBefore(top,main.firstChild);
+    // banniere reprendre
+    var lastReached=0;try{lastReached=parseInt(localStorage.getItem(PK)||'0')||0;}catch(e){}
+    if(lastReached>0){
+      var rb=document.createElement('div');rb.className='resume-banner';rb.id='resume-banner';
+      rb.innerHTML='<span class="rb-i">↩️</span><div class="rb-t">Tu avais avancé jusqu\'à <strong>'+(LABELS[STEPS[lastReached]]||'')+'</strong>.</div>'
+        +'<button class="rb-go" onclick="(function(){document.getElementById(\'resume-banner\').remove();window.__resume('+lastReached+');})()">Reprendre</button>'
+        +'<button class="rb-x" onclick="document.getElementById(\'resume-banner\').remove()" aria-label="Fermer">✕</button>';
+      main.insertBefore(rb,top.nextSibling);
+    }
+    // barre basse
+    var bot=document.createElement('div');bot.className='pl-bar pl-bar-bottom';
+    bot.innerHTML='<button id="pl-prev-btn" class="pl-btn" onclick="plPrev()">← Précédent</button>'
+      +'<button id="pl-next-btn" class="pl-btn pl-cta" onclick="plNext()">Continuer →</button>';
+    main.appendChild(bot);
+    // numero + duree dans le sommaire
+    for(var N=1;N<=4;N++){var ti=document.getElementById('ti-'+N);if(ti){var sp=document.createElement('span');sp.className='toc-right';sp.id='tr-'+N;ti.appendChild(sp);}}
+  }
+  window.__resume=function(i){if(i>=0&&i<STEPS.length){var id=STEPS[i];if((id==='essentiel'||id==='examen')&&!allDone()){i=firstUnfinished();}cur=i;render();}};
+
+  // navigation clavier
+  document.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'){var b=document.getElementById('pl-next-btn');if(b&&!b.disabled)plNext();}
+    else if(e.key==='ArrowLeft'){var p=document.getElementById('pl-prev-btn');if(p&&!p.disabled)plPrev();}
+  });
+
+  window.addEventListener('load',function(){
+    document.body.classList.add('player');
+    build();attachVideos();
+    cur=0;render();
+  });
+})();
+</script>
+<script>
+/* ===== Activité globale comportement (examen blanc) — ELM-07 ===== */
+(function(){
+  function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  var K='ELM07v1_', SEUIL=0.85, W={a:40,b:40,c:20};
+  var NUM=[{"ans": 6.75, "tol": 0.05, "unit": "mm", "sol": "Avant-trou ≈ D − pas = 8 − 1,25 = 6,75 mm", "q": "Pour tarauder un trou <strong>M8</strong> (pas de <strong>1,25 mm</strong>), quel est le diamètre de l'<strong>avant-trou</strong> ?"}, {"ans": 8.5, "tol": 0.05, "unit": "mm", "sol": "Avant-trou ≈ D − pas = 10 − 1,5 = 8,5 mm", "q": "Pour tarauder un trou <strong>M10</strong> (pas de <strong>1,5 mm</strong>), quel est le diamètre de l'<strong>avant-trou</strong> ?"}, {"ans": 0.02, "tol": 0.001, "unit": "mm", "sol": "Un pied à coulisse au 1/50 lit au 1 ÷ 50 = 0,02 mm", "q": "Quelle est la <strong>précision de lecture</strong> d'un pied à coulisse au <strong>1/50</strong> ?"}, {"ans": 25, "tol": 0, "unit": "mm", "sol": "Cote totale − cote partielle : 120 − 95 = 25 mm", "q": "Une pièce doit mesurer <strong>95 mm</strong> ; ton brut fait <strong>120 mm</strong>. Quelle longueur faut-il <strong>enlever</strong> ?"}, {"ans": 4, "tol": 0, "unit": "trous", "sol": "Une équerre-support percée à chaque extrémité des deux ailes : 2 × 2 = 4 trous", "q": "Une équerre-support comporte <strong>deux ailes</strong>, percées chacune de <strong>deux trous</strong> de fixation. Combien de trous au <strong>total</strong> ?"}];
+  window.exNm=function(el){try{localStorage.setItem(K+'exNm',el.value);}catch(e){}};
+  window.__exB=null;
+  window.numGrade=function(){
+    var ok=0,total=NUM.length;
+    for(var i=0;i<total;i++){
+      var inp=document.getElementById('exn-'+i),fb=document.getElementById('exnf-'+i);
+      var raw=((inp&&inp.value)||'').replace(',','.').trim();var v=parseFloat(raw);
+      var good=(!isNaN(v))&&Math.abs(v-NUM[i].ans)<=NUM[i].tol;
+      if(inp){inp.classList.remove('ok','ko');inp.classList.add(good?'ok':'ko');}
+      if(fb){fb.className='exn-fb '+(good?'show-ok':'show-ko');
+        fb.innerHTML=(good?'✓ ':'✗ ')+'Réponse attendue : <strong>'+NUM[i].ans+' '+NUM[i].unit+'</strong>'+(NUM[i].sol?'<br><span style="opacity:.8">'+NUM[i].sol+'</span>':'');}
+      if(good)ok++;
+    }
+    window.__exB={ok:ok,total:total};
+    var chip=document.getElementById('exB-score');if(chip)chip.textContent=W.b+'% · '+ok+'/'+total+' exacts';
+    if(window.toast)toast(ok===total?'🎉 Calculs exacts : '+ok+'/'+total:'Calculs : '+ok+'/'+total);
+    exTotal(false);
+  };
+  function part(qid){var q=gx(K+'qs')[qid];return (q&&q.total>0)?q:null;}
+  function exTotal(fin){
+    var a=part('exa'),c=part('exc'),b=window.__exB;
+    var pa=a?a.ok/a.total:0, pc=c?c.ok/c.total:0, pb=b?b.ok/b.total:0;
+    var av=document.getElementById('exA-score');if(av)av.textContent=W.a+'% · '+(a?a.ok+'/'+a.total:'non soumis');
+    var cv=document.getElementById('exC-score');if(cv)cv.textContent=W.c+'% · '+(c?c.ok+'/'+c.total:'non soumis');
+    var bv=document.getElementById('exB-score');if(bv&&!b)bv.textContent=W.b+'% · non soumis';
+    var tot=Math.round(pa*W.a+pb*W.b+pc*W.c);
+    var bar=document.getElementById('ex-bar-fill');if(bar)bar.style.width=tot+'%';
+    var tt=document.getElementById('ex-total');if(tt)tt.textContent='Total : '+tot+'%';
+    return {tot:tot,done:!!(a&&c&&b)};
+  }
+  window.exValidate=function(){
+    var nm=document.getElementById('ex-nm');
+    if(nm&&!nm.value.trim()){if(window.toast)toast('✍️ Inscris ton nom avant de valider.');nm.focus();return;}
+    var r=exTotal(true),res=document.getElementById('exam-result');
+    if(!r.done){if(res){res.className='exam-result';res.innerHTML='⚠️ Complète les trois parties (QCM, calculs, démarche) avant de valider.';}return;}
+    var pass=r.tot>=Math.round(SEUIL*100);
+    if(res){res.className='exam-result '+(pass?'pass':'fail');
+      res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 85% non atteint.')
+        +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle du module est une <strong>épreuve pratique en atelier</strong> (5 h, seuil 80/100). Les volets montage, réparation et vérification y sont évalués par le professeur.</span>';}
+    if(pass){try{localStorage.setItem(K+'exam','passed');}catch(e){}var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}
+  };
+  window.exPrint=function(){
+    var nm=(document.getElementById('ex-nm')||{}).value||'';
+    var w=window.open('','_blank');if(!w)return;
+    var rows='';for(var i=0;i<NUM.length;i++){var inp=document.getElementById('exn-'+i);rows+='<tr><td>'+(i+1)+'</td><td>'+((inp&&inp.value)||'')+'</td><td>'+NUM[i].ans+' '+NUM[i].unit+'</td></tr>';}
+    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale ELM-07</title>'
+      +'<style>body{font-family:Arial;margin:2cm;color:#111}h1{font-size:18px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #999;padding:6px;font-size:13px}</style></head><body>'
+      +'<h1>Activité globale — Module ELM-07 : Usinage manuel et assemblage</h1>'
+      +'<p><strong>Programme :</strong> Mécanique d\u0027entretien industrielle &nbsp; <strong>Apprenant :</strong> '+nm+'</p>'
+      +'<p>Partie calculs (saisie de l\u0027apprenant vs réponse attendue) :</p>'
+      +'<table><tr><th>#</th><th>Réponse de l\u0027apprenant</th><th>Réponse attendue</th></tr>'+rows+'</table>'
+      +'<p style="margin-top:14px">Évaluation sommative officielle : épreuve pratique en atelier, 5 h, seuil 80/100.</p>'
+      +'</body></html>');w.document.close();w.print();
+  };
+  function init(){
+    var d=document.getElementById('ex-date');if(d)d.textContent=new Date().toLocaleDateString('fr-FR');
+    try{var nm=localStorage.getItem(K+'exNm');if(nm){var e=document.getElementById('ex-nm');if(e)e.value=nm;}}catch(e){}
+    exTotal(false);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ELM-11 — Terminologie anglaise · Canado Technique</title>
+<title>ELM-07 — Mesures électriques · Canado Technique</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
@@ -350,16 +350,16 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- HEADER -->
 <div class="mod-header">
-  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM11/slide-elm-11.jpg')"></div>
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/slide-elm-07.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🌐 ELM-11 · Compétence générale · Objectif de comportement</div>
-    <h1>Terminologie <em>anglaise</em></h1>
-    <p class="mod-desc">Terminologie anglaise · 45 heures — Lire et comprendre la documentation technique en anglais : vocabulaire des grandeurs, composants et outils, plaques signalétiques et fiches techniques, manuels d'entretien et avertissements de sécurité, communication écrite professionnelle.</p>
+    <div class="mod-tag">🔌 ELM-07 · Compétence générale · Objectif de comportement</div>
+    <h1>Mesures <em>électriques</em></h1>
+    <p class="mod-desc">Mesures électriques · 45 heures — Mesurer avec justesse et en sécurité : grandeurs et unités, multimètre (tension, intensité, résistance), courant alternatif, puissance et énergie, instruments spécialisés et règles de sécurité.</p>
     <div class="mod-meta">
       <div class="mod-meta-item">⏱ <strong>45 heures</strong></div>
       <div class="mod-meta-item">🎯 Objectif de <strong>comportement</strong></div>
       <div class="mod-meta-item">📚 <strong>4 chapitres</strong></div>
-      <div class="mod-meta-item">📖 <strong>Documentation technique</strong></div>
+      <div class="mod-meta-item">🔬 <strong>Dominante laboratoire</strong></div>
     </div>
     <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 4 chapitres</span></div>
   </div>
@@ -371,13 +371,13 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <div class="wrap"><div class="layout">
 <div class="toc" id="toc-sidebar">
-  <div class="toc-title">📋 Sommaire ELM-11</div>
+  <div class="toc-title">📋 Sommaire ELM-07</div>
   <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
   <div class="toc-sep">Contenu du module</div>
-  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Vocabulaire technique</span></div>
-  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Plaque & datasheet</span></div>
-  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Manuels & sécurité</span></div>
-  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Communication écrite</span></div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Les grandeurs électriques et leurs unités</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Le multimètre&nbsp;: tension, intensité, résistance</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Courant alternatif, puissance et énergie</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Sécurité, précision et instruments spécialisés</span></div>
   <div class="toc-sep">Synthèse</div>
   <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
   <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
@@ -387,160 +387,134 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- PLAN DE COURS -->
 <div class="pc step" id="plan">
-<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">ELM-11 · Terminologie anglaise · Programme Électromécanique (ELM)</div></div></div>
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">ELM-07 · Mesures électriques · Programme Électromécanique (ELM)</div></div></div>
 <div class="pc-body">
 <div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module ELM-11</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
-  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM11/final/ELM11-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module ELM-07</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
   <div class="pc-id">
-    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">ELM-11</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">ELM-07</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">45 heures</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
-    <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">ELM-02 · 09 · 10</div></div>
-    <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 75/100</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">ELM-02 · 03 · 06</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 80/100</div></div>
   </div>
-  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Utiliser la terminologie anglaise du métier.</strong></p></div>
-  <div class="pc-sec"><h4>Présentation du module</h4><p>Presque toute la documentation technique que rencontrera l'électromécanicien est en <strong>anglais</strong> : plaques signalétiques, notices de groupes électrogènes, manuels d'automates, fiches techniques de composants, catalogues de pièces. Ne pas la lire, c'est dépendre d'autrui — ou improviser.</p><p>L'objectif de ce module est donc précis et professionnel : non pas rendre l'étudiant bilingue, mais le rendre <strong>autonome face à un document technique</strong>. Il acquiert le vocabulaire des grandeurs, composants et outils, apprend à décoder une <strong>nameplate</strong> et une <strong>datasheet</strong>, à comprendre les <strong>avertissements de sécurité</strong> (DANGER, WARNING, CAUTION, NOTICE) et les procédures d'entretien, à exploiter un <strong>troubleshooting chart</strong>, et enfin à <strong>communiquer par écrit</strong> : rapport d'intervention, commande de pièce, description d'une panne.</p></div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Effectuer des mesures électriques.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Après les circuits (ELM-06), ce module fait du technicien un <strong>mesureur fiable</strong>. L'étudiant consolide les grandeurs et leurs unités, puis apprend à utiliser le <strong>multimètre</strong> avec méthode : bonne fonction, bon type (continu ou alternatif), bon calibre, bon branchement — voltmètre <strong>en parallèle</strong>, ampèremètre <strong>en série</strong>, ohmmètre <strong>hors tension</strong>.</p><p>Il aborde ensuite les mesures en <strong>alternatif</strong> (valeur efficace, fréquence), le calcul de la <strong>puissance</strong> et de l'<strong>énergie</strong> (le kWh de la facture EDH), puis les <strong>instruments spécialisés</strong> — pince ampèremétrique, mégohmmètre — et les <strong>règles de sécurité</strong> de mesure. Ces gestes servent chaque jour : diagnostiquer, vérifier une installation, contrôler un moteur.</p></div>
   <div class="pc-sec"><h4>Éléments de la compétence et pondération de l'épreuve</h4>
-    <table class="dtable"><thead><tr><th>Élément de la compétence</th><th>Points (épreuve /100)</th></tr></thead><tbody><tr><td>Maîtriser le vocabulaire technique de base</td><td>25</td></tr><tr><td>Décoder une plaque signalétique et une fiche technique</td><td>25</td></tr><tr><td>Comprendre les avertissements de sécurité et les procédures d'entretien</td><td>25</td></tr><tr><td>Communiquer par écrit (rapport, commande, description de panne)</td><td>25</td></tr></tbody></table>
+    <table class="dtable"><thead><tr><th>Élément de la compétence</th><th>Points (épreuve /100)</th></tr></thead><tbody><tr><td>Identifier les grandeurs, unités et préfixes</td><td>15</td></tr><tr><td>Mesurer tension, intensité et résistance au multimètre</td><td>30</td></tr><tr><td>Mesurer en alternatif et calculer puissance et énergie</td><td>25</td></tr><tr><td>Utiliser les instruments spécialisés (pince, mégohmmètre)</td><td>15</td></tr><tr><td>Appliquer les règles de sécurité et consigner les résultats</td><td>15</td></tr></tbody></table>
     <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération <strong>indicative</strong>, en attente de l'épreuve pratique officielle du module ; elle suit la structure des éléments de la compétence.</div></div>
   <div class="pc-sec"><h4>Contexte de réalisation</h4>
     <div class="pc-cols">
-      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Plaques signalétiques réelles · notices et manuels d'entretien en anglais (groupes électrogènes, moteurs, automates) · fiches techniques de composants · catalogues de pièces.</div>
-      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Dictionnaire technique bilingue · ordinateur et accès Internet (ELM-02) · documentation constructeur · glossaire du métier.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Circuits d'essai sur plaque et installations pédagogiques · consignes de mesure · fiches de relevé · appareils à contrôler (moteurs, câbles).</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Multimètre numérique · pince ampèremétrique · mégohmmètre · VAT (vérificateur d'absence de tension) · EPI · tableur pour les relevés (ELM-02).</div>
     </div></div>
   <div class="pc-sec"><h4>Découpage en chapitres</h4>
-    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Contenu</th></tr></thead><tbody><tr><td>1</td><td>Le vocabulaire technique de base</td><td>Grandeurs · Composants · Outils · Actions</td></tr><tr><td>2</td><td>Lire une plaque et une fiche technique</td><td>Nameplate · Datasheet · Abréviations · Nombres</td></tr><tr><td>3</td><td>Manuels d'entretien et avertissements de sécurité</td><td>DANGER · WARNING · CAUTION · Troubleshooting</td></tr><tr><td>4</td><td>Communiquer par écrit dans le métier</td><td>Rapport · Commande de pièces · Décrire une panne</td></tr></tbody></table></div>
+    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Contenu</th></tr></thead><tbody><tr><td>1</td><td>Les grandeurs électriques et leurs unités</td><td>Grandeurs · Unités · Préfixes</td></tr><tr><td>2</td><td>Le multimètre&nbsp;: tension, intensité, résistance</td><td>Multimètre · V, A, Ω · Branchements</td></tr><tr><td>3</td><td>Courant alternatif, puissance et énergie</td><td>Alternatif · Puissance · Énergie</td></tr><tr><td>4</td><td>Sécurité, précision et instruments spécialisés</td><td>Sécurité · Précision · Instruments spécialisés</td></tr></tbody></table></div>
   <div class="pc-sec"><h4>Modalités d'évaluation</h4>
     <ul>
-      <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 75 %.</li>
-      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve : lecture et exploitation d'un document technique authentique en anglais (plaque, extrait de manuel, tableau de dépannage) et rédaction d'un court rapport ou d'une commande de pièce</strong>, évaluée par le professeur.</li>
-      <li><strong>Seuil de réussite</strong> — <strong>75 sur 100</strong>.</li>
+      <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 80 %.</li>
+      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique : campagne de mesures sur circuits et appareils, avec relevé documenté et respect des règles de sécurité</strong>, évaluée par le professeur.</li>
+      <li><strong>Seuil de réussite</strong> — <strong>80 sur 100</strong>.</li>
     </ul></div>
-  <div class="pc-sec"><h4>Liens avec les autres modules</h4><p><strong>Réinvestit :</strong> ELM-02 (ordinateur : recherche documentaire, rédaction), ELM-09 (plaques et machines), ELM-10 (nameplate, réglages).<br><strong>Contribue à :</strong> ELM-12 et ELM-17 (notices de groupes électrogènes), ELM-16 (manuels de moteurs), ELM-20, ELM-21 et ELM-22 (documentation d'électronique et d'automates), ELM-23 (troubleshooting charts) — et à toute recherche technique autonome.</p></div>
-  <div class="pc-sec"><h4>Références</h4><ul><li>Programme de formation <em>Électromécanique</em> (INFP / CFPH – Canado Technique), guide d'apprentissage ELM-11.</li><li>Manuels d'entretien et fiches techniques authentiques des équipements de l'atelier.</li><li>Glossaires techniques bilingues français-anglais du secteur électromécanique.</li></ul></div>
+  <div class="pc-sec"><h4>Liens avec les autres modules</h4><p><strong>Réinvestit :</strong> ELM-02 (tableur pour les relevés), ELM-03 (santé-sécurité), ELM-06 (circuits CC et CA).<br><strong>Contribue à :</strong> ELM-09 (moteurs, générateurs, transformateurs), ELM-10 (raccordement et entretien), ELM-11 (électronique industrielle), ELM-17 (maintenance) et ELM-23 (dépannage de systèmes automatisés).</p></div>
+  <div class="pc-sec"><h4>Références</h4><ul><li>Programme de formation <em>Électromécanique</em> (INFP / CFPH – Canado Technique), guide d'apprentissage ELM-07.</li><li>Documentation des fabricants d'instruments de mesure (multimètres, pinces, mégohmmètres).</li><li>Normes de catégories de mesure (CAT II / III / IV).</li></ul></div>
 </div>
 </div>
 
 <div class="chapter step" id="ch-1">
 <div class="ch-header">
   <div class="ch-num">01</div>
-  <div class="ch-info"><h2>Le vocabulaire technique de base</h2><div class="ch-meta"><span class="ch-badge">Grandeurs · Composants · Outils · Actions</span></div></div>
+  <div class="ch-info"><h2>Les grandeurs électriques et leurs unités</h2><div class="ch-meta"><span class="ch-badge">Grandeurs · Unités · Préfixes</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Le vocabulaire technique de base</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Les grandeurs électriques et leurs unités</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>comprendre <strong>pourquoi</strong> l'anglais est un outil de travail ;</li><li>maîtriser le vocabulaire des <strong>grandeurs</strong> et des <strong>composants</strong> ;</li><li>connaître les <strong>outils</strong> et les <strong>verbes d'action</strong> de l'atelier.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vidéo Plan de cours du module. Tu as croisé l'anglais technique dès ELM-02 (ordinateur) et sur toutes les plaques signalétiques.</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Définir les grandeurs fondamentales&nbsp;: tension, intensité et résistance.</li><li>Associer chaque grandeur à son unité et à son symbole.</li><li>Appliquer la loi d'Ohm pour relier tension, intensité et résistance.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Au module ELM-06 « Circuits à courant continu et alternatif », vous avez étudié la constitution d'un circuit et la différence entre courant continu et alternatif. Nous apprenons maintenant à <em>mesurer</em> ce qui circule dans ces circuits.</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Le vocabulaire technique de l'électromécanicien</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
-  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM11/final/ELM11-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Les grandeurs électriques et leurs unités</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>1.1 Pourquoi l'anglais est un outil de travail</h3>
-<p>Regarde n'importe quel équipement de ton atelier : la <strong>plaque signalétique</strong> du moteur, la <strong>notice</strong> du groupe électrogène, l'<strong>étiquette</strong> du disjoncteur, le <strong>manuel</strong> de l'automate. Presque tout est en anglais. Ce n'est pas un choix, c'est une réalité : la documentation technique mondiale est rédigée en anglais.</p>
-<p>L'objectif de ce module n'est <strong>pas</strong> de te rendre bilingue. Il est plus précis et plus utile : te rendre capable de <strong>lire et comprendre</strong> une fiche technique, une plaque, un manuel d'entretien et un avertissement de sécurité — et de <strong>communiquer</strong> l'essentiel par écrit. On vise la <strong>compréhension technique</strong>, pas la conversation littéraire.</p>
+<h3>La tension, l'intensité et la résistance</h3>
+<p>La <strong>tension électrique</strong>, ou différence de potentiel, est ce qui « pousse » les charges dans un circuit&nbsp;; on la compare souvent à la pression dans une conduite d'eau. On la note <strong>U</strong> et on la mesure en <strong>volts (V)</strong>. Une pile de lampe de poche fournit 1,5&nbsp;V, une batterie de voiture 12&nbsp;V, une prise domestique en Haïti environ 110&nbsp;V.</p>
+<p>L'<strong>intensité du courant</strong>, notée <strong>I</strong>, mesure le débit de charges électriques&nbsp;: la quantité d'électricité qui traverse une section du conducteur à chaque seconde. On la mesure en <strong>ampères (A)</strong>. Plus l'intensité est grande, plus le conducteur chauffe&nbsp;: c'est pourquoi on dimensionne les câbles selon le courant qu'ils doivent supporter.</p>
+<p>La <strong>résistance</strong>, notée <strong>R</strong>, exprime l'opposition d'un matériau au passage du courant. Elle se mesure en <strong>ohms (Ω)</strong>. Un bon conducteur, comme le cuivre, a une faible résistance&nbsp;; un isolant, comme le plastique, une résistance très élevée.</p>
 </div>
 
 <div class="section">
-<h3>1.2 Les grandeurs et les composants électriques</h3>
-<table class="dtable"><thead><tr><th>Français</th><th>English</th><th>Symbole / unité</th></tr></thead><tbody>
-<tr><td>Tension</td><td><strong>voltage</strong></td><td>V (volt)</td></tr>
-<tr><td>Intensité, courant</td><td><strong>current</strong></td><td>A (ampere)</td></tr>
-<tr><td>Résistance</td><td><strong>resistance</strong></td><td>Ω (ohm)</td></tr>
-<tr><td>Puissance</td><td><strong>power</strong></td><td>W (watt)</td></tr>
-<tr><td>Courant continu / alternatif</td><td><strong>direct current (DC)</strong> / <strong>alternating current (AC)</strong></td><td>⎓ / ~</td></tr>
-<tr><td>Interrupteur</td><td><strong>switch</strong></td><td>—</td></tr>
-<tr><td>Disjoncteur</td><td><strong>circuit breaker</strong></td><td>—</td></tr>
-<tr><td>Fusible</td><td><strong>fuse</strong></td><td>—</td></tr>
-<tr><td>Fil, câble</td><td><strong>wire</strong>, <strong>cable</strong></td><td>—</td></tr>
-<tr><td>Terre</td><td><strong>ground</strong> (US) / <strong>earth</strong> (UK)</td><td>PE</td></tr>
-<tr><td>Prise / fiche</td><td><strong>socket, outlet</strong> / <strong>plug</strong></td><td>—</td></tr>
-<tr><td>Bobine</td><td><strong>coil</strong></td><td>—</td></tr>
-<tr><td>Roulement</td><td><strong>bearing</strong></td><td>—</td></tr>
-<tr><td>Courroie</td><td><strong>belt</strong></td><td>—</td></tr>
-</tbody></table>
-<div class="ibox blue"><span class="ibox-label">💡 Faux ami à connaître</span><strong>« Current »</strong> ne veut pas dire « courant » au sens de « actuel ». En technique, <em>current</em> = <strong>intensité</strong> du courant électrique. Et <strong>« tension »</strong> se dit <em>voltage</em>, pas <em>tension</em> (qui signifie « tension mécanique »).</div>
+<h3>Unités, symboles, multiples et sous-multiples</h3>
+<p>Chaque grandeur possède son symbole et son unité, qu'il faut connaître par cœur&nbsp;: la tension <em>U</em> en volts (V), l'intensité <em>I</em> en ampères (A), la résistance <em>R</em> en ohms (Ω), la puissance <em>P</em> en watts (W), l'énergie <em>E</em> en joules (J) ou en wattheures (Wh).</p>
+<p>Les valeurs rencontrées vont du très petit au très grand&nbsp;; on utilise donc des <strong>préfixes</strong> multiplicateurs. Le <strong>kilo (k)</strong> vaut mille fois l'unité&nbsp;: <code>1 kV = 1000 V</code>, <code>1 kΩ = 1000 Ω</code>. Le <strong>méga (M)</strong> vaut un million&nbsp;: <code>1 MΩ = 1 000 000 Ω</code>. À l'inverse, le <strong>milli (m)</strong> vaut un millième&nbsp;: <code>1 mA = 0,001 A</code>&nbsp;; le <strong>micro (µ)</strong> un millionième&nbsp;: <code>1 µA = 0,000001 A</code>.</p>
+<p>Savoir convertir est essentiel pour lire correctement un afficheur&nbsp;: «&nbsp;4,7&nbsp;kΩ&nbsp;» se lit 4700&nbsp;ohms, et «&nbsp;250&nbsp;mA&nbsp;» se lit 0,25&nbsp;ampère.</p>
 </div>
 
 <div class="section">
-<h3>1.3 Les outils et les actions de l'atelier</h3>
-<table class="dtable"><thead><tr><th>Français</th><th>English</th></tr></thead><tbody>
-<tr><td>Tournevis</td><td><strong>screwdriver</strong></td></tr>
-<tr><td>Clé (plate, à molette)</td><td><strong>wrench</strong> (US) / <strong>spanner</strong> (UK)</td></tr>
-<tr><td>Pince</td><td><strong>pliers</strong></td></tr>
-<tr><td>Perceuse / foret</td><td><strong>drill</strong> / <strong>drill bit</strong></td></tr>
-<tr><td>Lime</td><td><strong>file</strong></td></tr>
-<tr><td>Étau</td><td><strong>vice</strong></td></tr>
-<tr><td>Multimètre</td><td><strong>multimeter</strong></td></tr>
-<tr><td>Serrer / desserrer</td><td><strong>to tighten</strong> / <strong>to loosen</strong></td></tr>
-<tr><td>Brancher / débrancher</td><td><strong>to plug in</strong> / <strong>to unplug</strong></td></tr>
-<tr><td>Allumer / éteindre</td><td><strong>to turn on</strong> / <strong>to turn off</strong></td></tr>
-<tr><td>Remplacer</td><td><strong>to replace</strong></td></tr>
-<tr><td>Vérifier</td><td><strong>to check</strong></td></tr>
-<tr><td>Mesurer</td><td><strong>to measure</strong></td></tr>
-<tr><td>Régler</td><td><strong>to adjust, to set</strong></td></tr>
-</tbody></table>
+<h3>La loi d'Ohm, la puissance et l'énergie</h3>
+<p>La <strong>loi d'Ohm</strong> est la relation fondamentale de l'électricité&nbsp;: la tension aux bornes d'une résistance est égale au produit de sa résistance par l'intensité qui la traverse, soit <code>U = R × I</code>. On en déduit <code>I = U / R</code> et <code>R = U / I</code>. Connaissant deux grandeurs, on calcule ainsi la troisième.</p>
+<p>La <strong>puissance électrique</strong>, notée <em>P</em>, mesure l'énergie transformée par seconde&nbsp;; en courant continu, elle vaut <code>P = U × I</code> et se mesure en watts (W). Une lampe de 60&nbsp;W sous 110&nbsp;V consomme donc un courant d'environ 0,55&nbsp;A.</p>
+<p>Enfin, l'<strong>énergie</strong> <em>E</em> est le produit de la puissance par la durée&nbsp;: <code>E = P × t</code>. Facturée par la compagnie d'électricité, elle s'exprime en <strong>kilowattheures (kWh)</strong>&nbsp;: un appareil de 1000&nbsp;W fonctionnant une heure consomme 1&nbsp;kWh.</p>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Voltage</dt><dd>La tension, en volts. Attention : « tension » en anglais désigne une tension mécanique.</dd><dt>Current</dt><dd>L'intensité du courant, en ampères — et non « actuel ».</dd><dt>Circuit breaker</dt><dd>Le disjoncteur. Le fusible est un <em>fuse</em>.</dd><dt>Ground / Earth</dt><dd>La terre (US / UK).</dd><dt>Wrench / Spanner</dt><dd>La clé (US / UK). Le tournevis est un <em>screwdriver</em>.</dd><dt>To tighten / to loosen</dt><dd>Serrer / desserrer.</dd></dl>
+  <dl><dt>Tension (U)</dt><dd>« Pression » électrique qui pousse les électrons, en volts (V).</dd><dt>Intensité (I)</dt><dd>Débit de charges qui traverse un conducteur, en ampères (A).</dd><dt>Résistance (R)</dt><dd>Opposition d'un matériau au passage du courant, en ohms (Ω).</dd><dt>Loi d'Ohm</dt><dd>U = R × I — et ses formes dérivées I = U ÷ R et R = U ÷ I.</dd><dt>Préfixes</dt><dd>kilo (k) = ×1000, milli (m) = ÷1000 : 1 kΩ = 1000 Ω, 1 mA = 0,001 A.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>La documentation technique mondiale est en <strong>anglais</strong> : plaques, notices, manuels, datasheets.</li><li>L'objectif est la <strong>compréhension technique</strong>, pas la conversation littéraire.</li><li><strong>Voltage</strong> = tension · <strong>current</strong> = intensité · <strong>power</strong> = puissance · <strong>resistance</strong> = résistance.</li><li><strong>Circuit breaker</strong> = disjoncteur · <strong>fuse</strong> = fusible · <strong>ground/earth</strong> = terre · <strong>coil</strong> = bobine · <strong>bearing</strong> = roulement.</li><li>Faux amis : <em>current</em> ≠ actuel ; <em>tension</em> (anglais) = tension mécanique, pas électrique.</li></ul>
+  <ul class="recap-list"><li>Retenez le trio <em>U</em> (volt), <em>I</em> (ampère), <em>R</em> (ohm) et leurs symboles&nbsp;: c'est la base de toute mesure.</li><li>Un préfixe change tout&nbsp;: confondre mA et A, c'est mille fois d'écart. Vérifiez toujours l'unité affichée.</li><li>La loi d'Ohm <code>U = R × I</code> se réarrange en <code>I = U/R</code> et <code>R = U/I</code>&nbsp;: un seul triangle à mémoriser.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="1">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Comment dit-on « tension » (électrique) en anglais ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>tension</button>
-    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>voltage</button>
-    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>current</button>
-    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>power</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle est l'unité de mesure de la tension électrique&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>L'ampère (A)</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Le volt (V)</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>L'ohm (Ω)</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Le watt (W)</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que signifie « current » dans un contexte technique ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Actuel</button>
-    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>L'intensité du courant électrique</button>
-    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>La puissance</button>
-    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>La résistance</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que représente l'intensité du courant électrique&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>La quantité de charges qui traverse le conducteur chaque seconde</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>La pression qui pousse les électrons</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>L'opposition au passage du courant</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>L'énergie totale consommée</button>
   </div><div class="qexpl" id="qe-1-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Comment dit-on « disjoncteur » en anglais ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>fuse</button>
-    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>circuit breaker</button>
-    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>switch</button>
-    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>plug</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">D'après la loi d'Ohm <code>U = R × I</code>, si R = 10&nbsp;Ω et I = 2&nbsp;A, quelle est la tension U&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>5 V</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>12 V</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>20 V</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>0,2 V</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que signifie « bearing » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Courroie</button>
-    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Roulement</button>
-    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Bobine</button>
-    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Boulon</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quelle grandeur « pousse » les électrons dans un circuit ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>La résistance</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>La tension (U, en volts)</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>La puissance</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>La fréquence</button>
   </div><div class="qexpl" id="qe-1-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que signifie « to tighten » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Desserrer</button>
-    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Serrer</button>
-    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Remplacer</button>
-    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Mesurer</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quels préfixes multiplient et divisent les unités ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>kilo (×1000) et milli (÷1000)</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>kilo (÷1000) et milli (×1000)</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Aucun préfixe n'existe</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Seul le kilo existe</button>
   </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,1,1,1],['Voltage. Le mot anglais « tension » désigne une tension mécanique — c’est un faux ami classique.','Current = intensité (en ampères). C’est un faux ami à ne jamais confondre.','Circuit breaker. Le fuse est le fusible, le switch l’interrupteur, le plug la fiche.','Bearing = roulement. Belt = courroie, coil = bobine.','To tighten = serrer ; to loosen = desserrer.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,0,2,1,0],['<strong>Explication&nbsp;:</strong> La tension (ou différence de potentiel) se mesure en volts (V). L’ampère mesure l’intensité, l’ohm la résistance et le watt la puissance.','<strong>Explication&nbsp;:</strong> L’intensité (en ampères) mesure le débit de charges&nbsp;: la quantité d’électricité traversant une section du conducteur par seconde. La «&nbsp;pression&nbsp;» correspond à la tension, et l’opposition à la résistance.','<strong>Explication&nbsp;:</strong> <code>U = R × I = 10 × 2 = 20 V</code>. La loi d’Ohm relie directement la tension, la résistance et l’intensité.','La tension est la « pression » électrique qui met les électrons en mouvement.','1 kΩ = 1000 Ω ; 1 mA = 0,001 A. Maîtriser les préfixes évite les erreurs de calibre et de calcul.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
@@ -551,102 +525,90 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-2">
 <div class="ch-header">
   <div class="ch-num">02</div>
-  <div class="ch-info"><h2>Lire une plaque et une fiche technique</h2><div class="ch-meta"><span class="ch-badge">Nameplate · Datasheet · Abréviations · Nombres</span></div></div>
+  <div class="ch-info"><h2>Le multimètre&nbsp;: tension, intensité, résistance</h2><div class="ch-meta"><span class="ch-badge">Multimètre · V, A, Ω · Branchements</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Lire une plaque et une fiche technique</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Le multimètre&nbsp;: tension, intensité, résistance</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>décoder une <strong>nameplate</strong> (plaque signalétique) ;</li><li>exploiter une <strong>datasheet</strong> et ses rubriques ;</li><li>maîtriser les <strong>abréviations</strong> et le piège du <strong>séparateur décimal</strong>.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu connais le vocabulaire des grandeurs, composants et outils (leçon 1).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Identifier les fonctions et les bornes d'un multimètre.</li><li>Brancher correctement le voltmètre, l'ampèremètre et l'ohmmètre.</li><li>Choisir la fonction et le calibre adaptés à la mesure.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vous connaissez maintenant les grandeurs électriques et leurs unités. Découvrons l'appareil qui permet de les mesurer toutes&nbsp;: le multimètre.</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Décoder une nameplate et une datasheet</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
-  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM11/final/ELM11-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Le multimètre : tension, intensité, résistance</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>2.1 Décoder une plaque signalétique (nameplate)</h3>
-<p>La <strong>nameplate</strong> d'un moteur est un condensé d'anglais technique. Voici les mentions que tu liras systématiquement :</p>
-<table class="dtable"><thead><tr><th>Mention anglaise</th><th>Signification</th></tr></thead><tbody>
-<tr><td><strong>RATED VOLTAGE</strong></td><td>Tension nominale</td></tr>
-<tr><td><strong>RATED CURRENT</strong> / <strong>FULL LOAD AMPS (FLA)</strong></td><td>Courant nominal (à pleine charge)</td></tr>
-<tr><td><strong>RATED POWER / OUTPUT</strong></td><td>Puissance nominale (kW ou HP)</td></tr>
-<tr><td><strong>SPEED</strong> / <strong>RPM</strong></td><td>Vitesse (tours par minute)</td></tr>
-<tr><td><strong>FREQUENCY</strong> / <strong>Hz</strong></td><td>Fréquence</td></tr>
-<tr><td><strong>POWER FACTOR</strong> / <strong>PF</strong> / <strong>cos φ</strong></td><td>Facteur de puissance</td></tr>
-<tr><td><strong>PHASE</strong> / <strong>PH</strong></td><td>Nombre de phases (1 PH = monophasé, 3 PH = triphasé)</td></tr>
-<tr><td><strong>DUTY</strong></td><td>Service (continu, intermittent)</td></tr>
-<tr><td><strong>INSULATION CLASS</strong></td><td>Classe d'isolation</td></tr>
-<tr><td><strong>ENCLOSURE / IP</strong></td><td>Indice de protection</td></tr>
-</tbody></table>
-<div class="ibox blue"><span class="ibox-label">💡 HP et kW</span><strong>HP</strong> = <em>horsepower</em> (cheval-vapeur), très courant sur le matériel américain. Retiens l'ordre de grandeur : <strong>1 HP ≈ 0,75 kW</strong>.</div>
+<h3>Le multimètre, un appareil trois-en-un</h3>
+<p>Le <strong>multimètre</strong> est l'instrument de base de l'électromécanicien&nbsp;: il réunit dans un seul boîtier un <strong>voltmètre</strong> (tensions), un <strong>ampèremètre</strong> (intensités) et un <strong>ohmmètre</strong> (résistances). Il existe en version analogique (à aiguille) et, le plus souvent aujourd'hui, en version numérique à afficheur.</p>
+<p>On y trouve un <strong>sélecteur rotatif</strong> pour choisir la fonction (V continu, V alternatif, A, Ω) et le calibre, ainsi que des <strong>bornes</strong> où enficher les cordons&nbsp;: une borne commune notée <code>COM</code> (cordon noir), une borne pour les tensions et résistances (notée <code>VΩ</code>, cordon rouge) et une borne séparée pour les fortes intensités (notée <code>A</code> ou <code>10A</code>). Bien placer les cordons est la première précaution&nbsp;: mesurer une tension avec les cordons sur la borne «&nbsp;ampères&nbsp;» provoque un court-circuit.</p>
 </div>
 
 <div class="section">
-<h3>2.2 Lire une fiche technique (datasheet)</h3>
-<p>Une <strong>datasheet</strong> décrit un composant. Ses rubriques habituelles : <strong>Features</strong> (caractéristiques principales), <strong>Specifications</strong> (les valeurs), <strong>Ratings</strong> (valeurs nominales et limites), <strong>Dimensions</strong>, <strong>Wiring diagram</strong> (schéma de câblage), <strong>Ordering information</strong> (références de commande).</p>
-<p>Trois mots à ne jamais confondre : <strong>rated</strong> (valeur <em>nominale</em>, celle de fonctionnement normal), <strong>maximum</strong> (à ne pas dépasser) et <strong>typical</strong> (valeur <em>typique</em>, moyenne observée — pas une garantie). Un composant utilisé à sa valeur <em>maximum</em> en permanence a une durée de vie courte.</p>
+<h3>Mesurer une tension et une intensité</h3>
+<p>Pour <strong>mesurer une tension</strong>, on utilise la fonction voltmètre et on branche l'appareil <strong>en parallèle</strong>, c'est-à-dire aux deux bornes du composant, sans rien débrancher. Le voltmètre possède une très grande résistance interne&nbsp;: il ne «&nbsp;vole&nbsp;» presque pas de courant au circuit. On choisit <code>V⎓</code> (continu) pour une pile ou une batterie, <code>V∼</code> (alternatif) pour le secteur.</p>
+<p>Pour <strong>mesurer une intensité</strong>, on utilise la fonction ampèremètre et on branche l'appareil <strong>en série</strong>&nbsp;: il faut ouvrir le circuit et intercaler le multimètre pour que le courant le traverse. L'ampèremètre a une très faible résistance interne. Deux erreurs à éviter absolument&nbsp;: le brancher en parallèle sur une source, ce qui crée un court-circuit, et oublier de déplacer le cordon rouge sur la borne «&nbsp;A&nbsp;».</p>
 </div>
 
 <div class="section">
-<h3>2.3 Les abréviations et les nombres</h3>
-<p>La documentation abrège beaucoup : <strong>AC/DC</strong>, <strong>VAC</strong> (volts en alternatif), <strong>VDC</strong> (volts en continu), <strong>RPM</strong>, <strong>FLA</strong>, <strong>NO / NC</strong> (<em>normally open / normally closed</em> = NO / NF en français — attention : <strong>NC anglais = NF français</strong> !), <strong>PPE</strong> (<em>personal protective equipment</em> = EPI), <strong>MSDS</strong> (fiche de données de sécurité).</p>
-<div class="ibox red"><span class="ibox-label">⚠️ Le piège du séparateur décimal</span>En anglais, le <strong>point</strong> sépare les décimales et la <strong>virgule</strong> sépare les milliers. Ainsi <strong>1,500.75</strong> se lit « mille cinq cents virgule soixante-quinze » — et non « un virgule cinq ». Confondre les deux sur une commande ou une mesure peut coûter très cher.</div>
+<h3>Mesurer une résistance et tester la continuité</h3>
+<p>Pour <strong>mesurer une résistance</strong>, on utilise la fonction ohmmètre. Règle d'or&nbsp;: le circuit doit être <strong>hors tension</strong>. L'ohmmètre envoie lui-même un faible courant à travers le composant&nbsp;; s'il reste alimenté, la mesure est fausse et l'appareil peut être endommagé. Idéalement, on isole le composant du reste du circuit pour éviter les chemins parallèles qui fausseraient la lecture.</p>
+<p>La fonction <strong>continuité</strong>, souvent signalée par un symbole sonore, est très pratique&nbsp;: l'appareil émet un «&nbsp;bip&nbsp;» quand la résistance est quasi nulle. Elle permet de vérifier rapidement qu'un fil n'est pas coupé, qu'un fusible est bon, ou qu'un interrupteur ferme bien le circuit.</p>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Nameplate</dt><dd>La plaque signalétique d'un équipement.</dd><dt>Rated</dt><dd>Valeur nominale, de fonctionnement normal — à distinguer de <em>maximum</em> et de <em>typical</em>.</dd><dt>FLA (Full Load Amps)</dt><dd>Courant à pleine charge, c'est-à-dire le courant nominal.</dd><dt>RPM</dt><dd>Revolutions per minute : tours par minute.</dd><dt>NO / NC</dt><dd>Normally open / normally closed. <strong>Attention : NC anglais = NF français.</strong></dd><dt>HP (horsepower)</dt><dd>Cheval-vapeur : 1 HP ≈ 0,75 kW.</dd></dl>
+  <dl><dt>Multimètre</dt><dd>Instrument réunissant voltmètre, ampèremètre et ohmmètre ; on choisit fonction, type (CC/CA) et calibre.</dd><dt>Voltmètre</dt><dd>Mesure la tension, branché en parallèle aux bornes du composant, circuit sous tension.</dd><dt>Ampèremètre</dt><dd>Mesure le courant, branché en série, en ouvrant le circuit.</dd><dt>Ohmmètre</dt><dd>Mesure la résistance d'un composant isolé, circuit hors tension.</dd><dt>Calibre</dt><dd>Plage de mesure ; sur un appareil manuel, commencer par le calibre le plus élevé.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>Nameplate : <strong>RATED VOLTAGE</strong>, <strong>FLA</strong> (courant nominal), <strong>RPM</strong>, <strong>Hz</strong>, <strong>PF</strong> (cos φ), <strong>PH</strong> (phases).</li><li><strong>1 HP ≈ 0,75 kW</strong> — ordre de grandeur à connaître sur le matériel américain.</li><li>Datasheet : <strong>rated</strong> (nominal) ≠ <strong>maximum</strong> (limite) ≠ <strong>typical</strong> (moyen, non garanti).</li><li>⚠️ <strong>NC anglais = NF français</strong> (normally closed = normalement fermé).</li><li>⚠️ Séparateur décimal : <strong>1,500.75</strong> = mille cinq cents virgule 75 — le point est décimal, la virgule sépare les milliers.</li></ul>
+  <ul class="recap-list"><li>Voltmètre <em>en parallèle</em>, ampèremètre <em>en série</em>&nbsp;: cette règle se retient une fois pour toutes.</li><li>Sur un multimètre, un ampèremètre branché par erreur en parallèle = court-circuit&nbsp;: vérifiez fonction ET borne avant de brancher.</li><li>La fonction «&nbsp;continuité&nbsp;» (bip) est votre meilleure alliée pour trouver un fil coupé ou un fusible grillé.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="2">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Que signifie « FLA » sur une plaque de moteur ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Puissance maximale</button>
-    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Full Load Amps : le courant nominal à pleine charge</button>
-    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Fréquence</button>
-    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Facteur de puissance</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Comment branche-t-on un voltmètre pour mesurer la tension aux bornes d'un composant&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>En série avec le composant</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>En parallèle (en dérivation) aux bornes du composant</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>À la place du composant</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Toujours après avoir coupé le courant</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que signifie « NC » dans une documentation anglaise ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Non connecté</button>
-    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Normally closed — c'est-à-dire NF (normalement fermé) en français</button>
-    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Nouveau contact</button>
-    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Non conforme</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Comment branche-t-on un ampèremètre pour mesurer l'intensité dans un circuit&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>En parallèle aux bornes de la source</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>En série, en l'intercalant dans le circuit</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>En dérivation sur la résistance</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Sans jamais ouvrir le circuit</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Dans une datasheet, que signifie « rated voltage » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>La tension maximale absolue</button>
-    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>La tension nominale de fonctionnement normal</button>
-    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Une tension typique moyenne</button>
-    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>La tension d'essai</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Avant de mesurer une résistance avec l'ohmmètre, il faut impérativement&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Mettre le circuit sous tension</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Couper l'alimentation&nbsp;: le composant doit être hors tension</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Régler le sélecteur sur les volts</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Brancher l'appareil en série avec une pile</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Combien vaut approximativement 1 HP ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>0,75 kW</button>
-    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>7,5 kW</button>
-    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>75 W</button>
-    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>1 kW</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pourquoi mesure-t-on une résistance hors tension ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>Pour aller plus vite</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>Parce que l'ohmmètre injecte son propre courant : sous tension la mesure est fausse et dangereuse</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>C'est facultatif</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>Pour économiser la pile</button>
   </div><div class="qexpl" id="qe-2-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Dans un document anglais, à quoi correspond « 1,500.75 » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>1,50075</button>
-    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>Mille cinq cents virgule soixante-quinze</button>
-    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>Un virgule cinq</button>
-    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>Quinze</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que risque-t-on en branchant l'ampèremètre en parallèle sur une source ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>Une mesure plus précise</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>Un court-circuit (fusible grillé, danger)</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>Une économie d'énergie</button>
   </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1,0,1],['FLA est le courant nominal — c’est la valeur sur laquelle on règle le relais thermique (ELM-10).','Piège classique : le NC anglais correspond à notre NF. Le NO est identique dans les deux langues.','Rated = nominal. Maximum = limite à ne pas dépasser. Typical = valeur moyenne, non garantie.','1 horsepower ≈ 0,75 kW. Utile pour le matériel américain, très répandu en Haïti.','Le point sépare les décimales, la virgule les milliers : c’est l’inverse du français.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,1,1,2],['<strong>Explication&nbsp;:</strong> Le voltmètre se branche en parallèle (dérivation) aux bornes du composant, car il mesure la différence de potentiel entre deux points. Sa très grande résistance interne évite de perturber le circuit.','<strong>Explication&nbsp;:</strong> L’ampèremètre se place en série&nbsp;: le courant à mesurer doit le traverser. Le brancher en parallèle sur une source provoquerait un court-circuit, car sa résistance interne est très faible.','<strong>Explication&nbsp;:</strong> L’ohmmètre envoie son propre petit courant&nbsp;: le composant doit être hors tension (et souvent isolé du circuit), sinon la mesure est fausse et l’appareil risque d’être endommagé.','L’ohmmètre envoie un petit courant de test : toute tension extérieure fausse la mesure et peut détruire l’appareil.','La résistance interne de l’ampèremètre est quasi nulle : en parallèle, c’est un court-circuit.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
@@ -657,112 +619,91 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-3">
 <div class="ch-header">
   <div class="ch-num">03</div>
-  <div class="ch-info"><h2>Manuels d'entretien et avertissements de sécurité</h2><div class="ch-meta"><span class="ch-badge">DANGER · WARNING · CAUTION · Troubleshooting</span></div></div>
+  <div class="ch-info"><h2>Courant alternatif, puissance et énergie</h2><div class="ch-meta"><span class="ch-badge">Alternatif · Puissance · Énergie</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Manuels d'entretien et avertissements de sécurité</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Courant alternatif, puissance et énergie</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>hiérarchiser <strong>DANGER, WARNING, CAUTION, NOTICE</strong> ;</li><li>suivre une <strong>procédure d'entretien</strong> en anglais ;</li><li>exploiter un <strong>troubleshooting chart</strong>.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais décoder une plaque et une fiche technique (leçon 2).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Distinguer valeur efficace, valeur crête et fréquence en courant alternatif.</li><li>Utiliser la pince ampèremétrique.</li><li>Mesurer ou calculer une puissance et une énergie.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vous savez mesurer tension, intensité et résistance en continu. Le secteur, lui, est alternatif&nbsp;: voyons ses particularités et les appareils adaptés.</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Sécurité et procédures dans les manuels</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
-  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM11/final/ELM11-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Courant alternatif, puissance et énergie</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>3.1 Les avertissements de sécurité</h3>
-<p>Les manuels hiérarchisent les avertissements. Cette échelle est <strong>normalisée</strong> et il faut la connaître :</p>
-<table class="dtable"><thead><tr><th>Mot-clé</th><th>Niveau</th><th>Signification</th></tr></thead><tbody>
-<tr><td><strong>DANGER</strong></td><td>🔴 Le plus grave</td><td>Situation qui <strong>causera</strong> la mort ou une blessure grave</td></tr>
-<tr><td><strong>WARNING</strong></td><td>🟠 Grave</td><td>Situation qui <strong>pourrait</strong> causer la mort ou une blessure grave</td></tr>
-<tr><td><strong>CAUTION</strong></td><td>🟡 Modéré</td><td>Risque de blessure légère ou modérée</td></tr>
-<tr><td><strong>NOTICE</strong></td><td>🔵 Matériel</td><td>Risque de <strong>dommage à l'équipement</strong>, sans danger corporel</td></tr>
-</tbody></table>
-<p>Phrases à reconnaître immédiatement : <strong>« Disconnect power before servicing »</strong> (couper l'alimentation avant intervention), <strong>« Risk of electric shock »</strong> (risque de choc électrique), <strong>« Do not operate without guards »</strong> (ne pas faire fonctionner sans les protecteurs), <strong>« Lockout / Tagout »</strong> (consignation : cadenas et étiquette — exactement l'ELM-06), <strong>« Wear PPE »</strong> (porter les EPI), <strong>« Authorized personnel only »</strong> (personnel autorisé uniquement).</p>
+<h3>Le courant alternatif&nbsp;: valeur efficace et fréquence</h3>
+<p>En <strong>courant alternatif</strong>, la tension change de sens et de valeur à chaque instant, suivant une courbe sinusoïdale. On ne peut donc pas parler d'une seule «&nbsp;valeur&nbsp;» comme en continu. On retient la <strong>valeur efficace</strong> (en anglais RMS)&nbsp;: c'est la valeur qui produit les mêmes effets — notamment le même échauffement — qu'une tension continue de même nombre. C'est cette valeur qu'affichent les multimètres et qu'indiquent les plaques signalétiques&nbsp;: le secteur haïtien est donné pour environ 110&nbsp;V efficaces.</p>
+<p>La <strong>fréquence</strong> indique combien de fois par seconde le courant accomplit un cycle complet&nbsp;; elle se mesure en <strong>hertz (Hz)</strong>. Le réseau fonctionne à 60&nbsp;Hz en Haïti (50&nbsp;Hz dans beaucoup d'autres pays). Certains multimètres mesurent directement la fréquence.</p>
+<p>Attention&nbsp;: un multimètre d'entrée de gamme suppose une sinusoïde parfaite&nbsp;; pour des signaux déformés, on utilise un appareil «&nbsp;<strong>TRMS</strong>&nbsp;» (vraie valeur efficace).</p>
 </div>
 
 <div class="section">
-<h3>3.2 Comprendre une procédure d'entretien</h3>
-<p>Les manuels d'entretien emploient l'<strong>impératif</strong>, forme la plus simple de l'anglais — c'est une bonne nouvelle : <em>Check the oil level. Tighten the bolts. Replace the filter every 250 hours.</em></p>
-<table class="dtable"><thead><tr><th>Anglais</th><th>Français</th></tr></thead><tbody>
-<tr><td><strong>Maintenance schedule</strong></td><td>Calendrier d'entretien</td></tr>
-<tr><td><strong>Every 250 operating hours</strong></td><td>Toutes les 250 heures de fonctionnement</td></tr>
-<tr><td><strong>Oil change</strong></td><td>Vidange</td></tr>
-<tr><td><strong>Filter replacement</strong></td><td>Remplacement du filtre</td></tr>
-<tr><td><strong>Coolant level</strong></td><td>Niveau de liquide de refroidissement</td></tr>
-<tr><td><strong>Troubleshooting</strong></td><td>Dépannage, recherche de pannes</td></tr>
-<tr><td><strong>Spare parts</strong></td><td>Pièces de rechange</td></tr>
-<tr><td><strong>Torque</strong></td><td>Couple de serrage</td></tr>
-<tr><td><strong>Leak</strong></td><td>Fuite</td></tr>
-<tr><td><strong>Overheating</strong></td><td>Surchauffe</td></tr>
-</tbody></table>
+<h3>La pince ampèremétrique</h3>
+<p>Mesurer un courant en coupant le circuit n'est pas toujours possible ni prudent, surtout sur une installation en service. La <strong>pince ampèremétrique</strong> résout ce problème&nbsp;: ses mâchoires s'ouvrent et enserrent un <em>seul</em> conducteur&nbsp;; le champ magnétique créé par le courant est capté par la pince, qui en déduit l'intensité. Aucun contact électrique, aucun circuit à ouvrir.</p>
+<p>La règle est d'<strong>enserrer un seul fil</strong>&nbsp;: si l'on entoure à la fois la phase et le neutre, les champs s'annulent et la pince indique zéro. La pince est idéale pour vérifier le courant absorbé par un moteur, repérer un déséquilibre ou contrôler qu'un appareil ne consomme pas trop.</p>
 </div>
 
 <div class="section">
-<h3>3.3 Lire un tableau de dépannage (troubleshooting chart)</h3>
-<p>C'est la page la plus utile d'un manuel — et elle est toujours construite pareil : trois colonnes, <strong>Symptom / Possible cause / Corrective action</strong> (Symptôme / Cause possible / Action corrective).</p>
-<table class="dtable"><thead><tr><th>Symptom</th><th>Possible cause</th><th>Corrective action</th></tr></thead><tbody>
-<tr><td><em>Engine will not start</em><br>(le moteur ne démarre pas)</td><td><em>No fuel · Dead battery</em><br>(pas de carburant · batterie déchargée)</td><td><em>Refuel · Charge or replace battery</em><br>(faire le plein · charger ou remplacer)</td></tr>
-<tr><td><em>Overheating</em><br>(surchauffe)</td><td><em>Low coolant · Clogged radiator</em><br>(niveau bas · radiateur encrassé)</td><td><em>Add coolant · Clean radiator</em><br>(compléter · nettoyer)</td></tr>
-<tr><td><em>Low output voltage</em><br>(tension de sortie faible)</td><td><em>Loose connection · Faulty AVR</em><br>(connexion desserrée · régulateur défectueux)</td><td><em>Tighten · Replace AVR</em><br>(resserrer · remplacer)</td></tr>
-</tbody></table>
-<p>Savoir lire ce tableau, c'est pouvoir dépanner un groupe électrogène importé avec son seul manuel d'origine. C'est très exactement la compétence que ce module vise.</p>
+<h3>Mesurer la puissance et l'énergie</h3>
+<p>La <strong>puissance</strong> mesure l'énergie transformée chaque seconde. En courant continu, elle se calcule simplement&nbsp;: <code>P = U × I</code>. En courant alternatif, une partie de la puissance peut ne pas être «&nbsp;utile&nbsp;» (à cause du déphasage)&nbsp;; on introduit alors le <strong>facteur de puissance</strong>, et la puissance active vaut <code>P = U × I × cos φ</code>. Pour une mesure directe, on emploie un <strong>wattmètre</strong>, qui tient compte à la fois de la tension, du courant et du déphasage.</p>
+<p>L'<strong>énergie</strong> est le produit de la puissance par la durée&nbsp;: <code>E = P × t</code>. Le compteur de la compagnie d'électricité mesure cette énergie en <strong>kilowattheures (kWh)</strong>. Un climatiseur de 1500&nbsp;W fonctionnant 4&nbsp;heures consomme <code>1,5 × 4 = 6 kWh</code>&nbsp;: savoir estimer une consommation aide le technicien à conseiller le client.</p>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>DANGER</dt><dd>Le niveau le plus grave : la situation causera la mort ou une blessure grave.</dd><dt>WARNING</dt><dd>Grave : la situation pourrait causer la mort ou une blessure grave.</dd><dt>CAUTION</dt><dd>Modéré : risque de blessure légère ou modérée.</dd><dt>NOTICE</dt><dd>Risque de dommage à l'équipement, sans danger corporel.</dd><dt>Lockout / Tagout</dt><dd>Consignation : cadenas et étiquette — exactement la procédure d'ELM-06.</dd><dt>Troubleshooting chart</dt><dd>Tableau de dépannage : Symptom / Possible cause / Corrective action.</dd></dl>
+  <dl><dt>Valeur efficace (RMS)</dt><dd>Valeur lue par le multimètre en alternatif ; « 110 V » est une valeur efficace.</dd><dt>Fréquence</dt><dd>Nombre de cycles par seconde, en hertz ; réseau haïtien : 60 Hz.</dd><dt>Puissance (P)</dt><dd>P = U × I, en watts (W) ; 1 kW = 1000 W.</dd><dt>Énergie (E)</dt><dd>E = P × t, en kilowattheures (kWh) : l'unité du compteur et de la facture EDH.</dd><dt>Pince ampèremétrique</dt><dd>Mesure un courant sans ouvrir le circuit, en enserrant un conducteur.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>Échelle de gravité : <strong>DANGER</strong> (causera) &gt; <strong>WARNING</strong> (pourrait causer) &gt; <strong>CAUTION</strong> (blessure légère) &gt; <strong>NOTICE</strong> (matériel).</li><li><strong>« Disconnect power before servicing »</strong> : couper l'alimentation avant intervention.</li><li><strong>Lockout / Tagout</strong> = la consignation par cadenas et étiquette (ELM-06).</li><li>Les procédures sont à l'<strong>impératif</strong> : <em>check, tighten, replace, adjust</em>.</li><li>Le <strong>troubleshooting chart</strong> : <em>Symptom / Possible cause / Corrective action</em> — la page la plus utile du manuel.</li></ul>
+  <ul class="recap-list"><li>«&nbsp;110&nbsp;V&nbsp;» ou «&nbsp;220&nbsp;V&nbsp;» sont des valeurs efficaces&nbsp;: c'est la référence pour tous vos calculs.</li><li>Avec une pince ampèremétrique, n'enserrez qu'un seul conducteur, sinon la mesure tombe à zéro.</li><li>Puissance en watts, énergie en wattheures&nbsp;: <em>P</em> se multiplie par le temps pour donner <em>E</em>.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="3">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quel est le niveau d'avertissement le plus grave ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>CAUTION</button>
-    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>WARNING</button>
-    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>DANGER</button>
-    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>NOTICE</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">En courant alternatif, la valeur affichée par un multimètre est généralement&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>La valeur crête (maximale)</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>La valeur efficace (RMS)</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>La valeur moyenne</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>La fréquence</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que signifie « NOTICE » dans un manuel ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Danger de mort</button>
-    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Risque de dommage à l'équipement, sans danger corporel</button>
-    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Blessure grave</button>
-    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Information facultative</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel appareil permet de mesurer l'intensité d'un courant sans ouvrir le circuit&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Le voltmètre</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>L'ohmmètre</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>La pince ampèremétrique</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Le mégohmmètre</button>
   </div><div class="qexpl" id="qe-3-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Que signifie « Disconnect power before servicing » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Nettoyer avant usage</button>
-    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Couper l'alimentation avant toute intervention</button>
-    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Brancher avant de démarrer</button>
-    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Appeler le service après-vente</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">L'énergie électrique consommée se mesure en&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Volts (V)</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Ampères (A)</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Kilowattheures (kWh)</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Ohms (Ω)</button>
   </div><div class="qexpl" id="qe-3-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">À quoi correspond « Lockout / Tagout » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Fermer l'atelier à clé</button>
-    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>La consignation : cadenas et étiquette avant intervention</button>
-    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Étiqueter les pièces neuves</button>
-    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Verrouiller l'ordinateur</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Un appareil de 110 V absorbe 5 A. Quelle est sa puissance ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>22 W</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>115 W</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>550 W</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>5 W</button>
   </div><div class="qexpl" id="qe-3-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Comment sont organisées les colonnes d'un troubleshooting chart ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Prix / Quantité / Référence</button>
-    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Symptom / Possible cause / Corrective action</button>
-    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Date / Heure / Lieu</button>
-    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Avant / Pendant / Après</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Une ampoule de 100 W allumée 10 heures consomme…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>1 kWh</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>10 kWh</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>100 kWh</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>0,01 kWh</button>
   </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[2,1,1,1,1],['DANGER : la situation CAUSERA la mort ou une blessure grave. WARNING = pourrait causer.','NOTICE concerne le matériel, pas les personnes — mais reste à respecter.','C’est l’énoncé anglais de la règle de consignation vue en ELM-06.','Lockout = cadenas, Tagout = étiquette : c’est exactement notre procédure de consignation.','Symptôme, cause possible, action corrective : la structure universelle des tableaux de dépannage.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,2,2,2,0],['<strong>Explication&nbsp;:</strong> Les multimètres affichent la valeur efficace (RMS), celle qui produit les mêmes effets thermiques qu’une tension continue équivalente. Le secteur haïtien vaut environ 110&nbsp;V efficaces.','<strong>Explication&nbsp;:</strong> La pince ampèremétrique mesure l’intensité en enserrant le conducteur, grâce au champ magnétique qu’il crée&nbsp;: nul besoin de couper le circuit, ce qui est plus sûr et plus pratique.','<strong>Explication&nbsp;:</strong> L’énergie est le produit de la puissance par la durée (<code>E = P × t</code>). Elle se mesure en wattheures ou kilowattheures (kWh)&nbsp;: c’est l’unité facturée par la compagnie d’électricité.','P = U × I = 110 × 5 = 550 W.','E = P × t = 0,1 kW × 10 h = 1 kWh — l’unité facturée par EDH.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
@@ -773,102 +714,90 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="chapter step" id="ch-4">
 <div class="ch-header">
   <div class="ch-num">04</div>
-  <div class="ch-info"><h2>Communiquer par écrit dans le métier</h2><div class="ch-meta"><span class="ch-badge">Rapport · Commande de pièces · Décrire une panne</span></div></div>
+  <div class="ch-info"><h2>Sécurité, précision et instruments spécialisés</h2><div class="ch-meta"><span class="ch-badge">Sécurité · Précision · Instruments spécialisés</span></div></div>
 </div>
 <div class="ch-body">
 
 <div class="lesson-plan">
-  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Communiquer par écrit dans le métier</div></div></div>
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Sécurité, précision et instruments spécialisés</div></div></div>
   <div class="lpl-grid">
-    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>rédiger un court <strong>rapport d'intervention</strong> en anglais ;</li><li><strong>commander une pièce</strong> (part number, quantity, model) ;</li><li><strong>décrire un problème</strong> et demander de l'aide.</li></ul></div>
-    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais lire un manuel, ses avertissements et son tableau de dépannage (leçon 3).</p></div>
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>Appliquer les règles de sécurité lors des mesures électriques.</li><li>Choisir le bon calibre et comprendre la précision d'une mesure.</li><li>Reconnaître les instruments spécialisés (oscilloscope, mégohmmètre).</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Vous maîtrisez les mesures courantes. Reste à les réaliser sans danger, avec la bonne précision, et à connaître les appareils utilisés pour des mesures particulières.</p></div>
     <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour terminer le module et accéder à l'examen blanc.</p></div>
   </div>
 </div>
 
 <div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
 <div class="vblock">
-  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Rédiger un rapport et commander une pièce</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
-  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM11/final/ELM11-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Sécurité, précision et instruments spécialisés</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM07/final/ELM07-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
 </div>
 
 <div class="lesson-step-label">② Lecture</div>
 <div class="section">
-<h3>4.1 Rédiger un court rapport d'intervention</h3>
-<p>Un rapport en anglais reste <strong>simple et factuel</strong>. La structure est toujours la même : <em>Date · Equipment · Problem · Action taken · Parts used · Status</em>.</p>
-<div class="ibox blue"><span class="ibox-label">📝 Exemple type</span><em>Date: 12 July 2026 — Equipment: Generator 60 kVA, serial 4471<br>Problem: Engine overheating after 2 hours of operation.<br>Action taken: Cleaned the radiator, replaced the coolant, checked the fan belt tension.<br>Parts used: 5 L coolant, 1 air filter.<br>Status: Repaired and tested. Running normally.</em></div>
-<p>Remarque la simplicité : phrases courtes, verbes au <strong>passé</strong> pour ce qui a été fait (<em>cleaned, replaced, checked</em>), pas de tournure compliquée. En technique, la clarté vaut mieux que l'élégance.</p>
+<h3>Mesurer en sécurité</h3>
+<p>La mesure électrique n'est pas sans risque&nbsp;: on travaille parfois près de tensions dangereuses. Quelques règles s'imposent. On vérifie d'abord l'état des cordons et de l'appareil&nbsp;; un cordon dénudé se remplace. On choisit un multimètre dont la <strong>catégorie de mesure</strong> (CAT II, III ou IV) correspond à l'endroit où l'on intervient&nbsp;: plus le chiffre est élevé, plus la protection contre les surtensions est grande. On garde une seule main sur l'appareil quand c'est possible, et l'on ne touche jamais les parties métalliques des pointes.</p>
+<p>Avant une intervention hors tension, on <strong>consigne</strong> l'installation&nbsp;: on coupe, on condamne et on vérifie l'absence de tension avec le multimètre… puis on vérifie que le multimètre fonctionne toujours sur une source connue. Cette vérification en trois temps (VAT&nbsp;: vérification d'absence de tension) évite bien des accidents.</p>
 </div>
 
 <div class="section">
-<h3>4.2 Commander une pièce</h3>
-<p>Pour commander, il faut identifier précisément la pièce : <strong>part number</strong> (référence), <strong>description</strong>, <strong>quantity</strong> (quantité), <strong>model</strong> et <strong>serial number</strong> (numéro de série) de l'équipement.</p>
-<div class="ibox blue"><span class="ibox-label">📧 Exemple de demande</span><em>Dear Sir/Madam,<br>We need a spare part for our generator (model GEN-60, serial 4471).<br>Part number: AVR-2210 — Description: Automatic Voltage Regulator — Quantity: 1<br>Please send us your best price and delivery time.<br>Best regards,</em></div>
-<p>Quelques formules qui reviennent : <strong>« in stock »</strong> (en stock), <strong>« out of stock »</strong> (rupture), <strong>« lead time »</strong> (délai de livraison), <strong>« quotation »</strong> (devis), <strong>« invoice »</strong> (facture), <strong>« warranty »</strong> (garantie).</p>
+<h3>Calibre, précision et erreurs de mesure</h3>
+<p>Un multimètre à calibres manuels oblige à choisir la plage de mesure. La règle&nbsp;: pour une valeur <strong>inconnue</strong>, on commence par le <strong>calibre le plus élevé</strong>, puis on descend pour affiner. Commencer trop bas risque de dépasser la capacité de l'appareil. Les multimètres à sélection automatique («&nbsp;autorange&nbsp;») font ce choix seuls.</p>
+<p>Aucune mesure n'est parfaitement exacte. La <strong>précision</strong> (ou incertitude) indique l'écart possible entre la valeur lue et la valeur réelle&nbsp;; elle est donnée par le fabricant, par exemple ±&nbsp;1&nbsp;%. On distingue la <em>fidélité</em> (retrouver la même valeur en répétant la mesure) de la <em>justesse</em> (être proche de la vraie valeur). Un appareil mal étalonné peut être fidèle sans être juste&nbsp;: d'où l'importance de l'étalonnage périodique.</p>
 </div>
 
 <div class="section">
-<h3>4.3 Demander de l'aide et décrire un problème</h3>
-<p>Savoir décrire un symptôme est une compétence en soi. Quelques phrases à mémoriser telles quelles :</p>
-<table class="dtable"><thead><tr><th>Situation</th><th>Phrase utile</th></tr></thead><tbody>
-<tr><td>Ne démarre pas</td><td><em>The motor does not start.</em></td></tr>
-<tr><td>Bourdonne</td><td><em>The motor is humming but does not turn.</em></td></tr>
-<tr><td>Surchauffe</td><td><em>The unit is overheating.</em></td></tr>
-<tr><td>Bruit anormal</td><td><em>There is an unusual noise coming from the bearing.</em></td></tr>
-<tr><td>Fuite</td><td><em>There is an oil leak.</em></td></tr>
-<tr><td>Disjoncteur déclenche</td><td><em>The circuit breaker keeps tripping.</em></td></tr>
-<tr><td>Demander une précision</td><td><em>Could you please clarify this point?</em></td></tr>
-<tr><td>Demander la doc</td><td><em>Could you send us the service manual?</em></td></tr>
-</tbody></table>
-<div class="ibox gold"><span class="ibox-label">🎯 La bonne stratégie</span>Tu n'as pas besoin d'un anglais parfait. Tu as besoin d'un anglais <strong>compris</strong>. Phrases courtes, mots techniques justes, et n'hésite jamais à joindre une <strong>photo</strong> ou la <strong>référence exacte</strong> : elles parlent toutes les langues.</div>
+<h3>Les instruments spécialisés</h3>
+<p>Au-delà du multimètre, certaines mesures exigent des appareils dédiés. L'<strong>oscilloscope</strong> affiche la forme du signal en fonction du temps&nbsp;: on y voit «&nbsp;en image&nbsp;» une sinusoïde, une impulsion ou un défaut, ce qu'un simple afficheur de chiffres ne montre pas. Il est indispensable en électronique et pour l'analyse des signaux.</p>
+<p>Le <strong>mégohmmètre</strong> (ou contrôleur d'isolement) applique une haute tension continue d'essai — 250, 500 ou 1000&nbsp;V — et mesure des résistances très grandes, de l'ordre du mégohm&nbsp;: il contrôle la qualité de l'isolant d'un moteur ou d'un câble, ce que l'ohmmètre ordinaire ne peut pas faire. Citons encore la pince wattmétrique, le testeur de terre et le thermomètre infrarouge, autant d'outils que le technicien apprend à choisir selon le besoin.</p>
 </div>
 
 <div class="terms">
   <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
-  <dl><dt>Part number</dt><dd>La référence de la pièce — l'information la plus importante d'une commande.</dd><dt>Serial number</dt><dd>Le numéro de série de l'équipement, qui l'identifie précisément.</dd><dt>Lead time</dt><dd>Le délai de livraison.</dd><dt>Quotation</dt><dd>Le devis. <em>Invoice</em> = la facture.</dd><dt>In stock / out of stock</dt><dd>En stock / en rupture.</dd><dt>Warranty</dt><dd>La garantie.</dd></dl>
+  <dl><dt>Consignation</dt><dd>Couper, vérifier l'absence de tension, condamner (cadenas, étiquette) avant d'intervenir.</dd><dt>Catégorie CAT</dt><dd>Classement du multimètre (CAT II, III, IV) selon l'installation où il peut être utilisé en sécurité.</dd><dt>Mégohmmètre</dt><dd>Mesure la résistance d'isolement sous tension d'essai élevée — contrôle des moteurs et câbles.</dd><dt>Précision</dt><dd>Écart possible entre la valeur affichée et la valeur réelle ; toujours estimer avant de mesurer.</dd><dt>EPI</dt><dd>Équipements de protection individuelle : gants isolants, lunettes, chaussures de sécurité.</dd></dl>
 </div>
 
 <div class="recap">
   <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
-  <ul class="recap-list"><li>Rapport : <em>Date · Equipment · Problem · Action taken · Parts used · Status</em>. Phrases courtes, verbes au passé.</li><li>Commande : <strong>part number</strong>, <strong>description</strong>, <strong>quantity</strong>, <strong>model</strong> et <strong>serial number</strong>.</li><li>Vocabulaire commercial : <em>in stock, out of stock, lead time, quotation, invoice, warranty</em>.</li><li>Décrire une panne : <em>The motor is humming but does not turn. The circuit breaker keeps tripping.</em></li><li>Un anglais <strong>compris</strong> vaut mieux qu'un anglais parfait : phrases courtes, référence exacte, photo si possible.</li></ul>
+  <ul class="recap-list"><li>Vérifier son multimètre sur une source connue avant ET après un contrôle d'absence de tension&nbsp;: le réflexe qui sauve.</li><li>Calibre inconnu&nbsp;? On part du plus haut et on descend. En «&nbsp;autorange&nbsp;», l'appareil le fait pour vous.</li><li>L'ohmmètre du multimètre ne remplace pas le mégohmmètre&nbsp;: l'isolement se contrôle sous tension d'essai élevée.</li></ul>
 </div>
 <div class="lesson-step-label">③ Quiz de validation</div>
 <div class="qblock" data-qid="4">
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle information est la plus importante pour commander une pièce ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>La couleur</button>
-    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Le part number (la référence)</button>
-    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Le poids</button>
-    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Le nom du fournisseur</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Pour mesurer une tension inconnue avec un multimètre à calibres manuels, on commence par&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Le plus petit calibre</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Le calibre le plus élevé, puis on réduit</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Le calibre des ohms</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>N'importe quel calibre, cela n'a pas d'importance</button>
   </div><div class="qexpl" id="qe-4-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que signifie « lead time » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Le temps de travail</button>
-    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Le délai de livraison</button>
-    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>La durée de garantie</button>
-    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>L'heure d'ouverture</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que signifie la catégorie de mesure (CAT II, CAT III, CAT IV) inscrite sur un multimètre&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Le nombre de piles nécessaires</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Le niveau de protection contre les surtensions selon l'endroit de mesure</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>La couleur des cordons</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>La marque de l'appareil</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Comment dit-on « le disjoncteur déclenche sans arrêt » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>The breaker is broken.</button>
-    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>The circuit breaker keeps tripping.</button>
-    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>The breaker is on.</button>
-    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>The breaker is new.</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Quel appareil sert à vérifier l'isolement d'un moteur ou d'un câble sous haute tension d'essai&nbsp;?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Le mégohmmètre (contrôleur d'isolement)</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Le simple ohmmètre du multimètre</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>La pince ampèremétrique</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Le wattmètre</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Dans un rapport, quelle rubrique décrit ce que tu as fait ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Problem</button>
-    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Action taken</button>
-    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Status</button>
-    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Parts used</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Avant toute intervention sur un circuit, la démarche correcte est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Travailler vite sous tension</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Couper, vérifier l'absence de tension, consigner, puis travailler</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Porter des gants et y aller</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Demander à un collègue de surveiller</button>
   </div><div class="qexpl" id="qe-4-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que signifie « out of stock » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>En stock</button>
-    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>En rupture de stock</button>
-    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Hors service</button>
-    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Hors garantie</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que vérifie-t-on sur un multimètre avant de mesurer une tension élevée ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Sa couleur</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>L'état des cordons, la catégorie (CAT II/III) et le calibre choisi</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Son poids</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Sa marque</button>
   </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,1],['La référence identifie la pièce sans ambiguïté ; on y joint modèle et numéro de série de l’équipement.','Lead time = délai de livraison. À ne pas confondre avec warranty (garantie).','To trip = déclencher. « Keeps tripping » exprime la répétition.','Action taken = action réalisée. Problem = le constat, Status = l’état final.','Out of stock = rupture. In stock = disponible.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,0,1,1],['<strong>Explication&nbsp;:</strong> On démarre sur le calibre le plus élevé pour ne pas risquer de dépasser la capacité de l’appareil, puis on descend progressivement pour gagner en précision.','<strong>Explication&nbsp;:</strong> Les catégories CAT indiquent la résistance aux surtensions transitoires selon l’endroit du réseau où l’on mesure. Plus le chiffre est élevé, plus l’appareil est protégé (CAT IV près du branchement, CAT II sur une prise).','<strong>Explication&nbsp;:</strong> Le mégohmmètre applique une haute tension continue d’essai (250, 500, 1000&nbsp;V…) et mesure des résistances très élevées (mégohms) pour contrôler la qualité de l’isolant, ce que l’ohmmètre ordinaire ne peut pas faire.','Couper → vérifier au multimètre (VAT) → consigner (cadenas, étiquette) : la règle absolue du métier.','Cordons intacts, catégorie adaptée à l’installation, calibre supérieur à la valeur attendue : les trois vérifications de sécurité.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
@@ -879,27 +808,35 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="step" id="essentiel">
 <div class="ch-header">
   <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
-  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module ELM-11</span></div></div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module ELM-07</span></div></div>
 </div>
 <div class="ch-body">
 <div class="recap recap-final">
-  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module ELM-11</div>
-  <ul class="recap-list"><li><strong>Les grandeurs —</strong> <em>voltage</em> (tension), <em>current</em> (intensité), <em>power</em> (puissance), <em>resistance</em>. Faux amis : <em>current</em> ≠ actuel ; <em>tension</em> anglais = tension mécanique.</li><li><strong>Les composants —</strong> <em>circuit breaker</em> (disjoncteur), <em>fuse</em> (fusible), <em>switch</em>, <em>wire</em>, <em>ground/earth</em> (terre), <em>coil</em> (bobine), <em>bearing</em> (roulement), <em>belt</em> (courroie).</li><li><strong>La plaque —</strong> <em>RATED VOLTAGE</em>, <em>FLA</em> (courant nominal), <em>RPM</em>, <em>Hz</em>, <em>PF</em>, <em>PH</em>. <strong>1 HP ≈ 0,75 kW.</strong> ⚠️ <strong>NC anglais = NF français.</strong></li><li><strong>Les nombres —</strong> ⚠️ <strong>1,500.75</strong> = mille cinq cents virgule 75 : le <strong>point</strong> est décimal, la <strong>virgule</strong> sépare les milliers.</li><li><strong>La sécurité —</strong> <strong>DANGER</strong> (causera) &gt; <strong>WARNING</strong> (pourrait causer) &gt; <strong>CAUTION</strong> (blessure légère) &gt; <strong>NOTICE</strong> (matériel). <em>Lockout/Tagout</em> = consignation (ELM-06).</li><li><strong>Le dépannage —</strong> le <em>troubleshooting chart</em> : <em>Symptom / Possible cause / Corrective action</em>. La page la plus utile de tout manuel.</li><li><strong>Écrire —</strong> rapport (<em>Date, Equipment, Problem, Action taken, Parts used, Status</em>) et commande (<em>part number, quantity, model, serial number</em>). Phrases courtes : un anglais <strong>compris</strong> vaut mieux qu'un anglais parfait.</li></ul>
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module ELM-07</div>
+  <ul class="recap-list"><li>La tension (<em>U</em>, en volts), l'intensité (<em>I</em>, en ampères) et la résistance (<em>R</em>, en ohms) sont les trois grandeurs de base, reliées par la loi d'Ohm <code>U = R × I</code>.</li><li>Les préfixes k, M, m, µ changent l'échelle&nbsp;: 1&nbsp;kΩ = 1000&nbsp;Ω, 1&nbsp;mA = 0,001&nbsp;A&nbsp;; toujours vérifier l'unité affichée.</li><li>Le voltmètre se branche en parallèle, l'ampèremètre en série, et l'ohmmètre uniquement hors tension.</li><li>Sur un multimètre, il faut accorder la fonction ET la borne des cordons&nbsp;; la fonction continuité (bip) repère vite un fil coupé ou un fusible grillé.</li><li>En alternatif, la valeur affichée est la valeur efficace&nbsp;; la fréquence se mesure en hertz (60&nbsp;Hz en Haïti).</li><li>La pince ampèremétrique mesure un courant sans ouvrir le circuit&nbsp;; la puissance vaut <code>P = U × I</code> (continu) et l'énergie <code>E = P × t</code>, facturée en kilowattheures.</li><li>On mesure en sécurité (cordons vérifiés, bonne catégorie CAT, absence de tension confirmée), on part du calibre le plus élevé, et l'on choisit l'appareil spécialisé — oscilloscope, mégohmmètre — selon le besoin.</li><li><strong>La règle d'or —</strong> voltmètre <strong>en parallèle</strong>, ampèremètre <strong>en série</strong>, ohmmètre <strong>hors tension</strong> ; calibre le plus élevé d'abord ; et avant toute intervention : <strong>couper, vérifier, consigner</strong>.</li></ul>
 </div>
 
 <div class="section">
-<h3>🎯 Mini-projet — Exploiter un manuel technique authentique (DEM-ELM-11-01)</h3><p>À partir du manuel d'origine d'un équipement de l'atelier (groupe électrogène, moteur, automate), produis un dossier d'exploitation en français.</p><ul><li><strong>Traduire la nameplate</strong> de l'équipement : relever et expliquer chaque mention en français <strong>(20 pts)</strong></li><li><strong>Relever les avertissements de sécurité</strong> du manuel et les classer par niveau (DANGER, WARNING, CAUTION, NOTICE) <strong>(20 pts)</strong></li><li><strong>Traduire le calendrier d'entretien</strong> (maintenance schedule) en un tableau français exploitable en atelier <strong>(25 pts)</strong></li><li><strong>Exploiter le troubleshooting chart</strong> : traduire trois lignes symptôme / cause / action <strong>(20 pts)</strong></li><li><strong>Rédiger en anglais</strong> une courte demande de pièce de rechange (part number, quantity, model, serial) <strong>(15 pts)</strong></li></ul><div class="ibox gold"><span class="ibox-label">🏫 En pratique</span>Ce dossier est directement réutilisable en atelier — et c'est exactement la compétence évaluée à l'épreuve (seuil 75/100).</div>
+<h3>🎯 Mini-projet — Relever les grandeurs électriques d'un petit circuit</h3>
+<p>Objectif&nbsp;: mettre en pratique la mesure de tension, d'intensité et de résistance, et vérifier la loi d'Ohm. À réaliser à l'atelier, sous la supervision du formateur, sur un circuit basse tension (pile et lampe ou résistance).</p>
+<ol>
+<li>Sur une feuille, dessinez le schéma du circuit&nbsp;: une pile (par exemple 4,5&nbsp;V), un interrupteur, une lampe (ou une résistance) et les fils de liaison.</li>
+<li>Hors tension, mesurez la résistance de la lampe (ou de la résistance) à l'ohmmètre et notez la valeur en ohms.</li>
+<li>Fermez le circuit, puis mesurez la tension aux bornes de la lampe en branchant le voltmètre en parallèle&nbsp;; notez la valeur en volts.</li>
+<li>Ouvrez le circuit et intercalez l'ampèremètre en série pour mesurer l'intensité&nbsp;; notez la valeur en ampères (ou milliampères).</li>
+<li>Vérifiez la cohérence avec la loi d'Ohm&nbsp;: comparez le rapport <code>U / I</code> à la résistance mesurée, calculez la puissance <code>P = U × I</code>, et présentez vos relevés dans un petit tableau.</li>
+</ol>
 </div>
 </div>
 </div>
 
 <div class="step" id="examen">
 <div class="ch-header"><div class="ch-num" style="background:#c0392b;color:#fff">🎓</div>
-  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 75 %</span></div></div></div>
+  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 80 %</span></div></div></div>
 <div class="ch-body">
 <div class="exam-head"><h3>🎓 Avant de commencer</h3>
-  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : connaissances (QCM), <strong>calculs</strong> (saisie numérique) et démarche. Le volet <strong>pratique</strong> — lecture et exploitation d'un document technique authentique en anglais, et rédaction d'un rapport ou d'une commande — est évalué <strong>par le professeur</strong>, lors de l'épreuve pratique officielle (seuil 75/100).</p>
-  <div class="exam-rules"><span class="exam-rule">A · Connaissances — 40%</span><span class="exam-rule">B · Calculs — 40%</span><span class="exam-rule">C · Démarche — 20%</span><span class="exam-rule">Validation en ligne : ≥ 75%</span></div>
+  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : connaissances (QCM), <strong>calculs</strong> (saisie numérique) et démarche. Le volet <strong>pratique</strong> — campagne de mesures sur circuits et appareils réels, avec relevé documenté — est évalué <strong>par le professeur</strong>, lors de l'épreuve pratique officielle (seuil 80/100).</p>
+  <div class="exam-rules"><span class="exam-rule">A · Connaissances — 40%</span><span class="exam-rule">B · Calculs — 40%</span><span class="exam-rule">C · Démarche — 20%</span><span class="exam-rule">Validation en ligne : ≥ 80%</span></div>
 </div>
 <div class="exid">
   <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
@@ -911,57 +848,57 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock" data-qid="exa">
 <div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">« Voltage » signifie…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Intensité</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>Tension</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Puissance</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Résistance</button>
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">L'unité de l'intensité du courant est&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Le volt</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>L'ampère</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>L'ohm</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Le watt</button>
   </div><div class="qexpl" id="qe-exa-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">« Current » signifie…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>Actuel</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>L'intensité du courant</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>La tension</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Le courant d'air</button>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">La résistance électrique se mesure en&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>Watts</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>Ampères</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Ohms</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Volts</button>
   </div><div class="qexpl" id="qe-exa-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">« Circuit breaker » signifie…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Fusible</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Disjoncteur</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Interrupteur</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Prise</button>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Le voltmètre se branche&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>En série avec le composant</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>En parallèle aux bornes du composant</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>À la place de la source</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Uniquement hors tension</button>
   </div><div class="qexpl" id="qe-exa-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">« FLA » sur une nameplate signifie…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>Fréquence</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Full Load Amps : le courant nominal</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Puissance maximale</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Facteur de puissance</button>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">L'ampèremètre se branche&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>En parallèle aux bornes de la source</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>En série, dans le circuit</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>En dérivation sur une résistance</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Sur la prise de terre</button>
   </div><div class="qexpl" id="qe-exa-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">En anglais technique, « NC » correspond au français…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>NO (normalement ouvert)</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>NF (normalement fermé)</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Non connecté</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Non conforme</button>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">La loi d'Ohm s'écrit&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>U = R + I</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>U = R × I</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>U = R / I</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>U = I / R</button>
   </div><div class="qexpl" id="qe-exa-4"></div></div>
-  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Le niveau d'avertissement le plus grave est…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>CAUTION</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>NOTICE</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>WARNING</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>DANGER</button>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">L'énergie électrique se facture en&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Volts</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Ampères</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Kilowattheures (kWh)</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Ohms</button>
   </div><div class="qexpl" id="qe-exa-5"></div></div>
-  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">« Lockout / Tagout » désigne…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Le verrouillage du bureau</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>La consignation par cadenas et étiquette</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>La fermeture de l'usine</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>L'étiquetage des pièces</button>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La valeur affichée par un multimètre en courant alternatif est la valeur&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Crête</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Moyenne</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>Efficace (RMS)</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Instantanée</button>
   </div><div class="qexpl" id="qe-exa-6"></div></div>
-  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">« 1,500.75 » dans un document anglais vaut…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>1,50075</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Mille cinq cents virgule soixante-quinze</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Un et demi</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Quinze</button>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">La puissance en courant continu se calcule par&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>P = U / I</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>P = U × I</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>P = U + I</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>P = I / U</button>
   </div><div class="qexpl" id="qe-exa-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,1,1,1,1,3,1,1],['Voltage = tension (V). Current = intensité, power = puissance.','Faux ami classique : current = intensité, en ampères.','Circuit breaker = disjoncteur ; fuse = fusible ; switch = interrupteur.','C’est le courant nominal, celui sur lequel on règle le relais thermique.','Normally closed = normalement fermé. Piège fréquent.','DANGER : la situation causera la mort ou une blessure grave.','C’est la procédure de consignation vue en ELM-06.','Le point est décimal, la virgule sépare les milliers : l’inverse du français.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,2,1,1,1,2,2,1],['Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Voir la leçon correspondante du module.','Le multimètre affiche la valeur efficace (RMS) en alternatif.','En continu, P = U × I.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exa"></span>
 </div>
@@ -969,50 +906,50 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <div class="exam-part"><span>Partie B — Calculs (saisie numérique)</span><span class="ex-chip" id="exB-score">40% · non soumis</span></div>
 <p style="font-size:.83rem;color:var(--g700);margin:0 0 .6rem">Saisis chaque résultat (décimales avec un point ou une virgule), puis vérifie.</p>
-<div class="exq"><div class="exq-t">1. Combien vaut approximativement <strong>1 HP</strong> (horsepower) en <strong>kilowatts</strong> ?</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">kW</span></div><div class="exn-fb" id="exnf-0"></div></div>
-<div class="exq"><div class="exq-t">2. Un document anglais indique <strong>1,500.75</strong>. Écris cette valeur en <strong>chiffres</strong> à la française (avec un point décimal).</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit"></span></div><div class="exn-fb" id="exnf-1"></div></div>
-<div class="exq"><div class="exq-t">3. Combien de <strong>niveaux</strong> compte l'échelle normalisée des avertissements de sécurité ?</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">niveaux</span></div><div class="exn-fb" id="exnf-2"></div></div>
-<div class="exq"><div class="exq-t">4. Le manuel dit « <em>Replace the filter every 250 operating hours</em> ». Après combien d'<strong>heures</strong> remplace-t-on le filtre ?</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">heures</span></div><div class="exn-fb" id="exnf-3"></div></div>
-<div class="exq"><div class="exq-t">5. Combien de <strong>colonnes</strong> compte un <em>troubleshooting chart</em> ?</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">colonnes</span></div><div class="exn-fb" id="exnf-4"></div></div>
+<div class="exq"><div class="exq-t">1. Une résistance de <strong>5 Ω</strong> est parcourue par <strong>3 A</strong>. Calcule la <strong>tension</strong> à ses bornes.</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">V</span></div><div class="exn-fb" id="exnf-0"></div></div>
+<div class="exq"><div class="exq-t">2. Un appareil de <strong>22 Ω</strong> est branché sur <strong>110 V</strong>. Calcule le <strong>courant</strong>.</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">A</span></div><div class="exn-fb" id="exnf-1"></div></div>
+<div class="exq"><div class="exq-t">3. Cet appareil (110 V · 5 A) : calcule sa <strong>puissance</strong>.</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">W</span></div><div class="exn-fb" id="exnf-2"></div></div>
+<div class="exq"><div class="exq-t">4. Un fer de <strong>550 W</strong> fonctionne <strong>4 heures</strong>. Calcule l'<strong>énergie</strong> consommée.</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">kWh</span></div><div class="exn-fb" id="exnf-3"></div></div>
+<div class="exq"><div class="exq-t">5. Une résistance porte l'inscription <strong>1,5 kΩ</strong>. Combien vaut-elle en <strong>ohms</strong> ?</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">Ω</span></div><div class="exn-fb" id="exnf-4"></div></div>
 <div class="qfooter"><button class="qbtn qbtn-submit" onclick="numGrade()">✓ Vérifier mes calculs</button></div>
 
 <div class="exam-part"><span>Partie C — Démarche</span><span class="ex-chip" id="exC-score">20% · non soumis</span></div>
 <div class="qblock" data-qid="exc">
 <div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
-  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Une étiquette indique « WARNING: Risk of electric shock ». Tu…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Ignores, ce n'est qu'un avertissement</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Prends la mention au sérieux : risque de choc électrique — tu consignes avant d'intervenir</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Enlèves l'étiquette</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Continues sans EPI</button>
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Pour mesurer une résistance à l'ohmmètre, le composant doit être&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Sous tension</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Hors tension</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>En court-circuit</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Branché en série avec une pile</button>
   </div><div class="qexpl" id="qe-exc-0"></div></div>
-  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Le manuel dit « Replace the filter every 250 operating hours ». Cela signifie…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Remplacer le filtre après 250 jours</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Remplacer le filtre toutes les 250 heures de fonctionnement</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Remplacer 250 filtres</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Nettoyer le filtre</button>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pour mesurer un courant sans ouvrir le circuit, on utilise&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Un voltmètre</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Une pince ampèremétrique</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Un ohmmètre</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Un mégohmmètre</button>
   </div><div class="qexpl" id="qe-exc-1"></div></div>
-  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Tu commandes une pièce mais tu n'as pas le part number. Tu…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Décris vaguement la pièce</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Relèves le modèle et le numéro de série de l'équipement, et joins une photo</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Commandes au hasard</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Renonces</button>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Sur un multimètre à calibres manuels, pour une tension inconnue on commence par&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Le calibre le plus faible</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Le calibre le plus élevé</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Le calibre des ohms</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Le calibre des ampères</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Une datasheet indique « Maximum voltage: 250 V ». Peux-tu l'utiliser en permanence à 250 V ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Oui, sans problème</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Non : c'est une limite à ne pas dépasser, pas une valeur de fonctionnement normal (rated)</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Oui, si c'est en continu</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Peu importe</button>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Le mégohmmètre sert à mesurer&nbsp;:</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>L'intensité d'un moteur en marche</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>La résistance d'isolement sous tension d'essai</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>La tension du secteur</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>La fréquence du réseau</button>
   </div><div class="qexpl" id="qe-exc-3"></div></div>
-  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Tu écris un rapport en anglais. La bonne approche est…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Des phrases longues et élégantes</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Des phrases courtes et factuelles, avec les termes techniques justes</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Du français traduit mot à mot</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>N'écrire que des abréviations</button>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Ton calcul annonce 5 A, mais la mesure affiche 0 A. Premier réflexe ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Changer de multimètre</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Vérifier le circuit et le branchement : circuit ouvert ? fonction ? calibre ?</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Augmenter la tension</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Ignorer l'écart</button>
   </div><div class="qexpl" id="qe-exc-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,1,1],['WARNING signale un risque grave possible : la consignation s’impose.','Operating hours = heures de fonctionnement, pas des jours.','Modèle, numéro de série et photo permettent au fournisseur d’identifier la référence exacte.','Maximum = limite absolue ; la valeur de fonctionnement normal est la valeur « rated ».','En technique, la clarté prime : phrases courtes, vocabulaire exact, et une photo si nécessaire.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,1,1],['L’ohmmètre injecte son propre courant : le composant doit être hors tension et isolé.','La pince ampèremétrique mesure le courant sans ouvrir le circuit.','Face à une tension inconnue, on part du calibre le plus élevé puis on redescend.','Le mégohmmètre contrôle la résistance d’isolement sous tension d’essai élevée.','Un écart calcul/mesure signale une anomalie ou une erreur de branchement : on vérifie méthodiquement.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
   <span class="qscore" id="qs-exc"></span>
 </div>
@@ -1031,15 +968,15 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
   <p style="color:#dbe6ff;margin:0 0 .7rem;line-height:1.65">Tu as acquis les bases de ce module. Pour ancrer ces acquis :</p>
   <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
-    <li style="margin-bottom:.4rem"><strong style="color:#fff">Mini-projet</strong> — réalise le dossier DEM-ELM-11-01 à partir du manuel d'origine d'un équipement de l'atelier.</li>
-    <li style="margin-bottom:.4rem"><strong style="color:#fff">Veille</strong> — prends l'habitude de lire la plaque anglaise de chaque équipement que tu croises, et de constituer ton propre glossaire.</li>
-    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape : <strong style="color:#fff">ELM-14 — Circuits d'électronique analogique</strong>.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Mini-projet</strong> — relève au multimètre les grandeurs d'un petit circuit, compare mesure et calcul, et documente l'écart au tableur.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Veille</strong> — repère la catégorie (CAT) inscrite sur le multimètre de l'atelier et vérifie qu'elle convient aux installations où tu interviens.</li>
+    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape : <strong style="color:#fff">ELM-08 — Façonnage et assemblage de pièces métalliques</strong>.</li>
   </ul>
 </div>
 
 <div class="complete-banner" id="complete-banner">
-  <h2>🎓 Module ELM-11 validé !</h2>
-  <p>Tu peux désormais lire une plaque, une datasheet, un manuel d'entretien et un tableau de dépannage en anglais — et écrire un rapport ou une commande. C'est l'autonomie technique. Prépare l'épreuve (seuil 75/100). Prochaine étape : ELM-14 — Circuits d'électronique analogique.</p>
+  <h2>🎓 Module ELM-07 validé !</h2>
+  <p>Tu sais mesurer tension, intensité, résistance, puissance et énergie — avec méthode et en sécurité. Prépare l'épreuve pratique (seuil 80/100). Prochaine étape : ELM-08 — Façonnage et assemblage de pièces métalliques.</p>
 </div>
 
 </div><!-- /main-content -->
@@ -1050,7 +987,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <script>
 // ═══ STATE & PERSISTENCE ═══
 var ST={done:{},qs:{},sel:{}};
-var K='ELM11v1_';
+var K='ELM07v1_';
 function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
 function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
 
@@ -1182,18 +1119,18 @@ function toast(msg){
 /* ===== LECTEUR DE COURS v3 ===== */
 (function(){
   var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','essentiel','examen'];
-  var LABELS={plan:'Plan de cours','ch-1':"Vocabulaire technique",'ch-2':"Plaque & datasheet",'ch-3':"Manuels & sécurité",'ch-4':"Communication écrite",'essentiel':"L'essentiel à retenir",'examen':'Examen blanc'};
+  var LABELS={plan:'Plan de cours','ch-1':"Les grandeurs électriques et leurs unités",'ch-2':"Le multimètre&nbsp;: tension, intensité, résistance",'ch-3':"Courant alternatif, puissance et énergie",'ch-4':"Sécurité, précision et instruments spécialisés",'essentiel':"L'essentiel à retenir",'examen':'Examen blanc'};
   var QUIZ={1:1,2:1,3:1,4:1};   // chapitres ayant un quiz
   var PASS=0.6;                          // seuil de réussite
-  var PK='ELM11v1_step', VK='ELM11v1_viewed';
+  var PK='ELM07v1_step', VK='ELM07v1_viewed';
   var cur=0, DUR={};
 
   function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
   function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
   function hasQuiz(n){return !!QUIZ[n];}
   function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
-  function isPassed(n){return !!readJSON('ELM11v1_done')[n];}
-  function countDone(){var d=readJSON('ELM11v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function isPassed(n){return !!readJSON('ELM07v1_done')[n];}
+  function countDone(){var d=readJSON('ELM07v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
   function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
   function refreshDur(){for(var N=1;N<=4;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
 
@@ -1264,10 +1201,10 @@ function toast(msg){
       if(window.exUpdateA)window.exUpdateA();
       updateGate();return;
     }
-    try{var qs=readJSON('ELM11v1_qs')[qid];
+    try{var qs=readJSON('ELM07v1_qs')[qid];
       if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
         if(window.ST){window.ST.done[qid]=true;}
-        try{var d=readJSON('ELM11v1_done');d[qid]=true;localStorage.setItem('ELM11v1_done',JSON.stringify(d));}catch(e){}
+        try{var d=readJSON('ELM07v1_done');d[qid]=true;localStorage.setItem('ELM07v1_done',JSON.stringify(d));}catch(e){}
         if(window.applyDone)applyDone(qid);
         if(window.updateProg)updateProg();
         if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
@@ -1336,11 +1273,11 @@ function toast(msg){
 })();
 </script>
 <script>
-/* ===== Activité globale comportement (examen blanc) — ELM-11 ===== */
+/* ===== Activité globale comportement (examen blanc) — ELM-07 ===== */
 (function(){
   function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
-  var K='ELM11v1_', SEUIL=0.75, W={a:40,b:40,c:20};
-  var NUM=[{"ans": 0.75, "tol": 0.02, "unit": "kW", "sol": "1 HP ≈ 0,75 kW", "q": "Combien vaut approximativement <strong>1 HP</strong> (horsepower) en <strong>kilowatts</strong> ?"}, {"ans": 1500.75, "tol": 0.01, "unit": "", "sol": "En anglais, le point est décimal et la virgule sépare les milliers", "q": "Un document anglais indique <strong>1,500.75</strong>. Écris cette valeur en <strong>chiffres</strong> à la française (avec un point décimal)."}, {"ans": 4, "tol": 0, "unit": "niveaux", "sol": "DANGER, WARNING, CAUTION, NOTICE", "q": "Combien de <strong>niveaux</strong> compte l'échelle normalisée des avertissements de sécurité ?"}, {"ans": 250, "tol": 0, "unit": "heures", "sol": "« Every 250 operating hours » = toutes les 250 heures de fonctionnement", "q": "Le manuel dit « <em>Replace the filter every 250 operating hours</em> ». Après combien d'<strong>heures</strong> remplace-t-on le filtre ?"}, {"ans": 3, "tol": 0, "unit": "colonnes", "sol": "Symptom / Possible cause / Corrective action", "q": "Combien de <strong>colonnes</strong> compte un <em>troubleshooting chart</em> ?"}];
+  var K='ELM07v1_', SEUIL=0.80, W={a:40,b:40,c:20};
+  var NUM=[{"ans": 15, "tol": 0, "unit": "V", "sol": "U = R × I = 5 × 3", "q": "Une résistance de <strong>5 Ω</strong> est parcourue par <strong>3 A</strong>. Calcule la <strong>tension</strong> à ses bornes."}, {"ans": 5, "tol": 0, "unit": "A", "sol": "I = U ÷ R = 110 ÷ 22", "q": "Un appareil de <strong>22 Ω</strong> est branché sur <strong>110 V</strong>. Calcule le <strong>courant</strong>."}, {"ans": 550, "tol": 0, "unit": "W", "sol": "P = U × I = 110 × 5", "q": "Cet appareil (110 V · 5 A) : calcule sa <strong>puissance</strong>."}, {"ans": 2.2, "tol": 0.05, "unit": "kWh", "sol": "E = P × t = 0,55 kW × 4 h", "q": "Un fer de <strong>550 W</strong> fonctionne <strong>4 heures</strong>. Calcule l'<strong>énergie</strong> consommée."}, {"ans": 1500, "tol": 0, "unit": "Ω", "sol": "1,5 kΩ = 1,5 × 1000 = 1500 Ω", "q": "Une résistance porte l'inscription <strong>1,5 kΩ</strong>. Combien vaut-elle en <strong>ohms</strong> ?"}];
   window.exNm=function(el){try{localStorage.setItem(K+'exNm',el.value);}catch(e){}};
   window.__exB=null;
   window.numGrade=function(){
@@ -1378,7 +1315,7 @@ function toast(msg){
     if(!r.done){if(res){res.className='exam-result';res.innerHTML='⚠️ Complète les trois parties (QCM, calculs, démarche) avant de valider.';}return;}
     var pass=r.tot>=Math.round(SEUIL*100);
     if(res){res.className='exam-result '+(pass?'pass':'fail');
-      res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 75% non atteint.')
+      res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 80% non atteint.')
         +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle du module est une <strong>épreuve pratique en atelier</strong> (5 h, seuil 80/100). Les volets montage, réparation et vérification y sont évalués par le professeur.</span>';}
     if(pass){try{localStorage.setItem(K+'exam','passed');}catch(e){}var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}
   };
@@ -1386,9 +1323,9 @@ function toast(msg){
     var nm=(document.getElementById('ex-nm')||{}).value||'';
     var w=window.open('','_blank');if(!w)return;
     var rows='';for(var i=0;i<NUM.length;i++){var inp=document.getElementById('exn-'+i);rows+='<tr><td>'+(i+1)+'</td><td>'+((inp&&inp.value)||'')+'</td><td>'+NUM[i].ans+' '+NUM[i].unit+'</td></tr>';}
-    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale ELM-11</title>'
+    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale ELM-07</title>'
       +'<style>body{font-family:Arial;margin:2cm;color:#111}h1{font-size:18px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #999;padding:6px;font-size:13px}</style></head><body>'
-      +'<h1>Activité globale — Module ELM-11 : Terminologie anglaise</h1>'
+      +'<h1>Activité globale — Module ELM-07 : Mesures électriques</h1>'
       +'<p><strong>Programme :</strong> Mécanique d\u0027entretien industrielle &nbsp; <strong>Apprenant :</strong> '+nm+'</p>'
       +'<p>Partie calculs (saisie de l\u0027apprenant vs réponse attendue) :</p>'
       +'<table><tr><th>#</th><th>Réponse de l\u0027apprenant</th><th>Réponse attendue</th></tr>'+rows+'</table>'
