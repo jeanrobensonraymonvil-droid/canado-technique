@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELM-13 — Dispositifs de transmission de mouvement · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
+.mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
+.mod-header h1 em{color:#7BA7FF;font-style:normal}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
+
+/* ===== LECTEUR DE COURS v3 ===== */
+.wrap{max-width:1280px}
+.mod-header-in{max-width:1280px}
+.layout{grid-template-columns:300px 1fr;gap:2rem}
+body.player .step{display:none}
+body.player .step.active{display:block;animation:stepIn .4s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pl-bar{display:flex;align-items:center;gap:1rem}
+.pl-bar-top{position:sticky;top:.6rem;z-index:60;background:rgba(255,255,255,.93);backdrop-filter:blur(10px) saturate(1.3);border:1px solid var(--bdr);border-radius:var(--rL);padding:.7rem 1rem;margin-bottom:1.3rem;box-shadow:0 6px 24px rgba(12,31,61,.07);flex-wrap:wrap}
+.pl-mid{flex:1;min-width:0}
+.pl-count{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--g500);font-family:var(--fD)}
+.pl-title{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-prog{height:5px;background:var(--g100);border-radius:3px;overflow:hidden;margin-top:.5rem}
+.pl-prog i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--blueG),var(--greenL));transition:width .55s ease}
+.pl-ic{width:38px;height:38px;border-radius:11px;background:var(--g100);color:var(--blue);font-size:1.15rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.pl-ic:hover:not(:disabled){background:var(--blue);color:#fff}
+.pl-ic:disabled{opacity:.3;cursor:default}
+.pl-bar-bottom{justify-content:space-between;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--bdr);flex-wrap:wrap;gap:.7rem}
+.pl-btn{padding:.6rem 1.2rem;border-radius:11px;font-family:var(--fD);font-weight:700;font-size:.83rem;background:var(--g100);color:var(--g700);transition:.15s}
+.pl-btn:hover:not(:disabled){background:var(--g300)}
+.pl-btn:disabled{opacity:.5;cursor:default}
+.pl-cta{background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;box-shadow:0 5px 16px rgba(43,86,192,.32)}
+.pl-cta:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.pl-cta:disabled{background:var(--g300);color:var(--g500);box-shadow:none}
+.toc-item.lock{opacity:.5;cursor:not-allowed}
+.toc-item.lock:hover{background:transparent;color:var(--g700)}
+.toc-item.viewed .toc-dot{background:var(--blueG)}
+.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-item.done .toc-num::after{content:' ✓';color:var(--greenL);font-weight:800}
+.toc-right{margin-left:auto;font-size:.62rem;color:var(--g500);font-family:var(--fM);flex-shrink:0}
+.resume-banner{display:flex;align-items:center;gap:.9rem;background:linear-gradient(135deg,rgba(43,86,192,.09),rgba(59,123,255,.04));border:1px solid rgba(43,86,192,.22);border-radius:var(--rL);padding:.85rem 1.1rem;margin-bottom:1.2rem}
+.resume-banner .rb-i{font-size:1.25rem}
+.resume-banner .rb-t{flex:1;font-size:.82rem;color:#1a2f52;line-height:1.45}
+.resume-banner .rb-t strong{color:var(--blue);font-family:var(--fD)}
+.resume-banner button{padding:.45rem 1rem;border-radius:9px;font-family:var(--fD);font-weight:700;font-size:.78rem}
+.rb-go{background:var(--blue);color:#fff}.rb-go:hover{background:var(--blueL)}
+.rb-x{background:transparent;color:var(--g500);font-size:1.05rem;padding:.2rem .55rem}
+@media(max-width:768px){.pl-title{font-size:.92rem}.pl-bar-top{top:0;border-radius:0;margin:0 -1.2rem 1.1rem;padding:.7rem 1.2rem}.pl-bar-bottom .pl-btn{flex:1;text-align:center}}
+
+
+/* ===== v4 : plan de leçon intégré + étapes de leçon ===== */
+.lesson-plan{background:linear-gradient(135deg,#f6f9ff,#eef3ff);border:1px solid var(--bdr);border-left:4px solid var(--blueG);border-radius:var(--rL);padding:1rem 1.1rem;margin-bottom:1.4rem}
+.lpl-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.85rem}
+.lpl-ic{width:34px;height:34px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.lpl-h{flex:1}
+.lpl-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);font-family:var(--fD)}
+.lpl-title{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);line-height:1.2}
+.lpl-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem}
+.lpl-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.7rem .8rem}
+.lpl-k{font-size:.66rem;font-weight:800;color:var(--blue);margin-bottom:.35rem;font-family:var(--fD)}
+.lpl-card p,.lpl-card li{font-size:.78rem;color:#2a3d6b;line-height:1.6}
+.lpl-card ul{padding-left:1.05rem;margin:0}
+.lpl-card li{margin-bottom:.2rem}
+.lesson-step-label{font-family:var(--fD);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin:1.6rem 0 .7rem;padding-bottom:.4rem;border-bottom:1px dashed var(--bdr)}
+
+
+/* ===== Bon à savoir (récap de leçon + récap final) ===== */
+.recap{margin-top:1.4rem;background:linear-gradient(135deg,#fffaf0,#fff3d4);border:1px solid #f0d98a;border-left:4px solid var(--gold);border-radius:var(--rL);padding:1rem 1.15rem}
+.recap-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#7a5b00;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.recap-ic{font-size:1rem}
+.recap-list{margin:0;padding-left:1.15rem}
+.recap-list li{font-size:.83rem;color:#5c4a1a;line-height:1.65;margin-bottom:.4rem}
+.recap-list li strong{color:#3d3000}
+.recap-final{background:linear-gradient(135deg,#0B1525,#13243f);border:1px solid rgba(255,197,24,.3);border-left:4px solid var(--gold)}
+.recap-final .recap-h{color:var(--gold)}
+.recap-final .recap-list li{color:#e8eeff}
+.recap-final .recap-list li strong{color:#fff}
+
+
+/* ===== Termes clés ===== */
+.terms{margin-top:1.4rem;background:linear-gradient(135deg,#f2fbf6,#e7f7ee);border:1px solid #bfe5cf;border-left:4px solid #1d9e5f;border-radius:var(--rL);padding:1rem 1.15rem}
+.terms-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#0f5c36;display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.terms dl{margin:0}
+.terms dt{font-weight:800;font-size:.8rem;color:#0f5c36;margin-top:.55rem}
+.terms dt:first-child{margin-top:0}
+.terms dd{margin:0 0 .15rem 0;font-size:.8rem;color:#27513c;line-height:1.6}
+/* ===== Examen blanc ===== */
+.exam-head{background:linear-gradient(135deg,#0B1525,#1a2c4d);border-radius:var(--rL);padding:1.1rem 1.2rem;margin-bottom:1.3rem;border:1px solid rgba(255,197,24,.25)}
+.exam-head h3{font-family:var(--fD);color:#fff;font-size:1rem;margin:0 0 .4rem}
+.exam-head p{color:#c9d6f2;font-size:.8rem;line-height:1.65;margin:0}
+.exam-head .exam-rules{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.exam-head .exam-rule{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:700;color:#ffd95e}
+.exam-result{display:none;margin-top:1.2rem;border-radius:var(--rL);padding:1rem 1.2rem;font-size:.85rem;font-weight:700}
+.exam-result.pass{display:block;background:#e9f9f0;border:1px solid #1d9e5f;color:#0f5c36}
+.exam-result.fail{display:block;background:#fdeeee;border:1px solid #d24a43;color:#8c2722}
+
+
+/* ===== Activité de réflexion ===== */
+.activity{margin-top:1.4rem;background:linear-gradient(135deg,#f7f3ff,#efe9fc);border:1px solid #d8c9f2;border-left:4px solid #6c3fc5;border-radius:var(--rL);padding:1rem 1.15rem}
+.activity-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#46287e;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.activity ol{margin:0;padding-left:1.2rem}
+.activity li{font-size:.81rem;color:#3d2a66;line-height:1.65;margin-bottom:.45rem}
+.activity .act-note{margin-top:.6rem;font-size:.74rem;color:#6b5694;font-style:italic}
+/* ===== Examen blanc 4 parties ===== */
+.exam-part{font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin:1.8rem 0 .8rem;padding:.55rem .9rem;background:linear-gradient(135deg,#f6f9ff,#eef3ff);border-left:4px solid var(--blue);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.exam-part .ex-chip{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.18);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.exid{display:grid;grid-template-columns:1fr auto auto;gap:.7rem;margin-bottom:.4rem}
+.exid label{font-size:.68rem;font-weight:800;color:var(--g500);display:block;margin-bottom:.25rem;font-family:var(--fD)}
+.exid input{width:100%;border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .7rem;font-size:.85rem;font-family:inherit}
+.exid .exid-fixed{border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .9rem;font-size:.85rem;background:#f7f9fe;color:var(--text);font-weight:700}
+.exq{margin-bottom:1.1rem}
+.exq-t{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.extxt{width:100%;min-height:92px;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem;font-size:.83rem;font-family:inherit;line-height:1.6;resize:vertical}
+.extxt:focus{outline:2px solid rgba(27,58,140,.25)}
+.ex-cnt{font-size:.66rem;color:var(--g500);margin-top:.2rem;text-align:right}
+.ex-cnt.ok{color:#1d9e5f;font-weight:700}
+.reveal-btn{margin-top:.35rem;background:none;border:none;color:var(--blue);font-size:.72rem;font-weight:800;cursor:pointer;padding:0;font-family:var(--fD)}
+.reveal{display:none;margin-top:.5rem;background:#f2fbf6;border:1px dashed #1d9e5f;border-radius:var(--r);padding:.65rem .85rem;font-size:.76rem;color:#27513c;line-height:1.6}
+.reveal.show{display:block}
+.reveal ul{margin:.2rem 0 0;padding-left:1.1rem}
+.engage{list-style:none;margin:0;padding:0}
+.engage li{margin-bottom:.5rem}
+.engage label{display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;color:var(--text);cursor:pointer;line-height:1.5}
+.engage input{width:17px;height:17px;margin-top:2px;accent-color:#1d9e5f;cursor:pointer}
+.exam-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;align-items:center}
+.exam-score-line{font-size:.74rem;color:var(--g500);font-weight:700}
+.btn-print{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem 1.1rem;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--fD);color:var(--text)}
+.btn-print:hover{border-color:var(--blue);color:var(--blue)}
+.ex-bar{height:8px;background:#e8edf8;border-radius:6px;overflow:hidden;margin-top:.5rem}
+.ex-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#1d9e5f);border-radius:6px;transition:width .5s ease}
+@media(max-width:700px){.exid{grid-template-columns:1fr}}
+
+
+/* responsive fix — force one column on mobile */
+@media(max-width:768px){.layout{display:block!important;grid-template-columns:1fr!important}#main-content{width:100%!important}}
+/* numeric exam inputs + svg figures */
+.exnum{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:.5rem 0}
+.exnum input{width:150px;padding:.5rem .7rem;border:1px solid var(--bdr);border-radius:9px;font-family:var(--fM);font-size:.95rem}
+.exnum input.ok{border-color:var(--greenL);background:rgba(46,160,87,.06)}
+.exnum input.ko{border-color:#c0392b;background:rgba(192,57,43,.05)}
+.exn-unit{font-family:var(--fM);font-size:.85rem;color:var(--g500)}
+.exn-fb{display:none;font-size:.82rem;margin:.2rem 0 .4rem;padding:.5rem .7rem;border-radius:8px}
+.exn-fb.show-ok{display:block;background:rgba(46,160,87,.1);color:#1e7e45}
+.exn-fb.show-ko{display:block;background:rgba(192,57,43,.08);color:#a5281b}
+.fig{margin:1rem 0;background:#fff;border:1px solid var(--bdr);border-radius:12px;padding:1rem;text-align:center}
+.fig svg{max-width:100%;height:auto}
+.fig figcaption{font-size:.78rem;color:var(--g500);margin-top:.5rem;font-family:var(--fM)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/_assets/hero/slide-elm-13.jpg')"></div>
+  <div class="mod-header-in">
+    <div class="mod-tag">⚙️ ELM-13 · Compétence générale · Objectif de comportement</div>
+    <h1>Dispositifs de transmission de <em>mouvement</em></h1>
+    <p class="mod-desc">Dispositifs de transmission de mouvement · 75 heures — Maîtriser la part mécanique du métier : rapports de transmission, poulies et courroies, chaînes, engrenages et réducteurs, roulements et lubrification, accouplements et alignement — et la sécurité des organes en mouvement.</p>
+    <div class="mod-meta">
+      <div class="mod-meta-item">⏱ <strong>75 heures</strong></div>
+      <div class="mod-meta-item">🎯 Objectif de <strong>comportement</strong></div>
+      <div class="mod-meta-item">📚 <strong>5 chapitres</strong></div>
+      <div class="mod-meta-item">🔧 <strong>La part mécanique</strong></div>
+    </div>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 5 chapitres</span></div>
+  </div>
+</div>
+
+<div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong> &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div>
+</div>
+
+<div class="wrap"><div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire ELM-13</div>
+  <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+  <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Principes & rapports</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>Courroies & chaînes</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Engrenages & réducteurs</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Roulements & lubrification</span></div>
+  <div class="toc-item" onclick="goTo(5)" id="ti-5"><div class="toc-dot"></div><span class="toc-num">05</span><span>Accouplements & alignement</span></div>
+  <div class="toc-sep">Synthèse</div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+</div>
+
+<div id="main-content">
+
+<!-- PLAN DE COURS -->
+<div class="pc step" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">ELM-13 · Dispositifs de transmission de mouvement · Programme Électromécanique (ELM)</div></div></div>
+<div class="pc-body">
+<div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module ELM-13</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM13/final/ELM13-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">ELM-13</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">75 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">ELM-06 · 07 · 09 · 10</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 85/100</div></div>
+  </div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Entretenir des dispositifs de transmission de mouvement.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Ce module est la <strong>part mécanique</strong> de l'électromécanique — celle qui distingue le technicien complet de l'électricien. Sans transmission, la rotation du moteur ne devient jamais un travail utile : c'est elle qui adapte la <strong>vitesse</strong> et le <strong>couple</strong> aux besoins de la machine.</p><p>L'étudiant part du principe fondamental — <strong>la puissance se conserve : réduire la vitesse, c'est augmenter le couple</strong> — puis apprend à calculer les <strong>rapports</strong> et à monter chaque famille : <strong>courroies</strong> (tension et alignement, les deux réglages qui tuent les roulements), <strong>chaînes</strong>, <strong>engrenages</strong> et <strong>réducteurs</strong>. Il maîtrise ensuite les <strong>roulements</strong> — leur montage, qui ne pardonne aucune erreur, leur lubrification et leur diagnostic par le bruit — et enfin les <strong>accouplements</strong> et l'<strong>alignement</strong>, première cause de destruction prématurée des machines. Le tout sous la règle absolue de la sécurité : <strong>toute transmission en mouvement est cartérisée</strong>.</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Élément de la compétence — <em>libellé officiel</em></th></tr></thead><tbody><tr><td>1</td><td>Interpréter des directives, des plans, des manuels techniques.</td></tr><tr><td>2</td><td>Calculer les valeurs des paramètres de transmission de mouvement pour les composants à remplacer.</td></tr><tr><td>3</td><td>Planifier l'exécution du travail d'entretien.</td></tr><tr><td>4</td><td>Effectuer l'entretien préventif de dispositifs mécaniques.</td></tr><tr><td>5</td><td>Effectuer l'entretien correctif de dispositifs mécaniques.</td></tr><tr><td>6</td><td>Vérifier le fonctionnement des dispositifs mécaniques.</td></tr><tr><td>7</td><td>Consigner les données.</td></tr><tr><td>8</td><td>Nettoyer l'aire de travail.</td></tr></tbody></table>
+    <div class="ibox blue"><span class="ibox-label">📘 Source</span>Éléments repris <strong>mot à mot</strong> du programme officiel <em>Électromécanique</em> (INFP/MENFP). La <strong>pondération de l'épreuve</strong> figure au <em>Guide d'évaluation</em> et n'est pas reproduite ici.</div></div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4>
+    <div class="pc-cols">
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Bancs de transmission pédagogiques · moteurs et machines entraînées · poulies, courroies, chaînes, pignons, réducteurs · roulements et paliers · documentation constructeur.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Extracteurs et presse · chauffage inductif de roulements · comparateur et/ou aligneur laser · cales d'épaisseur · tensiomètre de courroie · clé dynamométrique · graisses et huiles · EPI.</div>
+    </div></div>
+  <div class="pc-sec"><h4>Découpage en chapitres</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Contenu</th></tr></thead><tbody><tr><td>1</td><td>Principes de la transmission</td><td>Vitesse ↔ Couple · Rapport · Adhérence/obstacle</td></tr><tr><td>2</td><td>Poulies, courroies et chaînes</td><td>Trapézoïdale · Tension · Alignement · Chaîne</td></tr><tr><td>3</td><td>Engrenages et réducteurs</td><td>Droit · Hélicoïdal · Conique · Vis sans fin</td></tr><tr><td>4</td><td>Paliers, roulements et lubrification</td><td>Types · Montage · Graissage · Diagnostic</td></tr><tr><td>5</td><td>Accouplements, alignement et sécurité</td><td>Élastique · Limiteur · Alignement laser · Carters</td></tr></tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4>
+    <ul>
+      <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 85 %.</li>
+      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique : montage d'une transmission (courroie ou chaîne) avec réglage de tension et d'alignement, montage d'un roulement, alignement d'un accouplement au comparateur ou au laser, avec calculs de rapports</strong>, évaluée par le professeur.</li>
+      <li><strong>Seuil de réussite</strong> — <strong>85 sur 100</strong>.</li>
+    </ul></div>
+  <div class="pc-sec"><h4>Liens avec les autres modules</h4><p><strong>Réinvestit :</strong> ELM-06 (sécurité, carters), ELM-07 (usinage, montage, clé dynamométrique), ELM-09 (couple et vitesse), ELM-10 (accouplement et alignement du moteur).<br><strong>Contribue à :</strong> ELM-16 et ELM-17 (moteurs thermiques et groupes électrogènes : courroies, poulies, roulements), ELM-23 (dépannage), ELM-24 (maintenance planifiée) — et à toute intervention mécanique du métier.</p></div>
+  <div class="pc-sec"><h4>Références</h4><ul><li>Programme de formation <em>Électromécanique</em> (INFP / CFPH – Canado Technique), guide d'apprentissage ELM-13.</li><li>Catalogues constructeur de roulements, courroies et réducteurs (montage, tolérances, lubrification).</li><li>Tables de tension de courroies et de couples de serrage.</li></ul></div>
+</div>
+</div>
+
+<div class="chapter step" id="ch-1">
+<div class="ch-header">
+  <div class="ch-num">01</div>
+  <div class="ch-info"><h2>Principes de la transmission</h2><div class="ch-meta"><span class="ch-badge">Vitesse ↔ Couple · Rapport · Adhérence/obstacle</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Principes de la transmission</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>comprendre l'échange <strong>vitesse ↔ couple</strong> ;</li><li>calculer un <strong>rapport de transmission</strong> ;</li><li>distinguer transmission par <strong>adhérence</strong> et par <strong>obstacle</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu maîtrises les moteurs (ELM-09, ELM-10) et les gestes d'atelier (ELM-07).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Vitesse, couple et rapport de transmission</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM13/final/ELM13-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>1.1 Pourquoi transmettre le mouvement</h3>
+<p>Un moteur tourne vite et fournit peu de couple. La machine entraînée, elle, demande souvent l'inverse : <strong>tourner lentement avec beaucoup de force</strong> — un treuil, un convoyeur chargé, un broyeur. Le rôle de la <strong>transmission</strong> est de faire le pont : adapter la <strong>vitesse</strong> et le <strong>couple</strong> entre la source et le récepteur.</p>
+<p>C'est ici que l'électromécanicien redevient <strong>mécanicien</strong>. Sans cette partie, l'électricité ne sert à rien : c'est la transmission qui transforme la rotation du moteur en travail utile.</p>
+</div>
+
+<div class="section">
+<h3>1.2 Vitesse et couple : la loi d'échange</h3>
+<div class="ibox blue"><span class="ibox-label">💡 La règle fondamentale</span>La <strong>puissance se conserve</strong> (aux pertes près) : <strong>P = C × ω</strong> (couple × vitesse angulaire). Donc, si l'on <strong>réduit la vitesse</strong>, on <strong>augmente le couple</strong> — et réciproquement. On n'obtient jamais les deux à la fois. C'est exactement la même logique que le transformateur d'ELM-09 : ce qu'on gagne en tension, on le perd en courant.</div>
+<p>Le <strong>rapport de transmission</strong> exprime cet échange : <code>r = n<sub>sortie</sub> / n<sub>entrée</sub></code>. Un rapport de <strong>1/3</strong> signifie que la sortie tourne <strong>trois fois moins vite</strong> — et développe donc environ <strong>trois fois plus de couple</strong>. C'est un <strong>réducteur</strong>. Un rapport supérieur à 1 serait un <strong>multiplicateur</strong>.</p>
+</div>
+
+<div class="section">
+<h3>1.3 Les familles de transmission</h3>
+<table class="dtable"><thead><tr><th>Famille</th><th>Principe</th><th>Caractéristique</th></tr></thead><tbody>
+<tr><td><strong>Par adhérence</strong> (courroies plates, trapézoïdales)</td><td>Le frottement entraîne</td><td><strong>Glissement possible</strong> : silencieux, souple, protège en cas de blocage — mais rapport pas rigoureux</td></tr>
+<tr><td><strong>Par obstacle</strong> (engrenages, chaînes, courroies crantées)</td><td>Des dents s'engrènent</td><td><strong>Aucun glissement</strong> : rapport rigoureux et synchronisé — mais transmet les à-coups</td></tr>
+</tbody></table>
+<p>Cette distinction commande tous les choix. Une <strong>pompe</strong> peut tolérer une courroie trapézoïdale ; un <strong>arbre à cames</strong> exige une courroie crantée ou une chaîne, car un décalage d'une dent détruirait le moteur.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Transmission</dt><dd>Dispositif qui adapte vitesse et couple entre une source et un récepteur.</dd><dt>Couple</dt><dd>Effort de rotation, en newtons-mètres (N·m).</dd><dt>Rapport de transmission</dt><dd>r = n sortie ÷ n entrée. Inférieur à 1 = réducteur ; supérieur à 1 = multiplicateur.</dd><dt>Réducteur</dt><dd>Réduit la vitesse et augmente le couple d'autant.</dd><dt>Transmission par adhérence</dt><dd>Par frottement (courroies) : glissement possible, souple, protège en cas de blocage.</dd><dt>Transmission par obstacle</dt><dd>Par dents (engrenages, chaînes) : aucun glissement, rapport rigoureux.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>La <strong>puissance se conserve</strong> : <strong>P = C × ω</strong>. Réduire la vitesse, c'est <strong>augmenter le couple</strong> — jamais les deux.</li><li><strong>r = n<sub>sortie</sub> / n<sub>entrée</sub></strong> : un rapport 1/3 divise la vitesse par 3 et multiplie le couple par ≈ 3.</li><li><strong>Adhérence</strong> (courroies) : glissement possible — souple, silencieux, protège en cas de blocage.</li><li><strong>Obstacle</strong> (engrenages, chaînes, courroies crantées) : rapport <strong>rigoureux</strong>, mais transmet les à-coups.</li><li>C'est la transmission qui transforme la rotation du moteur en <strong>travail utile</strong>.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Si un réducteur divise la vitesse par 3, que devient le couple ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Il est multiplié par environ 3</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Il est divisé par 3</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Il reste identique</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Il devient nul</button>
+  </div><div class="qexpl" id="qe-1-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Qu'est-ce qu'une transmission par adhérence ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>Par frottement (courroies) : un glissement est possible</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>Par chaîne</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Par soudure</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>Par engrenages</button>
+  </div><div class="qexpl" id="qe-1-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Quelle transmission garantit un rapport rigoureusement exact ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>La courroie trapézoïdale</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>L'engrenage (transmission par obstacle)</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Aucune</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>La courroie plate</button>
+  </div><div class="qexpl" id="qe-1-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que vaut le rapport si la sortie tourne 4 fois moins vite que l'entrée ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>4</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>1/4</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>1</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>2</button>
+  </div><div class="qexpl" id="qe-1-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Pourquoi a-t-on besoin d'une transmission entre le moteur et la machine ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Pour adapter la vitesse et le couple aux besoins de la machine entraînée</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Pour faire joli</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Pour refroidir le moteur</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Pour économiser l'électricité</button>
+  </div><div class="qexpl" id="qe-1-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[0,0,1,1,0],['La puissance se conserve : P = C × ω. Ce qu’on perd en vitesse, on le gagne en couple.','Le glissement est parfois un avantage : il protège la machine en cas de blocage.','Les dents s’engrènent : aucun glissement possible. Indispensable pour un arbre à cames, par exemple.','r = n sortie ÷ n entrée = 1/4 : c’est un réducteur.','Le moteur tourne vite avec peu de couple ; la machine demande souvent l’inverse.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
+</div></div>
+
+<div class="chapter step" id="ch-2">
+<div class="ch-header">
+  <div class="ch-num">02</div>
+  <div class="ch-info"><h2>Poulies, courroies et chaînes</h2><div class="ch-meta"><span class="ch-badge">Trapézoïdale · Tension · Alignement · Chaîne</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Poulies, courroies et chaînes</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>calculer un rapport par <strong>diamètres de poulies</strong> ;</li><li>régler la <strong>tension</strong> et l'<strong>alignement</strong> d'une courroie ;</li><li>entretenir une transmission par <strong>chaîne</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu comprends l'échange vitesse/couple et le calcul des rapports (leçon 1).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Courroies et chaînes : monter et régler</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM13/final/ELM13-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>2.1 Poulies et courroies</h3>
+<p>La transmission par <strong>courroie</strong> est la plus répandue : simple, silencieuse, peu coûteuse, tolérante à un léger désalignement. La <strong>courroie trapézoïdale</strong> (en V) est la reine de l'atelier — sa forme la coince dans la gorge de la poulie, ce qui augmente l'adhérence.</p>
+<p>Le <strong>rapport</strong> se calcule par les diamètres : <code>n₁ × D₁ = n₂ × D₂</code>, donc <code>n₂ = n₁ × D₁ / D₂</code>.</p>
+<p><strong>Exemple :</strong> une poulie motrice de <strong>100 mm</strong> tournant à <strong>1800 tr/min</strong> entraîne une poulie réceptrice de <strong>300 mm</strong>. La vitesse de sortie vaut 1800 × 100 ÷ 300 = <strong>600 tr/min</strong> — et le couple est multiplié par 3. C'est un réducteur de rapport 1/3.</p>
+</div>
+
+<div class="section">
+<h3>2.2 Tension et alignement : les deux réglages qui tuent</h3>
+<div class="ibox red"><span class="ibox-label">⚠️ Ni trop, ni trop peu</span>Une courroie <strong>trop lâche</strong> <strong>patine</strong> : elle chauffe, s'use, siffle et transmet mal la puissance. Une courroie <strong>trop tendue</strong> détruit les <strong>roulements</strong> du moteur et de la machine par excès de charge radiale. Il existe une tension correcte, et une seule : on la vérifie par la <strong>flèche</strong> (l'enfoncement sous une force donnée) ou au tensiomètre.</p></div>
+<p>L'<strong>alignement</strong> est tout aussi critique : les deux poulies doivent être <strong>dans le même plan</strong>. Un désalignement fait travailler la courroie de travers — usure rapide sur un flanc, échauffement, projection. On le contrôle à la règle ou au laser.</p>
+<p>Enfin : sur une transmission à <strong>plusieurs courroies</strong>, on les remplace <strong>toutes ensemble, par jeu apparié</strong>. Mélanger une courroie neuve avec des anciennes détendues, c'est faire porter toute la charge à la neuve — qui casse aussitôt.</p>
+</div>
+
+<div class="section">
+<h3>2.3 Chaînes et pignons</h3>
+<p>La <strong>chaîne à rouleaux</strong> transmet <strong>sans glissement</strong>, supporte de <strong>fortes charges</strong> et tolère des températures élevées. On la trouve sur les convoyeurs, les élévateurs, les machines agricoles.</p>
+<p>Le rapport se calcule par le <strong>nombre de dents</strong> : <code>n₁ × Z₁ = n₂ × Z₂</code>. Un pignon de 15 dents entraînant une roue de 45 dents divise la vitesse par 3.</p>
+<p>Sa contrainte : la chaîne exige une <strong>lubrification</strong> régulière (sinon elle s'use et s'allonge) et un <strong>tendeur</strong>, car elle se détend en vieillissant. Une chaîne trop détendue « saute » les dents — avec des conséquences brutales.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Courroie trapézoïdale</dt><dd>Courroie en V, coincée dans la gorge de la poulie : forte adhérence. La plus répandue.</dd><dt>Rapport par poulies</dt><dd>n₁ × D₁ = n₂ × D₂, donc n₂ = n₁ × D₁ ÷ D₂.</dd><dt>Flèche</dt><dd>Enfoncement de la courroie sous une force donnée : c'est la mesure de sa tension.</dd><dt>Jeu apparié</dt><dd>Ensemble de courroies remplacées TOUTES ENSEMBLE, jamais une seule.</dd><dt>Chaîne à rouleaux</dt><dd>Transmission par obstacle, sans glissement, forte charge ; exige lubrification et tendeur.</dd><dt>Rapport par dents</dt><dd>n₁ × Z₁ = n₂ × Z₂.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li><strong>n₂ = n₁ × D₁ ÷ D₂</strong> : poulie motrice 100 mm à 1800 tr/min → poulie 300 mm = <strong>600 tr/min</strong>.</li><li>⚠️ Courroie <strong>trop lâche</strong> = patinage, échauffement. <strong>Trop tendue</strong> = <strong>roulements détruits</strong>.</li><li>L'<strong>alignement</strong> des poulies est aussi critique que la tension.</li><li>Plusieurs courroies : on les remplace <strong>toutes ensemble, en jeu apparié</strong>.</li><li>La <strong>chaîne</strong> : pas de glissement, forte charge — mais exige <strong>lubrification</strong> et <strong>tendeur</strong>.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Poulie motrice de 100 mm à 1800 tr/min, poulie réceptrice de 300 mm. Vitesse de sortie ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>600 tr/min</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>300 tr/min</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>1800 tr/min</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>5400 tr/min</button>
+  </div><div class="qexpl" id="qe-2-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que risque-t-on avec une courroie trop tendue ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Elle dure plus longtemps</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Elle détruit les roulements du moteur et de la machine</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Elle patine</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Rien</button>
+  </div><div class="qexpl" id="qe-2-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Sur une transmission à trois courroies, l'une est usée. Que fais-tu ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Tu remplaces les trois ensemble, en jeu apparié</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>Tu remplaces uniquement l'usée</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>Tu retires l'usée sans la remplacer</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Tu tends davantage les deux autres</button>
+  </div><div class="qexpl" id="qe-2-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quelle est la contrainte principale d'une transmission par chaîne ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>Elle exige une lubrification régulière et un tendeur (elle s'allonge en vieillissant)</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>Elle glisse</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>Elle est silencieuse</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>Elle ne supporte pas les charges</button>
+  </div><div class="qexpl" id="qe-2-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Un pignon de 15 dents entraîne une roue de 45 dents. Le rapport est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>15</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>3</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>45</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>1/3</button>
+  </div><div class="qexpl" id="qe-2-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[0,1,0,0,3],['n₂ = n₁ × D₁ ÷ D₂ = 1800 × 100 ÷ 300 = 600 tr/min.','L’excès de charge radiale tue les roulements. Trop lâche, elle patine : il y a une seule bonne tension.','Une courroie neuve seule porterait toute la charge et casserait aussitôt.','Une chaîne mal lubrifiée s’use et s’allonge ; trop détendue, elle « saute » les dents.','n₁ × Z₁ = n₂ × Z₂ : la sortie tourne 3 fois moins vite. C’est un réducteur de rapport 1/3.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
+</div></div>
+
+<div class="chapter step" id="ch-3">
+<div class="ch-header">
+  <div class="ch-num">03</div>
+  <div class="ch-info"><h2>Engrenages et réducteurs</h2><div class="ch-meta"><span class="ch-badge">Droit · Hélicoïdal · Conique · Vis sans fin</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">Engrenages et réducteurs</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>connaître les <strong>types d'engrenages</strong> et leurs usages ;</li><li>comprendre l'<strong>irréversibilité</strong> de la roue et vis sans fin ;</li><li>entretenir un <strong>réducteur</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais monter et régler courroies et chaînes (leçon 2).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Les engrenages et les réducteurs</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM13/final/ELM13-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>3.1 Les engrenages : la transmission rigoureuse</h3>
+<p>L'<strong>engrenage</strong> transmet le mouvement par <strong>obstacle</strong> : les dents d'une roue s'engrènent dans celles de l'autre. Résultat : <strong>aucun glissement</strong>, un rapport <strong>rigoureusement exact</strong>, et la capacité de transmettre de très fortes puissances dans un encombrement réduit.</p>
+<p>Le rapport se calcule par les <strong>dents</strong> : <code>n₁ × Z₁ = n₂ × Z₂</code>. Notez aussi qu'un engrenage à deux roues <strong>inverse le sens</strong> de rotation — d'où l'usage parfois d'une <strong>roue intermédiaire</strong> (roue folle) pour rétablir le sens sans changer le rapport.</p>
+</div>
+
+<div class="section">
+<h3>3.2 Les types d'engrenages</h3>
+<table class="dtable"><thead><tr><th>Type</th><th>Denture</th><th>Usage</th></tr></thead><tbody>
+<tr><td><strong>Droit</strong></td><td>Dents parallèles à l'axe</td><td>Simple et économique, mais <strong>bruyant</strong></td></tr>
+<tr><td><strong>Hélicoïdal</strong></td><td>Dents inclinées</td><td><strong>Silencieux</strong> et progressif ; engendre une poussée axiale</td></tr>
+<tr><td><strong>Conique</strong></td><td>Axes concourants</td><td>Renvoie le mouvement à <strong>90°</strong></td></tr>
+<tr><td><strong>Roue et vis sans fin</strong></td><td>Une vis entraîne une roue</td><td><strong>Grande réduction</strong> en un seul étage ; souvent <strong>irréversible</strong></td></tr>
+</tbody></table>
+<div class="ibox blue"><span class="ibox-label">💡 L'irréversibilité, une sécurité</span>Le système <strong>roue et vis sans fin</strong> ne peut souvent pas être entraîné « à l'envers » : la charge ne peut pas faire tourner le moteur. C'est ce qui empêche un <strong>treuil</strong> ou un <strong>monte-charge</strong> de redescendre tout seul quand on coupe l'alimentation. Une propriété mécanique devenue une <strong>fonction de sécurité</strong>.</div>
+</div>
+
+<div class="section">
+<h3>3.3 Le réducteur</h3>
+<p>Un <strong>réducteur</strong> est un boîtier fermé contenant un ou plusieurs étages d'engrenages, baignant dans l'huile. On l'accouple au moteur (on parle alors de <strong>motoréducteur</strong>).</p>
+<p>Sur plusieurs étages, les rapports se <strong>multiplient</strong> : deux étages de 1/4 et 1/5 donnent un rapport total de 1/20. C'est ainsi qu'on descend d'un moteur à 1800 tr/min à un arbre de sortie à 90 tr/min.</p>
+<p>Son entretien tient en peu de choses, mais elles sont vitales : contrôler le <strong>niveau d'huile</strong>, surveiller les <strong>fuites</strong> aux joints, guetter le <strong>bruit anormal</strong> et l'<strong>échauffement</strong>. Un réducteur qui a manqué d'huile est un réducteur détruit.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Engrenage</dt><dd>Transmission par obstacle : les dents s'engrènent. Rapport rigoureux, fortes puissances.</dd><dt>Engrenage droit</dt><dd>Dents parallèles à l'axe : simple, économique, mais bruyant.</dd><dt>Engrenage hélicoïdal</dt><dd>Dents inclinées : silencieux et progressif ; engendre une poussée axiale.</dd><dt>Engrenage conique</dt><dd>Renvoie le mouvement à 90°.</dd><dt>Roue et vis sans fin</dt><dd>Grande réduction en un seul étage ; souvent IRRÉVERSIBLE — sécurité des treuils et monte-charges.</dd><dt>Motoréducteur</dt><dd>Ensemble moteur + réducteur ; les rapports des étages se multiplient.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>L'engrenage transmet <strong>sans glissement</strong>, avec un rapport <strong>rigoureusement exact</strong> : <strong>n₁ × Z₁ = n₂ × Z₂</strong>.</li><li><strong>Droit</strong> = bruyant · <strong>hélicoïdal</strong> = silencieux (mais poussée axiale) · <strong>conique</strong> = renvoi à 90°.</li><li>La <strong>roue et vis sans fin</strong> : grande réduction, souvent <strong>irréversible</strong> — c'est ce qui empêche un treuil de redescendre seul.</li><li>Sur un réducteur multi-étages, les rapports se <strong>multiplient</strong> (1/4 × 1/5 = 1/20).</li><li>Entretien du réducteur : <strong>niveau d'huile</strong>, fuites, bruit, échauffement. Un réducteur sans huile est un réducteur mort.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quel engrenage est le plus silencieux ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Hélicoïdal</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Tous identiques</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Droit</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Conique</button>
+  </div><div class="qexpl" id="qe-3-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pourquoi l'irréversibilité d'une roue et vis sans fin est-elle une sécurité ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Elle augmente la vitesse</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Elle réduit le bruit</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Elle économise l'énergie</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Elle empêche la charge d'entraîner le moteur : un treuil ne redescend pas tout seul</button>
+  </div><div class="qexpl" id="qe-3-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Un réducteur a deux étages : 1/4 puis 1/5. Rapport total ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>1/20</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>9</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>1/9</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>20</button>
+  </div><div class="qexpl" id="qe-3-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quel engrenage renvoie le mouvement à 90° ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Conique</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Vis sans fin uniquement</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Hélicoïdal</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Droit</button>
+  </div><div class="qexpl" id="qe-3-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quel est le point d'entretien vital d'un réducteur ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Sa couleur</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Le niveau d'huile (et l'absence de fuite)</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Son poids</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Sa peinture</button>
+  </div><div class="qexpl" id="qe-3-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,3,0,0,1],['Les dents inclinées entrent en contact progressivement : c’est plus doux et plus silencieux.','C’est une propriété mécanique devenue une fonction de sécurité sur les treuils et monte-charges.','Les rapports se multiplient : 1/4 × 1/5 = 1/20.','L’engrenage conique a des axes concourants : il renvoie le mouvement à angle droit.','Un réducteur qui a manqué d’huile est détruit. Niveau, fuites, bruit et échauffement : les quatre contrôles.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
+</div></div>
+
+<div class="chapter step" id="ch-4">
+<div class="ch-header">
+  <div class="ch-num">04</div>
+  <div class="ch-info"><h2>Paliers, roulements et lubrification</h2><div class="ch-meta"><span class="ch-badge">Types · Montage · Graissage · Diagnostic</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Paliers, roulements et lubrification</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>choisir un <strong>roulement</strong> selon la charge ;</li><li><strong>monter et démonter</strong> un roulement sans le détruire ;</li><li><strong>lubrifier</strong> et diagnostiquer par le bruit.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu maîtrises les engrenages et les réducteurs (leçon 3).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Monter et entretenir un roulement</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM13/final/ELM13-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>4.1 Les paliers et les roulements</h3>
+<p>Tout arbre en rotation doit être <strong>guidé</strong>. C'est le rôle des <strong>paliers</strong>, qui contiennent le plus souvent des <strong>roulements</strong>.</p>
+<table class="dtable"><thead><tr><th>Type</th><th>Charge supportée</th></tr></thead><tbody>
+<tr><td><strong>Roulement à billes</strong></td><td>Charges <strong>radiales</strong> (perpendiculaires à l'arbre), vitesse élevée</td></tr>
+<tr><td><strong>Roulement à rouleaux</strong></td><td>Charges radiales <strong>plus fortes</strong></td></tr>
+<tr><td><strong>Roulement à billes à contact oblique / à rouleaux coniques</strong></td><td>Charges radiales <strong>et axiales</strong> (le long de l'arbre)</td></tr>
+<tr><td><strong>Butée</strong></td><td>Charges purement <strong>axiales</strong></td></tr>
+</tbody></table>
+<p>Le choix dépend donc de la <strong>nature de la charge</strong>. Une transmission par engrenages hélicoïdaux engendre une poussée axiale : il faudra un roulement capable de l'encaisser.</p>
+</div>
+
+<div class="section">
+<h3>4.2 Monter et démonter un roulement</h3>
+<div class="ibox red"><span class="ibox-label">⚠️ La règle absolue du montage</span>On ne frappe <strong>jamais</strong> un roulement au marteau, et on ne fait <strong>jamais</strong> passer l'effort de montage <strong>à travers les billes</strong>. L'effort doit être appliqué <strong>uniquement sur la bague qui est ajustée serrée</strong> : sur la <strong>bague intérieure</strong> si l'ajustement serré est sur l'arbre, sur la <strong>bague extérieure</strong> si c'est dans le logement. Un roulement monté de travers, ou dont les billes ont encaissé le choc, est <strong>déjà mort</strong> — même s'il tourne encore.</div>
+<p>Les bonnes méthodes : <strong>presse</strong> avec une douille d'appui adaptée, ou <strong>montage à chaud</strong> (chauffage inductif à 80-100 °C : la bague se dilate et se glisse sans effort). Au démontage : <strong>extracteur</strong>, jamais le burin.</p>
+<p>Et toujours : <strong>propreté absolue</strong>. Une seule particule de sable dans un roulement le détruit en quelques heures.</p>
+</div>
+
+<div class="section">
+<h3>4.3 Lubrification et diagnostic</h3>
+<p>La <strong>lubrification</strong> (graisse ou huile) réduit le frottement, évacue la chaleur et protège de la corrosion. Deux erreurs symétriques : le <strong>manque</strong> (échauffement, grippage) et l'<strong>excès</strong> de graisse (barattage, échauffement lui aussi). On respecte les préconisations du constructeur, en <strong>quantité</strong> et en <strong>périodicité</strong>.</p>
+<div class="ibox blue"><span class="ibox-label">💡 Un roulement parle avant de mourir</span>Il donne toujours des <strong>signes annonciateurs</strong> : d'abord un <strong>sifflement</strong> ou un ronronnement inhabituel, puis des <strong>vibrations</strong>, puis un <strong>échauffement</strong>, enfin un <strong>grondement</strong> sourd. Le technicien qui écoute ses machines remplace le roulement <strong>avant</strong> la casse — c'est toute la différence entre la maintenance préventive et l'arrêt de production.</div>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Palier</dt><dd>Organe qui guide un arbre en rotation ; contient généralement un roulement.</dd><dt>Charge radiale</dt><dd>Charge perpendiculaire à l'arbre (billes, rouleaux).</dd><dt>Charge axiale</dt><dd>Charge le long de l'arbre (butée, roulements à contact oblique).</dd><dt>Montage à chaud</dt><dd>Chauffage du roulement à 80-100 °C : la bague se dilate et se monte sans effort.</dd><dt>Extracteur</dt><dd>Outil de démontage d'un roulement — jamais de burin.</dd><dt>Grippage</dt><dd>Destruction du roulement par manque de lubrification et échauffement.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li><strong>Billes</strong> = charges radiales, vitesse élevée · <strong>rouleaux</strong> = radiales fortes · <strong>coniques / contact oblique</strong> = radiales <strong>et</strong> axiales · <strong>butée</strong> = axiales pures.</li><li>⚠️ <strong>Jamais de marteau</strong>, jamais d'effort <strong>à travers les billes</strong> : l'effort passe par la <strong>bague ajustée serrée</strong>.</li><li>Méthodes : <strong>presse</strong> avec douille adaptée, ou <strong>montage à chaud</strong> (80-100 °C). Démontage : <strong>extracteur</strong>.</li><li><strong>Propreté absolue</strong> : une particule de sable détruit un roulement en quelques heures.</li><li>Lubrification : ni <strong>manque</strong> (grippage), ni <strong>excès</strong> (barattage). Un roulement <strong>parle avant de mourir</strong> : sifflement → vibrations → échauffement → grondement.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Comment monte-t-on correctement un roulement ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>En frappant sur les billes</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>En appliquant l'effort uniquement sur la bague ajustée serrée (presse ou montage à chaud)</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Au marteau, directement</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Au burin</button>
+  </div><div class="qexpl" id="qe-4-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel roulement supporte une charge axiale ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Le roulement à rouleaux droits</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Le roulement à billes standard</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Le roulement à rouleaux coniques ou à contact oblique</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Aucun</button>
+  </div><div class="qexpl" id="qe-4-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Quels sont les signes annonciateurs de la mort d'un roulement ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Il ralentit</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Aucun, il casse d'un coup</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Sifflement, puis vibrations, puis échauffement, puis grondement</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Il change de couleur</button>
+  </div><div class="qexpl" id="qe-4-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quel est l'effet d'un EXCÈS de graisse dans un roulement ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Un barattage qui provoque aussi un échauffement</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Il tourne plus vite</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Il devient silencieux</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Aucun, plus il y en a mieux c'est</button>
+  </div><div class="qexpl" id="qe-4-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que faut-il absolument respecter lors du montage d'un roulement ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>La couleur</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Le poids</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>La marque</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>La propreté absolue : une particule de sable le détruit en quelques heures</button>
+  </div><div class="qexpl" id="qe-4-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,2,2,0,3],['Un effort passant par les billes détruit le roulement, même s’il tourne encore après.','Les roulements coniques ou à contact oblique encaissent les charges radiales ET axiales.','Un roulement parle avant de mourir : le technicien qui écoute le remplace avant la casse.','Manque et excès mènent tous deux à l’échauffement : on respecte les préconisations.','La contamination est l’ennemi n°1 du roulement.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<div class="chapter step" id="ch-5">
+<div class="ch-header">
+  <div class="ch-num">05</div>
+  <div class="ch-info"><h2>Accouplements, alignement et sécurité</h2><div class="ch-meta"><span class="ch-badge">Élastique · Limiteur · Alignement laser · Carters</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 5</div><div class="lpl-title">Accouplements, alignement et sécurité</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>choisir un <strong>accouplement</strong> ;</li><li>réaliser un <strong>alignement</strong> correct — la compétence qui fait la différence ;</li><li>assurer la <strong>sécurité</strong> et la maintenance préventive des transmissions.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais monter et entretenir les roulements (leçon 4).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour terminer le module et accéder à l'examen blanc.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 5 — Aligner, accoupler, protéger</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf5" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM13/final/ELM13-CH05.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>5.1 Les accouplements</h3>
+<p>L'<strong>accouplement</strong> relie l'arbre du moteur à celui de la machine.</p>
+<table class="dtable"><thead><tr><th>Type</th><th>Caractéristique</th></tr></thead><tbody>
+<tr><td><strong>Rigide</strong></td><td>Aucune tolérance : exige un alignement parfait</td></tr>
+<tr><td><strong>Élastique</strong> (à plots, à denture, à mâchoires)</td><td>Absorbe les <strong>petits désalignements</strong> et les <strong>à-coups</strong> — le plus courant</td></tr>
+<tr><td><strong>Limiteur de couple</strong></td><td>Se <strong>désaccouple</strong> en cas de surcharge : protège la machine</td></tr>
+<tr><td><strong>Embrayage</strong></td><td>Accouplement <strong>débrayable</strong> en marche</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>5.2 L'alignement : la compétence qui fait la différence</h3>
+<div class="ibox red"><span class="ibox-label">⚠️ Le tueur silencieux de roulements</span>Un <strong>mauvais alignement</strong> est la <strong>première cause</strong> de destruction prématurée des roulements et des accouplements. Il génère des efforts parasites permanents : la machine vibre, chauffe, et les roulements meurent en quelques mois au lieu de durer des années.</div>
+<p>On distingue deux défauts : le <strong>désalignement parallèle</strong> (les axes sont parallèles mais décalés) et le <strong>désalignement angulaire</strong> (les axes forment un angle). Les deux se cumulent souvent.</p>
+<p>Le contrôle se fait à la <strong>règle et aux cales</strong> (méthode simple), au <strong>comparateur</strong> (précis) ou au <strong>laser</strong> (le plus rapide et le plus précis). Le réglage s'obtient par des <strong>cales d'épaisseur</strong> sous les pattes du moteur — et l'on n'oublie jamais de reprendre le contrôle <strong>après serrage définitif</strong>, car le serrage déplace la machine.</p>
+</div>
+
+<div class="section">
+<h3>5.3 La sécurité des transmissions</h3>
+<div class="ibox red"><span class="ibox-label">⚠️ Rappel d'ELM-06</span>Toute transmission en mouvement — courroie, chaîne, engrenage, arbre — doit être <strong>protégée par un carter</strong>. Les organes de transmission <strong>happent, entraînent et broient</strong> : ce sont parmi les accidents les plus graves de l'industrie. Le carter ne se retire <strong>que machine à l'arrêt et consignée</strong>. Et jamais de vêtements flottants, de bijoux ni de cheveux détachés à proximité.</div>
+<p>La <strong>maintenance préventive</strong> d'une transmission tient en peu de gestes : contrôler la <strong>tension</strong> des courroies, l'<strong>alignement</strong>, le <strong>niveau d'huile</strong> du réducteur, l'<strong>état</strong> des courroies (fissures, effilochage) et des chaînes (allongement), et <strong>écouter</strong> les roulements. Ces cinq points, faits régulièrement, évitent la grande majorité des arrêts de production.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Accouplement rigide</dt><dd>Aucune tolérance : exige un alignement parfait.</dd><dt>Accouplement élastique</dt><dd>Absorbe les petits désalignements et les à-coups : le plus courant.</dd><dt>Limiteur de couple</dt><dd>Se désaccouple en cas de surcharge : protège la machine.</dd><dt>Désalignement parallèle</dt><dd>Les axes sont parallèles mais décalés.</dd><dt>Désalignement angulaire</dt><dd>Les axes forment un angle.</dd><dt>Cales d'épaisseur</dt><dd>Cales placées sous les pattes du moteur pour corriger l'alignement.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li><strong>Élastique</strong> = le plus courant (absorbe désalignements et à-coups) ; <strong>limiteur de couple</strong> = protège en cas de surcharge.</li><li>⚠️ Le <strong>mauvais alignement</strong> est la <strong>première cause</strong> de destruction prématurée des roulements.</li><li>Deux défauts : <strong>parallèle</strong> (axes décalés) et <strong>angulaire</strong> (axes en angle) — souvent cumulés.</li><li>Contrôle à la <strong>règle</strong>, au <strong>comparateur</strong> ou au <strong>laser</strong> ; réglage par <strong>cales</strong> — et <strong>recontrôle après serrage définitif</strong>.</li><li>⚠️ <strong>Carter obligatoire</strong> sur toute transmission en mouvement (ELM-06). Maintenance : tension, alignement, huile, état, écoute.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="5">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 5</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle est la première cause de destruction prématurée des roulements ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',0,0)"><span class="qletter">A</span>La vitesse</button>
+    <button class="qopt" onclick="selQ(this,'5',0,1)"><span class="qletter">B</span>L'humidité</button>
+    <button class="qopt" onclick="selQ(this,'5',0,2)"><span class="qletter">C</span>Le mauvais alignement</button>
+    <button class="qopt" onclick="selQ(this,'5',0,3)"><span class="qletter">D</span>La couleur du moteur</button>
+  </div><div class="qexpl" id="qe-5-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel accouplement absorbe les petits désalignements et les à-coups ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',1,0)"><span class="qletter">A</span>Rigide</button>
+    <button class="qopt" onclick="selQ(this,'5',1,1)"><span class="qletter">B</span>Le limiteur de couple uniquement</button>
+    <button class="qopt" onclick="selQ(this,'5',1,2)"><span class="qletter">C</span>Élastique</button>
+    <button class="qopt" onclick="selQ(this,'5',1,3)"><span class="qletter">D</span>Aucun</button>
+  </div><div class="qexpl" id="qe-5-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">À quoi sert un limiteur de couple ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',2,0)"><span class="qletter">A</span>À aligner les arbres</button>
+    <button class="qopt" onclick="selQ(this,'5',2,1)"><span class="qletter">B</span>À lubrifier</button>
+    <button class="qopt" onclick="selQ(this,'5',2,2)"><span class="qletter">C</span>À se désaccoupler en cas de surcharge, protégeant ainsi la machine</button>
+    <button class="qopt" onclick="selQ(this,'5',2,3)"><span class="qletter">D</span>À augmenter la vitesse</button>
+  </div><div class="qexpl" id="qe-5-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Après avoir aligné et serré définitivement le moteur, tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',3,0)"><span class="qletter">A</span>Recontrôles l'alignement : le serrage déplace la machine</button>
+    <button class="qopt" onclick="selQ(this,'5',3,1)"><span class="qletter">B</span>Repeins le socle</button>
+    <button class="qopt" onclick="selQ(this,'5',3,2)"><span class="qletter">C</span>Ne fais rien de plus</button>
+    <button class="qopt" onclick="selQ(this,'5',3,3)"><span class="qletter">D</span>Desserres tout</button>
+  </div><div class="qexpl" id="qe-5-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Que doit-on toujours installer sur une transmission en mouvement ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'5',4,0)"><span class="qletter">A</span>Un carter de protection</button>
+    <button class="qopt" onclick="selQ(this,'5',4,1)"><span class="qletter">B</span>Une étiquette</button>
+    <button class="qopt" onclick="selQ(this,'5',4,2)"><span class="qletter">C</span>Un compteur</button>
+    <button class="qopt" onclick="selQ(this,'5',4,3)"><span class="qletter">D</span>Un thermomètre</button>
+  </div><div class="qexpl" id="qe-5-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('5',[2,2,2,0,0],['Le désalignement crée des efforts parasites permanents : les roulements meurent en mois au lieu d’années.','C’est le plus courant : il tolère les imperfections inévitables du montage.','En cas de blocage ou de surcharge, il rompt la liaison avant que la machine ne casse.','Le serrage modifie la position : un alignement non revérifié après serrage ne vaut rien.','Courroies, chaînes, engrenages et arbres happent et broient : le carter est obligatoire (ELM-06).'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-5" style="display:none" onclick="retryQ('5',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-5"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(5)">✓ Chapitre 5 terminé →</button></div>
+</div></div>
+
+<div class="step" id="essentiel">
+<div class="ch-header">
+  <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module ELM-13</span></div></div>
+</div>
+<div class="ch-body">
+<div class="recap recap-final">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module ELM-13</div>
+  <ul class="recap-list"><li><strong>Le principe —</strong> <strong>P = C × ω</strong> : la puissance se conserve. <strong>Réduire la vitesse, c'est augmenter le couple</strong> — jamais les deux à la fois. <strong>r = n<sub>sortie</sub> / n<sub>entrée</sub></strong>.</li><li><strong>Les familles —</strong> <strong>adhérence</strong> (courroies : glissement possible, souple, protège) vs <strong>obstacle</strong> (engrenages, chaînes : rapport rigoureux).</li><li><strong>Les calculs —</strong> poulies : <strong>n₁ × D₁ = n₂ × D₂</strong> · engrenages et chaînes : <strong>n₁ × Z₁ = n₂ × Z₂</strong> · réducteur multi-étages : les rapports se <strong>multiplient</strong>.</li><li><strong>Les courroies —</strong> ⚠️ trop lâche = <strong>patinage</strong> ; trop tendue = <strong>roulements détruits</strong>. <strong>Alignement</strong> aussi critique. Remplacement <strong>par jeu apparié</strong>.</li><li><strong>Les roulements —</strong> ⚠️ effort <strong>uniquement sur la bague ajustée serrée</strong>, jamais au marteau ni à travers les billes. <strong>Propreté absolue.</strong> Ni manque ni excès de graisse. Un roulement <strong>parle avant de mourir</strong> : sifflement → vibrations → échauffement → grondement.</li><li><strong>L'alignement —</strong> ⚠️ <strong>première cause</strong> de destruction prématurée des roulements. Contrôle règle / comparateur / laser, réglage par cales, <strong>recontrôle après serrage</strong>.</li><li><strong>La sécurité —</strong> <strong>carter obligatoire</strong> sur toute transmission en mouvement ; retrait uniquement machine <strong>consignée</strong>.</li></ul>
+</div>
+
+<div class="section">
+<h3>🎯 Mini-projet — Banc de transmission complet (DEM-ELM-13-01)</h3><p>Monte, règle et documente une transmission complète moteur → réducteur → machine.</p><ul><li><strong>Calculs</strong> : déterminer le rapport nécessaire, choisir les poulies (ou les pignons) et vérifier la vitesse de sortie obtenue <strong>(20 pts)</strong></li><li><strong>Montage courroie</strong> : poser les poulies, régler la <strong>tension</strong> (flèche ou tensiomètre) et l'<strong>alignement</strong> <strong>(25 pts)</strong></li><li><strong>Roulement</strong> : démonter à l'extracteur et remonter un roulement de palier — <strong>effort sur la bonne bague</strong>, propreté, graissage correct <strong>(25 pts)</strong></li><li><strong>Accouplement</strong> : aligner au comparateur ou au laser, corriger par cales, et <strong>recontrôler après serrage définitif</strong> <strong>(20 pts)</strong></li><li><strong>Sécurité et documentation</strong> : poser les <strong>carters</strong>, rédiger la fiche d'intervention et le plan de maintenance préventive <strong>(10 pts)</strong></li></ul><div class="ibox gold"><span class="ibox-label">🏫 En atelier</span>Ces gestes — tendre, aligner, monter un roulement — tu les feras chaque semaine en entreprise. Ce sont eux qui distinguent le technicien qui répare de celui qui casse.</div>
+</div>
+</div>
+</div>
+
+<div class="step" id="examen">
+<div class="ch-header"><div class="ch-num" style="background:#c0392b;color:#fff">🎓</div>
+  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 85 %</span></div></div></div>
+<div class="ch-body">
+<div class="exam-head"><h3>🎓 Avant de commencer</h3>
+  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : connaissances (QCM), <strong>calculs</strong> (saisie numérique) et démarche. Le volet <strong>pratique</strong> — montage et réglage d'une transmission, montage d'un roulement, alignement d'un accouplement, avec calculs de rapports — est évalué <strong>par le professeur</strong>, lors de l'épreuve pratique officielle (seuil 85/100).</p>
+  <div class="exam-rules"><span class="exam-rule">A · Connaissances — 40%</span><span class="exam-rule">B · Calculs — 40%</span><span class="exam-rule">C · Démarche — 20%</span><span class="exam-rule">Validation en ligne : ≥ 85%</span></div>
+</div>
+<div class="exid">
+  <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
+  <div><label>Programme</label><div class="exid-fixed">ELM — Électromécanique</div></div>
+  <div><label>Date</label><div class="exid-fixed" id="ex-date">—</div></div>
+</div>
+
+<div class="exam-part"><span>Partie A — Connaissances</span><span class="ex-chip" id="exA-score">40% · non soumis</span></div>
+<div class="qblock" data-qid="exa">
+<div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Si un réducteur divise la vitesse par 4, le couple est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Inchangé</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>Divisé par 4</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Multiplié par environ 4</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Nul</button>
+  </div><div class="qexpl" id="qe-exa-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Poulie motrice 100 mm à 1800 tr/min, poulie réceptrice 300 mm. Vitesse de sortie ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>5400 tr/min</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>300 tr/min</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>600 tr/min</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>1800 tr/min</button>
+  </div><div class="qexpl" id="qe-exa-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Une courroie trop tendue…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>N'a aucun effet</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Détruit les roulements</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Patine</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Dure plus longtemps</button>
+  </div><div class="qexpl" id="qe-exa-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">La transmission par engrenage est dite…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>Par magnétisme</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Par obstacle : aucun glissement, rapport rigoureux</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Par adhérence</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Par frottement</button>
+  </div><div class="qexpl" id="qe-exa-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">La roue et vis sans fin est souvent…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Irréversible : la charge ne peut pas entraîner le moteur</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Réversible</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Silencieuse uniquement</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Sans réduction</button>
+  </div><div class="qexpl" id="qe-exa-4"></div></div>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">On monte un roulement en appliquant l'effort…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>À travers les billes</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Uniquement sur la bague ajustée serrée</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Sur la cage</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Au marteau, n'importe où</button>
+  </div><div class="qexpl" id="qe-exa-5"></div></div>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">La première cause de destruction des roulements est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Le bruit</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Le mauvais alignement</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>La vitesse</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>La peinture</button>
+  </div><div class="qexpl" id="qe-exa-6"></div></div>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Sur une transmission à plusieurs courroies, on remplace…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Une sur deux</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Toutes les courroies ensemble, en jeu apparié</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Seulement la courroie usée</button>
+  </div><div class="qexpl" id="qe-exa-7"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[2,2,1,1,0,1,1,2],['La puissance se conserve : P = C × ω.','n₂ = 1800 × 100 ÷ 300 = 600 tr/min.','L’excès de charge radiale tue les roulements du moteur et de la machine.','Les dents s’engrènent : le rapport est rigoureusement exact.','C’est ce qui empêche un treuil ou un monte-charge de redescendre seul.','Un effort passant par les billes détruit le roulement.','Le désalignement génère des efforts parasites permanents.','Une neuve seule porterait toute la charge et casserait aussitôt.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exa"></span>
+</div>
+</div>
+
+<div class="exam-part"><span>Partie B — Calculs (saisie numérique)</span><span class="ex-chip" id="exB-score">40% · non soumis</span></div>
+<p style="font-size:.83rem;color:var(--g700);margin:0 0 .6rem">Saisis chaque résultat (décimales avec un point ou une virgule), puis vérifie.</p>
+<div class="exq"><div class="exq-t">1. Poulie motrice de <strong>100 mm</strong> à <strong>1800 tr/min</strong>, poulie réceptrice de <strong>300 mm</strong>. Calcule la <strong>vitesse de sortie</strong>.</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">tr/min</span></div><div class="exn-fb" id="exnf-0"></div></div>
+<div class="exq"><div class="exq-t">2. Même poulie motrice (100 mm, 1800 tr/min), mais poulie réceptrice de <strong>200 mm</strong>. Vitesse de sortie ?</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">tr/min</span></div><div class="exn-fb" id="exnf-1"></div></div>
+<div class="exq"><div class="exq-t">3. Pignon de <strong>15 dents</strong> à <strong>1800 tr/min</strong> entraînant une roue de <strong>45 dents</strong>. Vitesse de sortie ?</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">tr/min</span></div><div class="exn-fb" id="exnf-2"></div></div>
+<div class="exq"><div class="exq-t">4. Un réducteur a deux étages de rapports <strong>1/4</strong> et <strong>1/5</strong>. Par combien la vitesse est-elle <strong>divisée</strong> au total ?</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit"></span></div><div class="exn-fb" id="exnf-3"></div></div>
+<div class="exq"><div class="exq-t">5. Ce réducteur (rapport total 1/20) est entraîné par un moteur à <strong>1800 tr/min</strong>. Quelle est la <strong>vitesse de sortie</strong> ?</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">tr/min</span></div><div class="exn-fb" id="exnf-4"></div></div>
+<div class="exq"><div class="exq-t">6. Un réducteur divise la vitesse par <strong>3</strong>. Par combien le <strong>couple</strong> est-il multiplié ?</div><div class="exnum"><input type="text" id="exn-5" inputmode="decimal" placeholder="valeur"><span class="exn-unit"></span></div><div class="exn-fb" id="exnf-5"></div></div>
+<div class="qfooter"><button class="qbtn qbtn-submit" onclick="numGrade()">✓ Vérifier mes calculs</button></div>
+
+<div class="exam-part"><span>Partie C — Démarche</span><span class="ex-chip" id="exC-score">20% · non soumis</span></div>
+<div class="qblock" data-qid="exc">
+<div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Une courroie siffle et chauffe. Cause probable ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Elle est trop lâche et patine</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Le moteur est trop puissant</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Elle est neuve</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Elle est trop tendue</button>
+  </div><div class="qexpl" id="qe-exc-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Tu entends un sifflement inhabituel sur un palier. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Le signales et planifies le remplacement du roulement avant la panne</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Ajoutes beaucoup de graisse</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Attends la casse</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Augmentes la vitesse</button>
+  </div><div class="qexpl" id="qe-exc-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Un carter de transmission gêne l'accès. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Le tordes</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Consignes et arrêtes la machine avant tout retrait, et le remets avant redémarrage</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Le retires machine en marche</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Travailles sans</button>
+  </div><div class="qexpl" id="qe-exc-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Tu remplaces un roulement. Tu le trouves neuf mais tombé par terre. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>L'utilises, il est neuf</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Le nettoies et l'inspectes ; au moindre doute, tu en prends un autre — la contamination le détruit</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Le graisses davantage</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Le laves à l'eau</button>
+  </div><div class="qexpl" id="qe-exc-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Après alignement au laser et serrage, la machine vibre encore. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Recontrôles l'alignement après serrage : le serrage a pu déplacer la machine</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Ignores</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Ajoutes de la graisse</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Serres plus fort</button>
+  </div><div class="qexpl" id="qe-exc-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[0,0,1,1,0],['Le patinage d’une courroie détendue provoque sifflement, échauffement et usure rapide.','Un roulement parle avant de mourir : c’est l’occasion de la maintenance préventive.','Les organes de transmission happent et broient : le carter ne se retire que machine consignée.','Une particule ou un choc suffit : un roulement suspect ne se monte pas.','Le serrage déplace la machine : le recontrôle après serrage définitif est obligatoire.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exc"></span>
+</div>
+</div>
+
+<div class="exam-actions">
+  <button class="qbtn qbtn-submit" onclick="exValidate()">✓ Valider mon activité globale</button>
+  <button class="btn-print" onclick="exPrint()">🖨️ Imprimer / remettre au professeur</button>
+  <span class="exam-score-line" id="ex-total">Total : —</span>
+</div>
+<div class="ex-bar"><i id="ex-bar-fill"></i></div>
+<div class="exam-result" id="exam-result"></div>
+</div></div>
+
+<div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
+  <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
+  <p style="color:#dbe6ff;margin:0 0 .7rem;line-height:1.65">Tu as acquis les bases de ce module. Pour ancrer ces acquis :</p>
+  <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Mini-projet</strong> — réalise le banc de transmission DEM-ELM-13-01 : calculs, courroie, roulement, alignement, carters.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Veille</strong> — écoute les machines de l'atelier : repère un roulement qui commence à siffler et signale-le avant la casse.</li>
+    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape : <strong style="color:#fff">ELM-16 — Fonctionnement des moteurs à essence et diesel</strong>.</li>
+  </ul>
+</div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🎓 Module ELM-13 validé !</h2>
+  <p>Tu maîtrises la part mécanique du métier : rapports, courroies, engrenages, roulements et alignement. C'est ce qui fait le technicien complet. Prépare l'épreuve pratique (seuil 85/100). Prochaine étape : ELM-16 — Fonctionnement des moteurs à essence et diesel.</p>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /layout -->
+</div><!-- /wrap -->
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
+<script>
+// ═══ STATE & PERSISTENCE ═══
+var ST={done:{},qs:{},sel:{}};
+var K='ELM13v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+// ═══ INIT ═══
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){
+    var el=document.getElementById('qs-'+qid);
+    if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}
+  });
+  initTimer();updateProg();
+});
+
+// ═══ PROGRESS ═══
+var TOTAL=5;
+function updateProg(){
+  var done=Object.keys(ST.done).filter(function(k){return ST.done[k]&&/^\d+$/.test(k)&&(+k)<=TOTAL;}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';
+  if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');
+  if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
+}
+
+// ═══ CHAPTER DONE ═══
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+
+// ═══ TOC / NAV ═══
+function goTo(n){
+  var el=document.getElementById(typeof n==='string'?n:'ch-'+n);
+  if(!el){toast('ℹ️ Section bientôt disponible.');return;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');
+  if(window.innerWidth<=768)toggleToc();
+}
+function toggleToc(){
+  var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');
+  t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';
+}
+
+// ═══ PLANS DE LEÇON (accordéon) ═══
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+
+// ═══ QUIZ ENGINE ═══
+function selQ(btn,qid,qi,val){
+  var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');
+  var idx=parseInt(qi);
+  if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;
+}
+function submitQ(qid,answers,expls){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var sel=ST.sel[qid]||{};var total=answers.length;
+  for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}
+  var ok=0;var qItems=block.querySelectorAll('.q-item');
+  for(var i=0;i<total;i++){
+    var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;
+    qItem.querySelectorAll('.qopt').forEach(function(b,j){
+      b.disabled=true;
+      if(j===correct)b.classList.add('ok');
+      else if(j===chosen&&chosen!==correct)b.classList.add('ko');
+    });
+    var expl=document.getElementById('qe-'+qid+'-'+i);
+    if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}
+    if(chosen===correct)ok++;
+  }
+  ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';
+  updateProg();
+  toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');
+}
+function retryQ(qid,count){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});
+  block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});
+  if(ST.sel[qid])ST.sel[qid]={};
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';
+}
+
+// ═══ CARTES INTERACTIVES (réflexion) ═══
+var INFO={};
+function showInfo(group,idx,btn){
+  var grid=btn.closest('.dora-grid');
+  grid.querySelectorAll('.dora-card').forEach(function(s){s.classList.remove('active');});
+  btn.classList.add('active');
+  var d=document.getElementById(group+'-detail');
+  if(d){d.innerHTML=INFO[group][idx];d.className='dora-detail show';d.style.cssText='background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.2);color:#1a2f52;border-radius:var(--r);padding:.9rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:block';}
+}
+
+// ═══ VIDEO ═══
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){
+  var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;
+  var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+  var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);
+  if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';
+}
+
+// ═══ TIMER ═══
+var timerStart=Date.now();
+function initTimer(){
+  var saved=ld('time',0);timerStart=Date.now()-saved*1000;
+  setInterval(function(){
+    var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);
+    var el=document.getElementById('session-timer');
+    if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+  },1000);
+}
+
+// ═══ TOAST ═══
+var _tt;
+function toast(msg){
+  var t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);
+}
+</script>
+<script>
+/* ===== LECTEUR DE COURS v3 ===== */
+(function(){
+  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','ch-5','essentiel','examen'];
+  var LABELS={plan:'Plan de cours','ch-1':"Principes & rapports",'ch-2':"Courroies & chaînes",'ch-3':"Engrenages & réducteurs",'ch-4':"Roulements & lubrification",'ch-5':"Accouplements & alignement",'essentiel':"L'essentiel à retenir",'examen':'Examen blanc'};
+  var QUIZ={1:1,2:1,3:1,4:1,5:1};   // chapitres ayant un quiz
+  var PASS=0.6;                          // seuil de réussite
+  var PK='ELM13v1_step', VK='ELM13v1_viewed';
+  var cur=0, DUR={};
+
+  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
+  function hasQuiz(n){return !!QUIZ[n];}
+  function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  function isPassed(n){return !!readJSON('ELM13v1_done')[n];}
+  function countDone(){var d=readJSON('ELM13v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
+  function refreshDur(){for(var N=1;N<=5;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
+
+  function updateGate(){
+    refreshDur();
+    for(var N=1;N<=5;N++){
+      var ti=document.getElementById('ti-'+N);if(!ti)continue;
+      var locked=N>1&&!isPassed(N-1);
+      ti.classList.toggle('lock',locked);
+      if(isPassed(N))ti.classList.add('done');
+      var tr=document.getElementById('tr-'+N);
+      if(tr)tr.textContent=locked?'🔒':(DUR[N]||'');
+    }
+    var ad=allDone();
+    ['ti-essentiel','ti-examen'].forEach(function(tid){var t=document.getElementById(tid);if(t){t.classList.toggle('lock',!ad);}});
+    var pf=document.getElementById('pl-prog-fill');if(pf)pf.style.width=Math.round(countDone()/5*100)+'%';
+    var id=STEPS[cur],n=chNum(id),blocked=false,label;
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){blocked=true;label='🔒 Réussis le quiz pour continuer';}
+    else if(cur===STEPS.length-1){label='Terminer le module ✓';}
+    else{label=(n!==null?'Terminer & continuer →':'Continuer →');}
+    var nBot=document.getElementById('pl-next-btn'),nTop=document.getElementById('pl-next-top');
+    if(nBot){nBot.textContent=label;nBot.disabled=blocked;}
+    if(nTop)nTop.disabled=blocked;
+    var pTop=document.getElementById('pl-prev-top'),pBot=document.getElementById('pl-prev-btn');
+    if(pTop)pTop.disabled=cur===0;if(pBot)pBot.disabled=cur===0;
+    var cb=document.getElementById('complete-banner');if(cb)cb.style.display=(cur===STEPS.length-1&&countDone()>=5)?'block':'none';
+  }
+  function render(){
+    var id=STEPS[cur];
+    document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+    var el=document.getElementById(id);if(el)el.classList.add('active');
+    document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+    var ti=document.getElementById(tiId(id));if(ti)ti.classList.add('act');
+    var T=document.getElementById('pl-title');if(T)T.textContent=LABELS[id]||'';
+    var C=document.getElementById('pl-count');if(C)C.textContent='Étape '+(cur+1)+' / '+STEPS.length;
+    try{var prev=parseInt(localStorage.getItem(PK)||'0')||0;if(cur>prev)localStorage.setItem(PK,String(cur));}catch(e){}
+    updateGate();
+    var mc=document.getElementById('main-content');
+    if(mc){var y=mc.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y<0?0:y,behavior:'smooth'});}
+    if(window.innerWidth<=768){var t=document.getElementById('toc-sidebar');if(t)t.classList.remove('open');var o=document.getElementById('mob-overlay');if(o)o.style.display='none';}
+  }
+
+  function allDone(){for(var N=1;N<=5;N++){if(!isPassed(N))return false;}return true;}
+  function firstUnfinished(){for(var N=1;N<=5;N++){if(!isPassed(N))return STEPS.indexOf('ch-'+N);}return STEPS.indexOf('essentiel');}
+  window.goTo=function(n){
+    var id=(n==='plan'||n==='lecons'||n==='essentiel'||n==='examen')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
+    var cn=chNum(id);
+    if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
+    if((id==='essentiel'||id==='examen')&&!allDone()){if(window.toast)toast('🔒 Termine et valide les 5 leçons pour accéder à la synthèse et à l\u2019examen blanc.');return;}
+    cur=i;render();
+  };
+  window.plPrev=function(){if(cur>0){cur--;render();}};
+  window.plNext=function(){
+    var id=STEPS[cur],n=chNum(id);
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){if(window.toast)toast('🔒 Termine le quiz de ce chapitre pour continuer.');return;}
+    if(n!==null&&!hasQuiz(n)&&window.doneChapter)doneChapter(n);
+    if(cur<STEPS.length-1){cur++;render();}
+    else{var cb=document.getElementById('complete-banner');if(cb){cb.style.display='block';cb.scrollIntoView({behavior:'smooth'});}if(window.toast)toast('🎓 Module terminé, bravo !');}
+  };
+
+  // quiz reussi -> marque le chapitre fait + debloque le suivant
+  var _submit=window.submitQ;
+  var PASS_EX=0.8;
+  window.submitQ=function(qid,answers,expls){
+    _submit(qid,answers,expls);
+    if(qid==='ex'){
+      if(window.exUpdateA)window.exUpdateA();
+      updateGate();return;
+    }
+    try{var qs=readJSON('ELM13v1_qs')[qid];
+      if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
+        if(window.ST){window.ST.done[qid]=true;}
+        try{var d=readJSON('ELM13v1_done');d[qid]=true;localStorage.setItem('ELM13v1_done',JSON.stringify(d));}catch(e){}
+        if(window.applyDone)applyDone(qid);
+        if(window.updateProg)updateProg();
+        if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
+      }
+    }catch(e){}
+    updateGate();
+  };
+  var _retry=window.retryQ;
+  window.retryQ=function(qid,count){_retry(qid,count);updateGate();};
+
+  function markViewed(N){
+    var ti=document.getElementById('ti-'+N);
+    if(ti&&!isPassed(N))ti.classList.add('viewed');
+    try{var v=readJSON(VK);v[N]=true;localStorage.setItem(VK,JSON.stringify(v));}catch(e){}
+    if(window.toast)toast('▶️ Vidéo terminée — fais le quiz pour valider le chapitre.');
+  }
+  function attachVideos(){
+    for(var N=1;N<=5;N++){
+      var v=document.getElementById('vf'+N);if(!v)continue;
+      v.addEventListener('loadedmetadata',function(){var n=this.id.replace('vf','');DUR[n]=fmt(this.duration);updateGate();});
+      v.addEventListener('ended',function(){markViewed(this.id.replace('vf',''));});
+    }
+    // restaure les "vus"
+    var vv=readJSON(VK);Object.keys(vv).forEach(function(N){if(vv[N]){var ti=document.getElementById('ti-'+N);if(ti&&!isPassed(N))ti.classList.add('viewed');}});
+  }
+
+  function build(){
+    var main=document.getElementById('main-content');if(!main)return;
+    // barre sticky haute
+    var top=document.createElement('div');top.className='pl-bar pl-bar-top';
+    top.innerHTML='<button id="pl-prev-top" class="pl-ic" onclick="plPrev()" aria-label="Précédent">←</button>'
+      +'<div class="pl-mid"><div class="pl-count" id="pl-count"></div><div class="pl-title" id="pl-title"></div><div class="pl-prog"><i id="pl-prog-fill"></i></div></div>'
+      +'<button id="pl-next-top" class="pl-ic" onclick="plNext()" aria-label="Suivant">→</button>';
+    main.insertBefore(top,main.firstChild);
+    // banniere reprendre
+    var lastReached=0;try{lastReached=parseInt(localStorage.getItem(PK)||'0')||0;}catch(e){}
+    if(lastReached>0){
+      var rb=document.createElement('div');rb.className='resume-banner';rb.id='resume-banner';
+      rb.innerHTML='<span class="rb-i">↩️</span><div class="rb-t">Tu avais avancé jusqu\'à <strong>'+(LABELS[STEPS[lastReached]]||'')+'</strong>.</div>'
+        +'<button class="rb-go" onclick="(function(){document.getElementById(\'resume-banner\').remove();window.__resume('+lastReached+');})()">Reprendre</button>'
+        +'<button class="rb-x" onclick="document.getElementById(\'resume-banner\').remove()" aria-label="Fermer">✕</button>';
+      main.insertBefore(rb,top.nextSibling);
+    }
+    // barre basse
+    var bot=document.createElement('div');bot.className='pl-bar pl-bar-bottom';
+    bot.innerHTML='<button id="pl-prev-btn" class="pl-btn" onclick="plPrev()">← Précédent</button>'
+      +'<button id="pl-next-btn" class="pl-btn pl-cta" onclick="plNext()">Continuer →</button>';
+    main.appendChild(bot);
+    // numero + duree dans le sommaire
+    for(var N=1;N<=5;N++){var ti=document.getElementById('ti-'+N);if(ti){var sp=document.createElement('span');sp.className='toc-right';sp.id='tr-'+N;ti.appendChild(sp);}}
+  }
+  window.__resume=function(i){if(i>=0&&i<STEPS.length){var id=STEPS[i];if((id==='essentiel'||id==='examen')&&!allDone()){i=firstUnfinished();}cur=i;render();}};
+
+  // navigation clavier
+  document.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'){var b=document.getElementById('pl-next-btn');if(b&&!b.disabled)plNext();}
+    else if(e.key==='ArrowLeft'){var p=document.getElementById('pl-prev-btn');if(p&&!p.disabled)plPrev();}
+  });
+
+  window.addEventListener('load',function(){
+    document.body.classList.add('player');
+    build();attachVideos();
+    cur=0;render();
+  });
+})();
+</script>
+<script>
+/* ===== Activité globale comportement (examen blanc) — ELM-13 ===== */
+(function(){
+  function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  var K='ELM13v1_', SEUIL=0.85, W={a:40,b:40,c:20};
+  var NUM=[{"ans": 600, "tol": 0, "unit": "tr/min", "sol": "n₂ = n₁ × D₁ ÷ D₂ = 1800 × 100 ÷ 300 = 600 tr/min", "q": "Poulie motrice de <strong>100 mm</strong> à <strong>1800 tr/min</strong>, poulie réceptrice de <strong>300 mm</strong>. Calcule la <strong>vitesse de sortie</strong>."}, {"ans": 900, "tol": 0, "unit": "tr/min", "sol": "n₂ = 1800 × 100 ÷ 200 = 900 tr/min", "q": "Même poulie motrice (100 mm, 1800 tr/min), mais poulie réceptrice de <strong>200 mm</strong>. Vitesse de sortie ?"}, {"ans": 600, "tol": 0, "unit": "tr/min", "sol": "n₂ = n₁ × Z₁ ÷ Z₂ = 1800 × 15 ÷ 45 = 600 tr/min", "q": "Pignon de <strong>15 dents</strong> à <strong>1800 tr/min</strong> entraînant une roue de <strong>45 dents</strong>. Vitesse de sortie ?"}, {"ans": 20, "tol": 0, "unit": "", "sol": "Les rapports se multiplient : 4 × 5 = 20 (rapport total 1/20)", "q": "Un réducteur a deux étages de rapports <strong>1/4</strong> et <strong>1/5</strong>. Par combien la vitesse est-elle <strong>divisée</strong> au total ?"}, {"ans": 90, "tol": 0, "unit": "tr/min", "sol": "1800 ÷ 20 = 90 tr/min", "q": "Ce réducteur (rapport total 1/20) est entraîné par un moteur à <strong>1800 tr/min</strong>. Quelle est la <strong>vitesse de sortie</strong> ?"}, {"ans": 3, "tol": 0, "unit": "", "sol": "Si la vitesse est divisée par 3, le couple est multiplié par environ 3 (la puissance se conserve)", "q": "Un réducteur divise la vitesse par <strong>3</strong>. Par combien le <strong>couple</strong> est-il multiplié ?"}];
+  window.exNm=function(el){try{localStorage.setItem(K+'exNm',el.value);}catch(e){}};
+  window.__exB=null;
+  window.numGrade=function(){
+    var ok=0,total=NUM.length;
+    for(var i=0;i<total;i++){
+      var inp=document.getElementById('exn-'+i),fb=document.getElementById('exnf-'+i);
+      var raw=((inp&&inp.value)||'').replace(',','.').trim();var v=parseFloat(raw);
+      var good=(!isNaN(v))&&Math.abs(v-NUM[i].ans)<=NUM[i].tol;
+      if(inp){inp.classList.remove('ok','ko');inp.classList.add(good?'ok':'ko');}
+      if(fb){fb.className='exn-fb '+(good?'show-ok':'show-ko');
+        fb.innerHTML=(good?'✓ ':'✗ ')+'Réponse attendue : <strong>'+NUM[i].ans+' '+NUM[i].unit+'</strong>'+(NUM[i].sol?'<br><span style="opacity:.8">'+NUM[i].sol+'</span>':'');}
+      if(good)ok++;
+    }
+    window.__exB={ok:ok,total:total};
+    var chip=document.getElementById('exB-score');if(chip)chip.textContent=W.b+'% · '+ok+'/'+total+' exacts';
+    if(window.toast)toast(ok===total?'🎉 Calculs exacts : '+ok+'/'+total:'Calculs : '+ok+'/'+total);
+    exTotal(false);
+  };
+  function part(qid){var q=gx(K+'qs')[qid];return (q&&q.total>0)?q:null;}
+  function exTotal(fin){
+    var a=part('exa'),c=part('exc'),b=window.__exB;
+    var pa=a?a.ok/a.total:0, pc=c?c.ok/c.total:0, pb=b?b.ok/b.total:0;
+    var av=document.getElementById('exA-score');if(av)av.textContent=W.a+'% · '+(a?a.ok+'/'+a.total:'non soumis');
+    var cv=document.getElementById('exC-score');if(cv)cv.textContent=W.c+'% · '+(c?c.ok+'/'+c.total:'non soumis');
+    var bv=document.getElementById('exB-score');if(bv&&!b)bv.textContent=W.b+'% · non soumis';
+    var tot=Math.round(pa*W.a+pb*W.b+pc*W.c);
+    var bar=document.getElementById('ex-bar-fill');if(bar)bar.style.width=tot+'%';
+    var tt=document.getElementById('ex-total');if(tt)tt.textContent='Total : '+tot+'%';
+    return {tot:tot,done:!!(a&&c&&b)};
+  }
+  window.exValidate=function(){
+    var nm=document.getElementById('ex-nm');
+    if(nm&&!nm.value.trim()){if(window.toast)toast('✍️ Inscris ton nom avant de valider.');nm.focus();return;}
+    var r=exTotal(true),res=document.getElementById('exam-result');
+    if(!r.done){if(res){res.className='exam-result';res.innerHTML='⚠️ Complète les trois parties (QCM, calculs, démarche) avant de valider.';}return;}
+    var pass=r.tot>=Math.round(SEUIL*100);
+    if(res){res.className='exam-result '+(pass?'pass':'fail');
+      res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 85% non atteint.')
+        +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle du module est une <strong>épreuve pratique en atelier</strong> (5 h, seuil 80/100). Les volets montage, réparation et vérification y sont évalués par le professeur.</span>';}
+    if(pass){try{localStorage.setItem(K+'exam','passed');}catch(e){}var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}
+  };
+  window.exPrint=function(){
+    var nm=(document.getElementById('ex-nm')||{}).value||'';
+    var w=window.open('','_blank');if(!w)return;
+    var rows='';for(var i=0;i<NUM.length;i++){var inp=document.getElementById('exn-'+i);rows+='<tr><td>'+(i+1)+'</td><td>'+((inp&&inp.value)||'')+'</td><td>'+NUM[i].ans+' '+NUM[i].unit+'</td></tr>';}
+    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale ELM-13</title>'
+      +'<style>body{font-family:Arial;margin:2cm;color:#111}h1{font-size:18px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #999;padding:6px;font-size:13px}</style></head><body>'
+      +'<h1>Activité globale — Module ELM-13 : Dispositifs de transmission de mouvement</h1>'
+      +'<p><strong>Programme :</strong> Mécanique d\u0027entretien industrielle &nbsp; <strong>Apprenant :</strong> '+nm+'</p>'
+      +'<p>Partie calculs (saisie de l\u0027apprenant vs réponse attendue) :</p>'
+      +'<table><tr><th>#</th><th>Réponse de l\u0027apprenant</th><th>Réponse attendue</th></tr>'+rows+'</table>'
+      +'<p style="margin-top:14px">Évaluation sommative officielle : épreuve pratique en atelier, 5 h, seuil 80/100.</p>'
+      +'</body></html>');w.document.close();w.print();
+  };
+  function init(){
+    var d=document.getElementById('ex-date');if(d)d.textContent=new Date().toLocaleDateString('fr-FR');
+    try{var nm=localStorage.getItem(K+'exNm');if(nm){var e=document.getElementById('ex-nm');if(e)e.value=nm;}}catch(e){}
+    exTotal(false);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body>
+</html>

@@ -1,499 +1,1382 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ELM-26 - Preparation au marche du travail</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELM-26 — Préparation au marché du travail · Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#040D1A;--navy2:#081428;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;--red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;--orange:#C8570A;--orangeL:#E8782A;--orangeXL:#FF9B50;--purple:#6B2D8E;--purpleL:#9B4DBE;--teal:#006868;--tealL:#009898;--white:#FFF;--g50:#F8FAFF;--g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;--text:#0B1525;--bdr:rgba(100,130,220,.18);--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--r:10px;--rL:18px}
+:root{
+  --navy:#040D1A;--blue:#1B3A8C;--blueL:#2B56C0;--blueG:#3B7BFF;
+  --red:#E8192C;--gold:#F5C518;--green:#006B46;--greenL:#00A066;
+  --g100:#E8EEFF;--g300:#C0CCEE;--g500:#7B8DB8;--g700:#3A4A6B;
+  --text:#0B1525;--bdr:rgba(100,130,220,.18);
+  --fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif;--fM:'JetBrains Mono',monospace;
+  --r:10px;--rL:18px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:15px}
-body{font-family:var(--fB);background:#f0f4ff;color:var(--text);-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;outline:none}
-.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
-.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 55%,#1B3A8C 100%);padding:3rem 1.5rem 0;position:relative;overflow:hidden}
-.mod-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body{font-family:var(--fB);background:#eef2fb;color:var(--text);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+/* HEADER */
+.mod-header{background:linear-gradient(135deg,#040D1A 0%,#0C1F3D 60%,#1B3A8C 100%);padding:2.5rem 1.5rem 0;position:relative;overflow:hidden}
+.mod-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(59,123,255,.14) 0%,transparent 60%),radial-gradient(circle at 80% 20%,rgba(245,197,24,.08) 0%,transparent 50%);pointer-events:none}
 .mod-header-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
-.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.7rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
-.mod-header h1{font-family:var(--fD);font-weight:800;font-size:2rem;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.4);border-radius:20px;padding:4px 14px;font-size:.68rem;font-weight:700;color:#7BA7FF;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem}
+.mod-header h1{font-family:var(--fD);font-weight:800;font-size:1.9rem;color:#fff;line-height:1.1;margin-bottom:.4rem}
 .mod-header h1 em{color:#7BA7FF;font-style:normal}
-.mod-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.mod-meta-item{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
-.mod-meta-item strong{color:rgba(255,255,255,.9)}
-.progress-bar-wrap{background:rgba(255,255,255,.07);border-radius:var(--rL) var(--rL) 0 0;overflow:hidden;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.08);border-bottom:none;margin-top:1rem}
-.progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#7BA7FF);border-radius:3px;transition:width .5s ease;width:0%}
-.progress-label{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;margin-top:1.5rem}
-.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.2rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
-.toc h3{font-family:var(--fD);font-weight:700;font-size:.82rem;color:var(--g700);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.toc-item{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;font-size:.78rem;color:var(--g700);cursor:pointer;transition:all .18s;margin-bottom:2px}
-.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.08);color:var(--blue);font-weight:600}
-.toc-item.done .toc-dot{background:var(--greenL)}.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
-.toc-item.act .toc-dot{background:var(--blueG)}.toc-num{font-size:.65rem;color:var(--g500);font-weight:700;min-width:18px}
-.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem}
-.chapter-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.chapter-num{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:rgba(255,255,255,.15);min-width:40px}
-.chapter-info{flex:1}.chapter-info h2{font-family:var(--fD);font-weight:700;font-size:1rem;color:#fff;margin-bottom:2px}
-.chapter-meta{font-size:.7rem;color:rgba(255,255,255,.45);display:flex;gap:.8rem;flex-wrap:wrap}
-.chapter-badge{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
-.chapter-body{padding:1.5rem}
-.content-section{margin-bottom:1.8rem}
-.content-section h3{font-family:var(--fD);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.8rem;padding-left:.8rem;border-left:3px solid var(--blueG)}
-.content-section p{font-size:.85rem;color:#2a3d6b;line-height:1.82;margin-bottom:.9rem}
-.content-section ul,.content-section ol{padding-left:1.4rem;margin-bottom:.9rem}
-.content-section li{font-size:.85rem;color:#2a3d6b;line-height:1.8;margin-bottom:.3rem}
-.content-section strong{color:var(--text);font-weight:700}
-.info-box{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.82rem;color:#1a2f52;line-height:1.7}
-.info-box.warn{background:rgba(245,197,24,.07);border-color:rgba(245,197,24,.3);color:#5a4000}
-.info-box.tip{background:rgba(0,107,70,.06);border-color:rgba(0,107,70,.2);color:#004030}
-.info-box.danger{background:rgba(232,25,44,.05);border-color:rgba(232,25,44,.2);color:#5a0010}
-.info-box-label{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:block}
-.data-table{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:1rem}
-.data-table th{background:#1a2f52;color:#fff;padding:.55rem .9rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.data-table td{padding:.55rem .9rem;border-bottom:1px solid var(--bdr);color:var(--text)}
-.data-table tr:hover td{background:rgba(27,58,140,.04)}
-.data-table .mono{font-family:'Courier New',monospace;color:var(--blue);font-weight:700}
-.code-block{background:#0d1f3c;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;overflow-x:auto}
-.code-block code{font-family:'Courier New',monospace;font-size:.82rem;color:#7BA7FF;line-height:1.7;white-space:pre}
-.video-block{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.5rem;border:1px solid rgba(59,123,255,.2)}
-.video-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.video-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.video-title{font-family:var(--fD);font-weight:700;font-size:.88rem;color:#fff}
-.video-subtitle{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:1px}
-.video-embed{position:relative;padding-bottom:56.25%;background:#000;min-height:200px}
-.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.video-placeholder-text{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center}
-.video-guide{padding:1rem 1.2rem;background:rgba(255,255,255,.03)}
-.video-guide-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:.6rem}
-.video-guide-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-.video-guide-bullet{width:20px;height:20px;border-radius:50%;background:rgba(59,123,255,.2);border:1px solid rgba(59,123,255,.35);font-size:.65rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.video-guide-text{font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
-.video-guide-text strong{color:rgba(255,255,255,.85)}
-.video-url-input{display:flex;gap:.5rem;padding:.8rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
-.video-url-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:#fff;font-family:var(--fB)}
-.video-url-input input::placeholder{color:rgba(255,255,255,.25)}
-.video-url-input button{padding:.45rem 1rem;border-radius:8px;background:var(--blueG);color:#fff;font-size:.78rem;font-weight:700}
-.quiz-block{background:linear-gradient(135deg,rgba(245,197,24,.06),rgba(245,197,24,.02));border:1.5px solid rgba(245,197,24,.25);border-radius:var(--rL);overflow:hidden;margin-top:1.5rem}
-.quiz-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.quiz-icon{font-size:1.2rem}.quiz-header h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--gold)}
-.quiz-header span{font-size:.7rem;color:rgba(255,197,24,.4);margin-left:auto}
-.quiz-body{padding:1.2rem 1.5rem}
-.quiz-q{margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid rgba(245,197,24,.1)}
-.quiz-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.quiz-q-text{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.6}
-.quiz-q-num{font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.quiz-opts{display:flex;flex-direction:column;gap:.4rem}
-.quiz-opt{padding:.55rem .9rem;border:1.5px solid var(--bdr);border-radius:9px;font-size:.81rem;cursor:pointer;transition:all .18s;color:var(--text);display:flex;gap:.65rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
-.quiz-opt:hover{border-color:var(--blue);background:rgba(27,58,140,.04)}
-.quiz-opt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
-.quiz-opt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
-.quiz-opt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.07)!important;color:var(--red)!important}
-.quiz-letter{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.69rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.quiz-opt.sel .quiz-letter{background:var(--blue);color:#fff}
-.quiz-opt.ok .quiz-letter{background:var(--green);color:#fff}
-.quiz-opt.ko .quiz-letter{background:var(--red);color:#fff}
-.quiz-expl{margin-top:.5rem;padding:.5rem .8rem;background:rgba(27,58,140,.06);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--blue);line-height:1.65;display:none}
-.quiz-expl.show{display:block}
-.quiz-footer{padding:1rem 1.5rem;border-top:1px solid rgba(245,197,24,.1);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.quiz-score-display{font-size:.82rem;color:var(--g700)}
-.quiz-score-display strong{color:var(--text);font-size:.92rem}
-.btn-quiz{padding:.5rem 1.2rem;border-radius:9px;font-weight:700;font-size:.8rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.btn-quiz-submit{background:var(--gold);color:var(--navy);border:none}
-.btn-quiz-submit:hover{background:#d4a800}
-.btn-quiz-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}
-.btn-quiz-retry:hover{border-color:var(--blue);color:var(--blue)}
-/* SÉANCE PRATIQUE */
-.pratique-block{background:linear-gradient(135deg,rgba(200,87,10,.06),rgba(232,120,42,.02));border:1.5px solid rgba(200,87,10,.25);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.pratique-header{background:linear-gradient(135deg,#1e0800,#4a1a00);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.pratique-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.pratique-header-info{flex:1}
-.pratique-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#FF9B50}
-.pratique-header-info span{font-size:.68rem;color:rgba(255,155,80,.4);margin-top:1px;display:block}
-.pratique-badge-oblig{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.3);border:1px solid rgba(232,120,42,.5);font-size:.62rem;font-weight:800;color:#FF9B50;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-badge-option{padding:3px 10px;border-radius:20px;background:rgba(200,87,10,.15);border:1px solid rgba(232,120,42,.3);font-size:.62rem;font-weight:800;color:#E8782A;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.pratique-body{padding:1.3rem 1.5rem}
-.pratique-desc{font-size:.83rem;color:#3a1800;line-height:1.78;margin-bottom:1rem}
-.pratique-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.pratique-card{background:rgba(200,87,10,.05);border:1px solid rgba(200,87,10,.15);border-radius:var(--r);padding:.85rem}
-.pratique-card-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.5rem}
-.pratique-card ul{padding-left:1.2rem}
-.pratique-card li{font-size:.78rem;color:#3a2000;line-height:1.75;margin-bottom:.2rem}
-.pratique-slots-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--orange);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.slot-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.slot-btn{padding:.35rem .9rem;border-radius:8px;background:#fff;border:1.5px solid rgba(200,87,10,.2);font-size:.74rem;color:#3a2000;cursor:pointer;transition:all .2s;font-family:var(--fB)}
-.slot-btn:hover{border-color:var(--orange);background:rgba(200,87,10,.06);color:var(--orange)}
-.slot-btn.sel{border-color:var(--orange);background:rgba(200,87,10,.12);color:var(--orange);font-weight:700}
-.btn-reserver{padding:.55rem 1.4rem;border-radius:9px;background:var(--orange);color:#fff;font-size:.83rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-reserver:hover{background:var(--orangeL);transform:translateY(-1px)}
-.pratique-confirm{background:rgba(0,107,70,.08);border:1px solid rgba(0,107,70,.2);border-radius:var(--r);padding:.8rem 1rem;margin-top:1rem;font-size:.81rem;color:#003a20;display:none;align-items:center;gap:.6rem}
-.pratique-confirm.show{display:flex}
-/* DÉMONSTRATION */
-.demo-block{background:linear-gradient(135deg,rgba(0,104,104,.06),rgba(0,152,152,.02));border:1.5px solid rgba(0,104,104,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.demo-header{background:linear-gradient(135deg,#001818,#003030);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.demo-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.demo-header-info{flex:1}
-.demo-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#4DDADA}
-.demo-header-info span{font-size:.68rem;color:rgba(77,218,218,.4);margin-top:1px;display:block}
-.demo-badge{padding:3px 10px;border-radius:20px;background:rgba(0,104,104,.3);border:1px solid rgba(0,152,152,.5);font-size:.62rem;font-weight:800;color:#4DDADA;text-transform:uppercase;letter-spacing:.08em}
-.demo-body{padding:1.3rem 1.5rem}
-.demo-desc{font-size:.83rem;color:#001818;line-height:1.78;margin-bottom:1rem}
-.demo-steps-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.65rem}
-.demo-step{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.7rem}
-.demo-step-num{width:26px;height:26px;border-radius:50%;background:rgba(0,104,104,.12);border:1.5px solid rgba(0,104,104,.3);color:var(--teal);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--fD)}
-.demo-step-text{font-size:.82rem;color:#001818;line-height:1.75}
-.demo-step-text strong{color:var(--teal);font-weight:700}
-.demo-eval{background:rgba(0,104,104,.05);border:1px solid rgba(0,104,104,.15);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem}
-.demo-eval-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.5rem}
-.demo-eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.demo-eval-item{display:flex;align-items:flex-start;gap:.4rem;font-size:.78rem;color:#001818;line-height:1.65}
-/* DEVOIR */
-.devoir-block{background:linear-gradient(135deg,rgba(107,45,142,.06),rgba(107,45,142,.02));border:1.5px solid rgba(107,45,142,.22);border-radius:var(--rL);overflow:hidden;margin-top:2rem}
-.devoir-header{background:linear-gradient(135deg,#110028,#2a0050);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
-.devoir-icon-wrap{width:40px;height:40px;border-radius:10px;background:rgba(107,45,142,.3);border:1px solid rgba(155,77,190,.4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.devoir-header-info{flex:1}
-.devoir-header-info h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:#C47BE8}
-.devoir-header-info span{font-size:.68rem;color:rgba(196,123,232,.4);margin-top:1px;display:block}
-.devoir-deadline{padding:3px 10px;border-radius:20px;background:rgba(107,45,142,.25);border:1px solid rgba(155,77,190,.4);font-size:.62rem;font-weight:800;color:#C47BE8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.devoir-body{padding:1.3rem 1.5rem}
-.devoir-desc{font-size:.83rem;color:#2a1040;line-height:1.78;margin-bottom:1rem}
-.devoir-instructions{background:rgba(107,45,142,.05);border:1px solid rgba(107,45,142,.15);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1rem}
-.devoir-instructions-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.devoir-instructions ol{padding-left:1.3rem}
-.devoir-instructions li{font-size:.8rem;color:#2a1040;line-height:1.8;margin-bottom:.3rem}
-.devoir-bareme-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.5rem}
-.bareme-row{display:flex;align-items:center;gap:.75rem;padding:.4rem .6rem;border-radius:8px;background:rgba(107,45,142,.04);border:1px solid rgba(107,45,142,.08);margin-bottom:.35rem}
-.bareme-pts{font-family:var(--fD);font-weight:800;font-size:.82rem;color:var(--purple);min-width:36px;text-align:center}
-.bareme-label{font-size:.78rem;color:#2a1040;flex:1}
-.devoir-submit-area{background:rgba(107,45,142,.04);border:1.5px dashed rgba(107,45,142,.2);border-radius:var(--r);padding:1.2rem;text-align:center;margin-top:1rem}
-.devoir-submit-icon{font-size:2rem;margin-bottom:.4rem}
-.devoir-submit-text{font-size:.8rem;color:var(--g700);margin-bottom:.8rem}
-.btn-submit-devoir{padding:.5rem 1.3rem;border-radius:9px;background:var(--purple);color:#fff;font-size:.82rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:none;cursor:pointer}
-.btn-submit-devoir:hover{background:var(--purpleL);transform:translateY(-1px)}
-.completion{background:linear-gradient(135deg,var(--green),var(--greenL));border-radius:var(--rL);padding:1.5rem;text-align:center;margin-top:2rem;display:none}
-.completion.show{display:block}
-.completion h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.4rem}
-.completion p{color:rgba(255,255,255,.8);font-size:.85rem}
-@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none}.pratique-grid{grid-template-columns:1fr}}
+.mod-desc{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;max-width:560px;line-height:1.6}
+.mod-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.mod-meta-item{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.mod-meta-item strong{color:rgba(255,255,255,.88)}
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:var(--rL) var(--rL) 0 0;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.07);border-bottom:none;margin-top:.5rem}
+.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blueG),#A0C4FF);border-radius:3px;transition:width .6s ease;width:0%}
+.prog-txt{font-size:.7rem;color:rgba(255,255,255,.45);white-space:nowrap;font-family:var(--fD)}
+/* TIMER */
+.timer-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;background:#fff;border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500);flex-wrap:wrap}
+.timer-bar strong{color:var(--text)}
+.print-btns{display:flex;gap:6px;margin-left:auto}
+.tbtn{padding:3px 10px;border:1px solid var(--bdr);border-radius:6px;background:transparent;font-size:.7rem;color:var(--g500);transition:all .15s}
+.tbtn:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 1.2rem 5rem}
+.layout{display:grid;grid-template-columns:252px 1fr;gap:1.4rem;margin-top:1.4rem}
+/* TOC */
+.toc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);padding:1.1rem;position:sticky;top:1rem;height:fit-content;max-height:calc(100vh - 2rem);overflow-y:auto}
+.toc-title{font-family:var(--fD);font-weight:700;font-size:.75rem;color:var(--g500);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.toc-item{display:flex;align-items:center;gap:.55rem;padding:.38rem .6rem;border-radius:8px;font-size:.76rem;color:var(--g700);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.toc-item:hover{background:var(--g100);color:var(--blue)}.toc-item.act{background:rgba(27,58,140,.09);color:var(--blue);font-weight:600}
+.toc-item.done{color:var(--green)}.toc-dot{width:7px;height:7px;border-radius:50%;background:var(--g300);flex-shrink:0;transition:background .2s}
+.toc-item.act .toc-dot{background:var(--blueG)}.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-num{font-size:.62rem;color:var(--g500);font-weight:700;min-width:16px;font-family:var(--fD)}
+.toc-sep{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--bdr);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.3rem}
+/* CHAPTER */
+.chapter{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem}
+.ch-header{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.ch-num{font-family:var(--fD);font-weight:800;font-size:1.5rem;color:rgba(255,255,255,.12);min-width:38px}
+.ch-info{flex:1}.ch-info h2{font-family:var(--fD);font-weight:700;font-size:.97rem;color:#fff;margin-bottom:2px}
+.ch-meta{font-size:.68rem;color:rgba(255,255,255,.4);display:flex;gap:.7rem;flex-wrap:wrap}
+.ch-badge{font-size:.62rem;padding:2px 8px;border-radius:8px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.ch-body{padding:1.4rem}
+/* CONTENT */
+.section{margin-bottom:1.6rem}
+.section h3{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.75rem;padding-left:.75rem;border-left:3px solid var(--blueG)}
+.section p{font-size:.84rem;color:#2a3d6b;line-height:1.85;margin-bottom:.8rem}
+.section ul,.section ol{padding-left:1.3rem;margin-bottom:.8rem}
+.section li{font-size:.84rem;color:#2a3d6b;line-height:1.8;margin-bottom:.25rem}
+.section strong{color:var(--text);font-weight:700}
+/* INFO BOXES */
+.ibox{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.9rem;font-size:.81rem;line-height:1.72}
+.ibox-label{font-weight:800;font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.3rem;display:block}
+.ibox.blue{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.15);color:#1a2f52}.ibox.blue .ibox-label{color:var(--blue)}
+.ibox.green{background:rgba(0,107,70,.06);border:1px solid rgba(0,107,70,.2);color:#004030}.ibox.green .ibox-label{color:var(--green)}
+.ibox.gold{background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.3);color:#5a4000}.ibox.gold .ibox-label{color:#996600}
+.ibox.red{background:rgba(232,25,44,.05);border:1px solid rgba(232,25,44,.2);color:#5a0010}.ibox.red .ibox-label{color:var(--red)}
+/* TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:1rem;border-radius:var(--r);overflow:hidden}
+.dtable th{background:#0C1F3D;color:#fff;padding:.5rem .85rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.dtable td{padding:.5rem .85rem;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}.dtable tr:hover td{background:rgba(27,58,140,.03)}
+.mono{font-family:var(--fM);color:var(--blue);font-size:.8em;font-weight:700;background:rgba(27,58,140,.07);padding:1px 5px;border-radius:4px}
+/* VIDEO */
+.vblock{background:linear-gradient(135deg,#040D1A,#0C1F3D);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border:1px solid rgba(59,123,255,.2)}
+.vblock-header{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vicon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff4d5e);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.vtitle{font-family:var(--fD);font-weight:700;font-size:.85rem;color:#fff}
+.vsub{font-size:.67rem;color:rgba(255,255,255,.35)}
+.vembed{position:relative;padding-bottom:56.25%;background:#000}
+.vplaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}
+.vplay{width:56px;height:56px;border-radius:50%;background:rgba(232,25,44,.85);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:transform .2s}
+.vplay:hover{transform:scale(1.1)}
+.vplay-txt{font-size:.78rem;color:rgba(255,255,255,.4);text-align:center}
+.vguide{padding:.9rem 1.2rem;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05)}
+.vguide-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.25);margin-bottom:.55rem}
+.vguide-item{display:flex;gap:.55rem;margin-bottom:.45rem}
+.vbullet{width:18px;height:18px;border-radius:50%;background:rgba(59,123,255,.18);border:1px solid rgba(59,123,255,.3);font-size:.6rem;font-weight:800;color:#7BA7FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vguide-txt{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.6}
+.vguide-txt strong{color:rgba(255,255,255,.8)}
+.vurl{display:flex;gap:.45rem;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.05)}
+.vurl input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .75rem;font-size:.78rem;color:#fff;font-family:var(--fB)}
+.vurl input::placeholder{color:rgba(255,255,255,.22)}
+.vurl button{padding:.4rem .9rem;border-radius:7px;background:var(--blueG);color:#fff;font-size:.75rem;font-weight:700}
+/* QUIZ */
+.qblock{background:linear-gradient(135deg,rgba(245,197,24,.05),rgba(245,197,24,.01));border:1.5px solid rgba(245,197,24,.22);border-radius:var(--rL);overflow:hidden;margin-top:1.4rem}
+.qblock-header{background:linear-gradient(135deg,#1a0a00,#3a2000);padding:.9rem 1.4rem;display:flex;align-items:center;gap:.6rem}
+.qblock-header h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--gold)}
+.qblock-count{font-size:.68rem;color:rgba(255,197,24,.35);margin-left:auto}
+.qblock-body{padding:1.1rem 1.4rem}
+.q-item{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(245,197,24,.08)}
+.q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-num{font-size:.67rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem}
+.q-text{font-size:.84rem;font-weight:600;color:var(--text);margin-bottom:.65rem;line-height:1.6}
+.q-opts{display:flex;flex-direction:column;gap:.35rem}
+.qopt{padding:.5rem .85rem;border:1.5px solid var(--bdr);border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;background:#fff;text-align:left;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--blue);background:rgba(27,58,140,.04)}
+.qopt.sel{border-color:var(--blue);background:rgba(27,58,140,.07);font-weight:600;color:var(--blue)}
+.qopt.ok{border-color:var(--green)!important;background:rgba(0,107,70,.07)!important;color:var(--green)!important}
+.qopt.ko{border-color:var(--red)!important;background:rgba(232,25,44,.06)!important;color:var(--red)!important}
+.qletter{width:20px;height:20px;border-radius:50%;background:var(--g100);color:var(--g700);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.qopt.sel .qletter{background:var(--blue);color:#fff}.qopt.ok .qletter{background:var(--green);color:#fff}.qopt.ko .qletter{background:var(--red);color:#fff}
+.qexpl{margin-top:.45rem;padding:.5rem .8rem;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.65;display:none}
+.qexpl.show-ok{display:block;background:rgba(0,107,70,.07);border-left:3px solid var(--green);color:#003a20}
+.qexpl.show-ko{display:block;background:rgba(232,25,44,.05);border-left:3px solid var(--red);color:#4a0010}
+.qfooter{padding:.85rem 1.4rem;border-top:1px solid rgba(245,197,24,.08);display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.qscore{font-size:.8rem;color:var(--g700)}
+.qbtn{padding:.45rem 1.1rem;border-radius:8px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px}
+.qbtn-submit{background:var(--gold);color:var(--navy)}.qbtn-submit:hover{background:#d4a800}
+.qbtn-retry{background:transparent;border:1.5px solid var(--bdr);color:var(--g700)}.qbtn-retry:hover{border-color:var(--blue);color:var(--blue)}
+/* CARDS GRID (reflection / clickable) */
+.dora-grid{display:grid;gap:.6rem;margin:1rem 0}
+.dora-card{background:linear-gradient(135deg,#0c1f3d,#1B3A8C);border-radius:var(--r);padding:.8rem .65rem;text-align:center;cursor:pointer;transition:all .2s;border:1px solid rgba(59,123,255,.2)}
+.dora-card:hover,.dora-card.active{border-color:var(--blueG);box-shadow:0 4px 16px rgba(59,123,255,.25);transform:translateY(-2px)}
+.dora-letter{font-family:var(--fD);font-weight:800;font-size:1.4rem;color:var(--gold)}
+.dora-word{font-size:.67rem;font-weight:700;color:rgba(255,255,255,.7);font-family:var(--fD);margin:.15rem 0}
+.dora-hint{font-size:.62rem;color:rgba(255,255,255,.38);line-height:1.5}
+.dora-detail{border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:none}
+.dora-detail.show{display:block}
+/* ═══ PLAN DE COURS (nouveau bloc standardisé) ═══ */
+.pc{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1.4rem;border-top:4px solid var(--gold)}
+.pc-head{background:linear-gradient(135deg,#1a1200,#3a2a00);padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.pc-head .pc-ic{width:34px;height:34px;border-radius:9px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.pc-head h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:var(--gold)}
+.pc-head .pc-sub{font-size:.66rem;color:rgba(245,197,24,.5)}
+.pc-body{padding:1.4rem}
+.pc-id{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.55rem;margin-bottom:1.3rem}
+.pc-id-cell{background:var(--g100);border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem}
+.pc-id-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.15rem}
+.pc-id-val{font-family:var(--fD);font-weight:700;font-size:.86rem;color:var(--blue);line-height:1.25}
+.pc-sec{margin-bottom:1.3rem}
+.pc-sec:last-child{margin-bottom:0}
+.pc-sec h4{font-family:var(--fD);font-weight:700;font-size:.8rem;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.55rem;display:flex;align-items:center;gap:.45rem}
+.pc-sec h4::before{content:'';width:14px;height:2px;background:var(--gold);border-radius:2px}
+.pc-sec p{font-size:.83rem;color:#2a3d6b;line-height:1.8;margin-bottom:.55rem}
+.pc-sec ul,.pc-sec ol{padding-left:1.25rem;margin-bottom:.5rem}
+.pc-sec li{font-size:.83rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.pc-sec strong{color:var(--text)}
+.pc-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:600px){.pc-cols{grid-template-columns:1fr}}
+.pc-callout{background:rgba(27,58,140,.05);border:1px solid rgba(27,58,140,.14);border-radius:var(--r);padding:.7rem .9rem;font-size:.8rem;color:#1a2f52;line-height:1.65}
+.pc-callout .pc-callout-lbl{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);display:block;margin-bottom:.2rem}
+/* ═══ PLANS DE LEÇON (nouveau bloc standardisé) ═══ */
+.lp-intro{background:linear-gradient(135deg,#0C1F3D,#1B3A8C);border-radius:var(--rL);padding:1.1rem 1.4rem;margin-bottom:1.1rem}
+.lp-intro h2{font-family:var(--fD);font-weight:800;font-size:1rem;color:#fff;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem}
+.lp-intro p{font-size:.77rem;color:rgba(255,255,255,.55);line-height:1.6}
+.lp{background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;margin-bottom:1rem}
+.lp-head{padding:.85rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;background:linear-gradient(135deg,#f4f7ff,#e9efff);border-bottom:1px solid var(--bdr);transition:background .15s}
+.lp-head:hover{background:#e4ecff}
+.lp-no{font-family:var(--fD);font-weight:800;font-size:1.05rem;color:#fff;background:var(--blue);min-width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-htxt{flex:1}
+.lp-htxt h3{font-family:var(--fD);font-weight:700;font-size:.88rem;color:var(--text);line-height:1.2}
+.lp-htxt .lp-meta{font-size:.66rem;color:var(--g500);margin-top:1px}
+.lp-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lp-toggle{font-size:.9rem;color:var(--g500);transition:transform .2s;flex-shrink:0}
+.lp.open .lp-toggle{transform:rotate(180deg)}
+.lp-body{display:none;padding:1.1rem 1.2rem}
+.lp.open .lp-body{display:block}
+.lp-field{margin-bottom:1rem}
+.lp-field:last-child{margin-bottom:0}
+.lp-field-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.lp-field-lbl .lp-chip{font-size:.58rem;font-weight:700;color:var(--blue);background:rgba(27,58,140,.07);border-radius:5px;padding:1px 6px}
+.lp-field p{font-size:.82rem;color:#2a3d6b;line-height:1.75}
+.lp-field ul{padding-left:1.2rem}
+.lp-field li{font-size:.82rem;color:#2a3d6b;line-height:1.7;margin-bottom:.2rem}
+.lp-field strong{color:var(--text)}
+/* PHASE TIMELINE inside lesson */
+.lp-phases{display:flex;flex-direction:column;gap:.5rem}
+.lp-phase{display:flex;gap:.7rem;align-items:flex-start}
+.lp-phase-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 7px;white-space:nowrap;flex-shrink:0;min-width:96px;text-align:center;margin-top:1px}
+.lp-phase-tag.p1{background:#7B8DB8}.lp-phase-tag.p2{background:var(--blue)}.lp-phase-tag.p3{background:var(--blueG)}.lp-phase-tag.p4{background:var(--green)}.lp-phase-tag.p5{background:var(--gold);color:var(--navy)}
+.lp-phase-txt{font-size:.8rem;color:#2a3d6b;line-height:1.65}
+.lp-phase-txt strong{color:var(--text)}
+/* BUTTONS */
+.done-btn{padding:.48rem 1.2rem;border-radius:9px;background:var(--green);color:#fff;font-size:.79rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
+.done-btn:hover{background:#008055}
+.done-wrap{display:flex;justify-content:flex-end;margin-top:1.1rem}
+.complete-banner{background:linear-gradient(135deg,var(--green),#00A066);border-radius:var(--rL);padding:1.4rem;text-align:center;margin-top:1.5rem;display:none}
+.complete-banner h2{font-family:var(--fD);font-weight:800;color:#fff;margin-bottom:.3rem}
+.complete-banner p{color:rgba(255,255,255,.75);font-size:.83rem}
+/* RESPONSIVE */
+@media(max-width:768px){.layout{grid-template-columns:1fr}.toc{display:none;position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:268px;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}.toc.open{display:block!important;transform:translateX(0)}table{display:block;overflow-x:auto}.lp-phase{flex-direction:column;gap:.2rem}}
+#mob-toc-btn{display:none;position:fixed;bottom:18px;left:18px;z-index:190;width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,.3);align-items:center;justify-content:center}
+#mob-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
+@media(max-width:768px){#mob-toc-btn{display:flex!important}}
+@media print{.toc,#mob-toc-btn,#mob-overlay,.vblock,.timer-bar,.print-btns{display:none!important}.layout{display:block!important}.lp-body{display:block!important}body{background:#fff!important}}
+/* HERO */
+.mod-hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;z-index:0}
 
-@media(max-width:768px){
-  #toc-sidebar{position:fixed!important;top:0;left:0;bottom:0;z-index:200;width:270px;transform:translateX(-100%);transition:transform .25s ease;background:var(--bg2);box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #toc-sidebar.toc-open{transform:translateX(0)!important}
-  #toc-overlay{display:block!important}
-  .main-content{width:100%!important}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .slot-grid{grid-template-columns:1fr 1fr!important}
-}
-#toc-mob-btn{display:none;position:fixed;bottom:20px;left:20px;z-index:190;width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;color:#0F1B2D;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;justify-content:center}
-@media(max-width:768px){#toc-mob-btn{display:flex!important}}
-#toc-overlay{display:none;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5)}
-.session-timer-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bdr);font-size:.72rem;color:var(--g500)}
-.print-btn-wrap{padding:6px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px}
-.print-btn{font-size:.72rem;padding:4px 12px;border:1px solid var(--bdr);border-radius:6px;background:transparent;color:var(--g400);cursor:pointer}
-.print-btn:hover{color:var(--g200)}
-@media print{
-  #toc-sidebar,#toc-mob-btn,#toc-overlay,.session-timer-bar,.print-btn-wrap,
-  .video-block,.pratique-block,.demo-block{display:none!important}
-  .layout{display:block!important}
-  .main-content{width:100%!important}
-  body{background:#fff!important;color:#000!important}
-}
+/* ===== LECTEUR DE COURS v3 ===== */
+.wrap{max-width:1280px}
+.mod-header-in{max-width:1280px}
+.layout{grid-template-columns:300px 1fr;gap:2rem}
+body.player .step{display:none}
+body.player .step.active{display:block;animation:stepIn .4s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pl-bar{display:flex;align-items:center;gap:1rem}
+.pl-bar-top{position:sticky;top:.6rem;z-index:60;background:rgba(255,255,255,.93);backdrop-filter:blur(10px) saturate(1.3);border:1px solid var(--bdr);border-radius:var(--rL);padding:.7rem 1rem;margin-bottom:1.3rem;box-shadow:0 6px 24px rgba(12,31,61,.07);flex-wrap:wrap}
+.pl-mid{flex:1;min-width:0}
+.pl-count{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--g500);font-family:var(--fD)}
+.pl-title{font-family:var(--fD);font-weight:800;font-size:1.02rem;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-prog{height:5px;background:var(--g100);border-radius:3px;overflow:hidden;margin-top:.5rem}
+.pl-prog i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--blueG),var(--greenL));transition:width .55s ease}
+.pl-ic{width:38px;height:38px;border-radius:11px;background:var(--g100);color:var(--blue);font-size:1.15rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.pl-ic:hover:not(:disabled){background:var(--blue);color:#fff}
+.pl-ic:disabled{opacity:.3;cursor:default}
+.pl-bar-bottom{justify-content:space-between;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--bdr);flex-wrap:wrap;gap:.7rem}
+.pl-btn{padding:.6rem 1.2rem;border-radius:11px;font-family:var(--fD);font-weight:700;font-size:.83rem;background:var(--g100);color:var(--g700);transition:.15s}
+.pl-btn:hover:not(:disabled){background:var(--g300)}
+.pl-btn:disabled{opacity:.5;cursor:default}
+.pl-cta{background:linear-gradient(135deg,var(--blue),var(--blueG));color:#fff;box-shadow:0 5px 16px rgba(43,86,192,.32)}
+.pl-cta:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.pl-cta:disabled{background:var(--g300);color:var(--g500);box-shadow:none}
+.toc-item.lock{opacity:.5;cursor:not-allowed}
+.toc-item.lock:hover{background:transparent;color:var(--g700)}
+.toc-item.viewed .toc-dot{background:var(--blueG)}
+.toc-item.done .toc-dot{background:var(--greenL)}
+.toc-item.done .toc-num::after{content:' ✓';color:var(--greenL);font-weight:800}
+.toc-right{margin-left:auto;font-size:.62rem;color:var(--g500);font-family:var(--fM);flex-shrink:0}
+.resume-banner{display:flex;align-items:center;gap:.9rem;background:linear-gradient(135deg,rgba(43,86,192,.09),rgba(59,123,255,.04));border:1px solid rgba(43,86,192,.22);border-radius:var(--rL);padding:.85rem 1.1rem;margin-bottom:1.2rem}
+.resume-banner .rb-i{font-size:1.25rem}
+.resume-banner .rb-t{flex:1;font-size:.82rem;color:#1a2f52;line-height:1.45}
+.resume-banner .rb-t strong{color:var(--blue);font-family:var(--fD)}
+.resume-banner button{padding:.45rem 1rem;border-radius:9px;font-family:var(--fD);font-weight:700;font-size:.78rem}
+.rb-go{background:var(--blue);color:#fff}.rb-go:hover{background:var(--blueL)}
+.rb-x{background:transparent;color:var(--g500);font-size:1.05rem;padding:.2rem .55rem}
+@media(max-width:768px){.pl-title{font-size:.92rem}.pl-bar-top{top:0;border-radius:0;margin:0 -1.2rem 1.1rem;padding:.7rem 1.2rem}.pl-bar-bottom .pl-btn{flex:1;text-align:center}}
+
+
+/* ===== v4 : plan de leçon intégré + étapes de leçon ===== */
+.lesson-plan{background:linear-gradient(135deg,#f6f9ff,#eef3ff);border:1px solid var(--bdr);border-left:4px solid var(--blueG);border-radius:var(--rL);padding:1rem 1.1rem;margin-bottom:1.4rem}
+.lpl-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.85rem}
+.lpl-ic{width:34px;height:34px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.lpl-h{flex:1}
+.lpl-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);font-family:var(--fD)}
+.lpl-title{font-family:var(--fD);font-weight:700;font-size:.92rem;color:var(--text);line-height:1.2}
+.lpl-dur{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.15);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.lpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem}
+.lpl-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.7rem .8rem}
+.lpl-k{font-size:.66rem;font-weight:800;color:var(--blue);margin-bottom:.35rem;font-family:var(--fD)}
+.lpl-card p,.lpl-card li{font-size:.78rem;color:#2a3d6b;line-height:1.6}
+.lpl-card ul{padding-left:1.05rem;margin:0}
+.lpl-card li{margin-bottom:.2rem}
+.lesson-step-label{font-family:var(--fD);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin:1.6rem 0 .7rem;padding-bottom:.4rem;border-bottom:1px dashed var(--bdr)}
+
+
+/* ===== Bon à savoir (récap de leçon + récap final) ===== */
+.recap{margin-top:1.4rem;background:linear-gradient(135deg,#fffaf0,#fff3d4);border:1px solid #f0d98a;border-left:4px solid var(--gold);border-radius:var(--rL);padding:1rem 1.15rem}
+.recap-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#7a5b00;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.recap-ic{font-size:1rem}
+.recap-list{margin:0;padding-left:1.15rem}
+.recap-list li{font-size:.83rem;color:#5c4a1a;line-height:1.65;margin-bottom:.4rem}
+.recap-list li strong{color:#3d3000}
+.recap-final{background:linear-gradient(135deg,#0B1525,#13243f);border:1px solid rgba(255,197,24,.3);border-left:4px solid var(--gold)}
+.recap-final .recap-h{color:var(--gold)}
+.recap-final .recap-list li{color:#e8eeff}
+.recap-final .recap-list li strong{color:#fff}
+
+
+/* ===== Termes clés ===== */
+.terms{margin-top:1.4rem;background:linear-gradient(135deg,#f2fbf6,#e7f7ee);border:1px solid #bfe5cf;border-left:4px solid #1d9e5f;border-radius:var(--rL);padding:1rem 1.15rem}
+.terms-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#0f5c36;display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.terms dl{margin:0}
+.terms dt{font-weight:800;font-size:.8rem;color:#0f5c36;margin-top:.55rem}
+.terms dt:first-child{margin-top:0}
+.terms dd{margin:0 0 .15rem 0;font-size:.8rem;color:#27513c;line-height:1.6}
+/* ===== Examen blanc ===== */
+.exam-head{background:linear-gradient(135deg,#0B1525,#1a2c4d);border-radius:var(--rL);padding:1.1rem 1.2rem;margin-bottom:1.3rem;border:1px solid rgba(255,197,24,.25)}
+.exam-head h3{font-family:var(--fD);color:#fff;font-size:1rem;margin:0 0 .4rem}
+.exam-head p{color:#c9d6f2;font-size:.8rem;line-height:1.65;margin:0}
+.exam-head .exam-rules{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.exam-head .exam-rule{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:700;color:#ffd95e}
+.exam-result{display:none;margin-top:1.2rem;border-radius:var(--rL);padding:1rem 1.2rem;font-size:.85rem;font-weight:700}
+.exam-result.pass{display:block;background:#e9f9f0;border:1px solid #1d9e5f;color:#0f5c36}
+.exam-result.fail{display:block;background:#fdeeee;border:1px solid #d24a43;color:#8c2722}
+
+
+/* ===== Activité de réflexion ===== */
+.activity{margin-top:1.4rem;background:linear-gradient(135deg,#f7f3ff,#efe9fc);border:1px solid #d8c9f2;border-left:4px solid #6c3fc5;border-radius:var(--rL);padding:1rem 1.15rem}
+.activity-h{font-family:var(--fD);font-weight:800;font-size:.84rem;color:#46287e;display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.activity ol{margin:0;padding-left:1.2rem}
+.activity li{font-size:.81rem;color:#3d2a66;line-height:1.65;margin-bottom:.45rem}
+.activity .act-note{margin-top:.6rem;font-size:.74rem;color:#6b5694;font-style:italic}
+/* ===== Examen blanc 4 parties ===== */
+.exam-part{font-family:var(--fD);font-weight:800;font-size:.9rem;color:var(--text);margin:1.8rem 0 .8rem;padding:.55rem .9rem;background:linear-gradient(135deg,#f6f9ff,#eef3ff);border-left:4px solid var(--blue);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.exam-part .ex-chip{font-size:.66rem;font-weight:800;color:var(--blue);background:rgba(27,58,140,.08);border:1px solid rgba(27,58,140,.18);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.exid{display:grid;grid-template-columns:1fr auto auto;gap:.7rem;margin-bottom:.4rem}
+.exid label{font-size:.68rem;font-weight:800;color:var(--g500);display:block;margin-bottom:.25rem;font-family:var(--fD)}
+.exid input{width:100%;border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .7rem;font-size:.85rem;font-family:inherit}
+.exid .exid-fixed{border:1px solid var(--bdr);border-radius:var(--r);padding:.55rem .9rem;font-size:.85rem;background:#f7f9fe;color:var(--text);font-weight:700}
+.exq{margin-bottom:1.1rem}
+.exq-t{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.extxt{width:100%;min-height:92px;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem .75rem;font-size:.83rem;font-family:inherit;line-height:1.6;resize:vertical}
+.extxt:focus{outline:2px solid rgba(27,58,140,.25)}
+.ex-cnt{font-size:.66rem;color:var(--g500);margin-top:.2rem;text-align:right}
+.ex-cnt.ok{color:#1d9e5f;font-weight:700}
+.reveal-btn{margin-top:.35rem;background:none;border:none;color:var(--blue);font-size:.72rem;font-weight:800;cursor:pointer;padding:0;font-family:var(--fD)}
+.reveal{display:none;margin-top:.5rem;background:#f2fbf6;border:1px dashed #1d9e5f;border-radius:var(--r);padding:.65rem .85rem;font-size:.76rem;color:#27513c;line-height:1.6}
+.reveal.show{display:block}
+.reveal ul{margin:.2rem 0 0;padding-left:1.1rem}
+.engage{list-style:none;margin:0;padding:0}
+.engage li{margin-bottom:.5rem}
+.engage label{display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;color:var(--text);cursor:pointer;line-height:1.5}
+.engage input{width:17px;height:17px;margin-top:2px;accent-color:#1d9e5f;cursor:pointer}
+.exam-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;align-items:center}
+.exam-score-line{font-size:.74rem;color:var(--g500);font-weight:700}
+.btn-print{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:.6rem 1.1rem;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--fD);color:var(--text)}
+.btn-print:hover{border-color:var(--blue);color:var(--blue)}
+.ex-bar{height:8px;background:#e8edf8;border-radius:6px;overflow:hidden;margin-top:.5rem}
+.ex-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#1d9e5f);border-radius:6px;transition:width .5s ease}
+@media(max-width:700px){.exid{grid-template-columns:1fr}}
+
+
+/* responsive fix — force one column on mobile */
+@media(max-width:768px){.layout{display:block!important;grid-template-columns:1fr!important}#main-content{width:100%!important}}
+/* numeric exam inputs + svg figures */
+.exnum{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:.5rem 0}
+.exnum input{width:150px;padding:.5rem .7rem;border:1px solid var(--bdr);border-radius:9px;font-family:var(--fM);font-size:.95rem}
+.exnum input.ok{border-color:var(--greenL);background:rgba(46,160,87,.06)}
+.exnum input.ko{border-color:#c0392b;background:rgba(192,57,43,.05)}
+.exn-unit{font-family:var(--fM);font-size:.85rem;color:var(--g500)}
+.exn-fb{display:none;font-size:.82rem;margin:.2rem 0 .4rem;padding:.5rem .7rem;border-radius:8px}
+.exn-fb.show-ok{display:block;background:rgba(46,160,87,.1);color:#1e7e45}
+.exn-fb.show-ko{display:block;background:rgba(192,57,43,.08);color:#a5281b}
+.fig{margin:1rem 0;background:#fff;border:1px solid var(--bdr);border-radius:12px;padding:1rem;text-align:center}
+.fig svg{max-width:100%;height:auto}
+.fig figcaption{font-size:.78rem;color:var(--g500);margin-top:.5rem;font-family:var(--fM)}
 </style>
 </head>
 <body>
+
+<!-- HEADER -->
 <div class="mod-header">
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/_assets/hero/slide-elm-26.jpg')"></div>
   <div class="mod-header-in">
-    <div class="mod-tag">🎯 Module ELM-26 · 1ère Année</div>
-    <h1>Preparation au <em>marche du travail</em></h1>
+    <div class="mod-tag">🎓 ELM-26 · Compétence générale · Objectif de comportement</div>
+    <h1>Préparation au <em>marché du travail</em></h1>
+    <p class="mod-desc">Préparation au marché du travail · 30 heures — Le dernier module : connaître le marché et le marché caché, rédiger un CV qui ouvre des portes, réussir l'entretien et les tests pratiques, réussir ses premiers mois — et emporter ce qui compte vraiment.</p>
     <div class="mod-meta">
-      <div class="mod-meta-item">⏱ Durée : <strong>45 heures</strong></div>
-      <div class="mod-meta-item">🎯 Seuil : <strong>70%</strong></div>
-      <div class="mod-meta-item">📚 Chapitres : <strong>4</strong></div>
-      <div class="mod-meta-item">🎥 Vidéos : <strong>4 à produire</strong></div>
-      <div class="mod-meta-item">🔬 Pratique : <strong>Travaux pratiques</strong></div><div class="mod-meta-item">📝 Devoir : <strong>Rapport de travaux</strong></div>
+      <div class="mod-meta-item">⏱ <strong>30 heures</strong></div>
+      <div class="mod-meta-item">🎯 Objectif de <strong>comportement</strong></div>
+      <div class="mod-meta-item">📚 <strong>4 chapitres</strong></div>
+      <div class="mod-meta-item">🏁 <strong>Dernier module</strong></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress"></div></div>
-      <span class="progress-label" id="progress-text">0 / 4 chapitres</span>
-    </div>
-  </div>
-</div><div id="mod-code-data" data-code="ELM-26" style="display:none"></div><div id="seuil-data" data-seuil="70" style="display:none"></div><div id="toc-overlay" onclick="toggleToc()"></div><button id="toc-mob-btn" onclick="toggleToc()" aria-label="Menu">☰</button><div class="wrap"><div class="layout"><div class="toc">
-  <h3>📋 Sommaire</h3>
-  <div class="toc-item  act" onclick="scrollToChapter(1)" id="toc-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Marche emploi ELM en Haiti</span></div>
-<div class="toc-item" onclick="scrollToChapter(2)" id="toc-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>CV et candidature technique ELM</span></div>
-<div class="toc-item" onclick="scrollToChapter(3)" id="toc-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>Entretien d'embauche ELM</span></div>
-<div class="toc-item" onclick="scrollToChapter(4)" id="toc-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Certifications et evolution de carriere</span></div>
-  
-</div><div><div class="chapter" id="chapter-1">
-  <div class="chapter-header">
-    <div class="chapter-num">01</div>
-    <div class="chapter-info">
-      <h2>Marche emploi ELM en Haiti</h2>
-      <div class="chapter-meta"><span>🕐 11h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 1 — Marche emploi ELM en Haiti - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-1"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-1" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Marche emploi ELM en Haiti (5 min)</strong> - Fondamentaux, normes, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-1" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(1)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-1">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 1</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-1"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Role de Marche emploi ELM en Haiti en electromecanique industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_1')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_1')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite et la disponibilite des installations electromecaniques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_1')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_1')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_1">La maitrise de Marche emploi ELM en Haiti est essentielle pour assurer la continuite des installations electriques et mecaniques industrielles.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_1')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_1')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_1')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_1')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_1">LOTO + verification d'absence de tension = regle absolue non-negociable avant toute intervention.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_1')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_1')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_1')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_1')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_1">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique 2e annee?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_1')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_1')"><span class="quiz-letter">B</span>Gants isolants classes selon la tension, lunettes de securite, chaussures isolantes</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_1')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_1')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_1">Les EPI electriques sont calibres selon la tension de travail. Gants Classe 0 (1000V) minimum pour le reseau haiteien.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(1)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(1)" id="qretry-1" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-1">Répondez à toutes les questions puis validez.</span>
+    <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div><span class="prog-txt" id="prog-txt">0 / 4 chapitres</span></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(1);checkCompletion()">✓ Chapitre terminé →</button>
-</div></div>
-</div><div class="chapter" id="chapter-2">
-  <div class="chapter-header">
-    <div class="chapter-num">02</div>
-    <div class="chapter-info">
-      <h2>CV et candidature technique ELM</h2>
-      <div class="chapter-meta"><span>🕐 11h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
+
+<div class="timer-bar">⏱ Session : <strong id="session-timer">0m 0s</strong> &nbsp;|&nbsp; Quiz : <strong id="quiz-stat">—</strong>
+  <div class="print-btns"><button class="tbtn" onclick="window.print()">🖨 Imprimer</button><button class="tbtn" onclick="toggleToc()">☰ Sommaire</button></div>
+</div>
+
+<div class="wrap"><div class="layout">
+<div class="toc" id="toc-sidebar">
+  <div class="toc-title">📋 Sommaire ELM-26</div>
+  <div class="toc-item act" onclick="goTo('plan')" id="ti-plan"><div class="toc-dot"></div><span class="toc-num">PC</span><span>Plan de cours</span></div>
+  <div class="toc-sep">Contenu du module</div>
+  <div class="toc-item" onclick="goTo(1)" id="ti-1"><div class="toc-dot"></div><span class="toc-num">01</span><span>Le marché du travail</span></div>
+  <div class="toc-item" onclick="goTo(2)" id="ti-2"><div class="toc-dot"></div><span class="toc-num">02</span><span>CV & candidature</span></div>
+  <div class="toc-item" onclick="goTo(3)" id="ti-3"><div class="toc-dot"></div><span class="toc-num">03</span><span>L'entretien</span></div>
+  <div class="toc-item" onclick="goTo(4)" id="ti-4"><div class="toc-dot"></div><span class="toc-num">04</span><span>Débuts & évolution</span></div>
+  <div class="toc-sep">Synthèse</div>
+  <div class="toc-item" onclick="goTo('essentiel')" id="ti-essentiel"><div class="toc-dot"></div><span class="toc-num">★</span><span>L'essentiel à retenir</span></div>
+  <div class="toc-item" onclick="goTo('examen')" id="ti-examen"><div class="toc-dot"></div><span class="toc-num">🎓</span><span>Examen blanc</span></div>
+</div>
+
+<div id="main-content">
+
+<!-- PLAN DE COURS -->
+<div class="pc step" id="plan">
+<div class="pc-head"><div class="pc-ic">🗂</div><div><h2>Plan de cours</h2><div class="pc-sub">ELM-26 · Préparation au marché du travail · Programme Électromécanique (ELM)</div></div></div>
+<div class="pc-body">
+<div class="lesson-step-label" style="margin-top:0">▶ Présentation du module en vidéo</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Présentation du module ELM-26</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf-plan" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM26/final/ELM26-PLAN.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+  <div class="pc-id">
+    <div class="pc-id-cell"><div class="pc-id-lbl">Code</div><div class="pc-id-val">ELM-26</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Durée</div><div class="pc-id-val">30 heures</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Type d'objectif</div><div class="pc-id-val">Comportement</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Catégorie</div><div class="pc-id-val">Compétence générale</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">Tout le programme</div></div>
+    <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 70/100</div></div>
   </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 2 — CV et candidature technique ELM - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-2"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-2" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de CV et candidature technique ELM (5 min)</strong> - Fondamentaux, normes, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-2" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(2)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-2">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 2</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-2"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Role de CV et candidature technique ELM en electromecanique industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_2')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_2')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite et la disponibilite des installations electromecaniques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_2')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_2')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_2">La maitrise de CV et candidature technique ELM est essentielle pour assurer la continuite des installations electriques et mecaniques industrielles.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_2')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_2')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_2')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_2')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_2">LOTO + verification d'absence de tension = regle absolue non-negociable avant toute intervention.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_2')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_2')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_2')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_2')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_2">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique 2e annee?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_2')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_2')"><span class="quiz-letter">B</span>Gants isolants classes selon la tension, lunettes de securite, chaussures isolantes</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_2')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_2')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_2">Les EPI electriques sont calibres selon la tension de travail. Gants Classe 0 (1000V) minimum pour le reseau haiteien.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(2)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(2)" id="qretry-2" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-2">Répondez à toutes les questions puis validez.</span>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Se préparer au marché du travail.</strong></p></div>
+  <div class="pc-sec"><h4>Présentation du module</h4><p>Tu y es. <strong>Vingt-cinq modules, mille huit cents heures.</strong> Tu sais mesurer, câbler, usiner, électrifier, raccorder des moteurs, entretenir des groupes électrogènes, monter des circuits pneumatiques et hydrauliques, programmer un automate, dépanner un système complet et planifier une maintenance.</p><p>Il reste une chose — et elle n'est pas la moindre : <strong>faire savoir ce que tu sais faire</strong>. Car un excellent technicien que personne ne connaît reste sans travail, tandis qu'un technicien moyen qui sait se présenter trouve un poste.</p><p>Ce module te fait découvrir le <strong>marché caché</strong> (la plupart des emplois techniques ne sont jamais annoncés), t'apprend à rédiger un <strong>CV qui décrit tes compétences en actes</strong>, à mener une <strong>candidature spontanée</strong> — dix minutes qui te distinguent de 90 % des candidats —, à réussir l'<strong>entretien</strong> et son <strong>test dans le test</strong>, puis à réussir tes <strong>premiers mois</strong> et à <strong>évoluer</strong>. Et il se termine par la seule chose qui, au fond, ne s'oubliera jamais : <strong>ta manière de penser</strong>.</p></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Élément de la compétence — <em>libellé officiel</em></th></tr></thead><tbody><tr><td>1</td><td>Inventorier les entreprises exerçant des activités en électromécanique.</td></tr><tr><td>2</td><td>Rédiger son curriculum vitae.</td></tr><tr><td>3</td><td>Rédiger une lettre de demande d'emploi et de stage.</td></tr><tr><td>4</td><td>Contacter des employeurs.</td></tr><tr><td>5</td><td>Préparer et passer une entrevue de sélection.</td></tr><tr><td>6</td><td>Rédiger un rapport.</td></tr></tbody></table>
+    <div class="ibox blue"><span class="ibox-label">📘 Source</span>Éléments repris <strong>mot à mot</strong> du programme officiel <em>Électromécanique</em> (INFP/MENFP). La <strong>pondération de l'épreuve</strong> figure au <em>Guide d'évaluation</em> et n'est pas reproduite ici.</div></div>
+  <div class="pc-sec"><h4>Contexte de réalisation</h4>
+    <div class="pc-cols">
+      <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Offres d'emploi réelles · annuaires d'entreprises · rencontres avec des employeurs et des anciens élèves · simulations d'entretien · tests techniques types.</div>
+      <div class="pc-callout"><span class="pc-callout-lbl">À l'aide de</span>Traitement de texte et tableur (ELM-02) · modèles de CV et de lettres · documentation sur les entreprises du secteur · dossier de compétences (les 25 modules).</div>
+    </div></div>
+  <div class="pc-sec"><h4>Découpage en chapitres</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Chapitre</th><th>Contenu</th></tr></thead><tbody><tr><td>1</td><td>Connaître le marché du travail</td><td>Secteurs · Employeurs · Marché caché</td></tr><tr><td>2</td><td>Le CV et la candidature</td><td>CV d'une page · Compétences en actes · Spontanée</td></tr><tr><td>3</td><td>L'entretien d'embauche</td><td>Préparation · Questions clés · Tests pratiques</td></tr><tr><td>4</td><td>Réussir ses débuts et évoluer</td><td>6 premiers mois · Attitudes · Évolution · Ton diplôme</td></tr></tbody></table></div>
+  <div class="pc-sec"><h4>Modalités d'évaluation</h4>
+    <ul>
+      <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 70 %.</li>
+      <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve : constitution d'un dossier de candidature complet (CV, lettre, présentation des compétences en actes) et <strong>simulation d'entretien</strong> avec test technique — évaluation de la préparation, de la présentation et des attitudes professionnelles</strong>, évaluée par le professeur.</li>
+      <li><strong>Seuil de réussite</strong> — <strong>70 sur 100</strong>.</li>
+    </ul></div>
+  <div class="pc-sec"><h4>Liens avec les autres modules</h4><p><strong>Réinvestit :</strong> <strong>tout le programme</strong> — chaque module est une ligne de ton CV. ELM-01 (le métier), ELM-02 (bureautique), ELM-06 (sécurité : le test dans le test), ELM-11 (anglais), ELM-23 (la méthode qu'on te demandera de raconter), ELM-25 (l'alternative entrepreneuriale).<br><strong>Contribue à :</strong> <strong>ta vie professionnelle</strong>.</p></div>
+  <div class="pc-sec"><h4>Références</h4><ul><li>Programme de formation <em>Électromécanique</em> (INFP / CFPH – Canado Technique), guide d'apprentissage ELM-26.</li><li>Annuaires des entreprises d'Haïti et sites d'emploi spécialisés.</li><li>Réseau des anciens élèves et des entreprises partenaires du centre.</li></ul></div>
+</div>
+</div>
+
+<div class="chapter step" id="ch-1">
+<div class="ch-header">
+  <div class="ch-num">01</div>
+  <div class="ch-info"><h2>Connaître le marché du travail</h2><div class="ch-meta"><span class="ch-badge">Secteurs · Employeurs · Marché caché</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 1</div><div class="lpl-title">Connaître le marché du travail</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>identifier les <strong>secteurs</strong> et les <strong>employeurs</strong> ;</li><li>comprendre le <strong>marché caché</strong> ;</li><li>activer les bons <strong>canaux</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu as achevé ta formation technique et exploré l'entrepreneuriat (ELM-25).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(2);checkCompletion()">✓ Chapitre terminé →</button>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 1 — Où sont les emplois ?</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf1" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM26/final/ELM26-CH01.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>1.1 Le dernier module</h3>
+<p>Tu y es. Vingt-cinq modules, mille huit cents heures. Tu sais mesurer, câbler, usiner, électrifier, raccorder des moteurs, entretenir des groupes électrogènes, monter des circuits pneumatiques et hydrauliques, programmer un automate, dépanner un système complet et planifier une maintenance.</p>
+<p>Il reste une chose — et elle n'est pas la moindre : <strong>faire savoir ce que tu sais faire</strong>. Car un excellent technicien que personne ne connaît reste sans travail, tandis qu'un technicien moyen qui sait se présenter trouve un poste. Ce module comble cet écart.</p>
+</div>
+
+<div class="section">
+<h3>1.2 Connaître le marché haïtien</h3>
+<p>Où sont les emplois ? Ta formation t'ouvre plusieurs portes :</p>
+<table class="dtable"><thead><tr><th>Secteur</th><th>Employeurs</th><th>Modules clés</th></tr></thead><tbody>
+<tr><td><strong>Énergie</strong></td><td>Sociétés de groupes électrogènes, installateurs solaires, hôtels, hôpitaux, banques</td><td>ELM-12, ELM-16, ELM-17</td></tr>
+<tr><td><strong>Industrie</strong></td><td>Brasseries, agroalimentaire, cimenteries, embouteillage</td><td>ELM-10, ELM-13, ELM-23, ELM-24</td></tr>
+<tr><td><strong>Zones franches</strong></td><td>Parcs industriels (Caracol, SONAPI) : textile, assemblage</td><td>ELM-10, ELM-18, ELM-21</td></tr>
+<tr><td><strong>Bâtiment et services</strong></td><td>Électrification, climatisation, ascenseurs, sociétés de maintenance</td><td>ELM-08, ELM-24</td></tr>
+<tr><td><strong>ONG et institutions</strong></td><td>Maintenance d'installations, énergie solaire</td><td>ELM-12, ELM-24</td></tr>
+<tr><td><strong>Indépendant</strong></td><td>Ton propre compte (ELM-25)</td><td>Tous</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>1.3 Le marché caché</h3>
+<div class="ibox gold"><span class="ibox-label">🎯 La plupart des emplois ne sont jamais annoncés</span>Une grande partie des postes techniques ne fait l'objet d'<strong>aucune annonce</strong>. Ils se pourvoient par le <strong>bouche-à-oreille</strong>, par <strong>recommandation</strong>, ou parce qu'un candidat s'est <strong>présenté au bon moment</strong>.<br><br>Conséquence pratique : <strong>attendre les annonces, c'est se condamner à la portion congrue</strong>. Le technicien qui trouve du travail est celui qui <strong>va au-devant</strong> : il entre, il se présente, il laisse son CV — même quand « il n'y a rien pour le moment ».<br><br><strong>Et souvent, trois semaines plus tard, il y a quelque chose. Et on se souvient de lui.</strong></div>
+<p>Les canaux à activer : ton <strong>réseau</strong> (famille, amis, camarades de promotion, <strong>formateurs</strong>), les entreprises visitées pendant la formation, les <strong>stages</strong>, les fournisseurs de matériel (ils savent qui recrute), et la <strong>candidature spontanée</strong>.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Marché caché</dt><dd>La majorité des postes techniques ne fait l'objet d'AUCUNE annonce.</dd><dt>Candidature spontanée</dt><dd>Se présenter sans qu'un poste soit annoncé : la démarche la plus efficace.</dd><dt>Réseau</dt><dd>Famille, amis, camarades de promotion, formateurs, fournisseurs : ils savent qui recrute.</dd><dt>Zones franches</dt><dd>Parcs industriels (Caracol, SONAPI) : gros employeurs techniques.</dd><dt>Recommandation</dt><dd>Le canal par lequel se pourvoient beaucoup de postes.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Tes secteurs : <strong>énergie</strong> (groupes, solaire) · <strong>industrie</strong> · <strong>zones franches</strong> · <strong>bâtiment et services</strong> · <strong>ONG</strong> · <strong>indépendant</strong>.</li><li>🎯 <strong>La plupart des emplois techniques ne sont jamais annoncés</strong> : ils se pourvoient par recommandation ou candidature spontanée.</li><li><strong>Attendre les annonces, c'est se condamner à la portion congrue.</strong></li><li>Le technicien qui trouve du travail est celui qui <strong>va au-devant</strong> — même quand « il n'y a rien pour le moment ».</li><li>Canaux : réseau, <strong>formateurs</strong>, entreprises visitées, stages, <strong>fournisseurs de matériel</strong> (ils savent qui recrute).</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="1">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">La plupart des emplois techniques en Haïti sont-ils annoncés ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Non : la majorité se pourvoit par recommandation ou candidature spontanée</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Oui, tous</button>
+    <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Uniquement dans les journaux</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Uniquement en ligne</button>
+  </div><div class="qexpl" id="qe-1-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quel secteur offre le plus d'emplois liés à ta formation en Haïti ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>L'agriculture</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>L'enseignement</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>Le tourisme balnéaire</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>L'énergie : groupes électrogènes, solaire, onduleurs</button>
+  </div><div class="qexpl" id="qe-1-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Que faire quand une entreprise dit « il n'y a rien pour le moment » ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Insister lourdement</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Partir et ne plus revenir</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Abandonner</button>
+    <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Laisser son CV et demander à rappeler dans deux semaines — puis rappeler vraiment</button>
+  </div><div class="qexpl" id="qe-1-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Qui, parmi ces personnes, sait souvent qui recrute ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Les concurrents</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Les fournisseurs de matériel et tes formateurs</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Personne</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Les clients</button>
+  </div><div class="qexpl" id="qe-1-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quelle démarche te distingue de 90 % des candidats ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>Attendre</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>Te présenter en personne au responsable technique, remettre ton CV en main propre et rappeler</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>Envoyer un courriel</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>Poster sur les réseaux</button>
+  </div><div class="qexpl" id="qe-1-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[0,3,3,1,1],['C’est le marché caché : attendre les annonces, c’est se condamner à la portion congrue.','C’est le premier marché du pays — d’où l’importance d’ELM-12, ELM-16 et ELM-17.','Trois semaines plus tard, il y a souvent quelque chose. Et on se souvient de celui qui est passé.','Les fournisseurs circulent partout et entendent tout : c’est un réseau précieux.','Dix minutes de démarche, et tu sors du lot.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-1"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(1)">✓ Chapitre 1 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-3">
-  <div class="chapter-header">
-    <div class="chapter-num">03</div>
-    <div class="chapter-info">
-      <h2>Entretien d'embauche ELM</h2>
-      <div class="chapter-meta"><span>🕐 11h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 3 — Entretien d'embauche ELM - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-3"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-3" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Entretien d'embauche ELM (5 min)</strong> - Fondamentaux, normes, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-3" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(3)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-3">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 3</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-3"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Role de Entretien d'embauche ELM en electromecanique industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_3')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_3')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite et la disponibilite des installations electromecaniques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_3')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_3')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_3">La maitrise de Entretien d'embauche ELM est essentielle pour assurer la continuite des installations electriques et mecaniques industrielles.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_3')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_3')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_3')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_3')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_3">LOTO + verification d'absence de tension = regle absolue non-negociable avant toute intervention.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_3')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_3')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_3')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_3')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_3">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique 2e annee?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_3')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_3')"><span class="quiz-letter">B</span>Gants isolants classes selon la tension, lunettes de securite, chaussures isolantes</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_3')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_3')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_3">Les EPI electriques sont calibres selon la tension de travail. Gants Classe 0 (1000V) minimum pour le reseau haiteien.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(3)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(3)" id="qretry-3" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-3">Répondez à toutes les questions puis validez.</span>
+
+<div class="chapter step" id="ch-2">
+<div class="ch-header">
+  <div class="ch-num">02</div>
+  <div class="ch-info"><h2>Le CV et la candidature</h2><div class="ch-meta"><span class="ch-badge">CV d'une page · Compétences en actes · Spontanée</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 2</div><div class="lpl-title">Le CV et la candidature</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>rédiger un <strong>CV de technicien</strong> ;</li><li>décrire tes compétences <strong>en actes</strong> ;</li><li>réussir une <strong>candidature spontanée</strong>.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu connais le marché et le principe du marché caché (leçon 1).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(3);checkCompletion()">✓ Chapitre terminé →</button>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 2 — Écrire un CV qui ouvre des portes</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf2" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM26/final/ELM26-CH02.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>2.1 Le CV d'un technicien</h3>
+<p>Un CV n'est pas une autobiographie : c'est un <strong>argumentaire</strong>. Il tient sur <strong>une page</strong>, il est <strong>propre</strong> (tableur ou traitement de texte — ELM-02), et il répond à une seule question : <strong>« pourquoi devrais-je te recevoir ? »</strong></p>
+<table class="dtable"><thead><tr><th>Rubrique</th><th>Contenu</th></tr></thead><tbody>
+<tr><td><strong>Identité</strong></td><td>Nom, téléphone (qui <strong>fonctionne</strong> !), courriel <strong>sérieux</strong>, quartier</td></tr>
+<tr><td><strong>Titre</strong></td><td><strong>Électromécanicien</strong> — et ta spécialité si tu en as une</td></tr>
+<tr><td><strong>Compétences techniques</strong></td><td>Les <strong>plus recherchées d'abord</strong> : groupes électrogènes, solaire, moteurs, automates, électrification…</td></tr>
+<tr><td><strong>Formation</strong></td><td>Électromécanique, CFPH – Canado Technique (programme APC, 1800 h)</td></tr>
+<tr><td><strong>Expérience / stages</strong></td><td>Même courte : décris ce que tu as <strong>fait</strong>, pas seulement où tu étais</td></tr>
+<tr><td><strong>Divers</strong></td><td>Anglais technique (ELM-11), informatique (ELM-02), permis, disponibilité</td></tr>
+</tbody></table>
+<div class="ibox red"><span class="ibox-label">⚠️ Les trois fautes qui font jeter un CV</span><strong>1. Les fautes d'orthographe</strong> — elles disent « je ne suis pas rigoureux ». Or ton métier <strong>est</strong> la rigueur. Fais-le relire.<br><strong>2. Un numéro qui ne répond pas</strong> — l'employeur appelle <strong>une fois</strong>. Une seule.<br><strong>3. Une adresse courriel fantaisiste</strong> — un courriel du type « prénom.nom » et rien d'autre.</div>
+</div>
+
+<div class="section">
+<h3>2.2 Décrire ses compétences en actes</h3>
+<p>Ne dis pas « connaissances en électricité ». Dis ce que tu <strong>sais faire</strong> :</p>
+<table class="dtable"><thead><tr><th>❌ Vague</th><th>✅ Concret</th></tr></thead><tbody>
+<tr><td>Connaissances en moteurs</td><td>Raccordement de moteurs asynchrones, <strong>couplage étoile-triangle</strong>, démarrage direct et inversion, réglage du relais thermique</td></tr>
+<tr><td>Notions de groupes électrogènes</td><td>Entretien et dépannage de groupes : vidange, filtres, <strong>purge</strong>, contrôle de compression, <strong>flashing</strong> d'alternateur, réglage de fréquence</td></tr>
+<tr><td>Bases en énergie solaire</td><td>Dimensionnement et installation solaire : bilan de puissance, panneaux, <strong>régulateur MPPT</strong>, onduleur, parc de batteries</td></tr>
+<tr><td>Un peu d'automatisme</td><td>Programmation d'automates en <strong>Ladder</strong> et <strong>Grafcet</strong>, raccordement de capteurs et de variateurs</td></tr>
+</tbody></table>
+<div class="ibox gold"><span class="ibox-label">🎯 L'effet immédiat</span>Un recruteur technique <strong>reconnaît</strong> ces mots. « Couplage étoile-triangle », « purge du circuit », « MPPT », « Grafcet » : ils prouvent que tu as <strong>réellement</strong> pratiqué. Les formules vagues, elles, prouvent le contraire.</div>
+</div>
+
+<div class="section">
+<h3>2.3 La lettre et la candidature spontanée</h3>
+<p>La <strong>lettre de motivation</strong> est courte — trois paragraphes suffisent : <strong>qui tu es et ce que tu cherches</strong> ; <strong>ce que tu sais faire</strong> qui les intéresse <strong>précisément</strong> (montre que tu connais leur activité) ; et une <strong>disponibilité</strong> pour un entretien.</p>
+<div class="ibox blue"><span class="ibox-label">💡 La candidature spontanée bien faite</span>Ne dépose pas une enveloppe à l'accueil. <strong>Demande à voir le responsable technique ou le responsable de maintenance</strong> — pas les ressources humaines. Présente-toi en <strong>deux phrases</strong>, remets ton CV en main propre, demande si tu peux <strong>rappeler dans deux semaines</strong>. Et <strong>rappelle vraiment</strong>.<br><br>Cette démarche prend dix minutes et te distingue de <strong>quatre-vingt-dix pour cent</strong> des candidats.</div>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>CV</dt><dd>Un argumentaire d'UNE page, pas une autobiographie. Il répond à : « pourquoi te recevoir ? »</dd><dt>Compétence en actes</dt><dd>Décrire ce que tu SAIS FAIRE, avec les termes du métier — pas des formules vagues.</dd><dt>Lettre de motivation</dt><dd>Trois paragraphes : qui tu es, ce que tu sais faire qui les intéresse, ta disponibilité.</dd><dt>Candidature spontanée</dt><dd>Demander le responsable technique — pas les RH —, remettre le CV en main propre, rappeler.</dd><dt>Relance</dt><dd>Rappeler dans deux semaines, comme annoncé. Et le faire vraiment.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Le CV tient sur <strong>une page</strong> et répond à une seule question : <strong>« pourquoi devrais-je te recevoir ? »</strong></li><li>⚠️ Trois fautes qui font jeter un CV : <strong>l'orthographe</strong> (ton métier EST la rigueur), un <strong>numéro qui ne répond pas</strong>, un <strong>courriel fantaisiste</strong>.</li><li>🎯 <strong>Décris tes compétences en actes</strong> : « couplage étoile-triangle », « purge du circuit », « MPPT », « Grafcet ». <strong>Un recruteur technique reconnaît ces mots.</strong></li><li>Candidature spontanée : <strong>demande le responsable technique</strong> (pas les RH), remets le CV <strong>en main propre</strong>, annonce que tu rappelleras — <strong>et rappelle</strong>.</li><li>Cette démarche prend <strong>dix minutes</strong> et te distingue de <strong>90 % des candidats</strong>.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="2">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 2</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle est la longueur d'un bon CV de technicien ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Cinq pages</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Deux lignes</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Une page</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Dix pages</button>
+  </div><div class="qexpl" id="qe-2-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quelle formulation est la meilleure sur un CV ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Connaissances en moteurs</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Raccordement de moteurs asynchrones, couplage étoile-triangle, réglage du relais thermique</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>Bases en technique</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>Notions d'électricité</button>
+  </div><div class="qexpl" id="qe-2-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Quelle faute fait jeter un CV immédiatement ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>Une police différente</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>La longueur des phrases</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>La couleur du papier</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>Les fautes d'orthographe : elles disent « je ne suis pas rigoureux »</button>
+  </div><div class="qexpl" id="qe-2-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Lors d'une candidature spontanée, qui demandes-tu ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>Personne</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>Le directeur général</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>La secrétaire</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>Le responsable technique ou de maintenance — pas les ressources humaines</button>
+  </div><div class="qexpl" id="qe-2-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Tu dis que tu rappelleras dans deux semaines. Que fais-tu ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>Tu rappelles vraiment : c'est ce qui te distingue</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>Tu oublies</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>Tu rappelles six mois plus tard</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>Tu attends qu'on t'appelle</button>
+  </div><div class="qexpl" id="qe-2-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[2,1,3,3,0],['C’est un argumentaire, pas une autobiographie.','Un recruteur technique reconnaît ces termes : ils prouvent que tu as réellement pratiqué.','Or ton métier EST la rigueur. Fais relire ton CV.','C’est lui qui connaît le besoin réel — et souvent, qui décide.','La fiabilité commence là : faire ce qu’on a dit qu’on ferait.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-2"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(2)">✓ Chapitre 2 terminé →</button></div>
 </div></div>
-</div><div class="chapter" id="chapter-4">
-  <div class="chapter-header">
-    <div class="chapter-num">04</div>
-    <div class="chapter-info">
-      <h2>Certifications et evolution de carriere</h2>
-      <div class="chapter-meta"><span>🕐 11h</span><span class="chapter-badge">Theorie - Pratique - Securite</span></div>
-    </div>
-  </div>
-  <div class="chapter-body"><div class="video-block">
-  <div class="video-header"><div class="video-icon">▶</div><div><div class="video-title">Vidéo 4 — Certifications et evolution de carriere - fondamentaux et applications</div><div class="video-subtitle">Duree : 15 min</div></div></div>
-  <div class="video-embed"><div class="video-placeholder" id="vp-4"><div class="video-placeholder-icon">▶</div><div class="video-placeholder-text">Lien YouTube à insérer<br><span style="font-size:.72rem;color:rgba(59,123,255,.7)">Aucun lien configuré</span></div></div><iframe id="vframe-4" style="display:none;position:absolute;inset:0;width:100%;height:100%" frameborder="0" allowfullscreen></iframe></div>
-  <div class="video-guide"><div class="video-guide-label">🎬 Guide de production</div><div class="video-guide-item"><div class="video-guide-bullet">1</div><div class="video-guide-text"><strong>Principes de Certifications et evolution de carriere (5 min)</strong> - Fondamentaux, normes, applications en electromecanique industrielle en Haiti.</div></div><div class="video-guide-item"><div class="video-guide-bullet">2</div><div class="video-guide-text"><strong>Composants et equipements (5 min)</strong> - Identification, caracteristiques, selection selon les applications.</div></div><div class="video-guide-item"><div class="video-guide-bullet">3</div><div class="video-guide-text"><strong>Procedures pratiques (4 min)</strong> - Methodes de travail, etapes systematiques, controle qualite.</div></div><div class="video-guide-item"><div class="video-guide-bullet">4</div><div class="video-guide-text"><strong>Securite et documentation (2 min)</strong> - EPI, LOTO, rapport d'intervention.</div></div></div>
-  <div class="video-url-input"><input type="text" id="vinput-4" placeholder="https://youtu.be/xxxxx"><button onclick="setVideo(4)">Insérer →</button></div>
-</div><div class="quiz-block" id="quiz-4">
-  <div class="quiz-header"><span class="quiz-icon">📝</span><h3>Quiz — Chapitre 4</h3><span>4 questions</span></div>
-  <div class="quiz-body" id="qbody-4"><div class="quiz-q" data-q="0" data-ans="1">
-    <div class="quiz-q-num">Question 1 / 4</div>
-    <div class="quiz-q-text">Role de Certifications et evolution de carriere en electromecanique industrielle?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q0_4')"><span class="quiz-letter">A</span>Optionnel</button><button class="quiz-opt" onclick="selectOpt(this,1,'q0_4')"><span class="quiz-letter">B</span>Fondamental pour la fiabilite et la disponibilite des installations electromecaniques</button><button class="quiz-opt" onclick="selectOpt(this,2,'q0_4')"><span class="quiz-letter">C</span>Uniquement en bureau</button><button class="quiz-opt" onclick="selectOpt(this,3,'q0_4')"><span class="quiz-letter">D</span>Remplace par l'informatique</button></div>
-    <div class="quiz-expl" id="expl-q0_4">La maitrise de Certifications et evolution de carriere est essentielle pour assurer la continuite des installations electriques et mecaniques industrielles.</div>
-  </div><div class="quiz-q" data-q="1" data-ans="1">
-    <div class="quiz-q-num">Question 2 / 4</div>
-    <div class="quiz-q-text">Regle de securite prioritaire en electromecanique?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q1_4')"><span class="quiz-letter">A</span>Travailler vite</button><button class="quiz-opt" onclick="selectOpt(this,1,'q1_4')"><span class="quiz-letter">B</span>Consignation LOTO et verification d'absence de tension avant toute intervention</button><button class="quiz-opt" onclick="selectOpt(this,2,'q1_4')"><span class="quiz-letter">C</span>Appeler un electricien</button><button class="quiz-opt" onclick="selectOpt(this,3,'q1_4')"><span class="quiz-letter">D</span>Ignorer les petites tensions</button></div>
-    <div class="quiz-expl" id="expl-q1_4">LOTO + verification d'absence de tension = regle absolue non-negociable avant toute intervention.</div>
-  </div><div class="quiz-q" data-q="2" data-ans="1">
-    <div class="quiz-q-num">Question 3 / 4</div>
-    <div class="quiz-q-text">Documentation technique est importante car?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q2_4')"><span class="quiz-letter">A</span>Obligation administrative</button><button class="quiz-opt" onclick="selectOpt(this,1,'q2_4')"><span class="quiz-letter">B</span>Permet de retracer les interventions, planifier la maintenance et former les collegues</button><button class="quiz-opt" onclick="selectOpt(this,2,'q2_4')"><span class="quiz-letter">C</span>Inutile si l'equipement remarche</button><button class="quiz-opt" onclick="selectOpt(this,3,'q2_4')"><span class="quiz-letter">D</span>Uniquement pour les assurances</button></div>
-    <div class="quiz-expl" id="expl-q2_4">La documentation alimente l'historique et permet d'optimiser la maintenance preventive.</div>
-  </div><div class="quiz-q" data-q="3" data-ans="1">
-    <div class="quiz-q-num">Question 4 / 4</div>
-    <div class="quiz-q-text">EPI specifique en electromecanique 2e annee?</div>
-    <div class="quiz-opts"><button class="quiz-opt" onclick="selectOpt(this,0,'q3_4')"><span class="quiz-letter">A</span>Cravate</button><button class="quiz-opt" onclick="selectOpt(this,1,'q3_4')"><span class="quiz-letter">B</span>Gants isolants classes selon la tension, lunettes de securite, chaussures isolantes</button><button class="quiz-opt" onclick="selectOpt(this,2,'q3_4')"><span class="quiz-letter">C</span>Aucun si experimente</button><button class="quiz-opt" onclick="selectOpt(this,3,'q3_4')"><span class="quiz-letter">D</span>Uniquement le casque</button></div>
-    <div class="quiz-expl" id="expl-q3_4">Les EPI electriques sont calibres selon la tension de travail. Gants Classe 0 (1000V) minimum pour le reseau haiteien.</div>
-  </div></div>
-  <div class="quiz-footer">
-    <button class="btn-quiz btn-quiz-submit" onclick="submitQuiz(4)">✓ Valider mes réponses</button>
-    <button class="btn-quiz btn-quiz-retry" onclick="retryQuiz(4)" id="qretry-4" style="display:none">↺ Réessayer</button>
-    <span class="quiz-score-display" id="qscore-4">Répondez à toutes les questions puis validez.</span>
+
+<div class="chapter step" id="ch-3">
+<div class="ch-header">
+  <div class="ch-num">03</div>
+  <div class="ch-info"><h2>L'entretien d'embauche</h2><div class="ch-meta"><span class="ch-badge">Préparation · Questions clés · Tests pratiques</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 3</div><div class="lpl-title">L'entretien d'embauche</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li><strong>préparer</strong> un entretien sérieusement ;</li><li>répondre aux <strong>questions qui reviennent</strong> ;</li><li>réussir un <strong>test pratique</strong> — et le test dans le test.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais rédiger un CV et mener une candidature spontanée (leçon 2).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour débloquer le chapitre suivant.</p></div>
   </div>
 </div>
-<div style="display:flex;justify-content:flex-end;margin-top:1rem">
-  <button class="btn-quiz btn-quiz-submit" style="background:var(--green);font-size:.8rem" onclick="completeChapter(4);checkCompletion()">✓ Chapitre terminé →</button>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 3 — Réussir l'entretien</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf3" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM26/final/ELM26-CH03.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>3.1 Préparer l'entretien</h3>
+<p>Un entretien se <strong>prépare</strong>. Avant d'y aller :</p>
+<ul>
+<li><strong>Renseigne-toi sur l'entreprise</strong> : que fait-elle ? quels équipements possède-t-elle ? On te demandera « pourquoi nous ? » — il faut une réponse.</li>
+<li><strong>Relis ton CV</strong> : on t'interrogera sur ce que tu y as écrit. Sois prêt à <strong>démontrer</strong> chaque compétence annoncée.</li>
+<li><strong>Prépare tes questions</strong> : ne pas en poser, c'est signaler un manque d'intérêt.</li>
+<li><strong>Prépare la logistique</strong> : trajet, horaire, tenue propre et sobre. <strong>Arrive quinze minutes en avance.</strong></li>
+</ul>
+<div class="ibox red"><span class="ibox-label">⚠️ Le retard</span>Arriver en retard à un entretien pour un poste technique, c'est terminer avant d'avoir commencé. La <strong>ponctualité</strong> est une <strong>compétence professionnelle</strong> dans ce métier — le recruteur le sait, et il vient de te tester.</div>
+</div>
+
+<div class="section">
+<h3>3.2 Les questions qui reviennent</h3>
+<table class="dtable"><thead><tr><th>Question</th><th>Ce qu'il faut comprendre — et répondre</th></tr></thead><tbody>
+<tr><td><em>« Parlez-moi de vous »</em></td><td>Il veut ton <strong>parcours professionnel</strong> en 2 minutes, pas ta biographie. Formation, compétences, projet.</td></tr>
+<tr><td><em>« Que savez-vous faire ? »</em></td><td><strong>Sois concret</strong> : « je raccorde un moteur triphasé, je choisis le couplage d'après la plaque, je règle le relais thermique. »</td></tr>
+<tr><td><em>« Pourquoi notre entreprise ? »</em></td><td>Montre que tu t'es <strong>renseigné</strong>. C'est le test du sérieux.</td></tr>
+<tr><td><em>« Vos défauts ? »</em></td><td>Sois honnête et <strong>constructif</strong> : un vrai défaut, et ce que tu fais pour y remédier.</td></tr>
+<tr><td><em>« Une panne difficile que vous avez résolue ? »</em></td><td>⭐ <strong>La question en or.</strong> Raconte une vraie panne avec ta <strong>méthode</strong> (ELM-23) : constat, hypothèses, mesures, cause, solution.</td></tr>
+<tr><td><em>« Vos prétentions ? »</em></td><td>Renseigne-toi <strong>avant</strong> sur les usages du secteur. Donne une fourchette réaliste, sans te brader.</td></tr>
+</tbody></table>
+<div class="ibox gold"><span class="ibox-label">🎯 La question qui te fait embaucher</span>Quand on te demande une panne que tu as résolue, <strong>ne raconte pas que tu as remplacé une pièce</strong>. Raconte ta <strong>méthode</strong> : « le moteur bourdonnait sans tourner, j'ai coupé immédiatement — c'est le signe d'une phase manquante —, j'ai consigné, j'ai mesuré les trois phases et j'ai trouvé un fusible fondu. J'ai cherché <strong>pourquoi</strong> il avait fondu : le relais thermique était mal réglé. »<br><br><strong>Cette réponse-là vaut tous les diplômes.</strong> Elle prouve que tu raisonnes.</div>
+</div>
+
+<div class="section">
+<h3>3.3 Les tests techniques et pratiques</h3>
+<p>Beaucoup d'employeurs testent avant d'embaucher : un <strong>QCM</strong>, une <strong>lecture de schéma</strong>, un <strong>test pratique</strong> (câbler un démarreur, diagnostiquer une panne introduite).</p>
+<div class="ibox red"><span class="ibox-label">⚠️ Le test dans le test</span>Pendant un test pratique, on ne juge <strong>pas seulement</strong> ta réussite. On observe : <strong>consignes-tu</strong> avant d'intervenir ? Portes-tu tes <strong>EPI</strong> ? Ranges-tu ton poste ? Travailles-tu <strong>proprement</strong> et <strong>méthodiquement</strong> ?<br><br><strong>Un candidat qui réussit le montage mais qui a travaillé sous tension sans consigner ne sera pas embauché.</strong> Et il ne comprendra jamais pourquoi.</div>
+<p>Souviens-toi : la <strong>règle de vérdique</strong> qui t'a suivi pendant tout le programme n'était pas une invention scolaire. C'est <strong>exactement</strong> ce que fait un employeur.</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Préparation</dt><dd>Se renseigner sur l'entreprise, relire son CV, préparer ses questions, arriver en avance.</dd><dt>Ponctualité</dt><dd>⚠️ Une COMPÉTENCE professionnelle dans ce métier — le recruteur vient de te tester.</dd><dt>La question en or</dt><dd>« Une panne difficile que vous avez résolue ? » — raconte ta MÉTHODE, pas un remplacement de pièce.</dd><dt>Test technique</dt><dd>QCM, lecture de schéma, ou test pratique (câblage, diagnostic).</dd><dt>Le test dans le test</dt><dd>⚠️ On observe si tu CONSIGNES, si tu portes tes EPI, si tu ranges — pas seulement si tu réussis.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>Prépare : <strong>renseigne-toi sur l'entreprise</strong>, relis ton CV, prépare tes <strong>questions</strong>, arrive <strong>15 min en avance</strong>.</li><li>⚠️ <strong>La ponctualité est une compétence professionnelle</strong> dans ce métier. Le recruteur vient de te tester.</li><li>🎯 <strong>« Une panne que vous avez résolue ? »</strong> — <strong>raconte ta MÉTHODE</strong> (constat, hypothèses, mesures, cause, solution), pas un remplacement de pièce. <strong>Cette réponse vaut tous les diplômes.</strong></li><li>⚠️ <strong>Le test dans le test</strong> : on observe si tu <strong>consignes</strong>, si tu portes tes <strong>EPI</strong>, si tu travailles proprement.</li><li><strong>Un candidat qui réussit le montage mais travaille sans consigner ne sera pas embauché</strong> — et ne comprendra jamais pourquoi.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="3">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">On te demande de raconter une panne que tu as résolue. Que racontes-tu ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Ta MÉTHODE : constat, hypothèses, mesures, cause identifiée, solution — et pourquoi c'était tombé en panne</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Que c'était facile</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Que tu as remplacé une pièce</button>
+  </div><div class="qexpl" id="qe-3-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pendant un test pratique, qu'observe-t-on en plus du résultat ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Si tu consignes, si tu portes tes EPI, si tu travailles proprement et méthodiquement</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Ta tenue</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Ta vitesse seulement</button>
+  </div><div class="qexpl" id="qe-3-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Tu arrives en retard à l'entretien. Conséquence ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>On ne le remarquera pas</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Aucune</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>C'est presque éliminatoire : la ponctualité est une compétence professionnelle dans ce métier</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>On te félicitera</button>
+  </div><div class="qexpl" id="qe-3-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">On te demande « pourquoi notre entreprise ? ». C'est le test…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>De ta modestie</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>De ton salaire</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>De ton sérieux : t'es-tu renseigné sur eux ?</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>De ta patience</button>
+  </div><div class="qexpl" id="qe-3-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Faut-il poser des questions à la fin d'un entretien ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Oui : ne pas en poser signale un manque d'intérêt</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Non, jamais</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Seulement si on y pense</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Seulement sur le salaire</button>
+  </div><div class="qexpl" id="qe-3-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,1,2,2,0],['Cette réponse prouve que tu raisonnes : elle vaut tous les diplômes.','Un candidat qui réussit le montage mais travaille sous tension sans consigner ne sera pas embauché.','Le recruteur vient de te tester — sans te le dire.','Ne pas savoir ce que fait l’entreprise signale un manque d’intérêt et de préparation.','Prépare-les à l’avance : c’est un signe de sérieux et d’implication.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-3"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(3)">✓ Chapitre 3 terminé →</button></div>
 </div></div>
-</div><div class="completion" id="completion-msg"><h2>🎉 Module ELM-26 termine - ELM 1ere annee!</h2><p>Tu as complété tous les chapitres. N'oublie pas de remettre tes travaux dans les délais impartis.</p></div></div></div></div>
+
+<div class="chapter step" id="ch-4">
+<div class="ch-header">
+  <div class="ch-num">04</div>
+  <div class="ch-info"><h2>Réussir ses débuts et évoluer</h2><div class="ch-meta"><span class="ch-badge">6 premiers mois · Attitudes · Évolution · Ton diplôme</span></div></div>
+</div>
+<div class="ch-body">
+
+<div class="lesson-plan">
+  <div class="lpl-head"><span class="lpl-ic">🧭</span><div class="lpl-h"><div class="lpl-lbl">Plan de la leçon 4</div><div class="lpl-title">Réussir ses débuts et évoluer</div></div></div>
+  <div class="lpl-grid">
+    <div class="lpl-card"><div class="lpl-k">🎯 Aujourd'hui, tu vas…</div><ul><li>réussir tes <strong>premiers mois</strong> ;</li><li>comprendre ce qui permet d'<strong>évoluer</strong> ;</li><li>emporter ce qui compte vraiment.</li></ul></div>
+    <div class="lpl-card"><div class="lpl-k">↩️ Précédemment</div><p>Tu sais chercher, postuler et réussir un entretien (leçons 1 à 3).</p></div>
+    <div class="lpl-card"><div class="lpl-k">✓ Pour valider la leçon</div><p>Regarde la vidéo, lis la section, puis réussis le quiz pour terminer le module — et le programme.</p></div>
+  </div>
+</div>
+
+<div class="lesson-step-label" style="margin-top:0">① Vidéo de la leçon</div>
+<div class="vblock">
+  <div class="vblock-header"><div class="vicon">▶</div><div><div class="vtitle">Vidéo 4 — Tes premiers mois, et la suite</div><div class="vsub">Prof. Aneas Diabob</div></div></div>
+  <div class="vembed"><video id="vf4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM26/final/ELM26-CH04.mp4" type="video/mp4">Votre navigateur ne lit pas les vidéos HTML5.</video></div>
+</div>
+
+<div class="lesson-step-label">② Lecture</div>
+<div class="section">
+<h3>4.1 Réussir ses premiers mois</h3>
+<p>Tu es embauché. Le plus dur commence — et se joue vite.</p>
+<table class="dtable"><thead><tr><th>Attitude</th><th>Pourquoi</th></tr></thead><tbody>
+<tr><td><strong>Ponctualité</strong></td><td>La première chose qu'on remarque. Elle ne coûte rien.</td></tr>
+<tr><td><strong>Sécurité irréprochable</strong></td><td>⚠️ Plus de <strong>la moitié des accidents</strong> surviennent dans les <strong>six premiers mois</strong> (ELM-01, ELM-06). Tu es le plus exposé — et le plus observé.</td></tr>
+<tr><td><strong>Poser des questions</strong></td><td>Demander n'est <strong>pas</strong> un aveu d'ignorance : c'est un signe de sérieux. <strong>Improviser en silence est bien pire.</strong></td></tr>
+<tr><td><strong>Observer les anciens</strong></td><td>Ils ont des tours de main que tu n'apprendras nulle part ailleurs. Respecte-les, ils te transmettront.</td></tr>
+<tr><td><strong>Rendre compte</strong></td><td>Rapport clair, honnête, y compris sur ce qui n'a pas marché.</td></tr>
+<tr><td><strong>Ne jamais mentir sur son travail</strong></td><td>Dire « je n'ai pas trouvé » est acceptable. Dire « c'est réparé » quand ça ne l'est pas est <strong>impardonnable</strong> — et dangereux.</td></tr>
+</tbody></table>
+</div>
+
+<div class="section">
+<h3>4.2 Évoluer</h3>
+<p>Un électromécanicien ne reste pas électromécanicien toute sa vie — s'il ne le veut pas. Les évolutions naturelles :</p>
+<ul>
+<li><strong>Technicien senior</strong> — le référent sur une spécialité (automatismes, groupes, solaire).</li>
+<li><strong>Chef d'équipe</strong> — encadrer, planifier, former.</li>
+<li><strong>Responsable de maintenance</strong> — piloter la fiabilité d'un site (ELM-24).</li>
+<li><strong>Formateur</strong> — transmettre, comme on t'a transmis.</li>
+<li><strong>Entrepreneur</strong> — ton propre compte (ELM-25).</li>
+</ul>
+<div class="ibox gold"><span class="ibox-label">🎯 Ce qui fait la différence</span>Ce n'est <strong>pas l'ancienneté</strong>. Ce sont trois choses : la <strong>compétence</strong> (qui se développe par la <strong>curiosité</strong> — apprends chaque technologie nouvelle qui passe à ta portée), la <strong>fiabilité</strong> (on te confie ce qui compte), et la capacité à <strong>transmettre</strong> (on ne promeut jamais quelqu'un qu'on ne peut pas remplacer).</div>
+</div>
+
+<div class="section">
+<h3>4.3 Ce que tu emportes</h3>
+<div class="ibox gold"><span class="ibox-label">🎓 La fin d'un parcours — et le début d'un autre</span>Tu as commencé par <strong>ELM-01</strong>, en te demandant ce qu'était ce métier. Tu achèves <strong>ELM-26</strong>, prêt à l'exercer.<br><br>Ce que tu emportes n'est pas une liste de procédures — elles vieilliront. C'est une <strong>manière de penser</strong> :<br><br><strong>Observer</strong> avant de toucher · <strong>Mesurer</strong> plutôt que supposer · <strong>Comprendre</strong> la cause, pas seulement le symptôme · <strong>Diviser</strong> les problèmes pour les résoudre · <strong>Documenter</strong> pour ceux qui suivront · <strong>Apprendre</strong> toute sa vie · Et <strong>ne jamais transiger</strong> sur la sécurité — ni la sienne, ni celle des autres.<br><br>Cette méthode vaut pour un moteur, un groupe électrogène, une chaîne automatisée — et pour des technologies qui n'existent pas encore.<br><br><strong>C'est elle, ton vrai diplôme.</strong></div>
+<p style="text-align:center;margin-top:1.2rem;font-size:1.05rem"><strong>Bonne route, technicien.</strong> 🔧⚡</p>
+</div>
+
+<div class="terms">
+  <div class="terms-h"><span>🔑</span> Termes clés de la leçon</div>
+  <dl><dt>Les six premiers mois</dt><dd>⚠️ Plus de la moitié des accidents y surviennent : tu es le plus exposé — et le plus observé.</dd><dt>Poser des questions</dt><dd>Un signe de sérieux, pas d'ignorance. Improviser en silence est bien pire.</dd><dt>Rendre compte</dt><dd>Rapport clair et honnête, y compris sur ce qui n'a pas marché.</dd><dt>Ne jamais mentir</dt><dd>« Je n'ai pas trouvé » est acceptable. « C'est réparé » quand ça ne l'est pas est impardonnable.</dd><dt>Évolution</dt><dd>Technicien senior, chef d'équipe, responsable de maintenance, formateur, entrepreneur.</dd><dt>Transmettre</dt><dd>⭐ On ne promeut jamais quelqu'un qu'on ne peut pas remplacer.</dd></dl>
+</div>
+
+<div class="recap">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir</div>
+  <ul class="recap-list"><li>⚠️ <strong>Plus de la moitié des accidents surviennent dans les six premiers mois</strong> (ELM-01, ELM-06) : sécurité <strong>irréprochable</strong>.</li><li><strong>Poser des questions n'est pas un aveu d'ignorance</strong> : c'est un signe de sérieux. <strong>Improviser en silence est bien pire.</strong></li><li>⚠️ <strong>Ne jamais mentir sur son travail.</strong> « Je n'ai pas trouvé » est acceptable ; « c'est réparé » quand ça ne l'est pas est <strong>impardonnable</strong>.</li><li>Évolution : technicien senior · chef d'équipe · <strong>responsable de maintenance</strong> · formateur · <strong>entrepreneur</strong>.</li><li>🎯 Ce qui fait évoluer : la <strong>compétence</strong> (curiosité), la <strong>fiabilité</strong>, et la capacité à <strong>transmettre</strong>.</li></ul>
+</div>
+<div class="lesson-step-label">③ Quiz de validation</div>
+<div class="qblock" data-qid="4">
+<div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 4</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quand surviennent la majorité des accidents du travail ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Dans les six premiers mois : tu es le plus exposé et le plus observé</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Le vendredi</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Jamais chez les jeunes</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Après vingt ans</button>
+  </div><div class="qexpl" id="qe-4-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Tu ne sais pas comment faire une tâche. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Improvises en silence</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Fais semblant</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Pars</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Poses la question : c'est un signe de sérieux, pas d'ignorance</button>
+  </div><div class="qexpl" id="qe-4-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Tu n'as pas réussi à réparer une machine. Tu dis…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>« C'est réparé » pour ne pas décevoir</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>« Je n'ai pas trouvé » — honnêtement, avec ce que tu as vérifié</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Que ce n'est pas ton domaine</button>
+  </div><div class="qexpl" id="qe-4-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Qu'est-ce qui fait évoluer un technicien ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>La compétence (curiosité), la fiabilité, et la capacité à transmettre</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Le diplôme seul</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>La chance</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>L'ancienneté</button>
+  </div><div class="qexpl" id="qe-4-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quel est ton véritable acquis, au terme de ce programme ?</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Un papier</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Des outils</button>
+    <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Une liste de procédures</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Une manière de penser : observer, mesurer, comprendre la cause, documenter, apprendre — et ne jamais transiger sur la sécurité</button>
+  </div><div class="qexpl" id="qe-4-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[0,3,2,0,3],['C’est ce que t’annonçait ELM-01 dès le premier jour. La boucle est bouclée.','Improviser en silence est bien pire : c’est ainsi qu’on casse du matériel — ou qu’on se blesse.','Mentir sur son travail est impardonnable — et dangereux.','⭐ On ne promeut jamais quelqu’un qu’on ne peut pas remplacer : apprends à transmettre.','Les procédures vieilliront. La méthode, elle, vaut pour des technologies qui n’existent pas encore.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
+  <span class="qscore" id="qs-4"></span>
+</div>
+</div>
+<div class="done-wrap"><button class="done-btn" onclick="doneChapter(4)">✓ Chapitre 4 terminé →</button></div>
+</div></div>
+
+<div class="step" id="essentiel">
+<div class="ch-header">
+  <div class="ch-num" style="background:var(--gold);color:var(--navy)">★</div>
+  <div class="ch-info"><h2>L'essentiel à retenir</h2><div class="ch-meta"><span class="ch-badge">Synthèse du module ELM-26</span></div></div>
+</div>
+<div class="ch-body">
+<div class="recap recap-final">
+  <div class="recap-h"><span class="recap-ic">📌</span> Bon à savoir — l'essentiel du module ELM-26</div>
+  <ul class="recap-list"><li><strong>🎯 Le marché caché —</strong> <strong>la plupart des emplois techniques ne sont jamais annoncés.</strong> <strong>Attendre les annonces, c'est se condamner à la portion congrue.</strong> Le technicien qui trouve du travail est celui qui <strong>va au-devant</strong>.</li><li><strong>Le CV —</strong> <strong>une page</strong>, un argumentaire. ⚠️ Trois fautes fatales : <strong>l'orthographe</strong> (ton métier EST la rigueur), un <strong>numéro qui ne répond pas</strong>, un <strong>courriel fantaisiste</strong>.</li><li><strong>🎯 Les compétences en actes —</strong> « <strong>couplage étoile-triangle</strong> », « <strong>purge du circuit</strong> », « <strong>MPPT</strong> », « <strong>Grafcet</strong> ». <strong>Un recruteur technique reconnaît ces mots</strong> — ils prouvent que tu as pratiqué.</li><li><strong>La candidature spontanée —</strong> demande le <strong>responsable technique</strong> (pas les RH), remets le CV <strong>en main propre</strong>, annonce que tu rappelleras — <strong>et rappelle</strong>. <strong>Dix minutes, et tu te distingues de 90 % des candidats.</strong></li><li><strong>🎯 L'entretien —</strong> « <strong>une panne que vous avez résolue ?</strong> » → <strong>raconte ta MÉTHODE</strong>, pas un remplacement de pièce. <strong>Cette réponse vaut tous les diplômes.</strong></li><li><strong>⚠️ Le test dans le test —</strong> on observe si tu <strong>consignes</strong>, si tu portes tes <strong>EPI</strong>, si tu ranges. <strong>Réussir le montage sans consigner = pas d'embauche.</strong></li><li><strong>⚠️ Les six premiers mois —</strong> <strong>plus de la moitié des accidents</strong> y surviennent (ELM-01, ELM-06). <strong>Poser des questions</strong> est un signe de sérieux. <strong>Ne jamais mentir sur son travail.</strong></li><li><strong>🎓 Ce que tu emportes —</strong> non pas des procédures (elles vieilliront), mais une <strong>manière de penser</strong> : <strong>observer</strong> avant de toucher · <strong>mesurer</strong> plutôt que supposer · <strong>comprendre la cause</strong> · <strong>documenter</strong> · <strong>apprendre toute sa vie</strong> · et <strong>ne jamais transiger sur la sécurité</strong>. <strong>C'est elle, ton vrai diplôme.</strong></li></ul>
+</div>
+
+<div class="section">
+<h3>🎯 Activité finale — Mon dossier de candidature (DEM-ELM-26-01)</h3><p>Constitue le dossier avec lequel tu chercheras réellement du travail — et passe une <strong>simulation d'entretien</strong> devant le formateur.</p><ul><li><strong>Mon CV</strong> : une page, propre, sans faute, avec mes <strong>compétences décrites en actes</strong> (les termes du métier que tu as appris pendant 1800 heures) <strong>(30 pts)</strong></li><li><strong>Ma lettre</strong> : trois paragraphes, adaptée à une <strong>entreprise réelle</strong> que tu auras choisie et sur laquelle tu te seras renseigné <strong>(20 pts)</strong></li><li><strong>Mon plan de recherche</strong> : liste de <strong>dix employeurs réels</strong> à démarcher, avec le nom du responsable technique quand tu l'as trouvé <strong>(15 pts)</strong></li><li><strong>Simulation d'entretien</strong> : présentation en 2 minutes, réponses aux questions clés — dont <strong>« racontez-moi une panne que vous avez résolue »</strong> (raconte ta <strong>méthode</strong> !) <strong>(25 pts)</strong></li><li><strong>Test pratique</strong> : une tâche technique — ⚠️ <strong>on observe autant ta consignation, tes EPI et ta propreté que ta réussite</strong> <strong>(10 pts)</strong></li></ul><div class="ibox gold"><span class="ibox-label">🎓 Un livrable réel</span>Ce dossier n'est pas un exercice : c'est celui que tu <strong>utiliseras dès la semaine prochaine</strong>. Beaucoup d'étudiants décrochent leur premier emploi avec exactement ces documents — et avec les dix employeurs de leur liste.</div>
+</div>
+</div>
+</div>
+
+<div class="step" id="examen">
+<div class="ch-header"><div class="ch-num" style="background:#c0392b;color:#fff">🎓</div>
+  <div class="ch-info"><h2>Activité globale — Examen blanc</h2><div class="ch-meta"><span class="ch-badge">Auto-évaluation formative · seuil 70 %</span></div></div></div>
+<div class="ch-body">
+<div class="exam-head"><h3>🎓 Avant de commencer</h3>
+  <p>Cette auto-évaluation couvre les dimensions <strong>auto-corrigeables</strong> du module : connaissances (QCM), <strong>calculs</strong> (saisie numérique) et démarche. Le volet <strong>pratique</strong> — dossier de candidature complet et simulation d'entretien avec test technique — est évalué <strong>par le professeur</strong>, lors de l'épreuve pratique officielle (seuil 70/100).</p>
+  <div class="exam-rules"><span class="exam-rule">A · Connaissances — 40%</span><span class="exam-rule">B · Calculs — 40%</span><span class="exam-rule">C · Démarche — 20%</span><span class="exam-rule">Validation en ligne : ≥ 70%</span></div>
+</div>
+<div class="exid">
+  <div><label>Nom de l'apprenant</label><input type="text" id="ex-nm" oninput="exNm(this)" placeholder="Ton nom complet"></div>
+  <div><label>Programme</label><div class="exid-fixed">ELM — Électromécanique</div></div>
+  <div><label>Date</label><div class="exid-fixed" id="ex-date">—</div></div>
+</div>
+
+<div class="exam-part"><span>Partie A — Connaissances</span><span class="ex-chip" id="exA-score">40% · non soumis</span></div>
+<div class="qblock" data-qid="exa">
+<div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">La plupart des emplois techniques…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Sont réservés aux anciens</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>Ne sont jamais annoncés : ils se pourvoient par recommandation ou candidature spontanée</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Sont annoncés</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>N'existent pas</button>
+  </div><div class="qexpl" id="qe-exa-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Un bon CV de technicien tient sur…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>Une ligne</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>Cinq pages</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>Dix pages</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>Une page</button>
+  </div><div class="qexpl" id="qe-exa-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">Sur un CV, la meilleure formulation est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>« Notions techniques »</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>« Couplage étoile-triangle, réglage du relais thermique »</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>« Connaissances en moteurs »</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>« Bases en électricité »</button>
+  </div><div class="qexpl" id="qe-exa-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Lors d'une candidature spontanée, on demande…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>La secrétaire</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>Le responsable technique ou de maintenance</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>Personne</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>Le directeur</button>
+  </div><div class="qexpl" id="qe-exa-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Pendant un test pratique, on observe aussi…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Si tu consignes, portes tes EPI et travailles proprement</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Rien d'autre</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Ta vitesse seulement</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Ta tenue</button>
+  </div><div class="qexpl" id="qe-exa-4"></div></div>
+  <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">La question « une panne que vous avez résolue ? » attend…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Ta MÉTHODE : constat, hypothèses, mesures, cause</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Le nom de la pièce</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Une histoire drôle</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Un chiffre</button>
+  </div><div class="qexpl" id="qe-exa-5"></div></div>
+  <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Les six premiers mois d'un emploi sont…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>Les plus dangereux : plus de la moitié des accidents y surviennent</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Sans importance</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>Tranquilles</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Sans risque</button>
+  </div><div class="qexpl" id="qe-exa-6"></div></div>
+  <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Ce qui fait évoluer un technicien est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>La compétence, la fiabilité et la capacité à transmettre</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Le diplôme seul</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>La chance</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>L'ancienneté</button>
+  </div><div class="qexpl" id="qe-exa-7"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,3,1,1,0,0,0,0],['C’est le marché caché : il faut aller au-devant.','C’est un argumentaire, pas une autobiographie.','Un recruteur technique reconnaît ces termes : ils prouvent la pratique réelle.','C’est lui qui connaît le besoin réel.','Réussir le montage sans consigner = pas d’embauche.','Elle prouve que tu raisonnes : c’est ce qui te fait embaucher.','C’est ce qu’annonçait déjà ELM-01.','On ne promeut jamais quelqu’un qu’on ne peut pas remplacer.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exa"></span>
+</div>
+</div>
+
+<div class="exam-part"><span>Partie B — Calculs (saisie numérique)</span><span class="ex-chip" id="exB-score">40% · non soumis</span></div>
+<p style="font-size:.83rem;color:var(--g700);margin:0 0 .6rem">Saisis chaque résultat (décimales avec un point ou une virgule), puis vérifie.</p>
+<div class="exq"><div class="exq-t">1. Sur combien de <strong>pages</strong> tient un bon CV de technicien ?</div><div class="exnum"><input type="text" id="exn-0" inputmode="decimal" placeholder="valeur"><span class="exn-unit">page</span></div><div class="exn-fb" id="exnf-0"></div></div>
+<div class="exq"><div class="exq-t">2. Combien de <strong>paragraphes</strong> suffisent pour une lettre de motivation ?</div><div class="exnum"><input type="text" id="exn-1" inputmode="decimal" placeholder="valeur"><span class="exn-unit">paragraphes</span></div><div class="exn-fb" id="exnf-1"></div></div>
+<div class="exq"><div class="exq-t">3. Combien de <strong>minutes</strong> en avance faut-il arriver à un entretien ?</div><div class="exnum"><input type="text" id="exn-2" inputmode="decimal" placeholder="valeur"><span class="exn-unit">minutes</span></div><div class="exn-fb" id="exnf-2"></div></div>
+<div class="exq"><div class="exq-t">4. Pendant combien de <strong>mois</strong> après l'embauche le risque d'accident est-il le plus élevé ?</div><div class="exnum"><input type="text" id="exn-3" inputmode="decimal" placeholder="valeur"><span class="exn-unit">mois</span></div><div class="exn-fb" id="exnf-3"></div></div>
+<div class="exq"><div class="exq-t">5. Après une candidature spontanée, dans combien de <strong>semaines</strong> annonces-tu que tu rappelleras ?</div><div class="exnum"><input type="text" id="exn-4" inputmode="decimal" placeholder="valeur"><span class="exn-unit">semaines</span></div><div class="exn-fb" id="exnf-4"></div></div>
+<div class="exq"><div class="exq-t">6. Combien de <strong>modules</strong> compte le programme que tu viens d'achever ?</div><div class="exnum"><input type="text" id="exn-5" inputmode="decimal" placeholder="valeur"><span class="exn-unit">modules</span></div><div class="exn-fb" id="exnf-5"></div></div>
+<div class="qfooter"><button class="qbtn qbtn-submit" onclick="numGrade()">✓ Vérifier mes calculs</button></div>
+
+<div class="exam-part"><span>Partie C — Démarche</span><span class="ex-chip" id="exC-score">20% · non soumis</span></div>
+<div class="qblock" data-qid="exc">
+<div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
+<div class="qblock-body">
+  <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Une entreprise te dit « rien pour le moment ». Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Pars et ne reviens plus</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Insistes lourdement</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Laisses ton CV au responsable technique et demandes à rappeler dans deux semaines — puis rappelles</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Abandonnes le secteur</button>
+  </div><div class="qexpl" id="qe-exc-0"></div></div>
+  <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pendant un test pratique, le circuit est sous tension et tu es pressé. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Consignes d'abord — même si cela prend du temps : c'est exactement ce qu'on observe</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Refuses le test</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Demandes de l'aide</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Interviens vite pour impressionner</button>
+  </div><div class="qexpl" id="qe-exc-1"></div></div>
+  <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Tu n'as pas trouvé la panne après trois heures. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Accuses le matériel</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Ne dis rien</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Rends compte honnêtement : ce que tu as vérifié, ce que tu écartes, ce qu'il reste à explorer</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Dis que c'est réparé</button>
+  </div><div class="qexpl" id="qe-exc-2"></div></div>
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Un ancien te montre un tour de main différent de ce que tu as appris. Tu…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Observes, écoutes, et poses des questions — puis vérifies si c'est sûr et conforme</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Lui expliques qu'il a tort</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>L'ignores</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Te moques</button>
+  </div><div class="qexpl" id="qe-exc-3"></div></div>
+  <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Au terme de ce programme, ce que tu emportes, c'est…</div><div class="q-opts">
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Un diplôme</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Une liste de procédures</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Une manière de penser : observer, mesurer, comprendre la cause, documenter, apprendre, et ne jamais transiger sur la sécurité</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Des outils</button>
+  </div><div class="qexpl" id="qe-exc-4"></div></div>
+</div>
+<div class="qfooter">
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[2,0,2,0,2],['Trois semaines plus tard, il y a souvent quelque chose. Et on se souvient de toi.','Un candidat qui travaille sans consigner ne sera pas embauché, quelle que soit sa réussite technique.','Mentir sur son travail est impardonnable — et sur une machine, cela peut blesser quelqu’un.','Les anciens ont des savoir-faire précieux. Respecte-les — mais ne transige jamais sur la sécurité.','Les procédures vieilliront. La méthode vaut pour des technologies qui n’existent pas encore.'])">✓ Valider</button>
+  <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
+  <span class="qscore" id="qs-exc"></span>
+</div>
+</div>
+
+<div class="exam-actions">
+  <button class="qbtn qbtn-submit" onclick="exValidate()">✓ Valider mon activité globale</button>
+  <button class="btn-print" onclick="exPrint()">🖨️ Imprimer / remettre au professeur</button>
+  <span class="exam-score-line" id="ex-total">Total : —</span>
+</div>
+<div class="ex-bar"><i id="ex-bar-fill"></i></div>
+<div class="exam-result" id="exam-result"></div>
+</div></div>
+
+<div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
+  <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
+  <p style="color:#dbe6ff;margin:0 0 .7rem;line-height:1.65">Tu as acquis les bases de ce module. Pour ancrer ces acquis :</p>
+  <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Activité finale</strong> — constitue ton dossier DEM-ELM-26-01 et démarche les dix employeurs de ta liste. Dès cette semaine.</li>
+    <li style="margin-bottom:.4rem"><strong style="color:#fff">Pour toute ta carrière</strong> — apprends chaque technologie nouvelle qui passe à ta portée, tiens ton carnet de pannes, transmets à ceux qui arrivent. Et ne transige jamais sur la sécurité.</li>
+    <li><strong style="color:#fff">Lien avec la suite</strong> — prochaine étape : <strong style="color:#fff">🎓 Fin du programme — Électromécanique (26 modules · 1800 heures)</strong>.</li>
+  </ul>
+</div>
+
+<div class="complete-banner" id="complete-banner">
+  <h2>🎓 Module ELM-26 validé !</h2>
+  <p>🎓 Tu achèves le programme Électromécanique : 26 modules, 1800 heures. Tu ne remplaces pas — tu raisonnes. Observer, mesurer, comprendre, documenter, apprendre, et ne jamais transiger sur la sécurité : c'est là ton vrai diplôme. Bonne route, technicien. 🔧⚡</p>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /layout -->
+</div><!-- /wrap -->
+<button id="mob-toc-btn" onclick="toggleToc()">☰</button>
+<div id="mob-overlay" onclick="toggleToc()"></div>
 <script>
-const quizState={};
-function selectOpt(el,idx,qid){
-  const q=el.closest('.quiz-q');const id=q.dataset.q;
-  if(!quizState[qid])quizState[qid]={};quizState[qid][id]=idx;
-  q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.toggle('selected',i===idx);});
-  try{localStorage.setItem('qa_'+getModCode()+'_'+qid+'_'+id,idx);}catch(e){}
+// ═══ STATE & PERSISTENCE ═══
+var ST={done:{},qs:{},sel:{}};
+var K='ELM26v1_';
+function sv(k,v){try{localStorage.setItem(K+k,JSON.stringify(v));}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem(K+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+// ═══ INIT ═══
+window.addEventListener('load',function(){
+  ST.done=ld('done',{});ST.qs=ld('qs',{});
+  Object.keys(ST.done).forEach(function(n){if(ST.done[n])applyDone(n);});
+  Object.keys(ST.qs).forEach(function(qid){
+    var el=document.getElementById('qs-'+qid);
+    if(el){var s=ST.qs[qid];el.textContent='Score : '+s.ok+'/'+s.total+(s.ok===s.total?' 🎉':'');}
+  });
+  initTimer();updateProg();
+});
+
+// ═══ PROGRESS ═══
+var TOTAL=4;
+function updateProg(){
+  var done=Object.keys(ST.done).filter(function(k){return ST.done[k]&&/^\d+$/.test(k)&&(+k)<=TOTAL;}).length;
+  var pct=Math.round(done/TOTAL*100);
+  var f=document.getElementById('prog-fill');var t=document.getElementById('prog-txt');
+  if(f)f.style.width=pct+'%';
+  if(t)t.textContent=done+' / '+TOTAL+' chapitres — '+pct+'%';
+  var qOk=0,qTot=0;Object.keys(ST.qs).forEach(function(k){qOk+=ST.qs[k].ok;qTot+=ST.qs[k].total;});
+  var qs=document.getElementById('quiz-stat');
+  if(qs)qs.textContent=qTot>0?qOk+'/'+qTot+' réponses correctes':'—';
+  if(pct>=75){var cb=document.getElementById('complete-banner');if(cb)cb.style.display='block';}
 }
-function submitQuiz(qid,correct,expl){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');
-  if(!qBlock)return;
-  const q=qBlock.querySelector('[data-q="'+qid+'"]');
-  const opts=qBlock.querySelectorAll('.quiz-opt');
-  const stQ=quizState[qid]?quizState[qid][qid]:undefined;
-  if(stQ===undefined){showToastM('Sélectionne une réponse.');return;}
-  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===stQ&&stQ!==correct)b.classList.add('wrong');});
-  const res=document.getElementById('res-'+qid);const ok=stQ===correct;
-  if(res){res.innerHTML='<div class="'+(ok?'res-ok':'res-ko')+'">'+(ok?'✅ Correct !':'❌ Incorrect.')+' — '+expl+'</div>';res.style.display='block';}
-  try{localStorage.setItem('qr_'+getModCode()+'_'+qid,ok?'1':'0');}catch(e){}
-  updateProgBar();
+
+// ═══ CHAPTER DONE ═══
+function doneChapter(n){ST.done[n]=true;sv('done',ST.done);applyDone(n);updateProg();toast('✅ Chapitre '+n+' terminé !');}
+function applyDone(n){var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('done');}
+
+// ═══ TOC / NAV ═══
+function goTo(n){
+  var el=document.getElementById(typeof n==='string'?n:'ch-'+n);
+  if(!el){toast('ℹ️ Section bientôt disponible.');return;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+  var ti=document.getElementById('ti-'+n);if(ti)ti.classList.add('act');
+  if(window.innerWidth<=768)toggleToc();
 }
-function retryQuiz(qid){
-  const qBlock=document.querySelector('[data-quiz="'+qid+'"]');if(!qBlock)return;
-  qBlock.querySelectorAll('.quiz-opt').forEach(b=>{b.classList.remove('selected','correct','wrong');b.disabled=false;});
-  const res=document.getElementById('res-'+qid);if(res)res.style.display='none';
-  if(quizState[qid])delete quizState[qid][qid];
+function toggleToc(){
+  var t=document.getElementById('toc-sidebar');var o=document.getElementById('mob-overlay');
+  t.classList.toggle('open');if(o)o.style.display=t.classList.contains('open')?'block':'none';
 }
-function setVideo(btn,url,ch){
-  document.querySelectorAll('.vtab-'+ch).forEach(b=>b.classList.remove('vt-active'));
-  btn.classList.add('vt-active');const f=document.getElementById('vframe-'+ch);if(f)f.src=url;
+
+// ═══ PLANS DE LEÇON (accordéon) ═══
+function toggleLp(n){var lp=document.getElementById('lp-'+n);if(lp)lp.classList.toggle('open');}
+
+// ═══ QUIZ ENGINE ═══
+function selQ(btn,qid,qi,val){
+  var qItems=document.querySelector('[data-qid="'+qid+'"]').querySelectorAll('.q-item');
+  var idx=parseInt(qi);
+  if(qItems[idx])qItems[idx].querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  if(!ST.sel[qid])ST.sel[qid]={};ST.sel[qid][qi]=val;
 }
-function completeChapter(n){
-  const btn=event.target;btn.textContent='✅ Chapitre '+n+' terminé';btn.style.opacity='.6';btn.disabled=true;
-  try{localStorage.setItem('ch_'+getModCode()+'_'+n,'1');}catch(e){}
-  updateProgBar();showToastM('Chapitre '+n+' validé !');
-}
-function getModCode(){const el=document.getElementById('mod-code-data');return el?el.dataset.code:'mod';}
-function updateProgBar(){
-  const code=getModCode();let total=0,ok=0;
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('qr_'+code+'_')){total++;if(localStorage.getItem(k)==='1')ok++;}}}catch(e){}
-  if(total===0)return;const pct=Math.round(ok/total*100);
-  const fill=document.getElementById('progress-fill');const txt=document.getElementById('progress-txt');
-  if(fill)fill.style.width=pct+'%';if(txt)txt.textContent=pct+'%';
-  checkCompletion(pct);
-}
-function checkCompletion(pct){
-  const seuil=parseInt(document.getElementById('seuil-data')?.dataset?.seuil||'60');
-  if(pct>=seuil){
-    const comp=document.getElementById('completion-block');
-    if(comp){comp.style.display='block';setTimeout(()=>comp.scrollIntoView({behavior:'smooth'}),300);}
-    try{const code=getModCode();const done=JSON.parse(localStorage.getItem('canado_done')||'{}');done[code]=true;localStorage.setItem('canado_done',JSON.stringify(done));}catch(e){}
+function submitQ(qid,answers,expls){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  var sel=ST.sel[qid]||{};var total=answers.length;
+  for(var i=0;i<total;i++){if(sel[i]===undefined){toast('⚠️ Réponds à toutes les questions avant de valider.');return;}}
+  var ok=0;var qItems=block.querySelectorAll('.q-item');
+  for(var i=0;i<total;i++){
+    var correct=answers[i],chosen=sel[i];var qItem=qItems[i];if(!qItem)continue;
+    qItem.querySelectorAll('.qopt').forEach(function(b,j){
+      b.disabled=true;
+      if(j===correct)b.classList.add('ok');
+      else if(j===chosen&&chosen!==correct)b.classList.add('ko');
+    });
+    var expl=document.getElementById('qe-'+qid+'-'+i);
+    if(expl){expl.textContent=expls[i];expl.className='qexpl '+(chosen===correct?'show-ok':'show-ko');}
+    if(chosen===correct)ok++;
   }
+  ST.qs[qid]={ok:ok,total:total};sv('qs',ST.qs);
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='Score : '+ok+'/'+total+(ok===total?' 🎉':'');
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='inline-flex';
+  updateProg();
+  toast(ok===total?'🎉 Parfait ! '+ok+'/'+total:'Score : '+ok+'/'+total+' — Réessaie !');
 }
-function scrollToChapter(n){
-  const el=document.getElementById('ch-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<=768){document.getElementById('toc-sidebar')?.classList.remove('toc-open');document.getElementById('toc-overlay')?.classList.remove('toc-open');}
+function retryQ(qid,count){
+  var block=document.querySelector('[data-qid="'+qid+'"]');if(!block)return;
+  block.querySelectorAll('.qopt').forEach(function(b){b.classList.remove('sel','ok','ko');b.disabled=false;});
+  block.querySelectorAll('.qexpl').forEach(function(e){e.className='qexpl';e.textContent='';});
+  if(ST.sel[qid])ST.sel[qid]={};
+  var sc=document.getElementById('qs-'+qid);if(sc)sc.textContent='';
+  var rb=document.getElementById('qr-'+qid);if(rb)rb.style.display='none';
 }
-function selectSlot(btn){btn.closest('.slot-grid').querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('slot-selected'));btn.classList.add('slot-selected');}
-function reserverSeance(id){
-  const grid=document.querySelector('[data-seance="'+id+'"]');const sel=grid?.querySelector('.slot-selected');
-  if(!sel){showToastM('Sélectionne un créneau.');return;}
-  showToastM('✅ Créneau réservé : '+sel.textContent);
-  try{localStorage.setItem('seance_'+id,sel.textContent);}catch(e){}
+
+// ═══ CARTES INTERACTIVES (réflexion) ═══
+var INFO={};
+function showInfo(group,idx,btn){
+  var grid=btn.closest('.dora-grid');
+  grid.querySelectorAll('.dora-card').forEach(function(s){s.classList.remove('active');});
+  btn.classList.add('active');
+  var d=document.getElementById(group+'-detail');
+  if(d){d.innerHTML=INFO[group][idx];d.className='dora-detail show';d.style.cssText='background:rgba(27,58,140,.07);border:1px solid rgba(27,58,140,.2);color:#1a2f52;border-radius:var(--r);padding:.9rem 1rem;margin-top:.5rem;font-size:.81rem;line-height:1.72;display:block';}
 }
-function toggleToc(){document.getElementById('toc-sidebar')?.classList.toggle('toc-open');document.getElementById('toc-overlay')?.classList.toggle('toc-open');}
-function printModule(){window.print();}
-let _toastT2;
-function showToastM(msg){
-  let t=document.getElementById('mod-toast');
-  if(!t){t=document.createElement('div');t.id='mod-toast';
-    t.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#162236;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#F4F1EC;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px';
-    document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
-  clearTimeout(_toastT2);_toastT2=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';},3000);
+
+// ═══ VIDEO ═══
+function openVideo(n){var vp=document.getElementById('vp'+n);var vf=document.getElementById('vf'+n);if(vp)vp.style.display='none';if(vf)vf.style.display='block';}
+function setVid(n){
+  var inp=document.getElementById('vi'+n);if(!inp||!inp.value.trim())return;
+  var url=inp.value.trim().replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+  var vf=document.getElementById('vf'+n);var vp=document.getElementById('vp'+n);
+  if(vf){vf.src=url+'?autoplay=1';vf.style.display='block';}if(vp)vp.style.display='none';
 }
-let _chrStart=Date.now();
-function _initTimer(){
-  const code=getModCode();
-  let saved=0;try{saved=parseInt(localStorage.getItem('time_'+code)||'0');}catch(e){}
-  _chrStart=Date.now()-saved*1000;
-  setInterval(()=>{
-    const el=document.getElementById('session-timer');
-    const elapsed=Math.floor((Date.now()-_chrStart)/1000);
-    try{localStorage.setItem('time_'+code,elapsed);}catch(e){}
-    if(el){const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
+
+// ═══ TIMER ═══
+var timerStart=Date.now();
+function initTimer(){
+  var saved=ld('time',0);timerStart=Date.now()-saved*1000;
+  setInterval(function(){
+    var elapsed=Math.floor((Date.now()-timerStart)/1000);sv('time',elapsed);
+    var el=document.getElementById('session-timer');
+    if(el){var h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;el.textContent=(h?h+'h ':'')+m+'m '+s+'s';}
   },1000);
 }
-window.addEventListener('load',()=>{_initTimer();updateProgBar();});
+
+// ═══ TOAST ═══
+var _tt;
+function toast(msg){
+  var t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:22px;right:22px;z-index:9999;background:#0d1f3c;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:.81rem;color:#e8f0ff;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);transition:all .25s ease;pointer-events:none;max-width:300px;line-height:1.5';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateY(0)';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(8px)';},3500);
+}
+</script>
+<script>
+/* ===== LECTEUR DE COURS v3 ===== */
+(function(){
+  var STEPS=['plan','ch-1','ch-2','ch-3','ch-4','essentiel','examen'];
+  var LABELS={plan:'Plan de cours','ch-1':"Le marché du travail",'ch-2':"CV & candidature",'ch-3':"L'entretien",'ch-4':"Débuts & évolution",'essentiel':"L'essentiel à retenir",'examen':'Examen blanc'};
+  var QUIZ={1:1,2:1,3:1,4:1};   // chapitres ayant un quiz
+  var PASS=0.6;                          // seuil de réussite
+  var PK='ELM26v1_step', VK='ELM26v1_viewed';
+  var cur=0, DUR={};
+
+  function tiId(id){return id==='plan'?'ti-plan':id==='essentiel'?'ti-essentiel':id==='examen'?'ti-examen':id==='lecons'?'ti-lecons':'ti-'+id.split('-')[1];}
+  function chNum(id){return id.indexOf('ch-')===0?parseInt(id.split('-')[1]):null;}
+  function hasQuiz(n){return !!QUIZ[n];}
+  function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  function isPassed(n){return !!readJSON('ELM26v1_done')[n];}
+  function countDone(){var d=readJSON('ELM26v1_done');return Object.keys(d).filter(function(k){return d[k];}).length;}
+  function fmt(s){if(!s||!isFinite(s))return '';s=Math.round(s);var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}
+  function refreshDur(){for(var N=1;N<=4;N++){var v=document.getElementById('vf'+N);if(v&&v.readyState>=1&&!DUR[N])DUR[N]=fmt(v.duration);}}
+
+  function updateGate(){
+    refreshDur();
+    for(var N=1;N<=4;N++){
+      var ti=document.getElementById('ti-'+N);if(!ti)continue;
+      var locked=N>1&&!isPassed(N-1);
+      ti.classList.toggle('lock',locked);
+      if(isPassed(N))ti.classList.add('done');
+      var tr=document.getElementById('tr-'+N);
+      if(tr)tr.textContent=locked?'🔒':(DUR[N]||'');
+    }
+    var ad=allDone();
+    ['ti-essentiel','ti-examen'].forEach(function(tid){var t=document.getElementById(tid);if(t){t.classList.toggle('lock',!ad);}});
+    var pf=document.getElementById('pl-prog-fill');if(pf)pf.style.width=Math.round(countDone()/4*100)+'%';
+    var id=STEPS[cur],n=chNum(id),blocked=false,label;
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){blocked=true;label='🔒 Réussis le quiz pour continuer';}
+    else if(cur===STEPS.length-1){label='Terminer le module ✓';}
+    else{label=(n!==null?'Terminer & continuer →':'Continuer →');}
+    var nBot=document.getElementById('pl-next-btn'),nTop=document.getElementById('pl-next-top');
+    if(nBot){nBot.textContent=label;nBot.disabled=blocked;}
+    if(nTop)nTop.disabled=blocked;
+    var pTop=document.getElementById('pl-prev-top'),pBot=document.getElementById('pl-prev-btn');
+    if(pTop)pTop.disabled=cur===0;if(pBot)pBot.disabled=cur===0;
+    var cb=document.getElementById('complete-banner');if(cb)cb.style.display=(cur===STEPS.length-1&&countDone()>=4)?'block':'none';
+  }
+  function render(){
+    var id=STEPS[cur];
+    document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+    var el=document.getElementById(id);if(el)el.classList.add('active');
+    document.querySelectorAll('.toc-item').forEach(function(t){t.classList.remove('act');});
+    var ti=document.getElementById(tiId(id));if(ti)ti.classList.add('act');
+    var T=document.getElementById('pl-title');if(T)T.textContent=LABELS[id]||'';
+    var C=document.getElementById('pl-count');if(C)C.textContent='Étape '+(cur+1)+' / '+STEPS.length;
+    try{var prev=parseInt(localStorage.getItem(PK)||'0')||0;if(cur>prev)localStorage.setItem(PK,String(cur));}catch(e){}
+    updateGate();
+    var mc=document.getElementById('main-content');
+    if(mc){var y=mc.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y<0?0:y,behavior:'smooth'});}
+    if(window.innerWidth<=768){var t=document.getElementById('toc-sidebar');if(t)t.classList.remove('open');var o=document.getElementById('mob-overlay');if(o)o.style.display='none';}
+  }
+
+  function allDone(){for(var N=1;N<=4;N++){if(!isPassed(N))return false;}return true;}
+  function firstUnfinished(){for(var N=1;N<=4;N++){if(!isPassed(N))return STEPS.indexOf('ch-'+N);}return STEPS.indexOf('essentiel');}
+  window.goTo=function(n){
+    var id=(n==='plan'||n==='lecons'||n==='essentiel'||n==='examen')?n:'ch-'+n;var i=STEPS.indexOf(id);
+    if(i<0){if(window.toast)toast('ℹ️ Section bientôt disponible.');return;}
+    var cn=chNum(id);
+    if(cn!==null&&cn>1&&!isPassed(cn-1)){if(window.toast)toast('🔒 Réussis le quiz du chapitre précédent pour débloquer celui-ci.');return;}
+    if((id==='essentiel'||id==='examen')&&!allDone()){if(window.toast)toast('🔒 Termine et valide les 4 leçons pour accéder à la synthèse et à l\u2019examen blanc.');return;}
+    cur=i;render();
+  };
+  window.plPrev=function(){if(cur>0){cur--;render();}};
+  window.plNext=function(){
+    var id=STEPS[cur],n=chNum(id);
+    if(n!==null&&hasQuiz(n)&&!isPassed(n)){if(window.toast)toast('🔒 Termine le quiz de ce chapitre pour continuer.');return;}
+    if(n!==null&&!hasQuiz(n)&&window.doneChapter)doneChapter(n);
+    if(cur<STEPS.length-1){cur++;render();}
+    else{var cb=document.getElementById('complete-banner');if(cb){cb.style.display='block';cb.scrollIntoView({behavior:'smooth'});}if(window.toast)toast('🎓 Module terminé, bravo !');}
+  };
+
+  // quiz reussi -> marque le chapitre fait + debloque le suivant
+  var _submit=window.submitQ;
+  var PASS_EX=0.8;
+  window.submitQ=function(qid,answers,expls){
+    _submit(qid,answers,expls);
+    if(qid==='ex'){
+      if(window.exUpdateA)window.exUpdateA();
+      updateGate();return;
+    }
+    try{var qs=readJSON('ELM26v1_qs')[qid];
+      if(qs&&qs.total>0&&(qs.ok/qs.total)>=PASS){
+        if(window.ST){window.ST.done[qid]=true;}
+        try{var d=readJSON('ELM26v1_done');d[qid]=true;localStorage.setItem('ELM26v1_done',JSON.stringify(d));}catch(e){}
+        if(window.applyDone)applyDone(qid);
+        if(window.updateProg)updateProg();
+        if(window.toast)toast('🎉 Quiz réussi — chapitre suivant débloqué !');
+      }
+    }catch(e){}
+    updateGate();
+  };
+  var _retry=window.retryQ;
+  window.retryQ=function(qid,count){_retry(qid,count);updateGate();};
+
+  function markViewed(N){
+    var ti=document.getElementById('ti-'+N);
+    if(ti&&!isPassed(N))ti.classList.add('viewed');
+    try{var v=readJSON(VK);v[N]=true;localStorage.setItem(VK,JSON.stringify(v));}catch(e){}
+    if(window.toast)toast('▶️ Vidéo terminée — fais le quiz pour valider le chapitre.');
+  }
+  function attachVideos(){
+    for(var N=1;N<=4;N++){
+      var v=document.getElementById('vf'+N);if(!v)continue;
+      v.addEventListener('loadedmetadata',function(){var n=this.id.replace('vf','');DUR[n]=fmt(this.duration);updateGate();});
+      v.addEventListener('ended',function(){markViewed(this.id.replace('vf',''));});
+    }
+    // restaure les "vus"
+    var vv=readJSON(VK);Object.keys(vv).forEach(function(N){if(vv[N]){var ti=document.getElementById('ti-'+N);if(ti&&!isPassed(N))ti.classList.add('viewed');}});
+  }
+
+  function build(){
+    var main=document.getElementById('main-content');if(!main)return;
+    // barre sticky haute
+    var top=document.createElement('div');top.className='pl-bar pl-bar-top';
+    top.innerHTML='<button id="pl-prev-top" class="pl-ic" onclick="plPrev()" aria-label="Précédent">←</button>'
+      +'<div class="pl-mid"><div class="pl-count" id="pl-count"></div><div class="pl-title" id="pl-title"></div><div class="pl-prog"><i id="pl-prog-fill"></i></div></div>'
+      +'<button id="pl-next-top" class="pl-ic" onclick="plNext()" aria-label="Suivant">→</button>';
+    main.insertBefore(top,main.firstChild);
+    // banniere reprendre
+    var lastReached=0;try{lastReached=parseInt(localStorage.getItem(PK)||'0')||0;}catch(e){}
+    if(lastReached>0){
+      var rb=document.createElement('div');rb.className='resume-banner';rb.id='resume-banner';
+      rb.innerHTML='<span class="rb-i">↩️</span><div class="rb-t">Tu avais avancé jusqu\'à <strong>'+(LABELS[STEPS[lastReached]]||'')+'</strong>.</div>'
+        +'<button class="rb-go" onclick="(function(){document.getElementById(\'resume-banner\').remove();window.__resume('+lastReached+');})()">Reprendre</button>'
+        +'<button class="rb-x" onclick="document.getElementById(\'resume-banner\').remove()" aria-label="Fermer">✕</button>';
+      main.insertBefore(rb,top.nextSibling);
+    }
+    // barre basse
+    var bot=document.createElement('div');bot.className='pl-bar pl-bar-bottom';
+    bot.innerHTML='<button id="pl-prev-btn" class="pl-btn" onclick="plPrev()">← Précédent</button>'
+      +'<button id="pl-next-btn" class="pl-btn pl-cta" onclick="plNext()">Continuer →</button>';
+    main.appendChild(bot);
+    // numero + duree dans le sommaire
+    for(var N=1;N<=4;N++){var ti=document.getElementById('ti-'+N);if(ti){var sp=document.createElement('span');sp.className='toc-right';sp.id='tr-'+N;ti.appendChild(sp);}}
+  }
+  window.__resume=function(i){if(i>=0&&i<STEPS.length){var id=STEPS[i];if((id==='essentiel'||id==='examen')&&!allDone()){i=firstUnfinished();}cur=i;render();}};
+
+  // navigation clavier
+  document.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'){var b=document.getElementById('pl-next-btn');if(b&&!b.disabled)plNext();}
+    else if(e.key==='ArrowLeft'){var p=document.getElementById('pl-prev-btn');if(p&&!p.disabled)plPrev();}
+  });
+
+  window.addEventListener('load',function(){
+    document.body.classList.add('player');
+    build();attachVideos();
+    cur=0;render();
+  });
+})();
+</script>
+<script>
+/* ===== Activité globale comportement (examen blanc) — ELM-26 ===== */
+(function(){
+  function gx(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return {};}}
+  var K='ELM26v1_', SEUIL=0.70, W={a:40,b:40,c:20};
+  var NUM=[{"ans": 1, "tol": 0, "unit": "page", "sol": "Un CV de technicien tient sur une page", "q": "Sur combien de <strong>pages</strong> tient un bon CV de technicien ?"}, {"ans": 3, "tol": 0, "unit": "paragraphes", "sol": "Qui tu es · ce que tu sais faire qui les intéresse · ta disponibilité", "q": "Combien de <strong>paragraphes</strong> suffisent pour une lettre de motivation ?"}, {"ans": 15, "tol": 5, "unit": "minutes", "sol": "Arriver 15 minutes en avance à un entretien", "q": "Combien de <strong>minutes</strong> en avance faut-il arriver à un entretien ?"}, {"ans": 6, "tol": 0, "unit": "mois", "sol": "Plus de la moitié des accidents surviennent dans les 6 premiers mois (ELM-01, ELM-06)", "q": "Pendant combien de <strong>mois</strong> après l'embauche le risque d'accident est-il le plus élevé ?"}, {"ans": 2, "tol": 0, "unit": "semaines", "sol": "Annoncer que l'on rappellera dans deux semaines — et le faire", "q": "Après une candidature spontanée, dans combien de <strong>semaines</strong> annonces-tu que tu rappelleras ?"}, {"ans": 26, "tol": 0, "unit": "modules", "sol": "Le programme Électromécanique compte 26 modules (1800 heures)", "q": "Combien de <strong>modules</strong> compte le programme que tu viens d'achever ?"}];
+  window.exNm=function(el){try{localStorage.setItem(K+'exNm',el.value);}catch(e){}};
+  window.__exB=null;
+  window.numGrade=function(){
+    var ok=0,total=NUM.length;
+    for(var i=0;i<total;i++){
+      var inp=document.getElementById('exn-'+i),fb=document.getElementById('exnf-'+i);
+      var raw=((inp&&inp.value)||'').replace(',','.').trim();var v=parseFloat(raw);
+      var good=(!isNaN(v))&&Math.abs(v-NUM[i].ans)<=NUM[i].tol;
+      if(inp){inp.classList.remove('ok','ko');inp.classList.add(good?'ok':'ko');}
+      if(fb){fb.className='exn-fb '+(good?'show-ok':'show-ko');
+        fb.innerHTML=(good?'✓ ':'✗ ')+'Réponse attendue : <strong>'+NUM[i].ans+' '+NUM[i].unit+'</strong>'+(NUM[i].sol?'<br><span style="opacity:.8">'+NUM[i].sol+'</span>':'');}
+      if(good)ok++;
+    }
+    window.__exB={ok:ok,total:total};
+    var chip=document.getElementById('exB-score');if(chip)chip.textContent=W.b+'% · '+ok+'/'+total+' exacts';
+    if(window.toast)toast(ok===total?'🎉 Calculs exacts : '+ok+'/'+total:'Calculs : '+ok+'/'+total);
+    exTotal(false);
+  };
+  function part(qid){var q=gx(K+'qs')[qid];return (q&&q.total>0)?q:null;}
+  function exTotal(fin){
+    var a=part('exa'),c=part('exc'),b=window.__exB;
+    var pa=a?a.ok/a.total:0, pc=c?c.ok/c.total:0, pb=b?b.ok/b.total:0;
+    var av=document.getElementById('exA-score');if(av)av.textContent=W.a+'% · '+(a?a.ok+'/'+a.total:'non soumis');
+    var cv=document.getElementById('exC-score');if(cv)cv.textContent=W.c+'% · '+(c?c.ok+'/'+c.total:'non soumis');
+    var bv=document.getElementById('exB-score');if(bv&&!b)bv.textContent=W.b+'% · non soumis';
+    var tot=Math.round(pa*W.a+pb*W.b+pc*W.c);
+    var bar=document.getElementById('ex-bar-fill');if(bar)bar.style.width=tot+'%';
+    var tt=document.getElementById('ex-total');if(tt)tt.textContent='Total : '+tot+'%';
+    return {tot:tot,done:!!(a&&c&&b)};
+  }
+  window.exValidate=function(){
+    var nm=document.getElementById('ex-nm');
+    if(nm&&!nm.value.trim()){if(window.toast)toast('✍️ Inscris ton nom avant de valider.');nm.focus();return;}
+    var r=exTotal(true),res=document.getElementById('exam-result');
+    if(!r.done){if(res){res.className='exam-result';res.innerHTML='⚠️ Complète les trois parties (QCM, calculs, démarche) avant de valider.';}return;}
+    var pass=r.tot>=Math.round(SEUIL*100);
+    if(res){res.className='exam-result '+(pass?'pass':'fail');
+      res.innerHTML=(pass?'🎉 '+r.tot+'% — auto-évaluation réussie !':'📌 '+r.tot+'% — seuil de 70% non atteint.')
+        +'<br><span style="font-weight:400;font-size:.9em">Rappel : l\u0027évaluation sommative officielle du module est une <strong>épreuve pratique en atelier</strong> (5 h, seuil 80/100). Les volets montage, réparation et vérification y sont évalués par le professeur.</span>';}
+    if(pass){try{localStorage.setItem(K+'exam','passed');}catch(e){}var cb=document.getElementById('complete-banner');if(cb)cb.classList.add('show');}
+  };
+  window.exPrint=function(){
+    var nm=(document.getElementById('ex-nm')||{}).value||'';
+    var w=window.open('','_blank');if(!w)return;
+    var rows='';for(var i=0;i<NUM.length;i++){var inp=document.getElementById('exn-'+i);rows+='<tr><td>'+(i+1)+'</td><td>'+((inp&&inp.value)||'')+'</td><td>'+NUM[i].ans+' '+NUM[i].unit+'</td></tr>';}
+    w.document.write('<html><head><meta charset="utf-8"><title>Activité globale ELM-26</title>'
+      +'<style>body{font-family:Arial;margin:2cm;color:#111}h1{font-size:18px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #999;padding:6px;font-size:13px}</style></head><body>'
+      +'<h1>Activité globale — Module ELM-26 : Préparation au marché du travail</h1>'
+      +'<p><strong>Programme :</strong> Mécanique d\u0027entretien industrielle &nbsp; <strong>Apprenant :</strong> '+nm+'</p>'
+      +'<p>Partie calculs (saisie de l\u0027apprenant vs réponse attendue) :</p>'
+      +'<table><tr><th>#</th><th>Réponse de l\u0027apprenant</th><th>Réponse attendue</th></tr>'+rows+'</table>'
+      +'<p style="margin-top:14px">Évaluation sommative officielle : épreuve pratique en atelier, 5 h, seuil 80/100.</p>'
+      +'</body></html>');w.document.close();w.print();
+  };
+  function init(){
+    var d=document.getElementById('ex-date');if(d)d.textContent=new Date().toLocaleDateString('fr-FR');
+    try{var nm=localStorage.getItem(K+'exNm');if(nm){var e=document.getElementById('ex-nm');if(e)e.value=nm;}}catch(e){}
+    exTotal(false);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
 </script>
 </body>
 </html>
