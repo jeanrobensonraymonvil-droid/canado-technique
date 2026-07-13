@@ -350,7 +350,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- HEADER -->
 <div class="mod-header">
-  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM15/slide-elm-15.jpg')"></div>
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/_assets/hero/slide-elm-15.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">💡 ELM-15 · Compétence générale · Objectif de comportement</div>
     <h1>Circuits d'électronique <em>numérique</em></h1>
@@ -402,11 +402,11 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">ELM-10 · 11 · 14</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 80/100</div></div>
   </div>
-  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Analyser et vérifier des circuits d'électronique numérique.</strong></p></div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Vérifier le fonctionnement des circuits d'électronique numérique.</strong></p></div>
   <div class="pc-sec"><h4>Présentation du module</h4><p>Ce module est le <strong>pont entre l'électricité et l'automatisation</strong>. Tout ce qui pilote une machine moderne — automate, variateur, carte de commande — repose sur la <strong>logique numérique</strong> : deux états, 0 et 1, et une immunité au bruit qui la rend fiable en plein atelier.</p><p>L'étudiant apprend d'abord à <strong>compter comme une machine</strong> (binaire, octet, hexadécimal — celui des codes d'erreur et des adresses d'automates), puis découvre les <strong>portes logiques</strong> et les <strong>tables de vérité</strong>. Il constatera une belle surprise : la logique câblée qu'il a déjà pratiquée en ELM-10 (contacts en série = ET, en parallèle = OU, auto-maintien = bascule) <strong>est</strong> la logique numérique, exprimée autrement. Il aborde ensuite la <strong>mémoire</strong> (bascules, compteurs, registres), les <strong>familles logiques</strong> et les <strong>interfaces de puissance</strong> — optocoupleur, relais — jusqu'au <strong>microcontrôleur</strong> et à la conversion analogique-numérique qui ouvrent la voie aux automates (ELM-21).</p></div>
-  <div class="pc-sec"><h4>Éléments de la compétence et pondération de l'épreuve</h4>
-    <table class="dtable"><thead><tr><th>Élément de la compétence</th><th>Points (épreuve /100)</th></tr></thead><tbody><tr><td>Convertir entre les systèmes de numération (binaire, décimal, hexadécimal)</td><td>20</td></tr><tr><td>Analyser et réaliser des fonctions logiques combinatoires</td><td>25</td></tr><tr><td>Analyser des circuits séquentiels (bascules, compteurs, registres)</td><td>25</td></tr><tr><td>Mettre en œuvre les circuits intégrés et les interfaces de puissance</td><td>20</td></tr><tr><td>Respecter les précautions (électricité statique) et diagnostiquer</td><td>10</td></tr></tbody></table>
-    <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération <strong>indicative</strong>, en attente de l'épreuve pratique officielle du module ; elle suit la structure des éléments de la compétence.</div></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Élément de la compétence — <em>libellé officiel</em></th></tr></thead><tbody><tr><td>1</td><td>Analyser les fonctions combinatoires, séquentielles ou de conversion d'un circuit.</td></tr><tr><td>2</td><td>Déterminer le niveau logique ou le signal à différents points du circuit.</td></tr><tr><td>3</td><td>Vérifier le niveau logique ou le signal à différents points du circuit.</td></tr><tr><td>4</td><td>Analyser les résultats.</td></tr></tbody></table>
+    <div class="ibox blue"><span class="ibox-label">📘 Source</span>Éléments repris <strong>mot à mot</strong> du programme officiel <em>Électromécanique</em> (INFP/MENFP). La <strong>pondération de l'épreuve</strong> figure au <em>Guide d'évaluation</em> et n'est pas reproduite ici.</div></div>
   <div class="pc-sec"><h4>Contexte de réalisation</h4>
     <div class="pc-cols">
       <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Plaques d'essai et maquettes logiques · circuits intégrés TTL (74xx) et CMOS (40xx) · optocoupleurs et relais · datasheets (en anglais) · schémas logiques.</div>
@@ -488,38 +488,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Combien d'états connaît un signal numérique ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Une infinité</button>
-    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Deux : 0 et 1</button>
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Deux : 0 et 1</button>
+    <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Seize</button>
     <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Dix</button>
-    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Seize</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Une infinité</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">À quelle valeur décimale correspond le binaire 1010 ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>4</button>
-    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>8</button>
-    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>10</button>
-    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>12</button>
+    <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>12</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>10</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>4</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>8</button>
   </div><div class="qexpl" id="qe-1-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Combien de valeurs un octet peut-il représenter ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>8</button>
-    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>16</button>
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>16</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>8</button>
     <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>128</button>
     <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>256</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pourquoi le numérique est-il préféré en milieu industriel bruité ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Il est moins cher</button>
-    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Pour son immunité au bruit : un signal dégradé reste interprété correctement</button>
-    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Il est plus joli</button>
-    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Il consomme plus</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Il consomme plus</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Pour son immunité au bruit : un signal dégradé reste interprété correctement</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Il est plus joli</button>
   </div><div class="qexpl" id="qe-1-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">En hexadécimal, que vaut FF ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>15</button>
-    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>16</button>
-    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>255</button>
-    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>99</button>
+    <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>99</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>255</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>16</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>15</button>
   </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,2,3,1,2],['Deux états seulement, ce qui lui donne son immunité au bruit.','1010 = 8 + 0 + 2 + 0 = 10 (on additionne les puissances de 2 des bits à 1).','8 bits → 2⁸ = 256 valeurs, de 0 à 255.','Peu importe qu’un 5 V arrive à 4,6 V : il vaut toujours 1. Décisif près des moteurs et contacteurs.','F = 15 ; FF = 15×16 + 15 = 255, soit un octet plein (11111111).'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[0,1,3,2,1],['Deux états seulement, ce qui lui donne son immunité au bruit.','1010 = 8 + 0 + 2 + 0 = 10 (on additionne les puissances de 2 des bits à 1).','8 bits → 2⁸ = 256 valeurs, de 0 à 255.','Peu importe qu’un 5 V arrive à 4,6 V : il vaut toujours 1. Décisif près des moteurs et contacteurs.','F = 15 ; FF = 15×16 + 15 = 255, soit un octet plein (11111111).'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
@@ -599,37 +599,37 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quand la sortie d'une porte ET vaut-elle 1 ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Si au moins une entrée est à 1</button>
-    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Si toutes les entrées sont à 1</button>
-    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Si aucune entrée n'est à 1</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Si aucune entrée n'est à 1</button>
+    <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Si toutes les entrées sont à 1</button>
     <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Toujours</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">À quoi correspondent deux contacts en parallèle dans la logique numérique ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>À une porte ET</button>
-    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>À une porte OU</button>
-    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>À une porte NON</button>
-    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>À une bascule</button>
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>À une bascule</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>À une porte NON</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>À une porte ET</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>À une porte OU</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Combien de lignes compte la table de vérité d'une porte à 3 entrées ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>3</button>
-    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>6</button>
-    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>8</button>
-    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>9</button>
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>8</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>9</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>6</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>3</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quelle porte est dite « universelle » ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>ET</button>
-    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>OU</button>
-    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>NAND</button>
-    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>XOR</button>
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>XOR</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>NAND</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>ET</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>OU</button>
   </div><div class="qexpl" id="qe-2-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quelle porte réalise la fonction d'un va-et-vient ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>ET</button>
-    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>OU</button>
-    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>XOR (OU exclusif)</button>
-    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>NAND</button>
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>XOR (OU exclusif)</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>NAND</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>ET</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>OU</button>
   </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[1,1,2,2,2],['ET = produit logique : il faut TOUTES les entrées à 1. C’est l’équivalent de contacts en série.','L’un OU l’autre suffit : c’est la fonction OU. En série, ce serait un ET.','2ⁿ = 2³ = 8 combinaisons possibles.','Avec des NAND seules, on reconstruit ET, OU et NON — d’où leur omniprésence dans les circuits intégrés.','La lampe s’allume si les deux interrupteurs sont dans des positions différentes : c’est exactement le XOR.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[2,3,0,1,0],['ET = produit logique : il faut TOUTES les entrées à 1. C’est l’équivalent de contacts en série.','L’un OU l’autre suffit : c’est la fonction OU. En série, ce serait un ET.','2ⁿ = 2³ = 8 combinaisons possibles.','Avec des NAND seules, on reconstruit ET, OU et NON — d’où leur omniprésence dans les circuits intégrés.','La lampe s’allume si les deux interrupteurs sont dans des positions différentes : c’est exactement le XOR.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
@@ -695,38 +695,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Qu'est-ce qui distingue la logique séquentielle de la combinatoire ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Rien</button>
-    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>La séquentielle a une mémoire : sa sortie dépend aussi de l'état précédent</button>
-    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>La combinatoire est plus rapide</button>
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>La combinatoire est plus rapide</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Rien</button>
+    <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>La séquentielle a une mémoire : sa sortie dépend aussi de l'état précédent</button>
     <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>La séquentielle n'a pas d'entrées</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que fait l'entrée S d'une bascule RS ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Elle remet la sortie à 0</button>
-    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Elle met la sortie à 1, qui y reste après l'impulsion</button>
-    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Elle efface la mémoire</button>
-    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Elle cadence l'horloge</button>
+    <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Elle efface la mémoire</button>
+    <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Elle cadence l'horloge</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Elle met la sortie à 1, qui y reste après l'impulsion</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Elle remet la sortie à 0</button>
   </div><div class="qexpl" id="qe-3-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">À quel montage d'ELM-10 la bascule RS correspond-elle ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Au démarrage étoile-triangle</button>
-    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Au circuit marche/arrêt avec auto-maintien</button>
-    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>À l'inversion de sens</button>
-    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Au relais thermique</button>
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Au relais thermique</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Au démarrage étoile-triangle</button>
+    <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Au circuit marche/arrêt avec auto-maintien</button>
+    <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>À l'inversion de sens</button>
   </div><div class="qexpl" id="qe-3-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Jusqu'à combien compte un compteur à 4 bascules ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>4</button>
-    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>8</button>
-    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>15</button>
-    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>16</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>15</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>16</button>
+    <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>8</button>
   </div><div class="qexpl" id="qe-3-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">À quoi sert l'horloge dans un circuit séquentiel ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>À afficher l'heure</button>
-    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>À cadencer les changements d'état des bascules (sur un front)</button>
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>À cadencer les changements d'état des bascules (sur un front)</button>
+    <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>À amplifier le signal</button>
     <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>À alimenter le circuit</button>
-    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>À amplifier le signal</button>
+    <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>À afficher l'heure</button>
   </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,1,1,2,1],['La mémoire fait toute la différence : un compteur ou un auto-maintien exigent de se souvenir.','S = Set. Et la sortie reste à 1 : c’est la mémoire — l’équivalent de l’auto-maintien.','Marche = Set, Arrêt = Reset, auto-maintien = la mémoire. Même fonction, autre technologie.','2ⁿ − 1 = 2⁴ − 1 = 15. Il compte donc de 0 à 15, soit 16 valeurs.','Elle synchronise tout le système : les bascules ne basculent que sur un front d’horloge.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[2,2,2,1,0],['La mémoire fait toute la différence : un compteur ou un auto-maintien exigent de se souvenir.','S = Set. Et la sortie reste à 1 : c’est la mémoire — l’équivalent de l’auto-maintien.','Marche = Set, Arrêt = Reset, auto-maintien = la mémoire. Même fonction, autre technologie.','2ⁿ − 1 = 2⁴ − 1 = 15. Il compte donc de 0 à 15, soit 16 valeurs.','Elle synchronise tout le système : les bascules ne basculent que sur un front d’horloge.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
@@ -798,36 +798,36 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelle précaution exige la manipulation des circuits CMOS ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Les chauffer</button>
     <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Les protéger de l'électricité statique (manipulation par les bords, plan antistatique)</button>
-    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Les tremper dans l'eau</button>
-    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Aucune</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Aucune</button>
+    <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Les tremper dans l'eau</button>
   </div><div class="qexpl" id="qe-4-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">À quoi sert un optocoupleur ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>À amplifier</button>
-    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>À isoler galvaniquement la commande de la puissance</button>
-    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>À redresser</button>
-    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>À compter</button>
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>À redresser</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>À amplifier</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>À compter</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>À isoler galvaniquement la commande de la puissance</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Que fait un convertisseur analogique-numérique (CAN) ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Il convertit du binaire en tension</button>
-    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Il traduit une tension analogique en nombre binaire</button>
-    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Il redresse l'alternatif</button>
-    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Il amplifie le courant</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Il amplifie le courant</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Il traduit une tension analogique en nombre binaire</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Il redresse l'alternatif</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quel est l'avantage majeur de la logique programmée sur la logique câblée ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Elle coûte moins cher à l'achat</button>
-    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>On modifie le fonctionnement sans recâbler l'armoire</button>
-    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Elle consomme moins</button>
-    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Elle est plus jolie</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Elle est plus jolie</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>On modifie le fonctionnement sans recâbler l'armoire</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Elle consomme moins</button>
   </div><div class="qexpl" id="qe-4-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Comment un circuit numérique 5 V peut-il commander un contacteur 220 V ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Directement</button>
-    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Par une interface : transistor + relais (avec diode de roue libre), optocoupleur ou relais statique</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>En augmentant la tension logique</button>
     <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>C'est impossible</button>
-    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>En augmentant la tension logique</button>
+    <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>Par une interface : transistor + relais (avec diode de roue libre), optocoupleur ou relais statique</button>
   </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,1],['Une décharge électrostatique invisible peut les détruire — ou les affaiblir, avec une panne différée.','Une LED éclaire un phototransistor : aucune liaison électrique entre les deux mondes. C’est la protection des E/S d’automate.','C’est ce qui permet à un automate de lire un capteur analogique 4-20 mA (ELM-14).','C’est la révolution de l’automatisation : changer le programme au lieu de refaire le câblage.','Le numérique ne délivre que quelques mA : il faut une interface de puissance.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,3,2,2,3],['Une décharge électrostatique invisible peut les détruire — ou les affaiblir, avec une panne différée.','Une LED éclaire un phototransistor : aucune liaison électrique entre les deux mondes. C’est la protection des E/S d’automate.','C’est ce qui permet à un automate de lire un capteur analogique 4-20 mA (ELM-14).','C’est la révolution de l’automatisation : changer le programme au lieu de refaire le câblage.','Le numérique ne délivre que quelques mA : il faut une interface de puissance.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
@@ -872,55 +872,55 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Le binaire 1010 vaut, en décimal…</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>4</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>10</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>12</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>101</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>12</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>101</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>10</button>
   </div><div class="qexpl" id="qe-exa-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Un octet représente…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>8 valeurs</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>16 valeurs</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>256 valeurs</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>8 valeurs</button>
     <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>128 valeurs</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>256 valeurs</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>16 valeurs</button>
   </div><div class="qexpl" id="qe-exa-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">La sortie d'une porte ET vaut 1…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Si au moins une entrée est à 1</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Si toutes les entrées sont à 1</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Si aucune entrée n'est à 1</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Toujours</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>Toujours</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>Si au moins une entrée est à 1</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>Si toutes les entrées sont à 1</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>Si aucune entrée n'est à 1</button>
   </div><div class="qexpl" id="qe-exa-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Deux contacts en parallèle réalisent la fonction…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>ET</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>OU</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>NON</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>XOR</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>NON</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>XOR</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>ET</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>OU</button>
   </div><div class="qexpl" id="qe-exa-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">La porte universelle est…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>ET</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>OU</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>NAND</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>NON</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>NAND</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>NON</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>OU</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>ET</button>
   </div><div class="qexpl" id="qe-exa-4"></div></div>
   <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">La bascule RS correspond, en logique câblée, à…</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Un démarrage étoile-triangle</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Un circuit marche/arrêt avec auto-maintien</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Un relais thermique</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Un fusible</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Un relais thermique</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Un fusible</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Un circuit marche/arrêt avec auto-maintien</button>
   </div><div class="qexpl" id="qe-exa-5"></div></div>
   <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Un compteur à 4 bascules compte jusqu'à…</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>4</button>
     <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>8</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>15</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>16</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>16</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>15</button>
   </div><div class="qexpl" id="qe-exa-6"></div></div>
   <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">L'optocoupleur sert à…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Amplifier</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Isoler galvaniquement commande et puissance</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Compter</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Redresser</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Isoler galvaniquement commande et puissance</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Amplifier</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Redresser</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Compter</button>
   </div><div class="qexpl" id="qe-exa-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,3,1,1,2,1,2,1],['8 + 2 = 10.','2⁸ = 256 valeurs (0 à 255).','ET = produit logique, équivalent de contacts en série.','L’un ou l’autre suffit : fonction OU.','Avec des NAND seules, on reconstruit toutes les autres portes.','Set = Marche, Reset = Arrêt, mémoire = auto-maintien.','2⁴ − 1 = 15 (de 0 à 15).','Une LED éclaire un phototransistor : aucune liaison électrique. C’est la protection des entrées/sorties d’automate.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[3,0,2,3,0,3,3,0],['8 + 2 = 10.','2⁸ = 256 valeurs (0 à 255).','ET = produit logique, équivalent de contacts en série.','L’un ou l’autre suffit : fonction OU.','Avec des NAND seules, on reconstruit toutes les autres portes.','Set = Marche, Reset = Arrêt, mémoire = auto-maintien.','2⁴ − 1 = 15 (de 0 à 15).','Une LED éclaire un phototransistor : aucune liaison électrique. C’est la protection des entrées/sorties d’automate.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exa"></span>
 </div>
@@ -941,38 +941,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Tu manipules un circuit intégré CMOS. Tu…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Le frottes pour le nettoyer</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Le prends par les bords, sur un plan antistatique</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Le poses sur un tapis en laine</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Le chauffes légèrement</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Le chauffes légèrement</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Le frottes pour le nettoyer</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Le prends par les bords, sur un plan antistatique</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Le poses sur un tapis en laine</button>
   </div><div class="qexpl" id="qe-exc-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Un signal logique stagne dans la « zone interdite ». Conséquence ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Rien</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Le circuit ne peut pas décider : comportement erratique — il faut corriger le niveau</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Le circuit s'accélère</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Le circuit s'accélère</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Le circuit ne peut pas décider : comportement erratique — il faut corriger le niveau</button>
     <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>La tension double</button>
   </div><div class="qexpl" id="qe-exc-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Une carte numérique doit commander un contacteur 220 V. Tu…</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>La connectes directement</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Passes par une interface : transistor + relais avec diode de roue libre, ou optocoupleur / SSR</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Augmentes la tension logique à 220 V</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Renonces</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Augmentes la tension logique à 220 V</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Renonces</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Passes par une interface : transistor + relais avec diode de roue libre, ou optocoupleur / SSR</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Ton automate doit lire un capteur de pression 4-20 mA. Il lui faut…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Une porte ET</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Un convertisseur analogique-numérique (CAN)</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Un compteur</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Une bascule RS</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Un convertisseur analogique-numérique (CAN)</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Une porte ET</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Une bascule RS</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Un compteur</button>
   </div><div class="qexpl" id="qe-exc-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Le client veut modifier la séquence de sa machine automatisée. Avec un automate, tu…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Recâbles toute l'armoire</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Ajoutes des relais</button>
     <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Modifies le programme : c'est tout l'avantage de la logique programmée</button>
     <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Changes les contacteurs</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Ajoutes des relais</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Recâbles toute l'armoire</button>
   </div><div class="qexpl" id="qe-exc-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,1,1],['Une décharge électrostatique peut le détruire — ou l’affaiblir, avec une panne qui apparaîtra plus tard.','Entre le niveau 0 et le niveau 1, le circuit ne sait pas trancher : source de pannes intermittentes.','Le numérique délivre quelques mA sous 5 V : l’interface de puissance est indispensable.','Le CAN traduit le signal analogique en nombre binaire exploitable par le programme.','Logique programmée : on change le programme, pas le câblage. C’est la révolution de l’automatisation.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[2,2,3,0,1],['Une décharge électrostatique peut le détruire — ou l’affaiblir, avec une panne qui apparaîtra plus tard.','Entre le niveau 0 et le niveau 1, le circuit ne sait pas trancher : source de pannes intermittentes.','Le numérique délivre quelques mA sous 5 V : l’interface de puissance est indispensable.','Le CAN traduit le signal analogique en nombre binaire exploitable par le programme.','Logique programmée : on change le programme, pas le câblage. C’est la révolution de l’automatisation.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
   <span class="qscore" id="qs-exc"></span>
 </div>

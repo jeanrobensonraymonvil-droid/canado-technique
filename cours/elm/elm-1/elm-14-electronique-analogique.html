@@ -350,7 +350,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 
 <!-- HEADER -->
 <div class="mod-header">
-  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/ELM14/slide-elm-14.jpg')"></div>
+  <div class="mod-hero-img" style="background-image:url('https://pub-870d1e52851740919f1f052d8478a1c3.r2.dev/Programme/ELM/_assets/hero/slide-elm-14.jpg')"></div>
   <div class="mod-header-in">
     <div class="mod-tag">🔬 ELM-14 · Compétence générale · Objectif de comportement</div>
     <h1>Circuits d'électronique <em>analogique</em></h1>
@@ -402,11 +402,11 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <div class="pc-id-cell"><div class="pc-id-lbl">Réinvestit</div><div class="pc-id-val">ELM-03 · 07 · 11</div></div>
     <div class="pc-id-cell"><div class="pc-id-lbl">Sanction</div><div class="pc-id-val">Épreuve pratique · 85/100</div></div>
   </div>
-  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Analyser et vérifier des circuits d'électronique analogique.</strong></p></div>
+  <div class="pc-sec"><h4>Énoncé de la compétence</h4><p><strong>Vérifier le fonctionnement des circuits d'électronique analogique.</strong></p></div>
   <div class="pc-sec"><h4>Présentation du module</h4><p>L'électronique n'est plus une option : elle est <strong>dans</strong> toutes les machines. Le régulateur de tension d'un alternateur (l'<strong>AVR</strong>), la carte d'un variateur, l'alimentation d'un automate, les capteurs d'un système — tout cela est de l'électronique analogique. Ne pas la comprendre, c'est remplacer des cartes entières au lieu de dépanner un composant.</p><p>L'étudiant part des <strong>composants passifs</strong> et du <strong>diviseur de tension</strong>, puis découvre la <strong>diode</strong> et la chaîne complète d'une <strong>alimentation</strong> (transformateur → pont de Graetz → filtrage → régulation). Il aborde ensuite le <strong>transistor</strong>, surtout en <strong>commutation</strong> — c'est ainsi qu'une carte pilote un relais — et l'<strong>amplificateur opérationnel</strong>. Enfin, il exploite les <strong>capteurs analogiques</strong> et les signaux normalisés <strong>0-10 V</strong> et <strong>4-20 mA</strong>, et apprend à <strong>dépanner une carte</strong> avec méthode.</p></div>
-  <div class="pc-sec"><h4>Éléments de la compétence et pondération de l'épreuve</h4>
-    <table class="dtable"><thead><tr><th>Élément de la compétence</th><th>Points (épreuve /100)</th></tr></thead><tbody><tr><td>Identifier les composants et exploiter le diviseur de tension</td><td>15</td></tr><tr><td>Analyser et vérifier un circuit à diodes (redressement, filtrage, régulation)</td><td>25</td></tr><tr><td>Analyser et mettre en œuvre un transistor (amplification, commutation)</td><td>25</td></tr><tr><td>Exploiter les capteurs analogiques et les signaux normalisés</td><td>20</td></tr><tr><td>Diagnostiquer une carte électronique et respecter les règles de sécurité</td><td>15</td></tr></tbody></table>
-    <div class="ibox blue"><span class="ibox-label">ℹ️ Note</span>Pondération <strong>indicative</strong>, en attente de l'épreuve pratique officielle du module ; elle suit la structure des éléments de la compétence.</div></div>
+  <div class="pc-sec"><h4>Éléments de la compétence</h4>
+    <table class="dtable"><thead><tr><th>N°</th><th>Élément de la compétence — <em>libellé officiel</em></th></tr></thead><tbody><tr><td>1</td><td>Analyser le circuit électronique.</td></tr><tr><td>2</td><td>Déterminer les signaux et les valeurs attendus à différents points du circuit.</td></tr><tr><td>3</td><td>Prendre des mesures sur le circuit.</td></tr><tr><td>4</td><td>Analyser les résultats.</td></tr></tbody></table>
+    <div class="ibox blue"><span class="ibox-label">📘 Source</span>Éléments repris <strong>mot à mot</strong> du programme officiel <em>Électromécanique</em> (INFP/MENFP). La <strong>pondération de l'épreuve</strong> figure au <em>Guide d'évaluation</em> et n'est pas reproduite ici.</div></div>
   <div class="pc-sec"><h4>Contexte de réalisation</h4>
     <div class="pc-cols">
       <div class="pc-callout"><span class="pc-callout-lbl">À partir de</span>Plaques d'essai et cartes électroniques réelles · composants (résistances, condensateurs, diodes, transistors, régulateurs, AOP) · capteurs analogiques · schémas et datasheets (en anglais).</div>
@@ -486,38 +486,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 1</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Qu'est-ce qu'un signal analogique ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Un signal à deux états (0/1)</button>
+    <button class="qopt" onclick="selQ(this,'1',0,0)"><span class="qletter">A</span>Un signal sans tension</button>
     <button class="qopt" onclick="selQ(this,'1',0,1)"><span class="qletter">B</span>Un signal qui varie de façon continue et peut prendre une infinité de valeurs</button>
     <button class="qopt" onclick="selQ(this,'1',0,2)"><span class="qletter">C</span>Un signal numérique codé</button>
-    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Un signal sans tension</button>
+    <button class="qopt" onclick="selQ(this,'1',0,3)"><span class="qletter">D</span>Un signal à deux états (0/1)</button>
   </div><div class="qexpl" id="qe-1-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Un diviseur de tension avec deux résistances égales alimenté en 12 V donne en sortie…</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',1,0)"><span class="qletter">A</span>12 V</button>
-    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>6 V</button>
-    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>3 V</button>
-    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>24 V</button>
+    <button class="qopt" onclick="selQ(this,'1',1,1)"><span class="qletter">B</span>3 V</button>
+    <button class="qopt" onclick="selQ(this,'1',1,2)"><span class="qletter">C</span>24 V</button>
+    <button class="qopt" onclick="selQ(this,'1',1,3)"><span class="qletter">D</span>6 V</button>
   </div><div class="qexpl" id="qe-1-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Lequel de ces composants est PASSIF ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Le transistor</button>
-    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>L'amplificateur opérationnel</button>
-    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>Le condensateur</button>
+    <button class="qopt" onclick="selQ(this,'1',2,0)"><span class="qletter">A</span>Le condensateur</button>
+    <button class="qopt" onclick="selQ(this,'1',2,1)"><span class="qletter">B</span>Le transistor</button>
+    <button class="qopt" onclick="selQ(this,'1',2,2)"><span class="qletter">C</span>L'amplificateur opérationnel</button>
     <button class="qopt" onclick="selQ(this,'1',2,3)"><span class="qletter">D</span>Le régulateur 7805</button>
   </div><div class="qexpl" id="qe-1-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que permet de lire le code des couleurs d'une résistance ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Sa puissance</button>
-    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Sa valeur en ohms et sa tolérance</button>
-    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Sa marque</button>
-    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Sa température</button>
+    <button class="qopt" onclick="selQ(this,'1',3,0)"><span class="qletter">A</span>Sa température</button>
+    <button class="qopt" onclick="selQ(this,'1',3,1)"><span class="qletter">B</span>Sa marque</button>
+    <button class="qopt" onclick="selQ(this,'1',3,2)"><span class="qletter">C</span>Sa puissance</button>
+    <button class="qopt" onclick="selQ(this,'1',3,3)"><span class="qletter">D</span>Sa valeur en ohms et sa tolérance</button>
   </div><div class="qexpl" id="qe-1-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">À quoi sert le diviseur de tension avec un capteur résistif ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'1',4,0)"><span class="qletter">A</span>À amplifier le signal</button>
-    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>À transformer la variation de résistance du capteur en variation de tension exploitable</button>
-    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>À redresser le courant</button>
-    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>À couper le circuit</button>
+    <button class="qopt" onclick="selQ(this,'1',4,1)"><span class="qletter">B</span>À redresser le courant</button>
+    <button class="qopt" onclick="selQ(this,'1',4,2)"><span class="qletter">C</span>À couper le circuit</button>
+    <button class="qopt" onclick="selQ(this,'1',4,3)"><span class="qletter">D</span>À transformer la variation de résistance du capteur en variation de tension exploitable</button>
   </div><div class="qexpl" id="qe-1-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,1,2,1,1],['L’analogique est continu ; le numérique ne connaît que 0 et 1.','Us = Ue × R2 ÷ (R1 + R2) = 12 × 1 ÷ 2 = 6 V.','R, L et C sont passifs : ils ne peuvent qu’atténuer ou stocker, jamais amplifier.','Deux ou trois anneaux de chiffres, un multiplicateur, un anneau de tolérance.','Le capteur remplace une résistance du diviseur : la tension du point milieu suit la grandeur mesurée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('1',[1,3,0,3,3],['L’analogique est continu ; le numérique ne connaît que 0 et 1.','Us = Ue × R2 ÷ (R1 + R2) = 12 × 1 ÷ 2 = 6 V.','R, L et C sont passifs : ils ne peuvent qu’atténuer ou stocker, jamais amplifier.','Deux ou trois anneaux de chiffres, un multiplicateur, un anneau de tolérance.','Le capteur remplace une résistance du diviseur : la tension du point milieu suit la grandeur mesurée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-1" style="display:none" onclick="retryQ('1',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-1"></span>
 </div>
@@ -587,37 +587,37 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Combien de diodes comporte un pont de Graetz ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'2',0,0)"><span class="qletter">A</span>Une</button>
-    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Deux</button>
+    <button class="qopt" onclick="selQ(this,'2',0,1)"><span class="qletter">B</span>Six</button>
     <button class="qopt" onclick="selQ(this,'2',0,2)"><span class="qletter">C</span>Quatre</button>
-    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Six</button>
+    <button class="qopt" onclick="selQ(this,'2',0,3)"><span class="qletter">D</span>Deux</button>
   </div><div class="qexpl" id="qe-2-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Quelle est la chute de tension directe d'une diode au silicium ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>0 V</button>
-    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>Environ 0,7 V</button>
-    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>5 V</button>
-    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>12 V</button>
+    <button class="qopt" onclick="selQ(this,'2',1,0)"><span class="qletter">A</span>Environ 0,7 V</button>
+    <button class="qopt" onclick="selQ(this,'2',1,1)"><span class="qletter">B</span>5 V</button>
+    <button class="qopt" onclick="selQ(this,'2',1,2)"><span class="qletter">C</span>12 V</button>
+    <button class="qopt" onclick="selQ(this,'2',1,3)"><span class="qletter">D</span>0 V</button>
   </div><div class="qexpl" id="qe-2-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">À quoi sert le condensateur placé après le pont de diodes ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>À redresser</button>
-    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>À filtrer, c'est-à-dire lisser la tension ondulée</button>
-    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>À amplifier</button>
-    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>À couper le courant</button>
+    <button class="qopt" onclick="selQ(this,'2',2,0)"><span class="qletter">A</span>À filtrer, c'est-à-dire lisser la tension ondulée</button>
+    <button class="qopt" onclick="selQ(this,'2',2,1)"><span class="qletter">B</span>À couper le courant</button>
+    <button class="qopt" onclick="selQ(this,'2',2,2)"><span class="qletter">C</span>À redresser</button>
+    <button class="qopt" onclick="selQ(this,'2',2,3)"><span class="qletter">D</span>À amplifier</button>
   </div><div class="qexpl" id="qe-2-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que délivre un régulateur 7812 ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>7,8 V</button>
-    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>12 V stabilisés</button>
-    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>78 V</button>
-    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>5 V</button>
+    <button class="qopt" onclick="selQ(this,'2',3,0)"><span class="qletter">A</span>5 V</button>
+    <button class="qopt" onclick="selQ(this,'2',3,1)"><span class="qletter">B</span>7,8 V</button>
+    <button class="qopt" onclick="selQ(this,'2',3,2)"><span class="qletter">C</span>12 V stabilisés</button>
+    <button class="qopt" onclick="selQ(this,'2',3,3)"><span class="qletter">D</span>78 V</button>
   </div><div class="qexpl" id="qe-2-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Une diode conduit dans les deux sens au testeur. Elle est…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>Saine</button>
-    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>En court-circuit (défectueuse)</button>
-    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>Coupée</button>
-    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>Zener</button>
+    <button class="qopt" onclick="selQ(this,'2',4,0)"><span class="qletter">A</span>Zener</button>
+    <button class="qopt" onclick="selQ(this,'2',4,1)"><span class="qletter">B</span>Coupée</button>
+    <button class="qopt" onclick="selQ(this,'2',4,2)"><span class="qletter">C</span>Saine</button>
+    <button class="qopt" onclick="selQ(this,'2',4,3)"><span class="qletter">D</span>En court-circuit (défectueuse)</button>
   </div><div class="qexpl" id="qe-2-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('2',[2,1,1,1,1],['Quatre diodes montées en pont, redressant les deux alternances.','≈ 0,7 V — c’est aussi la valeur qu’affiche le multimètre en position « diode » quand elle est saine.','Il se charge aux sommets et se décharge dans les creux : la tension devient quasiment continue.','La famille 78xx : les deux derniers chiffres donnent la tension de sortie. 7805 = 5 V, 7812 = 12 V.','Une diode saine conduit dans un seul sens. Conduire dans les deux = court-circuit ; dans aucun = coupée.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('2',[2,0,0,2,3],['Quatre diodes montées en pont, redressant les deux alternances.','≈ 0,7 V — c’est aussi la valeur qu’affiche le multimètre en position « diode » quand elle est saine.','Il se charge aux sommets et se décharge dans les creux : la tension devient quasiment continue.','La famille 78xx : les deux derniers chiffres donnent la tension de sortie. 7805 = 5 V, 7812 = 12 V.','Une diode saine conduit dans un seul sens. Conduire dans les deux = court-circuit ; dans aucun = coupée.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-2" style="display:none" onclick="retryQ('2',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-2"></span>
 </div>
@@ -684,38 +684,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>Quiz — Chapitre 3</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Quelles sont les trois électrodes d'un transistor bipolaire ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Anode, cathode, grille</button>
-    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Base, collecteur, émetteur</button>
+    <button class="qopt" onclick="selQ(this,'3',0,0)"><span class="qletter">A</span>Base, collecteur, émetteur</button>
+    <button class="qopt" onclick="selQ(this,'3',0,1)"><span class="qletter">B</span>Anode, cathode, grille</button>
     <button class="qopt" onclick="selQ(this,'3',0,2)"><span class="qletter">C</span>Phase, neutre, terre</button>
     <button class="qopt" onclick="selQ(this,'3',0,3)"><span class="qletter">D</span>Entrée, sortie, masse</button>
   </div><div class="qexpl" id="qe-3-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Que signifie le gain (β) d'un transistor ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'3',1,0)"><span class="qletter">A</span>Sa puissance maximale</button>
     <button class="qopt" onclick="selQ(this,'3',1,1)"><span class="qletter">B</span>Le rapport entre le courant collecteur et le courant de base</button>
-    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Sa tension de seuil</button>
-    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Sa résistance</button>
+    <button class="qopt" onclick="selQ(this,'3',1,2)"><span class="qletter">C</span>Sa résistance</button>
+    <button class="qopt" onclick="selQ(this,'3',1,3)"><span class="qletter">D</span>Sa tension de seuil</button>
   </div><div class="qexpl" id="qe-3-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">En commutation, le transistor se comporte comme…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Une résistance fixe</button>
-    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Un interrupteur commandé électroniquement (bloqué ou saturé)</button>
+    <button class="qopt" onclick="selQ(this,'3',2,0)"><span class="qletter">A</span>Un interrupteur commandé électroniquement (bloqué ou saturé)</button>
+    <button class="qopt" onclick="selQ(this,'3',2,1)"><span class="qletter">B</span>Une résistance fixe</button>
     <button class="qopt" onclick="selQ(this,'3',2,2)"><span class="qletter">C</span>Un condensateur</button>
     <button class="qopt" onclick="selQ(this,'3',2,3)"><span class="qletter">D</span>Un transformateur</button>
   </div><div class="qexpl" id="qe-3-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Pourquoi placer une diode de roue libre aux bornes d'un relais commandé par transistor ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Pour économiser du courant</button>
-    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Pour absorber la surtension créée à la coupure par la bobine, qui détruirait le transistor</button>
-    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Pour augmenter le gain</button>
+    <button class="qopt" onclick="selQ(this,'3',3,0)"><span class="qletter">A</span>Pour absorber la surtension créée à la coupure par la bobine, qui détruirait le transistor</button>
+    <button class="qopt" onclick="selQ(this,'3',3,1)"><span class="qletter">B</span>Pour augmenter le gain</button>
+    <button class="qopt" onclick="selQ(this,'3',3,2)"><span class="qletter">C</span>Pour économiser du courant</button>
     <button class="qopt" onclick="selQ(this,'3',3,3)"><span class="qletter">D</span>Pour filtrer le signal</button>
   </div><div class="qexpl" id="qe-3-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Un AOP monté en comparateur…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Amplifie linéairement</button>
+    <button class="qopt" onclick="selQ(this,'3',4,0)"><span class="qletter">A</span>Redresse le courant</button>
     <button class="qopt" onclick="selQ(this,'3',4,1)"><span class="qletter">B</span>Bascule sa sortie selon que l'entrée + est supérieure ou inférieure à l'entrée −</button>
-    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Redresse le courant</button>
+    <button class="qopt" onclick="selQ(this,'3',4,2)"><span class="qletter">C</span>Amplifie linéairement</button>
     <button class="qopt" onclick="selQ(this,'3',4,3)"><span class="qletter">D</span>Filtre le signal</button>
   </div><div class="qexpl" id="qe-3-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('3',[1,1,1,1,1],['Base (commande), collecteur et émetteur (courant principal).','Un gain de 100 signifie qu’un courant de base de 1 mA commande 100 mA au collecteur.','C’est l’usage le plus fréquent en électromécanique : piloter un relais depuis une carte ou un automate.','La bobine s’oppose à la variation de courant (Lenz) : la coupure produit une surtension destructrice.','Sans contre-réaction, la sortie va à fond dans un sens ou l’autre : c’est le principe du thermostat électronique.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('3',[0,1,0,0,1],['Base (commande), collecteur et émetteur (courant principal).','Un gain de 100 signifie qu’un courant de base de 1 mA commande 100 mA au collecteur.','C’est l’usage le plus fréquent en électromécanique : piloter un relais depuis une carte ou un automate.','La bobine s’oppose à la variation de courant (Lenz) : la coupure produit une surtension destructrice.','Sans contre-réaction, la sortie va à fond dans un sens ou l’autre : c’est le principe du thermostat électronique.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-3" style="display:none" onclick="retryQ('3',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-3"></span>
 </div>
@@ -787,37 +787,37 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Comment se comporte une thermistance NTC quand la température augmente ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',0,0)"><span class="qletter">A</span>Sa résistance augmente</button>
-    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Sa résistance diminue</button>
-    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Sa résistance reste constante</button>
+    <button class="qopt" onclick="selQ(this,'4',0,1)"><span class="qletter">B</span>Sa résistance reste constante</button>
+    <button class="qopt" onclick="selQ(this,'4',0,2)"><span class="qletter">C</span>Sa résistance diminue</button>
     <button class="qopt" onclick="selQ(this,'4',0,3)"><span class="qletter">D</span>Elle produit une tension</button>
   </div><div class="qexpl" id="qe-4-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Pourquoi le signal industriel est-il 4-20 mA et non 0-20 mA ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Par tradition</button>
-    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Parce que le zéro décalé à 4 mA permet de détecter une coupure de fil (0 mA = panne)</button>
-    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Pour économiser de l'énergie</button>
-    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Pour aller plus vite</button>
+    <button class="qopt" onclick="selQ(this,'4',1,0)"><span class="qletter">A</span>Pour aller plus vite</button>
+    <button class="qopt" onclick="selQ(this,'4',1,1)"><span class="qletter">B</span>Pour économiser de l'énergie</button>
+    <button class="qopt" onclick="selQ(this,'4',1,2)"><span class="qletter">C</span>Par tradition</button>
+    <button class="qopt" onclick="selQ(this,'4',1,3)"><span class="qletter">D</span>Parce que le zéro décalé à 4 mA permet de détecter une coupure de fil (0 mA = panne)</button>
   </div><div class="qexpl" id="qe-4-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Quel avantage a un signal en courant (4-20 mA) sur un signal en tension (0-10 V) ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Il est moins cher</button>
-    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Il ne souffre pas de la chute de tension en ligne : fiable sur longue distance</button>
-    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Il est plus rapide</button>
-    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Il consomme moins</button>
+    <button class="qopt" onclick="selQ(this,'4',2,0)"><span class="qletter">A</span>Il est plus rapide</button>
+    <button class="qopt" onclick="selQ(this,'4',2,1)"><span class="qletter">B</span>Il consomme moins</button>
+    <button class="qopt" onclick="selQ(this,'4',2,2)"><span class="qletter">C</span>Il ne souffre pas de la chute de tension en ligne : fiable sur longue distance</button>
+    <button class="qopt" onclick="selQ(this,'4',2,3)"><span class="qletter">D</span>Il est moins cher</button>
   </div><div class="qexpl" id="qe-4-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Quelle est la panne la plus fréquente d'une carte électronique ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'4',3,0)"><span class="qletter">A</span>Le microprocesseur</button>
-    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Une panne d'alimentation (condensateur gonflé, diode claquée, régulateur mort)</button>
-    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Les pistes du circuit imprimé</button>
-    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Le boîtier</button>
+    <button class="qopt" onclick="selQ(this,'4',3,1)"><span class="qletter">B</span>Les pistes du circuit imprimé</button>
+    <button class="qopt" onclick="selQ(this,'4',3,2)"><span class="qletter">C</span>Le boîtier</button>
+    <button class="qopt" onclick="selQ(this,'4',3,3)"><span class="qletter">D</span>Une panne d'alimentation (condensateur gonflé, diode claquée, régulateur mort)</button>
   </div><div class="qexpl" id="qe-4-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">Quel est le premier réflexe face à une carte en panne ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Remplacer tous les composants</button>
-    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Vérifier l'alimentation et faire une inspection visuelle (condensateurs gonflés, composants noircis, soudures froides)</button>
+    <button class="qopt" onclick="selQ(this,'4',4,0)"><span class="qletter">A</span>Vérifier l'alimentation et faire une inspection visuelle (condensateurs gonflés, composants noircis, soudures froides)</button>
+    <button class="qopt" onclick="selQ(this,'4',4,1)"><span class="qletter">B</span>Remplacer tous les composants</button>
     <button class="qopt" onclick="selQ(this,'4',4,2)"><span class="qletter">C</span>Chauffer la carte</button>
     <button class="qopt" onclick="selQ(this,'4',4,3)"><span class="qletter">D</span>La jeter</button>
   </div><div class="qexpl" id="qe-4-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('4',[1,1,1,1,1],['NTC = Negative Temperature Coefficient : la résistance baisse quand il fait plus chaud.','C’est l’auto-diagnostic : si le courant tombe à 0, ce n’est pas une mesure minimale mais une rupture.','Le courant reste identique tout le long de la boucle, quelle que soit la longueur des fils.','Dans la grande majorité des cas, on cherche d’abord du côté de l’alimentation.','Observer avant de mesurer : une carte défaillante montre souvent des signes visibles.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('4',[2,3,2,3,0],['NTC = Negative Temperature Coefficient : la résistance baisse quand il fait plus chaud.','C’est l’auto-diagnostic : si le courant tombe à 0, ce n’est pas une mesure minimale mais une rupture.','Le courant reste identique tout le long de la boucle, quelle que soit la longueur des fils.','Dans la grande majorité des cas, on cherche d’abord du côté de l’alimentation.','Observer avant de mesurer : une carte défaillante montre souvent des signes visibles.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-4" style="display:none" onclick="retryQ('4',5)">↺ Réessayer</button>
   <span class="qscore" id="qs-4"></span>
 </div>
@@ -861,56 +861,56 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>QCM — 8 questions</h3><span class="qblock-count">8 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 8</div><div class="q-text">Un signal analogique…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>N'a que deux états</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,0)"><span class="qletter">A</span>Est toujours numérique</button>
     <button class="qopt" onclick="selQ(this,'exa',0,1)"><span class="qletter">B</span>Varie de façon continue</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Est toujours numérique</button>
-    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>Est nul</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,2)"><span class="qletter">C</span>Est nul</button>
+    <button class="qopt" onclick="selQ(this,'exa',0,3)"><span class="qletter">D</span>N'a que deux états</button>
   </div><div class="qexpl" id="qe-exa-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 8</div><div class="q-text">Un pont de Graetz comporte…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>1 diode</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>2 diodes</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>4 diodes</button>
-    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>8 diodes</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,0)"><span class="qletter">A</span>4 diodes</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,1)"><span class="qletter">B</span>8 diodes</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,2)"><span class="qletter">C</span>1 diode</button>
+    <button class="qopt" onclick="selQ(this,'exa',1,3)"><span class="qletter">D</span>2 diodes</button>
   </div><div class="qexpl" id="qe-exa-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 8</div><div class="q-text">La chute de tension directe d'une diode au silicium est d'environ…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>0 V</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,0)"><span class="qletter">A</span>5 V</button>
     <button class="qopt" onclick="selQ(this,'exa',2,1)"><span class="qletter">B</span>0,7 V</button>
-    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>5 V</button>
+    <button class="qopt" onclick="selQ(this,'exa',2,2)"><span class="qletter">C</span>0 V</button>
     <button class="qopt" onclick="selQ(this,'exa',2,3)"><span class="qletter">D</span>12 V</button>
   </div><div class="qexpl" id="qe-exa-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 8</div><div class="q-text">Un régulateur 7805 délivre…</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exa',3,0)"><span class="qletter">A</span>78 V</button>
     <button class="qopt" onclick="selQ(this,'exa',3,1)"><span class="qletter">B</span>5 V stabilisés</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>12 V</button>
-    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>0,5 V</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,2)"><span class="qletter">C</span>0,5 V</button>
+    <button class="qopt" onclick="selQ(this,'exa',3,3)"><span class="qletter">D</span>12 V</button>
   </div><div class="qexpl" id="qe-exa-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 8</div><div class="q-text">Le gain d'un transistor est le rapport entre…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Tension et courant</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,0)"><span class="qletter">A</span>Puissance et tension</button>
     <button class="qopt" onclick="selQ(this,'exa',4,1)"><span class="qletter">B</span>Courant collecteur et courant de base</button>
-    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Puissance et tension</button>
+    <button class="qopt" onclick="selQ(this,'exa',4,2)"><span class="qletter">C</span>Tension et courant</button>
     <button class="qopt" onclick="selQ(this,'exa',4,3)"><span class="qletter">D</span>Résistance et courant</button>
   </div><div class="qexpl" id="qe-exa-4"></div></div>
   <div class="q-item"><div class="q-num">Question 6 / 8</div><div class="q-text">Une thermistance NTC voit sa résistance…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Augmenter quand il fait chaud</button>
-    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Diminuer quand il fait chaud</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,0)"><span class="qletter">A</span>Diminuer quand il fait chaud</button>
+    <button class="qopt" onclick="selQ(this,'exa',5,1)"><span class="qletter">B</span>Augmenter quand il fait chaud</button>
     <button class="qopt" onclick="selQ(this,'exa',5,2)"><span class="qletter">C</span>Rester constante</button>
     <button class="qopt" onclick="selQ(this,'exa',5,3)"><span class="qletter">D</span>Devenir nulle</button>
   </div><div class="qexpl" id="qe-exa-5"></div></div>
   <div class="q-item"><div class="q-num">Question 7 / 8</div><div class="q-text">Dans un signal 4-20 mA, un courant de 0 mA signifie…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>La mesure minimale</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,0)"><span class="qletter">A</span>La mesure maximale</button>
     <button class="qopt" onclick="selQ(this,'exa',6,1)"><span class="qletter">B</span>Un fil coupé ou un capteur en panne</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>La mesure maximale</button>
-    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>Un signal normal</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,2)"><span class="qletter">C</span>Un signal normal</button>
+    <button class="qopt" onclick="selQ(this,'exa',6,3)"><span class="qletter">D</span>La mesure minimale</button>
   </div><div class="qexpl" id="qe-exa-6"></div></div>
   <div class="q-item"><div class="q-num">Question 8 / 8</div><div class="q-text">Le montage de base qui répartit une tension entre deux résistances s'appelle…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Le pont de Graetz</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Le diviseur de tension</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Le comparateur</button>
-    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Le redresseur</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,0)"><span class="qletter">A</span>Le redresseur</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,1)"><span class="qletter">B</span>Le pont de Graetz</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,2)"><span class="qletter">C</span>Le diviseur de tension</button>
+    <button class="qopt" onclick="selQ(this,'exa',7,3)"><span class="qletter">D</span>Le comparateur</button>
   </div><div class="qexpl" id="qe-exa-7"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,2,1,1,1,1,1,1],['L’analogique est continu ; le numérique ne connaît que 0 et 1.','Quatre diodes, redressement double alternance : le montage universel des alimentations et alternateurs.','≈ 0,7 V, valeur qu’affiche le multimètre en position diode.','Famille 78xx : les deux derniers chiffres donnent la tension de sortie.','Un petit courant de base commande un gros courant collecteur.','NTC = coefficient de température négatif.','C’est tout l’intérêt du zéro décalé : le système détecte sa propre panne.','Us = Ue × R2 ÷ (R1 + R2).'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exa',[1,0,1,1,1,0,1,2],['L’analogique est continu ; le numérique ne connaît que 0 et 1.','Quatre diodes, redressement double alternance : le montage universel des alimentations et alternateurs.','≈ 0,7 V, valeur qu’affiche le multimètre en position diode.','Famille 78xx : les deux derniers chiffres donnent la tension de sortie.','Un petit courant de base commande un gros courant collecteur.','NTC = coefficient de température négatif.','C’est tout l’intérêt du zéro décalé : le système détecte sa propre panne.','Us = Ue × R2 ÷ (R1 + R2).'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exa" style="display:none" onclick="retryQ('exa',8)">↺ Recommencer</button>
   <span class="qscore" id="qs-exa"></span>
 </div>
@@ -931,38 +931,38 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="qblock-header"><span>📝</span><h3>QCM — 5 questions</h3><span class="qblock-count">5 questions</span></div>
 <div class="qblock-body">
   <div class="q-item"><div class="q-num">Question 1 / 5</div><div class="q-text">Tu commandes un relais avec un transistor. Que ne dois-tu jamais oublier ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Un condensateur</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>La diode de roue libre aux bornes de la bobine</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Un fusible sur la base</button>
-    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>Un transformateur</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,0)"><span class="qletter">A</span>Un fusible sur la base</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,1)"><span class="qletter">B</span>Un condensateur</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,2)"><span class="qletter">C</span>Un transformateur</button>
+    <button class="qopt" onclick="selQ(this,'exc',0,3)"><span class="qletter">D</span>La diode de roue libre aux bornes de la bobine</button>
   </div><div class="qexpl" id="qe-exc-0"></div></div>
   <div class="q-item"><div class="q-num">Question 2 / 5</div><div class="q-text">Une carte est en panne. Ton premier réflexe ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Remplacer le composant le plus cher</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Vérifier l'alimentation et inspecter visuellement (condensateurs gonflés, composants noircis)</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Chauffer la carte</button>
-    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Remplacer toute la carte</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,0)"><span class="qletter">A</span>Chauffer la carte</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,1)"><span class="qletter">B</span>Remplacer toute la carte</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,2)"><span class="qletter">C</span>Remplacer le composant le plus cher</button>
+    <button class="qopt" onclick="selQ(this,'exc',1,3)"><span class="qletter">D</span>Vérifier l'alimentation et inspecter visuellement (condensateurs gonflés, composants noircis)</button>
   </div><div class="qexpl" id="qe-exc-1"></div></div>
   <div class="q-item"><div class="q-num">Question 3 / 5</div><div class="q-text">Tu testes une diode : elle conduit dans les deux sens. Conclusion ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',2,0)"><span class="qletter">A</span>Elle est saine</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Elle est en court-circuit : à remplacer</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,1)"><span class="qletter">B</span>Le multimètre est cassé</button>
     <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Elle est Zener</button>
-    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Le multimètre est cassé</button>
+    <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Elle est en court-circuit : à remplacer</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
   <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Un capteur doit transmettre sa mesure à 80 mètres. Tu choisis…</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Un signal 0-10 V</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Un signal 4-20 mA, insensible à la chute de tension en ligne</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Aucun signal</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Un signal 0-10 V</button>
     <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Un signal audio</button>
-    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Aucun signal</button>
+    <button class="qopt" onclick="selQ(this,'exc',3,3)"><span class="qletter">D</span>Un signal 4-20 mA, insensible à la chute de tension en ligne</button>
   </div><div class="qexpl" id="qe-exc-3"></div></div>
   <div class="q-item"><div class="q-num">Question 5 / 5</div><div class="q-text">La sortie d'une alimentation présente une forte ondulation. Cause probable ?</div><div class="q-opts">
-    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>Le transformateur est trop gros</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,0)"><span class="qletter">A</span>La diode Zener est neuve</button>
     <button class="qopt" onclick="selQ(this,'exc',4,1)"><span class="qletter">B</span>Le condensateur de filtrage est défectueux ou de capacité insuffisante</button>
     <button class="qopt" onclick="selQ(this,'exc',4,2)"><span class="qletter">C</span>Le fusible est trop petit</button>
-    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>La diode Zener est neuve</button>
+    <button class="qopt" onclick="selQ(this,'exc',4,3)"><span class="qletter">D</span>Le transformateur est trop gros</button>
   </div><div class="qexpl" id="qe-exc-4"></div></div>
 </div>
 <div class="qfooter">
-  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[1,1,1,1,1],['Sans elle, la surtension de coupure de la bobine détruit le transistor.','L’alimentation est la cause la plus fréquente ; l’inspection visuelle est gratuite et souvent décisive.','Une diode saine ne conduit que dans un sens. Conduire dans les deux = défaut.','Sur longue distance, le courant reste constant alors que la tension chuterait.','C’est le condensateur de filtrage qui lisse la tension : gonflé ou desséché, l’ondulation réapparaît.'])">✓ Valider</button>
+  <button class="qbtn qbtn-submit" onclick="submitQ('exc',[3,3,3,3,1],['Sans elle, la surtension de coupure de la bobine détruit le transistor.','L’alimentation est la cause la plus fréquente ; l’inspection visuelle est gratuite et souvent décisive.','Une diode saine ne conduit que dans un sens. Conduire dans les deux = défaut.','Sur longue distance, le courant reste constant alors que la tension chuterait.','C’est le condensateur de filtrage qui lisse la tension : gonflé ou desséché, l’ondulation réapparaît.'])">✓ Valider</button>
   <button class="qbtn qbtn-retry" id="qr-exc" style="display:none" onclick="retryQ('exc',5)">↺ Recommencer</button>
   <span class="qscore" id="qs-exc"></span>
 </div>
