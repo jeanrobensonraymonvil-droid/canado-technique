@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Certification — CFPH Canado Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#040D1A;--blue:#1B3A8C;--green:#006B46;--red:#C0392B;--gold:#8B5E00;
+        --bdr:#E3E8F2;--g700:#3A4A6B;--g400:#8794AD;--fD:'Syne',sans-serif;--fB:'DM Sans',sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--fB);background:#F4F6FB;color:#0B1525;line-height:1.55}
+  header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:1rem 1.3rem;
+         display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+  header h1{font-family:var(--fD);font-weight:800;font-size:1.05rem}
+  header .who{font-size:.82rem;opacity:.85;display:flex;align-items:center;gap:.7rem}
+  .wrap{max-width:1080px;margin:0 auto;padding:1.4rem 1.2rem 3rem}
+  .card{background:#fff;border:1px solid var(--bdr);border-radius:14px;padding:1.3rem;margin-bottom:1.1rem}
+  h2{font-family:var(--fD);font-size:1rem;margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+  label{display:block;font-size:.74rem;font-weight:700;color:var(--g700);text-transform:uppercase;
+        letter-spacing:.05em;margin-bottom:.3rem}
+  input,select,textarea{width:100%;padding:.65rem .8rem;border:1px solid var(--bdr);border-radius:9px;
+        font-family:var(--fB);font-size:.9rem;background:#fff}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,58,140,.1)}
+  .row{display:grid;gap:.9rem;margin-bottom:.9rem}
+  .r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:700px){.r2,.r3{grid-template-columns:1fr}}
+  button{padding:.7rem 1.3rem;border:none;border-radius:9px;cursor:pointer;font-weight:700;
+         font-family:var(--fB);font-size:.88rem;background:linear-gradient(135deg,var(--blue),#2B56C0);color:#fff}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  button.ghost{background:#fff;color:var(--g700);border:1px solid var(--bdr)}
+  button.green{background:linear-gradient(135deg,var(--green),#00A066)}
+  button.red{background:linear-gradient(135deg,#8E2A1F,var(--red))}
+  .hide{display:none}
+  .msg{padding:.8rem 1rem;border-radius:9px;font-size:.86rem;margin-bottom:1rem}
+  .msg.err{background:#FDECEA;border:1px solid #F0B4AC;color:#8E2A1F}
+  .msg.ok{background:#E6F5EF;border:1px solid #9BD8C0;color:#00543A}
+  .msg.warn{background:#FFF3DC;border:1px solid #F0D09B;color:#6B4500}
+
+  /* grille */
+  table{width:100%;border-collapse:collapse;font-size:.86rem}
+  th{text-align:left;padding:.5rem .6rem;background:#F1F4FA;color:var(--g700);font-size:.68rem;
+     text-transform:uppercase;letter-spacing:.05em}
+  td{padding:.55rem .6rem;border-bottom:1px solid var(--bdr);vertical-align:middle}
+  td.pts{width:120px;text-align:right;white-space:nowrap}
+  td.pts input{width:62px;text-align:center;display:inline-block;padding:.4rem}
+  .bar{position:sticky;bottom:0;background:#fff;border-top:2px solid var(--bdr);padding:.9rem 1.3rem;
+       display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+       box-shadow:0 -4px 18px rgba(27,58,140,.08);border-radius:0 0 14px 14px}
+  .tot{font-family:var(--fD);font-weight:800;font-size:1.5rem}
+  .tot small{font-size:.78rem;color:var(--g400);font-weight:400;font-family:var(--fB)}
+  .men{font-weight:800;font-size:.95rem;padding:.35rem .9rem;border-radius:99px}
+  .men.ok{background:#E6F5EF;color:var(--green)}
+  .men.ko{background:#FDECEA;color:var(--red)}
+  .verd{background:#FDECEA;border:1px solid #F0B4AC;border-radius:10px;padding:.8rem 1rem;margin:1rem 0}
+  .verd label{display:flex;align-items:flex-start;gap:.6rem;text-transform:none;font-size:.86rem;
+              letter-spacing:0;color:#8E2A1F;cursor:pointer;font-weight:600}
+  .verd input[type=checkbox]{width:auto;margin-top:.2rem;flex:none}
+  .chip{display:inline-block;font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:99px;
+        background:#E8EEFF;color:var(--blue)}
+  .chip.glob{background:#FFF3DC;color:var(--gold)}
+  .dossier td{font-size:.84rem}
+  .prog{height:8px;background:#E8EEFF;border-radius:99px;overflow:hidden;margin:.5rem 0}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#00A066)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎓 Certification — CFPH Canado Technique</h1>
+  <div class="who hide" id="who">
+    <span id="whoTxt"></span>
+    <button class="ghost" style="padding:.35rem .8rem;font-size:.78rem" onclick="deco()">Déconnexion</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="msg"></div>
+
+  <!-- ══ LOGIN ══ -->
+  <div class="card" id="login">
+    <h2>🔐 Connexion</h2>
+    <div class="row r2">
+      <div><label>Adresse courriel</label><input id="em" type="email" autocomplete="username"></div>
+      <div><label>Mot de passe</label><input id="mp" type="password" autocomplete="current-password"></div>
+    </div>
+    <button onclick="login()">Se connecter</button>
+  </div>
+
+  <!-- ══ ESPACE ══ -->
+  <div id="app" class="hide">
+
+    <!-- Choix étudiant + module -->
+    <div class="card">
+      <h2>📋 Nouvelle évaluation sommative</h2>
+      <div class="row r3">
+        <div><label>Filière</label>
+          <select id="fil" onchange="chargerEtudiants();chargerModules()">
+            <option value="ELM">ELM — Électromécanique</option>
+            <option value="TRI">TRI — Réseaux informatiques</option>
+            <option value="MEI">MEI — Mécanique d'entretien</option>
+            <option value="TEL">TEL — Télécommunications</option>
+          </select></div>
+        <div><label>Étudiant</label><select id="etu" onchange="chargerDossier()"></select></div>
+        <div><label>Module</label><select id="mod" onchange="chargerGrille()"></select></div>
+      </div>
+      <div class="row r2">
+        <div><label>Date de l'épreuve</label><input id="dt" type="date"></div>
+        <div style="display:flex;align-items:flex-end"><button class="ghost" onclick="chargerDossier()">↻ Rafraîchir le dossier</button></div>
+      </div>
+    </div>
+
+    <!-- Grille -->
+    <div class="card hide" id="grilleCard">
+      <h2><span id="gTitre"></span> <span id="gChip"></span></h2>
+      <div id="gInfo" style="font-size:.82rem;color:var(--g700);margin-bottom:.9rem"></div>
+      <div id="gBody"></div>
+
+      <div class="verd">
+        <label>
+          <input type="checkbox" id="verd" onchange="calc()">
+          <span><strong>⚠️ Manquement grave aux règles de santé et de sécurité (règle de vérdique).</strong><br>
+          Entraîne l'<strong>échec du module</strong>, quels que soient les points obtenus.</span>
+        </label>
+        <input id="verdMotif" class="hide" style="margin-top:.7rem" placeholder="Motif du manquement (obligatoire)">
+      </div>
+
+      <div class="row"><div><label>Observations (facultatif)</label>
+        <textarea id="obs" rows="2"></textarea></div></div>
+
+      <div class="bar">
+        <div>
+          <div class="tot"><span id="tot">0</span><small id="totMax"></small></div>
+          <div style="font-size:.74rem;color:var(--g400)">Seuil : <strong id="seuil">—</strong></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <span class="men ko" id="men">—</span>
+          <button class="green" id="btnSign" onclick="signer()">✍️ Signer et enregistrer</button>
+        </div>
+      </div>
+      <p style="font-size:.74rem;color:var(--g400);margin-top:.7rem">
+        🔒 Une évaluation signée est <strong>immuable</strong>. Une reprise créera une nouvelle tentative —
+        elle n'écrasera jamais celle-ci.
+      </p>
+    </div>
+
+    <!-- Dossier -->
+    <div class="card hide" id="dosCard">
+      <h2>📁 Dossier de l'étudiant</h2>
+      <div id="dosProg"></div>
+      <div style="overflow:auto"><table class="dossier">
+        <thead><tr><th>Code</th><th>Module</th><th style="text-align:right">Durée</th>
+          <th style="text-align:right">Résultat</th><th style="text-align:right">Tentative</th></tr></thead>
+        <tbody id="dosBody"></tbody>
+      </table></div>
+      <div id="dipl" style="margin-top:1.1rem"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API = 'https://canado-backend-production.up.railway.app/api/v1';
+const $ = s => document.querySelector(s);
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let TOKEN = sessionStorage.getItem('cert_token') || '';
+let USER  = JSON.parse(sessionStorage.getItem('cert_user') || 'null');
+let GRILLE = null;
+
+function msg(t, k='err'){ $('#msg').innerHTML = t ? `<div class="msg ${k}">${esc(t)}</div>` : ''; }
+
+async function api(path, opt={}){
+  const r = await fetch(API + path, {
+    ...opt,
+    headers:{ 'Content-Type':'application/json',
+              ...(TOKEN ? {Authorization:'Bearer ' + TOKEN} : {}), ...(opt.headers||{}) }
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || `Erreur ${r.status}`);
+  return d;
+}
+
+/* ── AUTH ── */
+async function login(){
+  msg('');
+  try{
+    const d = await api('/auth/login', { method:'POST',
+      body: JSON.stringify({ email:$('#em').value.trim(), mot_de_passe:$('#mp').value }) });
+    TOKEN = d.token; USER = d.user;
+    sessionStorage.setItem('cert_token', TOKEN);
+    sessionStorage.setItem('cert_user', JSON.stringify(USER));
+    demarrer();
+  }catch(e){ msg(e.message); }
+}
+function deco(){ sessionStorage.clear(); location.reload(); }
+
+function demarrer(){
+  $('#login').classList.add('hide');
+  $('#app').classList.remove('hide');
+  $('#who').classList.remove('hide');
+  $('#whoTxt').textContent = `${USER.prenom} ${USER.nom} · ${USER.role}`;
+  $('#dt').valueAsDate = new Date();
+  chargerEtudiants(); chargerModules();
+}
+
+/* ── DONNÉES ── */
+async function chargerEtudiants(){
+  try{
+    const l = await api('/etudiants?filiere=' + $('#fil').value);
+    $('#etu').innerHTML = l.length
+      ? l.map(e => `<option value="${e.id}">${esc(e.nom)} ${esc(e.prenom)} — ${esc(e.matricule)}</option>`).join('')
+      : '<option value="">— aucun étudiant —</option>';
+    chargerDossier();
+  }catch(e){ msg(e.message); }
+}
+
+async function chargerModules(){
+  try{
+    const l = await api('/modules?filiere=' + $('#fil').value);
+    $('#mod').innerHTML = l.map(m =>
+      `<option value="${m.code}">${esc(m.code)} — ${esc(m.titre)}${m.grille_officielle ? '' : '  (note globale)'}</option>`
+    ).join('');
+    chargerGrille();
+  }catch(e){ msg(e.message); }
+}
+
+/* ── GRILLE OFFICIELLE ── */
+async function chargerGrille(){
+  const code = $('#mod').value;
+  if (!code) return;
+  try{
+    const d = await api(`/modules/${code}/grille`);
+    GRILLE = d;
+    const m = d.module, cs = d.criteres;
+    const situ = m.type_objectif === 'situation';
+    const grilleOff = cs.length > 0;
+
+    $('#grilleCard').classList.remove('hide');
+    $('#gTitre').textContent = `${m.code} — ${m.titre}`;
+    $('#gChip').innerHTML = grilleOff
+      ? '<span class="chip">Grille officielle</span>'
+      : '<span class="chip glob">Note globale /100</span>';
+    $('#gInfo').innerHTML = `${m.heures} h · objectif de <strong>${esc(m.type_objectif)}</strong>` +
+      (m.duree_epreuve ? ` · épreuve : ${esc(m.duree_epreuve)}` : '') +
+      (grilleOff ? ` · ${cs.length} critères` : '');
+
+    $('#seuil').textContent = situ
+      ? `${m.seuil_criteres}/${m.total_criteres} critères`
+      : `${m.seuil_points} / 100`;
+
+    if (!grilleOff){
+      $('#gBody').innerHTML = `
+        <div class="msg warn">⚠️ Le Guide d'évaluation de ce module n'a pas encore été dépouillé :
+          saisis la <strong>note globale sur 100</strong> issue de la grille papier officielle.</div>
+        <div class="row" style="max-width:220px"><div><label>Note globale /100</label>
+          <input id="note" type="number" min="0" max="100" step="1" value="0" oninput="calc()"></div></div>`;
+      $('#totMax').textContent = ' / 100';
+    } else if (situ){
+      $('#gBody').innerHTML = `<div style="overflow:auto"><table>
+        <thead><tr><th style="width:44px">Nº</th><th>Critère de participation</th>
+          <th style="width:110px;text-align:right">Satisfait</th></tr></thead>
+        <tbody>${cs.map(c => `<tr>
+          <td><strong>${c.ordre}</strong></td>
+          <td>${esc(c.libelle)}${c.obligatoire ? ' <span class="chip">obligatoire</span>' : ''}</td>
+          <td style="text-align:right"><input type="checkbox" class="cr" data-o="${c.ordre}"
+              style="width:auto" onchange="calc()"></td></tr>`).join('')}</tbody></table></div>`;
+      $('#totMax').textContent = ` / ${m.total_criteres} critères`;
+    } else {
+      $('#gBody').innerHTML = `<div style="overflow:auto"><table>
+        <thead><tr><th style="width:44px">Nº</th><th>Critère d'évaluation</th>
+          <th class="pts" style="text-align:right">Points</th></tr></thead>
+        <tbody>${cs.map(c => `<tr>
+          <td><strong>${c.ordre}</strong></td>
+          <td>${esc(c.libelle)}</td>
+          <td class="pts"><input type="number" class="cr" data-o="${c.ordre}" data-max="${c.points}"
+              min="0" max="${c.points}" step="1" value="0" oninput="calc()">
+            <span style="color:var(--g400);font-size:.8rem"> / ${c.points}</span></td>
+        </tr>`).join('')}</tbody></table></div>`;
+      $('#totMax').textContent = ' / 100';
+    }
+    calc();
+  }catch(e){ msg(e.message); }
+}
+
+/* ── CALCUL (miroir du serveur — le serveur reste seul juge) ── */
+function calc(){
+  if (!GRILLE) return;
+  const m = GRILLE.module, cs = GRILLE.criteres;
+  const situ = m.type_objectif === 'situation';
+  const verd = $('#verd').checked;
+  $('#verdMotif').classList.toggle('hide', !verd);
+
+  let val = 0, ok;
+  if (!cs.length){
+    val = Math.max(0, Math.min(100, +($('#note')?.value || 0)));
+    ok = !verd && val >= m.seuil_points;
+  } else if (situ){
+    const coches = [...document.querySelectorAll('.cr:checked')].map(i => +i.dataset.o);
+    val = coches.length;
+    const oblig = cs.filter(c => c.obligatoire).every(c => coches.includes(c.ordre));
+    ok = !verd && val >= m.seuil_criteres && oblig;
+  } else {
+    document.querySelectorAll('.cr').forEach(i => {
+      const max = +i.dataset.max;
+      if (+i.value > max) i.value = max;
+      if (+i.value < 0) i.value = 0;
+      val += +i.value;
+    });
+    ok = !verd && val >= m.seuil_points;
+  }
+  $('#tot').textContent = val;
+  const men = $('#men');
+  men.textContent = verd ? 'ÉCHEC (vérdique)' : (ok ? 'RÉUSSITE' : 'ÉCHEC');
+  men.className = 'men ' + (ok ? 'ok' : 'ko');
+}
+
+/* ── SIGNATURE ── */
+async function signer(){
+  msg('');
+  const m = GRILLE.module, cs = GRILLE.criteres;
+  const verd = $('#verd').checked;
+  if (verd && !$('#verdMotif').value.trim()) return msg('Un manquement grave doit être motivé.');
+  if (!$('#etu').value) return msg('Sélectionne un étudiant.');
+
+  const body = { etudiant_id:$('#etu').value, module_code:m.code, date_epreuve:$('#dt').value,
+                 verdique:verd, motif_verdique:$('#verdMotif').value.trim() || null,
+                 observations:$('#obs').value.trim() || null };
+
+  if (!cs.length) body.note_globale = +($('#note')?.value || 0);
+  else {
+    const d = {};
+    document.querySelectorAll('.cr').forEach(i => {
+      d[i.dataset.o] = (i.type === 'checkbox') ? (i.checked ? 1 : 0) : +i.value;
+    });
+    body.detail = d;
+  }
+
+  if (!confirm('Signer cette évaluation ?\n\nElle deviendra IMMUABLE. Une correction ne sera possible que par une nouvelle tentative.'))
+    return;
+
+  $('#btnSign').disabled = true;
+  try{
+    const r = await api('/evaluations', { method:'POST', body: JSON.stringify(body) });
+    msg(`Évaluation enregistrée — ${m.code} · tentative ${r.tentative} · ${r.mention}`, 'ok');
+    $('#obs').value = ''; $('#verd').checked = false; $('#verdMotif').value = '';
+    chargerGrille(); chargerDossier();
+  }catch(e){ msg(e.message); }
+  finally{ $('#btnSign').disabled = false; }
+}
+
+/* ── DOSSIER + DIPLÔME ── */
+async function chargerDossier(){
+  const id = $('#etu').value;
+  if (!id) { $('#dosCard').classList.add('hide'); return; }
+  try{
+    const d = await api(`/etudiants/${id}/dossier`);
+    $('#dosCard').classList.remove('hide');
+    const el = d.eligibilite || {};
+    const pct = el.modules_requis ? Math.round(el.modules_reussis / el.modules_requis * 100) : 0;
+
+    $('#dosProg').innerHTML =
+      `<div style="display:flex;justify-content:space-between;font-size:.84rem">
+         <span><strong>${el.modules_reussis || 0}</strong> / ${el.modules_requis || 0} modules validés</span>
+         <span style="color:var(--g700)">${d.heures_acquises || 0} h acquises</span></div>
+       <div class="prog"><i style="width:${pct}%"></i></div>`;
+
+    $('#dosBody').innerHTML = d.modules.map(m => `<tr>
+      <td><code style="color:var(--blue);font-weight:700">${esc(m.code)}</code></td>
+      <td>${esc(m.titre)}</td>
+      <td style="text-align:right">${m.heures} h</td>
+      <td style="text-align:right">${
+        m.mention === 'REUSSITE'
+          ? `<span style="color:var(--green);font-weight:800">✓ ${m.points_obtenus ?? m.criteres_valides ?? ''}</span>`
+          : m.mention === 'ECHEC'
+            ? `<span style="color:var(--red);font-weight:800">✗ ${m.points_obtenus ?? m.criteres_valides ?? ''}${m.verdique ? ' (vérdique)' : ''}</span>`
+            : '<span style="color:var(--g400)">—</span>'}</td>
+      <td style="text-align:right;color:var(--g400)">${m.tentative || ''}</td>
+    </tr>`).join('');
+
+    $('#dipl').innerHTML = el.eligible
+      ? `<div class="msg ok">🎓 <strong>Tous les modules sont validés.</strong> L'étudiant est éligible au diplôme.</div>
+         ${USER.role === 'direction' || USER.role === 'admin'
+            ? `<button class="green" onclick="delivrer()">🎓 Délivrer le diplôme</button>`
+            : `<p style="font-size:.82rem;color:var(--g700)">Seule la direction peut délivrer le diplôme.</p>`}`
+      : `<p style="font-size:.82rem;color:var(--g400)">Diplôme délivrable lorsque les ${el.modules_requis || 0} modules seront validés.</p>`;
+  }catch(e){ msg(e.message); }
+}
+
+async function delivrer(){
+  if (!confirm('Délivrer le diplôme ?\n\nCette action est définitive et sera consignée au registre.')) return;
+  try{
+    const c = await api('/certificats', { method:'POST',
+      body: JSON.stringify({ etudiant_id: $('#etu').value }) });
+    const url = location.origin + location.pathname.replace(/[^/]*$/, 'verifier.html') + '?n=' + c.numero;
+    $('#dipl').innerHTML = `<div class="msg ok">
+      🎓 <strong>Diplôme délivré</strong> — n° <code>${esc(c.numero)}</code> · ${c.total_heures} heures<br>
+      Page de vérification publique : <a href="${esc(url)}" target="_blank">${esc(url)}</a><br>
+      <span style="font-size:.78rem">Imprime ce lien en QR code sur le diplôme.</span></div>`;
+  }catch(e){ msg(e.message); }
+}
+
+if (TOKEN && USER) demarrer();
+</script>
+</body>
+</html>

@@ -2137,6 +2137,16 @@ td{color:var(--text)!important}
           <button class="btn btn-sm exam-filter-btn" data-prog="ELM" onclick="filterExamModules('ELM',this)" style="background:linear-gradient(135deg,#004D30,#00A066);color:#fff;border:none;box-shadow:0 2px 8px rgba(0,107,70,.3)">⚡ ELM</button>
           <button class="btn btn-sm exam-filter-btn" data-prog="TEL" onclick="filterExamModules('TEL',this)" style="background:linear-gradient(135deg,#3D1A6E,#8A50CC);color:#fff;border:none;box-shadow:0 2px 8px rgba(91,45,142,.3)">📡 TEL</button>
         </div>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.1rem">
+          <a href="certification.html" target="_blank" style="flex:1;min-width:230px;text-decoration:none;background:linear-gradient(135deg,#004D30,#00A066);color:#fff;border-radius:12px;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.8rem">
+            <span style="font-size:1.5rem">🎓</span>
+            <span><strong style="display:block;font-size:.92rem">Espace certification</strong><span style="font-size:.76rem;opacity:.85">Saisir une évaluation sommative · délivrer un diplôme</span></span>
+          </a>
+          <a href="verifier.html" target="_blank" style="flex:1;min-width:230px;text-decoration:none;background:linear-gradient(135deg,#1B3A8C,#2B56C0);color:#fff;border-radius:12px;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.8rem">
+            <span style="font-size:1.5rem">🔍</span>
+            <span><strong style="display:block;font-size:.92rem">Vérifier un diplôme</strong><span style="font-size:.76rem;opacity:.85">Page publique · numéro ou QR code</span></span>
+          </a>
+        </div>
         <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap"><input id="exam-mod-search" type="search" placeholder="🔍 Rechercher un module (code ou intitulé)…" oninput="renderExamModules(_currentExamProg)" style="flex:1;min-width:220px;padding:.6rem .9rem;border:1px solid var(--bdr);border-radius:10px;font-size:.85rem;font-family:var(--fB)"></div>
         <div id="exam-mod-recap"></div>
         <div id="exam-modules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem"></div>

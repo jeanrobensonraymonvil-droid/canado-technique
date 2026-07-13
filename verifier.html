@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vérification d'un diplôme — CFPH Canado Technique</title>
+<meta name="description" content="Vérifiez l'authenticité d'un diplôme délivré par le Centre de Formation Professionnelle d'Haïti — Canado Technique.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#040D1A; --blue:#1B3A8C; --green:#006B46; --red:#C0392B;
+    --bdr:#E3E8F2; --g700:#3A4A6B; --g400:#8794AD;
+    --fD:'Syne',sans-serif; --fB:'DM Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--fB);background:#F4F6FB;color:#0B1525;line-height:1.6;
+       min-height:100vh;display:flex;flex-direction:column}
+
+  header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:1.6rem 1.2rem}
+  .wrap{max-width:760px;margin:0 auto;width:100%}
+  header h1{font-family:var(--fD);font-weight:800;font-size:1.25rem;display:flex;align-items:center;gap:.6rem}
+  header p{opacity:.82;font-size:.86rem;margin-top:.2rem}
+
+  main{flex:1;padding:1.8rem 1.2rem 3rem}
+
+  .card{background:#fff;border:1px solid var(--bdr);border-radius:16px;padding:1.5rem;
+        box-shadow:0 2px 14px rgba(27,58,140,.06)}
+
+  .search{display:flex;gap:.6rem;flex-wrap:wrap}
+  .search input{flex:1;min-width:230px;padding:.85rem 1rem;border:1px solid var(--bdr);
+      border-radius:10px;font-size:.95rem;font-family:var(--fB);letter-spacing:.03em}
+  .search input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,58,140,.12)}
+  .search button{padding:.85rem 1.5rem;border:none;border-radius:10px;cursor:pointer;
+      background:linear-gradient(135deg,var(--blue),#2B56C0);color:#fff;font-weight:700;
+      font-family:var(--fB);font-size:.92rem}
+  .search button:disabled{opacity:.55;cursor:wait}
+  .hint{font-size:.78rem;color:var(--g400);margin-top:.7rem}
+
+  .state{margin-top:1.4rem}
+  .banner{display:flex;align-items:center;gap:.9rem;padding:1.1rem 1.2rem;border-radius:12px;margin-bottom:1.2rem}
+  .ok{background:#E6F5EF;border:1px solid #9BD8C0}
+  .ko{background:#FDECEA;border:1px solid #F0B4AC}
+  .banner .ic{font-size:1.7rem;line-height:1}
+  .banner b{font-family:var(--fD);font-size:1.05rem;display:block}
+  .banner span{font-size:.84rem;color:var(--g700)}
+
+  .id{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.9rem;margin-bottom:1.3rem}
+  .id div{background:#F7F9FD;border:1px solid var(--bdr);border-radius:10px;padding:.7rem .9rem}
+  .id .k{font-size:.68rem;color:var(--g400);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .id .v{font-weight:700;font-size:.95rem;margin-top:.15rem;word-break:break-word}
+
+  h2{font-family:var(--fD);font-size:1rem;margin:1.3rem 0 .6rem;display:flex;align-items:center;gap:.5rem}
+  table{width:100%;border-collapse:collapse;font-size:.84rem}
+  th{text-align:left;padding:.5rem .6rem;background:#F1F4FA;color:var(--g700);
+     font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
+  td{padding:.5rem .6rem;border-bottom:1px solid var(--bdr)}
+  td code{font-family:monospace;font-weight:700;color:var(--blue);font-size:.78rem}
+  .m-ok{color:var(--green);font-weight:800;font-size:.78rem}
+
+  .seal{margin-top:1.4rem;padding:.9rem 1rem;background:#F7F9FD;border:1px dashed var(--bdr);
+        border-radius:10px;font-size:.78rem;color:var(--g700)}
+
+  footer{background:var(--navy);color:#B9C6DE;padding:1.2rem;font-size:.78rem;text-align:center}
+  .sk{height:14px;background:linear-gradient(90deg,#EEF1F7,#F8FAFD,#EEF1F7);border-radius:6px;
+      animation:sh 1.1s infinite}
+  @keyframes sh{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
+  @media print{header,footer,.search,.hint{display:none}.card{border:none;box-shadow:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>🎓 Vérification d'un diplôme</h1>
+    <p>CFPH — Canado Technique · Programme homologué MENFP</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="card">
+      <div class="search">
+        <input id="num" type="text" placeholder="Numéro du certificat — ex. CFPH-ELM-2026-0001"
+               autocomplete="off" spellcheck="false">
+        <button id="go">Vérifier</button>
+      </div>
+      <p class="hint">
+        Le numéro figure sur le diplôme, sous le QR code. La vérification est publique et gratuite —
+        aucune donnée personnelle sensible n'est affichée.
+      </p>
+    </div>
+
+    <div id="state" class="state"></div>
+  </div>
+</main>
+
+<footer>
+  CFPH — Canado Technique · 157 Avenue Martin Luther King, Port-au-Prince, Haïti<br>
+  Un doute&nbsp;? Écrivez à <strong>info@canadotechnique.tech</strong>
+</footer>
+
+<script>
+const API = 'https://canado-backend-production.up.railway.app/api/v1';
+const $   = (s) => document.querySelector(s);
+const esc = (t) => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const NOMS = { TRI:'Techniques de réseaux informatiques', MEI:"Mécanique d'entretien industrielle",
+               ELM:'Électromécanique', TEL:'Télécommunications' };
+
+function chargement(){
+  $('#state').innerHTML =
+    `<div class="card"><div class="sk" style="width:60%"></div>
+     <div class="sk" style="width:85%;margin-top:.7rem"></div>
+     <div class="sk" style="width:40%;margin-top:.7rem"></div></div>`;
+}
+
+function echec(msg){
+  $('#state').innerHTML = `<div class="card">
+    <div class="banner ko">
+      <span class="ic">⚠️</span>
+      <div><b>Diplôme non vérifié</b><span>${esc(msg)}</span></div>
+    </div>
+    <p style="font-size:.85rem;color:var(--g700)">
+      Vérifiez le numéro saisi. S'il figure bien sur un document présenté comme un diplôme de
+      Canado Technique et qu'il reste introuvable, <strong>signalez-le-nous</strong> :
+      il peut s'agir d'un faux.
+    </p></div>`;
+}
+
+function succes(d){
+  const dt = new Date(d.delivre_le).toLocaleDateString('fr-FR',
+              { day:'2-digit', month:'long', year:'numeric' });
+  const mods = (d.modules || []).map(m => `<tr>
+      <td><code>${esc(m.code)}</code></td>
+      <td>${esc(m.titre)}</td>
+      <td style="text-align:right;white-space:nowrap">${m.heures} h</td>
+      <td style="text-align:right"><span class="m-ok">✓ Réussite</span></td>
+    </tr>`).join('');
+
+  $('#state').innerHTML = `<div class="card">
+    <div class="banner ok">
+      <span class="ic">✅</span>
+      <div><b>Diplôme authentique</b>
+        <span>Certificat délivré par le CFPH — Canado Technique et vérifié dans le registre officiel.</span>
+      </div>
+    </div>
+
+    <div class="id">
+      <div><div class="k">Titulaire</div><div class="v">${esc(d.titulaire)}</div></div>
+      <div><div class="k">Matricule</div><div class="v">${esc(d.matricule)}</div></div>
+      <div><div class="k">Filière</div><div class="v">${esc(NOMS[d.filiere] || d.filiere)}</div></div>
+      <div><div class="k">Délivré le</div><div class="v">${esc(dt)}</div></div>
+      <div><div class="k">Volume horaire</div><div class="v">${d.total_heures} heures</div></div>
+      <div><div class="k">N° de certificat</div><div class="v" style="font-family:monospace;font-size:.82rem">${esc(d.numero)}</div></div>
+    </div>
+
+    <h2>📘 Modules validés <span style="font-weight:400;color:var(--g400);font-size:.82rem">(${(d.modules||[]).length})</span></h2>
+    <table>
+      <thead><tr><th>Code</th><th>Module</th><th style="text-align:right">Durée</th><th style="text-align:right">Mention</th></tr></thead>
+      <tbody>${mods}</tbody>
+    </table>
+
+    <div class="seal">
+      🔒 <strong>Registre officiel.</strong> Ce certificat est scellé cryptographiquement et
+      enregistré au nom de ${esc(d.emetteur || 'CFPH — Canado Technique')}. Toute modification du
+      document papier serait détectable par comparaison avec cette page.
+    </div>
+  </div>`;
+}
+
+async function verifier(num){
+  num = (num || '').trim().toUpperCase();
+  if (!num) return;
+  history.replaceState(null, '', '?n=' + encodeURIComponent(num));
+  $('#go').disabled = true;
+  chargement();
+  try {
+    const r = await fetch(`${API}/verifier/${encodeURIComponent(num)}`);
+    const d = await r.json();
+    if (!r.ok || !d.valide) echec(d.message || 'Ce numéro ne correspond à aucun certificat délivré.');
+    else succes(d);
+  } catch (e) {
+    echec('Service de vérification momentanément injoignable. Réessayez dans un instant.');
+  } finally {
+    $('#go').disabled = false;
+  }
+}
+
+$('#go').addEventListener('click', () => verifier($('#num').value));
+$('#num').addEventListener('keydown', e => { if (e.key === 'Enter') verifier($('#num').value); });
+
+// Ouverture directe par QR code : verifier.html?n=CFPH-ELM-2026-0001
+const n = new URLSearchParams(location.search).get('n');
+if (n) { $('#num').value = n; verifier(n); }
+</script>
+</body>
+</html>
