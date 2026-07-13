@@ -11,7 +11,7 @@
     "is_inscription_visible": true,
     "text_inscription": "📋 Les inscriptions pour la session <strong>Septembre 2026</strong> sont ouvertes — Places limitées.",
     "stats": {
-      "etudiants": "1 642",
+      "etudiants": "72 000+",
       "modules": "108",
       "annees_experience": "50+"
     },
@@ -686,7 +686,7 @@
               "code": "ELM-01",
               "titre": "Métier et formation",
               "heures": 30,
-              "seuil": 80,
+              "seuil": "7/10 critères",
               "fichier": "cours/elm/elm-1/elm-01-metier-formation.html"
             },
             {
@@ -712,7 +712,7 @@
             },
             {
               "code": "ELM-05",
-              "titre": "Plan et devis",
+              "titre": "Plans et devis",
               "heures": 45,
               "seuil": 80,
               "fichier": "cours/elm/elm-1/elm-05-plan-devis.html"
@@ -747,7 +747,7 @@
             },
             {
               "code": "ELM-10",
-              "titre": "Raccordement et entretien des moteurs et circuits de commandes",
+              "titre": "Raccordement et entretien des moteurs et des circuits de commande",
               "heures": 90,
               "seuil": 85,
               "fichier": "cours/elm/elm-1/elm-10-moteurs-circuits-commandes.html"
@@ -777,11 +777,11 @@
         },
         {
           "annee": 2,
-          "heures": 1035,
+          "heures": 975,
           "modules": [
             {
               "code": "ELM-12",
-              "titre": "Installation de groupes électrogènes, onduleurs et panneaux solaires",
+              "titre": "Installation de groupes électrogènes, d'onduleurs et de panneaux solaires",
               "heures": 90,
               "seuil": 85,
               "fichier": "cours/elm/elm-2/elm-12-groupes-onduleurs-solaires.html"
@@ -797,27 +797,27 @@
               "code": "ELM-16",
               "titre": "Fonctionnement des moteurs à essence et diesel",
               "heures": 90,
-              "seuil": 85,
+              "seuil": 75,
               "fichier": "cours/elm/elm-2/elm-16-moteurs-essence-diesel.html"
             },
             {
               "code": "ELM-17",
-              "titre": "Réparation et entretien de groupes électrogènes",
-              "heures": 90,
+              "titre": "Réparation et entretien de groupes électrogènes, d'onduleurs et d'accumulateurs",
+              "heures": 120,
               "seuil": 85,
               "fichier": "cours/elm/elm-2/elm-17-groupes-electrogenes.html"
             },
             {
               "code": "ELM-18",
               "titre": "Circuits pneumatiques et électropneumatiques",
-              "heures": 90,
+              "heures": 60,
               "seuil": 85,
               "fichier": "cours/elm/elm-2/elm-18-circuits-pneumatiques-electropneumatiques.html"
             },
             {
               "code": "ELM-19",
               "titre": "Circuits hydrauliques et électrohydrauliques",
-              "heures": 90,
+              "heures": 60,
               "seuil": 85,
               "fichier": "cours/elm/elm-2/elm-19-circuits-hydrauliques-electrohydrauliques.html"
             },
@@ -845,14 +845,14 @@
             {
               "code": "ELM-23",
               "titre": "Dépannage d'un système automatisé",
-              "heures": 90,
+              "heures": 105,
               "seuil": 85,
               "fichier": "cours/elm/elm-2/elm-23-depannage-systeme-automatise.html"
             },
             {
               "code": "ELM-24",
               "titre": "Maintenance planifiée",
-              "heures": 75,
+              "heures": 45,
               "seuil": 80,
               "fichier": "cours/elm/elm-2/elm-24-maintenance-planifiee.html"
             },
@@ -860,13 +860,13 @@
               "code": "ELM-25",
               "titre": "Entrepreneuriat",
               "heures": 30,
-              "seuil": 75,
+              "seuil": "6/8 critères",
               "fichier": "cours/elm/elm-2/elm-25-entrepreneuriat.html"
             },
             {
               "code": "ELM-26",
               "titre": "Préparation au marché du travail",
-              "heures": 45,
+              "heures": 30,
               "seuil": 70,
               "fichier": "cours/elm/elm-2/elm-26-marche-travail.html"
             }

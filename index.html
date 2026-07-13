@@ -1573,7 +1573,7 @@ td{color:var(--text)!important}
             <div class="hfeat"><span style="color:var(--greenL)">✓</span> Certifications Cisco & Microsoft</div>
           </div>
           <div class="hstats" style="animation:fadeUp .4s .6s both">
-            <div class="hstat"><div class="hstat-n" id="stat-etudiants">1 200+</div><div class="hstat-l">Étudiants</div></div>
+            <div class="hstat"><div class="hstat-n" id="stat-etudiants">72 000+</div><div class="hstat-l">Étudiants formés</div></div>
             <div class="hstat"><div class="hstat-n" id="stat-modules">108</div><div class="hstat-l">Modules</div></div>
             <div class="hstat"><div class="hstat-n" id="stat-ans">50+</div><div class="hstat-l">Ans d'expérience</div></div>
           </div>
@@ -2137,6 +2137,8 @@ td{color:var(--text)!important}
           <button class="btn btn-sm exam-filter-btn" data-prog="ELM" onclick="filterExamModules('ELM',this)" style="background:linear-gradient(135deg,#004D30,#00A066);color:#fff;border:none;box-shadow:0 2px 8px rgba(0,107,70,.3)">⚡ ELM</button>
           <button class="btn btn-sm exam-filter-btn" data-prog="TEL" onclick="filterExamModules('TEL',this)" style="background:linear-gradient(135deg,#3D1A6E,#8A50CC);color:#fff;border:none;box-shadow:0 2px 8px rgba(91,45,142,.3)">📡 TEL</button>
         </div>
+        <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap"><input id="exam-mod-search" type="search" placeholder="🔍 Rechercher un module (code ou intitulé)…" oninput="renderExamModules(_currentExamProg)" style="flex:1;min-width:220px;padding:.6rem .9rem;border:1px solid var(--bdr);border-radius:10px;font-size:.85rem;font-family:var(--fB)"></div>
+        <div id="exam-mod-recap"></div>
         <div id="exam-modules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem"></div>
       </div>
 
@@ -2712,22 +2714,34 @@ function fetchDataJson() {
 (async function syncDataJson() {
   try {
     DATA_JSON = await fetchDataJson();
-    // Enrichir MODULES[] avec les chemins fichier de data.json
+    // ── SOURCE UNIQUE DE VÉRITÉ ──
+    // data.json reconstruit intégralement MODULES (1re année) et MODULES_2 (2e année).
+    // Les tableaux codés en dur ne servent plus que de secours si data.json est injoignable.
     if (DATA_JSON && DATA_JSON.filieres) {
-      DATA_JSON.filieres.forEach(filiere => {
-        const prog = filiere.code;
-        filiere.annees.forEach(annee => {
-          annee.modules.forEach(djMod => {
-            if (!djMod.fichier) return;
-            const arr = annee.annee === 1 ? MODULES[prog] : MODULES_2[prog];
-            if (!arr) return;
-            const mod = arr.find(m => m.code === djMod.code);
-            if (mod && !mod.fichier) mod.fichier = djMod.fichier;
+      DATA_JSON.filieres.forEach(function(filiere){
+        var prog = filiere.code;
+        var a1 = [], a2 = [];
+        (filiere.annees || []).forEach(function(annee){
+          (annee.modules || []).forEach(function(dm){
+            var mod = {
+              code:    dm.code,
+              title:   dm.titre,
+              dur:     dm.heures,
+              seuil:   dm.seuil,
+              fichier: dm.fichier || '',
+              annee:   annee.annee
+            };
+            (annee.annee === 1 ? a1 : a2).push(mod);
           });
         });
+        if (a1.length) MODULES[prog]   = a1;
+        if (a2.length) MODULES_2[prog] = a2;
       });
+      if (typeof renderExamModules === 'function' && document.getElementById('exam-modules-grid')) {
+        renderExamModules(typeof _currentExamProg !== 'undefined' ? _currentExamProg : 'ALL');
+      }
     }
-  } catch(e) { /* data.json optionnel */ }
+  } catch(e) { /* data.json injoignable : on garde les tableaux de secours */ }
 })();
 
 /* ══════════════════════════════════════
@@ -3310,49 +3324,111 @@ function filterExamModules(prog, btn) {
 function renderExamModules(progFilter) {
   const grid = document.getElementById('exam-modules-grid');
   if(!grid) return;
-  const colors = {TRI:{bg:'linear-gradient(135deg,#1B3A8C,#2B56C0)',icon:'🌐',chip:'cb'},
-    MEI:{bg:'linear-gradient(135deg,#6B4500,#C98A00)',icon:'🔧',chip:'cgd'},
-    ELM:{bg:'linear-gradient(135deg,#004D30,#00A066)',icon:'⚡',chip:'cg'},
-    TEL:{bg:'linear-gradient(135deg,#3D1A6E,#8A50CC)',icon:'📡',chip:'cgy'}};
+  const colors = {TRI:{bg:'linear-gradient(135deg,#1B3A8C,#2B56C0)',ac:'#1B3A8C',icon:'🌐'},
+    MEI:{bg:'linear-gradient(135deg,#6B4500,#C98A00)',ac:'#8B5E00',icon:'🔧'},
+    ELM:{bg:'linear-gradient(135deg,#004D30,#00A066)',ac:'#006B46',icon:'⚡'},
+    TEL:{bg:'linear-gradient(135deg,#3D1A6E,#8A50CC)',ac:'#5B2D8E',icon:'📡'}};
+  const NOMS = {TRI:'Réseaux informatiques',MEI:'Mécanique industrielle',ELM:'Électromécanique',TEL:'Télécommunications'};
   const examStatuses = {
     'TRI-05':'Disponible','TRI-13':'Disponible','TRI-08':'Disponible','TRI-03':'Disponible',
     'MEI-07':'Disponible','MEI-03':'Disponible','MEI-05':'En attente',
     'ELM-03':'Disponible','ELM-09':'Disponible','ELM-08':'En attente',
     'TEL-02':'Disponible','TEL-05':'Disponible','TEL-07':'Fermé',
   };
+  const q = (document.getElementById('exam-mod-search')?.value || '').trim().toLowerCase();
+
+  // ── 1re ET 2e année réunies (le catalogue n'en montrait qu'une) ──
   let allMods = [];
-  Object.entries(MODULES).forEach(([prog,mods])=>{
-    if(progFilter==='ALL'||progFilter===prog) {
-      mods.forEach(m=>allMods.push({...m,prog}));
-    }
+  ['TRI','MEI','ELM','TEL'].forEach(prog=>{
+    if(progFilter!=='ALL' && progFilter!==prog) return;
+    [[MODULES[prog]||[],1],[MODULES_2[prog]||[],2]].forEach(([arr,an])=>{
+      arr.forEach(m=>allMods.push({...m, prog, annee:(m.annee||an)}));
+    });
   });
-  grid.innerHTML = allMods.map(m=>{
-    const c = colors[m.prog];
-    const st = examStatuses[m.code]||'—';
-    const stClass = st==='Disponible'?'cg':st==='En attente'?'cgd':st==='Fermé'?'cgy':'';
-    const canStart = st==='Disponible';
-    return `<div style="background:#fff;border:1px solid var(--bdr);border-radius:var(--rL);overflow:hidden;transition:all .22s;cursor:pointer"
-      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(27,58,140,.13)'"
-      onmouseout="this.style.transform='';this.style.boxShadow=''">
-      <div style="background:${c.bg};padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:.6rem">
-          <span style="font-size:1rem">${c.icon}</span>
-          <code style="font-size:.72rem;color:#fff;font-family:monospace;letter-spacing:.06em;font-weight:800">${m.code}</code>
-        </div>
-        ${st!=='—'?`<span class="chip ${stClass}" style="font-size:.62rem">${st}</span>`:''}
-      </div>
-      <div style="padding:.9rem 1rem;background:#fff">
-        <div style="font-weight:700;font-size:.82rem;color:#0B1525;line-height:1.4;margin-bottom:.5rem;min-height:2.2em">${m.title}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
-          <div style="display:flex;gap:.4rem;flex-wrap:wrap">
-            <span style="font-size:.68rem;color:#3A4A6B;background:#E8EEFF;padding:2px 7px;border-radius:5px">⏱ ${m.dur} h</span>
-            <span style="font-size:.68rem;color:#3A4A6B;background:#E8EEFF;padding:2px 7px;border-radius:5px">✓ ${m.seuil}%</span>
-          </div>
-          ${canStart?`<button class="btn btn-blue btn-sm" style="font-size:.7rem;padding:.25rem .7rem" onclick="event.stopPropagation();showLogin()">Passer →</button>`:
-            `<button class="btn btn-ghost btn-sm" style="font-size:.7rem;padding:.25rem .7rem;opacity:.5;color:#3A4A6B;border-color:#ccc" disabled>Indisponible</button>`}
-        </div>
-      </div>
-    </div>`;
+  if(q) allMods = allMods.filter(m =>
+    (m.code||'').toLowerCase().includes(q) || (m.title||'').toLowerCase().includes(q));
+
+  if(!allMods.length){
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2.5rem 1rem;color:#3A4A6B">'+
+      '<div style="font-size:2rem;margin-bottom:.4rem">🔍</div>'+
+      '<div style="font-weight:700">Aucun module ne correspond</div>'+
+      '<div style="font-size:.82rem;margin-top:.2rem">Essaie un autre terme ou change de filière.</div></div>';
+    const rc = document.getElementById('exam-mod-recap'); if(rc) rc.innerHTML='';
+    return;
+  }
+
+  // ── Bandeau récapitulatif ──
+  const rc = document.getElementById('exam-mod-recap');
+  if(rc){
+    const totH = allMods.reduce((a,m)=>a+(+m.dur||0),0);
+    const dispo = allMods.filter(m=>examStatuses[m.code]==='Disponible').length;
+    const nbFil = new Set(allMods.map(m=>m.prog)).size;
+    const pct = Math.round(dispo/allMods.length*100);
+    const pill = (v,l,c)=>'<div style="flex:1;min-width:96px;background:#fff;border:1px solid var(--bdr);border-radius:12px;padding:.6rem .8rem">'+
+      '<div style="font-family:var(--fD);font-weight:800;font-size:1.25rem;color:'+c+';line-height:1">'+v+'</div>'+
+      '<div style="font-size:.68rem;color:#3A4A6B;margin-top:.15rem">'+l+'</div></div>';
+    rc.innerHTML = '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem">'+
+      pill(allMods.length,'Modules','#1B3A8C')+
+      pill(totH.toLocaleString('fr-FR')+' h','Volume total','#006B46')+
+      pill(nbFil,nbFil>1?'Filières':'Filière','#8B5E00')+
+      pill(dispo,'Examens ouverts','#5B2D8E')+
+      '</div>'+
+      '<div style="height:6px;background:#E8EEFF;border-radius:99px;overflow:hidden;margin-bottom:1.1rem">'+
+      '<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#1B3A8C,#00A066);border-radius:99px;transition:width .5s"></div></div>';
+  }
+
+  // ── Regroupement : filière → année ──
+  const groupes = {};
+  allMods.forEach(m=>{
+    const k = m.prog+'|'+m.annee;
+    (groupes[k] = groupes[k] || []).push(m);
+  });
+  const ordre = Object.keys(groupes).sort((x,y)=>{
+    const [px,ax]=x.split('|'), [py,ay]=y.split('|');
+    const o=['TRI','MEI','ELM','TEL'];
+    return o.indexOf(px)-o.indexOf(py) || (+ax)-(+ay);
+  });
+
+  grid.innerHTML = ordre.map(k=>{
+    const [prog,an] = k.split('|');
+    const mods = groupes[k].sort((a,b)=>String(a.code).localeCompare(String(b.code),'fr',{numeric:true}));
+    const c = colors[prog];
+    const hs = mods.reduce((a,m)=>a+(+m.dur||0),0);
+    const entete = '<div style="grid-column:1/-1;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:.4rem 0 .2rem">'+
+      '<span style="display:inline-flex;align-items:center;gap:.45rem;background:'+c.bg+';color:#fff;padding:.32rem .75rem;border-radius:99px;font-weight:800;font-size:.76rem">'+
+      c.icon+' '+prog+' <span style="opacity:.75;font-weight:600">· '+NOMS[prog]+'</span></span>'+
+      '<span style="font-size:.72rem;color:#3A4A6B;font-weight:700">'+an+'ʳᵉ année</span>'.replace('1ʳᵉ','1ʳᵉ').replace('2ʳᵉ','2ᵉ')+
+      '<span style="font-size:.68rem;color:#8794AD">'+mods.length+' modules · '+hs+' h</span>'+
+      '<span style="flex:1;height:1px;background:var(--bdr);min-width:20px"></span></div>';
+
+    const cartes = mods.map(m=>{
+      const st = examStatuses[m.code]||'—';
+      const stColor = st==='Disponible'?'#006B46':st==='En attente'?'#8B5E00':st==='Fermé'?'#8794AD':'';
+      const enLigne = !!m.fichier;
+      const seuilTxt = (typeof m.seuil==='number') ? ('✓ '+m.seuil+'%') : ('✓ '+m.seuil);
+      return '<div style="background:#fff;border:1px solid var(--bdr);border-left:3px solid '+c.ac+';border-radius:var(--rL);overflow:hidden;transition:all .2s;display:flex;flex-direction:column"'+
+        ' onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 26px rgba(27,58,140,.12)\'"'+
+        ' onmouseout="this.style.transform=\'\';this.style.boxShadow=\'\'">'+
+        '<div style="padding:.75rem .9rem .55rem;display:flex;align-items:center;justify-content:space-between;gap:.4rem">'+
+          '<code style="font-size:.7rem;font-family:monospace;letter-spacing:.05em;font-weight:800;color:'+c.ac+'">'+m.code+'</code>'+
+          (st!=='—'
+            ? '<span style="font-size:.6rem;font-weight:800;color:'+stColor+';background:'+(st==='Disponible'?'#E6F5EF':st==='En attente'?'#FFF3DC':'#F1F4FA')+';padding:2px 8px;border-radius:99px">'+st.toUpperCase()+'</span>'
+            : '<span style="font-size:.6rem;font-weight:700;color:#8794AD;background:#F1F4FA;padding:2px 8px;border-radius:99px">'+m.annee+(m.annee===1?'ʳᵉ':'ᵉ')+' année</span>')+
+        '</div>'+
+        '<div style="padding:0 .9rem;font-weight:700;font-size:.82rem;color:#0B1525;line-height:1.35;flex:1;min-height:2.5em">'+(m.title||'')+'</div>'+
+        '<div style="padding:.6rem .9rem .8rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">'+
+          '<div style="display:flex;gap:.35rem;flex-wrap:wrap">'+
+            '<span style="font-size:.66rem;color:#3A4A6B;background:#E8EEFF;padding:2px 7px;border-radius:5px">⏱ '+m.dur+' h</span>'+
+            '<span style="font-size:.66rem;color:#3A4A6B;background:#E8EEFF;padding:2px 7px;border-radius:5px">'+seuilTxt+'</span>'+
+          '</div>'+
+
+        '</div>'+
+        (enLigne
+          ? '<button class="btn btn-sm" style="border:none;border-radius:0;background:'+c.bg+';color:#fff;font-size:.72rem;padding:.45rem;font-weight:700;cursor:pointer" onclick="showLogin()">Ouvrir le module →</button>'
+          : '<div style="background:#F1F4FA;color:#8794AD;font-size:.7rem;padding:.45rem;text-align:center;font-weight:700">Contenu en préparation</div>')+
+      '</div>';
+    }).join('');
+    return entete + cartes;
   }).join('');
 }
 
@@ -4115,7 +4191,7 @@ function applyConfig() {
   const sEtud = document.getElementById('stat-etudiants');
   const sMod  = document.getElementById('stat-modules');
   const sAns  = document.getElementById('stat-ans');
-  if(sEtud) sEtud.textContent = stats.etudiants || '72k+';
+  if(sEtud) sEtud.textContent = stats.etudiants || '72 000+';
   if(sMod)  sMod.textContent  = stats.modules    || '108';
   if(sAns)  sAns.textContent  = stats.annees_experience || '50+';
 
@@ -4256,7 +4332,11 @@ function applyProgrammes() {
   // Stats total étudiants
   const totalEtud = progs.reduce((s,p)=>s+(p.nb_etudiants||0),0);
   const sEtud = document.getElementById('stat-etudiants');
-  if(sEtud && totalEtud > 0) sEtud.textContent = totalEtud.toLocaleString('fr-FR');
+  // Le compteur du hero est piloté par config.stats.etudiants (voir applyConfig).
+  // La somme des inscrits par programme ne sert QUE de secours si cette stat n'est pas définie,
+  // sinon applyProgrammes écrasait silencieusement la valeur officielle.
+  const cfgEtud = (SITE_DATA && SITE_DATA.config && SITE_DATA.config.stats && SITE_DATA.config.stats.etudiants) || '';
+  if(sEtud && !cfgEtud && totalEtud > 0) sEtud.textContent = totalEtud.toLocaleString('fr-FR');
 }
 
 /* ── Événements ── */
@@ -4617,7 +4697,7 @@ function hideLogin() { document.getElementById('login-overlay').classList.remove
    3. Le backend valide identifiant + mot de passe et gère la 2FA réelle
 ══════════════════════════════════════════════════════════ */
 // ── Connexion réelle activée ── (repli comptes de démo : définir window.DEMO_LOGIN = true)
-const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : true;
+const DEMO_MODE = (typeof window.DEMO_LOGIN === 'boolean') ? window.DEMO_LOGIN : false;
 const AUTH_URL    = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/login';
 const VERIFY_URL  = (window.ROOBY_API_URL || '').replace(/\/rooby$/, '') + '/auth/verify-2fa';
 let   tfaChallengeId = null;
