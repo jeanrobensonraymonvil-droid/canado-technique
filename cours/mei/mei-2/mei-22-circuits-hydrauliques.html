@@ -428,7 +428,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <ul>
       <li><strong>Évaluation formative (en ligne)</strong> — quiz de fin de chapitre et <em>examen blanc</em> auto-corrigé (QCM, calculs à saisie numérique, démarche). Seuil indicatif : 80 %.</li>
       <li><strong>Évaluation sommative officielle</strong> — <strong>épreuve pratique en atelier</strong> (5 h) : interprétation, calculs, planification, montage, vérification, entretien/réparation et rangement, évalués par le professeur.</li>
-      <li><strong>Seuil de réussite</strong> — <strong>80 sur 100</strong>. <strong>Règle de vérdique :</strong> tout manquement grave aux règles de sécurité entraîne l'arrêt immédiat de l'épreuve et l'échec.</li>
+      <li><strong>Seuil de réussite</strong> — <strong>80 sur 100</strong>. <strong>Règle de verdict :</strong> tout manquement grave aux règles de sécurité entraîne l'arrêt immédiat de l'épreuve et l'échec.</li>
     </ul></div>
 
   <div class="pc-sec"><h4>Liens avec les autres modules</h4>
@@ -1385,7 +1385,7 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
     <button class="qopt" onclick="selQ(this,'exc',2,2)"><span class="qletter">C</span>Le jeter</button>
     <button class="qopt" onclick="selQ(this,'exc',2,3)"><span class="qletter">D</span>Changer l'huile du réservoir</button>
   </div><div class="qexpl" id="qe-exc-2"></div></div>
-  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que dit la règle de vérdique de l'épreuve ?</div><div class="q-opts">
+  <div class="q-item"><div class="q-num">Question 4 / 5</div><div class="q-text">Que dit la règle de verdict de l'épreuve ?</div><div class="q-opts">
     <button class="qopt" onclick="selQ(this,'exc',3,0)"><span class="qletter">A</span>Le temps est doublé</button>
     <button class="qopt" onclick="selQ(this,'exc',3,1)"><span class="qletter">B</span>Un manquement grave à la sécurité entraîne l'échec</button>
     <button class="qopt" onclick="selQ(this,'exc',3,2)"><span class="qletter">C</span>Le seuil baisse à 50 %</button>
@@ -1414,6 +1414,17 @@ body.player .step.active{display:block;animation:stepIn .4s ease}
 <div class="exam-result" id="exam-result"></div>
 </div></div>
 
+
+<!-- ===== RESSOURCES EXTERNES (ajout) ===== -->
+<div style="margin:1.6rem 0;background:#fff;border:1px solid rgba(100,130,220,.18);border-radius:16px;padding:1.5rem 1.5rem 1.6rem;box-shadow:0 6px 24px rgba(20,40,90,.06)">
+  <div style="display:flex;align-items:center;gap:.6rem;margin:0 0 .3rem"><span style="font-size:1.5rem">🌐</span><h2 style="font-weight:800;font-size:1.1rem;color:#0B1525;margin:0">Ressources externes pour compléter la formation</h2></div>
+  <p style="color:#3A4A6B;margin:0 0 1.15rem;line-height:1.6;font-size:.94rem">Des ressources gratuites et fiables pour approfondir ce module. Ouvre-les dans un nouvel onglet.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.9rem">
+<div style="border:1px solid rgba(100,130,220,.18);border-radius:12px;padding:1rem 1rem 1.05rem;background:linear-gradient(180deg,rgba(232,25,44,.06),transparent)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem"><span style="width:30px;height:30px;border-radius:8px;background:#E8192C;display:grid;place-items:center;font-size:.95rem">🎬</span><strong style="font-weight:800;font-size:.9rem;color:#0B1525">Tutoriels vidéo (FR)</strong></div><a href="https://www.youtube.com/results?search_query=circuit+hydraulique+v%C3%A9rin+distributeur+cours" target="_blank" rel="noopener" style="display:block;color:#2B56C0;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.4;margin-bottom:.15rem">YouTube — Circuits hydrauliques ↗</a><span style="color:#3A4A6B;font-size:.8rem;line-height:1.45;display:block;margin-bottom:0">Symboles, vérins, distributeurs.</span></div><div style="border:1px solid rgba(100,130,220,.18);border-radius:12px;padding:1rem 1rem 1.05rem;background:linear-gradient(180deg,rgba(43,86,192,.06),transparent)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem"><span style="width:30px;height:30px;border-radius:8px;background:#2B56C0;display:grid;place-items:center;font-size:.95rem">📚</span><strong style="font-weight:800;font-size:.9rem;color:#0B1525">Cours en ligne gratuits</strong></div><a href="https://www.mcours.net/cours/ofppt/Cours_electromecanique_Circuits_hydrauliques.pdf" target="_blank" rel="noopener" style="display:block;color:#2B56C0;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.4;margin-bottom:.15rem">OFPPT — Circuits hydrauliques ↗</a><span style="color:#3A4A6B;font-size:.8rem;line-height:1.45;display:block;margin-bottom:0">Hydraulique industrielle (TP).</span></div><div style="border:1px solid rgba(100,130,220,.18);border-radius:12px;padding:1rem 1rem 1.05rem;background:linear-gradient(180deg,rgba(0,107,70,.06),transparent)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem"><span style="width:30px;height:30px;border-radius:8px;background:#006B46;display:grid;place-items:center;font-size:.95rem">📄</span><strong style="font-weight:800;font-size:.9rem;color:#0B1525">Docs &amp; références</strong></div><a href="https://sti-monge.fr/maintenancesystemes/wp-content/uploads/2013/02/Cours_hydraulique.pdf" target="_blank" rel="noopener" style="display:block;color:#2B56C0;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.4;margin-bottom:.15rem">STI Monge — Hydraulique ↗</a><span style="color:#3A4A6B;font-size:.8rem;line-height:1.45;display:block;margin-bottom:0">Fluides, pompes, vérins.</span></div><div style="border:1px solid rgba(100,130,220,.18);border-radius:12px;padding:1rem 1rem 1.05rem;background:linear-gradient(180deg,rgba(245,197,24,.06),transparent)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem"><span style="width:30px;height:30px;border-radius:8px;background:#F5C518;display:grid;place-items:center;font-size:.95rem">🔬</span><strong style="font-weight:800;font-size:.9rem;color:#0B1525">Outils &amp; simulateurs</strong></div><a href="https://mechsimulator.com/tools/hydraulic-circuit/" target="_blank" rel="noopener" style="display:block;color:#2B56C0;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.4;margin-bottom:.15rem">MechSimulator — Circuit hydraulique ↗</a><span style="color:#3A4A6B;font-size:.8rem;line-height:1.45;display:block;margin-bottom:0">Simulateur ISO 1219 animé.</span></div>
+  </div>
+  <p style="color:#7B8DB8;margin:1rem 0 0;font-size:.72rem;font-style:italic">Ressources externes vérifiées — sites tiers gratuits. Les contenus appartiennent à leurs auteurs respectifs.</p>
+</div>
+<!-- ===== FIN RESSOURCES EXTERNES ===== -->
 <div style="margin:1.6rem 0;background:linear-gradient(135deg,#1B3A8C,#040D1A);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.4rem 1.5rem">
   <h2 style="color:#fff;font-family:var(--fD);font-weight:800;font-size:1.05rem;margin:0 0 .5rem">🚀 Pour aller plus loin</h2>
   <ul style="color:#dbe6ff;margin:0;padding-left:1.15rem;line-height:1.75">
